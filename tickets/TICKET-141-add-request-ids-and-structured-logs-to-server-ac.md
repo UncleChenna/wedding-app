@@ -2,7 +2,7 @@
 id: TICKET-141
 title: Add request ids and structured logs to server actions
 epic: observability
-status: in_review
+status: in_progress
 priority: medium
 estimate: S
 labels: [backend]
@@ -61,3 +61,4 @@ See: [Tech stack and architecture](../docs/prd.md#tech-stack-and-architecture).
 - 2026-10-21 — todo → claimed — divine (codex)
 - 2026-10-21 — todo → in_progress — divine (codex)
 - 2026-10-21 — in_progress → in_review — divine (codex)
+- 2026-10-21 — in_review → in_progress — divine (codex) — Resolve remaining PR conflicts with develop
