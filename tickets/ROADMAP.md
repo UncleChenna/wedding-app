@@ -217,7 +217,7 @@ Target TICKET-164. 20 open tickets in the longest chain, 42 points (about 42 age
 
 ### PWA
 
-- [TICKET-102](TICKET-102-choose-the-service-worker-approach-for-next-js-1.md) Choose the service worker approach for Next.js 16 in an ADR · urgent · S · in_progress
+- [TICKET-102](TICKET-102-choose-the-service-worker-approach-for-next-js-1.md) Choose the service worker approach for Next.js 16 in an ADR · urgent · S · in_review
 - [TICKET-103](TICKET-103-generate-the-web-app-manifest-from-the-active-th.md) Generate the web app manifest from the active theme · high · M · todo
 - [TICKET-104](TICKET-104-generate-maskable-icons-apple-touch-icons-and-sp.md) Generate maskable icons, Apple touch icons and splash screens · high · M · todo
 - [TICKET-105](TICKET-105-add-the-service-worker-with-per-route-caching.md) Add the service worker with per-route caching · urgent · L · todo
