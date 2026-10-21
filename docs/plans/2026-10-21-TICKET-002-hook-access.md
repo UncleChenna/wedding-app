@@ -1,3 +1,7 @@
 # TICKET-002 — Read access and shell write targets
 
 Separate read resolution from edit confinement. Permit non-secret reads outside the checkout, deny secret reads including symlink targets, and retain edit confinement/protected-path rules. Replace command-wide keyword matching with static shell word/operator inspection for common read/write commands and redirects. This remains a workflow guard, not a full shell sandbox; arbitrary interpreters are covered by existing post-tool/staged checks and platform permissions. Add table-driven regressions for ticket examples and common bypass/false-positive cases, run them against old behavior, then run full verification. Preserve the independently reviewed TICKET-001 changes by limiting this work to pre-tool access handling.
+
+## Review update: develop conflicts
+
+Merge develop into TICKET-002, retain both hook fixes and regression suites, preserve progress history and CLI-synced completion metadata, regenerate boards, and run quick and full verification before pushing PR #8.

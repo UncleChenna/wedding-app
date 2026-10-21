@@ -18,12 +18,12 @@ Fix TICKET-002: the pre-tool hook rejected harmless reads of temporary output an
 ## Verification
 
 - Before implementation: regression suite demonstrated 12 failures and 21 passes.
-- Focused hooks/harness tests after implementation: 39 passed.
-- Full `pnpm verify`: ticket validation (188 tickets), formatting, lint, types, 104 unit tests, production build, and 17 browser smoke passes; 7 existing skips.
+- Original focused hooks/harness tests: 39 passed. After integrating develop: `pnpm verify:quick` passed with 58 related tests.
+- Full `pnpm verify`: ticket validation (188 tickets), formatting, lint, types, 106 unit tests, production build, and 17 browser smoke passes; 7 existing skips.
 - Used public local defaults from `.env.example`. No UI or production data changes. Interactive Claude tool integration was not exercised.
 
 ## Risks and rollout
 
 Static inspection handles common commands; it does not interpret arbitrary shell programs or replace platform permissions and post-edit/staged checks. Complex command syntax may require explicit paths.
 
-This branch includes unmerged prerequisite harness, backlog, and workflow history because `develop` is still based on published main. The focused TICKET-002 changes begin after `0d2e878`; review prerequisite PRs before integration. No PR has been merged automatically. Roll back this ticket's implementation commit if its guard behavior causes regressions; retain the prior workflow history.
+Updated against `develop` after TICKET-001 merged. Preserved its post-tool symlink handling and isolated Git test environments, retained both progress entries, and regenerated ticket boards from the current ticket records. Roll back this ticket’s implementation commit if its guard behavior causes regressions; retain TICKET-001’s fixes.

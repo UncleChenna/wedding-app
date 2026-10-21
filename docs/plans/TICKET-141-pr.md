@@ -16,4 +16,8 @@ Initial logger regressions: 2 failed, 5 passed. Focused logging suite: 17 passed
 
 ## Risks and rollout
 
-Request IDs are untrusted correlation metadata, never authorization. Key-based redaction cannot identify secrets hidden in free text; use fixed messages and selected safe fields as documented. Existing log-level filtering applies. Future actions must explicitly adopt the wrapper. No dependencies or schema migration; revert this ticket's implementation commit to roll back. Earlier unmerged harness/workflow history is included; focused changes follow 5506f63. Human review and merge only.
+Request IDs are untrusted correlation metadata, never authorization. Key-based redaction cannot identify secrets hidden in free text; use fixed messages and selected safe fields as documented. Existing log-level filtering applies. Future actions must explicitly adopt the wrapper. No dependencies or schema migration; revert this ticket's implementation commit to roll back. Prerequisite harness/workflow changes are now merged into develop. Human review and merge only.
+
+## Integration verification
+
+Updated against develop after TICKET-001 and TICKET-002 merged. Preserved both handoff histories, regenerated boards and retained prerequisite hook fixes. Quick and full verification passed: 118 unit tests, production build, 17 browser smoke passes and 7 existing skips.
