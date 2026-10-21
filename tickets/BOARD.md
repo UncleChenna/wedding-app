@@ -110,16 +110,17 @@ Open tickets labelled `human` (decisions, accounts, physical tasks), in `pnpm t:
 
 ## Board
 
-### In progress (0)
+### In progress (1)
 
-_None._
+| Ticket | Title | Epic | Priority | Est. | Owner | Blocked by |
+| ------ | ----- | ---- | -------- | ---- | ----- | ---------- |
+| [TICKET-004](TICKET-004-get-the-first-green-ci-run-and-confirm-parity-wi.md) | Get the first green CI run and confirm parity with pnpm verify | foundations | urgent | S | divine |  |
 
-### In review (5)
+### In review (4)
 
 | Ticket | Title | Epic | Priority | Est. | Owner | Blocked by |
 | ------ | ----- | ---- | -------- | ---- | ----- | ---------- |
 | [TICKET-002](TICKET-002-allow-reads-outside-the-checkout-and-fix-shell-g.md) | Allow reads outside the checkout and fix shell-guard false positives | foundations | urgent | S | divine |  |
-| [TICKET-004](TICKET-004-get-the-first-green-ci-run-and-confirm-parity-wi.md) | Get the first green CI run and confirm parity with pnpm verify | foundations | urgent | S | divine |  |
 | [TICKET-186](TICKET-186-use-ticket-prefix.md) | Use TICKET as the ticket prefix | foundations | urgent | M | divine |  |
 | [TICKET-187](TICKET-187-require-backlog-alignment-before-coding.md) | Require backlog alignment before coding | foundations | urgent | S | divine |  |
 | [TICKET-188](TICKET-188-require-ticket-named-branches-and-detailed-devel.md) | Require ticket-named branches and detailed develop PRs | foundations | urgent | S | divine |  |

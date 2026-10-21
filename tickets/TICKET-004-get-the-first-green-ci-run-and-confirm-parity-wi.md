@@ -2,7 +2,7 @@
 id: TICKET-004
 title: Get the first green CI run and confirm parity with pnpm verify
 epic: foundations
-status: in_review
+status: in_progress
 priority: urgent
 estimate: S
 labels: [infra, test]
@@ -70,3 +70,4 @@ See: [Current state](../docs/current-state.md) · [Testing plan](../docs/prd.md#
 - 2026-10-21 — todo → in_progress — divine (codex)
 - 2026-10-21 — in_progress → in_review — divine (codex)
 - 2026-10-21 — in_review → in_progress — divine (codex) — Resolve remaining PR conflicts with develop
+- 2026-10-21 — in_review → in_progress — divine (codex) — Resolve new conflicts after PR 9 merged
