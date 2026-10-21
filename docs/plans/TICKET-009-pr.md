@@ -16,4 +16,8 @@ Both regression tests pass. A temporary sage-garden JSON copied from ivory-gold 
 
 ## Risks and rollout
 
-Test-only registry mocks are reset after each test. No runtime changes or migration. Revert the ticket implementation commit to roll back. This branch carries earlier unmerged harness/workflow history; focused ticket changes follow commit 5506f63. Human review and prerequisite integration remain required before merge into develop.
+Test-only registry mocks are reset after each test. No runtime changes or migration. Revert the ticket implementation commit to roll back. Prerequisite harness/workflow changes are now merged into develop. Human review remains required.
+
+## Integration verification
+
+Updated against develop after TICKET-001 and TICKET-002 merged. Preserved both handoff histories, regenerated boards and retained prerequisite hook fixes. Quick and full verification passed: 108 unit tests, production build, 17 browser smoke passes and 7 existing skips.

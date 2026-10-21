@@ -57,6 +57,8 @@ See: [How theming works](../docs/prd.md#how-theming-works) (THM-3).
 
 ## Notes / decisions
 
+- 2026-10-21: Resolved develop conflicts, preserving merged prerequisite fixes and progress history. Quick and full verification passed: 108 unit tests, production build, 17 browser smoke passes and 7 existing skips.
+
 - 2026-10-21: Loader and registry-import regressions assert all 11 failing fixture pairs and theme identity. Copied ivory-gold to a temporary sage-garden theme, edited its identity, registered it, and ran the documented theming tests successfully; setting foreground equal to background caused registry-load failure naming sage-garden. Removed the fixture afterwards. No production loader fix or palette change was needed. Quick gate and full verify passed (106 unit tests, 17 smoke passes, 7 existing skips).
 
 - 2026-10-21: Migrated from `docs/tasks.json` SETUP-002.
