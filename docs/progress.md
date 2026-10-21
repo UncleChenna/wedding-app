@@ -14,6 +14,14 @@ Add-only history, newest first: prepend new entries below this template, never r
 
 ---
 
+## 2026-10-21 10:45 UTC — TICKET-001 — Hooks skip the symlinked .claude/skills
+
+- **Who / agent / branch:** unclechenna · claude · `TICKET-001`
+- **Changed:** Ported PR #3 (`WED-001`, closed as superseded) onto develop as PR #7. The post-tool formatter skips non-regular files, so the `.claude/skills` symlink no longer raises a PostToolUse error. `agents:check` rejects a committed `.claude/skills`. `isolatedGitEnv()` sandboxes every git-spawning test.
+- **Checks:** The regression test fails on the old hook and passes with the fix. `agents:check` exits 0 in a fresh clone and 1 with the link committed. Full `pnpm verify` with public local defaults passed: 79 unit tests, build, 17 smoke.
+- **Learned:** `wt:new` reuses the ledger's recorded branch, so a ticket claimed before the exact-ID rule cannot get a `TICKET-NNN` worktree through it; this one was created with `git worktree add` and has no local env file. The Bash guard also blocks heredocs whose text merely mentions protected paths (TICKET-002 scope).
+- **Next / blockers:** Human review of PR #7. After merge: `pnpm t:move TICKET-001 done`, `pnpm wt:remove WED-001`, delete the old `unclechenna/WED-001-…` branch, and remove `.worktrees/TICKET-001`.
+
 ## 2026-10-21 10:03 UTC — TICKET-188 — Exact ticket branches and develop reviews
 
 - **Branch:** `TICKET-188`.
