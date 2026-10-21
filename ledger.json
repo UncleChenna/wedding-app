@@ -7,13 +7,14 @@
         "- 2026-10-21 — todo → claimed — unclechenna (claude)",
         "- 2026-10-21 — todo → in_progress — unclechenna (claude)",
         "- 2026-10-21 — in_progress → in_review — unclechenna (claude)",
-        "- 2026-10-21 — in_review → in_progress — unclechenna (claude) — PR #3 conflicted and targeted chore/ticket-system; redoing on TICKET-001 against develop"
+        "- 2026-10-21 — in_review → in_progress — unclechenna (claude) — PR #3 conflicted and targeted chore/ticket-system; redoing on TICKET-001 against develop",
+        "- 2026-10-21 — in_progress → in_review — unclechenna (claude)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "unclechenna",
       "agent": "claude",
-      "branch": "unclechenna/WED-001-fix-hooks-failing-on-the-symlinked-claude-skills",
-      "pr": "https://github.com/UncleChenna/wedding-app/pull/3",
+      "branch": "TICKET-001",
+      "pr": "https://github.com/UncleChenna/wedding-app/pull/7",
       "started": "2026-10-21",
       "completed": "",
       "updated": "2026-10-21",
