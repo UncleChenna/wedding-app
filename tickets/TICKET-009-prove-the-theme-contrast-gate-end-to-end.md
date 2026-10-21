@@ -2,7 +2,7 @@
 id: TICKET-009
 title: Prove the theme contrast gate end to end
 epic: design-system
-status: in_progress
+status: in_review
 priority: urgent
 estimate: S
 labels: [test, design]
