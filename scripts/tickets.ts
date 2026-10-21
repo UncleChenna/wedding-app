@@ -64,7 +64,8 @@ const USAGE = `Usage: pnpm t:<command>
   t:sync <id>                     sync only this branch’s ticket from the ledger
   t:validate                      schema, sections, ids, deps, cycles, consistency
   t:render                        generate ignored Markdown snapshots
-  t:dashboard                     generate the local interactive HTML board`;
+  t:dashboard                     start the auto-refresh loopback board
+  t:dashboard:snapshot            export the standalone HTML board`;
 
 interface Args {
   positional: string[];
@@ -449,6 +450,18 @@ function main(): number {
             : "OFFLINE — committed files only; status may be stale";
       const base =
         tryGit(["rev-parse", "--short", "refs/remotes/origin/develop"], state.cwd) ?? "unknown";
+      if (args.flags.json) {
+        console.log(
+          JSON.stringify({
+            tickets: state.tickets,
+            source: state.live && state.mode === "origin" ? "Shared ledger" : source,
+            base,
+            generated: new Date().toISOString(),
+            connected: state.live,
+          }),
+        );
+        return 0;
+      }
       const output = join(state.cwd, "artifacts/tickets/index.html");
       mkdirSync(join(state.cwd, "artifacts/tickets"), { recursive: true });
       writeFileSync(output, dashboardHtml(state.tickets, source, base));

@@ -154,7 +154,7 @@ Long rehearsal details live inside the skill's `references/` folder.
 
 ## Avoid shared-file conflicts
 
-- `pnpm t:dashboard` creates a read-only visual snapshot at `artifacts/tickets/index.html`; open it in a browser. Regenerate and reload to refresh.
+- `pnpm t:dashboard` serves a read-only, auto-refreshing loopback board at http://127.0.0.1:4173. Each collaborator uses their own Git access. `pnpm t:dashboard:snapshot` exports an offline HTML file.
 - `tickets/BOARD.md` and `tickets/ROADMAP.md` are stable links. Never commit generated board rows; `pnpm t:render` writes ignored artifacts only.
 - Status/ownership authority is the shared ledger. Do not sync unrelated ticket files. `pnpm t:sync <id>` operates only on that ticket’s branch.
 - Handoffs go in `docs/handoffs/<ticket-id>.md`; preserve `docs/progress.md` as history.
