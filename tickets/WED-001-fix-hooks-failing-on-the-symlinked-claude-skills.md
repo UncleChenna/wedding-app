@@ -2,20 +2,20 @@
 id: WED-001
 title: Fix hooks failing on the symlinked .claude/skills directory
 epic: foundations
-status: todo
+status: in_progress
 priority: urgent
 estimate: S
 labels: [infra, test]
 module: harness
-owner: ""
-agent: ""
+owner: unclechenna
+agent: claude
 blocked_by: []
 blocks: [WED-006]
-branch: ""
+branch: unclechenna/WED-001-fix-hooks-failing-on-the-symlinked-claude-skills
 pr: ""
 created: 2026-10-21
 updated: 2026-10-21
-started: ""
+started: 2026-10-21
 completed: ""
 reason: ""
 resume_to: ""
@@ -65,3 +65,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-21 — todo → claimed — unclechenna (claude)
+- 2026-10-21 — todo → in_progress — unclechenna (claude)

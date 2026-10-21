@@ -53,16 +53,16 @@ Agent work in `pnpm t:next` order (priority, then work unblocked, then id), assu
 
 | # | Ticket | Title | Priority | Est. | Module |
 | - | ------ | ----- | -------- | ---- | ------ |
-| 1 | [WED-001](WED-001-fix-hooks-failing-on-the-symlinked-claude-skills.md) | Fix hooks failing on the symlinked .claude/skills directory | urgent | S | harness |
-| 2 | [WED-002](WED-002-allow-reads-outside-the-checkout-and-fix-shell-g.md) | Allow reads outside the checkout and fix shell-guard false positives | urgent | S | harness |
-| 3 | [WED-003](WED-003-verify-database-bootstrap-is-idempotent.md) | Verify database bootstrap is idempotent | high | M | shared |
-| 4 | [WED-023](WED-023-redesign-invitation-guest-and-rsvp-tables-to-mat.md) | Redesign invitation, guest and RSVP tables to match the PRD | urgent | L | shared |
-| 5 | [WED-024](WED-024-redesign-check-in-menu-order-and-staff-tables-to.md) | Redesign check-in, menu, order and staff tables to match the PRD | urgent | L | shared |
-| 6 | [WED-056](WED-056-sign-gate-pass-tokens-with-ed25519-and-document.md) | Sign gate pass tokens with Ed25519 and document key handling | urgent | M | checkin |
-| 7 | [WED-031](WED-031-add-staff-pin-sign-in-with-hashed-expiring-pins.md) | Add staff PIN sign-in with hashed, expiring PINs | urgent | M | shared |
-| 8 | [WED-057](WED-057-verify-gate-tokens-on-the-scanner-device.md) | Verify gate tokens on the scanner device | urgent | M | checkin |
-| 9 | [WED-058](WED-058-implement-admission-rules-and-partial-admission.md) | Implement admission rules and partial admission | urgent | M | checkin |
-| 10 | [WED-036](WED-036-generate-invitation-tokens-and-the-personal-i-to.md) | Generate invitation tokens and the personal /i/[token] route | urgent | M | invitations |
+| 1 | [WED-002](WED-002-allow-reads-outside-the-checkout-and-fix-shell-g.md) | Allow reads outside the checkout and fix shell-guard false positives | urgent | S | harness |
+| 2 | [WED-003](WED-003-verify-database-bootstrap-is-idempotent.md) | Verify database bootstrap is idempotent | high | M | shared |
+| 3 | [WED-023](WED-023-redesign-invitation-guest-and-rsvp-tables-to-mat.md) | Redesign invitation, guest and RSVP tables to match the PRD | urgent | L | shared |
+| 4 | [WED-024](WED-024-redesign-check-in-menu-order-and-staff-tables-to.md) | Redesign check-in, menu, order and staff tables to match the PRD | urgent | L | shared |
+| 5 | [WED-056](WED-056-sign-gate-pass-tokens-with-ed25519-and-document.md) | Sign gate pass tokens with Ed25519 and document key handling | urgent | M | checkin |
+| 6 | [WED-031](WED-031-add-staff-pin-sign-in-with-hashed-expiring-pins.md) | Add staff PIN sign-in with hashed, expiring PINs | urgent | M | shared |
+| 7 | [WED-057](WED-057-verify-gate-tokens-on-the-scanner-device.md) | Verify gate tokens on the scanner device | urgent | M | checkin |
+| 8 | [WED-058](WED-058-implement-admission-rules-and-partial-admission.md) | Implement admission rules and partial admission | urgent | M | checkin |
+| 9 | [WED-036](WED-036-generate-invitation-tokens-and-the-personal-i-to.md) | Generate invitation tokens and the personal /i/[token] route | urgent | M | invitations |
+| 10 | [WED-009](WED-009-prove-the-theme-contrast-gate-end-to-end.md) | Prove the theme contrast gate end to end | high | S | theming |
 
 ## Waiting on people
 
@@ -100,9 +100,11 @@ Open tickets labelled `human` (decisions, accounts, physical tasks), in `pnpm t:
 
 ## Board
 
-### In progress (0)
+### In progress (1)
 
-_None._
+| Ticket | Title | Epic | Priority | Est. | Owner | Blocked by |
+| ------ | ----- | ---- | -------- | ---- | ----- | ---------- |
+| [WED-001](WED-001-fix-hooks-failing-on-the-symlinked-claude-skills.md) | Fix hooks failing on the symlinked .claude/skills directory | foundations | urgent | S | unclechenna |  |
 
 ### In review (0)
 
@@ -112,11 +114,10 @@ _None._
 
 _None._
 
-### Todo (166)
+### Todo (165)
 
 | Ticket | Title | Epic | Priority | Est. | Owner | Blocked by |
 | ------ | ----- | ---- | -------- | ---- | ----- | ---------- |
-| [WED-001](WED-001-fix-hooks-failing-on-the-symlinked-claude-skills.md) | Fix hooks failing on the symlinked .claude/skills directory | foundations | urgent | S |  |  |
 | [WED-002](WED-002-allow-reads-outside-the-checkout-and-fix-shell-g.md) | Allow reads outside the checkout and fix shell-guard false positives | foundations | urgent | S |  |  |
 | [WED-003](WED-003-verify-database-bootstrap-is-idempotent.md) | Verify database bootstrap is idempotent | foundations | high | M |  |  |
 | [WED-004](WED-004-get-the-first-green-ci-run-and-confirm-parity-wi.md) | Get the first green CI run and confirm parity with pnpm verify | foundations | high | S |  |  |

@@ -62,7 +62,7 @@ Target WED-164. 14 open tickets in the longest chain, 36 points (about 36 agent-
 
 ### Foundations fix-ups
 
-- [WED-001](WED-001-fix-hooks-failing-on-the-symlinked-claude-skills.md) Fix hooks failing on the symlinked .claude/skills directory · urgent · S · todo
+- [WED-001](WED-001-fix-hooks-failing-on-the-symlinked-claude-skills.md) Fix hooks failing on the symlinked .claude/skills directory · urgent · S · in_progress
 - [WED-002](WED-002-allow-reads-outside-the-checkout-and-fix-shell-g.md) Allow reads outside the checkout and fix shell-guard false positives · urgent · S · todo
 - [WED-003](WED-003-verify-database-bootstrap-is-idempotent.md) Verify database bootstrap is idempotent · high · M · todo
 - [WED-004](WED-004-get-the-first-green-ci-run-and-confirm-parity-wi.md) Get the first green CI run and confirm parity with pnpm verify · high · S · todo
