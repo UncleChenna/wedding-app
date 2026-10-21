@@ -20,4 +20,4 @@ Use signature timing sparingly and avoid wrapping fixed/sticky overlays in trans
 
 ## Screenshots and UI checklist
 
-[Complete scoped checklist and evidence](../blob/TICKET-016/docs/reviews/TICKET-016/README.md). Screenshots are committed under docs/reviews/TICKET-016/screenshots for both themes at 375/768/1280. Guest Lighthouse, WhatsApp, real-device and QR checks are not claimed: this change adds a developer-only demonstration and does not alter those flows.
+[Complete scoped checklist and evidence](https://github.com/UncleChenna/wedding-app/blob/TICKET-016/docs/reviews/TICKET-016/README.md). Screenshots are committed under docs/reviews/TICKET-016/screenshots for both themes at 375/768/1280. Guest Lighthouse, WhatsApp, real-device and QR checks are not claimed: this change adds a developer-only demonstration and does not alter those flows.
