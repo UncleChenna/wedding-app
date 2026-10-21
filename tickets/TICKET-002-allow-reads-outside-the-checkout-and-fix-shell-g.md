@@ -2,20 +2,20 @@
 id: TICKET-002
 title: Allow reads outside the checkout and fix shell-guard false positives
 epic: foundations
-status: todo
+status: in_progress
 priority: urgent
 estimate: S
 labels: [infra, test, security]
 module: harness
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: []
 blocks: [TICKET-003, TICKET-006]
-branch: ""
+branch: TICKET-002
 pr: ""
 created: 2026-10-21
 updated: 2026-10-21
-started: ""
+started: 2026-10-21
 completed: ""
 reason: ""
 resume_to: ""
@@ -62,3 +62,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-21 — todo → claimed — divine (codex)
+- 2026-10-21 — todo → in_progress — divine (codex)

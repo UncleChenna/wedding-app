@@ -76,7 +76,7 @@ Target TICKET-164. 20 open tickets in the longest chain, 42 points (about 42 age
 ### Foundations fix-ups
 
 - [TICKET-001](TICKET-001-fix-hooks-failing-on-the-symlinked-claude-skills.md) Fix hooks failing on the symlinked .claude/skills directory · urgent · S · todo
-- [TICKET-002](TICKET-002-allow-reads-outside-the-checkout-and-fix-shell-g.md) Allow reads outside the checkout and fix shell-guard false positives · urgent · S · todo
+- [TICKET-002](TICKET-002-allow-reads-outside-the-checkout-and-fix-shell-g.md) Allow reads outside the checkout and fix shell-guard false positives · urgent · S · in_progress
 - [TICKET-003](TICKET-003-verify-database-bootstrap-is-idempotent.md) Verify database bootstrap is idempotent · urgent · M · todo
 - [TICKET-004](TICKET-004-get-the-first-green-ci-run-and-confirm-parity-wi.md) Get the first green CI run and confirm parity with pnpm verify · urgent · S · todo
 - [TICKET-005](TICKET-005-replace-codeowners-placeholders-and-enable-branc.md) Replace CODEOWNERS placeholders and enable branch protection · urgent · S · todo · human

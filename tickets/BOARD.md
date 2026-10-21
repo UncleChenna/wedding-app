@@ -58,15 +58,15 @@ Agent work in `pnpm t:next` order (priority, then work unblocked, then id), assu
 | # | Ticket | Title | Priority | Est. | Module |
 | - | ------ | ----- | -------- | ---- | ------ |
 | 1 | [TICKET-001](TICKET-001-fix-hooks-failing-on-the-symlinked-claude-skills.md) | Fix hooks failing on the symlinked .claude/skills directory | urgent | S | harness |
-| 2 | [TICKET-002](TICKET-002-allow-reads-outside-the-checkout-and-fix-shell-g.md) | Allow reads outside the checkout and fix shell-guard false positives | urgent | S | harness |
-| 3 | [TICKET-003](TICKET-003-verify-database-bootstrap-is-idempotent.md) | Verify database bootstrap is idempotent | urgent | M | shared |
-| 4 | [TICKET-009](TICKET-009-prove-the-theme-contrast-gate-end-to-end.md) | Prove the theme contrast gate end to end | urgent | S | theming |
-| 5 | [TICKET-010](TICKET-010-add-fixed-semantic-status-tokens-for-valid-used.md) | Add fixed semantic status tokens for valid, used and invalid | urgent | M | theming |
-| 6 | [TICKET-023](TICKET-023-redesign-invitation-guest-and-rsvp-tables-to-mat.md) | Redesign invitation, guest and RSVP tables to match the PRD | urgent | L | shared |
-| 7 | [TICKET-017](TICKET-017-harden-base-components-for-focus-tap-targets-and.md) | Harden base components for focus, tap targets and dialogs | urgent | L | shared |
-| 8 | [TICKET-025](TICKET-025-add-event-settings-and-rsvp-change-log-tables.md) | Add event settings and RSVP change-log tables | urgent | M | shared |
-| 9 | [TICKET-029](TICKET-029-add-admin-sign-in-with-email-codes-and-an-allowl.md) | Add admin sign-in with email codes and an allowlist | urgent | M | admin |
-| 10 | [TICKET-172](TICKET-172-migrate-staff-identities-and-device-registration.md) | Migrate staff identities and device registrations | urgent | M | shared |
+| 2 | [TICKET-003](TICKET-003-verify-database-bootstrap-is-idempotent.md) | Verify database bootstrap is idempotent | urgent | M | shared |
+| 3 | [TICKET-009](TICKET-009-prove-the-theme-contrast-gate-end-to-end.md) | Prove the theme contrast gate end to end | urgent | S | theming |
+| 4 | [TICKET-010](TICKET-010-add-fixed-semantic-status-tokens-for-valid-used.md) | Add fixed semantic status tokens for valid, used and invalid | urgent | M | theming |
+| 5 | [TICKET-023](TICKET-023-redesign-invitation-guest-and-rsvp-tables-to-mat.md) | Redesign invitation, guest and RSVP tables to match the PRD | urgent | L | shared |
+| 6 | [TICKET-017](TICKET-017-harden-base-components-for-focus-tap-targets-and.md) | Harden base components for focus, tap targets and dialogs | urgent | L | shared |
+| 7 | [TICKET-025](TICKET-025-add-event-settings-and-rsvp-change-log-tables.md) | Add event settings and RSVP change-log tables | urgent | M | shared |
+| 8 | [TICKET-029](TICKET-029-add-admin-sign-in-with-email-codes-and-an-allowl.md) | Add admin sign-in with email codes and an allowlist | urgent | M | admin |
+| 9 | [TICKET-172](TICKET-172-migrate-staff-identities-and-device-registration.md) | Migrate staff identities and device registrations | urgent | M | shared |
+| 10 | [TICKET-018](TICKET-018-add-form-components-for-rsvp-ordering-and-admin.md) | Add form components for RSVP, ordering and admin | urgent | M | shared |
 
 ## Waiting on people
 
@@ -110,9 +110,11 @@ Open tickets labelled `human` (decisions, accounts, physical tasks), in `pnpm t:
 
 ## Board
 
-### In progress (0)
+### In progress (1)
 
-_None._
+| Ticket | Title | Epic | Priority | Est. | Owner | Blocked by |
+| ------ | ----- | ---- | -------- | ---- | ----- | ---------- |
+| [TICKET-002](TICKET-002-allow-reads-outside-the-checkout-and-fix-shell-g.md) | Allow reads outside the checkout and fix shell-guard false positives | foundations | urgent | S | divine |  |
 
 ### In review (3)
 
@@ -126,12 +128,11 @@ _None._
 
 _None._
 
-### Todo (182)
+### Todo (181)
 
 | Ticket | Title | Epic | Priority | Est. | Owner | Blocked by |
 | ------ | ----- | ---- | -------- | ---- | ----- | ---------- |
 | [TICKET-001](TICKET-001-fix-hooks-failing-on-the-symlinked-claude-skills.md) | Fix hooks failing on the symlinked .claude/skills directory | foundations | urgent | S |  |  |
-| [TICKET-002](TICKET-002-allow-reads-outside-the-checkout-and-fix-shell-g.md) | Allow reads outside the checkout and fix shell-guard false positives | foundations | urgent | S |  |  |
 | [TICKET-003](TICKET-003-verify-database-bootstrap-is-idempotent.md) | Verify database bootstrap is idempotent | foundations | urgent | M |  | TICKET-001, TICKET-002 |
 | [TICKET-004](TICKET-004-get-the-first-green-ci-run-and-confirm-parity-wi.md) | Get the first green CI run and confirm parity with pnpm verify | foundations | urgent | S |  |  |
 | [TICKET-005](TICKET-005-replace-codeowners-placeholders-and-enable-branc.md) | Replace CODEOWNERS placeholders and enable branch protection | foundations | urgent | S |  | TICKET-004 |
