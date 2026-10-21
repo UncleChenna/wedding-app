@@ -7,7 +7,7 @@ Live state (including claims not yet merged): `pnpm t:board`. Rules: [docs/ticke
 ## Progress by epic
 
 ```text
-Foundations fix-ups                  ░░░░░░░░░░░░░░░░░░░░   0/7     0%
+Foundations fix-ups                  ░░░░░░░░░░░░░░░░░░░░   0/8     0%
 Design system and theming            ░░░░░░░░░░░░░░░░░░░░   0/17    0%
 Data and auth                        ░░░░░░░░░░░░░░░░░░░░   0/13    0%
 Invitations and RSVP                 ░░░░░░░░░░░░░░░░░░░░   0/17    0%
@@ -110,9 +110,11 @@ Open tickets labelled `human` (decisions, accounts, physical tasks), in `pnpm t:
 
 ## Board
 
-### In progress (0)
+### In progress (1)
 
-_None._
+| Ticket | Title | Epic | Priority | Est. | Owner | Blocked by |
+| ------ | ----- | ---- | -------- | ---- | ----- | ---------- |
+| [WED-186](WED-186-rename-the-ticket-prefix-from-wed-to-ticket.md) | Rename the ticket prefix from WED to TICKET | foundations | urgent | M | divine |  |
 
 ### In review (0)
 
