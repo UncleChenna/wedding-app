@@ -62,6 +62,9 @@ export default defineConfig([
     rules: { "no-console": "off" },
   },
   globalIgnores([
+    ".worktrees/**",
+    ".harness/**",
+    "tooling/plugin/dist/**",
     ".next/**",
     "out/**",
     "build/**",

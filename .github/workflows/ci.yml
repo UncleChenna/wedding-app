@@ -4,6 +4,8 @@ on:
   push:
     branches: [main]
   pull_request:
+    # `edited` re-runs the PR text check when a title or body changes.
+    types: [opened, synchronize, reopened, edited, ready_for_review]
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -21,6 +23,33 @@ env:
   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH
 
 jobs:
+  tickets:
+    name: tickets valid
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm t:validate
+
+  pr-text:
+    name: no AI attribution in PR text
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      # PR text is untrusted: pass it through env, never interpolate it into the script.
+      - env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: node scripts/harness/commit-rules.mjs pr
+
   verify:
     name: pnpm verify
     runs-on: ubuntu-latest
@@ -34,6 +63,7 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm agents:link && pnpm agents:check
       - run: pnpm verify
       - if: failure()
         uses: actions/upload-artifact@v7

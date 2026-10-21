@@ -1,0 +1,11 @@
+# Replace these handles before enabling required CODEOWNERS reviews.
+* @REPLACE_ME_DIVINE @REPLACE_ME_FRIEND
+/src/modules/invitations/ @REPLACE_ME_DIVINE
+/src/modules/theming/ @REPLACE_ME_DIVINE
+/src/modules/checkin/ @REPLACE_ME_FRIEND
+/src/modules/ordering/ @REPLACE_ME_FRIEND
+/src/modules/admin/ @REPLACE_ME_DIVINE @REPLACE_ME_FRIEND
+/src/modules/shared/ @REPLACE_ME_DIVINE @REPLACE_ME_FRIEND
+/.github/ @REPLACE_ME_DIVINE @REPLACE_ME_FRIEND
+/.agents/ @REPLACE_ME_DIVINE @REPLACE_ME_FRIEND
+/scripts/ @REPLACE_ME_DIVINE @REPLACE_ME_FRIEND

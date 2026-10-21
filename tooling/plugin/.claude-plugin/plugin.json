@@ -1,0 +1,5 @@
+{
+  "name": "wedding-harness",
+  "version": "1.0.0",
+  "description": "Shared wedding repository skills, reviewers and quality hooks. Build with pnpm plugin:build before distribution."
+}

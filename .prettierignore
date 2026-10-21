@@ -11,3 +11,11 @@ drizzle/meta
 supabase/.temp
 next-env.d.ts
 src/modules/theming/themes/theme.schema.json
+
+.worktrees
+.harness
+.claude/skills
+tooling/plugin/dist
+
+# Machine-managed by pnpm t:* (round-trips exactly; see docs/tickets.md)
+tickets

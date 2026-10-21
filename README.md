@@ -39,7 +39,7 @@ Stop the database with `pnpm db:stop`.
 | `pnpm screenshots`            | Screenshots of pages in every theme at 375/768/1280px → `artifacts/screenshots/`                             |
 | `pnpm db:generate`            | Generate a migration after editing `src/modules/shared/server/db/schema.ts`                                  |
 | `pnpm db:reset`               | Recreate, migrate and reseed the local DB                                                                    |
-| `pnpm agent:loop --help`      | Run Claude Code headless over `docs/tasks.json`                                                              |
+| `pnpm agent:loop --help`      | Run Claude Code headless over the ticket queue (`pnpm t:next`)                                               |
 
 The full list is in [AGENTS.md](AGENTS.md#commands).
 
@@ -51,14 +51,16 @@ Change the active theme in `src/modules/theming/config.ts`. Add a theme in under
 
 - [AGENTS.md](AGENTS.md): conventions, folder rules, definition of done, and the workflow loop (for humans and AI agents)
 - [docs/architecture.md](docs/architecture.md) and [docs/decisions/](docs/decisions/)
-- [docs/tasks.json](docs/tasks.json) and [docs/progress.md](docs/progress.md): task queue and work log
+- [tickets/BOARD.md](tickets/BOARD.md), [tickets/ROADMAP.md](tickets/ROADMAP.md) and [docs/tickets.md](docs/tickets.md): the ticket backlog and its rules (`pnpm t:*`)
+- [docs/current-state.md](docs/current-state.md): what exists, what is incomplete, PRD contradictions and assumptions
+- [docs/progress.md](docs/progress.md): work log
 
-## Working with AI agents
+## Working together with AI agents
 
-`AGENTS.md` is read natively by Codex and pointed to from `CLAUDE.md`, `GEMINI.md`, `.github/copilot-instructions.md` and `.cursor/rules/`. For Claude Code:
+Start with [docs/collaboration.md](docs/collaboration.md): onboarding, atomic task claims,
+isolated worktrees/databases, skills, hooks, PR reviews and optional Claude plugin.
+Run `pnpm agents:link` after cloning or changing skills. Canonical workflows live in
+`.agents/skills/`; `AGENTS.md` is the shared index. Use `/implement-task` in Claude.
 
-- Commands: `/plan`, `/implement <task-id>`, `/verify`, `/review`
-- Subagents: `code-reviewer`, `test-writer`, `ui-reviewer`
-- Hooks: Prettier + ESLint after every edit; `pnpm verify:quick` before the agent stops
-- MCP: Playwright browser (`.mcp.json`; approve it the first time Claude Code asks)
-- Unattended: `pnpm agent:loop --max-iterations 3` runs `/implement` on the next pending tasks, one commit each, stopping at the first failure. Logs go to `logs/agent-loop/`.
+`pnpm agent:loop` claims work, creates an isolated checkout, runs Claude, verifies,
+and opens a PR. It stops on failure and retains the claim for a handoff.

@@ -36,3 +36,11 @@ CLAUDE.local.md
 npm-debug.log*
 .pnpm-debug.log*
 .vercel
+
+.worktrees/
+.harness/
+.claude/skills
+.codex/config.local.toml
+.codex/*.local.json
+.cursor/*.local.json
+tooling/plugin/dist/

@@ -1,0 +1,22 @@
+# Agent integration sources
+
+Checked 2026-10-21 against official documentation. These are implementation references, not promises that every installed agent version supports the latest format.
+
+| Surface                  | Official source                                                                                                                        | Repository choice                                                                  |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| Skill standard           | [Agent Skills specification](https://agentskills.io/specification)                                                                     | Folder per skill, YAML name/description, optional references                       |
+| Codex skills             | [Build skills](https://developers.openai.com/codex/skills/)                                                                            | `.agents/skills/`; no extra Codex skill alias                                      |
+| Codex instructions       | [AGENTS.md](https://developers.openai.com/codex/guides/agents-md)                                                                      | Root and nested source instructions                                                |
+| Codex hooks              | [Hooks](https://learn.chatgpt.com/docs/hooks)                                                                                          | `.codex/hooks.json`; PreToolUse/PostToolUse/Stop, trusted project                  |
+| Codex worktrees          | [Worktrees](https://developers.openai.com/codex/app/worktrees)                                                                         | Launch in the harness-managed checkout                                             |
+| Codex plugins/action     | [Plugins](https://developers.openai.com/plugins/build/plugins), [official action](https://github.com/openai/codex-action)              | Portable skills directly; optional disabled action                                 |
+| Claude skills/memory     | [Skills](https://code.claude.com/docs/en/skills), [Memory](https://code.claude.com/docs/en/memory)                                     | `.claude/skills/` alias and CLAUDE.md imports                                      |
+| Claude hooks             | [Hooks reference](https://code.claude.com/docs/en/hooks)                                                                               | `.claude/settings.json` event handlers                                             |
+| Claude plugins           | [Manifest](https://code.claude.com/docs/en/plugins-reference), [marketplaces](https://code.claude.com/docs/en/plugin-marketplaces)     | `.claude-plugin/plugin.json`, marketplace.json, generated self-contained dist      |
+| Claude worktrees         | [Common workflows](https://code.claude.com/docs/en/common-workflows)                                                                   | Use existing managed checkout, not another `--worktree`                            |
+| Cursor skills/rules      | [Skills](https://cursor.com/docs/skills), [Rules](https://cursor.com/docs/rules)                                                       | `.agents/skills` supported directly; existing `.cursor/rules/*.mdc` points to root |
+| Cursor hooks             | [Hooks](https://cursor.com/docs/hooks)                                                                                                 | `.cursor/hooks.json`, preToolUse/postToolUse/stop; `loop_limit: null`              |
+| Cursor worktrees/plugins | [Worktrees](https://cursor.com/docs/configuration/worktrees), [Plugins](https://cursor.com/docs/plugins)                               | Open managed directory; no duplicate native setup or plugin required               |
+| Supabase isolation       | [CLI](https://supabase.com/docs/reference/cli/supabase-start), [config](https://supabase.com/docs/guides/local-development/cli/config) | Unique project_id, host ports, explicit --workdir/--local                          |
+
+Codex hook JSON and Claude hook JSON use the same event envelope here, but output semantics are handled by the shared adapter. Cursor uses its own permission and follow-up fields. All hooks can be interrupted by the human; no local hook replaces remote branch protection. Hook/tool compatibility must be smoke-tested after agent upgrades.

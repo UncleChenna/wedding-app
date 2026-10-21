@@ -1,0 +1,9 @@
+# Shared project config. Trust this project in Codex before running its hooks.
+# Keep personal model/account preferences in ~/.codex/config.toml.
+
+# No AI attribution in commits (AGENTS.md → "No AI attribution"). An empty
+# string disables Codex's Co-authored-by trailer. Must stay above any [table].
+commit_attribution = ""
+
+[features]
+hooks = true
