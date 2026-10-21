@@ -11,6 +11,7 @@ import {
   symlinkSync,
   writeFileSync,
 } from "node:fs";
+import { execFileSync } from "node:child_process";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -35,6 +36,15 @@ for (const s of skills) {
 if (check) {
   if (!existsSync(target) || JSON.stringify(snapshot(source)) !== JSON.stringify(snapshot(target)))
     throw new Error("Skill links/copies are stale: run pnpm agents:link.");
+  // .claude/skills is generated per clone and gitignored; a committed copy breaks hooks and links.
+  const tracked = execFileSync("git", ["ls-files", "--", ".claude/skills"], {
+    cwd: root,
+    encoding: "utf8",
+  }).trim();
+  if (tracked)
+    throw new Error(
+      ".claude/skills is committed but must stay generated: run git rm -r --cached .claude/skills.",
+    );
 } else {
   mkdirSync(dirname(target), { recursive: true });
   if (
