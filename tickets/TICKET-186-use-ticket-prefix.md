@@ -2,7 +2,7 @@
 id: TICKET-186
 title: Use TICKET as the ticket prefix
 epic: foundations
-status: in_progress
+status: in_review
 priority: urgent
 estimate: M
 labels: [infra, test]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: []
 blocks: []
 branch: divine/WED-186-rename-the-ticket-prefix-from-wed-to-ticket
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/4
 created: 2026-10-21
 updated: 2026-10-21
 started: 2026-10-21
@@ -63,3 +63,4 @@ The requested naming convention is TICKET-NNN. Preserve the backlog and coordina
 - 2026-10-21 — new → todo — divine
 - 2026-10-21 — todo → claimed — divine (codex)
 - 2026-10-21 — todo → in_progress — divine (codex)
+- 2026-10-21 — in_progress → in_review — divine (codex)

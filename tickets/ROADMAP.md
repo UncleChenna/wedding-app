@@ -82,7 +82,7 @@ Target TICKET-164. 20 open tickets in the longest chain, 42 points (about 42 age
 - [TICKET-005](TICKET-005-replace-codeowners-placeholders-and-enable-branc.md) Replace CODEOWNERS placeholders and enable branch protection · urgent · S · todo · human
 - [TICKET-006](TICKET-006-prove-the-managed-worktree-lifecycle-end-to-end.md) Prove the managed worktree lifecycle end to end · high · M · todo
 - [TICKET-007](TICKET-007-prove-ticket-claims-across-two-clones-against-gi.md) Prove ticket claims across two clones against GitHub · medium · S · todo
-- [TICKET-186](TICKET-186-use-ticket-prefix.md) Use TICKET as the ticket prefix · urgent · M · in_progress
+- [TICKET-186](TICKET-186-use-ticket-prefix.md) Use TICKET as the ticket prefix · urgent · M · in_review
 
 ### Design system and theming
 
