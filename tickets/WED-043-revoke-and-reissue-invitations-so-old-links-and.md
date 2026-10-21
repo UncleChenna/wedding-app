@@ -3,14 +3,14 @@ id: WED-043
 title: Revoke and reissue invitations so old links and QRs stop working
 epic: invitations
 status: todo
-priority: high
+priority: urgent
 estimate: M
 labels: [backend, security]
 module: invitations
 owner: ""
 agent: ""
-blocked_by: [WED-036, WED-056]
-blocks: [WED-065]
+blocked_by: [WED-036, WED-056, WED-032, WED-088]
+blocks: [WED-065, WED-089, WED-176]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -25,7 +25,7 @@ resume_to: ""
 
 ## Context
 
-INV-7: the admin can revoke or reissue an IV and the old QR stops working immediately, including on offline scanners.
+INV-7: the admin can revoke or reissue an IV and the old QR stops working on connected devices immediately, and on disconnected devices after refresh within the WED-169 policy, including on offline scanners.
 
 See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-7) · [Security](../docs/prd.md#security).
 
@@ -45,11 +45,15 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-7) · [Sec
 - [ ] An old signed QR verifies cryptographically but is reported Revoked because its version is stale (unit).
 - [ ] Every revoke/reissue is logged with actor and time.
 
+- [ ] Online validation rejects old links and pass versions immediately. Offline scanners follow WED-169 snapshot freshness; UI must not promise immediate disconnected revocation.
+
 ## Test plan
 
 - Unit: Version check logic.
 - End-to-end: Admin reissues; old link fails.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: End-to-end: revoke while one scanner is offline; verify its stale warning/policy and rejection after refresh.
 
 ## Files likely touched
 

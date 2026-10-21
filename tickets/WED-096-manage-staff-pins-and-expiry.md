@@ -3,14 +3,14 @@ id: WED-096
 title: Manage staff, PINs and expiry
 epic: admin
 status: todo
-priority: urgent
+priority: high
 estimate: M
 labels: [frontend, backend, security]
 module: admin
 owner: ""
 agent: ""
-blocked_by: [WED-031, WED-088]
-blocks: [WED-086, WED-129, WED-134, WED-154]
+blocked_by: [WED-031, WED-088, WED-034]
+blocks: [WED-086, WED-129, WED-134, WED-166]
 branch: ""
 pr: ""
 created: 2026-10-21

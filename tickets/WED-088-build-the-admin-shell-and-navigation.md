@@ -3,14 +3,14 @@ id: WED-088
 title: Build the admin shell and navigation
 epic: admin
 status: todo
-priority: high
+priority: urgent
 estimate: M
 labels: [frontend]
 module: admin
 owner: ""
 agent: ""
 blocked_by: [WED-017, WED-032]
-blocks: [WED-048, WED-069, WED-089, WED-095, WED-096, WED-098, WED-101, WED-143]
+blocks: [WED-043, WED-048, WED-064, WED-067, WED-069, WED-080, WED-089, WED-095, WED-096, WED-098, WED-099, WED-101, WED-143, WED-166, WED-174, WED-175]
 branch: ""
 pr: ""
 created: 2026-10-21

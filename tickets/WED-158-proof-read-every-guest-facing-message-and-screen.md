@@ -3,14 +3,14 @@ id: WED-158
 title: Proof-read every guest-facing message and screen
 epic: launch
 status: todo
-priority: medium
+priority: urgent
 estimate: S
 labels: [human, docs]
 module: invitations
 owner: ""
 agent: ""
-blocked_by: [WED-035, WED-041, WED-052]
-blocks: [WED-159]
+blocked_by: [WED-035, WED-041, WED-052, WED-044, WED-045, WED-046]
+blocks: [WED-159, WED-164]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -41,10 +41,14 @@ See: [Invitation wording](../docs/prd.md#invitation-wording) · [On the website]
 
 - [ ] Couple signs off in notes; fixes merged.
 
+- [ ] Approve exact PRD formal/warm wording, including invite, RSVP, pass and share messages before first send; later order/scanner messages are checked by their flow tests and WED-164.
+
 ## Test plan
 
 - Manual: Proof-read.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: Manual: compare strings to the approved PRD voice, placeholders and rendered small-screen copy.
 
 ## Files likely touched
 

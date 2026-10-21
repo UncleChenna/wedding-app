@@ -3,14 +3,14 @@ id: WED-078
 title: Let staff move orders through received, preparing and served
 epic: ordering
 status: todo
-priority: urgent
+priority: high
 estimate: M
 labels: [frontend, backend]
 module: ordering
 owner: ""
 agent: ""
 blocked_by: [WED-076]
-blocks: [WED-079, WED-082, WED-118, WED-129, WED-133, WED-154]
+blocks: [WED-075, WED-079, WED-082, WED-118, WED-129, WED-133]
 branch: ""
 pr: ""
 created: 2026-10-21

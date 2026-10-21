@@ -9,7 +9,7 @@ labels: [human, infra]
 module: ops
 owner: ""
 agent: ""
-blocked_by: [WED-143, WED-154]
+blocked_by: [WED-143, WED-147]
 blocks: [WED-164]
 branch: ""
 pr: ""

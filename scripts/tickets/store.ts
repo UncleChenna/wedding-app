@@ -29,6 +29,7 @@ export function loadTicketsSafely(root: string): { tickets: Ticket[]; errors: st
     if (
       !f.endsWith(".md") ||
       f === "TEMPLATE.md" ||
+      f === "AUDIT.md" ||
       GENERATED.includes(`tickets/${f}` as (typeof GENERATED)[number])
     )
       continue;

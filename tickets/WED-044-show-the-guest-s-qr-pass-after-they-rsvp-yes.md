@@ -9,8 +9,8 @@ labels: [frontend, backend]
 module: invitations
 owner: ""
 agent: ""
-blocked_by: [WED-040, WED-056]
-blocks: [WED-045, WED-046, WED-107, WED-116, WED-117, WED-131, WED-135, WED-138, WED-154]
+blocked_by: [WED-040, WED-056, WED-170, WED-183]
+blocks: [WED-045, WED-046, WED-107, WED-116, WED-117, WED-131, WED-135, WED-138, WED-154, WED-158]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -45,12 +45,16 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-5) · [Jou
 - [ ] Quiet zone ≥4 modules and contrast ≥4.5:1 in every theme (test).
 - [ ] The pass shows only after RSVP yes; declined or pending IVs see the RSVP form.
 
+- [ ] Test a realistic signed-pass payload in every theme, using four-module quiet zone and adequate module size; the prototype QR density is not production evidence.
+
 ## Test plan
 
 - Unit: QR encode/decode round trip.
 - End-to-end: RSVP yes then pass visible.
 - Manual: Scan from an iPhone and an Android camera.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: Manual: scan printed and on-screen samples on approved devices in low light and glare.
 
 ## Files likely touched
 

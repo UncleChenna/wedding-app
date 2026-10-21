@@ -10,7 +10,7 @@ module: checkin
 owner: ""
 agent: ""
 blocked_by: [WED-062, WED-063]
-blocks: []
+blocks: [WED-154]
 branch: ""
 pr: ""
 created: 2026-10-21

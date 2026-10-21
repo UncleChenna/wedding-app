@@ -1,16 +1,16 @@
 ---
 id: WED-024
-title: Redesign check-in, menu, order and staff tables to match the PRD
+title: Migrate admission counters and scan event tables
 epic: data-auth
 status: todo
 priority: urgent
-estimate: L
+estimate: M
 labels: [db, backend]
 module: shared
 owner: ""
 agent: ""
-blocked_by: [WED-023]
-blocks: [WED-026, WED-027, WED-031, WED-058, WED-061, WED-069, WED-070, WED-084, WED-095]
+blocked_by: [WED-023, WED-172]
+blocks: [WED-026, WED-027, WED-058, WED-061, WED-069, WED-173]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -21,7 +21,7 @@ reason: ""
 resume_to: ""
 ---
 
-# WED-024: Redesign check-in, menu, order and staff tables to match the PRD
+# WED-024: Migrate admission counters and scan event tables
 
 ## Context
 
@@ -31,12 +31,7 @@ See: [Data model](../docs/prd.md#data-model) · [Gate check-in](../docs/prd.md#g
 
 ## Scope
 
-- check_ins per invitation: people_admitted, result, device_id, staff_id, scanned_at, client_event_id (unique).
-- scan_log for every scan, including invalid ones.
-- menu_items: category meal/soft_drink/alcohol, station, available, max_per_order.
-- orders: status received/preparing/served/cancelled, station.
-- staff: role gate/kitchen/bar/host, whatsapp_number, pin_hash, expires_at, alerts_opt_in.
-- devices table for scanners and boards.
+- Migrate admission counters and immutable scan-event records, referencing WED-172 staff/devices. Menu/orders are WED-171; staff identities are WED-172.
 
 ## Out of scope
 
@@ -44,14 +39,14 @@ See: [Data model](../docs/prd.md#data-model) · [Gate check-in](../docs/prd.md#g
 
 ## Acceptance criteria
 
-- [ ] A DB constraint or trigger prevents sum(people_admitted) exceeding count_attending.
-- [ ] client_event_id uniqueness makes repeated syncs idempotent (tested).
-- [ ] Migration generated, applied twice cleanly.
+- [ ] Admission counters and all five scan results have constrained schemas, indexes and staff/device references.
+- [ ] A unique client event id supports retry without duplicate rows; unknown-token attempts allow a null invitation reference.
+- [ ] Migrate both an empty database and bootstrap schema in disposable tests; retain existing data and prove invalid counts/results are rejected.
 
 ## Test plan
 
-- Unit: Constraint and idempotency tests against the local stack.
-- Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+- Integration: disposable migration/seed, constraints, unique event ids and foreign keys.
+- Manual: review generated SQL and consumer contracts with WED-058 and WED-173.
 
 ## Files likely touched
 

@@ -3,14 +3,14 @@ id: WED-140
 title: Add Sentry error tracking to server and client
 epic: observability
 status: todo
-priority: high
+priority: urgent
 estimate: M
 labels: [infra, backend]
 module: shared
 owner: ""
 agent: ""
 blocked_by: [WED-139]
-blocks: [WED-154]
+blocks: [WED-154, WED-176]
 branch: ""
 pr: ""
 created: 2026-10-21

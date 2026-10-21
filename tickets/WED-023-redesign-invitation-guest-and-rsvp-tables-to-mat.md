@@ -9,8 +9,8 @@ labels: [db, backend]
 module: shared
 owner: ""
 agent: ""
-blocked_by: [WED-003]
-blocks: [WED-024, WED-025, WED-036, WED-040, WED-049, WED-056, WED-089]
+blocked_by: [WED-003, WED-034]
+blocks: [WED-024, WED-025, WED-036, WED-040, WED-049, WED-056, WED-089, WED-171, WED-172]
 branch: ""
 pr: ""
 created: 2026-10-21

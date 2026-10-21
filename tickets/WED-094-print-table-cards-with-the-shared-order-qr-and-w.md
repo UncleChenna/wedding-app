@@ -9,8 +9,8 @@ labels: [frontend, design]
 module: admin
 owner: ""
 agent: ""
-blocked_by: [WED-011, WED-093]
-blocks: [WED-160]
+blocked_by: [WED-011, WED-093, WED-170, WED-146]
+blocks: [WED-154, WED-160]
 branch: ""
 pr: ""
 created: 2026-10-21

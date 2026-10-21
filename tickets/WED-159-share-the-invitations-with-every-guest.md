@@ -3,14 +3,14 @@ id: WED-159
 title: Share the invitations with every guest
 epic: launch
 status: todo
-priority: high
+priority: urgent
 estimate: M
 labels: [human]
 module: ops
 owner: ""
 agent: ""
-blocked_by: [WED-051, WED-138, WED-157, WED-158]
-blocks: []
+blocked_by: [WED-051, WED-138, WED-177, WED-158, WED-176]
+blocks: [WED-164]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -39,7 +39,9 @@ See: [Journey 1: receiving the IV and RSVP](../docs/prd.md#journey-1-receiving-t
 
 ## Acceptance criteria
 
-- [ ] Every invitation has status sent (dashboard screenshot).
+- [ ] Every eligible invitation has a recorded first-send event/timestamp or an owner-approved exception; declined/revoked invitations are not automatically resent.
+- [ ] Sharing never resets an existing RSVP status, and cancelled native shares are not counted as sent.
+- [ ] Owner approves batches after WED-177 import reconciliation and WED-158 proofread; delivery failures have a private follow-up list.
 
 ## Test plan
 

@@ -3,13 +3,13 @@ id: WED-057
 title: Verify gate tokens on the scanner device
 epic: checkin
 status: todo
-priority: urgent
+priority: high
 estimate: M
 labels: [security, frontend]
 module: checkin
 owner: ""
 agent: ""
-blocked_by: [WED-056]
+blocked_by: [WED-056, WED-055]
 blocks: [WED-059]
 branch: ""
 pr: ""
@@ -44,11 +44,15 @@ See: [Security](../docs/prd.md#security) · [Gate check-in](../docs/prd.md#gate-
 - [ ] Verification of one token takes <20ms on a mid-range Android (manual timing).
 - [ ] No private key material is shipped to the client bundle (bundle scan test).
 
+- [ ] Verify signatures and expiry using realistic payload lengths on the physical device set; no private signing key ships to a browser or cache.
+
 ## Test plan
 
 - Unit: Shared vectors with the server signer.
 - End-to-end: Verify in Chromium and WebKit.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: Unit: forged/tampered/expired token matrix; manual timed low-light scans on real devices.
 
 ## Files likely touched
 

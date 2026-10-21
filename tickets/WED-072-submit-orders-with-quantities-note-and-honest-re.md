@@ -3,14 +3,14 @@ id: WED-072
 title: Submit orders with quantities, note and honest retrying
 epic: ordering
 status: todo
-priority: urgent
+priority: high
 estimate: L
 labels: [frontend, backend]
 module: ordering
 owner: ""
 agent: ""
 blocked_by: [WED-071]
-blocks: [WED-073, WED-074, WED-080, WED-097, WED-116, WED-123]
+blocks: [WED-074, WED-080, WED-097, WED-116, WED-123]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -45,11 +45,15 @@ See: [Table ordering](../docs/prd.md#table-ordering) (ORD-3) · [Connectivity pl
 - [ ] The UI shows sending, sent and failed states; failed offers retry.
 - [ ] The note is limited and stored as plain text.
 
+- [ ] Validate table, current availability, item caps, quantities and note bounds transactionally. Bind an idempotency key to submission payload/table; replay cannot create duplicate orders and a mismatched replay fails.
+
 ## Test plan
 
 - Unit: Idempotent create.
 - End-to-end: Flaky network via route interception.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: Integration: simultaneous sold-out/cap changes, duplicate taps, same key/different body and database rollback.
 
 ## Files likely touched
 

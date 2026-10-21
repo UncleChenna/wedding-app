@@ -1,16 +1,16 @@
 ---
 id: WED-151
-title: Set up database backups and prove a restore
+title: Configure database and media backups with failure alerts
 epic: deployment
 status: todo
-priority: high
+priority: urgent
 estimate: M
 labels: [infra, db]
 module: ops
 owner: ""
 agent: ""
-blocked_by: [WED-144]
-blocks: [WED-153]
+blocked_by: [WED-144, WED-149]
+blocks: [WED-168, WED-179]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -21,7 +21,7 @@ reason: ""
 resume_to: ""
 ---
 
-# WED-151: Set up database backups and prove a restore
+# WED-151: Configure database and media backups with failure alerts
 
 ## Context
 
@@ -31,8 +31,7 @@ See: [Performance and reliability](../docs/prd.md#performance-and-reliability).
 
 ## Scope
 
-- Daily backups (plan-dependent) plus a scripted pg_dump to private storage before the day.
-- Restore into a scratch project and compare counts.
+- Configure scheduled encrypted database and media backups, retention, access controls and failure alerts. The timed isolated restore and verification are WED-179.
 
 ## Out of scope
 
@@ -40,13 +39,16 @@ See: [Performance and reliability](../docs/prd.md#performance-and-reliability).
 
 ## Acceptance criteria
 
-- [ ] A restore test into a scratch project matches row counts (evidence in notes).
-- [ ] Restore steps in docs/runbook.md.
+- [ ] Scheduled backups include database and referenced media, with documented retention, access controls and recoverable secret/config references.
+- [ ] A deliberately failed backup produces an actionable alert; a successful run records time and inventory without personal data.
+- [ ] WED-179 can restore a selected backup to an isolated target; this ticket does not claim restore success before that rehearsal.
+
+- [ ] Backup failure alerts and an inventory must cover database and media independently; row-count-only verification is not a restore drill. WED-179 proves recovery.
 
 ## Test plan
 
-- Manual: Restore drill.
-- Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+- Integration: schedule a synthetic database/media backup and inject a failed job; verify inventory and alert delivery.
+- Manual: review encryption, access, retention and recovery references. Timed restore verification belongs to WED-179.
 
 ## Files likely touched
 

@@ -9,8 +9,8 @@ labels: [test, infra]
 module: shared
 owner: ""
 agent: ""
-blocked_by: [WED-068, WED-073, WED-149]
-blocks: [WED-163]
+blocked_by: [WED-068, WED-073, WED-149, WED-026, WED-133]
+blocks: [WED-154, WED-163]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -43,10 +43,14 @@ See: [Testing plan](../docs/prd.md#testing-plan) · [Performance and reliability
 - [ ] p95 scan-to-result <1s and order-to-board <2s at target load (report in docs/audits/).
 - [ ] Zero failed orders or lost check-ins.
 
+- [ ] Exercise 350 guests, three scanners over 45 minutes and 30 tables ordering over five minutes on isolated staging data; record sub-second check-in and two-second board-delivery results against an agreed measurement protocol.
+
 ## Test plan
 
 - Manual: Run against staging.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: Load: repeat the PRD workload with latency/error distributions and no real guest data; failures block release.
 
 ## Files likely touched
 

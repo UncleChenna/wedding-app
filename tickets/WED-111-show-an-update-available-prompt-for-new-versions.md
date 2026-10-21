@@ -4,12 +4,12 @@ title: Show an update-available prompt for new versions
 epic: pwa
 status: todo
 priority: high
-estimate: S
+estimate: M
 labels: [pwa, frontend]
 module: shared
 owner: ""
 agent: ""
-blocked_by: [WED-105]
+blocked_by: [WED-105, WED-066, WED-180]
 blocks: [WED-113]
 branch: ""
 pr: ""
@@ -42,11 +42,15 @@ See: [Tech stack and architecture](../docs/prd.md#tech-stack-and-architecture).
 - [ ] A new build triggers the prompt (e2e with two builds or simulated waiting worker).
 - [ ] Reload is blocked while check-ins are pending (unit).
 
+- [ ] Use WED-180 queue-safe activation; defer updates while scans are pending and preserve events across multiple tabs and worker/schema changes.
+
 ## Test plan
 
 - Unit: Update guard.
 - End-to-end: Update flow.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: End-to-end: actual N/N+1 workers with unsynced events, decline/accept update and interrupted reload.
 
 ## Files likely touched
 

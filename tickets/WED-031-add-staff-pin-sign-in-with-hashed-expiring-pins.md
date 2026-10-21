@@ -9,8 +9,8 @@ labels: [security, backend]
 module: shared
 owner: ""
 agent: ""
-blocked_by: [WED-024]
-blocks: [WED-032, WED-033, WED-059, WED-064, WED-076, WED-096, WED-123]
+blocked_by: [WED-172, WED-025, WED-169]
+blocks: [WED-027, WED-032, WED-033, WED-059, WED-064, WED-076, WED-096, WED-173, WED-185]
 branch: ""
 pr: ""
 created: 2026-10-21

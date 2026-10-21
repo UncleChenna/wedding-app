@@ -3,14 +3,14 @@ id: WED-073
 title: Enforce order limits per table, cooldown and item caps
 epic: ordering
 status: todo
-priority: urgent
+priority: high
 estimate: M
 labels: [backend, security]
 module: ordering
 owner: ""
 agent: ""
-blocked_by: [WED-025, WED-072]
-blocks: [WED-130, WED-137]
+blocked_by: [WED-025, WED-074]
+blocks: [WED-079, WED-081, WED-130, WED-133, WED-137]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -45,10 +45,14 @@ See: [Table ordering](../docs/prd.md#table-ordering) (ORD-6, ORD-8).
 - [ ] A second order within 60s is refused and states the seconds left.
 - [ ] Concurrent submits cannot exceed limits (parallel test).
 
+- [ ] Count a mixed kitchen/bar submission once for table cooldown/open-submission limits; do not double-charge a single guest action. Limits apply across server instances.
+
 ## Test plan
 
 - Unit: Limit checks with concurrency.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: Integration: concurrent mixed submissions at the threshold and completion/cancellation releasing the limit.
 
 ## Files likely touched
 

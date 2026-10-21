@@ -3,14 +3,14 @@ id: WED-034
 title: Decide wedding date, RSVP lock, tag-along limit and Wallet scope
 epic: invitations
 status: todo
-priority: high
+priority: urgent
 estimate: S
 labels: [human, docs]
 module: invitations
 owner: ""
 agent: ""
 blocked_by: []
-blocks: []
+blocks: [WED-023, WED-042, WED-096, WED-101, WED-176, WED-177]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -33,7 +33,7 @@ See: [Open questions](../docs/prd.md#open-questions) · [Invitations and RSVP](.
 
 - Confirm date, venue, map link, dress code, time zone.
 - Confirm default tag-along limit (assumed 1) and lock time (assumed 00:00 on the day).
-- Confirm Wallet passes are out of v1 (assumed).
+- Decide Wallet scope explicitly; an approved PRD amendment or implementation backlog is required.
 - Confirm retention period (assumed 90 days) for WED-127.
 
 ## Out of scope
@@ -45,10 +45,14 @@ See: [Open questions](../docs/prd.md#open-questions) · [Invitations and RSVP](.
 - [ ] Every assumption 1–4 and 14 in docs/current-state.md is marked confirmed or changed in that file.
 - [ ] Values are entered in seed/settings or recorded in notes for WED-101.
 
+- [ ] Wallet is an unresolved PRD journey requirement, not automatically out of v1. Record explicit owner approval to amend scope, or create issuer/account and implementation tickets through t:new and add them to WED-176 before closing this decision.
+
 ## Test plan
 
 - Manual: Couple answers; agent updates docs/current-state.md.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: Manual: attach dated scope approval or linked implementation tickets; unanswered decisions cannot be marked confirmed.
 
 ## Files likely touched
 

@@ -10,7 +10,7 @@ module: invitations
 owner: ""
 agent: ""
 blocked_by: [WED-023]
-blocks: [WED-037, WED-040, WED-043, WED-048, WED-050, WED-123]
+blocks: [WED-037, WED-040, WED-043, WED-048, WED-050, WED-090, WED-183, WED-185]
 branch: ""
 pr: ""
 created: 2026-10-21

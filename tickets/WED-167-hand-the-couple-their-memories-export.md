@@ -10,7 +10,7 @@ module: ops
 owner: ""
 agent: ""
 blocked_by: [WED-166]
-blocks: [WED-168]
+blocks: []
 branch: ""
 pr: ""
 created: 2026-10-21

@@ -9,7 +9,7 @@ labels: [human, security]
 module: ops
 owner: ""
 agent: ""
-blocked_by: [WED-127, WED-167]
+blocked_by: [WED-127, WED-151, WED-184, WED-166]
 blocks: []
 branch: ""
 pr: ""
@@ -41,10 +41,14 @@ See: [Privacy (UK GDPR)](../docs/prd.md#privacy-uk-gdpr).
 
 - [ ] Queries show zero personal rows; backup deletion confirmed; record in notes.
 
+- [ ] Execute the retention deadline independently of whether the optional memories export has been delivered; include offline caches and backup retention evidence.
+
 ## Test plan
 
 - Manual: Verification.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: Manual: verify cutoff against approved event timezone and record deletion counts, not personal data.
 
 ## Files likely touched
 

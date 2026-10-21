@@ -3,7 +3,7 @@ id: WED-060
 title: Show scan results within one second with sound and vibration
 epic: checkin
 status: todo
-priority: urgent
+priority: high
 estimate: M
 labels: [frontend]
 module: checkin

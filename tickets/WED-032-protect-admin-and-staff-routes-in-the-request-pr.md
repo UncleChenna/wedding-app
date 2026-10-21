@@ -3,14 +3,14 @@ id: WED-032
 title: Protect admin and staff routes in the request proxy
 epic: data-auth
 status: todo
-priority: high
+priority: urgent
 estimate: M
 labels: [security, backend]
 module: shared
 owner: ""
 agent: ""
 blocked_by: [WED-030, WED-031]
-blocks: [WED-088]
+blocks: [WED-043, WED-059, WED-061, WED-088, WED-181]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -31,8 +31,7 @@ See: [Users and roles](../docs/prd.md#users-and-roles) · [Security](../docs/prd
 
 ## Scope
 
-- Next.js 16 `proxy.ts` (read the installed docs) redirects unauthenticated requests.
-- Server-side guard helpers used by every action, not just the proxy.
+- Require AAL2 for admin and scoped staff sessions for staff routes/actions. Guest RSVP uses its invitation capability; table ordering remains unauthenticated under ORD-8 with validated inputs and abuse limits.
 
 ## Out of scope
 
@@ -40,8 +39,9 @@ See: [Users and roles](../docs/prd.md#users-and-roles) · [Security](../docs/prd
 
 ## Acceptance criteria
 
-- [ ] Unauthenticated requests to /admin/*, /checkin, /kitchen and /bar redirect to sign-in or PIN entry (e2e).
-- [ ] Every server action in admin/checkin/ordering calls a guard (enforced by a unit test that scans exports or a lint rule).
+- [ ] Admin/staff routes and server actions reject missing, expired or wrong-role credentials, including direct action invocation.
+- [ ] Anonymous guests can order and authorized invitation holders can RSVP without staff login; neither can invoke privileged actions.
+- [ ] An executable role/route/action matrix covers admin, gate, kitchen, bar, guest capability and anonymous callers; status endpoints disclose no other household data.
 
 ## Test plan
 

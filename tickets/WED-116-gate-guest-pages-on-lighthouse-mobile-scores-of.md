@@ -10,7 +10,7 @@ module: shared
 owner: ""
 agent: ""
 blocked_by: [WED-038, WED-044, WED-072]
-blocks: [WED-121]
+blocks: [WED-121, WED-154]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -43,10 +43,14 @@ See: [Design principles](../docs/prd.md#design-principles) · [Design principles
 - [ ] CI fails when Performance or Accessibility drops below 95 on any guest page.
 - [ ] Current scores recorded in notes.
 
+- [ ] Measure the invitation and order pages on mobile with realistic images/fonts and completed RSVP states; keep the PRD Lighthouse performance target of at least 95 and order payload under 200KB.
+
 ## Test plan
 
 - End-to-end: Lighthouse CI.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: Manual: record build, device/network profile, payload accounting and repeated performance runs.
 
 ## Files likely touched
 

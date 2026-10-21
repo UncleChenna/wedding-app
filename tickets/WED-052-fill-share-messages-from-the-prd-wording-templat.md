@@ -3,14 +3,14 @@ id: WED-052
 title: Fill share messages from the PRD wording templates
 epic: sharing
 status: todo
-priority: high
+priority: urgent
 estimate: S
 labels: [backend, docs]
 module: invitations
 owner: ""
 agent: ""
-blocked_by: [WED-050]
-blocks: [WED-158]
+blocked_by: [WED-050, WED-035, WED-025]
+blocks: [WED-053, WED-054, WED-158, WED-176]
 branch: ""
 pr: ""
 created: 2026-10-21

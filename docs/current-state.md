@@ -57,9 +57,10 @@ fix-up ticket changes a fact recorded here.
   - `.claude/skills` is listed in `.gitignore` but committed as a symlink.
 - **Attribution.** Commit `2f8dc47` carries a `Co-Authored-By: Claude …` trailer. The new `commit-msg` hook blocks this
   for future commits; history is not rewritten.
-- **SPIKE-001.** A worktree `../wedding-design-spike` exists on `divine/SPIKE-001-invitation-design` with no commits
-  and no entry in the old task list. Its likely scope overlaps the invitation design tickets (WED-037 onwards).
-  Divine should either fold it into those tickets or cancel the spike.
+- **SPIKE-001 (audit update, 2026-10-21).** The prototype and findings are committed on
+  `divine/SPIKE-001-invitation-design` (reviewed at `bb08a21`). The spike is evidence, not production code.
+  Its palette, fonts, motion, QR and token findings are mapped in [the backlog audit](../tickets/AUDIT.md)
+  to WED-011–WED-016, WED-039, WED-044, WED-138 and WED-170. The historical baseline above is unchanged.
 
 ## What contradicts the PRD
 

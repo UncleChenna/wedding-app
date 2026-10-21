@@ -3,14 +3,14 @@ id: WED-008
 title: Decide domain, wedding colours and photos for the first theme
 epic: design-system
 status: todo
-priority: high
+priority: urgent
 estimate: S
 labels: [human, design]
 module: theming
 owner: ""
 agent: ""
 blocked_by: []
-blocks: [WED-014, WED-146]
+blocks: [WED-014, WED-038, WED-146]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -44,10 +44,14 @@ See: [Open questions](../docs/prd.md#open-questions) · [How theming works](../d
 - [ ] Domain name, hex colours and photo files are recorded in notes (photos in a shared folder linked from notes).
 - [ ] Photo usage is agreed with both partners.
 
+- [ ] The primary palette is already selected: ivory, champagne gold and chocolate brown. Record that decision; only domain, photos and asset permissions still require approval.
+
 ## Test plan
 
 - Manual: Couple decides; agent records.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: Manual: confirm supplied photo rights and domain ownership; do not reopen the approved palette.
 
 ## Files likely touched
 

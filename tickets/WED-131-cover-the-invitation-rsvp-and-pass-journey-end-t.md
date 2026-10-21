@@ -3,14 +3,14 @@ id: WED-131
 title: Cover the invitation, RSVP and pass journey end to end
 epic: testing
 status: todo
-priority: high
+priority: urgent
 estimate: M
 labels: [test]
 module: invitations
 owner: ""
 agent: ""
-blocked_by: [WED-041, WED-042, WED-044]
-blocks: []
+blocked_by: [WED-041, WED-042, WED-044, WED-045, WED-046]
+blocks: [WED-154, WED-176]
 branch: ""
 pr: ""
 created: 2026-10-21

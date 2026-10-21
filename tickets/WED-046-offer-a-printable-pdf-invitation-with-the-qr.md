@@ -3,14 +3,14 @@ id: WED-046
 title: Offer a printable PDF invitation with the QR
 epic: invitations
 status: todo
-priority: medium
+priority: urgent
 estimate: L
 labels: [frontend, backend]
 module: invitations
 owner: ""
 agent: ""
 blocked_by: [WED-011, WED-044]
-blocks: []
+blocks: [WED-131, WED-158, WED-176]
 branch: ""
 pr: ""
 created: 2026-10-21

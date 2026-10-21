@@ -14,6 +14,14 @@ Add-only history, newest first: prepend new entries below this template, never r
 
 ---
 
+## 2026-10-21 09:28 UTC — HARNESS-002 — Independent backlog audit
+
+- **Branch:** `divine/HARNESS-002-backlog-audit`, based on the current `chore/ticket-system` tree.
+- **Changed:** Audited all 168 source tickets against PRD/current-state/roadmap and committed SPIKE-001 findings. Added 17 tickets with the CLI, revised 136 originals, split overloaded work, prioritized early invitation sending, and wrote 36 numbered plus 51 supplementary traceability rows in `tickets/AUDIT.md`. Added a narrow AUDIT.md validator exception with regression coverage. Product code and ticket statuses are unchanged.
+- **Checks:** Full `pnpm verify` passed using documented public local environment defaults: 69 unit tests, build, 17 smoke passes and 7 existing skips. Ticket-specific suite: 19 passes. Final render/validate and format checks pass; simulation reaches all 182 todo tickets with no cycles or stranded work. Earlier smoke attempts lacked environment configuration and were not counted as passing.
+- **Learned:** Dependency order alone did not prioritize the invitation milestone; priority changes were also necessary. Offline revocation cannot be immediate on a disconnected device. A backup drill must verify media and configuration as well as database rows.
+- **Next / blockers:** Review `tickets/AUDIT.md` and the stacked PR against `chore/ticket-system`; its previous PR #1 is closed and main does not yet contain the ticket system. Human decisions WED-034 (Wallet/date/limits) and WED-169 (QR authority/offline freshness) remain open. No feature implementation, real-device approval or production recovery is claimed.
+
 ## 2026-10-21 05:55 UTC — TICKETS — Ticket system and full backlog
 
 - **Who / agent / branch:** UncleChenna · Claude Code · `chore/ticket-system` (from `2f8dc47`, the committed HARNESS-001/DESIGN-001 work)

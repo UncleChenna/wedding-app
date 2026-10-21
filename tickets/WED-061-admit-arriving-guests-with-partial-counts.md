@@ -3,13 +3,13 @@ id: WED-061
 title: Admit arriving guests with partial counts
 epic: checkin
 status: todo
-priority: urgent
+priority: high
 estimate: M
 labels: [frontend, backend]
 module: checkin
 owner: ""
 agent: ""
-blocked_by: [WED-024, WED-060]
+blocked_by: [WED-024, WED-060, WED-064, WED-032]
 blocks: [WED-062, WED-063, WED-065, WED-068, WED-097]
 branch: ""
 pr: ""

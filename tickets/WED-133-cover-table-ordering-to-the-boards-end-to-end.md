@@ -9,8 +9,8 @@ labels: [test]
 module: ordering
 owner: ""
 agent: ""
-blocked_by: [WED-075, WED-077, WED-078]
-blocks: []
+blocked_by: [WED-075, WED-077, WED-078, WED-073, WED-080]
+blocks: [WED-137, WED-154]
 branch: ""
 pr: ""
 created: 2026-10-21

@@ -43,10 +43,14 @@ See: [Usability and accessibility](../docs/prd.md#usability-and-accessibility) Â
 - [ ] Every route in e2e/routes is scanned in every theme (test list).
 - [ ] An injected violation fails the suite (proved in notes).
 
+- [ ] Resolve all applicable WCAG A/AA violations regardless of axe severity; a moderate-severity AA failure still fails this gate.
+
 ## Test plan
 
 - End-to-end: axe scan.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: End-to-end: run axe on representative states/themes and record manual checks for criteria axe cannot assess.
 
 ## Files likely touched
 

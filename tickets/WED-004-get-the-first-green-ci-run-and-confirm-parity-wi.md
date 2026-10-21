@@ -3,7 +3,7 @@ id: WED-004
 title: Get the first green CI run and confirm parity with pnpm verify
 epic: foundations
 status: todo
-priority: high
+priority: urgent
 estimate: S
 labels: [infra, test]
 module: shared

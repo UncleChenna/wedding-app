@@ -9,7 +9,7 @@ labels: [backend, db]
 module: ordering
 owner: ""
 agent: ""
-blocked_by: [WED-024, WED-074]
+blocked_by: [WED-171, WED-074]
 blocks: [WED-085, WED-086, WED-112, WED-143]
 branch: ""
 pr: ""
@@ -45,10 +45,14 @@ See: [ORD-9 WhatsApp order alerts](../docs/prd.md#ord-9--whatsapp-order-alerts-m
 - [ ] An alert failure never blocks order creation (test).
 - [ ] ADR merged.
 
+- [ ] A durable scheduled drain sends the final pending batch within the approved 60-second window even if no new request arrives; request-triggered flushing alone is insufficient.
+
 ## Test plan
 
 - Unit: Batching and formatting.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: Integration: enqueue one order then stop traffic; advance scheduled time and verify one bounded batch with retry/idempotency behavior.
 
 ## Files likely touched
 

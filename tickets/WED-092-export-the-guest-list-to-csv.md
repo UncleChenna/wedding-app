@@ -3,14 +3,14 @@ id: WED-092
 title: Export the guest list to CSV
 epic: admin
 status: todo
-priority: high
+priority: urgent
 estimate: S
 labels: [backend]
 module: admin
 owner: ""
 agent: ""
 blocked_by: [WED-089]
-blocks: []
+blocks: [WED-154, WED-176]
 branch: ""
 pr: ""
 created: 2026-10-21

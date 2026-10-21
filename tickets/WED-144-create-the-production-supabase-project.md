@@ -3,14 +3,14 @@ id: WED-144
 title: Create the production Supabase project
 epic: deployment
 status: todo
-priority: high
+priority: urgent
 estimate: S
 labels: [human, infra]
 module: ops
 owner: ""
 agent: ""
-blocked_by: []
-blocks: [WED-148, WED-149, WED-151]
+blocked_by: [WED-145]
+blocks: [WED-028, WED-148, WED-149, WED-151]
 branch: ""
 pr: ""
 created: 2026-10-21

@@ -3,13 +3,13 @@ id: WED-003
 title: Verify database bootstrap is idempotent
 epic: foundations
 status: todo
-priority: high
+priority: urgent
 estimate: M
 labels: [db, test]
 module: shared
 owner: ""
 agent: ""
-blocked_by: []
+blocked_by: [WED-001, WED-002]
 blocks: [WED-006, WED-023]
 branch: ""
 pr: ""

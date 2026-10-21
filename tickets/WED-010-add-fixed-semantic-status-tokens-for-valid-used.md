@@ -3,7 +3,7 @@ id: WED-010
 title: Add fixed semantic status tokens for valid, used and invalid
 epic: design-system
 status: todo
-priority: high
+priority: urgent
 estimate: M
 labels: [design, frontend]
 module: theming

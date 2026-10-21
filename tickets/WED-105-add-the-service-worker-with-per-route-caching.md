@@ -3,14 +3,14 @@ id: WED-105
 title: Add the service worker with per-route caching
 epic: pwa
 status: todo
-priority: high
+priority: urgent
 estimate: L
 labels: [pwa, frontend]
 module: shared
 owner: ""
 agent: ""
 blocked_by: [WED-102]
-blocks: [WED-106, WED-107, WED-108, WED-111, WED-112, WED-124]
+blocks: [WED-106, WED-107, WED-108, WED-111, WED-112, WED-124, WED-180]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -45,11 +45,15 @@ See: [Tech stack and architecture](../docs/prd.md#tech-stack-and-architecture) Â
 - [ ] Admin and API responses are never cached (test).
 - [ ] `pnpm build` and smoke pass with the worker registered.
 
+- [ ] Route caching explicitly excludes admin HTML, private API responses and arbitrary invitation pages. Cache only an authorized own-pass copy through WED-107 and approved scanner data through WED-108.
+
 ## Test plan
 
 - Unit: Route matcher.
 - End-to-end: Service worker registration.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: End-to-end: switch guest links, log out staff, inspect cache entries and attempt cross-household/private-route offline access.
 
 ## Files likely touched
 

@@ -3,14 +3,14 @@ id: WED-147
 title: Configure Vercel builds and preview deployments per PR
 epic: deployment
 status: todo
-priority: high
+priority: urgent
 estimate: M
 labels: [infra]
 module: shared
 owner: ""
 agent: ""
 blocked_by: [WED-004, WED-145]
-blocks: [WED-148, WED-149]
+blocks: [WED-142, WED-148, WED-149]
 branch: ""
 pr: ""
 created: 2026-10-21

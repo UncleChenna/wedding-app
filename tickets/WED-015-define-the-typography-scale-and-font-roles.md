@@ -3,7 +3,7 @@ id: WED-015
 title: Define the typography scale and font roles
 epic: design-system
 status: todo
-priority: high
+priority: urgent
 estimate: M
 labels: [design, frontend]
 module: theming

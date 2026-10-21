@@ -3,14 +3,14 @@ id: WED-051
 title: Mark invitations as sent when shared
 epic: sharing
 status: todo
-priority: high
+priority: urgent
 estimate: S
 labels: [backend, frontend]
 module: admin
 owner: ""
 agent: ""
-blocked_by: [WED-050]
-blocks: [WED-053, WED-159]
+blocked_by: [WED-050, WED-089]
+blocks: [WED-053, WED-159, WED-176]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -43,10 +43,14 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-3).
 - [ ] Sharing through any channel sets status sent and sent_at once (unit).
 - [ ] The guest list filters by sent / not sent.
 
+- [ ] First-send timestamp is separate from RSVP status. Re-sharing preserves yes/no responses and revocation; cancelling native share does not mark sent, and opening an external intent is not proof of delivery.
+
 ## Test plan
 
 - Unit: Status transition.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: Unit: first share, repeat share after RSVP, revoked invitation and native-share cancellation; assert no RSVP mutation.
 
 ## Files likely touched
 

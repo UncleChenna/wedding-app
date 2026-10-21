@@ -9,8 +9,8 @@ labels: [human, infra]
 module: ops
 owner: ""
 agent: ""
-blocked_by: [WED-117, WED-129, WED-142, WED-163]
-blocks: [WED-165, WED-166]
+blocked_by: [WED-117, WED-118, WED-129, WED-142, WED-163, WED-154, WED-159, WED-160, WED-158, WED-005]
+blocks: [WED-165]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -42,10 +42,14 @@ See: [Milestones, scope and testing](../docs/prd.md#milestones-scope-and-testing
 - [ ] Go/no-go recorded with the release tag and open risks.
 - [ ] Branch protection limits merges to fix tickets until after the wedding.
 
+- [ ] Freeze at least two weeks before the approved wedding date; unresolved mandatory checks, scope decisions or device failures mean no-go. Record owner, date, deployed commit and exception decisions explicitly.
+
 ## Test plan
 
 - Manual: Decision meeting.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: Manual: reconcile all prerequisite evidence including late wording checks; do not treat dependency points as calendar estimates.
 
 ## Files likely touched
 

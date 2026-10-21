@@ -3,13 +3,13 @@ id: WED-095
 title: Build the menu editor with a live sold-out toggle
 epic: admin
 status: todo
-priority: urgent
+priority: high
 estimate: M
 labels: [frontend, backend]
 module: admin
 owner: ""
 agent: ""
-blocked_by: [WED-024, WED-088]
+blocked_by: [WED-171, WED-088]
 blocks: [WED-134, WED-157]
 branch: ""
 pr: ""

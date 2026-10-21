@@ -9,8 +9,8 @@ labels: [backend]
 module: ordering
 owner: ""
 agent: ""
-blocked_by: [WED-083, WED-084]
-blocks: [WED-087]
+blocked_by: [WED-083, WED-084, WED-086]
+blocks: [WED-087, WED-154]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -43,11 +43,15 @@ See: [ORD-9 WhatsApp order alerts](../docs/prd.md#ord-9--whatsapp-order-alerts-m
 - [ ] A provider 500 retries up to 3 times then records failure (unit with mocked fetch).
 - [ ] A live test message is received on a staff phone (manual, in notes).
 
+- [ ] Require recorded station opt-in before sending; provider timeout/retry must not duplicate a batch and failure leaves the board operational.
+
 ## Test plan
 
 - Unit: Adapter with mocked HTTP.
 - Manual: Live send.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: Integration: opt-out, timeout-after-provider-acceptance, repeated callback and disconnected provider.
 
 ## Files likely touched
 

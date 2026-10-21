@@ -3,14 +3,14 @@ id: WED-145
 title: Create the Vercel project and connect the repository
 epic: deployment
 status: todo
-priority: high
+priority: urgent
 estimate: S
 labels: [human, infra]
 module: ops
 owner: ""
 agent: ""
 blocked_by: []
-blocks: [WED-146, WED-147]
+blocks: [WED-139, WED-144, WED-146, WED-147]
 branch: ""
 pr: ""
 created: 2026-10-21

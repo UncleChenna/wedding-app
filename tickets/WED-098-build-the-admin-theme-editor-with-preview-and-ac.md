@@ -4,13 +4,13 @@ title: Build the admin theme editor with preview and activate
 epic: admin
 status: todo
 priority: medium
-estimate: L
+estimate: M
 labels: [frontend, design]
 module: admin
 owner: ""
 agent: ""
-blocked_by: [WED-012, WED-088]
-blocks: [WED-099]
+blocked_by: [WED-181, WED-088]
+blocks: []
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -31,8 +31,7 @@ See: [How theming works](../docs/prd.md#how-theming-works) (THM-3, THM-6).
 
 ## Scope
 
-- Start from a preset; edit colours and fonts; live preview.
-- Save rejected with failing pairs named; Activate switches the DB theme.
+- Curated font/token editor, live invitation/order preview and Activate controls using WED-181 persistence; no duplicate server persistence implementation.
 
 ## Out of scope
 
@@ -43,10 +42,14 @@ See: [How theming works](../docs/prd.md#how-theming-works) (THM-3, THM-6).
 - [ ] Saving a failing theme shows each failing pair and does not save (e2e).
 - [ ] Activate restyles the guest site without deploy (e2e).
 
+- [ ] Use WED-181 for save/activate; show named contrast errors and prevent activation of invalid drafts while keeping the current live theme unchanged.
+
 ## Test plan
 
 - End-to-end: Save, reject, activate.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: End-to-end: invalid draft, valid live preview, activation and initial server-rendered variables.
 
 ## Files likely touched
 

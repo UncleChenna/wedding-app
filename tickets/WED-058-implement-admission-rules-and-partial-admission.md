@@ -3,14 +3,14 @@ id: WED-058
 title: Implement admission rules and partial admission
 epic: checkin
 status: todo
-priority: urgent
+priority: high
 estimate: M
 labels: [backend, test]
 module: checkin
 owner: ""
 agent: ""
 blocked_by: [WED-024]
-blocks: [WED-060, WED-130]
+blocks: [WED-060, WED-130, WED-173]
 branch: ""
 pr: ""
 created: 2026-10-21

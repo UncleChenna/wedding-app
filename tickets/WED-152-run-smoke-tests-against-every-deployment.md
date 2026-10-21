@@ -3,14 +3,14 @@ id: WED-152
 title: Run smoke tests against every deployment
 epic: deployment
 status: todo
-priority: high
+priority: urgent
 estimate: M
 labels: [test, infra]
 module: shared
 owner: ""
 agent: ""
 blocked_by: [WED-150]
-blocks: [WED-153]
+blocks: [WED-153, WED-176]
 branch: ""
 pr: ""
 created: 2026-10-21

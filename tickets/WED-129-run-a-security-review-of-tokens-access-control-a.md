@@ -9,8 +9,8 @@ labels: [security, test]
 module: shared
 owner: ""
 agent: ""
-blocked_by: [WED-066, WED-078, WED-096, WED-123]
-blocks: [WED-164]
+blocked_by: [WED-066, WED-078, WED-096, WED-123, WED-128, WED-184]
+blocks: [WED-154, WED-164]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -42,10 +42,14 @@ See: [Security](../docs/prd.md#security) · [Milestones, scope and testing](../d
 - [ ] Review report in docs/audits/ covering every server action.
 - [ ] `pnpm audit --prod` has no high/critical issues.
 
+- [ ] No unresolved high/critical security finding may pass the release gate; each finding needs a linked bounded fix and successful retest, not just a report.
+
 ## Test plan
 
 - Manual: Review.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: Manual: attach the route/action matrix, findings and retest evidence without secrets.
 
 ## Files likely touched
 

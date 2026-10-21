@@ -3,14 +3,14 @@ id: WED-026
 title: Rebuild deterministic seed data for the new schema
 epic: data-auth
 status: todo
-priority: high
+priority: urgent
 estimate: M
 labels: [db, test]
 module: shared
 owner: ""
 agent: ""
-blocked_by: [WED-024, WED-025]
-blocks: [WED-127]
+blocked_by: [WED-024, WED-025, WED-171, WED-172]
+blocks: [WED-127, WED-137, WED-150]
 branch: ""
 pr: ""
 created: 2026-10-21

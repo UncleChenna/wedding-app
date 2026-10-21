@@ -9,8 +9,8 @@ labels: [human, pwa, test]
 module: ops
 owner: ""
 agent: ""
-blocked_by: [WED-113, WED-154]
-blocks: [WED-163]
+blocked_by: [WED-113, WED-149, WED-055]
+blocks: [WED-154, WED-163]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -42,10 +42,14 @@ See: [Usability and accessibility](../docs/prd.md#usability-and-accessibility) Â
 - [ ] Device models, OS versions and results recorded in notes with screenshots.
 - [ ] Any failure has a linked fix-up ticket.
 
+- [ ] Run on the staging HTTPS deployment before full production release. Any required-device failure blocks sign-off until fixed and retested.
+
 ## Test plan
 
 - Manual: Real devices.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: Manual: record real iOS/Android device results for guidance, installation, standalone offline launches and safe update.
 
 ## Files likely touched
 

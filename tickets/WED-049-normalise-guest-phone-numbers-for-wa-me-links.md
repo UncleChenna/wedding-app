@@ -3,14 +3,14 @@ id: WED-049
 title: Normalise guest phone numbers for wa.me links
 epic: sharing
 status: todo
-priority: high
+priority: urgent
 estimate: S
 labels: [backend]
 module: invitations
 owner: ""
 agent: ""
 blocked_by: [WED-023]
-blocks: [WED-050, WED-090]
+blocks: [WED-050, WED-086, WED-090]
 branch: ""
 pr: ""
 created: 2026-10-21

@@ -3,14 +3,14 @@ id: WED-013
 title: Ship third and fourth preset themes
 epic: design-system
 status: todo
-priority: medium
+priority: urgent
 estimate: M
 labels: [design, frontend]
 module: theming
 owner: ""
 agent: ""
-blocked_by: [WED-010, WED-011]
-blocks: [WED-014, WED-135]
+blocked_by: [WED-010, WED-011, WED-170]
+blocks: [WED-014, WED-021, WED-135]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -44,10 +44,14 @@ See: [How theming works](../docs/prd.md#how-theming-works) (THM-5).
 - [ ] Screenshots of /dev/theme at 375/768/1280 in all four themes are attached.
 - [ ] `pnpm verify` passes.
 
+- [ ] Use the spike pairings: Cormorant Garamond + Inter for Ivory & Gold, Playfair Display + Inter for Emerald Night, and Cormorant Garamond + Jost for Blush & Sage. Preserve fixed semantic success/warning/error hues.
+
 ## Test plan
 
 - End-to-end: Visual screenshots for every theme.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: Manual: compare all three complete presets at 375/768/1280, including long guest names and all scanner results.
 
 ## Files likely touched
 

@@ -40,13 +40,16 @@ See: [Design principles](../docs/prd.md#design-principles) · [Tech stack and ar
 
 ## Acceptance criteria
 
-- [ ] /manifest.webmanifest validates (Lighthouse installability audit passes).
+- [ ] /manifest.webmanifest has valid name, start_url, scope, display and theme/background fields; icon requirements are completed by WED-104.
 - [ ] Changing the active theme changes theme_color (unit).
+- [ ] WED-113 verifies manifest/HTTPS/worker control and WED-114 records actual device installs; no removed Lighthouse PWA audit is required.
 
 ## Test plan
 
 - Unit: Manifest builder.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: Manual: inspect browser install behavior and manifest errors; Lighthouse remains useful for performance/accessibility only.
 
 ## Files likely touched
 

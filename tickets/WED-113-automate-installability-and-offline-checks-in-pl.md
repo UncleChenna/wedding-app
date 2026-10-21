@@ -9,8 +9,8 @@ labels: [pwa, test]
 module: shared
 owner: ""
 agent: ""
-blocked_by: [WED-104, WED-106, WED-107, WED-108, WED-111]
-blocks: [WED-114, WED-154]
+blocked_by: [WED-104, WED-106, WED-107, WED-108, WED-111, WED-109, WED-110, WED-184]
+blocks: [WED-114]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -31,8 +31,7 @@ See: [Tech stack and architecture](../docs/prd.md#tech-stack-and-architecture) Â
 
 ## Scope
 
-- Manifest, icons, SW registration, offline pass, offline scanner in the smoke suite.
-- Lighthouse PWA/installability audit in CI.
+- Automated manifest, icons, HTTPS, service-worker control and offline pass/scanner checks in the smoke suite. Physical install checks remain WED-114.
 
 ## Out of scope
 
@@ -40,12 +39,14 @@ See: [Tech stack and architecture](../docs/prd.md#tech-stack-and-architecture) Â
 
 ## Acceptance criteria
 
-- [ ] All checks run in `pnpm verify` or CI and fail on regression.
+- [ ] Automated manifest/icon/worker/offline regressions fail pnpm verify or CI.
+- [ ] Tests cover installed-shell navigation, offline pass and scanner, and WED-111 update behavior with pending events.
+- [ ] Document the separate WED-114 iOS/Android install evidence; do not require a removed Lighthouse PWA score.
 
 ## Test plan
 
-- End-to-end: PWA smoke.
-- Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+- End-to-end: HTTPS manifest/icon checks, worker control, offline navigation and safe update behavior.
+- Manual: review the automated-versus-physical evidence split; actual devices are WED-114.
 
 ## Files likely touched
 

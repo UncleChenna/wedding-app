@@ -9,8 +9,8 @@ labels: [frontend, backend]
 module: invitations
 owner: ""
 agent: ""
-blocked_by: [WED-040]
-blocks: [WED-042, WED-117, WED-131, WED-158]
+blocked_by: [WED-040, WED-171]
+blocks: [WED-042, WED-117, WED-131, WED-138, WED-158]
 branch: ""
 pr: ""
 created: 2026-10-21

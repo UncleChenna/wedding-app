@@ -3,13 +3,13 @@ id: WED-108
 title: Make the scanner app shell work fully offline
 epic: pwa
 status: todo
-priority: urgent
+priority: high
 estimate: M
 labels: [pwa, frontend]
 module: checkin
 owner: ""
 agent: ""
-blocked_by: [WED-059, WED-105]
+blocked_by: [WED-059, WED-105, WED-169]
 blocks: [WED-065, WED-113, WED-136]
 branch: ""
 pr: ""

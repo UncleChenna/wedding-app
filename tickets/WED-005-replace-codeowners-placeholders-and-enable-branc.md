@@ -3,14 +3,14 @@ id: WED-005
 title: Replace CODEOWNERS placeholders and enable branch protection
 epic: foundations
 status: todo
-priority: high
+priority: urgent
 estimate: S
 labels: [human, infra, security]
 module: harness
 owner: ""
 agent: ""
 blocked_by: [WED-004]
-blocks: []
+blocks: [WED-164, WED-176]
 branch: ""
 pr: ""
 created: 2026-10-21
