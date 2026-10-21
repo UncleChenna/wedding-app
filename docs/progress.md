@@ -14,6 +14,14 @@ Add-only history, newest first: prepend new entries below this template, never r
 
 ---
 
+## 2026-10-21 — TICKET-004 — Resolve develop conflicts
+
+- **Who / agent / branch:** divine · codex · `TICKET-004`.
+- **Changed:** Integrated develop, preserved both progress histories and merged prerequisite fixes, and regenerated ticket boards. Ticket implementation remains unchanged.
+- **Checks:** Quick and full verification passed: 108 unit tests, production build, 17 browser smoke passes and 7 existing skips.
+- **Learned:** Shared handoff entries and generated boards require reconciliation when parallel ticket PRs integrate.
+- **Next:** Human review of this ticket PR into develop; no PR merged automatically.
+
 ## 2026-10-21 — TICKET-004 — CI parity evidence
 
 - **Who / agent / branch:** divine · codex · `TICKET-004`.
@@ -22,6 +30,14 @@ Add-only history, newest first: prepend new entries below this template, never r
 - **Learned:** PostgreSQL fixture and PR-text inputs belong in documentation comments, not the app runtime schema.
 - **Next:** Human reviews and merges into develop; branch protection is separate TICKET-005.
 
+## 2026-10-21 — TICKET-002 — Resolve develop conflicts
+
+- **Who / agent / branch:** divine · codex · `TICKET-002`.
+- **Changed:** Merged `develop` into the ticket branch after TICKET-001 merged. Preserved both hook implementations and regression suites, both historical handoffs, and CLI-synced TICKET-001 completion; regenerated boards and refreshed the PR description.
+- **Checks:** `pnpm verify:quick` passed (58 related tests). Full `pnpm verify` passed using public local defaults: 188 valid tickets, formatting, lint, types, 106 unit tests, production build, 17 smoke passes and 7 existing skips.
+- **Learned:** Conflicts were in shared progress and ticket metadata; the complementary hook changes merged cleanly and passed together.
+- **Next / blockers:** Review PR #8 and merge into `develop` when approved. Interactive Claude integration remains unverified.
+
 ## 2026-10-21 — TICKET-002 — Safe reads and shell write targets
 
 - **Who / agent / branch:** divine · codex · `TICKET-002`.
@@ -29,6 +45,14 @@ Add-only history, newest first: prepend new entries below this template, never r
 - **Checks:** Regression run before implementation: 12 failed, 21 passed. Focused hooks/harness suite: 39 passed. Full `pnpm verify` using public `.env.example` defaults: 104 unit tests, production build, 17 smoke passes and 7 existing skips. No product UI changed. Interactive Claude runtime integration was not exercised.
 - **Learned:** Directory operands such as `cp -t drizzle x` require protection of the directory itself, not just descendant paths. Static command inspection is not a complete shell interpreter or security sandbox.
 - **Next / blockers:** Human review and merge of the `TICKET-002` PR into `develop`. Earlier harness/backlog workflow changes remain unmerged prerequisites visible in its history. TICKET-001's separate post-hook fix remains owned by its existing reviewer; this work does not duplicate it.
+
+## 2026-10-21 10:45 UTC — TICKET-001 — Hooks skip the symlinked .claude/skills
+
+- **Who / agent / branch:** unclechenna · claude · `TICKET-001`
+- **Changed:** Ported PR #3 (`WED-001`, closed as superseded) onto develop as PR #7. The post-tool formatter skips non-regular files, so the `.claude/skills` symlink no longer raises a PostToolUse error. `agents:check` rejects a committed `.claude/skills`. `isolatedGitEnv()` sandboxes every git-spawning test.
+- **Checks:** The regression test fails on the old hook and passes with the fix. `agents:check` exits 0 in a fresh clone and 1 with the link committed. Full `pnpm verify` with public local defaults passed: 79 unit tests, build, 17 smoke.
+- **Learned:** `wt:new` reuses the ledger's recorded branch, so a ticket claimed before the exact-ID rule cannot get a `TICKET-NNN` worktree through it; this one was created with `git worktree add` and has no local env file. The Bash guard also blocks heredocs whose text merely mentions protected paths (TICKET-002 scope).
+- **Next / blockers:** Human review of PR #7. After merge: `pnpm t:move TICKET-001 done`, `pnpm wt:remove WED-001`, delete the old `unclechenna/WED-001-…` branch, and remove `.worktrees/TICKET-001`.
 
 ## 2026-10-21 10:03 UTC — TICKET-188 — Exact ticket branches and develop reviews
 

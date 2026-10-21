@@ -13,3 +13,4 @@
 - Git directory-only ignore patterns do not match symlinks; ignore `.claude/skills` without a trailing slash.
 - Identity fallbacks from environment variables must use `||`, not `??`: an exported empty `AGENT_OWNER` otherwise hides `git config harness.owner`.
 - Ticket files are machine-written; change them with `pnpm t:*`, or by hand followed by `pnpm t:render`. Prettier ignores `tickets/`.
+- Tests that spawn git must use `isolatedGitEnv()` from `scripts/__tests__/git-env.ts`: git exports `GIT_DIR`/`GIT_INDEX_FILE` to hooks, so a test run by the pre-commit gate can otherwise commit to the real branch or set `core.bare=true`.

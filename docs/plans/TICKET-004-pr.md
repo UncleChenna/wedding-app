@@ -16,4 +16,8 @@ New regression before the fix: 1 failed, 1 passed. Quick and full local gates pa
 
 ## Risks and rollout
 
-The parity test reflects the current explicit YAML job layout; intentionally changing setup commands requires updating its expectation. No deployment, dependencies or migration. Revert this ticket commit to roll back. Earlier unmerged harness/workflow history is included; focused changes follow 5506f63. Human review and merge only; branch protection remains TICKET-005.
+The parity test reflects the current explicit YAML job layout; intentionally changing setup commands requires updating its expectation. No deployment, dependencies or migration. Revert this ticket commit to roll back. Prerequisite harness/workflow changes are now merged into develop. Human review and merge only; branch protection remains TICKET-005.
+
+## Integration verification
+
+Updated against develop after TICKET-001 and TICKET-002 merged. Preserved both handoff histories, regenerated boards and retained prerequisite hook fixes. Quick and full verification passed: 108 unit tests, production build, 17 browser smoke passes and 7 existing skips.
