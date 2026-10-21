@@ -13,7 +13,7 @@ export function protectedPath(path) {
     /(^|\/)\.env(?!\.example$)([^/]*)(\/|$)/.test(p) ||
     /(^|\/)(pnpm-lock\.yaml|package-lock\.json|yarn\.lock)$/.test(p) ||
     /(^|\/)(node_modules|\.next|\.git)(\/|$)/.test(p) ||
-    /^(drizzle\/|supabase\/\.temp\/)/.test(p) ||
+    /^(drizzle(?:\/|$)|supabase\/\.temp(?:\/|$))/.test(p) ||
     p.endsWith("themes/theme.schema.json")
   );
 }

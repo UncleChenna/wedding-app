@@ -3,6 +3,7 @@ import { fileURLToPath } from "node:url";
 import { existsSync, readFileSync, realpathSync } from "node:fs";
 import { dirname, relative, resolve, sep } from "node:path";
 import { spawnSync } from "node:child_process";
+import { shellAccess } from "./shell-access.mjs";
 import { protectedPath } from "./core.mjs";
 import { git, isMain, root } from "./io.mjs";
 
@@ -30,16 +31,26 @@ function approved(cwd, path, staged = false) {
   // Human approval names exact paths; generated artifacts remain subject to normal verification.
   return !staged || !/(^|\/)\.env(?!\.example$)/.test(path);
 }
-function normalized(cwd, file) {
+function resolvedPath(cwd, file) {
   let path = resolve(cwd, file);
   // Resolve existing parent symlinks even for a newly created file.
   let parent = path;
   while (!existsSync(parent) && dirname(parent) !== parent) parent = dirname(parent);
   path = resolve(realpathSync(parent), relative(parent, path));
+  return path;
+}
+function normalized(cwd, file) {
+  const path = resolvedPath(cwd, file);
   const rel = relative(realpathSync(cwd), path);
   if (rel.startsWith(`..${sep}`) || rel === ".." || resolve(cwd, rel) !== path)
     throw new Error("Edit outside this checkout denied.");
   return rel.replaceAll(sep, "/");
+}
+function verifyRead(cwd, file) {
+  // Check both the requested name and resolved target: aliases cannot expose secrets.
+  const secret = /(^|[\\/])\.env(?!\.example(?:[\\/]|$))(?:[^\\/]*)(?:[\\/]|$)/;
+  if (secret.test(file) || secret.test(resolvedPath(cwd, file)))
+    throw new Error("Protected file: secret environment files cannot be read.");
 }
 function changed(cwd, staged = false) {
   const args = staged
@@ -85,21 +96,24 @@ export async function main() {
   const cwd = root(input.cwd ?? input.workspace_roots?.[0] ?? process.cwd());
   try {
     if (mode === "pre") {
-      const paths = editPaths(input).map((p) => normalized(cwd, p));
+      const paths = editPaths(input);
       const isRead = /^(Read|read_file)$/i.test(input.tool_name ?? "");
-      verifyProtected(cwd, isRead ? paths.filter((p) => /(^|\/)\.env/.test(p)) : paths);
+      if (isRead) paths.forEach((path) => verifyRead(cwd, path));
+      else
+        verifyProtected(
+          cwd,
+          paths.map((path) => normalized(cwd, path)),
+        );
       const tool = input.tool_input ?? input;
       const shell = tool.command ?? tool.cmd ?? "";
       if (/\bgit\b[^\n]*\bcommit\b/.test(shell) && isMain(git(["branch", "--show-current"], cwd)))
         throw new Error("No commits on main or develop. Create a task branch/worktree.");
-      // Catch direct shell writes; arbitrary programs are additionally checked post-tool and at commit.
-      if (
-        /(?:>|\b(?:rm|mv|cp|tee|sed|perl)\b)/.test(shell) &&
-        /(?:\.env\S*|pnpm-lock\.yaml|drizzle\/|\.next\/|node_modules\/)/.test(shell)
-      )
-        throw new Error(
-          "Direct shell writes to protected files are blocked. Use the approved repository generator/bootstrap command.",
-        );
+      const access = shellAccess(shell, cwd);
+      access.reads.forEach((path) => verifyRead(cwd, path));
+      verifyProtected(
+        cwd,
+        access.writes.map((path) => normalized(cwd, path)),
+      );
     } else if (mode === "post") {
       if (!/edit|write|patch|bash|shell|exec/i.test(input.tool_name ?? "") && !input.file_path) {
         console.log("{}");

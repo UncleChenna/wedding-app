@@ -41,9 +41,9 @@ See: [Current state](../docs/current-state.md) · [Working together](../docs/col
 
 ## Acceptance criteria
 
-- [ ] Reading a file in the OS temp directory is allowed; reading `.env.local` is still denied.
-- [ ] `grep -n process.env src/x.ts | sed -n 1p` is allowed; `sed -i s/a/b/ .env.local` and `cp x drizzle/0001.sql` are denied.
-- [ ] Each case is covered by a unit test in hooks.test.ts.
+- [x] Reading a file in the OS temp directory is allowed; reading `.env.local` is still denied.
+- [x] `grep -n process.env src/x.ts | sed -n 1p` is allowed; `sed -i s/a/b/ .env.local` and `cp x drizzle/0001.sql` are denied.
+- [x] Each case is covered by a unit test in hooks.test.ts.
 
 ## Test plan
 
@@ -57,7 +57,7 @@ See: [Current state](../docs/current-state.md) · [Working together](../docs/col
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-10-21 — Implemented safe external reads, symlink-aware secret checks, and operand-based shell access inspection. Regression tests failed before the fix (12 failures); focused tests now pass (39). Full `pnpm verify` passed: 104 unit tests, production build, 17 smoke passes and 7 existing skips. Static inspection is not a shell sandbox; interactive Claude integration remains unverified. Ready for human review on `TICKET-002`.
 
 ## Activity log
 

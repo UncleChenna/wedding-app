@@ -14,6 +14,14 @@ Add-only history, newest first: prepend new entries below this template, never r
 
 ---
 
+## 2026-10-21 — TICKET-002 — Safe reads and shell write targets
+
+- **Who / agent / branch:** divine · codex · `TICKET-002`.
+- **Changed:** `scripts/harness/hooks.mjs`, `core.mjs`, new `shell-access.mjs`, regression tests and collaboration documentation. Non-secret temporary files can be read; writes remain confined to the checkout. Common shell commands check actual operands and redirections, including symlink-resolved secret reads and protected directory destinations.
+- **Checks:** Regression run before implementation: 12 failed, 21 passed. Focused hooks/harness suite: 39 passed. Full `pnpm verify` using public `.env.example` defaults: 104 unit tests, production build, 17 smoke passes and 7 existing skips. No product UI changed. Interactive Claude runtime integration was not exercised.
+- **Learned:** Directory operands such as `cp -t drizzle x` require protection of the directory itself, not just descendant paths. Static command inspection is not a complete shell interpreter or security sandbox.
+- **Next / blockers:** Human review and merge of the `TICKET-002` PR into `develop`. Earlier harness/backlog workflow changes remain unmerged prerequisites visible in its history. TICKET-001's separate post-hook fix remains owned by its existing reviewer; this work does not duplicate it.
+
 ## 2026-10-21 10:03 UTC — TICKET-188 — Exact ticket branches and develop reviews
 
 - **Branch:** `TICKET-188`.

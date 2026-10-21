@@ -98,3 +98,68 @@ it("rejects direct pushes to develop", () => {
   expect(result.status).toBe(2);
   expect(result.stderr).toContain("Direct pushes to main/develop");
 });
+
+function preflight(tool_name: string, tool_input: Record<string, string>) {
+  return spawnSync(process.execPath, [hook, "pre", "codex"], {
+    input: JSON.stringify({ cwd: process.cwd(), tool_name, tool_input }),
+    encoding: "utf8",
+  });
+}
+
+it.each([
+  ["/tmp/ticket-hook-output.txt", 0],
+  ["/tmp/.env.local", 2],
+  [".env.local", 2],
+  [".env.example", 0],
+])("checks read access to %s", (file_path, status) => {
+  expect(preflight("Read", { file_path }).status).toBe(status);
+});
+
+it.each([
+  ["grep -n process.env src/x.ts | sed -n 1p", 0],
+  ["cat node_modules/example/index.js | sed -n '1,10p'", 0],
+  ["cp drizzle/0001.sql scratch.sql", 0],
+  ["printf '%s' 'cp x drizzle/0001.sql > .env.local'", 0],
+  ["sed -n '1p' drizzle/0001.sql", 0],
+  ["sed -i s/a/b/ .env.local", 2],
+  ["sed -i '' 's/a/b/' .env.local", 2],
+  ["cp x drizzle/0001.sql", 2],
+  ["cp -t drizzle x", 2],
+  ["cp -tdrizzle x", 2],
+  ["cp --target-directory=drizzle x", 2],
+  ["mv drizzle/0001.sql scratch.sql", 2],
+  ["printf hello > node_modules/example.js", 2],
+  ["printf hello > '.env.local'", 2],
+  ["printf hello | tee -a .env.local", 2],
+  ["cat .env.local", 2],
+  ["grep TOKEN .env.local", 2],
+  ["cp .env.local scratch.txt", 2],
+  ["cat < .env.local", 2],
+  ["echo hello 2>&1", 0],
+  ["cp x /tmp/ticket-hook-out.txt", 2],
+  ["cd /tmp && cp x ticket-hook-out.txt", 2],
+])("classifies shell accesses: %s", (command, status) => {
+  const result = preflight("Bash", { command });
+  expect(result.status, result.stderr).toBe(status);
+});
+
+it("confines edits while allowing non-secret external reads and resolving symlinks", async () => {
+  const { mkdtempSync, symlinkSync, writeFileSync, rmSync } = await import("node:fs");
+  const { tmpdir } = await import("node:os");
+  const { join } = await import("node:path");
+  const dir = mkdtempSync(join(tmpdir(), "ticket-002-access-"));
+  try {
+    const plain = join(dir, "output.txt");
+    const secret = join(dir, ".env.local");
+    const alias = join(dir, "alias.txt");
+    writeFileSync(plain, "synthetic output");
+    writeFileSync(secret, "synthetic test fixture, not credentials");
+    symlinkSync(secret, alias);
+    expect(preflight("Read", { file_path: plain }).status).toBe(0);
+    expect(preflight("Write", { file_path: plain }).status).toBe(2);
+    expect(preflight("Read", { file_path: alias }).status).toBe(2);
+    expect(preflight("Bash", { command: `cat '${alias}'` }).status).toBe(2);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
