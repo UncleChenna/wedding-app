@@ -40,7 +40,7 @@ fix-up ticket changes a fact recorded here.
   `pattern` texture token. Two presets, not 3–4 (THM-5).
 - **Database never exercised.** The local stack, migrate-twice and seed-twice idempotency (old SETUP-003) were not
   verified locally; CI's database job has never run.
-- **CI never ran.** `origin` was empty until this change; no workflow has executed on GitHub (old SETUP-004).
+- **CI exercised (TICKET-004 update, 2026-10-21).** All four required jobs passed on [PR #8](https://github.com/UncleChenna/wedding-app/pull/8), [run 39586928907](https://github.com/UncleChenna/wedding-app/actions/runs/39586928907). The verify job runs exactly `pnpm verify` after setup. CI-only env inputs are documented in `.env.example`; parity regression coverage prevents drift. Branch protection and human approval remain separate work.
 - **Old setup tasks still open:** contrast-gate proof (SETUP-002), database bootstrap (SETUP-003), CI parity
   (SETUP-004), `/dev/theme` UI review (SETUP-005). All are migrated into tickets.
 - **Collaboration setup unfinished.** `.github/CODEOWNERS` still has `@REPLACE_ME_*` placeholders; branch protection

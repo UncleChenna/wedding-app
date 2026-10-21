@@ -41,9 +41,9 @@ See: [Current state](../docs/current-state.md) · [Testing plan](../docs/prd.md#
 
 ## Acceptance criteria
 
-- [ ] A PR shows all CI jobs green, linked in notes.
-- [ ] CI's verify job runs exactly `pnpm verify` plus setup steps.
-- [ ] `.env.example` documents every variable in `ci.yml`.
+- [x] A PR shows all CI jobs green, linked in notes.
+- [x] CI's verify job runs exactly `pnpm verify` plus setup steps.
+- [x] `.env.example` documents every variable in `ci.yml`.
 
 ## Test plan
 
@@ -56,6 +56,8 @@ See: [Current state](../docs/current-state.md) · [Testing plan](../docs/prd.md#
 - `.env.example`
 
 ## Notes / decisions
+
+- 2026-10-21: All required jobs are green on [PR #8](https://github.com/UncleChenna/wedding-app/pull/8), [CI run 39586928907](https://github.com/UncleChenna/wedding-app/actions/runs/39586928907): tickets valid, no attribution, pnpm verify, migrations + seed. The optional review job is intentionally disabled. CI verify already invokes exactly pnpm verify after setup; no workflow edit was necessary. Added documentation for POSTGRES_PASSWORD, PR_TITLE and PR_BODY as comments in .env.example, plus regression checks. Before fix: 1 test failed / 1 passed. Quick and full local gates pass: 106 unit tests, build, 17 smoke passes, 7 existing skips. This ticket PR will also receive a fresh CI run.
 
 - 2026-10-21: Migrated from `docs/tasks.json` SETUP-004.
 

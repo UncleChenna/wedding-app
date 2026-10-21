@@ -14,6 +14,14 @@ Add-only history, newest first: prepend new entries below this template, never r
 
 ---
 
+## 2026-10-21 — TICKET-004 — CI parity evidence
+
+- **Who / agent / branch:** divine · codex · `TICKET-004`.
+- **Changed:** Public environment example documents CI-only inputs; regression tests check declared variables and exact verify-job commands; current-state CI claim updated. Workflow itself is unchanged.
+- **Checks:** Existing PR #8 run 39586928907 passed all four required CI jobs. New documentation test failed before the fix. Quick/full local gates pass: 106 unit tests, production build, 17 smoke passes, 7 existing skips. Fresh ticket PR CI is checked before handoff.
+- **Learned:** PostgreSQL fixture and PR-text inputs belong in documentation comments, not the app runtime schema.
+- **Next:** Human reviews and merges into develop; branch protection is separate TICKET-005.
+
 ## 2026-10-21 — TICKET-002 — Safe reads and shell write targets
 
 - **Who / agent / branch:** divine · codex · `TICKET-002`.
