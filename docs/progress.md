@@ -14,6 +14,14 @@ Add-only history, newest first: prepend new entries below this template, never r
 
 ---
 
+## 2026-10-21 — TICKET-141 — Resolve conflicts after PR #9
+
+- **Who / agent / branch:** divine · codex · `TICKET-141`.
+- **Changed:** Integrated develop at cb365fe after PR #9 merged, preserved both progress histories and merged prerequisite fixes, and regenerated ticket boards. Ticket implementation remains unchanged.
+- **Checks:** Quick and full verification passed: 120 unit tests, production build, 17 browser smoke passes and 7 existing skips.
+- **Learned:** Shared handoff entries and generated boards require reconciliation when parallel ticket PRs integrate.
+- **Next:** Human review of this ticket PR into develop; no PR merged automatically.
+
 ## 2026-10-21 — TICKET-141 — Resolve develop conflicts
 
 - **Who / agent / branch:** divine · codex · `TICKET-141`.
@@ -29,6 +37,22 @@ Add-only history, newest first: prepend new entries below this template, never r
 - **Checks:** Before fixes: 2 logger regressions failed, 5 passed. Focused logging suite: 17 passed. Quick and full verify passed: 116 unit tests, production build, 17 smoke passes, 7 existing skips. No UI change.
 - **Learned:** A depth guard must truncate, not return unredacted objects; callers must not replace a request ID through child or per-message fields. Key redaction does not sanitize arbitrary free text.
 - **Next:** Human reviews and merges the PR into develop. Future feature actions adopt runLoggedAction; there were no existing feature endpoints to migrate or live action flows to exercise.
+
+## 2026-10-21 — TICKET-009 — Resolve develop conflicts
+
+- **Who / agent / branch:** divine · codex · `TICKET-009`.
+- **Changed:** Integrated develop, preserved both progress histories and merged prerequisite fixes, and regenerated ticket boards. Ticket implementation remains unchanged.
+- **Checks:** Quick and full verification passed: 108 unit tests, production build, 17 browser smoke passes and 7 existing skips.
+- **Learned:** Shared handoff entries and generated boards require reconciliation when parallel ticket PRs integrate.
+- **Next:** Human review of this ticket PR into develop; no PR merged automatically.
+
+## 2026-10-21 — TICKET-009 — Contrast gate evidence
+
+- **Who / agent / branch:** divine · codex · `TICKET-009`.
+- **Changed:** Theme loader regression coverage now verifies every failing pair and registry-import rejection; theming guide clarifies import/registration checks. Shipped themes are unchanged.
+- **Checks:** Temporary third theme passed the documented command; invalid foreground failed with its identity. Quick gate and full verify passed: 106 unit tests, build, 17 browser passes, 7 existing skips. UI review N/A: tests and docs only.
+- **Learned:** Existing loader already enforces this contract; additional production code is unnecessary.
+- **Next:** Human reviews the PR into develop; dependent tickets wait for merge.
 
 ## 2026-10-21 — TICKET-002 — Resolve develop conflicts
 
