@@ -3,3 +3,4 @@ export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 export { Input, type InputProps } from "./input";
 export { Sheet, type SheetProps } from "./sheet";
 export { ToastProvider, ToastView, useToast, type ToastOptions, type ToastTone } from "./toast";
+export { FadeIn, Rise, type MotionProps } from "./motion";

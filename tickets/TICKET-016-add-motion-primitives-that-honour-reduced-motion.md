@@ -41,11 +41,11 @@ See: [Design principles](../docs/prd.md#design-principles) · [Design principles
 
 ## Acceptance criteria
 
-- [ ] Primitives animate only `opacity` and `transform` (asserted in tests).
-- [ ] With reduced motion emulated, no transform animation runs.
-- [ ] Demonstrated on /dev/theme.
+- [x] Primitives animate only `opacity` and `transform` (asserted in tests).
+- [x] With reduced motion emulated, no transform animation runs.
+- [x] Demonstrated on /dev/theme.
 
-- [ ] Use 180ms control transitions and the 600ms signature envelope reveal; reduced motion removes transforms and uses no animation or at most 150ms fade.
+- [x] Use 180ms control transitions and the 600ms signature envelope reveal; reduced motion removes transforms and uses no animation or at most 150ms fade.
 
 ## Test plan
 
@@ -62,7 +62,7 @@ See: [Design principles](../docs/prd.md#design-principles) · [Design principles
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-10-21: Added CSS FadeIn/Rise, shared 180ms control / 240ms entrance / 600ms signature tokens and a replay demo in both themes. The actual envelope remains TICKET-039. Reduced motion disables animations and transforms. Unit test first failed on missing primitives; browser timing check then caught CSS-module integration failing in this custom loader, fixed through the existing global styling path. Final quick/full gates pass: 107 unit tests, build, 21 smoke passes, 7 existing skips. Screenshots and scoped UI checklist: docs/reviews/TICKET-016/README.md. Actual hover contrast 4.809:1 ivory / 7.809:1 dark; CLS 0 at all widths.
 
 ## Activity log
 

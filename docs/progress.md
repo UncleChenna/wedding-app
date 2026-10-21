@@ -14,6 +14,14 @@ Add-only history, newest first: prepend new entries below this template, never r
 
 ---
 
+## 2026-10-21 — TICKET-016 — Reduced-motion primitives
+
+- **Who / agent / branch:** divine · codex · `TICKET-016`.
+- **Changed:** Shared CSS FadeIn/Rise, timing tokens, developer replay showcase, unit/browser regressions, theming docs and committed screenshots/review evidence. No palette changes or envelope implementation.
+- **Checks:** Missing-component test failed before implementation; browser checks caught non-applied CSS-module classes. Final quick/full verification passed: 107 unit tests, production build, 21 smoke passes, 7 existing skips. Six screenshot cases passed; full images/slices and six focused previews inspected. CLS 0, zero overflow, visible keyboard focus, hover contrast 4.809/7.809.
+- **Learned:** Test actual keyframes/computed timing with this custom CSS pipeline; class names alone do not prove motion. Opacity compositing can lower contrast even with valid theme tokens.
+- **Next:** Human reviews PR into develop. Guest device tests belong to later adoption; existing Small-button/spinner issues remain TICKET-017/021. Scoped checklist approved in docs/reviews/TICKET-016/README.md.
+
 ## 2026-10-21 — TICKET-002 — Safe reads and shell write targets
 
 - **Who / agent / branch:** divine · codex · `TICKET-002`.

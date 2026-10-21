@@ -62,3 +62,11 @@ Themes pick fonts by key: `cormorant`, `playfair`, `inter`, `jost`. To add a fon
 
 - Never hard-code a colour in `src/` (hex, rgb, hsl, oklch). ESLint fails the build.
 - To render something in a specific theme (previews, emails), wrap it in an element with `style={themeStyle(theme)}`.
+
+## Shared motion tokens
+
+Motion timings are a shared accessibility contract in `src/app/globals.css`, identical in all colour themes: `--motion-duration-control` 180ms, `--motion-duration-enter` 240ms, `--motion-duration-signature` 600ms, `--motion-easing` cubic-bezier(0.2, 0, 0, 1), and `--motion-distance-rise` 0.5rem. These are not new JSON colour tokens.
+
+Use `FadeIn` or `Rise` from shared UI to animate server-rendered content with CSS only. Default pace is `enter`; `pace="signature"` reserves the 600ms timing for special moments. TICKET-039 implements the actual envelope reveal. Wrappers do not wait to mount children, hide content with JavaScript, or block actions. Do not wrap a sticky/fixed overlay in a transformed entrance.
+
+Reduced motion disables these entrance animations and the demo's control transition entirely, leaving content immediately visible. `/dev/theme` has a keyboard-accessible replay demo in each theme. Its replay control uses the 180ms opacity transition; existing unrelated component motion is outside this ticket.

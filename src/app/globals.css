@@ -45,6 +45,15 @@
   --shadow-lg: var(--t-shadow-lg);
 }
 
+/* Shared accessibility timing contract: identical across colour themes. */
+:root {
+  --motion-duration-control: 180ms;
+  --motion-duration-enter: 240ms;
+  --motion-duration-signature: 600ms;
+  --motion-easing: cubic-bezier(0.2, 0, 0, 1);
+  --motion-distance-rise: 0.5rem;
+}
+
 @layer base {
   * {
     border-color: var(--t-color-border);
@@ -75,5 +84,56 @@
       animation-duration: 0.01ms !important;
       transition-duration: 0.01ms !important;
     }
+  }
+}
+
+/* Shared CSS entrances; no client runtime required. */
+.motion-fade-in {
+  animation: fade-in var(--motion-duration-enter) var(--motion-easing) both;
+}
+
+.motion-rise {
+  animation: rise-in var(--motion-duration-enter) var(--motion-easing) both;
+}
+
+.motion-signature {
+  animation-duration: var(--motion-duration-signature);
+}
+
+.motion-control {
+  transition: opacity var(--motion-duration-control) var(--motion-easing);
+}
+
+.motion-control:hover {
+  opacity: 0.98;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--motion-distance-rise));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-fade-in,
+  .motion-rise {
+    animation: none;
+  }
+  .motion-control {
+    transition: none;
   }
 }
