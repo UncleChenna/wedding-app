@@ -2,7 +2,7 @@
 id: TICKET-009
 title: Prove the theme contrast gate end to end
 epic: design-system
-status: in_review
+status: in_progress
 priority: urgent
 estimate: S
 labels: [test, design]
@@ -67,3 +67,4 @@ See: [How theming works](../docs/prd.md#how-theming-works) (THM-3).
 - 2026-10-21 — todo → claimed — divine (codex)
 - 2026-10-21 — todo → in_progress — divine (codex)
 - 2026-10-21 — in_progress → in_review — divine (codex)
+- 2026-10-21 — in_review → in_progress — divine (codex) — Resolve remaining PR conflicts with develop
