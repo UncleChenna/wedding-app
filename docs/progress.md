@@ -14,29 +14,29 @@ Add-only history, newest first: prepend new entries below this template, never r
 
 ---
 
-## 2026-10-21 — TICKET-016 — Resolve conflicts after PR #9
+## 2026-10-21 — TICKET-102 — Resolve conflicts after PR #9
 
-- **Who / agent / branch:** divine · codex · `TICKET-016`.
+- **Who / agent / branch:** divine · codex · `TICKET-102`.
 - **Changed:** Integrated develop at cb365fe after PR #9 merged, preserved both progress histories and merged prerequisite fixes, and regenerated ticket boards. Ticket implementation remains unchanged.
-- **Checks:** Quick and full verification passed: 111 unit tests, production build, 21 browser smoke passes and 7 existing skips.
+- **Checks:** Quick and full verification passed: 108 unit tests, production build, 17 browser smoke passes and 7 existing skips.
 - **Learned:** Shared handoff entries and generated boards require reconciliation when parallel ticket PRs integrate.
 - **Next:** Human review of this ticket PR into develop; no PR merged automatically.
 
-## 2026-10-21 — TICKET-016 — Resolve develop conflicts
+## 2026-10-21 — TICKET-102 — Resolve develop conflicts
 
-- **Who / agent / branch:** divine · codex · `TICKET-016`.
+- **Who / agent / branch:** divine · codex · `TICKET-102`.
 - **Changed:** Integrated develop, preserved both progress histories and merged prerequisite fixes, and regenerated ticket boards. Ticket implementation remains unchanged.
-- **Checks:** Quick and full verification passed: 109 unit tests, production build, 21 browser smoke passes and 7 existing skips.
+- **Checks:** Quick and full verification passed: 106 unit tests, production build, 17 browser smoke passes and 7 existing skips.
 - **Learned:** Shared handoff entries and generated boards require reconciliation when parallel ticket PRs integrate.
 - **Next:** Human review of this ticket PR into develop; no PR merged automatically.
 
-## 2026-10-21 — TICKET-016 — Reduced-motion primitives
+## 2026-10-21 — TICKET-102 — Service-worker decision
 
-- **Who / agent / branch:** divine · codex · `TICKET-016`.
-- **Changed:** Shared CSS FadeIn/Rise, timing tokens, developer replay showcase, unit/browser regressions, theming docs and committed screenshots/review evidence. No palette changes or envelope implementation.
-- **Checks:** Missing-component test failed before implementation; browser checks caught non-applied CSS-module classes. Final quick/full verification passed: 107 unit tests, production build, 21 smoke passes, 7 existing skips. Six screenshot cases passed; full images/slices and six focused previews inspected. CLS 0, zero overflow, visible keyboard focus, hover contrast 4.809/7.809.
-- **Learned:** Test actual keyframes/computed timing with this custom CSS pipeline; class names alone do not prove motion. Opacity compositing can lower contrast even with valid theme tokens.
-- **Next:** Human reviews PR into develop. Guest device tests belong to later adoption; existing Small-button/spinner issues remain TICKET-017/021. Scoped checklist approved in docs/reviews/TICKET-016/README.md.
+- **Who / agent / branch:** divine · codex · `TICKET-102`.
+- **Changed:** Proposed ADR 0014 and disposable `spikes/pwa` build/browser experiment. Custom allowlisted worker selected for review; no production worker or dependencies added.
+- **Checks:** Two production builds; Chromium registration, precache, runtime fallback, offline reload and cache inspection passed. Worker 1,494 bytes (643 gzip); static output unchanged. Quick and full gates passed: 104 unit tests, build, 17 smoke passes, 7 existing skips.
+- **Learned:** Serwist has a Turbopack integration, but its convenience policies still require privacy/update review. Build timings are warm-cache observations, not a speed benchmark.
+- **Next:** Human reviews ADR and PR into develop. TICKET-105 implements root-scope policy; private data, upgrades and real iOS tests remain downstream.
 
 ## 2026-10-21 — TICKET-009 — Resolve develop conflicts
 

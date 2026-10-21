@@ -55,7 +55,7 @@ The reservation is locked across worktrees in one clone; live port checks also a
 ## PR flow and cleanup
 
 1. Follow `ticket-workflow` and `implement-task`, including the full gate and UI checklist where applicable. Every commit subject starts `TICKET-NNN: `; no AI attribution.
-2. Tick the acceptance criteria you proved and add notes to the ticket. Prepend a handoff to `docs/progress.md`; keep historical entries unchanged. Commit ticket changes only.
+2. Tick the acceptance criteria you proved and add notes to the ticket. Write or update `docs/handoffs/<ticket-id>.md`; never append to the shared historical `docs/progress.md`. Commit ticket changes only.
 3. Copy `.github/pull_request_template.md` to `docs/plans/<ticket-id>-pr.md`, fill in evidence and commit it.
 4. Run `pnpm t:pr <id>` inside the worktree. It independently verifies, pushes the branch, opens/reuses a detailed PR targeting `develop`, titled `<id>: <title>` and moves the ticket to `in_review`. It requires `gh` and an authenticated `origin`.
 5. The human reviews; CI must pass. Only the human merges via GitHub, then `pnpm t:move <id> done` verifies the merged PR and records completion in the ledger. The ticket file catches up on your next ticket branch.

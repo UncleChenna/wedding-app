@@ -142,7 +142,7 @@ describe("backlog validation", () => {
     expect(validateTickets(tickets).filter((p) => !p.includes("milestone"))).toEqual([]);
   });
 
-  it("finds duplicates, gaps, dangling deps, stale blocks and cycles", () => {
+  it("finds duplicates, gaps, dangling deps, derived reverse dependencies and cycles", () => {
     const problems = validateTickets([
       ticket("TICKET-001"),
       ticket("TICKET-001"),
@@ -153,7 +153,10 @@ describe("backlog validation", () => {
     expect(problems).toMatch(/duplicate id/);
     expect(problems).toMatch(/missing TICKET-002/);
     expect(problems).toMatch(/TICKET-009 does not exist/);
-    expect(problems).toMatch(/blocks must be/);
+    expect(
+      withBlocks([ticket("TICKET-001"), ticket("TICKET-002", { blocked_by: ["TICKET-001"] })])[0]
+        ?.meta.blocks,
+    ).toEqual(["TICKET-002"]);
     expect(problems).toMatch(/cycle/);
   });
 
@@ -409,6 +412,70 @@ function t(cwd: string, ...args: string[]) {
 }
 
 describe("ticket CLI with a shared remote", () => {
+  it("new worktree bases use remote develop instead of the current feature HEAD", () => {
+    const { a } = setup();
+    git(a, "push", "origin", "main:develop");
+    const base = git(a, "rev-parse", "HEAD");
+    git(a, "checkout", "-qb", "feature-unmerged");
+    writeFileSync(join(a, "unrelated.txt"), "Do not inherit me");
+    git(a, "add", ".");
+    git(a, "commit", "-qm", "chore: unrelated feature");
+    const helper = resolve("scripts/harness/worktree-base.mjs");
+    const result = execFileSync(
+      process.execPath,
+      [
+        "--input-type=module",
+        "-e",
+        `import { worktreeBase } from ${JSON.stringify("file://" + helper)}; console.log(JSON.stringify(worktreeBase(process.cwd(), "TICKET-003")))`,
+      ],
+      { cwd: a, env: isolatedGitEnv(), encoding: "utf8" },
+    );
+    expect(JSON.parse(result)).toEqual({ existingBranch: false, baseCommit: base });
+  });
+
+  it("dashboard overlays the live ledger and cannot inject ticket HTML", async () => {
+    const { a, b } = setup();
+    expect((await t(b, "claim", "TICKET-001", "--agent", "codex")).code).toBe(0);
+    const sample = ticket("TICKET-001", { title: "Test </script><img src=x onerror=alert(1)>" });
+    writeFileSync(join(a, sample.path), serializeTicket(sample));
+    const before = git(a, "diff", "HEAD");
+    const generated = await t(a, "dashboard");
+    expect(generated.code, generated.out).toBe(0);
+    const html = readFileSync(join(a, "artifacts/tickets/index.html"), "utf8");
+    expect(html).toContain('"owner":"friend"');
+    expect(html).not.toContain(sample.meta.title);
+    expect(html).toContain("Ledger snapshot");
+    expect(git(a, "diff", "HEAD")).toBe(before);
+    git(a, "remote", "set-url", "origin", join(a, "missing.git"));
+    expect((await t(a, "dashboard")).out).toContain("OFFLINE");
+    expect(readFileSync(join(a, "artifacts/tickets/index.html"), "utf8")).toContain(
+      "status may be stale",
+    );
+  }, 30000);
+
+  it("does not sync or write another branch's ticket", async () => {
+    const { a, b } = setup();
+    expect((await t(b, "claim", "TICKET-001", "--agent", "codex")).code).toBe(0);
+    git(a, "checkout", "-qb", "TICKET-002");
+    const before = git(a, "diff", "HEAD", "--", "tickets");
+    expect((await t(a, "sync", "TICKET-001")).code).not.toBe(0);
+    expect((await t(a, "board")).code).toBe(0);
+    expect((await t(a, "next")).code).toBe(0);
+    expect(git(a, "diff", "HEAD", "--", "tickets")).toBe(before);
+  }, 30000);
+
+  it("renders snapshots without rewriting tracked boards or other ticket definitions", async () => {
+    const { a } = setup();
+    writeFileSync(join(a, "tickets/BOARD.md"), "# Stable dashboard entry point\n");
+    git(a, "add", ".");
+    git(a, "commit", "-qm", "chore: stable entry point");
+    const before = readFileSync(join(a, "tickets/BOARD.md"), "utf8");
+    expect((await t(a, "render")).code).toBe(0);
+    expect(readFileSync(join(a, "tickets/BOARD.md"), "utf8")).toBe(before);
+    expect(git(a, "diff", "HEAD", "--", "tickets")).toBe("");
+    expect(readFileSync(join(a, "artifacts/tickets/BOARD.md"), "utf8")).toContain("TICKET-001");
+  }, 30000);
+
   it("lets exactly one of two clones claim a ticket, without touching main checkouts", async () => {
     const { a, b, remote } = setup();
     writeFileSync(join(a, "notes.txt"), "uncommitted human work");
@@ -445,7 +512,9 @@ describe("ticket CLI with a shared remote", () => {
     expect(file).toMatch(/status: in_progress/);
     expect(file).toMatch(/- 2026-10-22 — todo → claimed — divine \(claude\)/);
     expect(file).toMatch(/- 2026-10-22 — todo → in_progress — divine \(claude\)/);
-    expect(readFileSync(join(a, "tickets/BOARD.md"), "utf8")).toMatch(/### In progress \(1\)/);
+    expect(readFileSync(join(a, "tickets/TICKET-002-build-thing.md"), "utf8")).toMatch(
+      /status: todo/,
+    );
     expect((await t(a, "move", "TICKET-001", "done")).out).toMatch(/not allowed/);
     const created = await t(
       a,
