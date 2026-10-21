@@ -2,7 +2,7 @@
 id: TICKET-141
 title: Add request ids and structured logs to server actions
 epic: observability
-status: in_progress
+status: in_review
 priority: medium
 estimate: S
 labels: [backend]
