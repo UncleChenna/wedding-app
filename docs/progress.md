@@ -14,6 +14,14 @@ Add-only history, newest first: prepend new entries below this template, never r
 
 ---
 
+## 2026-10-21 — TICKET-102 — Service-worker decision
+
+- **Who / agent / branch:** divine · codex · `TICKET-102`.
+- **Changed:** Proposed ADR 0014 and disposable `spikes/pwa` build/browser experiment. Custom allowlisted worker selected for review; no production worker or dependencies added.
+- **Checks:** Two production builds; Chromium registration, precache, runtime fallback, offline reload and cache inspection passed. Worker 1,494 bytes (643 gzip); static output unchanged. Quick and full gates passed: 104 unit tests, build, 17 smoke passes, 7 existing skips.
+- **Learned:** Serwist has a Turbopack integration, but its convenience policies still require privacy/update review. Build timings are warm-cache observations, not a speed benchmark.
+- **Next:** Human reviews ADR and PR into develop. TICKET-105 implements root-scope policy; private data, upgrades and real iOS tests remain downstream.
+
 ## 2026-10-21 — TICKET-002 — Safe reads and shell write targets
 
 - **Who / agent / branch:** divine · codex · `TICKET-002`.
