@@ -2,7 +2,7 @@
 id: TICKET-190
 title: Refresh the local ticket dashboard automatically
 epic: foundations
-status: in_progress
+status: in_review
 priority: high
 estimate: M
 labels: [infra, frontend, test]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: []
 blocks: []
 branch: TICKET-190
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/15
 created: 2026-10-21
 updated: 2026-10-21
 started: 2026-10-21
@@ -67,3 +67,4 @@ See docs/tickets.md: the local board currently needs regeneration. Collaborators
 - 2026-10-21 — new → todo — divine (codex)
 - 2026-10-21 — todo → claimed — divine (codex)
 - 2026-10-21 — todo → in_progress — divine (codex)
+- 2026-10-21 — in_progress → in_review — divine (codex)
