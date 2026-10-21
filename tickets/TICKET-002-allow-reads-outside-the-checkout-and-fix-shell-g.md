@@ -2,20 +2,20 @@
 id: TICKET-002
 title: Allow reads outside the checkout and fix shell-guard false positives
 epic: foundations
-status: todo
+status: in_review
 priority: urgent
 estimate: S
 labels: [infra, test, security]
 module: harness
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: []
 blocks: [TICKET-003, TICKET-006]
-branch: ""
-pr: ""
+branch: TICKET-002
+pr: https://github.com/UncleChenna/wedding-app/pull/8
 created: 2026-10-21
 updated: 2026-10-21
-started: ""
+started: 2026-10-21
 completed: ""
 reason: ""
 resume_to: ""
@@ -41,9 +41,9 @@ See: [Current state](../docs/current-state.md) · [Working together](../docs/col
 
 ## Acceptance criteria
 
-- [ ] Reading a file in the OS temp directory is allowed; reading `.env.local` is still denied.
-- [ ] `grep -n process.env src/x.ts | sed -n 1p` is allowed; `sed -i s/a/b/ .env.local` and `cp x drizzle/0001.sql` are denied.
-- [ ] Each case is covered by a unit test in hooks.test.ts.
+- [x] Reading a file in the OS temp directory is allowed; reading `.env.local` is still denied.
+- [x] `grep -n process.env src/x.ts | sed -n 1p` is allowed; `sed -i s/a/b/ .env.local` and `cp x drizzle/0001.sql` are denied.
+- [x] Each case is covered by a unit test in hooks.test.ts.
 
 ## Test plan
 
@@ -57,8 +57,14 @@ See: [Current state](../docs/current-state.md) · [Working together](../docs/col
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-10-21 — Resolved develop conflicts after TICKET-001 merged, preserving both hook fixes and history. Quick verification passed (58 tests); full gate passed (106 unit tests, build, 17 smoke passes, 7 existing skips).
+
+- 2026-10-21 — Implemented safe external reads, symlink-aware secret checks, and operand-based shell access inspection. Regression tests failed before the fix (12 failures); focused tests now pass (39). Full `pnpm verify` passed: 104 unit tests, production build, 17 smoke passes and 7 existing skips. Static inspection is not a shell sandbox; interactive Claude integration remains unverified. Ready for human review on `TICKET-002`.
 
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-21 — todo → claimed — divine (codex)
+- 2026-10-21 — todo → in_progress — divine (codex)
+- 2026-10-21 — in_progress → in_review — divine (codex)
+- 2026-10-21 — in_review → in_progress — divine (codex) — Resolve conflicts with develop after TICKET-001 merge

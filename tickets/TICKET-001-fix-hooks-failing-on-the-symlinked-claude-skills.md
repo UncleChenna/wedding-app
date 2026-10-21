@@ -2,7 +2,7 @@
 id: TICKET-001
 title: Fix hooks failing on the symlinked .claude/skills directory
 epic: foundations
-status: in_review
+status: done
 priority: urgent
 estimate: S
 labels: [infra, test]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/7
 created: 2026-10-21
 updated: 2026-10-21
 started: 2026-10-21
-completed: ""
+completed: 2026-10-21
 reason: ""
 resume_to: ""
 ---
@@ -73,3 +73,5 @@ See: [Current state](../docs/current-state.md) · [Working together](../docs/col
 - 2026-10-21 — todo → in_progress — unclechenna (claude)
 - 2026-10-21 — in_progress → in_review — unclechenna (claude)
 - 2026-10-21 — in_review → in_progress — unclechenna (claude) — PR #3 conflicted and targeted chore/ticket-system; redoing on TICKET-001 against develop
+- 2026-10-21 — in_progress → in_review — unclechenna (claude)
+- 2026-10-21 — in_review → done — unclechenna (claude)
