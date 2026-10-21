@@ -110,9 +110,11 @@ Open tickets labelled `human` (decisions, accounts, physical tasks), in `pnpm t:
 
 ## Board
 
-### In progress (0)
+### In progress (1)
 
-_None._
+| Ticket | Title | Epic | Priority | Est. | Owner | Blocked by |
+| ------ | ----- | ---- | -------- | ---- | ----- | ---------- |
+| [TICKET-102](TICKET-102-choose-the-service-worker-approach-for-next-js-1.md) | Choose the service worker approach for Next.js 16 in an ADR | pwa | urgent | S | divine |  |
 
 ### In review (4)
 
@@ -127,7 +129,7 @@ _None._
 
 _None._
 
-### Todo (181)
+### Todo (180)
 
 | Ticket | Title | Epic | Priority | Est. | Owner | Blocked by |
 | ------ | ----- | ---- | -------- | ---- | ----- | ---------- |
@@ -229,7 +231,6 @@ _None._
 | [TICKET-099](TICKET-099-add-the-iv-design-editor-for-photo-and-text.md) | Add the IV design editor for photo and text | admin | medium | M |  | TICKET-038, TICKET-088, TICKET-175 |
 | [TICKET-100](TICKET-100-show-each-invitation-s-rsvp-change-history.md) | Show each invitation's RSVP change history | admin | medium | S |  | TICKET-042, TICKET-089 |
 | [TICKET-101](TICKET-101-build-the-event-settings-page.md) | Build the event settings page | admin | urgent | M |  | TICKET-025, TICKET-088, TICKET-034, TICKET-035 |
-| [TICKET-102](TICKET-102-choose-the-service-worker-approach-for-next-js-1.md) | Choose the service worker approach for Next.js 16 in an ADR | pwa | urgent | S |  |  |
 | [TICKET-103](TICKET-103-generate-the-web-app-manifest-from-the-active-th.md) | Generate the web app manifest from the active theme | pwa | high | M |  | TICKET-012, TICKET-102 |
 | [TICKET-104](TICKET-104-generate-maskable-icons-apple-touch-icons-and-sp.md) | Generate maskable icons, Apple touch icons and splash screens | pwa | high | M |  | TICKET-103 |
 | [TICKET-105](TICKET-105-add-the-service-worker-with-per-route-caching.md) | Add the service worker with per-route caching | pwa | urgent | L |  | TICKET-102 |
