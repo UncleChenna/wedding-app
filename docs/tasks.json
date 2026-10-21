@@ -5,7 +5,7 @@
       "id": "SETUP-001",
       "title": "Guard against horizontal overflow on phones",
       "module": "theming",
-      "status": "pending",
+      "status": "done",
       "dependsOn": [],
       "acceptanceCriteria": [
         "A @smoke Playwright test loads /, /invite, /order, /checkin, /kitchen, /admin and /dev/theme at 375px wide and asserts document scrollWidth <= clientWidth on each",

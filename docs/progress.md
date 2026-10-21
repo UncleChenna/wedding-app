@@ -20,3 +20,10 @@ Entry format:
 - **Learned:** Next 16.4 enables Cache Components + Partial Prefetching by default; error boundaries receive `retry` (not `reset`) and `error: unknown`. `next dev` rewrites a managed block at the top of AGENTS.md; keep it. With `"type": "module"`, JSON imports need `with { type: "json" }` for Playwright to load them. pnpm 12 fails installs on unapproved build scripts; approvals live in `pnpm-workspace.yaml` (`allowBuilds`). Supabase CLI now issues `sb_publishable_…` keys.
 - **Next:** Run the setup-verification tasks in `docs/tasks.json`, then add the PRD to `docs/prd.md` and break it into tasks.
 - **Checks:** pnpm verify ✔
+
+## 2026-10-21 — SETUP-001 — Guard against horizontal overflow on phones
+
+- **Done:** Added `e2e/overflow.spec.ts` (@smoke): loads `/`, `/invite`, `/order`, `/checkin`, `/kitchen`, `/admin`, `/dev/theme` at 375×812 and asserts `scrollWidth <= clientWidth` on `<html>`. Runs in the `mobile` project only (skipped in `desktop`). Plan: `docs/plans/2026-10-21-SETUP-001.md`.
+- **Learned:** All routes passed first time, so no style fixes were needed. To prove the check works, a throwaway spec injected a 600px element and failed as expected (600 > 375); it was not committed. The `mobile` project's Pixel 7 device is 412px wide, so 375px checks must set the viewport themselves with `test.use({ viewport })`.
+- **Next:** SETUP-005 (UI review of /dev/theme) is now unblocked.
+- **Checks:** pnpm verify ✔ (17 smoke passed, 7 skipped by design)
