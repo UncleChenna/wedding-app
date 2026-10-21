@@ -2,7 +2,7 @@
 id: TICKET-004
 title: Get the first green CI run and confirm parity with pnpm verify
 epic: foundations
-status: in_progress
+status: in_review
 priority: urgent
 estimate: S
 labels: [infra, test]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: []
 blocks: [TICKET-005, TICKET-007, TICKET-147]
 branch: TICKET-004
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/11
 created: 2026-10-21
 updated: 2026-10-21
 started: 2026-10-21
@@ -66,3 +66,4 @@ See: [Current state](../docs/current-state.md) · [Testing plan](../docs/prd.md#
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-10-21 — todo → claimed — divine (codex)
 - 2026-10-21 — todo → in_progress — divine (codex)
+- 2026-10-21 — in_progress → in_review — divine (codex)
