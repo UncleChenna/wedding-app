@@ -17,3 +17,5 @@ Short records of decisions that are expensive to reverse. Add one per new decisi
 | [0011](0011-atomic-task-claims.md)      | Atomic Git remote task claims                                         |
 | [0012](0012-shared-quality-hooks.md)    | Shared hooks and independent quality gates                            |
 | [0013](0013-ticket-system.md)           | In-repo tickets with a shared claim ledger                            |
+
+Proposed: [0014 — Explicit service-worker caching](0014-service-worker.md) (TICKET-102; acceptance awaits human merge).

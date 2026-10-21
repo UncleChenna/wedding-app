@@ -12,6 +12,7 @@ import { createServer } from "node:net";
 import { join, dirname } from "node:path";
 import { branchName, isolatedConfig, safeId } from "./harness/core.mjs";
 import { cli, common, git, json, lock, pnpm, root, writeJson } from "./harness/io.mjs";
+import { worktreeBase } from "./harness/worktree-base.mjs";
 import { liveTicket, ticketOwner } from "./harness/tickets.mjs";
 
 function free(port) {
@@ -109,21 +110,21 @@ async function main() {
         }
         if (!base) throw new Error("No free local port block; check port-binding permission.");
         const project = `wedding-${createHash("sha256").update(`${primary}:${id}`).digest("hex").slice(0, 12)}`;
-        const baseCommit = git(["rev-parse", "HEAD"], cwd);
+        const { baseCommit, existingBranch } = worktreeBase(cwd, task.branch);
         mkdirSync(dirname(path), { recursive: true });
-        let existingBranch = false;
-        try {
-          git(["show-ref", "--verify", `refs/heads/${task.branch}`], cwd);
-          existingBranch = true;
-        } catch {
-          /* new branch */
-        }
         git(
           existingBranch
             ? ["worktree", "add", path, task.branch]
             : ["worktree", "add", "-b", task.branch, path, baseCommit],
           cwd,
         );
+        // A newly allocated ticket may not be on develop yet. Carry its definition only.
+        if (
+          task.path &&
+          /^tickets\/TICKET-\d{3}-[a-z0-9-]+\.md$/.test(task.path) &&
+          !existsSync(join(path, task.path))
+        )
+          copyFileSync(join(cwd, task.path), join(path, task.path));
         state[id] = {
           id,
           path,

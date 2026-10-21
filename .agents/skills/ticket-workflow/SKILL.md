@@ -14,9 +14,9 @@ One ticket at a time, one worktree per ticket. Rules: [docs/tickets.md](../../..
 5. **Build.** Write a dated plan in `docs/plans/`. Read the installed Next.js docs before framework code. Write failing tests, implement, run `pnpm verify:quick` then `pnpm verify`. Commit in small steps; every subject starts `<id>: `, e.g. `TICKET-014: add RSVP form validation`. Push often. UI work follows the `ui-review` skill; schema work follows `db-migration`.
 6. **Finish.** Tick every acceptance criterion in `tickets/<id>-*.md` (only ones you proved). Append dated notes and decisions. Write `docs/plans/<id>-pr.md` from `.github/pull_request_template.md` with evidence, and commit both. Then run `pnpm t:pr <id>`. It runs `pnpm verify`, pushes, opens the PR titled `<id>: <title>` targeting `develop`, moves the ticket to `in_review` and pushes again.
 7. **Review changes.** If the reviewer asks for changes: `pnpm t:move <id> in_progress --reason "<what was asked>" --push`, fix, then `pnpm t:pr <id>` again.
-8. **Close.** After the human reviews and merges the PR into `develop`: `pnpm t:move <id> done`. This records the completion date and PR link in the shared ledger, and the file catches up on your next ticket branch. Then, from the primary checkout, `pnpm wt:remove <id>`.
+8. **Close.** After the human reviews and merges the PR into `develop`: `pnpm t:move <id> done`. This records the completion date and PR link in the shared ledger, and only that ticket’s own branch may sync its file. Never copy completion metadata into unrelated branches. Then, from the primary checkout, `pnpm wt:remove <id>`.
 9. **Blocked?** `pnpm t:move <id> blocked --reason "<blocking ticket or question>" --push`, add a note, then pick another ticket. When it clears: `pnpm t:move <id> <previous status> --push`. Never skip anything silently.
-10. **Hand off.** Before ending any session, prepend an entry to `docs/progress.md` (the `handoff` skill).
+10. **Hand off.** Before ending any session, write or update `docs/handoffs/<ticket-id>.md` (the `handoff` skill).
 
 Every handoff must have pushed work and a linked PR to `develop` (draft if unfinished). Fill every task-specific PR section with changes, acceptance evidence, test results, untested cases, risks and rollout/rollback details. Never merge or enable auto-merge; the human decides.
 

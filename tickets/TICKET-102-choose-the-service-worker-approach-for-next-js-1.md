@@ -2,20 +2,20 @@
 id: TICKET-102
 title: Choose the service worker approach for Next.js 16 in an ADR
 epic: pwa
-status: todo
+status: in_review
 priority: urgent
 estimate: S
 labels: [pwa, docs]
 module: shared
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: []
 blocks: [TICKET-103, TICKET-105]
-branch: ""
-pr: ""
+branch: TICKET-102
+pr: https://github.com/UncleChenna/wedding-app/pull/10
 created: 2026-10-21
 updated: 2026-10-21
-started: ""
+started: 2026-10-21
 completed: ""
 reason: ""
 resume_to: ""
@@ -40,8 +40,8 @@ See: [Tech stack and architecture](../docs/prd.md#tech-stack-and-architecture).
 
 ## Acceptance criteria
 
-- [ ] ADR merged with the decision, versions, and rejected options with reasons.
-- [ ] Prototype builds with `pnpm build` (evidence in notes).
+- [x] ADR records the decision, versions, and rejected options with reasons, ready for human review; only the human merges it before this ticket becomes done.
+- [x] Prototype builds with `pnpm build` (evidence in notes).
 
 ## Test plan
 
@@ -54,8 +54,17 @@ See: [Tech stack and architecture](../docs/prd.md#tech-stack-and-architecture).
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-10-21: Resolved develop conflicts, preserving merged prerequisite fixes and progress history. Quick and full verification passed: 108 unit tests, production build, 17 browser smoke passes and 7 existing skips.
+
+- 2026-10-21: Resolved develop conflicts, preserving merged prerequisite fixes and progress history. Quick and full verification passed: 106 unit tests, production build, 17 browser smoke passes and 7 existing skips.
+
+- 2026-10-21: ADR 0014 proposes a custom allowlisted worker; Serwist Turbopack evaluated from its primary documentation without installation. Prototype production builds and Chromium offline checks passed. Worker: 1,494 bytes / 643 gzip; static build output unchanged at 1,373,288 bytes; sequential warm builds 9,184ms baseline / 4,817ms prototype (not a comparative benchmark). Quick and full gates passed: 104 unit tests, 17 smoke passes, 7 existing skips. Production registration, private offline data, iOS and update/outbox behavior remain downstream work. Clarified the original merged-ADR criterion to distinguish review readiness from the mandatory human merge required for done; no merge performed.
 
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-21 — todo → claimed — divine (codex)
+- 2026-10-21 — todo → in_progress — divine (codex)
+- 2026-10-21 — in_progress → in_review — divine (codex)
+- 2026-10-21 — in_review → in_progress — divine (codex) — Resolve remaining PR conflicts with develop
+- 2026-10-21 — in_review → in_progress — divine (codex) — Resolve new conflicts after PR 9 merged
