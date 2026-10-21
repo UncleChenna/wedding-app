@@ -39,11 +39,11 @@ The shared progress log and generated boards caused repeated PR conflicts. See d
 
 ## Acceptance criteria
 
-- [ ] Dashboard shows every status, filters tickets and opens accessible ticket details with safe PR links.
-- [ ] Live ledger overlays file state; offline fallback is clearly identified.
-- [ ] Rendering and read commands leave tracked files unchanged; status changes touch only the assigned ticket.
-- [ ] Handoff guidance for all agents uses per-ticket files and preserves historical progress.
-- [ ] Unit, CLI and browser regression tests pass; review at 375/768/1280 in both themes.
+- [x] Dashboard shows every status, filters tickets and opens accessible ticket details with safe PR links.
+- [x] Live ledger overlays file state; offline fallback is clearly identified.
+- [x] Rendering and read commands leave tracked files unchanged; status changes touch only the assigned ticket.
+- [x] Handoff guidance for all agents uses per-ticket files and preserves historical progress.
+- [x] Unit, CLI and browser regression tests pass; review at 375/768/1280 in both themes.
 
 ## Test plan
 
@@ -58,7 +58,7 @@ The shared progress log and generated boards caused repeated PR conflicts. See d
 
 ## Notes / decisions
 
-- Local read-only dashboard; no new dependency or public endpoint.
+- 2026-10-21: Implemented the local dashboard and conflict-reduction workflow. Full verification passed: 112 unit tests, build, 21 smoke passes, 7 existing skips. UI review and screenshots in docs/reviews/TICKET-189/. ADR 0015 documents rollout; no product route or new dependency.
 
 ## Activity log
 

@@ -1,5 +1,5 @@
-import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { dirname, join } from "node:path";
 
 import { activity, parseTicket, serializeTicket } from "./format";
 import { inverseBlocks } from "./graph";
@@ -57,7 +57,7 @@ export function overlay(ticket: Ticket, record: LedgerRecord | undefined): Ticke
 }
 
 export function effective(tickets: readonly Ticket[], ledger: LedgerData | null): Ticket[] {
-  return tickets.map((t) => overlay(t, ledger?.tickets[ledgerKey(t.meta.id)]));
+  return deriveBlocks(tickets.map((t) => overlay(t, ledger?.tickets[ledgerKey(t.meta.id)])));
 }
 
 export function recordFrom(ticket: Ticket): LedgerRecord {
@@ -71,55 +71,39 @@ export function writeTicket(root: string, ticket: Ticket): void {
   writeFileSync(join(root, ticket.path), serializeTicket(ticket));
 }
 
-/** Expected generated outputs for the given files (blocks are derived, then boards rendered). */
+/** Reverse dependencies are a view, never a reason to rewrite another ticket. */
+export function deriveBlocks(tickets: readonly Ticket[]): Ticket[] {
+  const inverse = inverseBlocks(tickets.map((t) => t.meta));
+  return tickets.map((t) => ({ ...t, meta: { ...t.meta, blocks: inverse.get(t.meta.id) ?? [] } }));
+}
+
 export function renderOutputs(tickets: readonly Ticket[]): {
   tickets: Ticket[];
   files: Record<string, string>;
 } {
-  const inverse = inverseBlocks(tickets.map((t) => t.meta));
-  const fixed = tickets.map((t) => {
-    const blocks = inverse.get(t.meta.id) ?? [];
-    return blocks.join(",") === t.meta.blocks.join(",") ? t : { ...t, meta: { ...t.meta, blocks } };
-  });
+  const fixed = deriveBlocks(tickets);
   const metas = fixed.map((t) => t.meta);
-  const paths = new Map(fixed.map((t) => [t.meta.id, t.path]));
+  const paths = new Map(fixed.map((t) => [t.meta.id, `../../${t.path}`]));
   return {
     tickets: fixed,
     files: {
-      "tickets/BOARD.md": renderBoard(metas, paths) + "\n",
-      "tickets/ROADMAP.md": renderRoadmap(metas, paths) + "\n",
+      "artifacts/tickets/BOARD.md": renderBoard(metas, paths) + "\n",
+      "artifacts/tickets/ROADMAP.md": renderRoadmap(metas, paths) + "\n",
     },
   };
 }
 
-/** Rewrite derived `blocks` fields and the generated boards. Returns the paths that changed. */
-export function render(root: string): string[] {
-  const tickets = loadTickets(root);
-  const { tickets: fixed, files } = renderOutputs(tickets);
+/** Local snapshots only; never write or stage tracked ticket files. */
+export function render(root: string, tickets: readonly Ticket[] = loadTickets(root)): string[] {
+  const { files } = renderOutputs(tickets);
   const changed: string[] = [];
-  fixed.forEach((t, i) => {
-    if (t !== tickets[i]) {
-      writeTicket(root, t);
-      changed.push(t.path);
-    }
-  });
   for (const [path, content] of Object.entries(files)) {
     const full = join(root, path);
+    mkdirSync(dirname(full), { recursive: true });
     if (!existsSync(full) || readFileSync(full, "utf8") !== content) {
       writeFileSync(full, content);
       changed.push(path);
     }
   }
   return changed;
-}
-
-/** Problems if generated files are stale. */
-export function staleOutputs(root: string, tickets: readonly Ticket[]): string[] {
-  const { files } = renderOutputs(tickets);
-  return Object.entries(files)
-    .filter(
-      ([path, content]) =>
-        !existsSync(join(root, path)) || readFileSync(join(root, path), "utf8") !== content,
-    )
-    .map(([path]) => `${path} is stale: run pnpm t:render`);
 }

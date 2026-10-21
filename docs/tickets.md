@@ -26,7 +26,7 @@ is fixed when the ticket is created. Start from [`tickets/TEMPLATE.md`](../ticke
 | `module`                                     | `invitations`, `checkin`, `ordering`, `admin`, `theming`, `shared`, `harness`, `ops`       |
 | `owner`, `agent`                             | Who claimed it and which agent works on it; empty until claimed                            |
 | `blocked_by`                                 | Ticket ids that must be `done` first                                                       |
-| `blocks`                                     | Derived inverse of `blocked_by`; `pnpm t:render` maintains it                              |
+| `blocks`                                     | Legacy snapshot; reverse dependencies are derived in memory from `blocked_by`              |
 | `branch`, `pr`                               | Set by claim and review; the branch always contains the ticket id                          |
 | `created`, `updated`, `started`, `completed` | `YYYY-MM-DD`                                                                               |
 | `reason`, `resume_to`                        | Set only while `blocked` (why, and the status to return to) or `cancelled` (why)           |
@@ -68,9 +68,9 @@ the `ticket-ledger` branch on `origin`, using a compare-and-swap push (ADR 0011'
 
 - Two developers (or agents) can never claim the same ticket. The second claim fails with "already claimed".
 - `t:next` and `t:board` show claims and progress that have not reached `develop` yet.
-- `done` is recorded the moment the PR is merged. Branch protection forbids direct commits to `develop`, so the file
-  catches up through the next ticket branch: `t:move <id> in_progress` syncs finished tickets into that branch. You can
-  also run `pnpm t:sync` on a small bookkeeping branch.
+- `done` is recorded by the CLI after the human merges the PR. Live ledger state is authoritative; committed file status can lag.
+- A transition writes only the branch’s own ticket. No unrelated completion records are copied into feature branches.
+- `t:sync <id>` explicitly refreshes that ticket on its own branch; ordinary reads never edit tracked files.
 
 Commands that change state fail closed if `origin` is unreachable. `TICKETS_LEDGER=off` uses files only, for a solo
 offline session; `TICKETS_LEDGER=local` is for tests. Ticket files are only rewritten on a branch, never on `develop`, so
@@ -86,12 +86,12 @@ the coordination checkout stays clean.
 | `pnpm t:show <id> [--json]`                                                                       | One ticket (live)                                                                                                           |
 | `pnpm t:claim <id> --owner <name> --agent <name>`                                                 | Atomic claim; fails if claimed or blocked                                                                                   |
 | `pnpm t:release <id>`                                                                             | Owner gives back a claimed `todo` ticket                                                                                    |
-| `pnpm t:move <id> <status> [--reason text] [--push]`                                              | Enforced transition; `--push` commits `tickets/` as `TICKET-NNN: move to <status>` and pushes                               |
+| `pnpm t:move <id> <status> [--reason text] [--push]`                                              | Enforced transition; `--push` commits only the assigned ticket as `TICKET-NNN: move to <status>` and pushes                 |
 | `pnpm t:pr <id>`                                                                                  | Verify, push, open the PR (title `TICKET-NNN: <title>`, body from `docs/plans/TICKET-NNN-pr.md`), move to `in_review`, push |
 | `pnpm t:new --title … --epic … --module … [--priority --estimate --labels --blocked-by --status]` | Scaffold the next id                                                                                                        |
-| `pnpm t:sync`                                                                                     | Write ledger state into ticket files (on a branch)                                                                          |
-| `pnpm t:validate`                                                                                 | Schema, sections, unique and contiguous ids, real dependencies, no cycles, status/branch/PR consistency, boards fresh       |
-| `pnpm t:render`                                                                                   | Recompute `blocks`, regenerate BOARD.md and ROADMAP.md                                                                      |
+| `pnpm t:sync <id>`                                                                                | Sync the named ticket only, on its own branch                                                                               |
+| `pnpm t:validate`                                                                                 | Schema, sections, unique and contiguous ids, real dependencies, no cycles, status/branch/PR consistency                     |
+| `pnpm t:render`                                                                                   | Generate ignored Markdown snapshots in `artifacts/tickets/`                                                                 |
 
 `owner` defaults to `git config harness.owner` or `AGENT_OWNER`. `agent` defaults to `TICKETS_AGENT`.
 
@@ -99,9 +99,9 @@ the coordination checkout stays clean.
 
 - `t:validate` runs in the pre-commit hook, as the first step of `pnpm verify`, and in CI (`tickets` job and
   `verify`).
-- The pre-commit hook runs `t:render --staged` first, so hand edits keep BOARD.md and ROADMAP.md fresh.
+- The legacy pre-commit `t:render --staged` call is a no-op for compatibility. Validation still runs; no hook stages generated files.
 - The `commit-msg` hook requires `TICKET-NNN: …` subjects on ticket branches and rejects AI attribution.
-- If two merged PRs both regenerate BOARD.md, resolve the conflict by taking either side and running `pnpm t:render`.
+- Feature PRs never regenerate tracked boards. Preserve their stable links. Reverse dependency fields are derived at read time; `blocked_by` remains the authoritative edge list. Dependency readiness is checked atomically by claim/move using the live ledger, not stale file statuses.
 
 ## The `human` label
 
@@ -133,3 +133,9 @@ rollout sections. Explain the before/after result, implementation details releva
 criterion, exact checks and outcomes, untested cases, and migration/rollback steps where relevant. Screenshots
 are required for UI work. Keep the description current; a passing content check is not a substitute for a useful
 review explanation. Legacy active branch names remain compatible; new claims always use the exact ticket ID.
+
+## Visual dashboard
+
+Run `pnpm t:dashboard`, then open the printed HTML path. Search titles/IDs/details, filter by epic/owner/priority/label, switch themes, and open ticket details. The page is a read-only snapshot, not a server: regenerate and reload to refresh. No public wedding route, account, dependency or remote frontend request is introduced. The header identifies snapshot time, local origin/develop ref, and ledger availability. Offline fallback uses committed file state and is explicitly labelled stale. Definitions for unmerged tickets absent from this checkout cannot appear; update develop or run from the branch containing them. Do not publish the generated snapshot: it includes internal ticket text.
+
+Snapshots are ignored under `artifacts/tickets/`. The tracked BOARD/ROADMAP files remain stable entry points. Record handoffs in `docs/handoffs/<ticket-id>.md`, not the shared historical progress log. After this migration merges, update older feature branches once, keep the stable entry points, preserve their handoff entries in per-ticket files, and regenerate local output. Never resolve conflicts by discarding implementation work.

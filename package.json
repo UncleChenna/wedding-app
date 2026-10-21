@@ -53,7 +53,8 @@
     "t:sync": "tsx scripts/tickets.ts sync",
     "t:validate": "tsx scripts/tickets.ts validate",
     "t:render": "tsx scripts/tickets.ts render",
-    "check:pr-text": "node scripts/harness/commit-rules.mjs pr"
+    "check:pr-text": "node scripts/harness/commit-rules.mjs pr",
+    "t:dashboard": "tsx scripts/tickets.ts dashboard"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
