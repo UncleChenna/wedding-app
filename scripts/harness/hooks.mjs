@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { fileURLToPath } from "node:url";
-import { existsSync, readFileSync, realpathSync } from "node:fs";
+import { existsSync, lstatSync, readFileSync, realpathSync } from "node:fs";
 import { dirname, relative, resolve, sep } from "node:path";
 import { spawnSync } from "node:child_process";
 import { shellAccess } from "./shell-access.mjs";
@@ -125,6 +125,9 @@ export async function main() {
       verifyProtected(cwd, paths);
       for (const path of paths) {
         if (!existsSync(resolve(cwd, path)) || protectedPath(path)) continue;
+        // Only regular files are formattable. Symlinks (e.g. the .claude/skills link that
+        // agents:link creates) and directories make Prettier fail on every tool call.
+        if (!lstatSync(resolve(cwd, path)).isFile()) continue;
         command(cwd, ["exec", "prettier", "--write", "--ignore-unknown", path]);
         if (/\.[cm]?[jt]sx?$/.test(path))
           command(cwd, ["exec", "eslint", "--fix", "--max-warnings=0", "--no-warn-ignored", path]);

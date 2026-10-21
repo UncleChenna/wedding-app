@@ -62,6 +62,8 @@ See: [Design principles](../docs/prd.md#design-principles) · [Design principles
 
 ## Notes / decisions
 
+- 2026-10-21: Resolved develop conflicts, preserving merged prerequisite fixes and progress history. Quick and full verification passed: 109 unit tests, production build, 21 browser smoke passes and 7 existing skips.
+
 - 2026-10-21: Added CSS FadeIn/Rise, shared 180ms control / 240ms entrance / 600ms signature tokens and a replay demo in both themes. The actual envelope remains TICKET-039. Reduced motion disables animations and transforms. Unit test first failed on missing primitives; browser timing check then caught CSS-module integration failing in this custom loader, fixed through the existing global styling path. Final quick/full gates pass: 107 unit tests, build, 21 smoke passes, 7 existing skips. Screenshots and scoped UI checklist: docs/reviews/TICKET-016/README.md. Actual hover contrast 4.809:1 ivory / 7.809:1 dark; CLS 0 at all widths.
 
 ## Activity log

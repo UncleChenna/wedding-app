@@ -16,8 +16,12 @@ Initial unit suite failed on missing primitives. Browser regression caught unapp
 
 ## Risks and rollout
 
-Use signature timing sparingly and avoid wrapping fixed/sticky overlays in transformed entrances. Guest-page adoption still needs device review. Existing unrelated small-button/spinner issues remain TICKET-017/021. No dependencies or data migration. Revert this ticket commit to roll back. Earlier unmerged harness/workflow history is included; focused changes follow 5506f63. Human review/merge only.
+Use signature timing sparingly and avoid wrapping fixed/sticky overlays in transformed entrances. Guest-page adoption still needs device review. Existing unrelated small-button/spinner issues remain TICKET-017/021. No dependencies or data migration. Revert this ticket commit to roll back. Prerequisite harness/workflow changes are now merged into develop. Human review/merge only.
 
 ## Screenshots and UI checklist
 
 [Complete scoped checklist and evidence](https://github.com/UncleChenna/wedding-app/blob/TICKET-016/docs/reviews/TICKET-016/README.md). Screenshots are committed under docs/reviews/TICKET-016/screenshots for both themes at 375/768/1280. Guest Lighthouse, WhatsApp, real-device and QR checks are not claimed: this change adds a developer-only demonstration and does not alter those flows.
+
+## Integration verification
+
+Updated against develop after TICKET-001 and TICKET-002 merged. Preserved both handoff histories, regenerated boards and retained prerequisite hook fixes. Quick and full verification passed: 109 unit tests, production build, 21 browser smoke passes and 7 existing skips.
