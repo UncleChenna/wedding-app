@@ -2,7 +2,7 @@
 id: TICKET-016
 title: Add motion primitives that honour reduced motion
 epic: design-system
-status: in_review
+status: in_progress
 priority: urgent
 estimate: M
 labels: [design, frontend]
@@ -73,3 +73,4 @@ See: [Design principles](../docs/prd.md#design-principles) · [Design principles
 - 2026-10-21 — todo → in_progress — divine (codex)
 - 2026-10-21 — in_progress → in_review — divine (codex)
 - 2026-10-21 — in_review → in_progress — divine (codex) — Resolve remaining PR conflicts with develop
+- 2026-10-21 — in_review → in_progress — divine (codex) — Resolve new conflicts after PR 9 merged
