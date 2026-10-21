@@ -39,13 +39,14 @@
     "WED-187": {
       "log": [
         "- 2026-10-21 — todo → claimed — divine (codex)",
-        "- 2026-10-21 — todo → in_progress — divine (codex)"
+        "- 2026-10-21 — todo → in_progress — divine (codex)",
+        "- 2026-10-21 — in_progress → in_review — divine (codex)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "divine",
       "agent": "codex",
       "branch": "divine/TICKET-187-require-backlog-alignment-before-coding",
-      "pr": "",
+      "pr": "https://github.com/UncleChenna/wedding-app/pull/5",
       "started": "2026-10-21",
       "completed": "",
       "updated": "2026-10-21",
