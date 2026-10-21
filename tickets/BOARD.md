@@ -114,12 +114,13 @@ Open tickets labelled `human` (decisions, accounts, physical tasks), in `pnpm t:
 
 _None._
 
-### In review (5)
+### In review (6)
 
 | Ticket | Title | Epic | Priority | Est. | Owner | Blocked by |
 | ------ | ----- | ---- | -------- | ---- | ----- | ---------- |
 | [TICKET-002](TICKET-002-allow-reads-outside-the-checkout-and-fix-shell-g.md) | Allow reads outside the checkout and fix shell-guard false positives | foundations | urgent | S | divine |  |
 | [TICKET-009](TICKET-009-prove-the-theme-contrast-gate-end-to-end.md) | Prove the theme contrast gate end to end | design-system | urgent | S | divine |  |
+| [TICKET-102](TICKET-102-choose-the-service-worker-approach-for-next-js-1.md) | Choose the service worker approach for Next.js 16 in an ADR | pwa | urgent | S | divine |  |
 | [TICKET-186](TICKET-186-use-ticket-prefix.md) | Use TICKET as the ticket prefix | foundations | urgent | M | divine |  |
 | [TICKET-187](TICKET-187-require-backlog-alignment-before-coding.md) | Require backlog alignment before coding | foundations | urgent | S | divine |  |
 | [TICKET-188](TICKET-188-require-ticket-named-branches-and-detailed-devel.md) | Require ticket-named branches and detailed develop PRs | foundations | urgent | S | divine |  |
@@ -128,7 +129,7 @@ _None._
 
 _None._
 
-### Todo (179)
+### Todo (178)
 
 | Ticket | Title | Epic | Priority | Est. | Owner | Blocked by |
 | ------ | ----- | ---- | -------- | ---- | ----- | ---------- |
@@ -228,7 +229,6 @@ _None._
 | [TICKET-099](TICKET-099-add-the-iv-design-editor-for-photo-and-text.md) | Add the IV design editor for photo and text | admin | medium | M |  | TICKET-038, TICKET-088, TICKET-175 |
 | [TICKET-100](TICKET-100-show-each-invitation-s-rsvp-change-history.md) | Show each invitation's RSVP change history | admin | medium | S |  | TICKET-042, TICKET-089 |
 | [TICKET-101](TICKET-101-build-the-event-settings-page.md) | Build the event settings page | admin | urgent | M |  | TICKET-025, TICKET-088, TICKET-034, TICKET-035 |
-| [TICKET-102](TICKET-102-choose-the-service-worker-approach-for-next-js-1.md) | Choose the service worker approach for Next.js 16 in an ADR | pwa | urgent | S |  |  |
 | [TICKET-103](TICKET-103-generate-the-web-app-manifest-from-the-active-th.md) | Generate the web app manifest from the active theme | pwa | high | M |  | TICKET-012, TICKET-102 |
 | [TICKET-104](TICKET-104-generate-maskable-icons-apple-touch-icons-and-sp.md) | Generate maskable icons, Apple touch icons and splash screens | pwa | high | M |  | TICKET-103 |
 | [TICKET-105](TICKET-105-add-the-service-worker-with-per-route-caching.md) | Add the service worker with per-route caching | pwa | urgent | L |  | TICKET-102 |
