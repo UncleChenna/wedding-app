@@ -24,4 +24,4 @@ Use signature timing sparingly and avoid wrapping fixed/sticky overlays in trans
 
 ## Integration verification
 
-Updated against develop at cb365fe after PR #9 merged. Later PR merges can create fresh shared-file conflicts. Preserved both handoff histories, regenerated boards and retained prerequisite hook fixes. Quick and full verification passed: 111 unit tests, production build, 21 browser smoke passes and 7 existing skips.
+Updated against develop d7b8862 after the dashboard changes merged. Kept develop's stable board/roadmap links and historical progress unchanged; moved this ticket's prior handoffs into docs/handoffs/TICKET-016.md. No motion implementation changes. Quick and full verification passed: 118 unit tests, production build, 27 browser passes (including reduced motion) and 7 existing conditional skips. Pairwise Git merge simulations with TICKET-004 and TICKET-141 report no conflicts. Human review and merge only.
