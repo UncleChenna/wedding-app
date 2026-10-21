@@ -9,3 +9,5 @@ Checks: initial server test failed before implementation; three server tests now
 Lesson: long checkout paths need overflow-wrap to keep the status line inside narrow screens. Regression now checks this. Each collaborator uses their own credentials and local ticket definitions; pull definitions manually. Ledger refresh is periodic, not instant. No new service, dependency or tracked output. VS Code editor consent and physical devices were not exercised; guest-only checks do not apply.
 
 Next: open the TICKET-190 PR into develop using pnpm t:pr; human review and merge only. PR is discoverable by the exact branch TICKET-190. No implementation blockers. Local preview runs at http://127.0.0.1:4173 while its process remains active.
+
+Repeat verification exposed macOS filesystem notification latency beyond the default assertion wait. The watcher test now allows five seconds for the same refresh assertion (periodic fallback remains 60 seconds in that test), and its targeted three tests pass.

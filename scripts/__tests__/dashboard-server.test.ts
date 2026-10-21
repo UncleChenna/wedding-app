@@ -74,7 +74,8 @@ it("refreshes after file changes without modifying ticket files", async () => {
   await app.refresh();
   const before = calls;
   writeFileSync(join(dir, "tickets/example.md"), "human edit");
-  await expect.poll(() => calls).toBeGreaterThan(before);
+  // macOS may coalesce filesystem notifications beyond the default poll timeout.
+  await expect.poll(() => calls, { timeout: 5000 }).toBeGreaterThan(before);
   expect(readFileSync(join(dir, "tickets/example.md"), "utf8")).toBe("human edit");
 });
 
