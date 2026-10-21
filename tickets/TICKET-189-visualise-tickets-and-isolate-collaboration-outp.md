@@ -2,7 +2,7 @@
 id: TICKET-189
 title: Visualise tickets and isolate collaboration outputs
 epic: foundations
-status: in_progress
+status: in_review
 priority: urgent
 estimate: L
 labels: [infra, frontend, test]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: []
 blocks: []
 branch: TICKET-189
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/14
 created: 2026-10-21
 updated: 2026-10-21
 started: 2026-10-21
@@ -65,3 +65,4 @@ The shared progress log and generated boards caused repeated PR conflicts. See d
 - 2026-10-21 — new → todo — divine (codex)
 - 2026-10-21 — todo → claimed — divine (codex)
 - 2026-10-21 — todo → in_progress — divine (codex)
+- 2026-10-21 — in_progress → in_review — divine (codex)
