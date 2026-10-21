@@ -14,6 +14,21 @@ Add-only history, newest first: prepend new entries below this template, never r
 
 ---
 
+## 2026-10-21 09:56 UTC — TICKET-187 — Mandatory backlog alignment before coding
+
+- **Branch:** `divine/TICKET-187-backlog-preflight`.
+- **Changed:** AGENTS.md now requires live board/next, roadmap, intended ticket, blockers, PRD and recent handoff review before coding. Agents confirm scope/ownership/readiness, state outcome and verification, and recheck after scope changes. Both workflow skills link to this canonical rule; Claude and other integrations inherit it.
+- **Checks:** Formatting and ticket validation pass. Full `pnpm verify` with public local defaults passed: 73 unit tests, build, 17 smoke passes and 7 existing skips. Shared-instruction imports and links inspected.
+- **Next:** Review the stacked instruction PR; expose the same verified commit in the clean original IDE checkout. No product code changes.
+
+## 2026-10-21 09:41 UTC — TICKET-186 — Rename ticket prefix
+
+- **Branch:** `divine/TICKET-186-ticket-prefix`.
+- **Changed:** Renamed all 186 ticket files and canonical IDs to TICKET, including references, boards, parsers, allocation, commit rules, shared instructions and Claude-facing workflow docs. Legacy CLI arguments and existing branches remain supported; stable internal ledger keys prevent duplicate claims across old/new worktrees.
+- **Checks:** `pnpm verify` passed with documented public local defaults: 73 unit tests, build, 17 smoke passes and 7 existing skips. Initial prefix regression failed as expected before implementation. Live old/new ID lookups return the same existing owner's claim. All 186 files validate; no WED-prefixed filenames remain.
+- **Learned:** Prefix length was embedded in numeric ID parsing; changing filenames alone would break ordering and shared claims. Ledger storage keys must remain stable while older worktrees exist.
+- **Next:** Review the rename PR stacked on `divine/HARNESS-002-backlog-audit`. Other active worktrees and remote branch names were not renamed; update them after merging the naming migration. No product UI changed.
+
 ## 2026-10-21 09:28 UTC — HARNESS-002 — Independent backlog audit
 
 - **Branch:** `divine/HARNESS-002-backlog-audit`, based on the current `chore/ticket-system` tree.

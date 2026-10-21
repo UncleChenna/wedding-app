@@ -35,10 +35,10 @@ The first Docker image download can take longer than setup itself. Do not add a 
 
 ```bash
 pnpm t:next --module checkin
-pnpm t:claim WED-003 --owner friend --agent claude
-pnpm wt:new WED-003
-cd .worktrees/WED-003
-pnpm t:move WED-003 in_progress --push
+pnpm t:claim TICKET-003 --owner friend --agent claude
+pnpm wt:new TICKET-003
+cd .worktrees/TICKET-003
+pnpm t:move TICKET-003 in_progress --push
 claude # or codex, or open this directory in Cursor
 ```
 
@@ -54,7 +54,7 @@ The reservation is locked across worktrees in one clone; live port checks also a
 
 ## PR flow and cleanup
 
-1. Follow `ticket-workflow` and `implement-task`, including the full gate and UI checklist where applicable. Every commit subject starts `WED-NNN: `; no AI attribution.
+1. Follow `ticket-workflow` and `implement-task`, including the full gate and UI checklist where applicable. Every commit subject starts `TICKET-NNN: `; no AI attribution.
 2. Tick the acceptance criteria you proved and add notes to the ticket. Prepend a handoff to `docs/progress.md`; keep historical entries unchanged. Commit ticket changes only.
 3. Copy `.github/pull_request_template.md` to `docs/plans/<ticket-id>-pr.md`, fill in evidence and commit it.
 4. Run `pnpm t:pr <id>` inside the worktree. It independently verifies, pushes the branch, opens/reuses a PR titled `<id>: <title>` and moves the ticket to `in_review`. It requires `gh` and an authenticated `origin`.

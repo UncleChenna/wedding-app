@@ -1,13 +1,13 @@
 ---
 name: implement-task
-description: Use when implementing a WED ticket's code or docs; wraps ticket-workflow with the build and verification details.
+description: Use when implementing a TICKET ticket's code or docs; wraps ticket-workflow with the build and verification details.
 ---
 
 # Implement Task
 
 Follow the `ticket-workflow` skill for picking, claiming, worktrees, status moves, PRs and closing. This skill covers step 5 (build) in detail.
 
-1. Read root instructions, `docs/collaboration.md`, `docs/learnings.md`, recent `docs/progress.md`, the ticket (`pnpm t:show <id>`), its PRD links and `docs/current-state.md`.
+1. Complete the [mandatory before-coding check](../../../AGENTS.md#mandatory-check-before-coding), including the live task list and roadmap; repeat it if scope changes. Read root instructions, `docs/collaboration.md`, `docs/learnings.md`, recent `docs/progress.md`, the ticket (`pnpm t:show <id>`), its PRD links and `docs/current-state.md`.
 2. Confirm you are in `.worktrees/<id>` on the ticket branch and the ticket is `in_progress` and owned by you. If not, go back to `ticket-workflow` steps 1–4.
 3. Write `docs/plans/YYYY-MM-DD-<id>.md`: acceptance, files, tests, risks. Write and run failing behavioural tests before implementation; documentation-only changes use link/format checks.
 4. Implement the smallest complete change within the ticket's scope. Read installed Next.js docs before framework code. For UI use `ui-review`; for schema use `db-migration`; for themes use `new-theme`.

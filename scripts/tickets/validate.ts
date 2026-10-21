@@ -1,6 +1,6 @@
 import { activity, criteria } from "./format";
 import { byId, findCycle, inverseBlocks } from "./graph";
-import { MILESTONES, formatId, idNumber } from "./model";
+import { MILESTONES, branchHasTicket, formatId, idNumber } from "./model";
 import type { Ticket } from "./model";
 
 /** Text from tickets/TEMPLATE.md that must be replaced before a ticket is valid. */
@@ -40,7 +40,7 @@ export function validateTickets(tickets: readonly Ticket[]): string[] {
   );
   if (missing.length)
     problems.push(
-      `ids must be contiguous from WED-001; missing ${missing.join(", ")} (cancel tickets, never delete them)`,
+      `ids must be contiguous from TICKET-001; missing ${missing.join(", ")} (cancel tickets, never delete them)`,
     );
 
   const inverse = inverseBlocks(tickets.map((t) => t.meta));
@@ -82,7 +82,7 @@ export function validateTickets(tickets: readonly Ticket[]): string[] {
     const needsOwner = ["in_progress", "in_review", "done"].includes(m.status);
     if (needsOwner && (!m.owner || !m.agent)) add(t, `${m.status} tickets need owner and agent`);
     if (m.status === "backlog" && m.owner) add(t, "backlog tickets cannot be claimed");
-    if (m.branch && !m.branch.includes(m.id)) add(t, `branch ${m.branch} must contain ${m.id}`);
+    if (m.branch && !branchHasTicket(m.branch, m.id)) add(t, `branch ${m.branch} must contain ${m.id}`);
     if (needsOwner && !m.branch) add(t, `${m.status} tickets need a branch`);
     if (needsOwner && !m.started) add(t, `${m.status} tickets need a started date`);
     if (["in_review", "done"].includes(m.status)) {

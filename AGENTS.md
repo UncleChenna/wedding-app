@@ -74,7 +74,7 @@ Drizzle, Zod, Vitest, Playwright, pnpm 12, Node 24. Product: [PRD](docs/prd.md).
 - Ask before paid/new account services, native-build dependencies, CI/RLS changes or data deletion,
   unless the current user request already authorizes the specific action.
 - Never weaken/skip/delete tests, lint rules or hooks to get green.
-- Ticket commits start `WED-NNN: `; other commits use Conventional Commits. Stage only ticket files.
+- Ticket commits start `TICKET-NNN: `; other commits use Conventional Commits. Stage only ticket files.
   No AI attribution (see below). See [engineering conventions](docs/engineering.md).
 
 ## Frontend work
@@ -88,12 +88,27 @@ with evidence. Nested `src/AGENTS.md` summarises frontend rules.
 All work happens on a claimed ticket in [`tickets/`](tickets/BOARD.md). Rules: [docs/tickets.md](docs/tickets.md).
 Exact commands: the [`ticket-workflow` skill](.agents/skills/ticket-workflow/SKILL.md).
 
+### Mandatory check before coding
+
+Before writing or changing code, review the task list to confirm you are working on the right thing:
+
+- Run `pnpm t:board` and `pnpm t:next` for live status and ownership; read `tickets/ROADMAP.md` for build order.
+- Read the intended ticket with `pnpm t:show <id>`, including its acceptance criteria, test plan, blockers and
+  related tickets. Check the relevant PRD section and latest `docs/progress.md` handoff.
+- Confirm the planned changes match the user's current request and ticket scope, prerequisites are complete,
+  and no other owner is already doing the same work. An explicit user-assigned task takes precedence over the
+  automatic next suggestion, but does not make unfinished dependencies complete.
+- Before coding, briefly state the ticket ID, intended outcome and verification plan. Resolve scope or dependency
+  discrepancies first; do not start unrelated, duplicate or blocked work.
+- Repeat this check after a scope change or handoff, and compare the result against the acceptance criteria
+  before declaring the work finished.
+
 1. **Pick the work.** `pnpm t:next`, then `pnpm t:claim <id> --owner <you> --agent <agent>`. Never work without a
    claimed ticket; one ticket at a time.
 2. **Isolate it.** `pnpm wt:new <id>`; work only in `.worktrees/<id>` on its branch (the name contains the id).
 3. **Start.** `pnpm t:move <id> in_progress --push`, so the change is committed and pushed immediately.
 4. **Build.** Dated plan, failing tests, implementation, `pnpm verify`. Commit in small steps; every subject starts
-   with the ticket id, e.g. `WED-014: add RSVP form validation`.
+   with the ticket id, e.g. `TICKET-014: add RSVP form validation`.
 5. **Finish.** Tick the acceptance criteria, fill in the notes, write the PR body, then `pnpm t:pr <id>`. It verifies,
    pushes, opens a PR titled `<id>: <title>` from the template, moves the ticket to `in_review` and pushes.
 6. **Close.** After merge: `pnpm t:move <id> done` (records completion date and PR link), then `pnpm wt:remove <id>`.

@@ -21,6 +21,8 @@ import {
 } from "./tickets/git";
 import type { LedgerMode } from "./tickets/git";
 import {
+  branchHasTicket,
+  ledgerKey,
   EPIC_KEYS,
   ESTIMATES,
   LABELS,
@@ -57,7 +59,7 @@ const USAGE = `Usage: pnpm t:<command>
   t:release <id>                  give back a claimed todo ticket
   t:move <id> <status> [--reason text] [--push]
   t:new --title "Imperative title" --epic e --module m [--priority p] [--estimate S|M|L]
-        [--labels a,b] [--blocked-by WED-001,WED-002] [--status backlog|todo]
+        [--labels a,b] [--blocked-by TICKET-001,TICKET-002] [--status backlog|todo]
   t:pr <id>                       verify, push, open PR, move to in_review
   t:sync                          write shared ledger state into ticket files
   t:validate                      schema, sections, ids, deps, cycles, consistency
@@ -133,7 +135,9 @@ function load(readOnly: boolean): State {
 }
 
 function find(state: State, id: string): Ticket {
-  const normalised = /^\d+$/.test(id) ? formatId(Number(id)) : id.toUpperCase();
+  const normalised = /^\d+$/.test(id)
+    ? formatId(Number(id))
+    : id.toUpperCase().replace(/^WED-/, "TICKET-");
   const ticket = state.tickets.find((t) => t.meta.id === normalised);
   if (!ticket) throw new Error(`Unknown ticket ${id}.`);
   return ticket;
@@ -162,11 +166,11 @@ function commitChange(
       const statusOf = (x: string) => fresh.find((t) => t.meta.id === x)?.meta.status;
       const { meta, log } = apply(current, statusOf);
       const record = {
-        ...(data.tickets[id] ?? { ...recordFrom(current), log: [] }),
+        ...(data.tickets[ledgerKey(id)] ?? { ...recordFrom(current), log: [] }),
         ...pickLedger(meta),
       };
-      record.log = [...(data.tickets[id]?.log ?? []), log];
-      data.tickets[id] = record;
+      record.log = [...(data.tickets[ledgerKey(id)]?.log ?? []), log];
+      data.tickets[ledgerKey(id)] = record;
       data.lastId = Math.max(data.lastId, ...state.files.map((t) => idNumber(t.meta.id)));
       return { result: overlay(fileTicket, record), message: `${id}: ${log.replace(/^- /, "")}` };
     });
@@ -211,7 +215,7 @@ function syncFiles(state: State, onlyTerminal: boolean): string[] {
   if (!state.ledger || !canWriteFiles(state.cwd, state.mode)) return [];
   const changed: string[] = [];
   for (const file of state.files) {
-    const record = state.ledger.tickets[file.meta.id];
+    const record = state.ledger.tickets[ledgerKey(file.meta.id)];
     if (!record || (onlyTerminal && !["done", "cancelled"].includes(record.status))) continue;
     const next = overlay(file, record);
     if (serializeTicket(next) !== serializeTicket(file)) {
@@ -346,7 +350,7 @@ function newTicket(args: Args): void {
     tryGit(["ls-tree", "--name-only", "refs/remotes/origin/main", "tickets/"], cwd) ?? ""
   )
     .split("\n")
-    .map((p) => /WED-(\d{3})/.exec(p)?.[1])
+    .map((p) => /(?:TICKET|WED)-(\d{3})/.exec(p)?.[1])
     .filter((n): n is string => !!n)
     .map(Number);
   const localMax = Math.max(0, ...files.map((t) => idNumber(t.meta.id)), ...onMain);
@@ -524,7 +528,7 @@ function main(): number {
       const ticket = find(state, args.positional[0] ?? "");
       const id = ticket.meta.id;
       const branch = currentBranch(state.cwd);
-      if (!branch.includes(id)) throw new Error(`Run t:pr inside ${id}'s worktree.`);
+      if (!branchHasTicket(branch, id)) throw new Error(`Run t:pr inside ${id}'s worktree.`);
       if (ticket.meta.status !== "in_progress")
         throw new Error(`${id} must be in_progress (it is ${ticket.meta.status}).`);
       if (!criteria(ticket).every((c) => c.checked))

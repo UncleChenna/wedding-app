@@ -1,6 +1,6 @@
 # Ticket
 
-Ticket: WED-NNN <!-- required; the PR title must also start with the ticket id -->
+Ticket: TICKET-NNN <!-- required; the PR title must also start with the ticket id -->
 
 # Summary
 
