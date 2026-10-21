@@ -41,10 +41,10 @@ See: [Current state](../docs/current-state.md) · [Working together](../docs/col
 
 ## Acceptance criteria
 
-- [ ] A post-tool hook run with `.claude/skills` present exits 0 and prints `{}`.
-- [ ] `git check-ignore .claude/skills` and `git ls-files .claude/skills` no longer contradict each other.
-- [ ] A unit test fails on the old behaviour and passes on the new.
-- [ ] `pnpm agents:check` passes in a fresh clone.
+- [x] A post-tool hook run with `.claude/skills` present exits 0 and prints `{}`.
+- [x] `git check-ignore .claude/skills` and `git ls-files .claude/skills` no longer contradict each other.
+- [x] A unit test fails on the old behaviour and passes on the new.
+- [x] `pnpm agents:check` passes in a fresh clone.
 
 ## Test plan
 
@@ -60,7 +60,11 @@ See: [Current state](../docs/current-state.md) · [Working together](../docs/col
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-10-21: Root cause: the post-tool hook passed every changed path to Prettier, including the `.claude/skills` symlink, and Prettier refuses symlinks. Fix: only regular files are formatted (`lstatSync(...).isFile()`).
+- 2026-10-21: Index vs ignore: `.claude/skills` is ignored and untracked on develop. `pnpm agents:check` now fails with a fix-up command if it is ever committed (proved by force-adding it in a fresh clone). `.gitignore` needed no change.
+- 2026-10-21: Incident during the first attempt: a test ran `git init/commit` without clearing `GIT_DIR`/`GIT_INDEX_FILE`; run by the pre-commit gate it set `core.bare=true` in the shared `.git/config` (since restored; now `false`). Fix: `scripts/__tests__/git-env.ts` `isolatedGitEnv()`, used by every git-spawning test including `tickets.test.ts`.
+- 2026-10-21: Redone on branch `TICKET-001` against `develop`. The first attempt (PR #3, branch `unclechenna/WED-001-…`) targeted the retired `chore/ticket-system` branch and conflicted on ticket bookkeeping after HARNESS-002 merged; code commits were cherry-picked unchanged apart from the test label.
+- 2026-10-21: Evidence: regression test fails on the old hook (`pnpm exec prettier --write --ignore-unknown .claude/skills failed`) and passes with the fix; hook run on this worktree prints `{}` and exits 0; `agents:check` exits 0 in a fresh clone and 1 with `.claude/skills` committed.
 
 ## Activity log
 
