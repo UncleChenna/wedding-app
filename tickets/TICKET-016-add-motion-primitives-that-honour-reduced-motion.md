@@ -2,7 +2,7 @@
 id: TICKET-016
 title: Add motion primitives that honour reduced motion
 epic: design-system
-status: in_progress
+status: in_review
 priority: urgent
 estimate: M
 labels: [design, frontend]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: []
 blocks: [TICKET-021, TICKET-039]
 branch: TICKET-016
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/12
 created: 2026-10-21
 updated: 2026-10-21
 started: 2026-10-21
@@ -69,3 +69,4 @@ See: [Design principles](../docs/prd.md#design-principles) · [Design principles
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-10-21 — todo → claimed — divine (codex)
 - 2026-10-21 — todo → in_progress — divine (codex)
+- 2026-10-21 — in_progress → in_review — divine (codex)
