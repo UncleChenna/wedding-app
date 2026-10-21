@@ -2,7 +2,7 @@
 id: TICKET-102
 title: Choose the service worker approach for Next.js 16 in an ADR
 epic: pwa
-status: in_progress
+status: in_review
 priority: urgent
 estimate: S
 labels: [pwa, docs]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: []
 blocks: [TICKET-103, TICKET-105]
 branch: TICKET-102
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/10
 created: 2026-10-21
 updated: 2026-10-21
 started: 2026-10-21
@@ -61,3 +61,4 @@ See: [Tech stack and architecture](../docs/prd.md#tech-stack-and-architecture).
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-10-21 — todo → claimed — divine (codex)
 - 2026-10-21 — todo → in_progress — divine (codex)
+- 2026-10-21 — in_progress → in_review — divine (codex)
