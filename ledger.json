@@ -35,6 +35,21 @@
       "updated": "2026-10-21",
       "reason": "",
       "resume_to": ""
+    },
+    "WED-187": {
+      "log": [
+        "- 2026-10-21 — todo → claimed — divine (codex)"
+      ],
+      "status": "todo",
+      "owner": "divine",
+      "agent": "codex",
+      "branch": "divine/TICKET-187-require-backlog-alignment-before-coding",
+      "pr": "",
+      "started": "",
+      "completed": "",
+      "updated": "2026-10-21",
+      "reason": "",
+      "resume_to": ""
     }
   }
 }
