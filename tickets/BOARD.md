@@ -110,18 +110,17 @@ Open tickets labelled `human` (decisions, accounts, physical tasks), in `pnpm t:
 
 ## Board
 
-### In progress (1)
+### In progress (0)
 
-| Ticket | Title | Epic | Priority | Est. | Owner | Blocked by |
-| ------ | ----- | ---- | -------- | ---- | ----- | ---------- |
-| [TICKET-016](TICKET-016-add-motion-primitives-that-honour-reduced-motion.md) | Add motion primitives that honour reduced motion | design-system | urgent | M | divine |  |
+_None._
 
-### In review (5)
+### In review (6)
 
 | Ticket | Title | Epic | Priority | Est. | Owner | Blocked by |
 | ------ | ----- | ---- | -------- | ---- | ----- | ---------- |
 | [TICKET-002](TICKET-002-allow-reads-outside-the-checkout-and-fix-shell-g.md) | Allow reads outside the checkout and fix shell-guard false positives | foundations | urgent | S | divine |  |
 | [TICKET-009](TICKET-009-prove-the-theme-contrast-gate-end-to-end.md) | Prove the theme contrast gate end to end | design-system | urgent | S | divine |  |
+| [TICKET-016](TICKET-016-add-motion-primitives-that-honour-reduced-motion.md) | Add motion primitives that honour reduced motion | design-system | urgent | M | divine |  |
 | [TICKET-186](TICKET-186-use-ticket-prefix.md) | Use TICKET as the ticket prefix | foundations | urgent | M | divine |  |
 | [TICKET-187](TICKET-187-require-backlog-alignment-before-coding.md) | Require backlog alignment before coding | foundations | urgent | S | divine |  |
 | [TICKET-188](TICKET-188-require-ticket-named-branches-and-detailed-devel.md) | Require ticket-named branches and detailed develop PRs | foundations | urgent | S | divine |  |
