@@ -4,14 +4,15 @@
   "tickets": {
     "WED-001": {
       "log": [
-        "- 2026-10-21 — todo → claimed — unclechenna (claude)"
+        "- 2026-10-21 — todo → claimed — unclechenna (claude)",
+        "- 2026-10-21 — todo → in_progress — unclechenna (claude)"
       ],
-      "status": "todo",
+      "status": "in_progress",
       "owner": "unclechenna",
       "agent": "claude",
       "branch": "unclechenna/WED-001-fix-hooks-failing-on-the-symlinked-claude-skills",
       "pr": "",
-      "started": "",
+      "started": "2026-10-21",
       "completed": "",
       "updated": "2026-10-21",
       "reason": "",
