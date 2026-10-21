@@ -17,7 +17,11 @@
     "jsx": "react-jsx",
     "incremental": true,
     "types": ["node", "vitest/globals", "@testing-library/jest-dom/vitest"],
-    "plugins": [{ "name": "next" }],
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
     "paths": {
       "@/*": ["./src/*"]
     }
@@ -30,5 +34,13 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],
-  "exclude": ["node_modules", ".next", "playwright-report", "test-results"]
+  "exclude": [
+    "node_modules",
+    ".next",
+    "playwright-report",
+    "test-results",
+    ".worktrees",
+    ".harness",
+    "tooling/plugin/dist"
+  ]
 }

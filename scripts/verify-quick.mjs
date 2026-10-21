@@ -23,7 +23,7 @@ const changed = [
     ...(git(["ls-files", "--others", "--exclude-standard"]) ?? []),
   ]),
 ];
-const testable = changed.filter((f) => /^(src|scripts)\/.*\.(ts|tsx|json)$/.test(f));
+const testable = changed.filter((f) => /^(src|scripts)\/.*\.([cm]?[jt]sx?|json)$/.test(f));
 
 const steps = [
   ["lint", ["pnpm", "-s", "lint"]],

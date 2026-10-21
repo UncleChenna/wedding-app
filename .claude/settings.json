@@ -34,7 +34,6 @@
       "Bash(pnpm exec supabase start*)",
       "Bash(pnpm exec supabase stop*)",
       "Bash(pnpm exec supabase status*)",
-      "Bash(pnpm exec supabase db reset*)",
       "Bash(pnpm supabase status*)",
       "Bash(git status*)",
       "Bash(git diff*)",
@@ -47,7 +46,11 @@
       "Bash(ls*)",
       "Bash(cat docs/*)",
       "Bash(jq *)",
-      "mcp__playwright"
+      "mcp__playwright",
+      "Bash(pnpm task:*)",
+      "Bash(pnpm wt:*)",
+      "Bash(pnpm agents:*)",
+      "Bash(pnpm plugin:build)"
     ],
     "deny": [
       "Bash(git push --force*)",
@@ -83,14 +86,24 @@
   },
   "enabledMcpjsonServers": ["playwright"],
   "hooks": {
-    "PostToolUse": [
+    "PreToolUse": [
       {
-        "matcher": "Edit|MultiEdit|Write",
         "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/format-file.sh",
-            "timeout": 60
+            "command": "node \"$(git rev-parse --show-toplevel)/scripts/harness/hooks.mjs\" pre claude",
+            "timeout": 600
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/scripts/harness/hooks.mjs\" post claude",
+            "timeout": 600
           }
         ]
       }
@@ -100,7 +113,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/stop-verify.sh",
+            "command": "node \"$(git rev-parse --show-toplevel)/scripts/harness/hooks.mjs\" stop claude",
             "timeout": 600
           }
         ]

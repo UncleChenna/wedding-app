@@ -1,6 +1,6 @@
 # Architecture decision records
 
-Short records of decisions that are expensive to reverse. Add one per new decision: copy the format, next number, status `Accepted`.
+Short records of decisions that are expensive to reverse. Add one per new decision: copy [the template](template.md), next number, status `Accepted`.
 
 | #                                       | Decision                                                              |
 | --------------------------------------- | --------------------------------------------------------------------- |
@@ -12,3 +12,7 @@ Short records of decisions that are expensive to reverse. Add one per new decisi
 | [0006](0006-security-headers.md)        | Static CSP with 'unsafe-inline' instead of nonces                     |
 | [0007](0007-testing-and-verify-gate.md) | Vitest + Playwright, one `pnpm verify` gate                           |
 | [0008](0008-agent-harness.md)           | AGENTS.md as the single source of truth for AI agents                 |
+| [0009](0009-portable-skills.md)         | Portable skills and generated Claude distribution                     |
+| [0010](0010-worktree-databases.md)      | Isolated Supabase stack per worktree                                  |
+| [0011](0011-atomic-task-claims.md)      | Atomic Git remote task claims                                         |
+| [0012](0012-shared-quality-hooks.md)    | Shared hooks and independent quality gates                            |

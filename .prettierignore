@@ -11,3 +11,8 @@ drizzle/meta
 supabase/.temp
 next-env.d.ts
 src/modules/theming/themes/theme.schema.json
+
+.worktrees
+.harness
+.claude/skills
+tooling/plugin/dist

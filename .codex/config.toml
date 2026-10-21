@@ -1,0 +1,4 @@
+# Shared project hooks. Trust this project in Codex before running its hooks.
+# Keep personal model/account preferences in ~/.codex/config.toml.
+[features]
+hooks = true

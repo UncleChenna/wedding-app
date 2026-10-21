@@ -14,7 +14,7 @@ Check, in priority order:
 1. **Correctness**: logic bugs, unhandled cases, race conditions (e.g. double check-in, duplicate orders, offline retry without idempotency keys), wrong Next.js 16 APIs (verify against `node_modules/next/dist/docs/`).
 2. **Security and privacy**: server-only code reachable from the client; secrets or `.env` use; unvalidated input (every form/param needs Zod); guessable invitation codes or QR tokens; RLS changes; data a guest could read about another guest.
 3. **Architecture**: `src/app` contains only routing/layout; business logic in `src/modules/<feature>/{lib,server}`; no imports from `src/app` into modules; DB only via Drizzle client.
-4. **Theming and UI rules**: no hard-coded colours, token classes only; mobile-first; labels on inputs; touch targets ≥ 44px; accessible names.
+4. **Theming and UI rules**: for UI changes, read `docs/design-principles.md` and check compliance; require evidence for `docs/ui-checklist.md`, coordinating visual checks with the UI reviewer.
 5. **Tests**: new behaviour has tests; tests assert behaviour (not implementation); no test was weakened, skipped (`.skip`, `.only`) or deleted.
 6. **Conventions**: naming, `createLogger` instead of `console.log`, expected errors as return values.
 

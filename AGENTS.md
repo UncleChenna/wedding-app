@@ -10,109 +10,93 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 # AGENTS.md
 
-Single source of truth for every AI agent (Claude Code, Codex, Cursor, Copilot, Gemini) and human working here. Keep it short and factual.
+Shared rules for humans, Codex, Claude Code, Cursor, Copilot and Gemini.
+Start with [collaboration](docs/collaboration.md), [learnings](docs/learnings.md), and the newest [handoff](docs/progress.md).
 
 ## Project
 
-A mobile-first wedding website for 200–300 guests: **invitations** (personal link + QR, RSVP, tag-alongs), **gate check-in** (camera QR scan, works offline), **table ordering** (free food/drinks, live kitchen/bar board), **admin** (guests, seating, menu, live dashboard). Premium look, fully responsive, plug-and-play colour themes. Product spec: `docs/prd.md`.
+Mobile-first wedding website for 200–300 guests: personal invitations/RSVP,
+offline QR check-in, free table ordering, kitchen/bar boards, and admin.
+Next.js 16 App Router, React 19, TypeScript strict, Tailwind 4, Supabase,
+Drizzle, Zod, Vitest, Playwright, pnpm 12, Node 24. Product: [PRD](docs/prd.md).
 
-Stack: Next.js 16 App Router (Cache Components on) · React 19 · TypeScript strict · Tailwind CSS 4 · Supabase (Postgres, Auth, Realtime; local via CLI) · Drizzle ORM · Zod 4 · Vitest · Playwright · pnpm 12 · Node 24.
+## Module map
 
-## Architecture map
-
-```
-src/
-  app/                    Routes and layouts ONLY. Thin: call into modules.
-    (guest)/              /, /invite, /order
-    (staff)/              /checkin, /kitchen
-    (admin)/              /admin
-    dev/theme/            Every component in every theme
-    layout.tsx            Applies active theme as CSS vars on <html> (server-rendered)
-    error.tsx, global-error.tsx, not-found.tsx
-  instrumentation.ts      Validates env at server start (fail fast)
-  modules/
-    invitations/ checkin/ ordering/ admin/ theming/ shared/
-      components/         React components for this feature
-      server/             Data access + Server Actions ("server-only")
-      lib/                Pure logic, types, validation (no I/O)
-      __tests__/          Vitest unit tests (*.test.ts[x])
-    shared/server/db/     Drizzle schema.ts + client.ts (all tables)
-    shared/components/ui/ Base components: Button, Card, Input, Sheet, Toast
-    theming/themes/*.json Themes; theming/config.ts = active theme
-drizzle/                  Generated SQL migrations (never hand-edit applied ones)
-scripts/                  seed, db-start, verify-quick, agent-loop
-e2e/                      Playwright (smoke.spec.ts tagged @smoke; visual/ screenshots)
-supabase/config.toml      Local Supabase stack
-docs/                     architecture, decisions (ADRs), theming, tasks.json, progress.md, plans/
-```
-
-Details: `docs/architecture.md`. Decisions: `docs/decisions/`.
+- `src/app/`: routes/layouts/metadata only; guest, staff and admin route groups.
+- `src/modules/{invitations,checkin,ordering,admin}/`: feature components, server I/O, pure lib and tests.
+- `src/modules/shared/`: base UI, env, logging, Supabase clients and Drizzle schema/client.
+- `src/modules/theming/`: theme JSON, validation, CSS variables; `/dev/theme` showcases components.
+- `drizzle/`: generated migrations. `supabase/`: local-stack template.
+- `scripts/`: database, verification and collaboration tools.
+- `.agents/skills/`: canonical portable workflows; Claude links here; Codex/Cursor read directly.
+- `docs/`: [architecture](docs/architecture.md), [decisions](docs/decisions/README.md), [tasks](docs/tasks.json), [plans](docs/plans/README.md).
 
 ## Commands
 
-| Command                                   | What it does                                                                                         |
-| ----------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| `pnpm install`                            | Install deps (Husky hooks install via `prepare`)                                                     |
-| `pnpm dev`                                | Dev server on :3000                                                                                  |
-| `pnpm build` / `pnpm start`               | Production build / serve                                                                             |
-| `pnpm verify`                             | **The gate.** format:check → lint → typecheck → test → build → e2e smoke                             |
-| `pnpm verify:quick`                       | lint → typecheck → unit tests related to changed files                                               |
-| `pnpm lint` / `pnpm lint:fix`             | ESLint (0 warnings allowed)                                                                          |
-| `pnpm format` / `pnpm format:check`       | Prettier                                                                                             |
-| `pnpm typecheck`                          | `next typegen` + `tsc --noEmit`                                                                      |
-| `pnpm test` / `pnpm test:watch`           | Vitest unit tests                                                                                    |
-| `pnpm test:e2e` / `pnpm test:e2e:smoke`   | Playwright at mobile (Pixel 7) + desktop (1280px); needs `pnpm build` first                          |
-| `pnpm screenshots`                        | Screenshots of routes × themes × 375/768/1280 → `artifacts/screenshots/` (`SCREENSHOT_ROUTES=/a,/b`) |
-| `pnpm db:start` / `db:stop` / `db:status` | Local Supabase (Docker). `db:start` creates `.env.local` if missing                                  |
-| `pnpm db:generate`                        | Generate a migration from `schema.ts` changes                                                        |
-| `pnpm db:migrate`                         | Apply migrations                                                                                     |
-| `pnpm db:seed`                            | Reset + seed local DB with deterministic fake data (refuses non-local DBs)                           |
-| `pnpm db:reset`                           | Recreate local DB, migrate, seed                                                                     |
-| `pnpm themes:schema`                      | Regenerate `themes/theme.schema.json` after changing the theme Zod schema                            |
-| `pnpm agent:loop`                         | Run Claude Code headless on the next pending task (`--help` for flags)                               |
+| Command                                                        | Purpose                                                    |
+| -------------------------------------------------------------- | ---------------------------------------------------------- |
+| `pnpm install`                                                 | Install dependencies and Husky hooks                       |
+| `pnpm agents:link` / `agents:check`                            | Refresh/check shared skill links (copy fallback)           |
+| `pnpm dev` / `build` / `start`                                 | Develop/build/serve; managed worktrees get unique ports    |
+| `pnpm verify`                                                  | Format → lint → types → unit tests → build → browser smoke |
+| `pnpm verify:quick`                                            | Lint, types, related unit tests                            |
+| `pnpm lint` / `lint:fix`                                       | ESLint, zero warnings                                      |
+| `pnpm format` / `format:check`                                 | Prettier                                                   |
+| `pnpm typecheck`                                               | Route type generation and TypeScript                       |
+| `pnpm test` / `test:watch`                                     | Unit tests                                                 |
+| `pnpm test:e2e` / `test:e2e:smoke`                             | Browser flows (build first)                                |
+| `pnpm screenshots`                                             | Playwright routes × themes × 375/768/1280                  |
+| `pnpm db:start` / `db:stop` / `db:status`                      | This checkout's local Supabase stack                       |
+| `pnpm db:generate` / `db:migrate`                              | Generate/apply Drizzle migrations                          |
+| `pnpm db:seed` / `db:reset`                                    | Disposable local data only; reset checks stack identity    |
+| `pnpm themes:schema`                                           | Generate theme JSON schema                                 |
+| `pnpm task:next [module]` / `task:show [id]`                   | Read the shared queue                                      |
+| `pnpm task:claim <id>` / `task:release <id>`                   | Atomic ownership change and metadata commit                |
+| `pnpm task:sync`                                               | Refresh local task metadata from the ledger                |
+| `pnpm wt:new <id>` / `wt:list` / `wt:remove <id>` / `wt:prune` | Managed isolated worktrees                                 |
+| `pnpm task:pr <id>` / `task:finish <id>`                       | Verify/open PR; mark merged work done                      |
+| `pnpm agent:loop --help`                                       | Claim → worktree → Claude → verify → PR                    |
+| `pnpm plugin:build` / `plugin:install`                         | Package/install shared Claude setup                        |
 
-## Conventions
+## Non-negotiable rules
 
-- TypeScript strict; no `any`, no `@ts-ignore`, no non-null `!` in app code without a comment why.
-- Files kebab-case (`guest-list.tsx`); components PascalCase; named exports (default exports only where Next requires them).
-- Import via `@/modules/...`. Modules never import from `src/app`. Feature modules may import `shared` and `theming`; import another feature module only through what it exports, never its `server/` internals.
-- Server-only code imports `"server-only"`. Validate every external input (forms, params, JSON) with Zod in `lib/`.
-- Data access: Drizzle via `@/modules/shared/server/db/client`. Supabase JS only for Auth/Realtime. All tables have RLS on with no policies (browser can't touch data directly) — keep it that way unless a feature needs a policy, and document it.
-- Expected errors are return values (`{ ok: false, error }`), not throws. Log with `createLogger({ module })` from `shared/lib/logger.ts`, never `console.log`.
-- **Styling: tokens only.** Use Tailwind token classes (`bg-primary`, `text-muted-foreground`, `rounded-md`, `shadow-md`, `font-display`). No hex/rgb/hsl literals in `src/` (ESLint enforces); Tailwind's default palette is disabled. New token → `docs/theming.md`.
-- Mobile-first: design at 375px, then `sm:`/`md:`/`lg:`. Touch targets ≥ 44px. Every input has a label. WCAG 2.2 AA.
-- Tests: unit tests next to the module in `__tests__/`; user flows in `e2e/`. Tag must-never-break flows `@smoke`.
-- Commits: Conventional Commits (`feat(ordering): ...`, `fix:`, `test:`, `docs:`, `chore:`), enforced by commitlint.
+- One editing agent per worktree; claim before work. Never commit/push directly to main.
+- Keep changes within the task; preserve other people's uncommitted work.
+- TypeScript strict: no `any`, `@ts-ignore`, or unexplained non-null assertions.
+- Kebab-case files, PascalCase components, named exports except Next-required defaults.
+- Routes call modules. Modules never import app code or another feature's server internals.
+- Server I/O imports `server-only`; validate external input with Zod. Use Drizzle for data.
+- Supabase JS is for Auth/Realtime. Keep RLS enabled; policy changes need authorization and an ADR.
+- Expected errors are return values. Use the shared logger; never expose secrets or guest technical errors.
+- No manual edits to secrets, lockfiles, installed/build output, applied migrations or generated schemas.
+  Use approved generators; explicit human exceptions use the exact-path process in collaboration docs.
+- Ask before paid/new account services, native-build dependencies, CI/RLS changes or data deletion,
+  unless the current user request already authorizes the specific action.
+- Never weaken/skip/delete tests, lint rules or hooks to get green.
+- Conventional Commits; stage only task files. See [engineering conventions](docs/engineering.md).
 
-## Folder rules
+## Frontend work
 
-- `src/app/**`: routing, layouts, metadata only. No business logic, no DB queries.
-- `drizzle/**`: generated. Never edit a migration that has been committed; add a new one.
-- `src/modules/theming/themes/theme.schema.json`: generated (`pnpm themes:schema`).
-- **Never touch:** `.env*` secrets (read `.env.example` only), `pnpm-lock.yaml` by hand, `supabase/.temp`, `.next/`, `node_modules/`, CI secrets. Never disable lint rules, tests, or hooks to get green.
-- Ask the human before: adding a paid service or a new account-requiring service (beyond Supabase and GitHub), adding a dependency with native builds, changing CI, changing RLS, or deleting data.
+Any UI change must follow [design principles](docs/design-principles.md) and pass
+[the UI checklist](docs/ui-checklist.md) before it counts as done. Report every result
+with evidence. Nested `src/AGENTS.md` summarises frontend rules.
 
-## Definition of done
+## Workflow and definition of done
 
-1. Acceptance criteria in `docs/tasks.json` (or the request) are met and covered by tests.
-2. `pnpm verify` passes locally.
-3. UI changes checked at 375/768/1280 in every theme (`pnpm screenshots` or the `ui-reviewer` agent).
-4. Docs updated if behaviour, commands, or architecture changed; ADR added for new decisions.
-5. `docs/progress.md` has an entry; task status updated in `docs/tasks.json`.
-6. One conventional commit per task.
+1. Read task acceptance, ownership, docs and relevant skill; claim and create a worktree.
+2. Read installed Next.js guides before framework code. Write a short dated plan.
+3. Write/run failing behavioural tests, then implement; docs-only work uses documentation checks.
+4. Run `pnpm verify:quick`, then `pnpm verify`; UI work also passes its checklist in every theme.
+5. Update docs/ADRs and prepend a handoff without rewriting old log entries.
+6. Commit task files, open a PR with evidence, set in_review; the other person reviews.
+7. After merge, mark done and remove the disposable worktree. Never mark failing/unverified work done.
 
-## The loop
+If blocked, retain the claim, record `blocked_reason` and the next action, and hand off.
+If you make the same mistake twice, propose a concrete harness fix (hook, skill or doc line)
+in your summary; add a verified fix to [learnings](docs/learnings.md).
 
-1. **Read the task** (`docs/tasks.json` entry or request).
-2. **Read the relevant docs** (this file, `docs/architecture.md`, module code, `node_modules/next/dist/docs/` for Next APIs).
-3. **Write a short plan** in `docs/plans/YYYY-MM-DD-<task-id>.md`.
-4. **Write failing tests** first; run them and see them fail.
-5. **Implement** the smallest change that passes.
-6. **Run `pnpm verify:quick`**; fix until green.
-7. **Run `pnpm verify`**; fix until green.
-8. **Update `docs/progress.md`** (append only: done / learned / next) and the task status.
-9. **Commit** with a conventional commit message.
+## Skills
 
-**Parallel agents:** run each concurrent agent session in its own git worktree (`claude -w <name>`, or `git worktree add`). Sessions sharing one working tree see each other's uncommitted files, and the Stop hook will make one agent "fix" another's work in progress.
-
-Never mark a task done with failing checks. Never weaken, skip, or delete a test to make it pass. If blocked, set the task to `blocked`, write why in `docs/progress.md`, and stop.
+Read the matching `.agents/skills/<name>/SKILL.md`:
+`implement-task`, `ui-review`, `new-theme`, `db-migration`, `handoff`, `release-checklist`.
+Long rehearsal details live inside the skill's `references/` folder.

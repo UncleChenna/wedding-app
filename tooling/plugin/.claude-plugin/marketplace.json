@@ -1,0 +1,7 @@
+{
+  "name": "wedding-team",
+  "owner": { "name": "Wedding team" },
+  "plugins": [
+    { "name": "wedding-harness", "source": "./dist", "description": "Shared repository workflow" }
+  ]
+}
