@@ -20,14 +20,15 @@
     },
     "WED-186": {
       "log": [
-        "- 2026-10-21 — todo → claimed — divine (codex)"
+        "- 2026-10-21 — todo → claimed — divine (codex)",
+        "- 2026-10-21 — todo → in_progress — divine (codex)"
       ],
-      "status": "todo",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "divine/WED-186-rename-the-ticket-prefix-from-wed-to-ticket",
       "pr": "",
-      "started": "",
+      "started": "2026-10-21",
       "completed": "",
       "updated": "2026-10-21",
       "reason": "",
