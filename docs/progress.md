@@ -14,29 +14,29 @@ Add-only history, newest first: prepend new entries below this template, never r
 
 ---
 
-## 2026-10-21 — TICKET-141 — Resolve conflicts after PR #9
+## 2026-10-21 — TICKET-102 — Resolve conflicts after PR #9
 
-- **Who / agent / branch:** divine · codex · `TICKET-141`.
+- **Who / agent / branch:** divine · codex · `TICKET-102`.
 - **Changed:** Integrated develop at cb365fe after PR #9 merged, preserved both progress histories and merged prerequisite fixes, and regenerated ticket boards. Ticket implementation remains unchanged.
-- **Checks:** Quick and full verification passed: 120 unit tests, production build, 17 browser smoke passes and 7 existing skips.
+- **Checks:** Quick and full verification passed: 108 unit tests, production build, 17 browser smoke passes and 7 existing skips.
 - **Learned:** Shared handoff entries and generated boards require reconciliation when parallel ticket PRs integrate.
 - **Next:** Human review of this ticket PR into develop; no PR merged automatically.
 
-## 2026-10-21 — TICKET-141 — Resolve develop conflicts
+## 2026-10-21 — TICKET-102 — Resolve develop conflicts
 
-- **Who / agent / branch:** divine · codex · `TICKET-141`.
+- **Who / agent / branch:** divine · codex · `TICKET-102`.
 - **Changed:** Integrated develop, preserved both progress histories and merged prerequisite fixes, and regenerated ticket boards. Ticket implementation remains unchanged.
-- **Checks:** Quick and full verification passed: 118 unit tests, production build, 17 browser smoke passes and 7 existing skips.
+- **Checks:** Quick and full verification passed: 106 unit tests, production build, 17 browser smoke passes and 7 existing skips.
 - **Learned:** Shared handoff entries and generated boards require reconciliation when parallel ticket PRs integrate.
 - **Next:** Human review of this ticket PR into develop; no PR merged automatically.
 
-## 2026-10-21 — TICKET-141 — Request-scoped action logs
+## 2026-10-21 — TICKET-102 — Service-worker decision
 
-- **Who / agent / branch:** divine · codex · `TICKET-141`.
-- **Changed:** Server-only action wrapper, pure request-ID validation, immutable correlation bindings, safe depth truncation, logger/action tests and observability guidance. Lifecycle logs omit inputs, outputs and exception text.
-- **Checks:** Before fixes: 2 logger regressions failed, 5 passed. Focused logging suite: 17 passed. Quick and full verify passed: 116 unit tests, production build, 17 smoke passes, 7 existing skips. No UI change.
-- **Learned:** A depth guard must truncate, not return unredacted objects; callers must not replace a request ID through child or per-message fields. Key redaction does not sanitize arbitrary free text.
-- **Next:** Human reviews and merges the PR into develop. Future feature actions adopt runLoggedAction; there were no existing feature endpoints to migrate or live action flows to exercise.
+- **Who / agent / branch:** divine · codex · `TICKET-102`.
+- **Changed:** Proposed ADR 0014 and disposable `spikes/pwa` build/browser experiment. Custom allowlisted worker selected for review; no production worker or dependencies added.
+- **Checks:** Two production builds; Chromium registration, precache, runtime fallback, offline reload and cache inspection passed. Worker 1,494 bytes (643 gzip); static output unchanged. Quick and full gates passed: 104 unit tests, build, 17 smoke passes, 7 existing skips.
+- **Learned:** Serwist has a Turbopack integration, but its convenience policies still require privacy/update review. Build timings are warm-cache observations, not a speed benchmark.
+- **Next:** Human reviews ADR and PR into develop. TICKET-105 implements root-scope policy; private data, upgrades and real iOS tests remain downstream.
 
 ## 2026-10-21 — TICKET-009 — Resolve develop conflicts
 

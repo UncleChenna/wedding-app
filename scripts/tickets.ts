@@ -4,10 +4,11 @@
  * the origin/ticket-ledger ref holds live claims and status so two developers
  * (and their agents) can never claim the same ticket. See docs/tickets.md.
  */
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 import { activity, criteria, parseTicket, serializeTicket } from "./tickets/format";
+import { dashboardHtml } from "./tickets/dashboard";
 import { REVIEW_BASE, reviewBodyProblems } from "./tickets/review";
 import { ready } from "./tickets/graph";
 import {
@@ -37,14 +38,12 @@ import {
 import type { Frontmatter, LedgerData, Status, Ticket } from "./tickets/model";
 import { renderList, renderTerminalBoard } from "./tickets/render";
 import {
-  GENERATED,
   effective,
   loadTickets,
   loadTicketsSafely,
   overlay,
   recordFrom,
   render,
-  staleOutputs,
   writeTicket,
 } from "./tickets/store";
 import { validateTickets } from "./tickets/validate";
@@ -62,9 +61,11 @@ const USAGE = `Usage: pnpm t:<command>
   t:new --title "Imperative title" --epic e --module m [--priority p] [--estimate S|M|L]
         [--labels a,b] [--blocked-by TICKET-001,TICKET-002] [--status backlog|todo]
   t:pr <id>                       verify, push, open PR, move to in_review
-  t:sync                          write shared ledger state into ticket files
+  t:sync <id>                     sync only this branch’s ticket from the ledger
   t:validate                      schema, sections, ids, deps, cycles, consistency
-  t:render                        regenerate blocks, tickets/BOARD.md and ROADMAP.md`;
+  t:render                        generate ignored Markdown snapshots
+  t:dashboard                     start the auto-refresh loopback board
+  t:dashboard:snapshot            export the standalone HTML board`;
 
 interface Args {
   positional: string[];
@@ -176,9 +177,8 @@ function commitChange(
       return { result: overlay(fileTicket, record), message: `${id}: ${log.replace(/^- /, "")}` };
     });
   }
-  if (canWriteFiles(state.cwd, state.mode)) {
+  if (canWriteFiles(state.cwd, state.mode) && branchHasTicket(currentBranch(state.cwd), id)) {
     writeTicket(state.cwd, updated);
-    render(state.cwd);
   } else
     console.log(
       `Recorded in the shared ledger. ${id}'s file is updated when you run t:move in its worktree (this checkout is on ${currentBranch(state.cwd) || "a detached HEAD"}).`,
@@ -211,25 +211,27 @@ function pickLedger(meta: Partial<Frontmatter>) {
   return out;
 }
 
-/** Write terminal (done/cancelled) ledger state into files, so merged work catches up on main via any branch. */
-function syncFiles(state: State, onlyTerminal: boolean): string[] {
-  if (!state.ledger || !canWriteFiles(state.cwd, state.mode)) return [];
-  const changed: string[] = [];
-  for (const file of state.files) {
-    const record = state.ledger.tickets[ledgerKey(file.meta.id)];
-    if (!record || (onlyTerminal && !["done", "cancelled"].includes(record.status))) continue;
-    const next = overlay(file, record);
-    if (serializeTicket(next) !== serializeTicket(file)) {
-      writeTicket(state.cwd, next);
-      changed.push(file.path);
-    }
-  }
-  if (changed.length) render(state.cwd);
-  return changed;
+/** Explicitly sync only the branch's own ticket. Reads never sync files. */
+function syncFiles(state: State, id: string): string[] {
+  if (!branchHasTicket(currentBranch(state.cwd), id))
+    throw new Error(`Run t:sync ${id} on its own ticket branch.`);
+  const file = state.files.find((t) => t.meta.id === id);
+  if (!file) throw new Error(`Unknown ticket ${id}.`);
+  const record = state.ledger?.tickets[ledgerKey(id)];
+  if (!record) return [];
+  const next = overlay(file, record);
+  if (serializeTicket(next) === serializeTicket(file)) return [];
+  writeTicket(state.cwd, next);
+  return [file.path];
 }
 
 function pushTickets(cwd: string, id: string, message: string) {
-  git(["add", "tickets/"], cwd);
+  const ticket = loadTickets(cwd).find((t) => t.meta.id === id);
+  if (!ticket) throw new Error(`Unknown ticket ${id}.`);
+  const staged = git(["diff", "--cached", "--name-only"], cwd).split("\n").filter(Boolean);
+  if (staged.some((path) => path !== ticket.path))
+    throw new Error("Commit other staged work separately before pushing a ticket status.");
+  git(["add", ticket.path], cwd);
   if (!tryGit(["diff", "--cached", "--quiet"], cwd)) {
     if (!stream("git", ["commit", "-m", `${id}: ${message}`], cwd))
       throw new Error("Commit failed (see hook output).");
@@ -319,14 +321,6 @@ function doMove(state: State, id: string, to: Status, args: Args): Ticket {
       log: logLine(facts.today, current.meta.status, to, facts.actor, facts.agent, facts.reason),
     };
   });
-  if (to === "in_progress") {
-    const synced = syncFiles(
-      { ...state, ledger: readLedger(state.cwd, state.mode)?.data ?? state.ledger },
-      true,
-    );
-    if (synced.length)
-      console.log(`Synced finished tickets into this branch: ${synced.join(", ")}`);
-  }
   console.log(`${result.meta.id}: ${to}`);
   if (args.flags.push) pushTickets(state.cwd, result.meta.id, `move to ${to}`);
   else if (canWriteFiles(state.cwd, state.mode) && to !== "done")
@@ -405,7 +399,6 @@ function newTicket(args: Args): void {
   // Round-trip through the parser so invalid enums fail before anything is written.
   parseTicket(serializeTicket(ticket), ticket.path);
   writeFileSync(join(cwd, ticket.path), serializeTicket(ticket));
-  render(cwd);
   console.log(`Created ${ticket.path}. Fill in every section, then commit it with your branch.`);
 }
 
@@ -413,7 +406,6 @@ function validate(): number {
   const cwd = root();
   const { tickets, errors } = loadTicketsSafely(cwd);
   const problems = [...errors, ...validateTickets(tickets)];
-  if (!errors.length) problems.push(...staleOutputs(cwd, tickets));
   if (!existsSync(join(cwd, "tickets/TEMPLATE.md")))
     problems.push("tickets/TEMPLATE.md is missing");
   if (existsSync(join(cwd, "docs/tasks.json")))
@@ -424,7 +416,7 @@ function validate(): number {
     );
     return 1;
   }
-  console.log(`✔ ${tickets.length} tickets valid; boards up to date.`);
+  console.log(`✔ ${tickets.length} tickets valid.`);
   return 0;
 }
 
@@ -446,6 +438,34 @@ function main(): number {
             (!f("label") || m.labels.includes(f("label") as Frontmatter["labels"][number])),
         );
       console.log(args.flags.json ? JSON.stringify(metas, null, 2) : renderList(metas));
+      return 0;
+    }
+    case "dashboard": {
+      const state = load(true);
+      const source =
+        state.mode === "off"
+          ? "Local files only (ledger disabled)"
+          : state.live
+            ? "Ledger snapshot (refresh to update)"
+            : "OFFLINE — committed files only; status may be stale";
+      const base =
+        tryGit(["rev-parse", "--short", "refs/remotes/origin/develop"], state.cwd) ?? "unknown";
+      if (args.flags.json) {
+        console.log(
+          JSON.stringify({
+            tickets: state.tickets,
+            source: state.live && state.mode === "origin" ? "Shared ledger" : source,
+            base,
+            generated: new Date().toISOString(),
+            connected: state.live,
+          }),
+        );
+        return 0;
+      }
+      const output = join(state.cwd, "artifacts/tickets/index.html");
+      mkdirSync(join(state.cwd, "artifacts/tickets"), { recursive: true });
+      writeFileSync(output, dashboardHtml(state.tickets, source, base));
+      console.log(`${source}\nOpen ${output}`);
       return 0;
     }
     case "board": {
@@ -585,7 +605,8 @@ function main(): number {
       const state = load(false);
       if (!canWriteFiles(state.cwd, state.mode))
         throw new Error("Run t:sync on a ticket branch, never on main or develop.");
-      const changed = syncFiles(state, false);
+      const id = find(state, args.positional[0] ?? currentBranch(state.cwd)).meta.id;
+      const changed = syncFiles(state, id);
       console.log(
         changed.length ? `Synced: ${changed.join(", ")}` : "Ticket files already match the ledger.",
       );
@@ -594,9 +615,12 @@ function main(): number {
     case "validate":
       return validate();
     case "render": {
-      const cwd = root();
-      const changed = render(cwd);
-      if (args.flags.staged && changed.length) git(["add", ...changed, ...GENERATED], cwd);
+      if (args.flags.staged) {
+        console.log("Snapshots are local output; nothing to stage.");
+        return 0;
+      }
+      const state = load(true);
+      const changed = render(state.cwd, state.tickets);
       console.log(
         changed.length ? `Rendered: ${changed.join(", ")}` : "Boards already up to date.",
       );

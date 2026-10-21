@@ -1,5 +1,5 @@
 import { activity, criteria } from "./format";
-import { byId, findCycle, inverseBlocks } from "./graph";
+import { byId, findCycle } from "./graph";
 import { MILESTONES, branchHasTicket, formatId, idNumber } from "./model";
 import type { Ticket } from "./model";
 
@@ -43,7 +43,6 @@ export function validateTickets(tickets: readonly Ticket[]): string[] {
       `ids must be contiguous from TICKET-001; missing ${missing.join(", ")} (cancel tickets, never delete them)`,
     );
 
-  const inverse = inverseBlocks(tickets.map((t) => t.meta));
   for (const t of tickets) {
     const m = t.meta;
     for (const dep of m.blocked_by) {
@@ -51,12 +50,6 @@ export function validateTickets(tickets: readonly Ticket[]): string[] {
       if (dep === m.id) add(t, "cannot block itself");
     }
     for (const dep of m.blocks) if (!map.has(dep)) add(t, `blocks ${dep} does not exist`);
-    const expected = inverse.get(m.id) ?? [];
-    if (expected.join(",") !== m.blocks.join(","))
-      add(
-        t,
-        `blocks must be [${expected.join(", ")}] (the inverse of blocked_by); run pnpm t:render`,
-      );
     if (new Set(m.blocked_by).size !== m.blocked_by.length) add(t, "duplicate blocked_by entries");
     if (new Set(m.labels).size !== m.labels.length) add(t, "duplicate labels");
 
@@ -82,7 +75,8 @@ export function validateTickets(tickets: readonly Ticket[]): string[] {
     const needsOwner = ["in_progress", "in_review", "done"].includes(m.status);
     if (needsOwner && (!m.owner || !m.agent)) add(t, `${m.status} tickets need owner and agent`);
     if (m.status === "backlog" && m.owner) add(t, "backlog tickets cannot be claimed");
-    if (m.branch && !branchHasTicket(m.branch, m.id)) add(t, `branch ${m.branch} must contain ${m.id}`);
+    if (m.branch && !branchHasTicket(m.branch, m.id))
+      add(t, `branch ${m.branch} must contain ${m.id}`);
     if (needsOwner && !m.branch) add(t, `${m.status} tickets need a branch`);
     if (needsOwner && !m.started) add(t, `${m.status} tickets need a started date`);
     if (["in_review", "done"].includes(m.status)) {
@@ -92,10 +86,8 @@ export function validateTickets(tickets: readonly Ticket[]): string[] {
     }
     if (m.status === "done" && !m.completed) add(t, "done tickets need a completed date");
     if (m.status !== "done" && m.completed) add(t, "only done tickets have a completed date");
-    if (m.status === "in_progress" || m.status === "in_review")
-      for (const dep of m.blocked_by)
-        if (map.get(dep) && map.get(dep)?.status !== "done")
-          add(t, `${m.status} while blocker ${dep} is ${map.get(dep)?.status}`);
+    // Dependency readiness is checked atomically against the ledger by move/claim.
+    // Committed dependency status can legitimately lag behind its merged PR.
     if (m.status === "blocked" && (!m.reason || !m.resume_to))
       add(t, "blocked tickets need reason and resume_to");
     if (m.status === "cancelled" && !m.reason) add(t, "cancelled tickets need a reason");

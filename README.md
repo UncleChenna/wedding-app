@@ -53,7 +53,7 @@ Change the active theme in `src/modules/theming/config.ts`. Add a theme in under
 - [docs/architecture.md](docs/architecture.md) and [docs/decisions/](docs/decisions/)
 - [tickets/BOARD.md](tickets/BOARD.md), [tickets/ROADMAP.md](tickets/ROADMAP.md) and [docs/tickets.md](docs/tickets.md): the ticket backlog and its rules (`pnpm t:*`)
 - [docs/current-state.md](docs/current-state.md): what exists, what is incomplete, PRD contradictions and assumptions
-- [docs/progress.md](docs/progress.md): work log
+- [docs/handoffs/](docs/handoffs/README.md): per-ticket handoffs; [docs/progress.md](docs/progress.md) retains historical work
 
 ## Working together with AI agents
 
@@ -64,3 +64,11 @@ Run `pnpm agents:link` after cloning or changing skills. Canonical workflows liv
 
 `pnpm agent:loop` claims work, creates an isolated checkout, runs Claude, verifies,
 and opens a PR. It stops on failure and retains the claim for a handoff.
+
+## Visual ticket board
+
+Run `pnpm t:dashboard` once and open http://127.0.0.1:4173. The local read-only server watches ticket files and checks the shared ledger every 20 seconds. The browser updates without losing filters, theme or open ticket details. Connection state and last successful refresh are visible. Stop with Ctrl+C; use `pnpm t:dashboard --port 4174` for another checkout.
+
+VS Code can start it when this folder opens: approve **Ticket dashboard (local)** when prompted to allow automatic tasks (in a trusted workspace). Otherwise use **Tasks: Run Task**. Disable it through **Tasks: Manage Automatic Tasks in Folder**. Each collaborator needs dependencies installed and their own working Git authentication; nothing is hosted or shared over the network.
+
+Ticket definitions come from the selected checkout, including local edits. Pull merged definitions normally; the dashboard never pulls or merges your branch. Shared claims/status refresh from the ledger automatically. `pnpm t:dashboard:snapshot` still exports a standalone HTML snapshot to `artifacts/tickets/index.html`.
