@@ -100,15 +100,15 @@ Open tickets labelled `human` (decisions, accounts, physical tasks), in `pnpm t:
 
 ## Board
 
-### In progress (1)
+### In progress (0)
+
+_None._
+
+### In review (1)
 
 | Ticket | Title | Epic | Priority | Est. | Owner | Blocked by |
 | ------ | ----- | ---- | -------- | ---- | ----- | ---------- |
 | [WED-001](WED-001-fix-hooks-failing-on-the-symlinked-claude-skills.md) | Fix hooks failing on the symlinked .claude/skills directory | foundations | urgent | S | unclechenna |  |
-
-### In review (0)
-
-_None._
 
 ### Blocked (0)
 
