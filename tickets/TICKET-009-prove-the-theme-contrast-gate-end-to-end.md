@@ -40,9 +40,9 @@ See: [How theming works](../docs/prd.md#how-theming-works) (THM-3).
 
 ## Acceptance criteria
 
-- [ ] A unit test asserts the error names the theme id and every failing token pair.
-- [ ] docs/theming.md steps work verbatim (any fix included).
-- [ ] `pnpm verify` passes.
+- [x] A unit test asserts the error names the theme id and every failing token pair.
+- [x] docs/theming.md steps work verbatim (any fix included).
+- [x] `pnpm verify` passes.
 
 ## Test plan
 
@@ -56,6 +56,8 @@ See: [How theming works](../docs/prd.md#how-theming-works) (THM-3).
 - `docs/theming.md`
 
 ## Notes / decisions
+
+- 2026-10-21: Loader and registry-import regressions assert all 11 failing fixture pairs and theme identity. Copied ivory-gold to a temporary sage-garden theme, edited its identity, registered it, and ran the documented theming tests successfully; setting foreground equal to background caused registry-load failure naming sage-garden. Removed the fixture afterwards. No production loader fix or palette change was needed. Quick gate and full verify passed (106 unit tests, 17 smoke passes, 7 existing skips).
 
 - 2026-10-21: Migrated from `docs/tasks.json` SETUP-002.
 
