@@ -11,7 +11,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 # AGENTS.md
 
 Shared rules for humans, Codex, Claude Code, Cursor, Copilot and Gemini.
-Start with [collaboration](docs/collaboration.md), [learnings](docs/learnings.md), and the newest [handoff](docs/progress.md).
+Start with [collaboration](docs/collaboration.md), [learnings](docs/learnings.md), and the relevant [handoff](docs/handoffs/README.md).
 
 ## Project
 
@@ -33,31 +33,31 @@ Drizzle, Zod, Vitest, Playwright, pnpm 12, Node 24. Product: [PRD](docs/prd.md).
 
 ## Commands
 
-| Command                                                              | Purpose                                                    |
-| -------------------------------------------------------------------- | ---------------------------------------------------------- |
-| `pnpm install`                                                       | Install dependencies and Husky hooks                       |
-| `pnpm agents:link` / `agents:check`                                  | Refresh/check shared skill links (copy fallback)           |
-| `pnpm dev` / `build` / `start`                                       | Develop/build/serve; managed worktrees get unique ports    |
-| `pnpm verify`                                                        | Format → lint → types → unit tests → build → browser smoke |
-| `pnpm verify:quick`                                                  | Lint, types, related unit tests                            |
-| `pnpm lint` / `lint:fix`                                             | ESLint, zero warnings                                      |
-| `pnpm format` / `format:check`                                       | Prettier                                                   |
-| `pnpm typecheck`                                                     | Route type generation and TypeScript                       |
-| `pnpm test` / `test:watch`                                           | Unit tests                                                 |
-| `pnpm test:e2e` / `test:e2e:smoke`                                   | Browser flows (build first)                                |
-| `pnpm screenshots`                                                   | Playwright routes × themes × 375/768/1280                  |
-| `pnpm db:start` / `db:stop` / `db:status`                            | This checkout's local Supabase stack                       |
-| `pnpm db:generate` / `db:migrate`                                    | Generate/apply Drizzle migrations                          |
-| `pnpm db:seed` / `db:reset`                                          | Disposable local data only; reset checks stack identity    |
-| `pnpm themes:schema`                                                 | Generate theme JSON schema                                 |
-| `pnpm t:next [--module m]` / `t:board` / `t:list` / `t:show <id>`    | Read the queue (live, includes unmerged claims)            |
-| `pnpm t:claim <id> --owner <you> --agent <agent>` / `t:release <id>` | Atomic claim via the shared ticket ledger                  |
-| `pnpm t:move <id> <status> [--reason] [--push]`                      | Enforced status transition                                 |
-| `pnpm t:pr <id>`                                                     | Verify, push, open PR, move to in_review                   |
-| `pnpm t:new` / `t:validate` / `t:render` / `t:sync`                  | Scaffold, check, regenerate boards, sync ledger into files |
-| `pnpm wt:new <id>` / `wt:list` / `wt:remove <id>` / `wt:prune`       | Managed isolated worktrees                                 |
-| `pnpm agent:loop --help`                                             | Next → claim → worktree → Claude → t:pr                    |
-| `pnpm plugin:build` / `plugin:install`                               | Package/install shared Claude setup                        |
+| Command                                                              | Purpose                                                     |
+| -------------------------------------------------------------------- | ----------------------------------------------------------- |
+| `pnpm install`                                                       | Install dependencies and Husky hooks                        |
+| `pnpm agents:link` / `agents:check`                                  | Refresh/check shared skill links (copy fallback)            |
+| `pnpm dev` / `build` / `start`                                       | Develop/build/serve; managed worktrees get unique ports     |
+| `pnpm verify`                                                        | Format → lint → types → unit tests → build → browser smoke  |
+| `pnpm verify:quick`                                                  | Lint, types, related unit tests                             |
+| `pnpm lint` / `lint:fix`                                             | ESLint, zero warnings                                       |
+| `pnpm format` / `format:check`                                       | Prettier                                                    |
+| `pnpm typecheck`                                                     | Route type generation and TypeScript                        |
+| `pnpm test` / `test:watch`                                           | Unit tests                                                  |
+| `pnpm test:e2e` / `test:e2e:smoke`                                   | Browser flows (build first)                                 |
+| `pnpm screenshots`                                                   | Playwright routes × themes × 375/768/1280                   |
+| `pnpm db:start` / `db:stop` / `db:status`                            | This checkout's local Supabase stack                        |
+| `pnpm db:generate` / `db:migrate`                                    | Generate/apply Drizzle migrations                           |
+| `pnpm db:seed` / `db:reset`                                          | Disposable local data only; reset checks stack identity     |
+| `pnpm themes:schema`                                                 | Generate theme JSON schema                                  |
+| `pnpm t:next [--module m]` / `t:board` / `t:list` / `t:show <id>`    | Read the queue (live, includes unmerged claims)             |
+| `pnpm t:claim <id> --owner <you> --agent <agent>` / `t:release <id>` | Atomic claim via the shared ticket ledger                   |
+| `pnpm t:move <id> <status> [--reason] [--push]`                      | Enforced status transition                                  |
+| `pnpm t:pr <id>`                                                     | Verify, push, open PR, move to in_review                    |
+| `pnpm t:new` / `t:validate` / `t:render` / `t:sync`                  | Scaffold, validate, render local snapshots, sync own ticket |
+| `pnpm wt:new <id>` / `wt:list` / `wt:remove <id>` / `wt:prune`       | Managed isolated worktrees                                  |
+| `pnpm agent:loop --help`                                             | Next → claim → worktree → Claude → t:pr                     |
+| `pnpm plugin:build` / `plugin:install`                               | Package/install shared Claude setup                         |
 
 ## Non-negotiable rules
 
@@ -111,7 +111,7 @@ Before writing or changing code, review the task list to confirm you are working
 
 - Run `pnpm t:board` and `pnpm t:next` for live status and ownership; read `tickets/ROADMAP.md` for build order.
 - Read the intended ticket with `pnpm t:show <id>`, including its acceptance criteria, test plan, blockers and
-  related tickets. Check the relevant PRD section and latest `docs/progress.md` handoff.
+  related tickets. Check the relevant PRD section and relevant `docs/handoffs/<ticket-id>.md` handoff.
 - Confirm the planned changes match the user's current request and ticket scope, prerequisites are complete,
   and no other owner is already doing the same work. An explicit user-assigned task takes precedence over the
   automatic next suggestion, but does not make unfinished dependencies complete.
@@ -131,7 +131,7 @@ Before writing or changing code, review the task list to confirm you are working
 6. **Close.** After the human reviews and merges into `develop`: `pnpm t:move <id> done` (records completion date and PR link), then `pnpm wt:remove <id>`.
    The ticket file and boards catch up on your next ticket branch (`t:move … in_progress` syncs them).
 7. **Blocked?** `pnpm t:move <id> blocked --reason "…" --push`, then pick another ticket. Never silently skip anything.
-8. **Hand off.** Prepend an entry to [docs/progress.md](docs/progress.md) before ending any session.
+8. **Hand off.** Write or update your ticket’s file in [docs/handoffs/](docs/handoffs/README.md) before ending any session.
 
 Never leave finished work unpushed. Never mark a ticket done with failing checks or unticked criteria. Never edit
 another owner's in-progress ticket. UI work also passes [the UI checklist](docs/ui-checklist.md) in every theme. Update
@@ -151,3 +151,12 @@ adds one anyway, remove it before committing.
 Read the matching `.agents/skills/<name>/SKILL.md`:
 `ticket-workflow`, `implement-task`, `ui-review`, `new-theme`, `db-migration`, `handoff`, `release-checklist`.
 Long rehearsal details live inside the skill's `references/` folder.
+
+## Avoid shared-file conflicts
+
+- `pnpm t:dashboard` creates a read-only visual snapshot at `artifacts/tickets/index.html`; open it in a browser. Regenerate and reload to refresh.
+- `tickets/BOARD.md` and `tickets/ROADMAP.md` are stable links. Never commit generated board rows; `pnpm t:render` writes ignored artifacts only.
+- Status/ownership authority is the shared ledger. Do not sync unrelated ticket files. `pnpm t:sync <id>` operates only on that ticket’s branch.
+- Handoffs go in `docs/handoffs/<ticket-id>.md`; preserve `docs/progress.md` as history.
+- Start new feature branches from freshly fetched `origin/develop`. For a new ticket not yet present there, carry only its definition, never unrelated feature commits. Existing branches need an explicit base update.
+- Shared implementation edits can still conflict. Inspect overlapping files, integrate PRs sequentially, and report the exact develop commit used for verification. Never auto-merge.

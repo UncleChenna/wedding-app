@@ -1,0 +1,260 @@
+:root {
+  --radius: 0.75rem;
+  --display: Georgia, serif;
+  --body: system-ui, sans-serif;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font: 16px/1.6 var(--body);
+}
+header,
+main {
+  max-width: 1560px;
+  margin: auto;
+  padding: 32px 24px;
+}
+header {
+  border-bottom: 1px solid var(--border);
+}
+.eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  color: var(--primary);
+}
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+h1 {
+  font: clamp(32px, 4vw, 56px)/1.1 var(--display);
+  letter-spacing: -0.02em;
+  margin: 24px 0 16px;
+}
+h2 {
+  font: 28px/1.2 var(--display);
+  margin: 0;
+}
+p {
+  margin: 8px 0;
+}
+.meta,
+footer {
+  color: var(--muted-foreground);
+  font-size: 14px;
+}
+.summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-bottom: 32px;
+}
+.summary strong {
+  display: block;
+  font: 36px/1.4 var(--display);
+}
+.summary span {
+  color: var(--muted-foreground);
+}
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: end;
+  padding: 24px 0;
+  border-block: 1px solid var(--border);
+}
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.search {
+  flex: 1 1 240px;
+}
+input,
+select,
+button {
+  min-height: 44px;
+  min-width: 44px;
+  font: inherit;
+  color: var(--foreground);
+  border: 1px solid var(--input);
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+}
+select {
+  max-width: 100%;
+}
+button,
+summary {
+  cursor: pointer;
+}
+button:hover {
+  background: var(--surface-muted);
+}
+:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 3px;
+}
+.board-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  margin: 40px 0 24px;
+}
+.board {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 270px), 1fr));
+  gap: 24px;
+  align-items: start;
+}
+.column {
+  max-height: 70vh;
+  overflow: auto;
+  min-width: 0;
+  background: var(--surface-muted);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+.column h3 {
+  margin: 0 0 16px;
+  font-size: 16px;
+  display: flex;
+  justify-content: space-between;
+}
+.card {
+  display: block;
+  text-align: left;
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 16px;
+  border-color: var(--input);
+  overflow-wrap: anywhere;
+}
+.card .ticket-id {
+  display: block;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--primary);
+  font-weight: 700;
+}
+.card strong {
+  display: block;
+  margin: 8px 0 12px;
+  line-height: 1.45;
+  font-weight: 600;
+}
+.card .meta {
+  display: block;
+}
+.card .priority {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.column-empty {
+  color: var(--muted-foreground);
+  font-size: 14px;
+}
+.epics {
+  margin-top: 48px;
+  border-top: 1px solid var(--border);
+  padding-top: 24px;
+}
+summary {
+  min-height: 44px;
+  font-size: 20px;
+}
+.epic-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 16px;
+  align-items: center;
+  padding: 12px 0;
+}
+progress {
+  width: 100%;
+  accent-color: var(--primary);
+}
+footer {
+  margin-top: 48px;
+  max-width: 75ch;
+}
+dialog {
+  width: min(700px, calc(100% - 32px));
+  max-height: 85vh;
+  border: 1px solid var(--input);
+  border-radius: var(--radius);
+  background: var(--background);
+  color: var(--foreground);
+  padding: 24px;
+}
+dialog::backdrop {
+  background: var(--foreground);
+  opacity: 0.5;
+}
+.dialog-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+#detail-body h3 {
+  margin-top: 32px;
+  font-size: 16px;
+}
+#detail-body pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font: inherit;
+}
+a {
+  color: var(--primary);
+  display: inline-block;
+  min-height: 44px;
+  padding-block: 10px;
+}
+@media (max-width: 600px) {
+  header,
+  main {
+    padding: 24px 16px;
+  }
+  .heading {
+    align-items: start;
+    flex-direction: column;
+  }
+  .summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .filters label {
+    width: 100%;
+  }
+  .board-heading {
+    flex-direction: column;
+  }
+  .epic-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+  dialog {
+    margin-bottom: 16px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto;
+  }
+}
