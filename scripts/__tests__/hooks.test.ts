@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { spawnSync } from "node:child_process";
 import { resolve } from "node:path";
 import { editPaths } from "../harness/hooks.mjs";
+import { isolatedGitEnv } from "./git-env";
 const hook = resolve("scripts/harness/hooks.mjs");
 describe("agent hook adapters", () => {
   it("extracts every file from a Codex patch including rename targets", () => {
@@ -79,6 +80,68 @@ it("allows reading generated migrations while blocking writes", () => {
     encoding: "utf8",
   });
   expect(write.status).toBe(2);
+});
+
+it("formats changed regular files but skips symlinks and directories (WED-001)", async () => {
+  const { mkdtempSync, mkdirSync, writeFileSync, chmodSync, rmSync, readFileSync, symlinkSync } =
+    await import("node:fs");
+  const { tmpdir } = await import("node:os");
+  const { join } = await import("node:path");
+  const dir = mkdtempSync(join(tmpdir(), "wedding-hook-symlink-"));
+  const git = (...args: string[]) =>
+    spawnSync("git", args, { cwd: join(dir, "repo"), encoding: "utf8", env: isolatedGitEnv() });
+  try {
+    const repo = join(dir, "repo");
+    mkdirSync(join(repo, ".agents/skills/x"), { recursive: true });
+    mkdirSync(join(repo, ".claude"));
+    writeFileSync(join(repo, ".agents/skills/x/SKILL.md"), "# x\n");
+    writeFileSync(join(repo, "notes.md"), "a\n");
+    git("init", "-q", "-b", "chore/x");
+    git("-c", "user.email=t@example.test", "-c", "user.name=T", "add", ".");
+    git("-c", "user.email=t@example.test", "-c", "user.name=T", "commit", "-qm", "chore: init");
+    // A changed regular file and a new (untracked) symlink, as agents:link creates.
+    writeFileSync(join(repo, "notes.md"), "b\n");
+    symlinkSync("../.agents/skills", join(repo, ".claude/skills"));
+    // Fake pnpm: log every formatted path; fail like Prettier does on a symlink.
+    const log = join(dir, "calls.log");
+    const fake = join(dir, "pnpm");
+    writeFileSync(
+      fake,
+      `#!/bin/sh\nfor last; do :; done\necho "$last" >> "${log}"\nif [ -L "$last" ] || [ -d "$last" ]; then echo "is a symbolic link" >&2; exit 2; fi\nexit 0\n`,
+    );
+    chmodSync(fake, 0o755);
+    const result = spawnSync(process.execPath, [hook, "post", "claude"], {
+      input: JSON.stringify({ cwd: repo, tool_name: "Bash", tool_input: { command: "ls" } }),
+      encoding: "utf8",
+      env: isolatedGitEnv({ PATH: `${dir}:${process.env.PATH}` }),
+    });
+    expect(result.stderr).toBe("");
+    expect(result.status).toBe(0);
+    const calls = readFileSync(log, "utf8");
+    expect(calls).toContain("notes.md");
+    expect(calls).not.toContain(".claude/skills");
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+it("isolates throwaway-repo git calls from the git hook environment", () => {
+  const saved = { dir: process.env.GIT_DIR, index: process.env.GIT_INDEX_FILE };
+  process.env.GIT_DIR = "/real/repo/.git";
+  process.env.GIT_INDEX_FILE = "/real/repo/.git/index";
+  try {
+    const env = isolatedGitEnv({ PATH: "/x" });
+    const leaked = Object.keys(env).filter(
+      (key) => key.startsWith("GIT_") && key !== "GIT_CONFIG_NOSYSTEM",
+    );
+    expect(leaked).toEqual([]);
+    expect(env.PATH).toBe("/x");
+  } finally {
+    if (saved.dir === undefined) delete process.env.GIT_DIR;
+    else process.env.GIT_DIR = saved.dir;
+    if (saved.index === undefined) delete process.env.GIT_INDEX_FILE;
+    else process.env.GIT_INDEX_FILE = saved.index;
+  }
 });
 
 it("rejects direct pushes to main", () => {
