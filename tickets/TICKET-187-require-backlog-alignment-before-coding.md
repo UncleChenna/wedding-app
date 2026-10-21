@@ -38,9 +38,9 @@ The user requires agents to review the task list before coding to confirm alignm
 
 ## Acceptance criteria
 
-- [ ] Shared instructions require live backlog, roadmap, ticket, dependency and PRD review before coding.
-- [ ] Agents state scope and verification, avoid duplicate or blocked work, and recheck after scope changes.
-- [ ] Workflow skills reference the same rule and Claude inherits it through AGENTS.md.
+- [x] Shared instructions require live backlog, roadmap, ticket, dependency and PRD review before coding.
+- [x] Agents state scope and verification, avoid duplicate or blocked work, and recheck after scope changes.
+- [x] Workflow skills reference the same rule and Claude inherits it through AGENTS.md.
 
 ## Test plan
 
@@ -53,6 +53,8 @@ The user requires agents to review the task list before coding to confirm alignm
 ## Notes / decisions
 
 - Documentation-only change; no new code tests needed.
+
+- 2026-10-21 — Canonical rule and both workflow references added. Claude, Cursor, Copilot and Gemini all point to AGENTS.md. Formatting, ticket validation and full verification pass (73 unit tests, build, 17 smoke passes; 7 existing skips).
 
 ## Activity log
 
