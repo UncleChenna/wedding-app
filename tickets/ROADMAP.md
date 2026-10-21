@@ -271,7 +271,7 @@ Target TICKET-164. 20 open tickets in the longest chain, 42 points (about 42 age
 
 - [TICKET-139](TICKET-139-create-the-sentry-project-and-share-its-dsn.md) Create the Sentry project and share its DSN · urgent · S · todo · human
 - [TICKET-140](TICKET-140-add-sentry-error-tracking-to-server-and-client.md) Add Sentry error tracking to server and client · urgent · M · todo
-- [TICKET-141](TICKET-141-add-request-ids-and-structured-logs-to-server-ac.md) Add request ids and structured logs to server actions · medium · S · in_progress
+- [TICKET-141](TICKET-141-add-request-ids-and-structured-logs-to-server-ac.md) Add request ids and structured logs to server actions · medium · S · in_review
 - [TICKET-142](TICKET-142-set-up-uptime-checks-for-guest-scanner-and-board.md) Set up uptime checks for guest, scanner and board routes · medium · S · todo · human
 - [TICKET-143](TICKET-143-build-the-admin-health-page.md) Build the admin health page · medium · M · todo
 

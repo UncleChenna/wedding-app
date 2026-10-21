@@ -2,7 +2,7 @@
 id: TICKET-141
 title: Add request ids and structured logs to server actions
 epic: observability
-status: in_progress
+status: in_review
 priority: medium
 estimate: S
 labels: [backend]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: []
 blocks: []
 branch: TICKET-141
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/13
 created: 2026-10-21
 updated: 2026-10-21
 started: 2026-10-21
@@ -60,3 +60,4 @@ See: [Tech stack and architecture](../docs/prd.md#tech-stack-and-architecture).
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-10-21 — todo → claimed — divine (codex)
 - 2026-10-21 — todo → in_progress — divine (codex)
+- 2026-10-21 — in_progress → in_review — divine (codex)
