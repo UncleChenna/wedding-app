@@ -6,7 +6,7 @@ Epics in delivery order. Points: S = 1, M = 2, L = 4 (L is about half a day of a
 
 | # | Epic | Goal | Tickets | Done | Open points | Human |
 | - | ---- | ---- | ------- | ---- | ----------- | ----- |
-| 1 | Foundations fix-ups | Repair and finish what the bootstrap left broken or unverified. | 8 | 0 | 11 | 1 |
+| 1 | Foundations fix-ups | Repair and finish what the bootstrap left broken or unverified. | 9 | 0 | 12 | 1 |
 | 2 | Design system and theming | Tokens, preset themes, base components, motion and contrast gates. | 17 | 0 | 30 | 2 |
 | 3 | Data and auth | PRD-shaped schema, RLS, admin auth with 2FA, staff PINs and seed data. | 13 | 0 | 27 | 1 |
 | 4 | Invitations and RSVP | The personal IV, envelope reveal, RSVP with tag-alongs and the QR pass. | 17 | 0 | 38 | 2 |
@@ -22,7 +22,7 @@ Epics in delivery order. Points: S = 1, M = 2, L = 4 (L is about half a day of a
 | 14 | Observability | Error tracking, structured logs, uptime checks and a health page. | 5 | 0 | 7 | 2 |
 | 15 | Deployment | Production Supabase and Vercel, previews, migrations, backups, rollback. | 13 | 0 | 24 | 4 |
 | 16 | Launch and the day itself | Real data, rehearsal, runbook, the day, and the post-wedding wind-down. | 15 | 0 | 20 | 13 |
-| | **Total** | | **186** | **0** | **352** | **33** |
+| | **Total** | | **187** | **0** | **353** | **33** |
 
 ## Critical path: Deployed and installable as a PWA
 
@@ -83,6 +83,7 @@ Target TICKET-164. 20 open tickets in the longest chain, 42 points (about 42 age
 - [TICKET-006](TICKET-006-prove-the-managed-worktree-lifecycle-end-to-end.md) Prove the managed worktree lifecycle end to end · high · M · todo
 - [TICKET-007](TICKET-007-prove-ticket-claims-across-two-clones-against-gi.md) Prove ticket claims across two clones against GitHub · medium · S · todo
 - [TICKET-186](TICKET-186-use-ticket-prefix.md) Use TICKET as the ticket prefix · urgent · M · in_review
+- [TICKET-187](TICKET-187-require-backlog-alignment-before-coding.md) Require backlog alignment before coding · urgent · S · in_progress
 
 ### Design system and theming
 
