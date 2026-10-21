@@ -1,0 +1,13 @@
+pnpm-lock.yaml
+.next
+out
+coverage
+test-results
+playwright-report
+blob-report
+artifacts
+logs
+drizzle/meta
+supabase/.temp
+next-env.d.ts
+src/modules/theming/themes/theme.schema.json

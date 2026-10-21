@@ -1,0 +1,207 @@
+{
+  "title": "Wedding site theme",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "colorScheme": {
+      "type": "string",
+      "enum": [
+        "light",
+        "dark"
+      ]
+    },
+    "colors": {
+      "type": "object",
+      "properties": {
+        "background": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "foreground": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "surface": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "surface-muted": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "muted-foreground": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "primary": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "primary-foreground": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "secondary": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "secondary-foreground": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "accent": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "accent-foreground": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "border": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "input": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "ring": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "danger": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "danger-foreground": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "success": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "success-foreground": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        }
+      },
+      "required": [
+        "background",
+        "foreground",
+        "surface",
+        "surface-muted",
+        "muted-foreground",
+        "primary",
+        "primary-foreground",
+        "secondary",
+        "secondary-foreground",
+        "accent",
+        "accent-foreground",
+        "border",
+        "input",
+        "ring",
+        "danger",
+        "danger-foreground",
+        "success",
+        "success-foreground"
+      ],
+      "additionalProperties": false
+    },
+    "fonts": {
+      "type": "object",
+      "properties": {
+        "display": {
+          "type": "string",
+          "enum": [
+            "cormorant",
+            "playfair",
+            "inter",
+            "jost"
+          ]
+        },
+        "body": {
+          "type": "string",
+          "enum": [
+            "cormorant",
+            "playfair",
+            "inter",
+            "jost"
+          ]
+        }
+      },
+      "required": [
+        "display",
+        "body"
+      ],
+      "additionalProperties": false
+    },
+    "radii": {
+      "type": "object",
+      "properties": {
+        "sm": {
+          "type": "string",
+          "pattern": "^\\d*\\.?\\d+(rem|px)$"
+        },
+        "md": {
+          "type": "string",
+          "pattern": "^\\d*\\.?\\d+(rem|px)$"
+        },
+        "lg": {
+          "type": "string",
+          "pattern": "^\\d*\\.?\\d+(rem|px)$"
+        }
+      },
+      "required": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "additionalProperties": false
+    },
+    "shadows": {
+      "type": "object",
+      "properties": {
+        "sm": {
+          "type": "string",
+          "minLength": 1
+        },
+        "md": {
+          "type": "string",
+          "minLength": 1
+        },
+        "lg": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "colorScheme",
+    "colors",
+    "fonts",
+    "radii",
+    "shadows"
+  ],
+  "additionalProperties": false
+}

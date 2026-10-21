@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens. Tailwind's default palette, fonts, radii and shadows are
+ * removed so that every utility resolves to a theme variable (--t-*). The
+ * variables are set on <html> by the root layout from the active theme JSON
+ * (src/modules/theming). See docs/theming.md.
+ */
+@theme {
+  --color-*: initial;
+  --font-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+}
+
+@theme inline {
+  --color-background: var(--t-color-background);
+  --color-foreground: var(--t-color-foreground);
+  --color-surface: var(--t-color-surface);
+  --color-surface-muted: var(--t-color-surface-muted);
+  --color-muted-foreground: var(--t-color-muted-foreground);
+  --color-primary: var(--t-color-primary);
+  --color-primary-foreground: var(--t-color-primary-foreground);
+  --color-secondary: var(--t-color-secondary);
+  --color-secondary-foreground: var(--t-color-secondary-foreground);
+  --color-accent: var(--t-color-accent);
+  --color-accent-foreground: var(--t-color-accent-foreground);
+  --color-border: var(--t-color-border);
+  --color-input: var(--t-color-input);
+  --color-ring: var(--t-color-ring);
+  --color-danger: var(--t-color-danger);
+  --color-danger-foreground: var(--t-color-danger-foreground);
+  --color-success: var(--t-color-success);
+  --color-success-foreground: var(--t-color-success-foreground);
+
+  --font-display: var(--t-font-display), ui-serif, Georgia, serif;
+  --font-sans: var(--t-font-body), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-sm: var(--t-radius-sm);
+  --radius-md: var(--t-radius-md);
+  --radius-lg: var(--t-radius-lg);
+
+  --shadow-sm: var(--t-shadow-sm);
+  --shadow-md: var(--t-shadow-md);
+  --shadow-lg: var(--t-shadow-lg);
+}
+
+@layer base {
+  * {
+    border-color: var(--t-color-border);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--t-color-background);
+    color: var(--t-color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--t-color-ring);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

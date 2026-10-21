@@ -1,0 +1,8 @@
+---
+description: Project rules. Always read AGENTS.md first.
+alwaysApply: true
+---
+
+Read and follow `AGENTS.md` at the repo root. It is the single source of truth for architecture, commands, conventions, folder rules, the definition of done, and the workflow loop. Do not duplicate or override it here.
+
+@AGENTS.md

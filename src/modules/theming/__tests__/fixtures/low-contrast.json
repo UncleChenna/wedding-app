@@ -1,0 +1,28 @@
+{
+  "id": "low-contrast",
+  "name": "Low contrast (test fixture)",
+  "colorScheme": "light",
+  "colors": {
+    "background": "#FFFFFF",
+    "foreground": "#999999",
+    "surface": "#FFFFFF",
+    "surface-muted": "#F5F5F5",
+    "muted-foreground": "#BBBBBB",
+    "primary": "#F0C060",
+    "primary-foreground": "#FFFFFF",
+    "secondary": "#EEEEEE",
+    "secondary-foreground": "#333333",
+    "accent": "#8C3B4A",
+    "accent-foreground": "#FFFFFF",
+    "border": "#EEEEEE",
+    "input": "#DDDDDD",
+    "ring": "#F0C060",
+    "danger": "#A12C2C",
+    "danger-foreground": "#FFFFFF",
+    "success": "#2F6B47",
+    "success-foreground": "#FFFFFF"
+  },
+  "fonts": { "display": "cormorant", "body": "inter" },
+  "radii": { "sm": "0.25rem", "md": "0.5rem", "lg": "1rem" },
+  "shadows": { "sm": "none", "md": "none", "lg": "none" }
+}

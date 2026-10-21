@@ -1,0 +1,40 @@
+{
+  "$schema": "./theme.schema.json",
+  "id": "midnight-champagne",
+  "name": "Midnight & Champagne",
+  "colorScheme": "dark",
+  "colors": {
+    "background": "#0F1420",
+    "foreground": "#F4EFE6",
+    "surface": "#171D2B",
+    "surface-muted": "#1F2636",
+    "muted-foreground": "#B5AC9E",
+    "primary": "#D9B97A",
+    "primary-foreground": "#1A1408",
+    "secondary": "#262E40",
+    "secondary-foreground": "#EDE6D8",
+    "accent": "#C98F9B",
+    "accent-foreground": "#1A0E11",
+    "border": "#2C3448",
+    "input": "#6B7489",
+    "ring": "#D9B97A",
+    "danger": "#F08A8A",
+    "danger-foreground": "#2A0909",
+    "success": "#7CC79A",
+    "success-foreground": "#0B1F13"
+  },
+  "fonts": {
+    "display": "playfair",
+    "body": "jost"
+  },
+  "radii": {
+    "sm": "0.25rem",
+    "md": "0.5rem",
+    "lg": "0.875rem"
+  },
+  "shadows": {
+    "sm": "0 1px 2px 0 rgb(0 0 0 / 0.4)",
+    "md": "0 6px 20px -6px rgb(0 0 0 / 0.55)",
+    "lg": "0 20px 48px -12px rgb(0 0 0 / 0.7)"
+  }
+}
