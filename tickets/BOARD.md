@@ -29,7 +29,7 @@ Launch and the day itself            ░░░░░░░░░░░░░░�
 
 Longest remaining dependency chain: 21 tickets, 43 points (about 43 agent-hours).
 
-1. [TICKET-002](TICKET-002-allow-reads-outside-the-checkout-and-fix-shell-g.md) Allow reads outside the checkout and fix shell-guard false positives · S · in_progress
+1. [TICKET-002](TICKET-002-allow-reads-outside-the-checkout-and-fix-shell-g.md) Allow reads outside the checkout and fix shell-guard false positives · S · in_review
 2. [TICKET-003](TICKET-003-verify-database-bootstrap-is-idempotent.md) Verify database bootstrap is idempotent · M · todo
 3. [TICKET-023](TICKET-023-redesign-invitation-guest-and-rsvp-tables-to-mat.md) Redesign invitation, guest and RSVP tables to match the PRD · L · todo
 4. [TICKET-025](TICKET-025-add-event-settings-and-rsvp-change-log-tables.md) Add event settings and RSVP change-log tables · M · todo
@@ -110,16 +110,15 @@ Open tickets labelled `human` (decisions, accounts, physical tasks), in `pnpm t:
 
 ## Board
 
-### In progress (1)
+### In progress (0)
+
+_None._
+
+### In review (4)
 
 | Ticket | Title | Epic | Priority | Est. | Owner | Blocked by |
 | ------ | ----- | ---- | -------- | ---- | ----- | ---------- |
 | [TICKET-002](TICKET-002-allow-reads-outside-the-checkout-and-fix-shell-g.md) | Allow reads outside the checkout and fix shell-guard false positives | foundations | urgent | S | divine |  |
-
-### In review (3)
-
-| Ticket | Title | Epic | Priority | Est. | Owner | Blocked by |
-| ------ | ----- | ---- | -------- | ---- | ----- | ---------- |
 | [TICKET-186](TICKET-186-use-ticket-prefix.md) | Use TICKET as the ticket prefix | foundations | urgent | M | divine |  |
 | [TICKET-187](TICKET-187-require-backlog-alignment-before-coding.md) | Require backlog alignment before coding | foundations | urgent | S | divine |  |
 | [TICKET-188](TICKET-188-require-ticket-named-branches-and-detailed-devel.md) | Require ticket-named branches and detailed develop PRs | foundations | urgent | S | divine |  |

@@ -2,7 +2,7 @@
 id: TICKET-002
 title: Allow reads outside the checkout and fix shell-guard false positives
 epic: foundations
-status: in_progress
+status: in_review
 priority: urgent
 estimate: S
 labels: [infra, test, security]
