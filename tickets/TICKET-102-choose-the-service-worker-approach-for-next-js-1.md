@@ -2,7 +2,7 @@
 id: TICKET-102
 title: Choose the service worker approach for Next.js 16 in an ADR
 epic: pwa
-status: in_review
+status: in_progress
 priority: urgent
 estimate: S
 labels: [pwa, docs]
@@ -65,3 +65,4 @@ See: [Tech stack and architecture](../docs/prd.md#tech-stack-and-architecture).
 - 2026-10-21 — todo → in_progress — divine (codex)
 - 2026-10-21 — in_progress → in_review — divine (codex)
 - 2026-10-21 — in_review → in_progress — divine (codex) — Resolve remaining PR conflicts with develop
+- 2026-10-21 — in_review → in_progress — divine (codex) — Resolve new conflicts after PR 9 merged
