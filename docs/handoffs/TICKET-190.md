@@ -11,3 +11,5 @@ Lesson: long checkout paths need overflow-wrap to keep the status line inside na
 Next: open the TICKET-190 PR into develop using pnpm t:pr; human review and merge only. PR is discoverable by the exact branch TICKET-190. No implementation blockers. Local preview runs at http://127.0.0.1:4173 while its process remains active.
 
 Repeat verification exposed macOS filesystem notification latency beyond the default assertion wait. The watcher test now allows five seconds for the same refresh assertion (periodic fallback remains 60 seconds in that test), and its targeted three tests pass.
+
+The first timeout adjustment alone did not stabilize the full suite. The watcher fixture now resolves the macOS temporary path, creates an existing ticket before watching and allows the OS subscription to establish before the edit. All 115 unit tests pass together. Keep this fixture pattern for future watcher tests; the assertion still must observe a refresh before the 60-second timer fallback.

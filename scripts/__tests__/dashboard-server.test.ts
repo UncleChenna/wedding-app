@@ -1,4 +1,4 @@
-import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { mkdtempSync, mkdirSync, readFileSync, realpathSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, expect, it } from "vitest";
@@ -52,8 +52,9 @@ it("serves loopback GETs, rejects cross-site requests, and preserves last valid 
 });
 
 it("refreshes after file changes without modifying ticket files", async () => {
-  const dir = mkdtempSync(join(tmpdir(), "ticket-dashboard-"));
+  const dir = realpathSync(mkdtempSync(join(tmpdir(), "ticket-dashboard-")));
   mkdirSync(join(dir, "tickets"));
+  writeFileSync(join(dir, "tickets/example.md"), "original ticket");
   let calls = 0;
   const app = await startDashboard({
     cwd: dir,
@@ -72,6 +73,8 @@ it("refreshes after file changes without modifying ticket files", async () => {
     rmSync(dir, { recursive: true, force: true });
   });
   await app.refresh();
+  // Let the OS establish its directory subscription before editing the existing file.
+  await new Promise((done) => setTimeout(done, 100));
   const before = calls;
   writeFileSync(join(dir, "tickets/example.md"), "human edit");
   // macOS may coalesce filesystem notifications beyond the default poll timeout.
