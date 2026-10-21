@@ -41,10 +41,10 @@ See: [Current state](../docs/current-state.md) · [Working together](../docs/col
 
 ## Acceptance criteria
 
-- [ ] A post-tool hook run with `.claude/skills` present exits 0 and prints `{}`.
-- [ ] `git check-ignore .claude/skills` and `git ls-files .claude/skills` no longer contradict each other.
-- [ ] A unit test fails on the old behaviour and passes on the new.
-- [ ] `pnpm agents:check` passes in a fresh clone.
+- [x] A post-tool hook run with `.claude/skills` present exits 0 and prints `{}`.
+- [x] `git check-ignore .claude/skills` and `git ls-files .claude/skills` no longer contradict each other.
+- [x] A unit test fails on the old behaviour and passes on the new.
+- [x] `pnpm agents:check` passes in a fresh clone.
 
 ## Test plan
 
@@ -60,7 +60,10 @@ See: [Current state](../docs/current-state.md) · [Working together](../docs/col
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-10-21: Root cause: the post-tool hook passed every changed path to Prettier, including the `.claude/skills` symlink, and Prettier refuses symlinks. Fix: only regular files are formatted (`lstatSync(...).isFile()`). Reproduced with the unfixed hook in a fresh clone (the exact "is a symbolic link" error), then fixed.
+- 2026-10-21: Index vs ignore: the history rewrite already dropped `.claude/skills` from git, so it is now ignored and untracked. `pnpm agents:check` now fails with a fix-up command if it is ever committed again (proved by force-adding it in a clone). `.gitignore` needed no change.
+- 2026-10-21: Incident: the first version of the new test ran `git init/commit` in a temp dir without clearing `GIT_DIR`/`GIT_INDEX_FILE`. Run by the pre-commit gate, it committed a fixture to this branch (undone with a mixed reset before any push) and set `core.bare=true` in the shared `.git/config`. That setting still needs a human to restore it (`git config --file .git/config core.bare false`); the agent was not permitted to change shared config. Fix: `scripts/__tests__/git-env.ts` `isolatedGitEnv()`, now used by every git-spawning test, including `tickets.test.ts`. Proved by running the script suite with `GIT_DIR` pointed at a decoy repo: decoy HEAD and config unchanged.
+- 2026-10-21: Evidence: `pnpm verify` passed (168 tickets valid, 70 unit tests, build, 17 smoke). Bash tool calls in this worktree no longer report PostToolUse errors.
 
 ## Activity log
 
