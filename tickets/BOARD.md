@@ -110,9 +110,11 @@ Open tickets labelled `human` (decisions, accounts, physical tasks), in `pnpm t:
 
 ## Board
 
-### In progress (0)
+### In progress (1)
 
-_None._
+| Ticket | Title | Epic | Priority | Est. | Owner | Blocked by |
+| ------ | ----- | ---- | -------- | ---- | ----- | ---------- |
+| [TICKET-016](TICKET-016-add-motion-primitives-that-honour-reduced-motion.md) | Add motion primitives that honour reduced motion | design-system | urgent | M | divine |  |
 
 ### In review (4)
 
@@ -127,7 +129,7 @@ _None._
 
 _None._
 
-### Todo (181)
+### Todo (180)
 
 | Ticket | Title | Epic | Priority | Est. | Owner | Blocked by |
 | ------ | ----- | ---- | -------- | ---- | ----- | ---------- |
@@ -145,7 +147,6 @@ _None._
 | [TICKET-013](TICKET-013-ship-third-and-fourth-preset-themes.md) | Ship third and fourth preset themes | design-system | urgent | M |  | TICKET-010, TICKET-011, TICKET-170 |
 | [TICKET-014](TICKET-014-create-the-couple-s-theme-from-their-colours-and.md) | Create the couple's theme from their colours and photos | design-system | urgent | S |  | TICKET-008, TICKET-013, TICKET-170 |
 | [TICKET-015](TICKET-015-define-the-typography-scale-and-font-roles.md) | Define the typography scale and font roles | design-system | urgent | M |  | TICKET-009 |
-| [TICKET-016](TICKET-016-add-motion-primitives-that-honour-reduced-motion.md) | Add motion primitives that honour reduced motion | design-system | urgent | M |  |  |
 | [TICKET-017](TICKET-017-harden-base-components-for-focus-tap-targets-and.md) | Harden base components for focus, tap targets and dialogs | design-system | urgent | L |  | TICKET-010 |
 | [TICKET-018](TICKET-018-add-form-components-for-rsvp-ordering-and-admin.md) | Add form components for RSVP, ordering and admin | design-system | urgent | M |  | TICKET-017 |
 | [TICKET-019](TICKET-019-add-staff-status-panels-and-badges-for-arm-s-len.md) | Add staff status panels and badges for arm's-length reading | design-system | urgent | S |  | TICKET-010, TICKET-017 |
