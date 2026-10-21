@@ -7,7 +7,7 @@ description: Use for every piece of work: pick, claim, isolate, build, review, c
 
 One ticket at a time, one worktree per ticket. Rules: [docs/tickets.md](../../../docs/tickets.md). Use your real name as `<you>` and your agent (`claude`, `codex`, `cursor`) as `<agent>`.
 
-1. **Pick.** From the primary checkout: `pnpm t:next` (add `--module <m>` for your area; `human` tickets are skipped). Read the ticket, its PRD links and its blockers with `pnpm t:show <id>`.
+1. **Review and pick.** First complete the mandatory before-coding check in [AGENTS.md](../../../AGENTS.md#mandatory-check-before-coding): review the live board, roadmap, current handoff, intended ticket and its dependencies/PRD. Confirm scope, ownership and readiness, then state the ticket ID, outcome and verification plan. From the primary checkout: `pnpm t:next` (add `--module <m>` for your area; `human` tickets are skipped). Read the ticket, its PRD links and its blockers with `pnpm t:show <id>`.
 2. **Claim.** `pnpm t:claim <id> --owner <you> --agent <agent>`. A failure ("already claimed" or "blocked by") means pick another ticket; never work around it.
 3. **Isolate.** `pnpm wt:new <id>`, then `cd .worktrees/<id>`. The branch is `<you>/<id>-<slug>`. Run your agent there; never share an editing checkout.
 4. **Start.** `pnpm t:move <id> in_progress --push`. This commits the ticket change as `<id>: move to in_progress` and pushes immediately, so the other developer sees it.

@@ -14,6 +14,13 @@ Add-only history, newest first: prepend new entries below this template, never r
 
 ---
 
+## 2026-10-21 09:56 UTC — TICKET-187 — Mandatory backlog alignment before coding
+
+- **Branch:** `divine/TICKET-187-backlog-preflight`.
+- **Changed:** AGENTS.md now requires live board/next, roadmap, intended ticket, blockers, PRD and recent handoff review before coding. Agents confirm scope/ownership/readiness, state outcome and verification, and recheck after scope changes. Both workflow skills link to this canonical rule; Claude and other integrations inherit it.
+- **Checks:** Formatting and ticket validation pass. Full `pnpm verify` with public local defaults passed: 73 unit tests, build, 17 smoke passes and 7 existing skips. Shared-instruction imports and links inspected.
+- **Next:** Review the stacked instruction PR; expose the same verified commit in the clean original IDE checkout. No product code changes.
+
 ## 2026-10-21 09:41 UTC — TICKET-186 — Rename ticket prefix
 
 - **Branch:** `divine/TICKET-186-ticket-prefix`.

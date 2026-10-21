@@ -7,7 +7,7 @@ Live state (including claims not yet merged): `pnpm t:board`. Rules: [docs/ticke
 ## Progress by epic
 
 ```text
-Foundations fix-ups                  ░░░░░░░░░░░░░░░░░░░░   0/8     0%
+Foundations fix-ups                  ░░░░░░░░░░░░░░░░░░░░   0/9     0%
 Design system and theming            ░░░░░░░░░░░░░░░░░░░░   0/17    0%
 Data and auth                        ░░░░░░░░░░░░░░░░░░░░   0/13    0%
 Invitations and RSVP                 ░░░░░░░░░░░░░░░░░░░░   0/17    0%
@@ -114,11 +114,12 @@ Open tickets labelled `human` (decisions, accounts, physical tasks), in `pnpm t:
 
 _None._
 
-### In review (1)
+### In review (2)
 
 | Ticket | Title | Epic | Priority | Est. | Owner | Blocked by |
 | ------ | ----- | ---- | -------- | ---- | ----- | ---------- |
 | [TICKET-186](TICKET-186-use-ticket-prefix.md) | Use TICKET as the ticket prefix | foundations | urgent | M | divine |  |
+| [TICKET-187](TICKET-187-require-backlog-alignment-before-coding.md) | Require backlog alignment before coding | foundations | urgent | S | divine |  |
 
 ### Blocked (0)
 
