@@ -68,7 +68,7 @@ Dependency direction: `app → feature modules → theming/shared`. Never the re
 
 - **Env**: Zod schemas in `shared/lib/env/schema.ts`; validated at server start in `src/instrumentation.ts`.
 - **Errors**: `app/error.tsx` (route), `app/global-error.tsx` (root layout), `app/not-found.tsx` (404). Expected errors are return values.
-- **Logging**: `createLogger({ module })` — JSON lines in production, readable in dev, secrets redacted.
+- **Logging**: `createLogger({ module })` — JSON lines in production, readable in dev, sensitive keys redacted. Server Actions call `runLoggedAction` for request IDs and safe lifecycle logs; see [observability](observability.md).
 - **Security headers**: `shared/lib/security-headers.ts`, applied in `next.config.ts` (CSP, HSTS, frame-ancestors none, camera allowed on self only). See ADR 0006.
 
 ## Testing

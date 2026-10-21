@@ -6,3 +6,5 @@
 - Generated migrations are added, never rewritten after application. Theme schema comes from `pnpm themes:schema`. Installed dependencies, `.next/`, and `supabase/.temp/` are not source.
 - Themes use CSS variables and Tailwind token classes; see the design principles and theming guide. Tokens, not component literals, define colours/font families/radii/shadows.
 - Every completed task has acceptance evidence, a passing full gate, UI checklist evidence where relevant, updated documentation, a handoff, ticket-prefixed commits (`TICKET-NNN: …`) with no AI attribution, and a reviewed PR. Work is tracked in [tickets](tickets.md).
+
+- Server Actions use `runLoggedAction` from `shared/server/action-logger` for per-request correlation and safe lifecycle logs. See [request-scoped logging](observability.md); never log raw inputs or exception text.

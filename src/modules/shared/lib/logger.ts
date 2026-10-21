@@ -37,7 +37,8 @@ function serialize(value: unknown, depth = 0): unknown {
   if (value instanceof Error) {
     return { name: value.name, message: value.message, stack: value.stack };
   }
-  if (depth > 5 || value === null || typeof value !== "object") return value;
+  if (depth > 5) return "[truncated]";
+  if (value === null || typeof value !== "object") return value;
   if (Array.isArray(value)) return value.map((item) => serialize(item, depth + 1));
   const out: Record<string, unknown> = {};
   for (const [key, inner] of Object.entries(value)) {
@@ -61,10 +62,13 @@ export function createLogger(bindings: LogFields = {}, options: LoggerOptions = 
   const format = options.format ?? (process.env.NODE_ENV === "development" ? "pretty" : "json");
   const write = options.write ?? defaultWrite;
   const now = options.now ?? (() => new Date());
+  // A request child keeps its correlation ID even when later fields reuse the key.
+  const requestBinding =
+    typeof bindings.requestId === "string" ? { requestId: bindings.requestId } : {};
 
   function log(msgLevel: LogLevel, msg: string, fields: LogFields = {}) {
     if (LEVEL_ORDER[msgLevel] < LEVEL_ORDER[level]) return;
-    const payload = serialize({ ...bindings, ...fields }) as LogFields;
+    const payload = serialize({ ...bindings, ...fields, ...requestBinding }) as LogFields;
     const time = now().toISOString();
     const line =
       format === "json"
@@ -80,7 +84,7 @@ export function createLogger(bindings: LogFields = {}, options: LoggerOptions = 
     info: (msg, fields) => log("info", msg, fields),
     warn: (msg, fields) => log("warn", msg, fields),
     error: (msg, fields) => log("error", msg, fields),
-    child: (more) => createLogger({ ...bindings, ...more }, options),
+    child: (more) => createLogger({ ...bindings, ...more, ...requestBinding }, options),
   };
 }
 

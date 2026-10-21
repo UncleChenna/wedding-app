@@ -39,8 +39,8 @@ See: [Tech stack and architecture](../docs/prd.md#tech-stack-and-architecture).
 
 ## Acceptance criteria
 
-- [ ] Each server action log line has a request id (unit).
-- [ ] Tokens are redacted in logs (unit).
+- [x] Each server action log line has a request id (unit).
+- [x] Tokens are redacted in logs (unit).
 
 ## Test plan
 
@@ -53,7 +53,7 @@ See: [Tech stack and architecture](../docs/prd.md#tech-stack-and-architecture).
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-10-21: Added server-only runLoggedAction with validated incoming request ID or UUID, request-local child logs, safe lifecycle records and unchanged handler return/throw behavior. Request IDs cannot be overridden by later fields/children; objects beyond the redaction depth limit are truncated rather than emitted raw. Initial logger regressions: 2 failed / 5 passed. Focused suite: 17 passed. Quick/full gates: 116 unit tests, production build, 17 smoke passes, 7 existing skips. No feature Server Actions exist yet; docs/observability.md requires future actions to use the helper and explains safe fields and redaction limits.
 
 ## Activity log
 

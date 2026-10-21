@@ -14,6 +14,14 @@ Add-only history, newest first: prepend new entries below this template, never r
 
 ---
 
+## 2026-10-21 — TICKET-141 — Request-scoped action logs
+
+- **Who / agent / branch:** divine · codex · `TICKET-141`.
+- **Changed:** Server-only action wrapper, pure request-ID validation, immutable correlation bindings, safe depth truncation, logger/action tests and observability guidance. Lifecycle logs omit inputs, outputs and exception text.
+- **Checks:** Before fixes: 2 logger regressions failed, 5 passed. Focused logging suite: 17 passed. Quick and full verify passed: 116 unit tests, production build, 17 smoke passes, 7 existing skips. No UI change.
+- **Learned:** A depth guard must truncate, not return unredacted objects; callers must not replace a request ID through child or per-message fields. Key redaction does not sanitize arbitrary free text.
+- **Next:** Human reviews and merges the PR into develop. Future feature actions adopt runLoggedAction; there were no existing feature endpoints to migrate or live action flows to exercise.
+
 ## 2026-10-21 — TICKET-002 — Safe reads and shell write targets
 
 - **Who / agent / branch:** divine · codex · `TICKET-002`.
