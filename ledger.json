@@ -52,6 +52,21 @@
       "updated": "2026-10-21",
       "reason": "",
       "resume_to": ""
+    },
+    "WED-188": {
+      "log": [
+        "- 2026-10-21 — todo → claimed — divine (codex)"
+      ],
+      "status": "todo",
+      "owner": "divine",
+      "agent": "codex",
+      "branch": "divine/TICKET-188-require-ticket-named-branches-and-detailed-devel",
+      "pr": "",
+      "started": "",
+      "completed": "",
+      "updated": "2026-10-21",
+      "reason": "",
+      "resume_to": ""
     }
   }
 }
