@@ -91,7 +91,7 @@ export async function main() {
       const tool = input.tool_input ?? input;
       const shell = tool.command ?? tool.cmd ?? "";
       if (/\bgit\b[^\n]*\bcommit\b/.test(shell) && isMain(git(["branch", "--show-current"], cwd)))
-        throw new Error("No commits on main. Create a task branch/worktree.");
+        throw new Error("No commits on main or develop. Create a task branch/worktree.");
       // Catch direct shell writes; arbitrary programs are additionally checked post-tool and at commit.
       if (
         /(?:>|\b(?:rm|mv|cp|tee|sed|perl)\b)/.test(shell) &&
@@ -117,14 +117,24 @@ export async function main() {
       }
     } else if (mode === "commit") {
       if (isMain(git(["branch", "--show-current"], cwd)) || !git(["branch", "--show-current"], cwd))
-        throw new Error("Commits require a named task branch, never main or detached HEAD.");
+        throw new Error(
+          "Commits require a named task branch, never main, develop or detached HEAD.",
+        );
       verifyProtected(cwd, changed(cwd, true), true);
       command(cwd, ["exec", "lint-staged"]);
       command(cwd, ["verify:quick"]);
     } else if (mode === "push") {
       const refs = readFileSync(0, "utf8");
-      if (refs.split("\n").some((line) => line.split(" ")[2] === "refs/heads/main"))
-        throw new Error("Direct pushes to main are blocked. Use a reviewed PR.");
+      if (
+        refs
+          .split("\n")
+          .some((line) =>
+            ["refs/heads/main", "refs/heads/master", "refs/heads/develop"].includes(
+              line.split(" ")[2],
+            ),
+          )
+      )
+        throw new Error("Direct pushes to main/develop are blocked. Use a reviewed PR.");
     } else if (mode === "stop") {
       verifyProtected(cwd, changed(cwd));
       command(cwd, ["verify:quick"]);

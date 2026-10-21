@@ -52,7 +52,7 @@ export async function lock(name, fn, cwd = process.cwd()) {
   }
 }
 export function isMain(meta) {
-  return /^(main|master)$/.test(meta);
+  return /^(main|master|develop)$/.test(meta);
 }
 export function cli(main) {
   main().catch((error) => {

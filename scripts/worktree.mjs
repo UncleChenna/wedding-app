@@ -54,7 +54,7 @@ async function main() {
         if (git(["status", "--porcelain"], path))
           throw new Error("Worktree has changes; commit or preserve them before removal.");
         if (git(["log", "--oneline", `${state[id].baseCommit}..HEAD`], path)) {
-          git(["fetch", "origin", "main"], path);
+          git(["fetch", "origin", "develop"], path);
           git(["merge-base", "--is-ancestor", "HEAD", "FETCH_HEAD"], path);
         }
         pnpm(

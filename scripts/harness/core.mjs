@@ -4,13 +4,8 @@ export function safeId(value) {
   return value;
 }
 export function branchName(owner, task) {
-  const slug =
-    task.title
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-|-$/g, "")
-      .slice(0, 48) || "task";
-  return `${safeId(owner)}/${safeId(task.id)}-${slug}`;
+  safeId(owner);
+  return safeId(task.id);
 }
 export function protectedPath(path) {
   const p = path.replaceAll("\\", "/").replace(/^\.\//, "");

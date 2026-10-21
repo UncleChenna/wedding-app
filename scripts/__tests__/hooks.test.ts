@@ -89,3 +89,12 @@ it("rejects direct pushes to main", () => {
   expect(result.status).toBe(2);
   expect(result.stderr).toContain("Direct pushes to main");
 });
+
+it("rejects direct pushes to develop", () => {
+  const result = spawnSync(process.execPath, [hook, "push"], {
+    input: "refs/heads/TICKET-188 abc refs/heads/develop def\n",
+    encoding: "utf8",
+  });
+  expect(result.status).toBe(2);
+  expect(result.stderr).toContain("Direct pushes to main/develop");
+});

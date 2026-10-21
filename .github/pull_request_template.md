@@ -4,7 +4,23 @@ Ticket: TICKET-NNN <!-- required; the PR title must also start with the ticket i
 
 # Summary
 
-<!-- Problem, resulting behaviour, and validation. -->
+<!-- Explain the concrete problem and resulting behavior. Target develop; human review and merge only. -->
+
+# Changes
+
+<!-- Describe the implementation and affected areas for a reviewer who has not seen the conversation. -->
+
+# Acceptance criteria and evidence
+
+<!-- Map each ticket criterion to its implementation and evidence; list incomplete work explicitly. -->
+
+# Verification
+
+<!-- Exact tests/checks run, outcomes, relevant logs and anything not verified. -->
+
+# Risks and rollout
+
+<!-- Limitations, dependencies, migration/deployment/rollback steps; explain when none apply. -->
 
 # Screenshots
 

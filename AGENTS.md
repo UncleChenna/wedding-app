@@ -61,7 +61,7 @@ Drizzle, Zod, Vitest, Playwright, pnpm 12, Node 24. Product: [PRD](docs/prd.md).
 
 ## Non-negotiable rules
 
-- One editing agent per worktree; claim a ticket before work. Never commit/push directly to main.
+- One editing agent per worktree; claim a ticket before work. Never commit/push directly to main or develop.
 - Keep changes within the task; preserve other people's uncommitted work.
 - TypeScript strict: no `any`, `@ts-ignore`, or unexplained non-null assertions.
 - Kebab-case files, PascalCase components, named exports except Next-required defaults.
@@ -88,6 +88,23 @@ with evidence. Nested `src/AGENTS.md` summarises frontend rules.
 All work happens on a claimed ticket in [`tickets/`](tickets/BOARD.md). Rules: [docs/tickets.md](docs/tickets.md).
 Exact commands: the [`ticket-workflow` skill](.agents/skills/ticket-workflow/SKILL.md).
 
+### Traceable branches and human review
+
+- Keep the ticket ID in its filename (`tickets/TICKET-NNN-description.md`), commit subjects and PR title.
+  Name every new work branch **exactly** after its ticket ID: `TICKET-188`, with no owner prefix or extra slug.
+- Push commits to `origin/<ticket-id>` at the start and throughout the task. Before handing off, push all work
+  and open a PR targeting **`develop`**; unfinished work uses a draft PR with remaining work listed.
+- One ticket per branch/PR. Link the ticket and record the PR URL in its metadata through the CLI. No untracked
+  side tasks or local-only finished work; create a ticket for additional scope before implementing it.
+- PR descriptions must explain the problem and result, concrete changes, acceptance criteria with evidence,
+  tests run and their actual results, untested cases, risks/limitations, and any migration or rollback steps.
+  Include screenshots for UI changes and exact review steps where useful. Empty templates and vague summaries
+  such as "done" are not sufficient. Update the description when the implementation changes.
+- The human reviews and merges. Agents must **never merge, enable auto-merge, or push directly to `develop` or
+  `main`**. Keep the ticket `in_review` until its PR is confirmed merged into `develop`, then mark it `done`.
+- Existing active branches retain their names during migration; do not rename another owner's branch or merge
+  their work. New claims and branches follow the exact-ID rule.
+
 ### Mandatory check before coding
 
 Before writing or changing code, review the task list to confirm you are working on the right thing:
@@ -105,13 +122,13 @@ Before writing or changing code, review the task list to confirm you are working
 
 1. **Pick the work.** `pnpm t:next`, then `pnpm t:claim <id> --owner <you> --agent <agent>`. Never work without a
    claimed ticket; one ticket at a time.
-2. **Isolate it.** `pnpm wt:new <id>`; work only in `.worktrees/<id>` on its branch (the name contains the id).
+2. **Isolate it.** `pnpm wt:new <id>`; work only in `.worktrees/<id>` on its branch named exactly after the ticket ID, e.g. `TICKET-188`.
 3. **Start.** `pnpm t:move <id> in_progress --push`, so the change is committed and pushed immediately.
 4. **Build.** Dated plan, failing tests, implementation, `pnpm verify`. Commit in small steps; every subject starts
    with the ticket id, e.g. `TICKET-014: add RSVP form validation`.
 5. **Finish.** Tick the acceptance criteria, fill in the notes, write the PR body, then `pnpm t:pr <id>`. It verifies,
-   pushes, opens a PR titled `<id>: <title>` from the template, moves the ticket to `in_review` and pushes.
-6. **Close.** After merge: `pnpm t:move <id> done` (records completion date and PR link), then `pnpm wt:remove <id>`.
+   pushes, opens a PR titled `<id>: <title>` targeting `develop` from the template, moves the ticket to `in_review` and pushes.
+6. **Close.** After the human reviews and merges into `develop`: `pnpm t:move <id> done` (records completion date and PR link), then `pnpm wt:remove <id>`.
    The ticket file and boards catch up on your next ticket branch (`t:move … in_progress` syncs them).
 7. **Blocked?** `pnpm t:move <id> blocked --reason "…" --push`, then pick another ticket. Never silently skip anything.
 8. **Hand off.** Prepend an entry to [docs/progress.md](docs/progress.md) before ending any session.

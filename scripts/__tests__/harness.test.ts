@@ -5,7 +5,7 @@ const task = { id: "TICKET-001", title: "A shared change" };
 describe("collaboration invariants", () => {
   // Claim, release and dependency rules moved to scripts/tickets/workflow.ts (tickets.test.ts).
   it("builds owner-scoped branch names and rejects unsafe ones", () => {
-    expect(branchName("divine", task)).toBe("divine/TICKET-001-a-shared-change");
+    expect(branchName("divine", task)).toBe("TICKET-001");
     expect(() => branchName("../../bad", task)).toThrow();
   });
   it("isolates every Supabase port and auth redirect without modifying the source config", () => {

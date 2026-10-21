@@ -422,6 +422,7 @@ describe("ticket CLI with a shared remote", () => {
     const owner = ledger.tickets["WED-001"].owner as string;
     expect(["divine", "friend"]).toContain(owner);
     expect(ledger.tickets["TICKET-001"]).toBeUndefined();
+    expect(ledger.tickets["WED-001"].branch).toBe("TICKET-001");
     expect((await t(a, "show", "WED-001", "--json")).out).toContain("TICKET-001");
     // The loser sees the live claim; blocked work cannot be claimed; only the owner may release.
     const loser = owner === "divine" ? b : a;

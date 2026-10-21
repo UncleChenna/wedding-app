@@ -8,6 +8,7 @@ import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 import { activity, criteria, parseTicket, serializeTicket } from "./tickets/format";
+import { REVIEW_BASE, reviewBodyProblems } from "./tickets/review";
 import { ready } from "./tickets/graph";
 import {
   git,
@@ -96,7 +97,7 @@ const today = () => process.env.TICKETS_TODAY ?? new Date().toLocaleDateString("
 const currentBranch = (cwd: string) => tryGit(["branch", "--show-current"], cwd) ?? "";
 /** Ticket files are only rewritten off main, so the coordination checkout stays clean. */
 const canWriteFiles = (cwd: string, mode: LedgerMode) =>
-  mode === "off" || !/^(main|master|)$/.test(currentBranch(cwd));
+  mode === "off" || !/^(main|master|develop|)$/.test(currentBranch(cwd));
 
 function actor(args: Args, cwd: string): string {
   const value =
@@ -236,11 +237,15 @@ function pushTickets(cwd: string, id: string, message: string) {
   if (!stream("git", ["push", "-u", "origin", "HEAD"], cwd)) throw new Error("Push failed.");
 }
 
-function prFor(cwd: string, ref: string): { url: string; state: string } | null {
+function prFor(
+  cwd: string,
+  ref: string,
+): { url: string; state: string; baseRefName: string } | null {
   try {
-    return JSON.parse(run("gh", ["pr", "view", ref, "--json", "url,state"], cwd)) as {
+    return JSON.parse(run("gh", ["pr", "view", ref, "--json", "url,state,baseRefName"], cwd)) as {
       url: string;
       state: string;
+      baseRefName: string;
     };
   } catch {
     return null;
@@ -274,17 +279,17 @@ function gatherFacts(
     tryGit(["fetch", "--quiet", "origin", currentBranch(cwd)], cwd);
     facts.pushed = tryGit(["rev-parse", `refs/remotes/origin/${currentBranch(cwd)}`], cwd) === head;
     const pr = prFor(cwd, currentBranch(cwd));
-    facts.openPr = pr?.state === "OPEN" ? pr.url : undefined;
+    facts.openPr = pr?.state === "OPEN" && pr.baseRefName === REVIEW_BASE ? pr.url : undefined;
     facts.verified = process.env.TICKETS_VERIFIED_SHA === head || !verify;
   }
   if (to === "done") {
     const pr = prFor(cwd, ticket.meta.pr || ticket.meta.branch);
-    facts.mergedPr = pr?.state === "MERGED" ? pr.url : undefined;
+    facts.mergedPr = pr?.state === "MERGED" && pr.baseRefName === REVIEW_BASE ? pr.url : undefined;
     // Criteria are judged on what actually merged.
     let merged = ticket;
-    if (tryGit(["fetch", "--quiet", "origin", "main"], cwd) !== null) {
+    if (tryGit(["fetch", "--quiet", "origin", REVIEW_BASE], cwd) !== null) {
       const text =
-        tryGit(["show", `refs/remotes/origin/main:${ticket.path}`], cwd) ??
+        tryGit(["show", `refs/remotes/origin/${REVIEW_BASE}:${ticket.path}`], cwd) ??
         tryGit(["show", `FETCH_HEAD:${ticket.path}`], cwd);
       if (text) merged = parseTicket(text, ticket.path);
     }
@@ -345,9 +350,9 @@ function newTicket(args: Args): void {
   );
   const files = loadTickets(cwd);
   // Ids also come from main and the ledger, so parallel branches never reuse a number.
-  tryGit(["fetch", "--quiet", "origin", "main"], cwd);
+  tryGit(["fetch", "--quiet", "origin", REVIEW_BASE], cwd);
   const onMain = (
-    tryGit(["ls-tree", "--name-only", "refs/remotes/origin/main", "tickets/"], cwd) ?? ""
+    tryGit(["ls-tree", "--name-only", `refs/remotes/origin/${REVIEW_BASE}`, "tickets/"], cwd) ?? ""
   )
     .split("\n")
     .map((p) => /(?:TICKET|WED)-(\d{3})/.exec(p)?.[1])
@@ -484,7 +489,7 @@ function main(): number {
       const who = actor(args, state.cwd);
       const agent = str(args, "agent") || process.env.TICKETS_AGENT || "";
       const t = commitChange(state, id, (current, statusOf) => {
-        const branch = `${who}/${id}-${slugify(current.meta.title)}`;
+        const branch = id;
         const change = claim(current.meta, { actor: who, agent, today: today(), statusOf }, branch);
         return { meta: change, log: logLine(today(), current.meta.status, "claimed", who, agent) };
       });
@@ -539,12 +544,18 @@ function main(): number {
         throw new Error(
           `Write ${body} from .github/pull_request_template.md (with evidence) and commit it, then retry.`,
         );
+      const bodyProblems = reviewBodyProblems(readFileSync(body, "utf8"));
+      if (bodyProblems.length) throw new Error(bodyProblems.join("\n"));
+      const currentPr = prFor(state.cwd, branch);
+      if (currentPr && currentPr.baseRefName !== REVIEW_BASE)
+        throw new Error(`Retarget this ticket PR to ${REVIEW_BASE} before continuing.`);
       console.log("Running pnpm verify…");
       if (!stream("pnpm", ["verify"], state.cwd)) throw new Error("pnpm verify failed.");
       process.env.TICKETS_VERIFIED_SHA = git(["rev-parse", "HEAD"], state.cwd);
       if (!stream("git", ["push", "-u", "origin", "HEAD"], state.cwd))
         throw new Error("Push failed.");
       const existing = prFor(state.cwd, branch);
+      if (existing) run("gh", ["pr", "edit", existing.url, "--body-file", body], state.cwd);
       if (!existing) {
         run(
           "gh",
@@ -552,7 +563,7 @@ function main(): number {
             "pr",
             "create",
             "--base",
-            "main",
+            REVIEW_BASE,
             "--head",
             branch,
             "--title",
@@ -573,7 +584,7 @@ function main(): number {
     case "sync": {
       const state = load(false);
       if (!canWriteFiles(state.cwd, state.mode))
-        throw new Error("Run t:sync on a branch, never on main.");
+        throw new Error("Run t:sync on a ticket branch, never on main or develop.");
       const changed = syncFiles(state, false);
       console.log(
         changed.length ? `Synced: ${changed.join(", ")}` : "Ticket files already match the ledger.",

@@ -113,6 +113,7 @@ export function move(meta: Frontmatter, to: Status, facts: MoveFacts): Change {
       throw new TransitionError("Push the branch first (git push -u origin HEAD).");
     if (!facts.openPr) throw new TransitionError("Open the PR first (pnpm t:pr does all of this).");
     change.pr = facts.openPr;
+    if (facts.branch) change.branch = facts.branch;
   }
 
   if (to === "done") {

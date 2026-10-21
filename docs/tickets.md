@@ -53,7 +53,7 @@ anything except done → cancelled (--reason)
 | `todo → in_progress`      | You claimed it, every `blocked_by` ticket is `done`, and you are on the ticket's branch                                                             |
 | `in_progress → in_review` | Every acceptance criterion is ticked, the tree is clean, the branch is pushed, a PR is open, and `pnpm verify` passes. `pnpm t:pr` does all of this |
 | `in_review → in_progress` | `--reason` gives the requested changes                                                                                                              |
-| `in_review → done`        | The PR is merged (checked with `gh`) and every criterion is ticked in the merged file on `main`                                                     |
+| `in_review → done`        | The PR is merged (checked with `gh`) and every criterion is ticked in the merged file on `develop`                                                  |
 | `→ blocked`               | From todo, in_progress or in_review, with `--reason` naming the blocking ticket or question                                                         |
 | `blocked → previous`      | Only back to the recorded `resume_to`                                                                                                               |
 | `→ cancelled`             | `--reason` required. `done` is final                                                                                                                |
@@ -62,18 +62,18 @@ Only the owner may move a claimed ticket. Nobody edits another owner's in-progre
 
 ## Live state: the ticket ledger
 
-Ticket files on `main` hold definitions and history. Live claims and status changes are also written atomically to
+Ticket files on `develop` hold definitions and history. Live claims and status changes are also written atomically to
 the `ticket-ledger` branch on `origin`, using a compare-and-swap push (ADR 0011's design, now ADR 0013). Every
 `t:*` read overlays the ledger on the files, so:
 
 - Two developers (or agents) can never claim the same ticket. The second claim fails with "already claimed".
-- `t:next` and `t:board` show claims and progress that have not reached `main` yet.
-- `done` is recorded the moment the PR is merged. Branch protection forbids direct commits to `main`, so the file
+- `t:next` and `t:board` show claims and progress that have not reached `develop` yet.
+- `done` is recorded the moment the PR is merged. Branch protection forbids direct commits to `develop`, so the file
   catches up through the next ticket branch: `t:move <id> in_progress` syncs finished tickets into that branch. You can
   also run `pnpm t:sync` on a small bookkeeping branch.
 
 Commands that change state fail closed if `origin` is unreachable. `TICKETS_LEDGER=off` uses files only, for a solo
-offline session; `TICKETS_LEDGER=local` is for tests. Ticket files are only rewritten on a branch, never on `main`, so
+offline session; `TICKETS_LEDGER=local` is for tests. Ticket files are only rewritten on a branch, never on `develop`, so
 the coordination checkout stays clean.
 
 ## Commands
@@ -119,3 +119,17 @@ its original `WED-NNN` storage keys: both tool versions therefore consult and up
 the same claim, rather than creating independent claims for one ticket. These are
 internal compatibility keys, not the visible ticket names. Keep this boundary until
 all older worktrees are retired; do not rename ledger keys independently.
+
+## Branch and PR contract
+
+Every new ticket uses its exact ID as its branch, such as `TICKET-188`. Push to the same remote branch.
+Keep the ticket ID in the Markdown filename, commit subjects and PR title (`TICKET-188: task title`).
+One ticket produces one branch and PR; additional scope needs its own ticket. All PRs target `develop`.
+Agents push progress and open a draft PR for unfinished handoffs; finished work must have a ready review PR.
+Only the human reviews and merges, and agents never enable auto-merge or push directly to integration branches.
+
+`pnpm t:pr` requires nonempty Summary, Changes, Acceptance criteria and evidence, Verification, and Risks and
+rollout sections. Explain the before/after result, implementation details relevant to review, evidence for each
+criterion, exact checks and outcomes, untested cases, and migration/rollback steps where relevant. Screenshots
+are required for UI work. Keep the description current; a passing content check is not a substitute for a useful
+review explanation. Legacy active branch names remain compatible; new claims always use the exact ticket ID.

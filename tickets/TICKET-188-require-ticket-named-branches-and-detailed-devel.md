@@ -38,10 +38,10 @@ The user requires traceable work: exact ticket-ID branches, pushed changes and d
 
 ## Acceptance criteria
 
-- [ ] New ticket claims use the exact ticket ID as branch name; ticket filenames and PR titles retain the ID.
-- [ ] PR tooling targets develop and requires a detailed task-specific body.
-- [ ] Shared instructions require pushing work, human review/merge and no direct integration-branch changes.
-- [ ] Regression tests, ticket validation and full verification pass.
+- [x] New ticket claims use the exact ticket ID as branch name; ticket filenames and PR titles retain the ID.
+- [x] PR tooling targets develop and requires a detailed task-specific body.
+- [x] Shared instructions require pushing work, human review/merge and no direct integration-branch changes.
+- [x] Regression tests, ticket validation and full verification pass.
 
 ## Test plan
 
@@ -55,6 +55,8 @@ The user requires traceable work: exact ticket-ID branches, pushed changes and d
 ## Notes / decisions
 
 - Ticket name means canonical ID, for example TICKET-188. Existing active branches remain compatible during rollout.
+
+- 2026-10-21 — Exact-ID allocation, develop PR destination/body checks and develop push guards implemented. Full verification passed: 77 unit tests, build and 17 smoke tests (7 existing skips). Existing branches remain compatible. develop was initialized from published main; no pending PR was merged.
 
 ## Activity log
 

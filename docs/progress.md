@@ -14,6 +14,13 @@ Add-only history, newest first: prepend new entries below this template, never r
 
 ---
 
+## 2026-10-21 10:03 UTC — TICKET-188 — Exact ticket branches and develop reviews
+
+- **Branch:** `TICKET-188`.
+- **Changed:** New ticket claims use exact ID branches; PR creation targets develop and rejects incomplete review sections. Existing PR descriptions refresh from their task body. Shared rules require pushed progress, a PR for every handoff, task-specific evidence and human-only merging; no auto-merge. Hooks block direct develop commits/pushes, and merged-ticket/worktree cleanup checks use develop.
+- **Checks:** Failing branch-allocation tests confirmed the old behavior; 35 focused tests then passed. Full `pnpm verify` with public local defaults passed: 77 unit tests, build, 17 smoke passes and 7 existing skips. Ticket validation and formatting pass.
+- **Next / integration:** develop was created from published main only. Existing harness/backlog/prefix/preflight branches remain unmerged and are prerequisites visible in the PR history. The human decides their integration; no remote PR was merged. Existing active branch names remain compatible during rollout.
+
 ## 2026-10-21 09:56 UTC — TICKET-187 — Mandatory backlog alignment before coding
 
 - **Branch:** `divine/TICKET-187-backlog-preflight`.
