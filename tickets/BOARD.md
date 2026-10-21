@@ -110,9 +110,11 @@ Open tickets labelled `human` (decisions, accounts, physical tasks), in `pnpm t:
 
 ## Board
 
-### In progress (0)
+### In progress (1)
 
-_None._
+| Ticket | Title | Epic | Priority | Est. | Owner | Blocked by |
+| ------ | ----- | ---- | -------- | ---- | ----- | ---------- |
+| [TICKET-004](TICKET-004-get-the-first-green-ci-run-and-confirm-parity-wi.md) | Get the first green CI run and confirm parity with pnpm verify | foundations | urgent | S | divine |  |
 
 ### In review (4)
 
@@ -127,13 +129,12 @@ _None._
 
 _None._
 
-### Todo (181)
+### Todo (180)
 
 | Ticket | Title | Epic | Priority | Est. | Owner | Blocked by |
 | ------ | ----- | ---- | -------- | ---- | ----- | ---------- |
 | [TICKET-001](TICKET-001-fix-hooks-failing-on-the-symlinked-claude-skills.md) | Fix hooks failing on the symlinked .claude/skills directory | foundations | urgent | S |  |  |
 | [TICKET-003](TICKET-003-verify-database-bootstrap-is-idempotent.md) | Verify database bootstrap is idempotent | foundations | urgent | M |  | TICKET-001, TICKET-002 |
-| [TICKET-004](TICKET-004-get-the-first-green-ci-run-and-confirm-parity-wi.md) | Get the first green CI run and confirm parity with pnpm verify | foundations | urgent | S |  |  |
 | [TICKET-005](TICKET-005-replace-codeowners-placeholders-and-enable-branc.md) | Replace CODEOWNERS placeholders and enable branch protection | foundations | urgent | S |  | TICKET-004 |
 | [TICKET-006](TICKET-006-prove-the-managed-worktree-lifecycle-end-to-end.md) | Prove the managed worktree lifecycle end to end | foundations | high | M |  | TICKET-001, TICKET-002, TICKET-003 |
 | [TICKET-007](TICKET-007-prove-ticket-claims-across-two-clones-against-gi.md) | Prove ticket claims across two clones against GitHub | foundations | medium | S |  | TICKET-004 |

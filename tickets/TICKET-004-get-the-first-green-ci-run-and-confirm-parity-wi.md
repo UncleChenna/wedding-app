@@ -2,20 +2,20 @@
 id: TICKET-004
 title: Get the first green CI run and confirm parity with pnpm verify
 epic: foundations
-status: todo
+status: in_progress
 priority: urgent
 estimate: S
 labels: [infra, test]
 module: shared
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: []
 blocks: [TICKET-005, TICKET-007, TICKET-147]
-branch: ""
+branch: TICKET-004
 pr: ""
 created: 2026-10-21
 updated: 2026-10-21
-started: ""
+started: 2026-10-21
 completed: ""
 reason: ""
 resume_to: ""
@@ -62,3 +62,5 @@ See: [Current state](../docs/current-state.md) · [Testing plan](../docs/prd.md#
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-21 — todo → claimed — divine (codex)
+- 2026-10-21 — todo → in_progress — divine (codex)
