@@ -6,9 +6,10 @@
       "log": [
         "- 2026-10-21 — todo → claimed — unclechenna (claude)",
         "- 2026-10-21 — todo → in_progress — unclechenna (claude)",
-        "- 2026-10-21 — in_progress → in_review — unclechenna (claude)"
+        "- 2026-10-21 — in_progress → in_review — unclechenna (claude)",
+        "- 2026-10-21 — in_review → in_progress — unclechenna (claude) — PR #3 conflicted and targeted chore/ticket-system; redoing on TICKET-001 against develop"
       ],
-      "status": "in_review",
+      "status": "in_progress",
       "owner": "unclechenna",
       "agent": "claude",
       "branch": "unclechenna/WED-001-fix-hooks-failing-on-the-symlinked-claude-skills",
