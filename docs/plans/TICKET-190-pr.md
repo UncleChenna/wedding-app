@@ -30,7 +30,7 @@ After merging, install dependencies normally and run pnpm t:dashboard or approve
 
 # Screenshots
 
-Six inspected captures: [TICKET-190 UI review](../reviews/TICKET-190/README.md), with screenshots in docs/reviews/TICKET-190/screenshots for Ivory & Gold and Midnight & Champagne at 375/768/1280.
+Six inspected captures: [TICKET-190 UI review](https://github.com/UncleChenna/wedding-app/blob/TICKET-190/docs/reviews/TICKET-190/README.md), with screenshots in docs/reviews/TICKET-190/screenshots for Ivory & Gold and Midnight & Champagne at 375/768/1280.
 
 # UI checklist
 
