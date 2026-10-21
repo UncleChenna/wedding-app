@@ -1,6 +1,6 @@
 # Working together
 
-Two developers can run several agents safely when each task has one owner, one branch, one managed worktree and one local Supabase stack. Claims are synchronized through the `agent-tasks` Git branch on `origin`; ordinary task branches merge through PRs to `main`.
+Two developers can run several agents safely when each ticket has one owner, one branch, one managed worktree and one local Supabase stack. Work is tracked in [tickets](tickets.md); claims are synchronized through the `ticket-ledger` Git branch on `origin`; ticket branches merge through PRs to `main`.
 
 If two PRs both add a handoff, resolve the log conflict by retaining both complete entries in newest-first order. Do not drop another session’s evidence.
 
@@ -16,7 +16,7 @@ git config harness.owner friend # Divine uses divine; use the same identity in e
 pnpm agents:link
 gh auth login
 pnpm db:start
-pnpm task:next checkin
+pnpm t:next --module checkin
 ```
 
 The first Docker image download can take longer than setup itself. Do not add a second agent to an existing editing session's checkout. The primary checkout is for coordination; product edits happen inside managed worktrees.
@@ -34,18 +34,17 @@ The first Docker image download can take longer than setup itself. Do not add a 
 ## Claim and start
 
 ```bash
-pnpm task:next checkin
-pnpm task:claim SETUP-003
-pnpm wt:new SETUP-003
-cd .worktrees/SETUP-003
+pnpm t:next --module checkin
+pnpm t:claim WED-003 --owner friend --agent claude
+pnpm wt:new WED-003
+cd .worktrees/WED-003
+pnpm t:move WED-003 in_progress --push
 claude # or codex, or open this directory in Cursor
 ```
 
-Use a task appropriate to your module; the example ID is illustrative. Ask the agent to use `implement-task`. Claude exposes `/implement-task`; Codex exposes `$implement-task`; Cursor discovers the skill in its skill picker. Run the agent in this directory without another automatic worktree flag.
+Use a ticket appropriate to your module; the example ID is illustrative. Ask the agent to use `ticket-workflow` and `implement-task`. Claude exposes `/ticket-workflow`; Codex exposes `$ticket-workflow`; Cursor discovers the skill in its skill picker. Run the agent in this directory without another automatic worktree flag.
 
-A claim writes a separate metadata commit to `origin/agent-tasks`. It does not stage your working tree. The remote update compares the exact previous SHA; concurrent claims cannot both win. A rejected update must be retried from fresh state. Missing network/remote fails closed. `--local` on task commands is only for single-machine tests and explicitly does not coordinate two developers.
-
-Task fields are `id`, `title`, `module`, `acceptance`, `status`, `owner`, `branch`, `claimed_at`, plus `dependsOn` and optional `blocked_reason`. Statuses: `todo → claimed → in_review → done`. The ledger owns status/owner fields for tasks it has seen, including completion; `docs/tasks.json` on main owns definitions. Use `pnpm task:sync` to refresh the local snapshot. A blocker retains its claim; record it in the handoff and local `blocked_reason`. Release deliberately with `pnpm task:release <id>`; only its owner may release. Never silently steal stale claims: coordinate with the other developer first.
+A claim writes a metadata-only commit to `origin/ticket-ledger` with a compare-and-swap push. It does not stage your working tree, and concurrent claims cannot both win. Missing network/remote fails closed for changes; reads fall back to committed files with a warning. `TICKETS_LEDGER=off` is only for a solo offline session and does not coordinate two developers. Ticket fields, statuses, allowed transitions and the ledger are documented in [tickets.md](tickets.md). A blocked ticket keeps its owner (`pnpm t:move <id> blocked --reason …`). Release a claimed `todo` ticket deliberately with `pnpm t:release <id>`; only its owner may release. Never silently steal stale claims: coordinate with the other developer first.
 
 `wt:new` creates `.worktrees/<id>` on `<owner>/<id>-<title-slug>`, installs locked dependencies, refreshes skill links, copies `.env.local` without printing it, replaces database/API/site settings with isolated local values, starts Supabase and applies migrations. Rerunning resumes incomplete setup. Run `pnpm db:seed` if sample data is needed. Keep database environment variables out of your shell so they cannot override worktree settings.
 
@@ -55,18 +54,18 @@ The reservation is locked across worktrees in one clone; live port checks also a
 
 ## PR flow and cleanup
 
-1. Follow `implement-task`, including the full gate and UI checklist where applicable.
-2. Prepend a handoff to `docs/progress.md`; keep historical entries unchanged. Commit task changes only.
-3. Copy `.github/pull_request_template.md` to `docs/plans/<task-id>-pr.md`, fill in evidence and commit it.
-4. Run `pnpm task:pr <id>` inside the worktree. It independently verifies, pushes the branch, opens/reuses a PR and marks the ledger `in_review`. It requires `gh` and an authenticated `origin`.
-5. The other person reviews; CI must pass. Merge via GitHub, then `pnpm task:finish <id>` verifies the merged PR and marks the ledger done.
+1. Follow `ticket-workflow` and `implement-task`, including the full gate and UI checklist where applicable. Every commit subject starts `WED-NNN: `; no AI attribution.
+2. Tick the acceptance criteria you proved and add notes to the ticket. Prepend a handoff to `docs/progress.md`; keep historical entries unchanged. Commit ticket changes only.
+3. Copy `.github/pull_request_template.md` to `docs/plans/<ticket-id>-pr.md`, fill in evidence and commit it.
+4. Run `pnpm t:pr <id>` inside the worktree. It independently verifies, pushes the branch, opens/reuses a PR titled `<id>: <title>` and moves the ticket to `in_review`. It requires `gh` and an authenticated `origin`.
+5. The other person reviews; CI must pass. Merge via GitHub, then `pnpm t:move <id> done` verifies the merged PR and records completion in the ledger. The ticket file catches up on your next ticket branch.
 6. From the primary checkout, run `pnpm wt:remove <id>`. It refuses dirty or unmerged work, stops only that stack, deletes its disposable database volumes, and removes the checkout. The Git branch remains for recovery. Removal is explicit authorization to delete that worktree's disposable data; back up anything valuable first.
 
 `wt:list` lists Git checkouts; `wt:prune` removes stale Git metadata only, never data. A failed setup leaves a reservation and checkout for retry; use `wt:remove` for cleanup. If a harness process crashes while holding `.git/harness-*.lock`, confirm no process is active before manually removing that lock directory. No automatic expiry can evict a live agent's lock.
 
 ## Shared versus personal
 
-Shared: `AGENTS.md`, nested source rules, `.agents/skills`, agent adapters, reviewer definitions, hook code, task definitions, docs, CI and plugin source. Personal: Git identity/`harness.owner`, agent login/API keys, `.env.local`, `.claude/settings.local.json`, `CLAUDE.local.md`, and user-level `~/.codex/config.toml` / `~/.cursor/` preferences.
+Shared: `AGENTS.md`, nested source rules, `.agents/skills`, agent adapters, reviewer definitions, hook code, tickets, docs, CI and plugin source. Personal: Git identity/`harness.owner`, agent login/API keys, `.env.local`, `.claude/settings.local.json`, `CLAUDE.local.md`, and user-level `~/.codex/config.toml` / `~/.cursor/` preferences.
 
 Codex uses a shared `.codex/hooks.json`; its `.codex/config.local.toml` and `*.local.json` ignore entries are storage conventions only, not automatically loaded Codex layers. Cursor likewise does not automatically load arbitrary `*.local.json`; use its user settings. Do not commit personal settings or credentials. Hooks require the agent's normal trust review; restart/reload the agent after linking if skills are absent.
 

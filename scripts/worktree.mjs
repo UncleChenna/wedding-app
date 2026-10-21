@@ -12,7 +12,7 @@ import { createServer } from "node:net";
 import { join, dirname } from "node:path";
 import { branchName, isolatedConfig, safeId } from "./harness/core.mjs";
 import { cli, common, git, json, lock, pnpm, root, writeJson } from "./harness/io.mjs";
-import { owner, readLedger } from "./task.mjs";
+import { liveTicket, ticketOwner } from "./harness/tickets.mjs";
 
 function free(port) {
   return new Promise((resolve) => {
@@ -75,15 +75,21 @@ async function main() {
         return;
       }
       if (action !== "new")
-        throw new Error("Usage: worktree.sh new <task-id> | list | remove <task-id> | prune");
+        throw new Error("Usage: worktree.sh new <ticket-id> | list | remove <ticket-id> | prune");
       if (!state[id]) {
         let task;
         if (id === "demo-task")
-          task = { id, title: "demo", branch: branchName(owner(cwd), { id, title: "demo" }) };
+          task = { id, title: "demo", branch: branchName(ticketOwner(cwd), { id, title: "demo" }) };
         else {
-          task = readLedger(cwd).data.tasks.find((t) => t.id === id);
-          if (!task || task.status !== "claimed" || task.owner !== owner(cwd))
-            throw new Error("Claim this task first with pnpm task:claim.");
+          task = liveTicket(cwd, id);
+          if (
+            task.owner !== ticketOwner(cwd) ||
+            !task.branch ||
+            ["done", "cancelled"].includes(task.status)
+          )
+            throw new Error(
+              `Claim this ticket first: pnpm t:claim ${id} --owner <you> --agent <agent>.`,
+            );
         }
         if (existsSync(path))
           throw new Error("Path already exists and is not managed; refusing overwrite.");

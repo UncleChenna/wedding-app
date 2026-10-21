@@ -29,38 +29,39 @@ Drizzle, Zod, Vitest, Playwright, pnpm 12, Node 24. Product: [PRD](docs/prd.md).
 - `drizzle/`: generated migrations. `supabase/`: local-stack template.
 - `scripts/`: database, verification and collaboration tools.
 - `.agents/skills/`: canonical portable workflows; Claude links here; Codex/Cursor read directly.
-- `docs/`: [architecture](docs/architecture.md), [decisions](docs/decisions/README.md), [tasks](docs/tasks.json), [plans](docs/plans/README.md).
+- `docs/`: [architecture](docs/architecture.md), [decisions](docs/decisions/README.md), [tickets](docs/tickets.md) ([board](tickets/BOARD.md), [roadmap](tickets/ROADMAP.md)), [current state](docs/current-state.md), [plans](docs/plans/README.md).
 
 ## Commands
 
-| Command                                                        | Purpose                                                    |
-| -------------------------------------------------------------- | ---------------------------------------------------------- |
-| `pnpm install`                                                 | Install dependencies and Husky hooks                       |
-| `pnpm agents:link` / `agents:check`                            | Refresh/check shared skill links (copy fallback)           |
-| `pnpm dev` / `build` / `start`                                 | Develop/build/serve; managed worktrees get unique ports    |
-| `pnpm verify`                                                  | Format → lint → types → unit tests → build → browser smoke |
-| `pnpm verify:quick`                                            | Lint, types, related unit tests                            |
-| `pnpm lint` / `lint:fix`                                       | ESLint, zero warnings                                      |
-| `pnpm format` / `format:check`                                 | Prettier                                                   |
-| `pnpm typecheck`                                               | Route type generation and TypeScript                       |
-| `pnpm test` / `test:watch`                                     | Unit tests                                                 |
-| `pnpm test:e2e` / `test:e2e:smoke`                             | Browser flows (build first)                                |
-| `pnpm screenshots`                                             | Playwright routes × themes × 375/768/1280                  |
-| `pnpm db:start` / `db:stop` / `db:status`                      | This checkout's local Supabase stack                       |
-| `pnpm db:generate` / `db:migrate`                              | Generate/apply Drizzle migrations                          |
-| `pnpm db:seed` / `db:reset`                                    | Disposable local data only; reset checks stack identity    |
-| `pnpm themes:schema`                                           | Generate theme JSON schema                                 |
-| `pnpm task:next [module]` / `task:show [id]`                   | Read the shared queue                                      |
-| `pnpm task:claim <id>` / `task:release <id>`                   | Atomic ownership change and metadata commit                |
-| `pnpm task:sync`                                               | Refresh local task metadata from the ledger                |
-| `pnpm wt:new <id>` / `wt:list` / `wt:remove <id>` / `wt:prune` | Managed isolated worktrees                                 |
-| `pnpm task:pr <id>` / `task:finish <id>`                       | Verify/open PR; mark merged work done                      |
-| `pnpm agent:loop --help`                                       | Claim → worktree → Claude → verify → PR                    |
-| `pnpm plugin:build` / `plugin:install`                         | Package/install shared Claude setup                        |
+| Command                                                              | Purpose                                                    |
+| -------------------------------------------------------------------- | ---------------------------------------------------------- |
+| `pnpm install`                                                       | Install dependencies and Husky hooks                       |
+| `pnpm agents:link` / `agents:check`                                  | Refresh/check shared skill links (copy fallback)           |
+| `pnpm dev` / `build` / `start`                                       | Develop/build/serve; managed worktrees get unique ports    |
+| `pnpm verify`                                                        | Format → lint → types → unit tests → build → browser smoke |
+| `pnpm verify:quick`                                                  | Lint, types, related unit tests                            |
+| `pnpm lint` / `lint:fix`                                             | ESLint, zero warnings                                      |
+| `pnpm format` / `format:check`                                       | Prettier                                                   |
+| `pnpm typecheck`                                                     | Route type generation and TypeScript                       |
+| `pnpm test` / `test:watch`                                           | Unit tests                                                 |
+| `pnpm test:e2e` / `test:e2e:smoke`                                   | Browser flows (build first)                                |
+| `pnpm screenshots`                                                   | Playwright routes × themes × 375/768/1280                  |
+| `pnpm db:start` / `db:stop` / `db:status`                            | This checkout's local Supabase stack                       |
+| `pnpm db:generate` / `db:migrate`                                    | Generate/apply Drizzle migrations                          |
+| `pnpm db:seed` / `db:reset`                                          | Disposable local data only; reset checks stack identity    |
+| `pnpm themes:schema`                                                 | Generate theme JSON schema                                 |
+| `pnpm t:next [--module m]` / `t:board` / `t:list` / `t:show <id>`    | Read the queue (live, includes unmerged claims)            |
+| `pnpm t:claim <id> --owner <you> --agent <agent>` / `t:release <id>` | Atomic claim via the shared ticket ledger                  |
+| `pnpm t:move <id> <status> [--reason] [--push]`                      | Enforced status transition                                 |
+| `pnpm t:pr <id>`                                                     | Verify, push, open PR, move to in_review                   |
+| `pnpm t:new` / `t:validate` / `t:render` / `t:sync`                  | Scaffold, check, regenerate boards, sync ledger into files |
+| `pnpm wt:new <id>` / `wt:list` / `wt:remove <id>` / `wt:prune`       | Managed isolated worktrees                                 |
+| `pnpm agent:loop --help`                                             | Next → claim → worktree → Claude → t:pr                    |
+| `pnpm plugin:build` / `plugin:install`                               | Package/install shared Claude setup                        |
 
 ## Non-negotiable rules
 
-- One editing agent per worktree; claim before work. Never commit/push directly to main.
+- One editing agent per worktree; claim a ticket before work. Never commit/push directly to main.
 - Keep changes within the task; preserve other people's uncommitted work.
 - TypeScript strict: no `any`, `@ts-ignore`, or unexplained non-null assertions.
 - Kebab-case files, PascalCase components, named exports except Next-required defaults.
@@ -73,7 +74,8 @@ Drizzle, Zod, Vitest, Playwright, pnpm 12, Node 24. Product: [PRD](docs/prd.md).
 - Ask before paid/new account services, native-build dependencies, CI/RLS changes or data deletion,
   unless the current user request already authorizes the specific action.
 - Never weaken/skip/delete tests, lint rules or hooks to get green.
-- Conventional Commits; stage only task files. See [engineering conventions](docs/engineering.md).
+- Ticket commits start `WED-NNN: `; other commits use Conventional Commits. Stage only ticket files.
+  No AI attribution (see below). See [engineering conventions](docs/engineering.md).
 
 ## Frontend work
 
@@ -81,22 +83,39 @@ Any UI change must follow [design principles](docs/design-principles.md) and pas
 [the UI checklist](docs/ui-checklist.md) before it counts as done. Report every result
 with evidence. Nested `src/AGENTS.md` summarises frontend rules.
 
-## Workflow and definition of done
+## Ticket workflow (every agent, every time)
 
-1. Read task acceptance, ownership, docs and relevant skill; claim and create a worktree.
-2. Read installed Next.js guides before framework code. Write a short dated plan.
-3. Write/run failing behavioural tests, then implement; docs-only work uses documentation checks.
-4. Run `pnpm verify:quick`, then `pnpm verify`; UI work also passes its checklist in every theme.
-5. Update docs/ADRs and prepend a handoff without rewriting old log entries.
-6. Commit task files, open a PR with evidence, set in_review; the other person reviews.
-7. After merge, mark done and remove the disposable worktree. Never mark failing/unverified work done.
+All work happens on a claimed ticket in [`tickets/`](tickets/BOARD.md). Rules: [docs/tickets.md](docs/tickets.md).
+Exact commands: the [`ticket-workflow` skill](.agents/skills/ticket-workflow/SKILL.md).
 
-If blocked, retain the claim, record `blocked_reason` and the next action, and hand off.
-If you make the same mistake twice, propose a concrete harness fix (hook, skill or doc line)
-in your summary; add a verified fix to [learnings](docs/learnings.md).
+1. **Pick the work.** `pnpm t:next`, then `pnpm t:claim <id> --owner <you> --agent <agent>`. Never work without a
+   claimed ticket; one ticket at a time.
+2. **Isolate it.** `pnpm wt:new <id>`; work only in `.worktrees/<id>` on its branch (the name contains the id).
+3. **Start.** `pnpm t:move <id> in_progress --push`, so the change is committed and pushed immediately.
+4. **Build.** Dated plan, failing tests, implementation, `pnpm verify`. Commit in small steps; every subject starts
+   with the ticket id, e.g. `WED-014: add RSVP form validation`.
+5. **Finish.** Tick the acceptance criteria, fill in the notes, write the PR body, then `pnpm t:pr <id>`. It verifies,
+   pushes, opens a PR titled `<id>: <title>` from the template, moves the ticket to `in_review` and pushes.
+6. **Close.** After merge: `pnpm t:move <id> done` (records completion date and PR link), then `pnpm wt:remove <id>`.
+   The ticket file and boards catch up on your next ticket branch (`t:move … in_progress` syncs them).
+7. **Blocked?** `pnpm t:move <id> blocked --reason "…" --push`, then pick another ticket. Never silently skip anything.
+8. **Hand off.** Prepend an entry to [docs/progress.md](docs/progress.md) before ending any session.
+
+Never leave finished work unpushed. Never mark a ticket done with failing checks or unticked criteria. Never edit
+another owner's in-progress ticket. UI work also passes [the UI checklist](docs/ui-checklist.md) in every theme. Update
+docs/ADRs with the change. If you make the same mistake twice, propose a concrete harness fix (hook, skill or doc
+line) in your summary and add a verified fix to [learnings](docs/learnings.md).
+
+## No AI attribution
+
+Commits, PR titles, PR bodies and comments never credit an AI agent: no `Co-Authored-By` trailers for Claude, Codex or
+any bot, no "Generated with…" lines, no robot emoji signatures. Claude Code (`attribution` in
+`.claude/settings.json`) and Codex (`commit_attribution` in `.codex/config.toml`) are configured not to add them. The
+`commit-msg` hook rejects them, and the CI `pr-text` job fails a PR whose title or body contains them. If your agent
+adds one anyway, remove it before committing.
 
 ## Skills
 
 Read the matching `.agents/skills/<name>/SKILL.md`:
-`implement-task`, `ui-review`, `new-theme`, `db-migration`, `handoff`, `release-checklist`.
+`ticket-workflow`, `implement-task`, `ui-review`, `new-theme`, `db-migration`, `handoff`, `release-checklist`.
 Long rehearsal details live inside the skill's `references/` folder.

@@ -11,3 +11,5 @@
 - Supabase project IDs and all host ports must differ per worktree; use the managed scripts, not raw CLI reset.
 - Hook exit success must never hide failed formatting or verification; there is no retry-count escape hatch.
 - Git directory-only ignore patterns do not match symlinks; ignore `.claude/skills` without a trailing slash.
+- Identity fallbacks from environment variables must use `||`, not `??`: an exported empty `AGENT_OWNER` otherwise hides `git config harness.owner`.
+- Ticket files are machine-written; change them with `pnpm t:*`, or by hand followed by `pnpm t:render`. Prettier ignores `tickets/`.

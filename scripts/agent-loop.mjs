@@ -2,18 +2,24 @@
 import { spawnSync } from "node:child_process";
 import { dirname, join } from "node:path";
 import { cli, common, pnpm, root } from "./harness/io.mjs";
-import { changeTask, readLedger } from "./task.mjs";
+import { liveTicket, nextTicket, ticketOwner } from "./harness/tickets.mjs";
+
+/**
+ * Headless loop: t:next → t:claim → wt:new → t:move in_progress → Claude runs
+ * the ticket-workflow skill → t:pr (verify, push, PR, in_review). One ticket
+ * per iteration; any failure stops the loop with the claim retained.
+ */
 cli(async () => {
   const args = process.argv.slice(2);
   if (args.includes("--help")) {
     console.log(
-      "agent:loop [--task ID] [--module MODULE] [--max-iterations N] [--dry-run]. Runs Claude in one isolated checkout per task, then verifies and opens its PR.",
+      "agent:loop [--ticket WED-NNN] [--module MODULE] [--max-iterations N] [--model M] [--max-budget-usd N] [--dry-run]. Runs Claude in one isolated worktree per ticket, then verifies and opens its PR.",
     );
     return;
   }
   const option = (key, fallback) => (args.includes(key) ? args[args.indexOf(key) + 1] : fallback);
   const supported = new Set([
-    "--task",
+    "--ticket",
     "--module",
     "--max-iterations",
     "--model",
@@ -28,36 +34,36 @@ cli(async () => {
   const max = Number(option("--max-iterations", "1"));
   if (!Number.isInteger(max) || max < 1) throw new Error("Invalid iteration count.");
   const cwd = root();
+  const owner = ticketOwner(cwd);
+  const agent = "claude";
   for (let i = 0; i < max; i++) {
-    const tasks = readLedger(cwd).data.tasks;
-    const id = option("--task", null);
-    const task = tasks.find(
-      (t) =>
-        (id
-          ? t.id === id
-          : t.status === "todo" &&
-            !t.blocked_reason &&
-            (!option("--module", null) || t.module === option("--module", null))) &&
-        (t.dependsOn ?? []).every((d) => tasks.some((x) => x.id === d && x.status === "done")),
-    );
-    if (!task) {
-      console.log("No runnable task.");
+    const requested = option("--ticket", null);
+    const ticket = requested
+      ? liveTicket(cwd, requested)
+      : nextTicket(cwd, option("--module", null));
+    if (!ticket) {
+      console.log("No ready ticket.");
       return;
     }
     if (args.includes("--dry-run")) {
       console.log(
-        `Would claim ${task.id}, create its worktree, run implement-task, verify and open a PR.`,
+        `Would claim ${ticket.id} (${ticket.title}), create its worktree, move it to in_progress, run the ticket-workflow skill, verify and open a PR.`,
       );
       return;
     }
-    await changeTask(cwd, "claim", task.id);
-    pnpm(["wt:new", task.id], cwd);
-    const path = join(dirname(common(cwd)), ".worktrees", task.id);
+    if (!ticket.owner) pnpm(["t:claim", ticket.id, "--owner", owner, "--agent", agent], cwd);
+    pnpm(["wt:new", ticket.id], cwd);
+    const path = join(dirname(common(cwd)), ".worktrees", ticket.id);
+    if (liveTicket(path, ticket.id).status === "todo")
+      pnpm(
+        ["t:move", ticket.id, "in_progress", "--owner", owner, "--agent", agent, "--push"],
+        path,
+      );
     const result = spawnSync(
       "claude",
       [
         "-p",
-        `Use the implement-task skill for ${task.id}. The task is already claimed for this session and this is its managed worktree. Stop after committing; the outer harness opens the PR.`,
+        `Use the ticket-workflow skill for ${ticket.id}. It is already claimed by ${owner}, in_progress, and this is its managed worktree. Work through steps 4–5; stop after committing with every acceptance criterion ticked. The outer harness runs pnpm t:pr.`,
         "--permission-mode",
         "acceptEdits",
         "--output-format",
@@ -67,13 +73,13 @@ cli(async () => {
           ? ["--max-budget-usd", option("--max-budget-usd", null)]
           : []),
       ],
-      { cwd: path, stdio: "inherit" },
+      { cwd: path, stdio: "inherit", env: { ...process.env, TICKETS_AGENT: agent } },
     );
     if (result.status !== 0)
       throw new Error(
-        `Agent failed on ${task.id}; claim retained. Write a handoff before retrying.`,
+        `Agent failed on ${ticket.id}; claim retained. Write a handoff or move it to blocked.`,
       );
-    pnpm(["task:pr", task.id], path);
-    if (id) return;
+    pnpm(["t:pr", ticket.id, "--owner", owner], path);
+    if (requested) return;
   }
 });

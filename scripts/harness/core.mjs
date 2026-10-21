@@ -12,31 +12,6 @@ export function branchName(owner, task) {
       .slice(0, 48) || "task";
   return `${safeId(owner)}/${safeId(task.id)}-${slug}`;
 }
-export function transitionTask(task, action, owner, tasks) {
-  safeId(owner);
-  if (action === "claim") {
-    if (task.status !== "todo")
-      throw new Error(`${task.id} is already ${task.status}; claim refused.`);
-    if (task.blocked_reason) throw new Error(`Task blocked: ${task.blocked_reason}`);
-    if ((task.dependsOn ?? []).some((id) => !tasks.some((t) => t.id === id && t.status === "done")))
-      throw new Error("Unfinished dependency.");
-    return {
-      ...task,
-      status: "claimed",
-      owner,
-      branch: branchName(owner, task),
-      claimed_at: new Date().toISOString(),
-    };
-  }
-  if (task.owner !== owner) throw new Error("Only the task owner can change its claim.");
-  if (action === "release") {
-    if (task.status === "done") throw new Error("Cannot release completed work.");
-    return { ...task, status: "todo", owner: null, branch: null, claimed_at: null };
-  }
-  if (action === "review" && task.status === "claimed") return { ...task, status: "in_review" };
-  if (action === "done" && task.status === "in_review") return { ...task, status: "done" };
-  throw new Error(`Invalid transition ${task.status} → ${action}`);
-}
 export function protectedPath(path) {
   const p = path.replaceAll("\\", "/").replace(/^\.\//, "");
   return (

@@ -1,0 +1,66 @@
+---
+id: WED-105
+title: Add the service worker with per-route caching
+epic: pwa
+status: todo
+priority: high
+estimate: L
+labels: [pwa, frontend]
+module: shared
+owner: ""
+agent: ""
+blocked_by: [WED-102]
+blocks: [WED-106, WED-107, WED-108, WED-111, WED-112, WED-124]
+branch: ""
+pr: ""
+created: 2026-10-21
+updated: 2026-10-21
+started: ""
+completed: ""
+reason: ""
+resume_to: ""
+---
+
+# WED-105: Add the service worker with per-route caching
+
+## Context
+
+Caching must be aggressive for the IV/pass and scanner, network-first for live data, and never cache admin or personal data across users.
+
+See: [Tech stack and architecture](../docs/prd.md#tech-stack-and-architecture) · [Gate check-in](../docs/prd.md#gate-check-in) (CHK-6) · [Connectivity plan](../docs/prd.md#connectivity-plan-signal-unknown).
+
+## Scope
+
+- Strategy table in docs: guest pass and scanner shell cache-first; menu/board/admin network-first or no-store.
+- Versioned caches with cleanup.
+- CSP worker-src updated.
+
+## Out of scope
+
+- Feature offline data (IndexedDB).
+
+## Acceptance criteria
+
+- [ ] Strategy table documented and matched by tests on routes.
+- [ ] Admin and API responses are never cached (test).
+- [ ] `pnpm build` and smoke pass with the worker registered.
+
+## Test plan
+
+- Unit: Route matcher.
+- End-to-end: Service worker registration.
+- Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+## Files likely touched
+
+- `src/app/sw.ts`
+- `next.config.ts`
+- `docs/pwa.md`
+
+## Notes / decisions
+
+_Agents append dated notes here while working._
+
+## Activity log
+
+- 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md

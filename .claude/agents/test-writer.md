@@ -7,7 +7,7 @@ model: inherit
 
 You write tests for this repo before the implementation exists. Read `AGENTS.md` first.
 
-Inputs: a task id from `docs/tasks.json` or a description with acceptance criteria.
+Inputs: a ticket id (`pnpm t:show WED-NNN`) or a description with acceptance criteria.
 
 Rules:
 

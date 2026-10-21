@@ -1,0 +1,124 @@
+# Current state
+
+Audit of the repository against the [PRD](prd.md) on **2026-10-21**, at commit `2f8dc47` (branch
+`chore/agent-collaboration-tooling`, which includes the uncommitted HARNESS-001 and DESIGN-001 work as it stood when
+it was committed). The [ticket backlog](../tickets/ROADMAP.md) starts from this state. Update this file when a
+fix-up ticket changes a fact recorded here.
+
+## How this was checked
+
+- `pnpm verify` at 06:20 BST: **passed**. Format, lint, typecheck, 52 unit tests in 11 files, production build, 17
+  Playwright smoke tests (7 overflow checks are skipped in the desktop project by design).
+- Read every file in `docs/`, `.agents/skills/`, `.claude/`, `scripts/`, `src/`, `e2e/`, `supabase/`, `drizzle/`, plus
+  `package.json`, configs and `git log --stat` for all four commits.
+- Not run: the local Supabase stack (`pnpm db:*`), `pnpm wt:new`/`wt:remove`, `pnpm screenshots`, `pnpm agent:loop`,
+  CI on GitHub (the `origin` repository was empty), and anything on a real phone.
+
+## What exists and works
+
+| Area          | What is there                                                                                                                                                                                                                                                                          | Evidence                                                       |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| App skeleton  | Next.js 16.4 App Router, React 19.3, TypeScript strict, Tailwind 4, Cache Components and typed routes; route groups `(guest)`, `(staff)`, `(admin)`                                                                                                                                    | `pnpm verify` build                                            |
+| Routes        | `/`, `/invite`, `/order`, `/checkin`, `/kitchen`, `/admin`, `/dev/theme`, themed 404, `error.tsx`, `global-error.tsx`                                                                                                                                                                  | smoke tests                                                    |
+| Theming       | JSON themes validated by Zod and a WCAG AA contrast gate at module load; CSS variables rendered on `<html>` on the server (no flash); Tailwind maps utilities to tokens; ESLint bans colour literals; 2 themes (`ivory-gold`, `midnight-champagne`); fonts via `next/font` with `swap` | unit tests `src/modules/theming/__tests__`, smoke `/dev/theme` |
+| Base UI       | `Button`, `Card`, `Input`, `Sheet`, `Toast` on theme tokens, shown on `/dev/theme`                                                                                                                                                                                                     | `src/modules/shared/__tests__/ui.test.tsx`                     |
+| Cross-cutting | Zod env loader (fails fast), redacting JSON logger, security headers with CSP / HSTS / camera permission                                                                                                                                                                               | unit tests, smoke "security headers are set"                   |
+| Data          | Drizzle schema for 10 tables with RLS enabled and no policies, first migration, deterministic seed                                                                                                                                                                                     | `scripts/__tests__/seed-data.test.ts` (seed data shape only)   |
+| Quality gates | Vitest, Playwright mobile + desktop smoke, 375px overflow check, Prettier, ESLint zero warnings, Husky + lint-staged + commitlint, CI workflow file                                                                                                                                    | `pnpm verify`                                                  |
+| Agent harness | `AGENTS.md` as the single rule source with pointers for Claude, Codex, Cursor, Copilot, Gemini; portable skills in `.agents/skills/`; shared pre/post/stop hooks; managed worktrees with isolated Supabase stacks and ports; plugin packaging; design principles and UI checklist      | `scripts/__tests__/harness.test.ts`, `hooks.test.ts`           |
+| Tickets       | This change replaces `docs/tasks.json` and `scripts/task.mjs` with `tickets/` and `pnpm t:*`                                                                                                                                                                                           | `scripts/__tests__/tickets.test.ts`                            |
+
+## What exists but is incomplete
+
+- **Every product route is a placeholder.** `/invite`, `/order`, `/checkin`, `/kitchen` and `/admin` render
+  `PagePlaceholder`. No invitation, RSVP, scanner, ordering, board or admin feature exists yet.
+- **Feature modules are empty.** `src/modules/{invitations,checkin,ordering,admin}` hold only `.gitkeep` and a README.
+- **No authentication.** No Supabase Auth wiring, no admin login, 2FA, staff PIN or route protection.
+- **No PWA.** No manifest, icons, service worker, offline page or install prompts.
+- **Theming gaps.** The active theme is a code constant (`ACTIVE_THEME_ID`), not stored in the database (THM-2). There
+  is no `warning`/amber token, so the fixed green/amber/red staff statuses (THM-4) cannot be built from tokens. No
+  `pattern` texture token. Two presets, not 3–4 (THM-5).
+- **Database never exercised.** The local stack, migrate-twice and seed-twice idempotency (old SETUP-003) were not
+  verified locally; CI's database job has never run.
+- **CI never ran.** `origin` was empty until this change; no workflow has executed on GitHub (old SETUP-004).
+- **Old setup tasks still open:** contrast-gate proof (SETUP-002), database bootstrap (SETUP-003), CI parity
+  (SETUP-004), `/dev/theme` UI review (SETUP-005). All are migrated into tickets.
+- **Collaboration setup unfinished.** `.github/CODEOWNERS` still has `@REPLACE_ME_*` placeholders; branch protection
+  is not enabled; the managed worktree lifecycle (`wt:new` → `wt:remove`) has not been proven end to end on this
+  machine; `.harness/approved-writes.json` flow has no test.
+- **Harness defects found during this audit:**
+  - The post-tool hook runs `prettier --write .claude/skills`, which fails on the symlink, so **every** agent tool
+    call reports a blocking error.
+  - The pre-tool hook rejects _reads_ outside the checkout ("Edit outside this checkout denied"), which breaks reading
+    tool output files and the scratchpad.
+  - The shell-write guard matches any command containing `sed`/`perl`/`cp`/`>` together with `.env`, `node_modules/`
+    or `drizzle/` anywhere in the text, including `process.env` and read-only `cat`. That gives false positives on
+    harmless commands.
+  - `.claude/skills` is listed in `.gitignore` but committed as a symlink.
+- **Attribution.** Commit `2f8dc47` carries a `Co-Authored-By: Claude …` trailer. The new `commit-msg` hook blocks this
+  for future commits; history is not rewritten.
+- **SPIKE-001.** A worktree `../wedding-design-spike` exists on `divine/SPIKE-001-invitation-design` with no commits
+  and no entry in the old task list. Its likely scope overlaps the invitation design tickets (WED-037 onwards).
+  Divine should either fold it into those tickets or cancel the spike.
+
+## What contradicts the PRD
+
+| PRD says                                                                                                                                                         | Repository has                                                                                               | Ticket           |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ | ---------------- |
+| Invitation has `token` (≥128-bit), `max_tag_alongs`, `status` (draft, sent, rsvp_yes, rsvp_no, revoked), `table_id`, `sent_at` ([data model](prd.md#data-model)) | `invitations.code`, `household_name`, `max_guests`, no status, no revoke, no table                           | WED-023          |
+| One QR per **invitation**; the invitation is the unit the gate checks                                                                                            | `guests.qr_token` (one QR per guest)                                                                         | WED-023          |
+| Guest has `meal_choice`, `dietary_notes`, `name`                                                                                                                 | `first_name`/`last_name`, `dietary_requirements`, no meal choice, table on the guest                         | WED-023          |
+| RSVP has `attending`, `count_attending`; changes are logged                                                                                                      | `rsvps.status` enum + `message`; no change log                                                               | WED-023, WED-025 |
+| CheckIn per invitation with `people_admitted`, `result`, `device_id`, `staff_id`; partial admission; every scan logged including failures                        | `check_ins` per **guest**, unique on `guest_id` (makes partial admission and failed-scan logging impossible) | WED-024          |
+| Menu categories meal / soft drink / alcohol; `max_per_order`                                                                                                     | `food` / `drink`; no per-item cap                                                                            | WED-024          |
+| Order statuses Received, Preparing, Served, Cancelled                                                                                                            | adds `ready`                                                                                                 | WED-024          |
+| Staff roles gate / kitchen / bar / host with `whatsapp_number`, `pin_hash`, `expires_at`, separate from admins                                                   | roles admin / gate / kitchen / bar, email + `auth_user_id`, no PIN                                           | WED-024          |
+| Personal link `oursite.com/i/<token>`                                                                                                                            | placeholder route `/invite`                                                                                  | WED-036          |
+| Active theme stored in the database (THM-2)                                                                                                                      | code constant                                                                                                | WED-012          |
+| Theme file includes a `pattern` texture                                                                                                                          | no pattern token                                                                                             | WED-011          |
+| Fixed green / amber / red scanner colours (THM-4)                                                                                                                | `success` and `danger` tokens only                                                                           | WED-010          |
+| WCAG **2.1** AA on guest pages                                                                                                                                   | repo targets WCAG **2.2** AA (stricter; kept)                                                                | n/a              |
+
+## PRD gaps and the assumptions the backlog makes
+
+Each assumption is reversible. Tickets labelled `human` confirm the ones that need a person.
+
+1. **Wedding date, venue, RSVP lock.** The PRD says the date is "not needed for the build", but RSVP locking, reminders,
+   PIN expiry and data retention depend on it. Assumption: one `event_settings` row holds the date, venue and time
+   zone (Europe/London). RSVPs lock at 00:00 local time on the wedding day. Confirmed by WED-034.
+2. **Tag-along limit** (open question). Assumption: the admin sets it per invitation, with a default of 1 and an
+   allowed range of 0–10. Confirmed by WED-034.
+3. **IV token vs signed QR.** INV-2 says the QR encodes the IV link; Security says the QR carries an Ed25519-signed
+   token that scanners verify offline. Assumption: the personal link `/i/<token>` uses the 128-bit random token. The
+   gate pass QR encodes `/p/<signed-token>`, so a phone camera still opens the guest's pass while scanners verify the
+   signature offline. Revocation and reissue bump a version in the signed payload, and scanners receive a revocation
+   list. Decided in an ADR by WED-056.
+4. **"Add to Wallet".** Apple and Google Wallet passes need paid or registered issuer accounts. Assumption: v1 offers
+   Save image, PDF and the PWA offline pass. Wallet passes are out of scope unless WED-034 says otherwise.
+5. **Guest photo at RSVP** (optional in the PRD). Out of v1, not ticketed.
+6. **Email.** Email is only for admin login codes; IVs go out through the Share menu. "Email sending" in the
+   Invitations milestone is read as the Share menu's `mailto:` option. A transactional provider (Resend) needs an
+   account: WED-028.
+7. **Order alerts.** Recipients and batching are an open question. Assumption: send one message per order when a
+   station is quiet; when more than one order arrives within 60 seconds, send one batch per station per minute.
+   Recipients are opted-in staff with a WhatsApp number and a kitchen or bar role. WhatsApp Cloud API account setup is
+   a human ticket (WED-083). Vercel Hobby cron jobs run at most daily, so batching uses a database outbox drained by
+   Supabase `pg_cron` or a request-time flush (WED-084 ADR).
+8. **Orders with food and drinks.** Assumption: the submitted order is split into one ticket per station, so kitchen
+   and bar each see only their items. The guest's confirmation shows both.
+9. **Abuse limits.** Assumed defaults: at most 3 open orders per table, a 60-second cooldown per table, and the menu
+   item's `max_per_order` (default 5). All are editable in settings.
+10. **Staff PINs.** Assumption: 6-digit PINs hashed with `scrypt` (`node:crypto`, no native dependency). Five failed
+    attempts per device per 10 minutes. PINs expire at 06:00 the day after the wedding.
+11. **Admin 2FA.** Supabase Auth email OTP plus TOTP MFA, with an allowlist of admin emails.
+12. **Hosting.** Vercel plus Supabase, as the PRD suggests. Accounts and any paid tier are human decisions
+    (WED-145, WED-144).
+13. **Service worker library.** Not specified. WED-102 writes the ADR, evaluating Serwist against a hand-written
+    worker for Next.js 16.
+14. **Data retention.** The PRD gives "e.g. 90 days". Assumption: 90 days after the wedding, confirmed by WED-122.
+15. **Devices and gate staffing** (open question). Assumption: 3 scanner phones, 2 board tablets, 1 backup device.
+    Confirmed by WED-055.
+16. **Table host role** (optional in the PRD). Ticketed as low priority in `backlog`.
+17. **Capacity.** The load test uses the PRD's headroom figures: 350 guests, 3 scanners and 30 tables.
+
+Ticket ids quoted above are fixed. The backlog is generated in one pass, and ids are never reused.

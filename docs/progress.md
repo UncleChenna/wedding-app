@@ -14,6 +14,14 @@ Add-only history, newest first: prepend new entries below this template, never r
 
 ---
 
+## 2026-10-21 05:55 UTC — TICKETS — Ticket system and full backlog
+
+- **Who / agent / branch:** UncleChenna · Claude Code · `chore/ticket-system` (from `2f8dc47`, the committed HARNESS-001/DESIGN-001 work)
+- **Changed:** Replaced `docs/tasks.json` and `scripts/task.mjs`/`task-pr.mjs` with `tickets/` + `scripts/tickets.ts` (`pnpm t:*`, ADR 0013), with live claims on `origin/ticket-ledger`. Wrote 168 tickets (WED-001–WED-168) across 16 epics, generated `tickets/BOARD.md` and `tickets/ROADMAP.md`, transcribed the PRD PDF to `docs/prd.md`, and audited the repo in `docs/current-state.md`. Added the `ticket-workflow` skill, the AGENTS.md workflow and the no-AI-attribution rule. Added a `commit-msg` hook (`scripts/harness/commit-rules.mjs`), CI `tickets` and `pr-text` jobs, and `t:validate` in pre-commit and `pnpm verify`. Turned off attribution in `.claude/settings.json` and `.codex/config.toml`. `worktree.mjs` and `agent-loop.mjs` now use tickets.
+- **Checks:** Baseline `pnpm verify` passed before the change. After the change: script unit tests (tickets, harness, hooks, seed) pass, `t:validate` and `t:render` pass, and the final `pnpm verify` result is recorded in the PR. Not verified: claims against GitHub (WED-007), worktree lifecycle (WED-006), CI on GitHub (WED-004).
+- **Learned:** An exported-but-empty env var defeats `??` fallbacks; use `||` for identity lookups. The harness hooks block reads outside the checkout and give false positives on shell commands that merely mention protected paths (WED-001, WED-002). Commit `2f8dc47` carries a Claude co-author trailer; history was not rewritten.
+- **Next / blockers:** Agents: `pnpm t:next` (WED-001 first). People: the "Waiting on people" list in `tickets/BOARD.md` (Vercel, Supabase, domain, colours, WhatsApp API, venue visit). Divine: decide whether SPIKE-001 (`../wedding-design-spike`) folds into WED-037 or is cancelled.
+
 ## 2026-10-21 05:15 UTC — HARNESS-001 — Two-person parallel agent harness
 
 - **Who / agent / branch:** Divine · Codex · `divine/HARNESS-001-collaboration` (implementation request predates the new claim tooling; no origin is configured).

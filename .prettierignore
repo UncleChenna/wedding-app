@@ -16,3 +16,6 @@ src/modules/theming/themes/theme.schema.json
 .harness
 .claude/skills
 tooling/plugin/dist
+
+# Machine-managed by pnpm t:* (round-trips exactly; see docs/tickets.md)
+tickets

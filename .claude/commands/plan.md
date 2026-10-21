@@ -1,13 +1,13 @@
 ---
 description: Write an implementation plan to docs/plans/ before any code is written
-argument-hint: <task-id from docs/tasks.json, or a short description>
+argument-hint: <ticket id (WED-NNN), or a short description>
 ---
 
 Write a plan for: **$ARGUMENTS**
 
 Do NOT write or change application code in this command. Only create the plan file.
 
-1. If the argument is a task id, read its entry in `docs/tasks.json` (title, module, acceptance criteria). Otherwise treat the argument as the task.
+1. If the argument is a ticket id, read it with `pnpm t:show <id>` (context, scope, acceptance criteria, PRD links). Otherwise treat the argument as the task.
 2. Read `AGENTS.md`, `docs/architecture.md`, the newest entries of `docs/progress.md`, and the code in the affected module(s). For Next.js APIs, read the matching guide in `node_modules/next/dist/docs/`.
 3. Create `docs/plans/<YYYY-MM-DD>-<task-id-or-slug>.md` using exactly this template:
 
@@ -24,7 +24,7 @@ Do NOT write or change application code in this command. Only create the plan fi
 
 ## Acceptance criteria
 
-- [ ] <copied from tasks.json or derived>
+- [ ] <copied from the ticket or derived>
 
 ## Approach
 

@@ -1,5 +1,10 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "attribution": {
+    "commit": "",
+    "pr": "",
+    "sessionUrl": false
+  },
   "permissions": {
     "allow": [
       "Bash(pnpm verify)",
@@ -47,10 +52,10 @@
       "Bash(cat docs/*)",
       "Bash(jq *)",
       "mcp__playwright",
-      "Bash(pnpm task:*)",
       "Bash(pnpm wt:*)",
       "Bash(pnpm agents:*)",
-      "Bash(pnpm plugin:build)"
+      "Bash(pnpm plugin:build)",
+      "Bash(pnpm t:*)"
     ],
     "deny": [
       "Bash(git push --force*)",

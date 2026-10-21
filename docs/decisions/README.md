@@ -16,3 +16,4 @@ Short records of decisions that are expensive to reverse. Add one per new decisi
 | [0010](0010-worktree-databases.md)      | Isolated Supabase stack per worktree                                  |
 | [0011](0011-atomic-task-claims.md)      | Atomic Git remote task claims                                         |
 | [0012](0012-shared-quality-hooks.md)    | Shared hooks and independent quality gates                            |
+| [0013](0013-ticket-system.md)           | In-repo tickets with a shared claim ledger                            |

@@ -1,6 +1,6 @@
-# Task
+# Ticket
 
-Task ID: <!-- required -->
+Ticket: WED-NNN <!-- required; the PR title must also start with the ticket id -->
 
 # Summary
 

@@ -1,30 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { branchName, transitionTask, isolatedConfig, protectedPath } from "../harness/core.mjs";
+import { branchName, isolatedConfig, protectedPath } from "../harness/core.mjs";
 
-const task = {
-  id: "T-1",
-  title: "A shared change",
-  module: "shared",
-  acceptance: ["works"],
-  status: "todo",
-  owner: null,
-  branch: null,
-  claimed_at: null,
-  dependsOn: [],
-};
+const task = { id: "WED-001", title: "A shared change" };
 describe("collaboration invariants", () => {
-  it("rejects duplicate claims and releases by another owner", () => {
-    const claimed = transitionTask(task, "claim", "divine", []);
-    expect(claimed.status).toBe("claimed");
-    expect(() => transitionTask(claimed, "claim", "friend", [])).toThrow(/claimed/);
-    expect(() => transitionTask(claimed, "release", "friend", [])).toThrow(/owner/);
-    expect(transitionTask(claimed, "release", "divine", []).status).toBe("todo");
-  });
-  it("waits for dependencies and rejects unsafe branch names", () => {
-    expect(() => transitionTask({ ...task, dependsOn: ["T-0"] }, "claim", "divine", [])).toThrow(
-      /depend/,
-    );
-    expect(branchName("divine", task)).toBe("divine/T-1-a-shared-change");
+  // Claim, release and dependency rules moved to scripts/tickets/workflow.ts (tickets.test.ts).
+  it("builds owner-scoped branch names and rejects unsafe ones", () => {
+    expect(branchName("divine", task)).toBe("divine/WED-001-a-shared-change");
     expect(() => branchName("../../bad", task)).toThrow();
   });
   it("isolates every Supabase port and auth redirect without modifying the source config", () => {

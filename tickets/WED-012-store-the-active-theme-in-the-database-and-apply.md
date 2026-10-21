@@ -1,0 +1,65 @@
+---
+id: WED-012
+title: Store the active theme in the database and apply it on the server
+epic: design-system
+status: todo
+priority: high
+estimate: M
+labels: [backend, db, frontend]
+module: theming
+owner: ""
+agent: ""
+blocked_by: [WED-011, WED-025]
+blocks: [WED-098, WED-103]
+branch: ""
+pr: ""
+created: 2026-10-21
+updated: 2026-10-21
+started: ""
+completed: ""
+reason: ""
+resume_to: ""
+---
+
+# WED-012: Store the active theme in the database and apply it on the server
+
+## Context
+
+THM-2: the active theme lives in the database so the couple can switch it without a deploy, and pages must never flash the wrong colours.
+
+See: [How theming works](../docs/prd.md#how-theming-works) (THM-2).
+
+## Scope
+
+- Read the active theme id from `event_settings` (cached with Cache Components and tag invalidation).
+- Fall back to the default theme when the DB is unreachable.
+- Revalidate on activation.
+
+## Out of scope
+
+- Editing themes (WED-098).
+
+## Acceptance criteria
+
+- [ ] Changing the active theme in the DB restyles pages on the next request with no flash (server-rendered CSS variables).
+- [ ] With the DB down, pages render in the default theme and log a warning.
+- [ ] A unit test covers fallback.
+
+## Test plan
+
+- Unit: Theme resolver with DB stub.
+- End-to-end: Switch theme via seed fixture and assert `data-theme` changes.
+- Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+## Files likely touched
+
+- `src/modules/theming/`
+- `src/app/layout.tsx`
+
+## Notes / decisions
+
+_Agents append dated notes here while working._
+
+## Activity log
+
+- 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md

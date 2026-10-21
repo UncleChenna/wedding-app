@@ -1,6 +1,6 @@
 # 0011 — Git remote compare-and-swap claims
 
-- Status: Accepted · 2026-10-21
+- Status: Accepted · 2026-10-21 · superseded in part by [0013](0013-ticket-system.md): the ledger now lives on `ticket-ledger` and tracks tickets
 
 **Context.** Editing tasks.json independently in two clones cannot prevent both developers claiming the same task. A filesystem lock only coordinates one clone.
 

@@ -39,7 +39,7 @@ Stop the database with `pnpm db:stop`.
 | `pnpm screenshots`            | Screenshots of pages in every theme at 375/768/1280px → `artifacts/screenshots/`                             |
 | `pnpm db:generate`            | Generate a migration after editing `src/modules/shared/server/db/schema.ts`                                  |
 | `pnpm db:reset`               | Recreate, migrate and reseed the local DB                                                                    |
-| `pnpm agent:loop --help`      | Run Claude Code headless over `docs/tasks.json`                                                              |
+| `pnpm agent:loop --help`      | Run Claude Code headless over the ticket queue (`pnpm t:next`)                                               |
 
 The full list is in [AGENTS.md](AGENTS.md#commands).
 
@@ -51,7 +51,9 @@ Change the active theme in `src/modules/theming/config.ts`. Add a theme in under
 
 - [AGENTS.md](AGENTS.md): conventions, folder rules, definition of done, and the workflow loop (for humans and AI agents)
 - [docs/architecture.md](docs/architecture.md) and [docs/decisions/](docs/decisions/)
-- [docs/tasks.json](docs/tasks.json) and [docs/progress.md](docs/progress.md): task queue and work log
+- [tickets/BOARD.md](tickets/BOARD.md), [tickets/ROADMAP.md](tickets/ROADMAP.md) and [docs/tickets.md](docs/tickets.md): the ticket backlog and its rules (`pnpm t:*`)
+- [docs/current-state.md](docs/current-state.md): what exists, what is incomplete, PRD contradictions and assumptions
+- [docs/progress.md](docs/progress.md): work log
 
 ## Working together with AI agents
 
