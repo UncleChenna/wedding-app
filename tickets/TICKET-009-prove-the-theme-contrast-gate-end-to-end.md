@@ -2,20 +2,20 @@
 id: TICKET-009
 title: Prove the theme contrast gate end to end
 epic: design-system
-status: todo
+status: in_progress
 priority: urgent
 estimate: S
 labels: [test, design]
 module: theming
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: []
 blocks: [TICKET-010, TICKET-011, TICKET-015, TICKET-170]
-branch: ""
+branch: TICKET-009
 pr: ""
 created: 2026-10-21
 updated: 2026-10-21
-started: ""
+started: 2026-10-21
 completed: ""
 reason: ""
 resume_to: ""
@@ -62,3 +62,5 @@ See: [How theming works](../docs/prd.md#how-theming-works) (THM-3).
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-21 — todo → claimed — divine (codex)
+- 2026-10-21 — todo → in_progress — divine (codex)

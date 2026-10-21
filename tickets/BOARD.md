@@ -59,14 +59,14 @@ Agent work in `pnpm t:next` order (priority, then work unblocked, then id), assu
 | - | ------ | ----- | -------- | ---- | ------ |
 | 1 | [TICKET-001](TICKET-001-fix-hooks-failing-on-the-symlinked-claude-skills.md) | Fix hooks failing on the symlinked .claude/skills directory | urgent | S | harness |
 | 2 | [TICKET-003](TICKET-003-verify-database-bootstrap-is-idempotent.md) | Verify database bootstrap is idempotent | urgent | M | shared |
-| 3 | [TICKET-009](TICKET-009-prove-the-theme-contrast-gate-end-to-end.md) | Prove the theme contrast gate end to end | urgent | S | theming |
-| 4 | [TICKET-010](TICKET-010-add-fixed-semantic-status-tokens-for-valid-used.md) | Add fixed semantic status tokens for valid, used and invalid | urgent | M | theming |
-| 5 | [TICKET-023](TICKET-023-redesign-invitation-guest-and-rsvp-tables-to-mat.md) | Redesign invitation, guest and RSVP tables to match the PRD | urgent | L | shared |
-| 6 | [TICKET-017](TICKET-017-harden-base-components-for-focus-tap-targets-and.md) | Harden base components for focus, tap targets and dialogs | urgent | L | shared |
-| 7 | [TICKET-025](TICKET-025-add-event-settings-and-rsvp-change-log-tables.md) | Add event settings and RSVP change-log tables | urgent | M | shared |
-| 8 | [TICKET-029](TICKET-029-add-admin-sign-in-with-email-codes-and-an-allowl.md) | Add admin sign-in with email codes and an allowlist | urgent | M | admin |
-| 9 | [TICKET-172](TICKET-172-migrate-staff-identities-and-device-registration.md) | Migrate staff identities and device registrations | urgent | M | shared |
-| 10 | [TICKET-018](TICKET-018-add-form-components-for-rsvp-ordering-and-admin.md) | Add form components for RSVP, ordering and admin | urgent | M | shared |
+| 3 | [TICKET-010](TICKET-010-add-fixed-semantic-status-tokens-for-valid-used.md) | Add fixed semantic status tokens for valid, used and invalid | urgent | M | theming |
+| 4 | [TICKET-023](TICKET-023-redesign-invitation-guest-and-rsvp-tables-to-mat.md) | Redesign invitation, guest and RSVP tables to match the PRD | urgent | L | shared |
+| 5 | [TICKET-017](TICKET-017-harden-base-components-for-focus-tap-targets-and.md) | Harden base components for focus, tap targets and dialogs | urgent | L | shared |
+| 6 | [TICKET-025](TICKET-025-add-event-settings-and-rsvp-change-log-tables.md) | Add event settings and RSVP change-log tables | urgent | M | shared |
+| 7 | [TICKET-029](TICKET-029-add-admin-sign-in-with-email-codes-and-an-allowl.md) | Add admin sign-in with email codes and an allowlist | urgent | M | admin |
+| 8 | [TICKET-172](TICKET-172-migrate-staff-identities-and-device-registration.md) | Migrate staff identities and device registrations | urgent | M | shared |
+| 9 | [TICKET-018](TICKET-018-add-form-components-for-rsvp-ordering-and-admin.md) | Add form components for RSVP, ordering and admin | urgent | M | shared |
+| 10 | [TICKET-171](TICKET-171-migrate-menu-and-station-order-tables-independen.md) | Migrate menu and station order tables independently | urgent | M | shared |
 
 ## Waiting on people
 
@@ -110,9 +110,11 @@ Open tickets labelled `human` (decisions, accounts, physical tasks), in `pnpm t:
 
 ## Board
 
-### In progress (0)
+### In progress (1)
 
-_None._
+| Ticket | Title | Epic | Priority | Est. | Owner | Blocked by |
+| ------ | ----- | ---- | -------- | ---- | ----- | ---------- |
+| [TICKET-009](TICKET-009-prove-the-theme-contrast-gate-end-to-end.md) | Prove the theme contrast gate end to end | design-system | urgent | S | divine |  |
 
 ### In review (4)
 
@@ -127,7 +129,7 @@ _None._
 
 _None._
 
-### Todo (181)
+### Todo (180)
 
 | Ticket | Title | Epic | Priority | Est. | Owner | Blocked by |
 | ------ | ----- | ---- | -------- | ---- | ----- | ---------- |
@@ -138,7 +140,6 @@ _None._
 | [TICKET-006](TICKET-006-prove-the-managed-worktree-lifecycle-end-to-end.md) | Prove the managed worktree lifecycle end to end | foundations | high | M |  | TICKET-001, TICKET-002, TICKET-003 |
 | [TICKET-007](TICKET-007-prove-ticket-claims-across-two-clones-against-gi.md) | Prove ticket claims across two clones against GitHub | foundations | medium | S |  | TICKET-004 |
 | [TICKET-008](TICKET-008-decide-domain-wedding-colours-and-photos-for-the.md) | Decide domain, wedding colours and photos for the first theme | design-system | urgent | S |  |  |
-| [TICKET-009](TICKET-009-prove-the-theme-contrast-gate-end-to-end.md) | Prove the theme contrast gate end to end | design-system | urgent | S |  |  |
 | [TICKET-010](TICKET-010-add-fixed-semantic-status-tokens-for-valid-used.md) | Add fixed semantic status tokens for valid, used and invalid | design-system | urgent | M |  | TICKET-009 |
 | [TICKET-011](TICKET-011-align-theme-files-with-the-prd-pattern-texture-a.md) | Align theme files with the PRD: pattern texture and radius | design-system | urgent | M |  | TICKET-009 |
 | [TICKET-012](TICKET-012-store-the-active-theme-in-the-database-and-apply.md) | Store the active theme in the database and apply it on the server | design-system | urgent | M |  | TICKET-011, TICKET-025 |
