@@ -29,27 +29,27 @@ Launch and the day itself            ░░░░░░░░░░░░░░�
 
 Longest remaining dependency chain: 21 tickets, 43 points (about 43 agent-hours).
 
-1. [WED-001](WED-001-fix-hooks-failing-on-the-symlinked-claude-skills.md) Fix hooks failing on the symlinked .claude/skills directory · S · todo
-2. [WED-003](WED-003-verify-database-bootstrap-is-idempotent.md) Verify database bootstrap is idempotent · M · todo
-3. [WED-023](WED-023-redesign-invitation-guest-and-rsvp-tables-to-mat.md) Redesign invitation, guest and RSVP tables to match the PRD · L · todo
-4. [WED-025](WED-025-add-event-settings-and-rsvp-change-log-tables.md) Add event settings and RSVP change-log tables · M · todo
-5. [WED-029](WED-029-add-admin-sign-in-with-email-codes-and-an-allowl.md) Add admin sign-in with email codes and an allowlist · M · todo
-6. [WED-030](WED-030-require-totp-two-factor-auth-for-admin-accounts.md) Require TOTP two-factor auth for admin accounts · M · todo
-7. [WED-032](WED-032-protect-admin-and-staff-routes-in-the-request-pr.md) Protect admin and staff routes in the request proxy · M · todo
-8. [WED-059](WED-059-build-the-scanner-page-with-camera-qr-reading.md) Build the scanner page with camera QR reading · L · todo
-9. [WED-060](WED-060-show-scan-results-within-one-second-with-sound-a.md) Show scan results within one second with sound and vibration · M · todo
-10. [WED-061](WED-061-admit-arriving-guests-with-partial-counts.md) Admit arriving guests with partial counts · M · todo
-11. [WED-065](WED-065-cache-the-guest-list-and-revocations-on-each-sca.md) Cache the guest list and revocations on each scanner · L · todo
-12. [WED-066](WED-066-queue-offline-check-ins-and-sync-them-when-signa.md) Queue offline check-ins and sync them when signal returns · M · todo
-13. [WED-180](WED-180-preserve-queued-events-across-worker-and-data-up.md) Preserve queued events across worker and data upgrades · M · todo
-14. [WED-111](WED-111-show-an-update-available-prompt-for-new-versions.md) Show an update-available prompt for new versions · M · todo
-15. [WED-113](WED-113-automate-installability-and-offline-checks-in-pl.md) Automate installability and offline checks in Playwright · M · todo
-16. [WED-114](WED-114-test-installation-on-real-android-and-ios-device.md) Test installation on real Android and iOS devices · S · todo
-17. [WED-154](WED-154-release-to-production-and-confirm-the-site-insta.md) Release to production and confirm the site installs as a PWA · M · todo
-18. [WED-162](WED-162-train-ushers-and-caterers-on-their-screens.md) Train ushers and caterers on their screens · S · todo
-19. [WED-163](WED-163-rehearse-at-the-venue-with-real-devices-and-the.md) Rehearse at the venue with real devices and the network off · M · todo
-20. [WED-164](WED-164-freeze-the-code-and-make-the-go-no-go-decision.md) Freeze the code and make the go/no-go decision · S · todo
-21. [WED-165](WED-165-export-and-print-the-gate-guest-list-on-the-morn.md) Export and print the gate guest list on the morning · S · todo
+1. [TICKET-001](TICKET-001-fix-hooks-failing-on-the-symlinked-claude-skills.md) Fix hooks failing on the symlinked .claude/skills directory · S · todo
+2. [TICKET-003](TICKET-003-verify-database-bootstrap-is-idempotent.md) Verify database bootstrap is idempotent · M · todo
+3. [TICKET-023](TICKET-023-redesign-invitation-guest-and-rsvp-tables-to-mat.md) Redesign invitation, guest and RSVP tables to match the PRD · L · todo
+4. [TICKET-025](TICKET-025-add-event-settings-and-rsvp-change-log-tables.md) Add event settings and RSVP change-log tables · M · todo
+5. [TICKET-029](TICKET-029-add-admin-sign-in-with-email-codes-and-an-allowl.md) Add admin sign-in with email codes and an allowlist · M · todo
+6. [TICKET-030](TICKET-030-require-totp-two-factor-auth-for-admin-accounts.md) Require TOTP two-factor auth for admin accounts · M · todo
+7. [TICKET-032](TICKET-032-protect-admin-and-staff-routes-in-the-request-pr.md) Protect admin and staff routes in the request proxy · M · todo
+8. [TICKET-059](TICKET-059-build-the-scanner-page-with-camera-qr-reading.md) Build the scanner page with camera QR reading · L · todo
+9. [TICKET-060](TICKET-060-show-scan-results-within-one-second-with-sound-a.md) Show scan results within one second with sound and vibration · M · todo
+10. [TICKET-061](TICKET-061-admit-arriving-guests-with-partial-counts.md) Admit arriving guests with partial counts · M · todo
+11. [TICKET-065](TICKET-065-cache-the-guest-list-and-revocations-on-each-sca.md) Cache the guest list and revocations on each scanner · L · todo
+12. [TICKET-066](TICKET-066-queue-offline-check-ins-and-sync-them-when-signa.md) Queue offline check-ins and sync them when signal returns · M · todo
+13. [TICKET-180](TICKET-180-preserve-queued-events-across-worker-and-data-up.md) Preserve queued events across worker and data upgrades · M · todo
+14. [TICKET-111](TICKET-111-show-an-update-available-prompt-for-new-versions.md) Show an update-available prompt for new versions · M · todo
+15. [TICKET-113](TICKET-113-automate-installability-and-offline-checks-in-pl.md) Automate installability and offline checks in Playwright · M · todo
+16. [TICKET-114](TICKET-114-test-installation-on-real-android-and-ios-device.md) Test installation on real Android and iOS devices · S · todo
+17. [TICKET-154](TICKET-154-release-to-production-and-confirm-the-site-insta.md) Release to production and confirm the site installs as a PWA · M · todo
+18. [TICKET-162](TICKET-162-train-ushers-and-caterers-on-their-screens.md) Train ushers and caterers on their screens · S · todo
+19. [TICKET-163](TICKET-163-rehearse-at-the-venue-with-real-devices-and-the.md) Rehearse at the venue with real devices and the network off · M · todo
+20. [TICKET-164](TICKET-164-freeze-the-code-and-make-the-go-no-go-decision.md) Freeze the code and make the go/no-go decision · S · todo
+21. [TICKET-165](TICKET-165-export-and-print-the-gate-guest-list-on-the-morn.md) Export and print the gate guest list on the morning · S · todo
 
 ## Next 10
 
@@ -57,16 +57,16 @@ Agent work in `pnpm t:next` order (priority, then work unblocked, then id), assu
 
 | # | Ticket | Title | Priority | Est. | Module |
 | - | ------ | ----- | -------- | ---- | ------ |
-| 1 | [WED-001](WED-001-fix-hooks-failing-on-the-symlinked-claude-skills.md) | Fix hooks failing on the symlinked .claude/skills directory | urgent | S | harness |
-| 2 | [WED-002](WED-002-allow-reads-outside-the-checkout-and-fix-shell-g.md) | Allow reads outside the checkout and fix shell-guard false positives | urgent | S | harness |
-| 3 | [WED-003](WED-003-verify-database-bootstrap-is-idempotent.md) | Verify database bootstrap is idempotent | urgent | M | shared |
-| 4 | [WED-009](WED-009-prove-the-theme-contrast-gate-end-to-end.md) | Prove the theme contrast gate end to end | urgent | S | theming |
-| 5 | [WED-010](WED-010-add-fixed-semantic-status-tokens-for-valid-used.md) | Add fixed semantic status tokens for valid, used and invalid | urgent | M | theming |
-| 6 | [WED-023](WED-023-redesign-invitation-guest-and-rsvp-tables-to-mat.md) | Redesign invitation, guest and RSVP tables to match the PRD | urgent | L | shared |
-| 7 | [WED-017](WED-017-harden-base-components-for-focus-tap-targets-and.md) | Harden base components for focus, tap targets and dialogs | urgent | L | shared |
-| 8 | [WED-025](WED-025-add-event-settings-and-rsvp-change-log-tables.md) | Add event settings and RSVP change-log tables | urgent | M | shared |
-| 9 | [WED-029](WED-029-add-admin-sign-in-with-email-codes-and-an-allowl.md) | Add admin sign-in with email codes and an allowlist | urgent | M | admin |
-| 10 | [WED-172](WED-172-migrate-staff-identities-and-device-registration.md) | Migrate staff identities and device registrations | urgent | M | shared |
+| 1 | [TICKET-001](TICKET-001-fix-hooks-failing-on-the-symlinked-claude-skills.md) | Fix hooks failing on the symlinked .claude/skills directory | urgent | S | harness |
+| 2 | [TICKET-002](TICKET-002-allow-reads-outside-the-checkout-and-fix-shell-g.md) | Allow reads outside the checkout and fix shell-guard false positives | urgent | S | harness |
+| 3 | [TICKET-003](TICKET-003-verify-database-bootstrap-is-idempotent.md) | Verify database bootstrap is idempotent | urgent | M | shared |
+| 4 | [TICKET-009](TICKET-009-prove-the-theme-contrast-gate-end-to-end.md) | Prove the theme contrast gate end to end | urgent | S | theming |
+| 5 | [TICKET-010](TICKET-010-add-fixed-semantic-status-tokens-for-valid-used.md) | Add fixed semantic status tokens for valid, used and invalid | urgent | M | theming |
+| 6 | [TICKET-023](TICKET-023-redesign-invitation-guest-and-rsvp-tables-to-mat.md) | Redesign invitation, guest and RSVP tables to match the PRD | urgent | L | shared |
+| 7 | [TICKET-017](TICKET-017-harden-base-components-for-focus-tap-targets-and.md) | Harden base components for focus, tap targets and dialogs | urgent | L | shared |
+| 8 | [TICKET-025](TICKET-025-add-event-settings-and-rsvp-change-log-tables.md) | Add event settings and RSVP change-log tables | urgent | M | shared |
+| 9 | [TICKET-029](TICKET-029-add-admin-sign-in-with-email-codes-and-an-allowl.md) | Add admin sign-in with email codes and an allowlist | urgent | M | admin |
+| 10 | [TICKET-172](TICKET-172-migrate-staff-identities-and-device-registration.md) | Migrate staff identities and device registrations | urgent | M | shared |
 
 ## Waiting on people
 
@@ -74,39 +74,39 @@ Open tickets labelled `human` (decisions, accounts, physical tasks), in `pnpm t:
 
 | # | Ticket | Title | Priority | Status | Blocked by |
 | - | ------ | ----- | -------- | ------ | ---------- |
-| 1 | [WED-034](WED-034-decide-wedding-date-rsvp-lock-tag-along-limit-an.md) | Decide wedding date, RSVP lock, tag-along limit and Wallet scope | urgent | todo |  |
-| 2 | [WED-169](WED-169-approve-offline-freshness-and-the-gate-credentia.md) | Approve offline freshness and the gate credential contract | urgent | todo |  |
-| 3 | [WED-055](WED-055-decide-who-runs-the-gate-and-boards-and-on-which.md) | Decide who runs the gate and boards, and on which devices | urgent | todo |  |
-| 4 | [WED-035](WED-035-choose-the-invitation-voice-and-approve-guest-fa.md) | Choose the invitation voice and approve guest-facing copy | urgent | todo |  |
-| 5 | [WED-145](WED-145-create-the-vercel-project-and-connect-the-reposi.md) | Create the Vercel project and connect the repository | urgent | todo |  |
-| 6 | [WED-144](WED-144-create-the-production-supabase-project.md) | Create the production Supabase project | urgent | todo | WED-145 |
-| 7 | [WED-149](WED-149-decide-and-set-up-the-database-for-previews-and.md) | Decide and set up the database for previews and staging | urgent | todo | WED-144, WED-147 |
-| 8 | [WED-008](WED-008-decide-domain-wedding-colours-and-photos-for-the.md) | Decide domain, wedding colours and photos for the first theme | urgent | todo |  |
-| 9 | [WED-122](WED-122-agree-data-retention-and-privacy-notice-details.md) | Agree data retention and privacy notice details | urgent | todo |  |
-| 10 | [WED-139](WED-139-create-the-sentry-project-and-share-its-dsn.md) | Create the Sentry project and share its DSN | urgent | todo | WED-145 |
-| 11 | [WED-083](WED-083-set-up-the-whatsapp-alert-number-and-confirm-rec.md) | Set up the WhatsApp alert number and confirm recipients | urgent | todo |  |
-| 12 | [WED-146](WED-146-buy-the-domain-and-point-it-at-vercel-with-https.md) | Buy the domain and point it at Vercel with HTTPS | urgent | todo | WED-008, WED-145 |
-| 13 | [WED-005](WED-005-replace-codeowners-placeholders-and-enable-branc.md) | Replace CODEOWNERS placeholders and enable branch protection | urgent | todo | WED-004 |
-| 14 | [WED-014](WED-014-create-the-couple-s-theme-from-their-colours-and.md) | Create the couple's theme from their colours and photos | urgent | todo | WED-008, WED-013, WED-170 |
-| 15 | [WED-028](WED-028-set-up-the-email-provider-for-admin-login-codes.md) | Set up the email provider for admin login codes | urgent | todo | WED-144, WED-146 |
-| 16 | [WED-138](WED-138-test-the-guest-flow-in-whatsapp-s-browser-on-ios.md) | Test the guest flow in WhatsApp's browser on iOS and Android | urgent | todo | WED-044, WED-047, WED-045, WED-107, WED-149, WED-055, WED-041, WED-039 |
-| 17 | [WED-177](WED-177-import-and-reconcile-the-real-invitation-guest-l.md) | Import and reconcile the real invitation guest list | urgent | todo | WED-091, WED-176, WED-034, WED-126 |
-| 18 | [WED-158](WED-158-proof-read-every-guest-facing-message-and-screen.md) | Proof-read every guest-facing message and screen | urgent | todo | WED-035, WED-041, WED-052, WED-044, WED-045, WED-046 |
-| 19 | [WED-159](WED-159-share-the-invitations-with-every-guest.md) | Share the invitations with every guest | urgent | todo | WED-051, WED-138, WED-177, WED-158, WED-176 |
-| 20 | [WED-117](WED-117-audit-guest-journeys-for-wcag-2-2-aa-and-fix-fin.md) | Audit guest journeys for WCAG 2.2 AA and fix findings | high | todo | WED-041, WED-044, WED-075, WED-115 |
-| 21 | [WED-114](WED-114-test-installation-on-real-android-and-ios-device.md) | Test installation on real Android and iOS devices | high | todo | WED-113, WED-149, WED-055 |
-| 22 | [WED-155](WED-155-visit-the-venue-and-measure-signal-at-the-gate-a.md) | Visit the venue and measure signal at the gate and hall | high | todo |  |
-| 23 | [WED-157](WED-157-load-the-real-guest-list-and-menu.md) | Load and reconcile the real wedding menu | high | todo | WED-095, WED-154, WED-177 |
-| 24 | [WED-162](WED-162-train-ushers-and-caterers-on-their-screens.md) | Train ushers and caterers on their screens | high | todo | WED-055, WED-154, WED-161 |
-| 25 | [WED-163](WED-163-rehearse-at-the-venue-with-real-devices-and-the.md) | Rehearse at the venue with real devices and the network off | high | todo | WED-114, WED-136, WED-137, WED-156, WED-162 |
-| 26 | [WED-164](WED-164-freeze-the-code-and-make-the-go-no-go-decision.md) | Freeze the code and make the go/no-go decision | high | todo | WED-117, WED-118, WED-129, WED-142, WED-163, WED-154, WED-159, WED-160, WED-158, WED-005 |
-| 27 | [WED-168](WED-168-confirm-guest-personal-data-is-deleted-after-ret.md) | Confirm guest personal data is deleted after retention | high | todo | WED-127, WED-151, WED-184, WED-166 |
-| 28 | [WED-118](WED-118-audit-staff-and-admin-screens-for-accessibility.md) | Audit staff and admin screens for accessibility and legibility | medium | todo | WED-060, WED-078, WED-093, WED-115 |
-| 29 | [WED-156](WED-156-buy-the-4g-router-backup-sim-power-banks-and-bac.md) | Buy the 4G router, backup SIM, power banks and backup device | medium | todo | WED-155 |
-| 30 | [WED-142](WED-142-set-up-uptime-checks-for-guest-scanner-and-board.md) | Set up uptime checks for guest, scanner and board routes | medium | todo | WED-143, WED-147 |
-| 31 | [WED-160](WED-160-print-the-table-cards.md) | Print the table cards | medium | todo | WED-094, WED-156, WED-157, WED-146 |
-| 32 | [WED-165](WED-165-export-and-print-the-gate-guest-list-on-the-morn.md) | Export and print the gate guest list on the morning | medium | todo | WED-069, WED-164 |
-| 33 | [WED-167](WED-167-hand-the-couple-their-memories-export.md) | Hand the couple their memories export | low | todo | WED-166 |
+| 1 | [TICKET-034](TICKET-034-decide-wedding-date-rsvp-lock-tag-along-limit-an.md) | Decide wedding date, RSVP lock, tag-along limit and Wallet scope | urgent | todo |  |
+| 2 | [TICKET-169](TICKET-169-approve-offline-freshness-and-the-gate-credentia.md) | Approve offline freshness and the gate credential contract | urgent | todo |  |
+| 3 | [TICKET-055](TICKET-055-decide-who-runs-the-gate-and-boards-and-on-which.md) | Decide who runs the gate and boards, and on which devices | urgent | todo |  |
+| 4 | [TICKET-035](TICKET-035-choose-the-invitation-voice-and-approve-guest-fa.md) | Choose the invitation voice and approve guest-facing copy | urgent | todo |  |
+| 5 | [TICKET-145](TICKET-145-create-the-vercel-project-and-connect-the-reposi.md) | Create the Vercel project and connect the repository | urgent | todo |  |
+| 6 | [TICKET-144](TICKET-144-create-the-production-supabase-project.md) | Create the production Supabase project | urgent | todo | TICKET-145 |
+| 7 | [TICKET-149](TICKET-149-decide-and-set-up-the-database-for-previews-and.md) | Decide and set up the database for previews and staging | urgent | todo | TICKET-144, TICKET-147 |
+| 8 | [TICKET-008](TICKET-008-decide-domain-wedding-colours-and-photos-for-the.md) | Decide domain, wedding colours and photos for the first theme | urgent | todo |  |
+| 9 | [TICKET-122](TICKET-122-agree-data-retention-and-privacy-notice-details.md) | Agree data retention and privacy notice details | urgent | todo |  |
+| 10 | [TICKET-139](TICKET-139-create-the-sentry-project-and-share-its-dsn.md) | Create the Sentry project and share its DSN | urgent | todo | TICKET-145 |
+| 11 | [TICKET-083](TICKET-083-set-up-the-whatsapp-alert-number-and-confirm-rec.md) | Set up the WhatsApp alert number and confirm recipients | urgent | todo |  |
+| 12 | [TICKET-146](TICKET-146-buy-the-domain-and-point-it-at-vercel-with-https.md) | Buy the domain and point it at Vercel with HTTPS | urgent | todo | TICKET-008, TICKET-145 |
+| 13 | [TICKET-005](TICKET-005-replace-codeowners-placeholders-and-enable-branc.md) | Replace CODEOWNERS placeholders and enable branch protection | urgent | todo | TICKET-004 |
+| 14 | [TICKET-014](TICKET-014-create-the-couple-s-theme-from-their-colours-and.md) | Create the couple's theme from their colours and photos | urgent | todo | TICKET-008, TICKET-013, TICKET-170 |
+| 15 | [TICKET-028](TICKET-028-set-up-the-email-provider-for-admin-login-codes.md) | Set up the email provider for admin login codes | urgent | todo | TICKET-144, TICKET-146 |
+| 16 | [TICKET-138](TICKET-138-test-the-guest-flow-in-whatsapp-s-browser-on-ios.md) | Test the guest flow in WhatsApp's browser on iOS and Android | urgent | todo | TICKET-044, TICKET-047, TICKET-045, TICKET-107, TICKET-149, TICKET-055, TICKET-041, TICKET-039 |
+| 17 | [TICKET-177](TICKET-177-import-and-reconcile-the-real-invitation-guest-l.md) | Import and reconcile the real invitation guest list | urgent | todo | TICKET-091, TICKET-176, TICKET-034, TICKET-126 |
+| 18 | [TICKET-158](TICKET-158-proof-read-every-guest-facing-message-and-screen.md) | Proof-read every guest-facing message and screen | urgent | todo | TICKET-035, TICKET-041, TICKET-052, TICKET-044, TICKET-045, TICKET-046 |
+| 19 | [TICKET-159](TICKET-159-share-the-invitations-with-every-guest.md) | Share the invitations with every guest | urgent | todo | TICKET-051, TICKET-138, TICKET-177, TICKET-158, TICKET-176 |
+| 20 | [TICKET-117](TICKET-117-audit-guest-journeys-for-wcag-2-2-aa-and-fix-fin.md) | Audit guest journeys for WCAG 2.2 AA and fix findings | high | todo | TICKET-041, TICKET-044, TICKET-075, TICKET-115 |
+| 21 | [TICKET-114](TICKET-114-test-installation-on-real-android-and-ios-device.md) | Test installation on real Android and iOS devices | high | todo | TICKET-113, TICKET-149, TICKET-055 |
+| 22 | [TICKET-155](TICKET-155-visit-the-venue-and-measure-signal-at-the-gate-a.md) | Visit the venue and measure signal at the gate and hall | high | todo |  |
+| 23 | [TICKET-157](TICKET-157-load-the-real-guest-list-and-menu.md) | Load and reconcile the real wedding menu | high | todo | TICKET-095, TICKET-154, TICKET-177 |
+| 24 | [TICKET-162](TICKET-162-train-ushers-and-caterers-on-their-screens.md) | Train ushers and caterers on their screens | high | todo | TICKET-055, TICKET-154, TICKET-161 |
+| 25 | [TICKET-163](TICKET-163-rehearse-at-the-venue-with-real-devices-and-the.md) | Rehearse at the venue with real devices and the network off | high | todo | TICKET-114, TICKET-136, TICKET-137, TICKET-156, TICKET-162 |
+| 26 | [TICKET-164](TICKET-164-freeze-the-code-and-make-the-go-no-go-decision.md) | Freeze the code and make the go/no-go decision | high | todo | TICKET-117, TICKET-118, TICKET-129, TICKET-142, TICKET-163, TICKET-154, TICKET-159, TICKET-160, TICKET-158, TICKET-005 |
+| 27 | [TICKET-168](TICKET-168-confirm-guest-personal-data-is-deleted-after-ret.md) | Confirm guest personal data is deleted after retention | high | todo | TICKET-127, TICKET-151, TICKET-184, TICKET-166 |
+| 28 | [TICKET-118](TICKET-118-audit-staff-and-admin-screens-for-accessibility.md) | Audit staff and admin screens for accessibility and legibility | medium | todo | TICKET-060, TICKET-078, TICKET-093, TICKET-115 |
+| 29 | [TICKET-156](TICKET-156-buy-the-4g-router-backup-sim-power-banks-and-bac.md) | Buy the 4G router, backup SIM, power banks and backup device | medium | todo | TICKET-155 |
+| 30 | [TICKET-142](TICKET-142-set-up-uptime-checks-for-guest-scanner-and-board.md) | Set up uptime checks for guest, scanner and board routes | medium | todo | TICKET-143, TICKET-147 |
+| 31 | [TICKET-160](TICKET-160-print-the-table-cards.md) | Print the table cards | medium | todo | TICKET-094, TICKET-156, TICKET-157, TICKET-146 |
+| 32 | [TICKET-165](TICKET-165-export-and-print-the-gate-guest-list-on-the-morn.md) | Export and print the gate guest list on the morning | medium | todo | TICKET-069, TICKET-164 |
+| 33 | [TICKET-167](TICKET-167-hand-the-couple-their-memories-export.md) | Hand the couple their memories export | low | todo | TICKET-166 |
 
 ## Board
 
@@ -114,7 +114,7 @@ Open tickets labelled `human` (decisions, accounts, physical tasks), in `pnpm t:
 
 | Ticket | Title | Epic | Priority | Est. | Owner | Blocked by |
 | ------ | ----- | ---- | -------- | ---- | ----- | ---------- |
-| [WED-186](WED-186-rename-the-ticket-prefix-from-wed-to-ticket.md) | Rename the ticket prefix from WED to TICKET | foundations | urgent | M | divine |  |
+| [TICKET-186](TICKET-186-use-ticket-prefix.md) | Use TICKET as the ticket prefix | foundations | urgent | M | divine |  |
 
 ### In review (0)
 
@@ -128,196 +128,196 @@ _None._
 
 | Ticket | Title | Epic | Priority | Est. | Owner | Blocked by |
 | ------ | ----- | ---- | -------- | ---- | ----- | ---------- |
-| [WED-001](WED-001-fix-hooks-failing-on-the-symlinked-claude-skills.md) | Fix hooks failing on the symlinked .claude/skills directory | foundations | urgent | S |  |  |
-| [WED-002](WED-002-allow-reads-outside-the-checkout-and-fix-shell-g.md) | Allow reads outside the checkout and fix shell-guard false positives | foundations | urgent | S |  |  |
-| [WED-003](WED-003-verify-database-bootstrap-is-idempotent.md) | Verify database bootstrap is idempotent | foundations | urgent | M |  | WED-001, WED-002 |
-| [WED-004](WED-004-get-the-first-green-ci-run-and-confirm-parity-wi.md) | Get the first green CI run and confirm parity with pnpm verify | foundations | urgent | S |  |  |
-| [WED-005](WED-005-replace-codeowners-placeholders-and-enable-branc.md) | Replace CODEOWNERS placeholders and enable branch protection | foundations | urgent | S |  | WED-004 |
-| [WED-006](WED-006-prove-the-managed-worktree-lifecycle-end-to-end.md) | Prove the managed worktree lifecycle end to end | foundations | high | M |  | WED-001, WED-002, WED-003 |
-| [WED-007](WED-007-prove-ticket-claims-across-two-clones-against-gi.md) | Prove ticket claims across two clones against GitHub | foundations | medium | S |  | WED-004 |
-| [WED-008](WED-008-decide-domain-wedding-colours-and-photos-for-the.md) | Decide domain, wedding colours and photos for the first theme | design-system | urgent | S |  |  |
-| [WED-009](WED-009-prove-the-theme-contrast-gate-end-to-end.md) | Prove the theme contrast gate end to end | design-system | urgent | S |  |  |
-| [WED-010](WED-010-add-fixed-semantic-status-tokens-for-valid-used.md) | Add fixed semantic status tokens for valid, used and invalid | design-system | urgent | M |  | WED-009 |
-| [WED-011](WED-011-align-theme-files-with-the-prd-pattern-texture-a.md) | Align theme files with the PRD: pattern texture and radius | design-system | urgent | M |  | WED-009 |
-| [WED-012](WED-012-store-the-active-theme-in-the-database-and-apply.md) | Store the active theme in the database and apply it on the server | design-system | urgent | M |  | WED-011, WED-025 |
-| [WED-013](WED-013-ship-third-and-fourth-preset-themes.md) | Ship third and fourth preset themes | design-system | urgent | M |  | WED-010, WED-011, WED-170 |
-| [WED-014](WED-014-create-the-couple-s-theme-from-their-colours-and.md) | Create the couple's theme from their colours and photos | design-system | urgent | S |  | WED-008, WED-013, WED-170 |
-| [WED-015](WED-015-define-the-typography-scale-and-font-roles.md) | Define the typography scale and font roles | design-system | urgent | M |  | WED-009 |
-| [WED-016](WED-016-add-motion-primitives-that-honour-reduced-motion.md) | Add motion primitives that honour reduced motion | design-system | urgent | M |  |  |
-| [WED-017](WED-017-harden-base-components-for-focus-tap-targets-and.md) | Harden base components for focus, tap targets and dialogs | design-system | urgent | L |  | WED-010 |
-| [WED-018](WED-018-add-form-components-for-rsvp-ordering-and-admin.md) | Add form components for RSVP, ordering and admin | design-system | urgent | M |  | WED-017 |
-| [WED-019](WED-019-add-staff-status-panels-and-badges-for-arm-s-len.md) | Add staff status panels and badges for arm's-length reading | design-system | urgent | S |  | WED-010, WED-017 |
-| [WED-020](WED-020-add-theme-driven-dividers-monogram-and-paper-tex.md) | Add theme-driven dividers, monogram and paper texture | design-system | urgent | S |  | WED-011 |
-| [WED-021](WED-021-ui-review-of-dev-theme-in-every-theme-and-width.md) | UI review of /dev/theme in every theme and width | design-system | urgent | S |  | WED-015, WED-016, WED-018, WED-019, WED-020, WED-013 |
-| [WED-023](WED-023-redesign-invitation-guest-and-rsvp-tables-to-mat.md) | Redesign invitation, guest and RSVP tables to match the PRD | data-auth | urgent | L |  | WED-003, WED-034 |
-| [WED-024](WED-024-redesign-check-in-menu-order-and-staff-tables-to.md) | Migrate admission counters and scan event tables | data-auth | urgent | M |  | WED-023, WED-172 |
-| [WED-025](WED-025-add-event-settings-and-rsvp-change-log-tables.md) | Add event settings and RSVP change-log tables | data-auth | urgent | M |  | WED-023 |
-| [WED-026](WED-026-rebuild-deterministic-seed-data-for-the-new-sche.md) | Rebuild deterministic seed data for the new schema | data-auth | urgent | M |  | WED-024, WED-025, WED-171, WED-172 |
-| [WED-027](WED-027-write-the-rls-adr-and-least-privilege-policies.md) | Write the RLS ADR and least-privilege policies | data-auth | urgent | M |  | WED-024, WED-025, WED-171, WED-172, WED-031 |
-| [WED-028](WED-028-set-up-the-email-provider-for-admin-login-codes.md) | Set up the email provider for admin login codes | data-auth | urgent | S |  | WED-144, WED-146 |
-| [WED-029](WED-029-add-admin-sign-in-with-email-codes-and-an-allowl.md) | Add admin sign-in with email codes and an allowlist | data-auth | urgent | M |  | WED-017, WED-025 |
-| [WED-030](WED-030-require-totp-two-factor-auth-for-admin-accounts.md) | Require TOTP two-factor auth for admin accounts | data-auth | urgent | M |  | WED-029 |
-| [WED-031](WED-031-add-staff-pin-sign-in-with-hashed-expiring-pins.md) | Add staff PIN sign-in with hashed, expiring PINs | data-auth | urgent | M |  | WED-172, WED-025, WED-169 |
-| [WED-032](WED-032-protect-admin-and-staff-routes-in-the-request-pr.md) | Protect admin and staff routes in the request proxy | data-auth | urgent | M |  | WED-030, WED-031 |
-| [WED-033](WED-033-set-up-realtime-channels-for-boards-and-scanners.md) | Set up realtime channels for boards and scanners | data-auth | high | M |  | WED-027, WED-031 |
-| [WED-034](WED-034-decide-wedding-date-rsvp-lock-tag-along-limit-an.md) | Decide wedding date, RSVP lock, tag-along limit and Wallet scope | invitations | urgent | S |  |  |
-| [WED-035](WED-035-choose-the-invitation-voice-and-approve-guest-fa.md) | Choose the invitation voice and approve guest-facing copy | invitations | urgent | S |  |  |
-| [WED-036](WED-036-generate-invitation-tokens-and-the-personal-i-to.md) | Generate invitation tokens and the personal /i/[token] route | invitations | urgent | M |  | WED-023 |
-| [WED-037](WED-037-build-the-iv-page-with-names-date-venue-dress-co.md) | Build the IV page with names, date, venue, dress code and map | invitations | urgent | L |  | WED-015, WED-017, WED-025, WED-036, WED-021 |
-| [WED-038](WED-038-add-the-full-bleed-hero-photo-with-blur-placehol.md) | Add the full-bleed hero photo with blur placeholder | invitations | urgent | M |  | WED-037, WED-008 |
-| [WED-039](WED-039-add-the-envelope-opening-reveal-with-reduced-mot.md) | Add the envelope-opening reveal with reduced-motion fallback | invitations | urgent | M |  | WED-016, WED-037 |
-| [WED-040](WED-040-build-the-rsvp-form-for-attending-yes-or-no.md) | Build the RSVP form for attending yes or no | invitations | urgent | M |  | WED-018, WED-023, WED-036, WED-025, WED-035 |
-| [WED-041](WED-041-let-guests-add-tag-alongs-with-meals-and-dietary.md) | Let guests add tag-alongs with meals and dietary notes | invitations | urgent | L |  | WED-040, WED-171 |
-| [WED-042](WED-042-lock-rsvp-edits-on-the-wedding-day-and-log-every.md) | Lock RSVP edits on the wedding day and log every change | invitations | urgent | M |  | WED-025, WED-041, WED-034 |
-| [WED-043](WED-043-revoke-and-reissue-invitations-so-old-links-and.md) | Revoke and reissue invitations so old links and QRs stop working | invitations | urgent | M |  | WED-036, WED-056, WED-032, WED-088 |
-| [WED-044](WED-044-show-the-guest-s-qr-pass-after-they-rsvp-yes.md) | Show the guest's QR pass after they RSVP yes | invitations | urgent | M |  | WED-040, WED-056, WED-170, WED-183 |
-| [WED-045](WED-045-let-guests-save-their-pass-as-an-image.md) | Let guests save their pass as an image | invitations | urgent | M |  | WED-044 |
-| [WED-046](WED-046-offer-a-printable-pdf-invitation-with-the-qr.md) | Offer a printable PDF invitation with the QR | invitations | urgent | L |  | WED-011, WED-044 |
-| [WED-047](WED-047-add-open-graph-previews-for-iv-links-without-gue.md) | Add Open Graph previews for IV links without guest details | invitations | urgent | M |  | WED-037 |
-| [WED-048](WED-048-let-guests-request-their-link-again.md) | Let guests request their link again | invitations | urgent | M |  | WED-036, WED-088, WED-050, WED-185 |
-| [WED-049](WED-049-normalise-guest-phone-numbers-for-wa-me-links.md) | Normalise guest phone numbers for wa.me links | sharing | urgent | S |  | WED-023 |
-| [WED-050](WED-050-build-the-share-menu-whatsapp-email-copy-link-an.md) | Build the Share menu: WhatsApp, email, copy link and native share | sharing | urgent | M |  | WED-018, WED-036, WED-049 |
-| [WED-051](WED-051-mark-invitations-as-sent-when-shared.md) | Mark invitations as sent when shared | sharing | urgent | S |  | WED-050, WED-089 |
-| [WED-052](WED-052-fill-share-messages-from-the-prd-wording-templat.md) | Fill share messages from the PRD wording templates | sharing | urgent | S |  | WED-050, WED-035, WED-025 |
-| [WED-053](WED-053-show-a-reminder-list-and-re-share-nudges-to-non.md) | Show a reminder list and re-share nudges to non-responders | sharing | medium | M |  | WED-051, WED-089, WED-052 |
-| [WED-054](WED-054-prepare-the-day-before-pass-reminder-batch.md) | Prepare the day-before pass reminder batch | sharing | low | S |  | WED-053, WED-052 |
-| [WED-055](WED-055-decide-who-runs-the-gate-and-boards-and-on-which.md) | Decide who runs the gate and boards, and on which devices | checkin | urgent | S |  |  |
-| [WED-056](WED-056-sign-gate-pass-tokens-with-ed25519-and-document.md) | Sign gate pass tokens with Ed25519 and document key handling | checkin | urgent | M |  | WED-023, WED-169 |
-| [WED-057](WED-057-verify-gate-tokens-on-the-scanner-device.md) | Verify gate tokens on the scanner device | checkin | high | M |  | WED-056, WED-055 |
-| [WED-058](WED-058-implement-admission-rules-and-partial-admission.md) | Implement admission rules and partial admission | checkin | high | M |  | WED-024 |
-| [WED-059](WED-059-build-the-scanner-page-with-camera-qr-reading.md) | Build the scanner page with camera QR reading | checkin | high | L |  | WED-019, WED-031, WED-057, WED-032 |
-| [WED-060](WED-060-show-scan-results-within-one-second-with-sound-a.md) | Show scan results within one second with sound and vibration | checkin | high | M |  | WED-058, WED-059 |
-| [WED-061](WED-061-admit-arriving-guests-with-partial-counts.md) | Admit arriving guests with partial counts | checkin | high | M |  | WED-024, WED-060, WED-064, WED-032 |
-| [WED-062](WED-062-log-every-scan-with-time-device-staff-and-result.md) | Log every scan with time, device, staff and result | checkin | high | S |  | WED-061, WED-064 |
-| [WED-063](WED-063-add-manual-search-and-check-in-by-guest-name.md) | Add manual search and check-in by guest name | checkin | high | M |  | WED-061, WED-065, WED-062 |
-| [WED-064](WED-064-register-and-name-scanner-and-board-devices.md) | Register and name scanner and board devices | checkin | medium | S |  | WED-031, WED-088 |
-| [WED-065](WED-065-cache-the-guest-list-and-revocations-on-each-sca.md) | Cache the guest list and revocations on each scanner | checkin | high | L |  | WED-043, WED-061, WED-108 |
-| [WED-066](WED-066-queue-offline-check-ins-and-sync-them-when-signa.md) | Queue offline check-ins and sync them when signal returns | checkin | high | M |  | WED-065, WED-173, WED-062 |
-| [WED-067](WED-067-flag-and-resolve-double-entries-from-offline-sca.md) | Flag and resolve double entries from offline scanners | checkin | high | M |  | WED-066, WED-033, WED-088 |
-| [WED-068](WED-068-sync-check-ins-across-scanners-within-two-second.md) | Sync check-ins across scanners within two seconds | checkin | high | M |  | WED-033, WED-061, WED-065 |
-| [WED-069](WED-069-export-a-printable-gate-guest-list.md) | Export a printable gate guest list | checkin | high | S |  | WED-024, WED-088 |
-| [WED-070](WED-070-start-the-order-page-by-typing-and-validating-a.md) | Start the order page by typing and validating a table number | ordering | high | M |  | WED-018, WED-171 |
-| [WED-071](WED-071-show-the-menu-by-category-with-live-sold-out-sta.md) | Show the menu by category with live sold-out state | ordering | high | M |  | WED-070 |
-| [WED-072](WED-072-submit-orders-with-quantities-note-and-honest-re.md) | Submit orders with quantities, note and honest retrying | ordering | high | L |  | WED-071 |
-| [WED-073](WED-073-enforce-order-limits-per-table-cooldown-and-item.md) | Enforce order limits per table, cooldown and item caps | ordering | high | M |  | WED-025, WED-074 |
-| [WED-074](WED-074-route-order-items-to-kitchen-and-bar-stations.md) | Route order items to kitchen and bar stations | ordering | high | M |  | WED-072 |
-| [WED-075](WED-075-show-guests-live-status-for-their-order.md) | Show guests live status for their order | ordering | high | M |  | WED-033, WED-074, WED-078 |
-| [WED-076](WED-076-build-the-kitchen-board-with-oldest-first-live-o.md) | Build the kitchen board with oldest-first live orders | ordering | high | L |  | WED-019, WED-031, WED-033, WED-074, WED-128 |
-| [WED-077](WED-077-add-the-bar-board-using-the-shared-board-compone.md) | Add the bar board using the shared board component | ordering | high | S |  | WED-076 |
-| [WED-078](WED-078-let-staff-move-orders-through-received-preparing.md) | Let staff move orders through received, preparing and served | ordering | high | M |  | WED-076 |
-| [WED-079](WED-079-let-staff-enter-an-order-for-a-table-from-the-bo.md) | Let staff enter an order for a table from the board | ordering | high | M |  | WED-078, WED-073 |
-| [WED-080](WED-080-open-and-close-ordering-on-admin-command.md) | Open and close ordering on admin command | ordering | high | S |  | WED-025, WED-072, WED-088 |
-| [WED-081](WED-081-keep-the-order-page-under-200-kb-and-fast-on-slo.md) | Keep the order page under 200 KB and fast on slow networks | ordering | high | M |  | WED-075, WED-073 |
-| [WED-083](WED-083-set-up-the-whatsapp-alert-number-and-confirm-rec.md) | Set up the WhatsApp alert number and confirm recipients | alerts | urgent | S |  |  |
-| [WED-084](WED-084-queue-order-alerts-in-an-outbox-and-batch-them-p.md) | Queue order alerts in an outbox and batch them per station | alerts | high | M |  | WED-171, WED-074 |
-| [WED-085](WED-085-send-alerts-through-the-whatsapp-cloud-api-with.md) | Send alerts through the WhatsApp Cloud API with retries | alerts | high | M |  | WED-083, WED-084, WED-086 |
-| [WED-086](WED-086-manage-alert-opt-ins-and-recipients-per-station.md) | Manage alert opt-ins and recipients per station | alerts | medium | S |  | WED-084, WED-096, WED-049 |
-| [WED-087](WED-087-show-alert-delivery-health-on-the-boards.md) | Show alert delivery health on the boards | alerts | medium | S |  | WED-076, WED-085 |
-| [WED-088](WED-088-build-the-admin-shell-and-navigation.md) | Build the admin shell and navigation | admin | urgent | M |  | WED-017, WED-032 |
-| [WED-089](WED-089-build-the-guest-list-with-rsvp-status-and-filter.md) | Build the guest list with RSVP status and filters | admin | urgent | L |  | WED-023, WED-088, WED-043, WED-050 |
-| [WED-090](WED-090-add-and-edit-invitations-and-guests-one-by-one.md) | Add and edit invitations and guests one by one | admin | urgent | M |  | WED-049, WED-089, WED-036 |
-| [WED-091](WED-091-import-guests-from-csv-with-a-validation-preview.md) | Import guests from CSV with a validation preview | admin | urgent | M |  | WED-090, WED-182 |
-| [WED-092](WED-092-export-the-guest-list-to-csv.md) | Export the guest list to CSV | admin | urgent | S |  | WED-089 |
-| [WED-093](WED-093-build-the-seating-plan-tables-and-assignments.md) | Build the seating plan: tables and assignments | admin | high | L |  | WED-089 |
-| [WED-094](WED-094-print-table-cards-with-the-shared-order-qr-and-w.md) | Print table cards with the shared order QR and Wi-Fi details | admin | high | M |  | WED-011, WED-093, WED-170, WED-146 |
-| [WED-095](WED-095-build-the-menu-editor-with-a-live-sold-out-toggl.md) | Build the menu editor with a live sold-out toggle | admin | high | M |  | WED-171, WED-088 |
-| [WED-096](WED-096-manage-staff-pins-and-expiry.md) | Manage staff, PINs and expiry | admin | high | M |  | WED-031, WED-088, WED-034 |
-| [WED-097](WED-097-show-live-counters-on-the-admin-dashboard.md) | Show live counters on the admin dashboard | admin | high | M |  | WED-033, WED-061, WED-072, WED-089 |
-| [WED-098](WED-098-build-the-admin-theme-editor-with-preview-and-ac.md) | Build the admin theme editor with preview and activate | admin | medium | M |  | WED-181, WED-088 |
-| [WED-099](WED-099-add-the-iv-design-editor-for-photo-and-text.md) | Add the IV design editor for photo and text | admin | medium | M |  | WED-038, WED-088, WED-175 |
-| [WED-100](WED-100-show-each-invitation-s-rsvp-change-history.md) | Show each invitation's RSVP change history | admin | medium | S |  | WED-042, WED-089 |
-| [WED-101](WED-101-build-the-event-settings-page.md) | Build the event settings page | admin | urgent | M |  | WED-025, WED-088, WED-034, WED-035 |
-| [WED-102](WED-102-choose-the-service-worker-approach-for-next-js-1.md) | Choose the service worker approach for Next.js 16 in an ADR | pwa | urgent | S |  |  |
-| [WED-103](WED-103-generate-the-web-app-manifest-from-the-active-th.md) | Generate the web app manifest from the active theme | pwa | high | M |  | WED-012, WED-102 |
-| [WED-104](WED-104-generate-maskable-icons-apple-touch-icons-and-sp.md) | Generate maskable icons, Apple touch icons and splash screens | pwa | high | M |  | WED-103 |
-| [WED-105](WED-105-add-the-service-worker-with-per-route-caching.md) | Add the service worker with per-route caching | pwa | urgent | L |  | WED-102 |
-| [WED-106](WED-106-add-an-offline-fallback-page.md) | Add an offline fallback page | pwa | high | S |  | WED-105 |
-| [WED-107](WED-107-keep-the-guest-s-own-qr-pass-available-offline-o.md) | Keep the guest's own QR pass available offline once opened | pwa | urgent | M |  | WED-044, WED-105 |
-| [WED-108](WED-108-make-the-scanner-app-shell-work-fully-offline.md) | Make the scanner app shell work fully offline | pwa | high | M |  | WED-059, WED-105, WED-169 |
-| [WED-109](WED-109-prompt-installation-on-android-and-chrome.md) | Prompt installation on Android and Chrome | pwa | medium | M |  | WED-103 |
-| [WED-110](WED-110-add-an-ios-add-to-home-screen-guide.md) | Add an iOS Add to Home Screen guide | pwa | medium | S |  | WED-103 |
-| [WED-111](WED-111-show-an-update-available-prompt-for-new-versions.md) | Show an update-available prompt for new versions | pwa | high | M |  | WED-105, WED-066, WED-180 |
-| [WED-112](WED-112-send-web-push-to-staff-boards-where-supported.md) | Send web push to staff boards where supported | pwa | low | L |  | WED-076, WED-084, WED-105 |
-| [WED-113](WED-113-automate-installability-and-offline-checks-in-pl.md) | Automate installability and offline checks in Playwright | pwa | high | M |  | WED-104, WED-106, WED-107, WED-108, WED-111, WED-109, WED-110, WED-184 |
-| [WED-114](WED-114-test-installation-on-real-android-and-ios-device.md) | Test installation on real Android and iOS devices | pwa | high | S |  | WED-113, WED-149, WED-055 |
-| [WED-115](WED-115-add-automated-accessibility-checks-to-playwright.md) | Add automated accessibility checks to Playwright | quality | high | M |  | WED-017 |
-| [WED-116](WED-116-gate-guest-pages-on-lighthouse-mobile-scores-of.md) | Gate guest pages on Lighthouse mobile scores of 95 or more | quality | high | M |  | WED-038, WED-044, WED-072 |
-| [WED-117](WED-117-audit-guest-journeys-for-wcag-2-2-aa-and-fix-fin.md) | Audit guest journeys for WCAG 2.2 AA and fix findings | quality | high | L |  | WED-041, WED-044, WED-075, WED-115 |
-| [WED-118](WED-118-audit-staff-and-admin-screens-for-accessibility.md) | Audit staff and admin screens for accessibility and legibility | quality | medium | L |  | WED-060, WED-078, WED-093, WED-115 |
-| [WED-119](WED-119-optimise-every-image-for-avif-webp-sizes-and-blu.md) | Optimise every image for AVIF/WebP, sizes and blur | quality | urgent | M |  | WED-038 |
-| [WED-120](WED-120-set-metadata-and-keep-private-pages-out-of-searc.md) | Set metadata and keep private pages out of search engines | quality | urgent | S |  | WED-047 |
-| [WED-121](WED-121-fail-e2e-on-layout-shift-or-console-errors-on-gu.md) | Fail e2e on layout shift or console errors on guest pages | quality | medium | M |  | WED-116 |
-| [WED-122](WED-122-agree-data-retention-and-privacy-notice-details.md) | Agree data retention and privacy notice details | security | urgent | S |  |  |
-| [WED-123](WED-123-rate-limit-iv-lookups-order-creation-and-pin-att.md) | Apply ordering abuse limits and regress shared endpoint protection | security | high | M |  | WED-185, WED-072, WED-048 |
-| [WED-124](WED-124-review-security-headers-and-csp-for-camera-worke.md) | Review security headers and CSP for camera, workers and realtime | security | high | S |  | WED-033, WED-059, WED-105, WED-149 |
-| [WED-125](WED-125-document-and-enforce-secrets-handling-and-key-ro.md) | Document and enforce secrets handling and key rotation | security | urgent | M |  | WED-029, WED-056 |
-| [WED-126](WED-126-publish-the-uk-gdpr-privacy-notice-on-the-rsvp-p.md) | Publish the UK GDPR privacy notice on the RSVP page | security | urgent | M |  | WED-040, WED-122 |
-| [WED-127](WED-127-add-the-data-retention-job-that-deletes-guest-da.md) | Add the data-retention job that deletes guest data on schedule | security | high | M |  | WED-026, WED-122 |
-| [WED-128](WED-128-restrict-dietary-notes-to-admin-and-kitchen.md) | Restrict dietary notes to admin and kitchen | security | urgent | S |  | WED-027 |
-| [WED-129](WED-129-run-a-security-review-of-tokens-access-control-a.md) | Run a security review of tokens, access control and actions | security | high | M |  | WED-066, WED-078, WED-096, WED-123, WED-128, WED-184 |
-| [WED-130](WED-130-enforce-coverage-on-critical-logic.md) | Enforce coverage on critical logic | testing | high | M |  | WED-056, WED-058, WED-073 |
-| [WED-131](WED-131-cover-the-invitation-rsvp-and-pass-journey-end-t.md) | Cover the invitation, RSVP and pass journey end to end | testing | urgent | M |  | WED-041, WED-042, WED-044, WED-045, WED-046 |
-| [WED-132](WED-132-cover-gate-scanning-partial-admission-and-search.md) | Cover gate scanning, partial admission and search end to end | testing | high | M |  | WED-062, WED-063 |
-| [WED-133](WED-133-cover-table-ordering-to-the-boards-end-to-end.md) | Cover table ordering to the boards end to end | testing | high | M |  | WED-075, WED-077, WED-078, WED-073, WED-080 |
-| [WED-134](WED-134-cover-admin-guest-import-seating-menu-and-staff.md) | Cover admin guest import, seating, menu and staff end to end | testing | high | M |  | WED-091, WED-093, WED-095, WED-096, WED-050 |
-| [WED-135](WED-135-add-visual-regression-across-themes-and-prd-devi.md) | Add visual regression across themes and PRD device sizes | testing | medium | M |  | WED-013, WED-044, WED-075 |
-| [WED-136](WED-136-test-the-gate-end-to-end-with-the-network-switch.md) | Test the gate end to end with the network switched off | testing | high | M |  | WED-066, WED-067, WED-108, WED-063, WED-062, WED-184 |
-| [WED-137](WED-137-load-test-350-guests-at-the-gate-and-30-tables-o.md) | Load test 350 guests at the gate and 30 tables ordering | testing | high | L |  | WED-068, WED-073, WED-149, WED-026, WED-133 |
-| [WED-138](WED-138-test-the-guest-flow-in-whatsapp-s-browser-on-ios.md) | Test the guest flow in WhatsApp's browser on iOS and Android | testing | urgent | S |  | WED-044, WED-047, WED-045, WED-107, WED-149, WED-055, WED-041, WED-039 |
-| [WED-139](WED-139-create-the-sentry-project-and-share-its-dsn.md) | Create the Sentry project and share its DSN | observability | urgent | S |  | WED-145 |
-| [WED-140](WED-140-add-sentry-error-tracking-to-server-and-client.md) | Add Sentry error tracking to server and client | observability | urgent | M |  | WED-139 |
-| [WED-141](WED-141-add-request-ids-and-structured-logs-to-server-ac.md) | Add request ids and structured logs to server actions | observability | medium | S |  |  |
-| [WED-142](WED-142-set-up-uptime-checks-for-guest-scanner-and-board.md) | Set up uptime checks for guest, scanner and board routes | observability | medium | S |  | WED-143, WED-147 |
-| [WED-143](WED-143-build-the-admin-health-page.md) | Build the admin health page | observability | medium | M |  | WED-066, WED-084, WED-088 |
-| [WED-144](WED-144-create-the-production-supabase-project.md) | Create the production Supabase project | deployment | urgent | S |  | WED-145 |
-| [WED-145](WED-145-create-the-vercel-project-and-connect-the-reposi.md) | Create the Vercel project and connect the repository | deployment | urgent | S |  |  |
-| [WED-146](WED-146-buy-the-domain-and-point-it-at-vercel-with-https.md) | Buy the domain and point it at Vercel with HTTPS | deployment | urgent | S |  | WED-008, WED-145 |
-| [WED-147](WED-147-configure-vercel-builds-and-preview-deployments.md) | Configure Vercel builds and preview deployments per PR | deployment | urgent | M |  | WED-004, WED-145 |
-| [WED-148](WED-148-define-and-validate-environment-variables-per-en.md) | Define and validate environment variables per environment | deployment | urgent | M |  | WED-125, WED-144, WED-147 |
-| [WED-149](WED-149-decide-and-set-up-the-database-for-previews-and.md) | Decide and set up the database for previews and staging | deployment | urgent | M |  | WED-144, WED-147 |
-| [WED-150](WED-150-run-migrations-safely-in-the-deploy-pipeline.md) | Run migrations safely in the deploy pipeline | deployment | urgent | M |  | WED-148, WED-149, WED-026 |
-| [WED-151](WED-151-set-up-database-backups-and-prove-a-restore.md) | Configure database and media backups with failure alerts | deployment | urgent | M |  | WED-144, WED-149 |
-| [WED-152](WED-152-run-smoke-tests-against-every-deployment.md) | Run smoke tests against every deployment | deployment | urgent | M |  | WED-150 |
-| [WED-153](WED-153-write-and-rehearse-the-rollback-plan.md) | Write and rehearse the rollback plan | deployment | urgent | S |  | WED-179, WED-152 |
-| [WED-154](WED-154-release-to-production-and-confirm-the-site-insta.md) | Release to production and confirm the site installs as a PWA | deployment | high | M |  | WED-044, WED-050, WED-067, WED-068, WED-079, WED-080, WED-081, WED-085, WED-087, WED-092, WED-093, WED-094, WED-097, WED-100, WED-101, WED-114, WED-116, WED-117, WED-118, WED-119, WED-120, WED-121, WED-124, WED-126, WED-127, WED-129, WED-130, WED-131, WED-132, WED-133, WED-134, WED-135, WED-136, WED-137, WED-138, WED-140, WED-146, WED-148, WED-153, WED-166, WED-174, WED-180, WED-012, WED-038, WED-176 |
-| [WED-155](WED-155-visit-the-venue-and-measure-signal-at-the-gate-a.md) | Visit the venue and measure signal at the gate and hall | launch | high | S |  |  |
-| [WED-156](WED-156-buy-the-4g-router-backup-sim-power-banks-and-bac.md) | Buy the 4G router, backup SIM, power banks and backup device | launch | medium | S |  | WED-155 |
-| [WED-157](WED-157-load-the-real-guest-list-and-menu.md) | Load and reconcile the real wedding menu | launch | high | M |  | WED-095, WED-154, WED-177 |
-| [WED-158](WED-158-proof-read-every-guest-facing-message-and-screen.md) | Proof-read every guest-facing message and screen | launch | urgent | S |  | WED-035, WED-041, WED-052, WED-044, WED-045, WED-046 |
-| [WED-159](WED-159-share-the-invitations-with-every-guest.md) | Share the invitations with every guest | launch | urgent | M |  | WED-051, WED-138, WED-177, WED-158, WED-176 |
-| [WED-160](WED-160-print-the-table-cards.md) | Print the table cards | launch | medium | S |  | WED-094, WED-156, WED-157, WED-146 |
-| [WED-161](WED-161-write-the-day-of-runbook-with-fallbacks.md) | Write the day-of runbook with fallbacks | launch | high | M |  | WED-069, WED-143, WED-153, WED-055, WED-155, WED-169 |
-| [WED-162](WED-162-train-ushers-and-caterers-on-their-screens.md) | Train ushers and caterers on their screens | launch | high | S |  | WED-055, WED-154, WED-161 |
-| [WED-163](WED-163-rehearse-at-the-venue-with-real-devices-and-the.md) | Rehearse at the venue with real devices and the network off | launch | high | M |  | WED-114, WED-136, WED-137, WED-156, WED-162 |
-| [WED-164](WED-164-freeze-the-code-and-make-the-go-no-go-decision.md) | Freeze the code and make the go/no-go decision | launch | high | S |  | WED-117, WED-118, WED-129, WED-142, WED-163, WED-154, WED-159, WED-160, WED-158, WED-005 |
-| [WED-165](WED-165-export-and-print-the-gate-guest-list-on-the-morn.md) | Export and print the gate guest list on the morning | launch | medium | S |  | WED-069, WED-164 |
-| [WED-166](WED-166-close-the-event-expire-pins-close-ordering-expor.md) | Close the event: expire PINs, close ordering, export memories | launch | medium | M |  | WED-096, WED-080, WED-088 |
-| [WED-167](WED-167-hand-the-couple-their-memories-export.md) | Hand the couple their memories export | launch | low | S |  | WED-166 |
-| [WED-168](WED-168-confirm-guest-personal-data-is-deleted-after-ret.md) | Confirm guest personal data is deleted after retention | launch | high | S |  | WED-127, WED-151, WED-184, WED-166 |
-| [WED-169](WED-169-approve-offline-freshness-and-the-gate-credentia.md) | Approve offline freshness and the gate credential contract | checkin | urgent | S |  |  |
-| [WED-170](WED-170-add-qr-paper-and-accessible-decorative-accent-to.md) | Add QR paper and accessible decorative accent tokens | design-system | urgent | M |  | WED-009, WED-011 |
-| [WED-171](WED-171-migrate-menu-and-station-order-tables-independen.md) | Migrate menu and station order tables independently | data-auth | urgent | M |  | WED-023 |
-| [WED-172](WED-172-migrate-staff-identities-and-device-registration.md) | Migrate staff identities and device registrations | data-auth | urgent | M |  | WED-023 |
-| [WED-173](WED-173-reconcile-offline-admissions-atomically-on-the-s.md) | Reconcile offline admissions atomically on the server | checkin | high | L |  | WED-024, WED-031, WED-058 |
-| [WED-174](WED-174-add-the-admin-scan-log-and-dispute-filters.md) | Add the admin scan log and dispute filters | admin | medium | M |  | WED-062, WED-088 |
-| [WED-175](WED-175-validate-and-store-invitation-photo-uploads.md) | Validate and store invitation photo uploads | admin | medium | M |  | WED-088 |
-| [WED-176](WED-176-release-invitations-before-the-wedding-day-featu.md) | Release invitations before the wedding-day feature launch | deployment | urgent | M |  | WED-005, WED-014, WED-028, WED-034, WED-035, WED-042, WED-043, WED-045, WED-046, WED-047, WED-048, WED-050, WED-051, WED-052, WED-091, WED-092, WED-101, WED-107, WED-120, WED-126, WED-131, WED-138, WED-140, WED-146, WED-148, WED-150, WED-152, WED-153, WED-170, WED-183, WED-185, WED-012, WED-027, WED-038, WED-119, WED-128 |
-| [WED-177](WED-177-import-and-reconcile-the-real-invitation-guest-l.md) | Import and reconcile the real invitation guest list | launch | urgent | S |  | WED-091, WED-176, WED-034, WED-126 |
-| [WED-179](WED-179-rehearse-database-and-asset-recovery-in-an-isola.md) | Rehearse database and asset recovery in an isolated target | deployment | urgent | L |  | WED-150, WED-151 |
-| [WED-180](WED-180-preserve-queued-events-across-worker-and-data-up.md) | Preserve queued events across worker and data upgrades | pwa | high | M |  | WED-066, WED-105 |
-| [WED-181](WED-181-persist-validated-theme-drafts-and-activate-them.md) | Persist validated theme drafts and activate them atomically | design-system | high | M |  | WED-012, WED-032, WED-170 |
-| [WED-182](WED-182-validate-and-commit-guest-csv-imports-atomically.md) | Validate and commit guest CSV imports atomically | admin | urgent | M |  | WED-090 |
-| [WED-183](WED-183-resolve-signed-pass-urls-without-exposing-invita.md) | Resolve signed pass URLs without exposing invitation editing | invitations | urgent | M |  | WED-036, WED-040, WED-056 |
-| [WED-184](WED-184-expire-private-offline-data-and-recover-from-sto.md) | Expire private offline data and recover from storage eviction | pwa | high | M |  | WED-065, WED-107 |
-| [WED-185](WED-185-protect-invitation-and-pin-endpoints-before-invi.md) | Protect invitation and PIN endpoints before invitations launch | security | urgent | M |  | WED-031, WED-036, WED-183 |
+| [TICKET-001](TICKET-001-fix-hooks-failing-on-the-symlinked-claude-skills.md) | Fix hooks failing on the symlinked .claude/skills directory | foundations | urgent | S |  |  |
+| [TICKET-002](TICKET-002-allow-reads-outside-the-checkout-and-fix-shell-g.md) | Allow reads outside the checkout and fix shell-guard false positives | foundations | urgent | S |  |  |
+| [TICKET-003](TICKET-003-verify-database-bootstrap-is-idempotent.md) | Verify database bootstrap is idempotent | foundations | urgent | M |  | TICKET-001, TICKET-002 |
+| [TICKET-004](TICKET-004-get-the-first-green-ci-run-and-confirm-parity-wi.md) | Get the first green CI run and confirm parity with pnpm verify | foundations | urgent | S |  |  |
+| [TICKET-005](TICKET-005-replace-codeowners-placeholders-and-enable-branc.md) | Replace CODEOWNERS placeholders and enable branch protection | foundations | urgent | S |  | TICKET-004 |
+| [TICKET-006](TICKET-006-prove-the-managed-worktree-lifecycle-end-to-end.md) | Prove the managed worktree lifecycle end to end | foundations | high | M |  | TICKET-001, TICKET-002, TICKET-003 |
+| [TICKET-007](TICKET-007-prove-ticket-claims-across-two-clones-against-gi.md) | Prove ticket claims across two clones against GitHub | foundations | medium | S |  | TICKET-004 |
+| [TICKET-008](TICKET-008-decide-domain-wedding-colours-and-photos-for-the.md) | Decide domain, wedding colours and photos for the first theme | design-system | urgent | S |  |  |
+| [TICKET-009](TICKET-009-prove-the-theme-contrast-gate-end-to-end.md) | Prove the theme contrast gate end to end | design-system | urgent | S |  |  |
+| [TICKET-010](TICKET-010-add-fixed-semantic-status-tokens-for-valid-used.md) | Add fixed semantic status tokens for valid, used and invalid | design-system | urgent | M |  | TICKET-009 |
+| [TICKET-011](TICKET-011-align-theme-files-with-the-prd-pattern-texture-a.md) | Align theme files with the PRD: pattern texture and radius | design-system | urgent | M |  | TICKET-009 |
+| [TICKET-012](TICKET-012-store-the-active-theme-in-the-database-and-apply.md) | Store the active theme in the database and apply it on the server | design-system | urgent | M |  | TICKET-011, TICKET-025 |
+| [TICKET-013](TICKET-013-ship-third-and-fourth-preset-themes.md) | Ship third and fourth preset themes | design-system | urgent | M |  | TICKET-010, TICKET-011, TICKET-170 |
+| [TICKET-014](TICKET-014-create-the-couple-s-theme-from-their-colours-and.md) | Create the couple's theme from their colours and photos | design-system | urgent | S |  | TICKET-008, TICKET-013, TICKET-170 |
+| [TICKET-015](TICKET-015-define-the-typography-scale-and-font-roles.md) | Define the typography scale and font roles | design-system | urgent | M |  | TICKET-009 |
+| [TICKET-016](TICKET-016-add-motion-primitives-that-honour-reduced-motion.md) | Add motion primitives that honour reduced motion | design-system | urgent | M |  |  |
+| [TICKET-017](TICKET-017-harden-base-components-for-focus-tap-targets-and.md) | Harden base components for focus, tap targets and dialogs | design-system | urgent | L |  | TICKET-010 |
+| [TICKET-018](TICKET-018-add-form-components-for-rsvp-ordering-and-admin.md) | Add form components for RSVP, ordering and admin | design-system | urgent | M |  | TICKET-017 |
+| [TICKET-019](TICKET-019-add-staff-status-panels-and-badges-for-arm-s-len.md) | Add staff status panels and badges for arm's-length reading | design-system | urgent | S |  | TICKET-010, TICKET-017 |
+| [TICKET-020](TICKET-020-add-theme-driven-dividers-monogram-and-paper-tex.md) | Add theme-driven dividers, monogram and paper texture | design-system | urgent | S |  | TICKET-011 |
+| [TICKET-021](TICKET-021-ui-review-of-dev-theme-in-every-theme-and-width.md) | UI review of /dev/theme in every theme and width | design-system | urgent | S |  | TICKET-015, TICKET-016, TICKET-018, TICKET-019, TICKET-020, TICKET-013 |
+| [TICKET-023](TICKET-023-redesign-invitation-guest-and-rsvp-tables-to-mat.md) | Redesign invitation, guest and RSVP tables to match the PRD | data-auth | urgent | L |  | TICKET-003, TICKET-034 |
+| [TICKET-024](TICKET-024-redesign-check-in-menu-order-and-staff-tables-to.md) | Migrate admission counters and scan event tables | data-auth | urgent | M |  | TICKET-023, TICKET-172 |
+| [TICKET-025](TICKET-025-add-event-settings-and-rsvp-change-log-tables.md) | Add event settings and RSVP change-log tables | data-auth | urgent | M |  | TICKET-023 |
+| [TICKET-026](TICKET-026-rebuild-deterministic-seed-data-for-the-new-sche.md) | Rebuild deterministic seed data for the new schema | data-auth | urgent | M |  | TICKET-024, TICKET-025, TICKET-171, TICKET-172 |
+| [TICKET-027](TICKET-027-write-the-rls-adr-and-least-privilege-policies.md) | Write the RLS ADR and least-privilege policies | data-auth | urgent | M |  | TICKET-024, TICKET-025, TICKET-171, TICKET-172, TICKET-031 |
+| [TICKET-028](TICKET-028-set-up-the-email-provider-for-admin-login-codes.md) | Set up the email provider for admin login codes | data-auth | urgent | S |  | TICKET-144, TICKET-146 |
+| [TICKET-029](TICKET-029-add-admin-sign-in-with-email-codes-and-an-allowl.md) | Add admin sign-in with email codes and an allowlist | data-auth | urgent | M |  | TICKET-017, TICKET-025 |
+| [TICKET-030](TICKET-030-require-totp-two-factor-auth-for-admin-accounts.md) | Require TOTP two-factor auth for admin accounts | data-auth | urgent | M |  | TICKET-029 |
+| [TICKET-031](TICKET-031-add-staff-pin-sign-in-with-hashed-expiring-pins.md) | Add staff PIN sign-in with hashed, expiring PINs | data-auth | urgent | M |  | TICKET-172, TICKET-025, TICKET-169 |
+| [TICKET-032](TICKET-032-protect-admin-and-staff-routes-in-the-request-pr.md) | Protect admin and staff routes in the request proxy | data-auth | urgent | M |  | TICKET-030, TICKET-031 |
+| [TICKET-033](TICKET-033-set-up-realtime-channels-for-boards-and-scanners.md) | Set up realtime channels for boards and scanners | data-auth | high | M |  | TICKET-027, TICKET-031 |
+| [TICKET-034](TICKET-034-decide-wedding-date-rsvp-lock-tag-along-limit-an.md) | Decide wedding date, RSVP lock, tag-along limit and Wallet scope | invitations | urgent | S |  |  |
+| [TICKET-035](TICKET-035-choose-the-invitation-voice-and-approve-guest-fa.md) | Choose the invitation voice and approve guest-facing copy | invitations | urgent | S |  |  |
+| [TICKET-036](TICKET-036-generate-invitation-tokens-and-the-personal-i-to.md) | Generate invitation tokens and the personal /i/[token] route | invitations | urgent | M |  | TICKET-023 |
+| [TICKET-037](TICKET-037-build-the-iv-page-with-names-date-venue-dress-co.md) | Build the IV page with names, date, venue, dress code and map | invitations | urgent | L |  | TICKET-015, TICKET-017, TICKET-025, TICKET-036, TICKET-021 |
+| [TICKET-038](TICKET-038-add-the-full-bleed-hero-photo-with-blur-placehol.md) | Add the full-bleed hero photo with blur placeholder | invitations | urgent | M |  | TICKET-037, TICKET-008 |
+| [TICKET-039](TICKET-039-add-the-envelope-opening-reveal-with-reduced-mot.md) | Add the envelope-opening reveal with reduced-motion fallback | invitations | urgent | M |  | TICKET-016, TICKET-037 |
+| [TICKET-040](TICKET-040-build-the-rsvp-form-for-attending-yes-or-no.md) | Build the RSVP form for attending yes or no | invitations | urgent | M |  | TICKET-018, TICKET-023, TICKET-036, TICKET-025, TICKET-035 |
+| [TICKET-041](TICKET-041-let-guests-add-tag-alongs-with-meals-and-dietary.md) | Let guests add tag-alongs with meals and dietary notes | invitations | urgent | L |  | TICKET-040, TICKET-171 |
+| [TICKET-042](TICKET-042-lock-rsvp-edits-on-the-wedding-day-and-log-every.md) | Lock RSVP edits on the wedding day and log every change | invitations | urgent | M |  | TICKET-025, TICKET-041, TICKET-034 |
+| [TICKET-043](TICKET-043-revoke-and-reissue-invitations-so-old-links-and.md) | Revoke and reissue invitations so old links and QRs stop working | invitations | urgent | M |  | TICKET-036, TICKET-056, TICKET-032, TICKET-088 |
+| [TICKET-044](TICKET-044-show-the-guest-s-qr-pass-after-they-rsvp-yes.md) | Show the guest's QR pass after they RSVP yes | invitations | urgent | M |  | TICKET-040, TICKET-056, TICKET-170, TICKET-183 |
+| [TICKET-045](TICKET-045-let-guests-save-their-pass-as-an-image.md) | Let guests save their pass as an image | invitations | urgent | M |  | TICKET-044 |
+| [TICKET-046](TICKET-046-offer-a-printable-pdf-invitation-with-the-qr.md) | Offer a printable PDF invitation with the QR | invitations | urgent | L |  | TICKET-011, TICKET-044 |
+| [TICKET-047](TICKET-047-add-open-graph-previews-for-iv-links-without-gue.md) | Add Open Graph previews for IV links without guest details | invitations | urgent | M |  | TICKET-037 |
+| [TICKET-048](TICKET-048-let-guests-request-their-link-again.md) | Let guests request their link again | invitations | urgent | M |  | TICKET-036, TICKET-088, TICKET-050, TICKET-185 |
+| [TICKET-049](TICKET-049-normalise-guest-phone-numbers-for-wa-me-links.md) | Normalise guest phone numbers for wa.me links | sharing | urgent | S |  | TICKET-023 |
+| [TICKET-050](TICKET-050-build-the-share-menu-whatsapp-email-copy-link-an.md) | Build the Share menu: WhatsApp, email, copy link and native share | sharing | urgent | M |  | TICKET-018, TICKET-036, TICKET-049 |
+| [TICKET-051](TICKET-051-mark-invitations-as-sent-when-shared.md) | Mark invitations as sent when shared | sharing | urgent | S |  | TICKET-050, TICKET-089 |
+| [TICKET-052](TICKET-052-fill-share-messages-from-the-prd-wording-templat.md) | Fill share messages from the PRD wording templates | sharing | urgent | S |  | TICKET-050, TICKET-035, TICKET-025 |
+| [TICKET-053](TICKET-053-show-a-reminder-list-and-re-share-nudges-to-non.md) | Show a reminder list and re-share nudges to non-responders | sharing | medium | M |  | TICKET-051, TICKET-089, TICKET-052 |
+| [TICKET-054](TICKET-054-prepare-the-day-before-pass-reminder-batch.md) | Prepare the day-before pass reminder batch | sharing | low | S |  | TICKET-053, TICKET-052 |
+| [TICKET-055](TICKET-055-decide-who-runs-the-gate-and-boards-and-on-which.md) | Decide who runs the gate and boards, and on which devices | checkin | urgent | S |  |  |
+| [TICKET-056](TICKET-056-sign-gate-pass-tokens-with-ed25519-and-document.md) | Sign gate pass tokens with Ed25519 and document key handling | checkin | urgent | M |  | TICKET-023, TICKET-169 |
+| [TICKET-057](TICKET-057-verify-gate-tokens-on-the-scanner-device.md) | Verify gate tokens on the scanner device | checkin | high | M |  | TICKET-056, TICKET-055 |
+| [TICKET-058](TICKET-058-implement-admission-rules-and-partial-admission.md) | Implement admission rules and partial admission | checkin | high | M |  | TICKET-024 |
+| [TICKET-059](TICKET-059-build-the-scanner-page-with-camera-qr-reading.md) | Build the scanner page with camera QR reading | checkin | high | L |  | TICKET-019, TICKET-031, TICKET-057, TICKET-032 |
+| [TICKET-060](TICKET-060-show-scan-results-within-one-second-with-sound-a.md) | Show scan results within one second with sound and vibration | checkin | high | M |  | TICKET-058, TICKET-059 |
+| [TICKET-061](TICKET-061-admit-arriving-guests-with-partial-counts.md) | Admit arriving guests with partial counts | checkin | high | M |  | TICKET-024, TICKET-060, TICKET-064, TICKET-032 |
+| [TICKET-062](TICKET-062-log-every-scan-with-time-device-staff-and-result.md) | Log every scan with time, device, staff and result | checkin | high | S |  | TICKET-061, TICKET-064 |
+| [TICKET-063](TICKET-063-add-manual-search-and-check-in-by-guest-name.md) | Add manual search and check-in by guest name | checkin | high | M |  | TICKET-061, TICKET-065, TICKET-062 |
+| [TICKET-064](TICKET-064-register-and-name-scanner-and-board-devices.md) | Register and name scanner and board devices | checkin | medium | S |  | TICKET-031, TICKET-088 |
+| [TICKET-065](TICKET-065-cache-the-guest-list-and-revocations-on-each-sca.md) | Cache the guest list and revocations on each scanner | checkin | high | L |  | TICKET-043, TICKET-061, TICKET-108 |
+| [TICKET-066](TICKET-066-queue-offline-check-ins-and-sync-them-when-signa.md) | Queue offline check-ins and sync them when signal returns | checkin | high | M |  | TICKET-065, TICKET-173, TICKET-062 |
+| [TICKET-067](TICKET-067-flag-and-resolve-double-entries-from-offline-sca.md) | Flag and resolve double entries from offline scanners | checkin | high | M |  | TICKET-066, TICKET-033, TICKET-088 |
+| [TICKET-068](TICKET-068-sync-check-ins-across-scanners-within-two-second.md) | Sync check-ins across scanners within two seconds | checkin | high | M |  | TICKET-033, TICKET-061, TICKET-065 |
+| [TICKET-069](TICKET-069-export-a-printable-gate-guest-list.md) | Export a printable gate guest list | checkin | high | S |  | TICKET-024, TICKET-088 |
+| [TICKET-070](TICKET-070-start-the-order-page-by-typing-and-validating-a.md) | Start the order page by typing and validating a table number | ordering | high | M |  | TICKET-018, TICKET-171 |
+| [TICKET-071](TICKET-071-show-the-menu-by-category-with-live-sold-out-sta.md) | Show the menu by category with live sold-out state | ordering | high | M |  | TICKET-070 |
+| [TICKET-072](TICKET-072-submit-orders-with-quantities-note-and-honest-re.md) | Submit orders with quantities, note and honest retrying | ordering | high | L |  | TICKET-071 |
+| [TICKET-073](TICKET-073-enforce-order-limits-per-table-cooldown-and-item.md) | Enforce order limits per table, cooldown and item caps | ordering | high | M |  | TICKET-025, TICKET-074 |
+| [TICKET-074](TICKET-074-route-order-items-to-kitchen-and-bar-stations.md) | Route order items to kitchen and bar stations | ordering | high | M |  | TICKET-072 |
+| [TICKET-075](TICKET-075-show-guests-live-status-for-their-order.md) | Show guests live status for their order | ordering | high | M |  | TICKET-033, TICKET-074, TICKET-078 |
+| [TICKET-076](TICKET-076-build-the-kitchen-board-with-oldest-first-live-o.md) | Build the kitchen board with oldest-first live orders | ordering | high | L |  | TICKET-019, TICKET-031, TICKET-033, TICKET-074, TICKET-128 |
+| [TICKET-077](TICKET-077-add-the-bar-board-using-the-shared-board-compone.md) | Add the bar board using the shared board component | ordering | high | S |  | TICKET-076 |
+| [TICKET-078](TICKET-078-let-staff-move-orders-through-received-preparing.md) | Let staff move orders through received, preparing and served | ordering | high | M |  | TICKET-076 |
+| [TICKET-079](TICKET-079-let-staff-enter-an-order-for-a-table-from-the-bo.md) | Let staff enter an order for a table from the board | ordering | high | M |  | TICKET-078, TICKET-073 |
+| [TICKET-080](TICKET-080-open-and-close-ordering-on-admin-command.md) | Open and close ordering on admin command | ordering | high | S |  | TICKET-025, TICKET-072, TICKET-088 |
+| [TICKET-081](TICKET-081-keep-the-order-page-under-200-kb-and-fast-on-slo.md) | Keep the order page under 200 KB and fast on slow networks | ordering | high | M |  | TICKET-075, TICKET-073 |
+| [TICKET-083](TICKET-083-set-up-the-whatsapp-alert-number-and-confirm-rec.md) | Set up the WhatsApp alert number and confirm recipients | alerts | urgent | S |  |  |
+| [TICKET-084](TICKET-084-queue-order-alerts-in-an-outbox-and-batch-them-p.md) | Queue order alerts in an outbox and batch them per station | alerts | high | M |  | TICKET-171, TICKET-074 |
+| [TICKET-085](TICKET-085-send-alerts-through-the-whatsapp-cloud-api-with.md) | Send alerts through the WhatsApp Cloud API with retries | alerts | high | M |  | TICKET-083, TICKET-084, TICKET-086 |
+| [TICKET-086](TICKET-086-manage-alert-opt-ins-and-recipients-per-station.md) | Manage alert opt-ins and recipients per station | alerts | medium | S |  | TICKET-084, TICKET-096, TICKET-049 |
+| [TICKET-087](TICKET-087-show-alert-delivery-health-on-the-boards.md) | Show alert delivery health on the boards | alerts | medium | S |  | TICKET-076, TICKET-085 |
+| [TICKET-088](TICKET-088-build-the-admin-shell-and-navigation.md) | Build the admin shell and navigation | admin | urgent | M |  | TICKET-017, TICKET-032 |
+| [TICKET-089](TICKET-089-build-the-guest-list-with-rsvp-status-and-filter.md) | Build the guest list with RSVP status and filters | admin | urgent | L |  | TICKET-023, TICKET-088, TICKET-043, TICKET-050 |
+| [TICKET-090](TICKET-090-add-and-edit-invitations-and-guests-one-by-one.md) | Add and edit invitations and guests one by one | admin | urgent | M |  | TICKET-049, TICKET-089, TICKET-036 |
+| [TICKET-091](TICKET-091-import-guests-from-csv-with-a-validation-preview.md) | Import guests from CSV with a validation preview | admin | urgent | M |  | TICKET-090, TICKET-182 |
+| [TICKET-092](TICKET-092-export-the-guest-list-to-csv.md) | Export the guest list to CSV | admin | urgent | S |  | TICKET-089 |
+| [TICKET-093](TICKET-093-build-the-seating-plan-tables-and-assignments.md) | Build the seating plan: tables and assignments | admin | high | L |  | TICKET-089 |
+| [TICKET-094](TICKET-094-print-table-cards-with-the-shared-order-qr-and-w.md) | Print table cards with the shared order QR and Wi-Fi details | admin | high | M |  | TICKET-011, TICKET-093, TICKET-170, TICKET-146 |
+| [TICKET-095](TICKET-095-build-the-menu-editor-with-a-live-sold-out-toggl.md) | Build the menu editor with a live sold-out toggle | admin | high | M |  | TICKET-171, TICKET-088 |
+| [TICKET-096](TICKET-096-manage-staff-pins-and-expiry.md) | Manage staff, PINs and expiry | admin | high | M |  | TICKET-031, TICKET-088, TICKET-034 |
+| [TICKET-097](TICKET-097-show-live-counters-on-the-admin-dashboard.md) | Show live counters on the admin dashboard | admin | high | M |  | TICKET-033, TICKET-061, TICKET-072, TICKET-089 |
+| [TICKET-098](TICKET-098-build-the-admin-theme-editor-with-preview-and-ac.md) | Build the admin theme editor with preview and activate | admin | medium | M |  | TICKET-181, TICKET-088 |
+| [TICKET-099](TICKET-099-add-the-iv-design-editor-for-photo-and-text.md) | Add the IV design editor for photo and text | admin | medium | M |  | TICKET-038, TICKET-088, TICKET-175 |
+| [TICKET-100](TICKET-100-show-each-invitation-s-rsvp-change-history.md) | Show each invitation's RSVP change history | admin | medium | S |  | TICKET-042, TICKET-089 |
+| [TICKET-101](TICKET-101-build-the-event-settings-page.md) | Build the event settings page | admin | urgent | M |  | TICKET-025, TICKET-088, TICKET-034, TICKET-035 |
+| [TICKET-102](TICKET-102-choose-the-service-worker-approach-for-next-js-1.md) | Choose the service worker approach for Next.js 16 in an ADR | pwa | urgent | S |  |  |
+| [TICKET-103](TICKET-103-generate-the-web-app-manifest-from-the-active-th.md) | Generate the web app manifest from the active theme | pwa | high | M |  | TICKET-012, TICKET-102 |
+| [TICKET-104](TICKET-104-generate-maskable-icons-apple-touch-icons-and-sp.md) | Generate maskable icons, Apple touch icons and splash screens | pwa | high | M |  | TICKET-103 |
+| [TICKET-105](TICKET-105-add-the-service-worker-with-per-route-caching.md) | Add the service worker with per-route caching | pwa | urgent | L |  | TICKET-102 |
+| [TICKET-106](TICKET-106-add-an-offline-fallback-page.md) | Add an offline fallback page | pwa | high | S |  | TICKET-105 |
+| [TICKET-107](TICKET-107-keep-the-guest-s-own-qr-pass-available-offline-o.md) | Keep the guest's own QR pass available offline once opened | pwa | urgent | M |  | TICKET-044, TICKET-105 |
+| [TICKET-108](TICKET-108-make-the-scanner-app-shell-work-fully-offline.md) | Make the scanner app shell work fully offline | pwa | high | M |  | TICKET-059, TICKET-105, TICKET-169 |
+| [TICKET-109](TICKET-109-prompt-installation-on-android-and-chrome.md) | Prompt installation on Android and Chrome | pwa | medium | M |  | TICKET-103 |
+| [TICKET-110](TICKET-110-add-an-ios-add-to-home-screen-guide.md) | Add an iOS Add to Home Screen guide | pwa | medium | S |  | TICKET-103 |
+| [TICKET-111](TICKET-111-show-an-update-available-prompt-for-new-versions.md) | Show an update-available prompt for new versions | pwa | high | M |  | TICKET-105, TICKET-066, TICKET-180 |
+| [TICKET-112](TICKET-112-send-web-push-to-staff-boards-where-supported.md) | Send web push to staff boards where supported | pwa | low | L |  | TICKET-076, TICKET-084, TICKET-105 |
+| [TICKET-113](TICKET-113-automate-installability-and-offline-checks-in-pl.md) | Automate installability and offline checks in Playwright | pwa | high | M |  | TICKET-104, TICKET-106, TICKET-107, TICKET-108, TICKET-111, TICKET-109, TICKET-110, TICKET-184 |
+| [TICKET-114](TICKET-114-test-installation-on-real-android-and-ios-device.md) | Test installation on real Android and iOS devices | pwa | high | S |  | TICKET-113, TICKET-149, TICKET-055 |
+| [TICKET-115](TICKET-115-add-automated-accessibility-checks-to-playwright.md) | Add automated accessibility checks to Playwright | quality | high | M |  | TICKET-017 |
+| [TICKET-116](TICKET-116-gate-guest-pages-on-lighthouse-mobile-scores-of.md) | Gate guest pages on Lighthouse mobile scores of 95 or more | quality | high | M |  | TICKET-038, TICKET-044, TICKET-072 |
+| [TICKET-117](TICKET-117-audit-guest-journeys-for-wcag-2-2-aa-and-fix-fin.md) | Audit guest journeys for WCAG 2.2 AA and fix findings | quality | high | L |  | TICKET-041, TICKET-044, TICKET-075, TICKET-115 |
+| [TICKET-118](TICKET-118-audit-staff-and-admin-screens-for-accessibility.md) | Audit staff and admin screens for accessibility and legibility | quality | medium | L |  | TICKET-060, TICKET-078, TICKET-093, TICKET-115 |
+| [TICKET-119](TICKET-119-optimise-every-image-for-avif-webp-sizes-and-blu.md) | Optimise every image for AVIF/WebP, sizes and blur | quality | urgent | M |  | TICKET-038 |
+| [TICKET-120](TICKET-120-set-metadata-and-keep-private-pages-out-of-searc.md) | Set metadata and keep private pages out of search engines | quality | urgent | S |  | TICKET-047 |
+| [TICKET-121](TICKET-121-fail-e2e-on-layout-shift-or-console-errors-on-gu.md) | Fail e2e on layout shift or console errors on guest pages | quality | medium | M |  | TICKET-116 |
+| [TICKET-122](TICKET-122-agree-data-retention-and-privacy-notice-details.md) | Agree data retention and privacy notice details | security | urgent | S |  |  |
+| [TICKET-123](TICKET-123-rate-limit-iv-lookups-order-creation-and-pin-att.md) | Apply ordering abuse limits and regress shared endpoint protection | security | high | M |  | TICKET-185, TICKET-072, TICKET-048 |
+| [TICKET-124](TICKET-124-review-security-headers-and-csp-for-camera-worke.md) | Review security headers and CSP for camera, workers and realtime | security | high | S |  | TICKET-033, TICKET-059, TICKET-105, TICKET-149 |
+| [TICKET-125](TICKET-125-document-and-enforce-secrets-handling-and-key-ro.md) | Document and enforce secrets handling and key rotation | security | urgent | M |  | TICKET-029, TICKET-056 |
+| [TICKET-126](TICKET-126-publish-the-uk-gdpr-privacy-notice-on-the-rsvp-p.md) | Publish the UK GDPR privacy notice on the RSVP page | security | urgent | M |  | TICKET-040, TICKET-122 |
+| [TICKET-127](TICKET-127-add-the-data-retention-job-that-deletes-guest-da.md) | Add the data-retention job that deletes guest data on schedule | security | high | M |  | TICKET-026, TICKET-122 |
+| [TICKET-128](TICKET-128-restrict-dietary-notes-to-admin-and-kitchen.md) | Restrict dietary notes to admin and kitchen | security | urgent | S |  | TICKET-027 |
+| [TICKET-129](TICKET-129-run-a-security-review-of-tokens-access-control-a.md) | Run a security review of tokens, access control and actions | security | high | M |  | TICKET-066, TICKET-078, TICKET-096, TICKET-123, TICKET-128, TICKET-184 |
+| [TICKET-130](TICKET-130-enforce-coverage-on-critical-logic.md) | Enforce coverage on critical logic | testing | high | M |  | TICKET-056, TICKET-058, TICKET-073 |
+| [TICKET-131](TICKET-131-cover-the-invitation-rsvp-and-pass-journey-end-t.md) | Cover the invitation, RSVP and pass journey end to end | testing | urgent | M |  | TICKET-041, TICKET-042, TICKET-044, TICKET-045, TICKET-046 |
+| [TICKET-132](TICKET-132-cover-gate-scanning-partial-admission-and-search.md) | Cover gate scanning, partial admission and search end to end | testing | high | M |  | TICKET-062, TICKET-063 |
+| [TICKET-133](TICKET-133-cover-table-ordering-to-the-boards-end-to-end.md) | Cover table ordering to the boards end to end | testing | high | M |  | TICKET-075, TICKET-077, TICKET-078, TICKET-073, TICKET-080 |
+| [TICKET-134](TICKET-134-cover-admin-guest-import-seating-menu-and-staff.md) | Cover admin guest import, seating, menu and staff end to end | testing | high | M |  | TICKET-091, TICKET-093, TICKET-095, TICKET-096, TICKET-050 |
+| [TICKET-135](TICKET-135-add-visual-regression-across-themes-and-prd-devi.md) | Add visual regression across themes and PRD device sizes | testing | medium | M |  | TICKET-013, TICKET-044, TICKET-075 |
+| [TICKET-136](TICKET-136-test-the-gate-end-to-end-with-the-network-switch.md) | Test the gate end to end with the network switched off | testing | high | M |  | TICKET-066, TICKET-067, TICKET-108, TICKET-063, TICKET-062, TICKET-184 |
+| [TICKET-137](TICKET-137-load-test-350-guests-at-the-gate-and-30-tables-o.md) | Load test 350 guests at the gate and 30 tables ordering | testing | high | L |  | TICKET-068, TICKET-073, TICKET-149, TICKET-026, TICKET-133 |
+| [TICKET-138](TICKET-138-test-the-guest-flow-in-whatsapp-s-browser-on-ios.md) | Test the guest flow in WhatsApp's browser on iOS and Android | testing | urgent | S |  | TICKET-044, TICKET-047, TICKET-045, TICKET-107, TICKET-149, TICKET-055, TICKET-041, TICKET-039 |
+| [TICKET-139](TICKET-139-create-the-sentry-project-and-share-its-dsn.md) | Create the Sentry project and share its DSN | observability | urgent | S |  | TICKET-145 |
+| [TICKET-140](TICKET-140-add-sentry-error-tracking-to-server-and-client.md) | Add Sentry error tracking to server and client | observability | urgent | M |  | TICKET-139 |
+| [TICKET-141](TICKET-141-add-request-ids-and-structured-logs-to-server-ac.md) | Add request ids and structured logs to server actions | observability | medium | S |  |  |
+| [TICKET-142](TICKET-142-set-up-uptime-checks-for-guest-scanner-and-board.md) | Set up uptime checks for guest, scanner and board routes | observability | medium | S |  | TICKET-143, TICKET-147 |
+| [TICKET-143](TICKET-143-build-the-admin-health-page.md) | Build the admin health page | observability | medium | M |  | TICKET-066, TICKET-084, TICKET-088 |
+| [TICKET-144](TICKET-144-create-the-production-supabase-project.md) | Create the production Supabase project | deployment | urgent | S |  | TICKET-145 |
+| [TICKET-145](TICKET-145-create-the-vercel-project-and-connect-the-reposi.md) | Create the Vercel project and connect the repository | deployment | urgent | S |  |  |
+| [TICKET-146](TICKET-146-buy-the-domain-and-point-it-at-vercel-with-https.md) | Buy the domain and point it at Vercel with HTTPS | deployment | urgent | S |  | TICKET-008, TICKET-145 |
+| [TICKET-147](TICKET-147-configure-vercel-builds-and-preview-deployments.md) | Configure Vercel builds and preview deployments per PR | deployment | urgent | M |  | TICKET-004, TICKET-145 |
+| [TICKET-148](TICKET-148-define-and-validate-environment-variables-per-en.md) | Define and validate environment variables per environment | deployment | urgent | M |  | TICKET-125, TICKET-144, TICKET-147 |
+| [TICKET-149](TICKET-149-decide-and-set-up-the-database-for-previews-and.md) | Decide and set up the database for previews and staging | deployment | urgent | M |  | TICKET-144, TICKET-147 |
+| [TICKET-150](TICKET-150-run-migrations-safely-in-the-deploy-pipeline.md) | Run migrations safely in the deploy pipeline | deployment | urgent | M |  | TICKET-148, TICKET-149, TICKET-026 |
+| [TICKET-151](TICKET-151-set-up-database-backups-and-prove-a-restore.md) | Configure database and media backups with failure alerts | deployment | urgent | M |  | TICKET-144, TICKET-149 |
+| [TICKET-152](TICKET-152-run-smoke-tests-against-every-deployment.md) | Run smoke tests against every deployment | deployment | urgent | M |  | TICKET-150 |
+| [TICKET-153](TICKET-153-write-and-rehearse-the-rollback-plan.md) | Write and rehearse the rollback plan | deployment | urgent | S |  | TICKET-179, TICKET-152 |
+| [TICKET-154](TICKET-154-release-to-production-and-confirm-the-site-insta.md) | Release to production and confirm the site installs as a PWA | deployment | high | M |  | TICKET-044, TICKET-050, TICKET-067, TICKET-068, TICKET-079, TICKET-080, TICKET-081, TICKET-085, TICKET-087, TICKET-092, TICKET-093, TICKET-094, TICKET-097, TICKET-100, TICKET-101, TICKET-114, TICKET-116, TICKET-117, TICKET-118, TICKET-119, TICKET-120, TICKET-121, TICKET-124, TICKET-126, TICKET-127, TICKET-129, TICKET-130, TICKET-131, TICKET-132, TICKET-133, TICKET-134, TICKET-135, TICKET-136, TICKET-137, TICKET-138, TICKET-140, TICKET-146, TICKET-148, TICKET-153, TICKET-166, TICKET-174, TICKET-180, TICKET-012, TICKET-038, TICKET-176 |
+| [TICKET-155](TICKET-155-visit-the-venue-and-measure-signal-at-the-gate-a.md) | Visit the venue and measure signal at the gate and hall | launch | high | S |  |  |
+| [TICKET-156](TICKET-156-buy-the-4g-router-backup-sim-power-banks-and-bac.md) | Buy the 4G router, backup SIM, power banks and backup device | launch | medium | S |  | TICKET-155 |
+| [TICKET-157](TICKET-157-load-the-real-guest-list-and-menu.md) | Load and reconcile the real wedding menu | launch | high | M |  | TICKET-095, TICKET-154, TICKET-177 |
+| [TICKET-158](TICKET-158-proof-read-every-guest-facing-message-and-screen.md) | Proof-read every guest-facing message and screen | launch | urgent | S |  | TICKET-035, TICKET-041, TICKET-052, TICKET-044, TICKET-045, TICKET-046 |
+| [TICKET-159](TICKET-159-share-the-invitations-with-every-guest.md) | Share the invitations with every guest | launch | urgent | M |  | TICKET-051, TICKET-138, TICKET-177, TICKET-158, TICKET-176 |
+| [TICKET-160](TICKET-160-print-the-table-cards.md) | Print the table cards | launch | medium | S |  | TICKET-094, TICKET-156, TICKET-157, TICKET-146 |
+| [TICKET-161](TICKET-161-write-the-day-of-runbook-with-fallbacks.md) | Write the day-of runbook with fallbacks | launch | high | M |  | TICKET-069, TICKET-143, TICKET-153, TICKET-055, TICKET-155, TICKET-169 |
+| [TICKET-162](TICKET-162-train-ushers-and-caterers-on-their-screens.md) | Train ushers and caterers on their screens | launch | high | S |  | TICKET-055, TICKET-154, TICKET-161 |
+| [TICKET-163](TICKET-163-rehearse-at-the-venue-with-real-devices-and-the.md) | Rehearse at the venue with real devices and the network off | launch | high | M |  | TICKET-114, TICKET-136, TICKET-137, TICKET-156, TICKET-162 |
+| [TICKET-164](TICKET-164-freeze-the-code-and-make-the-go-no-go-decision.md) | Freeze the code and make the go/no-go decision | launch | high | S |  | TICKET-117, TICKET-118, TICKET-129, TICKET-142, TICKET-163, TICKET-154, TICKET-159, TICKET-160, TICKET-158, TICKET-005 |
+| [TICKET-165](TICKET-165-export-and-print-the-gate-guest-list-on-the-morn.md) | Export and print the gate guest list on the morning | launch | medium | S |  | TICKET-069, TICKET-164 |
+| [TICKET-166](TICKET-166-close-the-event-expire-pins-close-ordering-expor.md) | Close the event: expire PINs, close ordering, export memories | launch | medium | M |  | TICKET-096, TICKET-080, TICKET-088 |
+| [TICKET-167](TICKET-167-hand-the-couple-their-memories-export.md) | Hand the couple their memories export | launch | low | S |  | TICKET-166 |
+| [TICKET-168](TICKET-168-confirm-guest-personal-data-is-deleted-after-ret.md) | Confirm guest personal data is deleted after retention | launch | high | S |  | TICKET-127, TICKET-151, TICKET-184, TICKET-166 |
+| [TICKET-169](TICKET-169-approve-offline-freshness-and-the-gate-credentia.md) | Approve offline freshness and the gate credential contract | checkin | urgent | S |  |  |
+| [TICKET-170](TICKET-170-add-qr-paper-and-accessible-decorative-accent-to.md) | Add QR paper and accessible decorative accent tokens | design-system | urgent | M |  | TICKET-009, TICKET-011 |
+| [TICKET-171](TICKET-171-migrate-menu-and-station-order-tables-independen.md) | Migrate menu and station order tables independently | data-auth | urgent | M |  | TICKET-023 |
+| [TICKET-172](TICKET-172-migrate-staff-identities-and-device-registration.md) | Migrate staff identities and device registrations | data-auth | urgent | M |  | TICKET-023 |
+| [TICKET-173](TICKET-173-reconcile-offline-admissions-atomically-on-the-s.md) | Reconcile offline admissions atomically on the server | checkin | high | L |  | TICKET-024, TICKET-031, TICKET-058 |
+| [TICKET-174](TICKET-174-add-the-admin-scan-log-and-dispute-filters.md) | Add the admin scan log and dispute filters | admin | medium | M |  | TICKET-062, TICKET-088 |
+| [TICKET-175](TICKET-175-validate-and-store-invitation-photo-uploads.md) | Validate and store invitation photo uploads | admin | medium | M |  | TICKET-088 |
+| [TICKET-176](TICKET-176-release-invitations-before-the-wedding-day-featu.md) | Release invitations before the wedding-day feature launch | deployment | urgent | M |  | TICKET-005, TICKET-014, TICKET-028, TICKET-034, TICKET-035, TICKET-042, TICKET-043, TICKET-045, TICKET-046, TICKET-047, TICKET-048, TICKET-050, TICKET-051, TICKET-052, TICKET-091, TICKET-092, TICKET-101, TICKET-107, TICKET-120, TICKET-126, TICKET-131, TICKET-138, TICKET-140, TICKET-146, TICKET-148, TICKET-150, TICKET-152, TICKET-153, TICKET-170, TICKET-183, TICKET-185, TICKET-012, TICKET-027, TICKET-038, TICKET-119, TICKET-128 |
+| [TICKET-177](TICKET-177-import-and-reconcile-the-real-invitation-guest-l.md) | Import and reconcile the real invitation guest list | launch | urgent | S |  | TICKET-091, TICKET-176, TICKET-034, TICKET-126 |
+| [TICKET-179](TICKET-179-rehearse-database-and-asset-recovery-in-an-isola.md) | Rehearse database and asset recovery in an isolated target | deployment | urgent | L |  | TICKET-150, TICKET-151 |
+| [TICKET-180](TICKET-180-preserve-queued-events-across-worker-and-data-up.md) | Preserve queued events across worker and data upgrades | pwa | high | M |  | TICKET-066, TICKET-105 |
+| [TICKET-181](TICKET-181-persist-validated-theme-drafts-and-activate-them.md) | Persist validated theme drafts and activate them atomically | design-system | high | M |  | TICKET-012, TICKET-032, TICKET-170 |
+| [TICKET-182](TICKET-182-validate-and-commit-guest-csv-imports-atomically.md) | Validate and commit guest CSV imports atomically | admin | urgent | M |  | TICKET-090 |
+| [TICKET-183](TICKET-183-resolve-signed-pass-urls-without-exposing-invita.md) | Resolve signed pass URLs without exposing invitation editing | invitations | urgent | M |  | TICKET-036, TICKET-040, TICKET-056 |
+| [TICKET-184](TICKET-184-expire-private-offline-data-and-recover-from-sto.md) | Expire private offline data and recover from storage eviction | pwa | high | M |  | TICKET-065, TICKET-107 |
+| [TICKET-185](TICKET-185-protect-invitation-and-pin-endpoints-before-invi.md) | Protect invitation and PIN endpoints before invitations launch | security | urgent | M |  | TICKET-031, TICKET-036, TICKET-183 |
 
 ### Backlog (3)
 
 | Ticket | Title | Epic | Priority | Est. | Owner | Blocked by |
 | ------ | ----- | ---- | -------- | ---- | ----- | ---------- |
-| [WED-022](WED-022-generate-a-full-palette-from-one-or-two-seed-col.md) | Generate a full palette from one or two seed colours | design-system | low | M |  | WED-010 |
-| [WED-082](WED-082-add-the-optional-table-host-view-for-a-section-s.md) | Add the optional table host view for a section's tables | ordering | low | M |  | WED-078 |
-| [WED-178](WED-178-offer-an-optional-guest-portrait-for-gate-identi.md) | Offer an optional guest portrait for gate identification | invitations | low | M |  | WED-040, WED-175 |
+| [TICKET-022](TICKET-022-generate-a-full-palette-from-one-or-two-seed-col.md) | Generate a full palette from one or two seed colours | design-system | low | M |  | TICKET-010 |
+| [TICKET-082](TICKET-082-add-the-optional-table-host-view-for-a-section-s.md) | Add the optional table host view for a section's tables | ordering | low | M |  | TICKET-078 |
+| [TICKET-178](TICKET-178-offer-an-optional-guest-portrait-for-gate-identi.md) | Offer an optional guest portrait for gate identification | invitations | low | M |  | TICKET-040, TICKET-175 |
 
 ### Done (0)
 

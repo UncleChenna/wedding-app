@@ -60,25 +60,25 @@ fix-up ticket changes a fact recorded here.
 - **SPIKE-001 (audit update, 2026-10-21).** The prototype and findings are committed on
   `divine/SPIKE-001-invitation-design` (reviewed at `bb08a21`). The spike is evidence, not production code.
   Its palette, fonts, motion, QR and token findings are mapped in [the backlog audit](../tickets/AUDIT.md)
-  to WED-011–WED-016, WED-039, WED-044, WED-138 and WED-170. The historical baseline above is unchanged.
+  to TICKET-011–TICKET-016, TICKET-039, TICKET-044, TICKET-138 and TICKET-170. The historical baseline above is unchanged.
 
 ## What contradicts the PRD
 
-| PRD says                                                                                                                                                         | Repository has                                                                                               | Ticket           |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ | ---------------- |
-| Invitation has `token` (≥128-bit), `max_tag_alongs`, `status` (draft, sent, rsvp_yes, rsvp_no, revoked), `table_id`, `sent_at` ([data model](prd.md#data-model)) | `invitations.code`, `household_name`, `max_guests`, no status, no revoke, no table                           | WED-023          |
-| One QR per **invitation**; the invitation is the unit the gate checks                                                                                            | `guests.qr_token` (one QR per guest)                                                                         | WED-023          |
-| Guest has `meal_choice`, `dietary_notes`, `name`                                                                                                                 | `first_name`/`last_name`, `dietary_requirements`, no meal choice, table on the guest                         | WED-023          |
-| RSVP has `attending`, `count_attending`; changes are logged                                                                                                      | `rsvps.status` enum + `message`; no change log                                                               | WED-023, WED-025 |
-| CheckIn per invitation with `people_admitted`, `result`, `device_id`, `staff_id`; partial admission; every scan logged including failures                        | `check_ins` per **guest**, unique on `guest_id` (makes partial admission and failed-scan logging impossible) | WED-024          |
-| Menu categories meal / soft drink / alcohol; `max_per_order`                                                                                                     | `food` / `drink`; no per-item cap                                                                            | WED-024          |
-| Order statuses Received, Preparing, Served, Cancelled                                                                                                            | adds `ready`                                                                                                 | WED-024          |
-| Staff roles gate / kitchen / bar / host with `whatsapp_number`, `pin_hash`, `expires_at`, separate from admins                                                   | roles admin / gate / kitchen / bar, email + `auth_user_id`, no PIN                                           | WED-024          |
-| Personal link `oursite.com/i/<token>`                                                                                                                            | placeholder route `/invite`                                                                                  | WED-036          |
-| Active theme stored in the database (THM-2)                                                                                                                      | code constant                                                                                                | WED-012          |
-| Theme file includes a `pattern` texture                                                                                                                          | no pattern token                                                                                             | WED-011          |
-| Fixed green / amber / red scanner colours (THM-4)                                                                                                                | `success` and `danger` tokens only                                                                           | WED-010          |
-| WCAG **2.1** AA on guest pages                                                                                                                                   | repo targets WCAG **2.2** AA (stricter; kept)                                                                | n/a              |
+| PRD says                                                                                                                                                         | Repository has                                                                                               | Ticket                 |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ | ---------------------- |
+| Invitation has `token` (≥128-bit), `max_tag_alongs`, `status` (draft, sent, rsvp_yes, rsvp_no, revoked), `table_id`, `sent_at` ([data model](prd.md#data-model)) | `invitations.code`, `household_name`, `max_guests`, no status, no revoke, no table                           | TICKET-023             |
+| One QR per **invitation**; the invitation is the unit the gate checks                                                                                            | `guests.qr_token` (one QR per guest)                                                                         | TICKET-023             |
+| Guest has `meal_choice`, `dietary_notes`, `name`                                                                                                                 | `first_name`/`last_name`, `dietary_requirements`, no meal choice, table on the guest                         | TICKET-023             |
+| RSVP has `attending`, `count_attending`; changes are logged                                                                                                      | `rsvps.status` enum + `message`; no change log                                                               | TICKET-023, TICKET-025 |
+| CheckIn per invitation with `people_admitted`, `result`, `device_id`, `staff_id`; partial admission; every scan logged including failures                        | `check_ins` per **guest**, unique on `guest_id` (makes partial admission and failed-scan logging impossible) | TICKET-024             |
+| Menu categories meal / soft drink / alcohol; `max_per_order`                                                                                                     | `food` / `drink`; no per-item cap                                                                            | TICKET-024             |
+| Order statuses Received, Preparing, Served, Cancelled                                                                                                            | adds `ready`                                                                                                 | TICKET-024             |
+| Staff roles gate / kitchen / bar / host with `whatsapp_number`, `pin_hash`, `expires_at`, separate from admins                                                   | roles admin / gate / kitchen / bar, email + `auth_user_id`, no PIN                                           | TICKET-024             |
+| Personal link `oursite.com/i/<token>`                                                                                                                            | placeholder route `/invite`                                                                                  | TICKET-036             |
+| Active theme stored in the database (THM-2)                                                                                                                      | code constant                                                                                                | TICKET-012             |
+| Theme file includes a `pattern` texture                                                                                                                          | no pattern token                                                                                             | TICKET-011             |
+| Fixed green / amber / red scanner colours (THM-4)                                                                                                                | `success` and `danger` tokens only                                                                           | TICKET-010             |
+| WCAG **2.1** AA on guest pages                                                                                                                                   | repo targets WCAG **2.2** AA (stricter; kept)                                                                | n/a                    |
 
 ## PRD gaps and the assumptions the backlog makes
 
@@ -86,25 +86,25 @@ Each assumption is reversible. Tickets labelled `human` confirm the ones that ne
 
 1. **Wedding date, venue, RSVP lock.** The PRD says the date is "not needed for the build", but RSVP locking, reminders,
    PIN expiry and data retention depend on it. Assumption: one `event_settings` row holds the date, venue and time
-   zone (Europe/London). RSVPs lock at 00:00 local time on the wedding day. Confirmed by WED-034.
+   zone (Europe/London). RSVPs lock at 00:00 local time on the wedding day. Confirmed by TICKET-034.
 2. **Tag-along limit** (open question). Assumption: the admin sets it per invitation, with a default of 1 and an
-   allowed range of 0–10. Confirmed by WED-034.
+   allowed range of 0–10. Confirmed by TICKET-034.
 3. **IV token vs signed QR.** INV-2 says the QR encodes the IV link; Security says the QR carries an Ed25519-signed
    token that scanners verify offline. Assumption: the personal link `/i/<token>` uses the 128-bit random token. The
    gate pass QR encodes `/p/<signed-token>`, so a phone camera still opens the guest's pass while scanners verify the
    signature offline. Revocation and reissue bump a version in the signed payload, and scanners receive a revocation
-   list. Decided in an ADR by WED-056.
+   list. Decided in an ADR by TICKET-056.
 4. **"Add to Wallet".** Apple and Google Wallet passes need paid or registered issuer accounts. Assumption: v1 offers
-   Save image, PDF and the PWA offline pass. Wallet passes are out of scope unless WED-034 says otherwise.
+   Save image, PDF and the PWA offline pass. Wallet passes are out of scope unless TICKET-034 says otherwise.
 5. **Guest photo at RSVP** (optional in the PRD). Out of v1, not ticketed.
 6. **Email.** Email is only for admin login codes; IVs go out through the Share menu. "Email sending" in the
    Invitations milestone is read as the Share menu's `mailto:` option. A transactional provider (Resend) needs an
-   account: WED-028.
+   account: TICKET-028.
 7. **Order alerts.** Recipients and batching are an open question. Assumption: send one message per order when a
    station is quiet; when more than one order arrives within 60 seconds, send one batch per station per minute.
    Recipients are opted-in staff with a WhatsApp number and a kitchen or bar role. WhatsApp Cloud API account setup is
-   a human ticket (WED-083). Vercel Hobby cron jobs run at most daily, so batching uses a database outbox drained by
-   Supabase `pg_cron` or a request-time flush (WED-084 ADR).
+   a human ticket (TICKET-083). Vercel Hobby cron jobs run at most daily, so batching uses a database outbox drained by
+   Supabase `pg_cron` or a request-time flush (TICKET-084 ADR).
 8. **Orders with food and drinks.** Assumption: the submitted order is split into one ticket per station, so kitchen
    and bar each see only their items. The guest's confirmation shows both.
 9. **Abuse limits.** Assumed defaults: at most 3 open orders per table, a 60-second cooldown per table, and the menu
@@ -113,12 +113,12 @@ Each assumption is reversible. Tickets labelled `human` confirm the ones that ne
     attempts per device per 10 minutes. PINs expire at 06:00 the day after the wedding.
 11. **Admin 2FA.** Supabase Auth email OTP plus TOTP MFA, with an allowlist of admin emails.
 12. **Hosting.** Vercel plus Supabase, as the PRD suggests. Accounts and any paid tier are human decisions
-    (WED-145, WED-144).
-13. **Service worker library.** Not specified. WED-102 writes the ADR, evaluating Serwist against a hand-written
+    (TICKET-145, TICKET-144).
+13. **Service worker library.** Not specified. TICKET-102 writes the ADR, evaluating Serwist against a hand-written
     worker for Next.js 16.
-14. **Data retention.** The PRD gives "e.g. 90 days". Assumption: 90 days after the wedding, confirmed by WED-122.
+14. **Data retention.** The PRD gives "e.g. 90 days". Assumption: 90 days after the wedding, confirmed by TICKET-122.
 15. **Devices and gate staffing** (open question). Assumption: 3 scanner phones, 2 board tablets, 1 backup device.
-    Confirmed by WED-055.
+    Confirmed by TICKET-055.
 16. **Table host role** (optional in the PRD). Ticketed as low priority in `backlog`.
 17. **Capacity.** The load test uses the PRD's headroom figures: 350 guests, 3 scanners and 30 tables.
 

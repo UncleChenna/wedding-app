@@ -3,18 +3,18 @@ import { join } from "node:path";
 
 import { activity, parseTicket, serializeTicket } from "./format";
 import { inverseBlocks } from "./graph";
-import { LEDGER_FIELDS } from "./model";
+import { LEDGER_FIELDS, ledgerKey } from "./model";
 import type { LedgerData, LedgerRecord, Ticket } from "./model";
 import { renderBoard, renderRoadmap } from "./render";
 
-export const TICKET_FILE = /^WED-\d{3}-[a-z0-9-]+\.md$/;
+export const TICKET_FILE = /^TICKET-\d{3}-[a-z0-9-]+\.md$/;
 export const GENERATED = ["tickets/BOARD.md", "tickets/ROADMAP.md"] as const;
 
 export function loadTickets(root: string): Ticket[] {
   const dir = join(root, "tickets");
   if (!existsSync(dir)) return [];
   return readdirSync(dir)
-    .filter((f) => TICKET_FILE.test(f) && !f.startsWith("WED-000"))
+    .filter((f) => TICKET_FILE.test(f) && !f.startsWith("TICKET-000"))
     .sort()
     .map((f) => parseTicket(readFileSync(join(dir, f), "utf8"), `tickets/${f}`));
 }
@@ -34,7 +34,7 @@ export function loadTicketsSafely(root: string): { tickets: Ticket[]; errors: st
     )
       continue;
     if (!TICKET_FILE.test(f)) {
-      errors.push(`tickets/${f}: ticket files are named WED-NNN-slug.md`);
+      errors.push(`tickets/${f}: ticket files are named TICKET-NNN-slug.md`);
       continue;
     }
     try {
@@ -57,7 +57,7 @@ export function overlay(ticket: Ticket, record: LedgerRecord | undefined): Ticke
 }
 
 export function effective(tickets: readonly Ticket[], ledger: LedgerData | null): Ticket[] {
-  return tickets.map((t) => overlay(t, ledger?.tickets[t.meta.id]));
+  return tickets.map((t) => overlay(t, ledger?.tickets[ledgerKey(t.meta.id)]));
 }
 
 export function recordFrom(ticket: Ticket): LedgerRecord {

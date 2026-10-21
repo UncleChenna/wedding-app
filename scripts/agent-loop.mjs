@@ -13,7 +13,7 @@ cli(async () => {
   const args = process.argv.slice(2);
   if (args.includes("--help")) {
     console.log(
-      "agent:loop [--ticket WED-NNN] [--module MODULE] [--max-iterations N] [--model M] [--max-budget-usd N] [--dry-run]. Runs Claude in one isolated worktree per ticket, then verifies and opens its PR.",
+      "agent:loop [--ticket TICKET-NNN] [--module MODULE] [--max-iterations N] [--model M] [--max-budget-usd N] [--dry-run]. Runs Claude in one isolated worktree per ticket, then verifies and opens its PR.",
     );
     return;
   }

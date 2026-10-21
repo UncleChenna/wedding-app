@@ -1,6 +1,6 @@
 ---
 description: Write an implementation plan to docs/plans/ before any code is written
-argument-hint: <ticket id (WED-NNN), or a short description>
+argument-hint: <ticket id (TICKET-NNN), or a short description>
 ---
 
 Write a plan for: **$ARGUMENTS**

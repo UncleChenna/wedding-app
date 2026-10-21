@@ -1,5 +1,5 @@
 ---
-id: WED-000
+id: TICKET-000
 title: Short imperative title under 70 characters
 epic: foundations
 status: backlog
@@ -21,7 +21,7 @@ reason: ""
 resume_to: ""
 ---
 
-# WED-000: Short imperative title under 70 characters
+# TICKET-000: Short imperative title under 70 characters
 
 ## Context
 

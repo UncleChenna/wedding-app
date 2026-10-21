@@ -1,0 +1,65 @@
+---
+id: TICKET-124
+title: Review security headers and CSP for camera, workers and realtime
+epic: security
+status: todo
+priority: high
+estimate: S
+labels: [security]
+module: shared
+owner: ""
+agent: ""
+blocked_by: [TICKET-033, TICKET-059, TICKET-105, TICKET-149]
+blocks: [TICKET-154]
+branch: ""
+pr: ""
+created: 2026-10-21
+updated: 2026-10-21
+started: ""
+completed: ""
+reason: ""
+resume_to: ""
+---
+
+# TICKET-124: Review security headers and CSP for camera, workers and realtime
+
+## Context
+
+New features (service worker, camera, Supabase realtime, Sentry) need a CSP that allows them and nothing else.
+
+See: [Security](../docs/prd.md#security).
+
+## Scope
+
+- Update CSP and Permissions-Policy; ADR 0006 addendum.
+
+## Out of scope
+
+- Nonce-based CSP.
+
+## Acceptance criteria
+
+- [ ] securityheaders.com grade A or better on production (screenshot).
+- [ ] No CSP violations in e2e console logs.
+
+- [ ] Verify security headers and CSP on the HTTPS staging deployment before production, including camera/worker/font requirements; repeat the same smoke checks after release.
+
+## Test plan
+
+- Unit: security-headers tests.
+- Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: Integration: assert required headers and blocked script injection while camera and worker flows still function.
+
+## Files likely touched
+
+- `src/modules/shared/lib/security-headers.ts`
+- `docs/decisions/0006-security-headers.md`
+
+## Notes / decisions
+
+_Agents append dated notes here while working._
+
+## Activity log
+
+- 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md

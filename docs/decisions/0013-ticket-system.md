@@ -35,4 +35,4 @@ Reversal: export the ledger and files to a tracker and delete `tickets/`.
 
 **Validation.** `scripts/__tests__/tickets.test.ts` covers the format round trip, every validation rule, the
 transition table, graph ordering and critical path, commit rules, and two clones racing a claim against a bare remote.
-`pnpm t:validate` passes on the 168-ticket backlog. The race has not yet been run against GitHub (WED-007).
+`pnpm t:validate` passes on the 168-ticket backlog. The race has not yet been run against GitHub (TICKET-007).

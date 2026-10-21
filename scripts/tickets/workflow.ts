@@ -1,3 +1,4 @@
+import { branchHasTicket } from "./model";
 import { ACTIVE_STATUSES, TRANSITIONS } from "./model";
 import type { ActiveStatus, Frontmatter, LedgerFields, Status } from "./model";
 
@@ -93,7 +94,7 @@ export function move(meta: Frontmatter, to: Status, facts: MoveFacts): Change {
       throw new TransitionError(`${meta.id} is still blocked by ${open.join(", ")}.`);
     if (from === "in_review" && !facts.reason?.trim())
       throw new TransitionError("Returning to in_progress needs --reason (the requested changes).");
-    if (facts.branch !== undefined && !facts.branch.includes(meta.id))
+    if (facts.branch !== undefined && !branchHasTicket(facts.branch, meta.id))
       throw new TransitionError(
         `Run this in ${meta.id}'s worktree (branch ${meta.branch || "containing " + meta.id}), not on ${facts.branch}.`,
       );
@@ -101,7 +102,7 @@ export function move(meta: Frontmatter, to: Status, facts: MoveFacts): Change {
   }
 
   if (to === "in_review") {
-    if (facts.branch !== undefined && !facts.branch.includes(meta.id))
+    if (facts.branch !== undefined && !branchHasTicket(facts.branch, meta.id))
       throw new TransitionError(`Run this on ${meta.id}'s branch, not ${facts.branch}.`);
     if (!facts.criteriaTicked)
       throw new TransitionError(`Tick every acceptance criterion in ${meta.id} before review.`);

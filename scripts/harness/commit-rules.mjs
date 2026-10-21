@@ -3,7 +3,7 @@
  * Commit and PR text rules shared by the commit-msg hook and CI.
  * - No AI attribution: no Co-Authored-By trailers for AI agents or bots, no
  *   "Generated with…" lines, no robot emoji signatures.
- * - On a ticket branch (name contains WED-NNN) every commit subject starts "WED-NNN: ".
+ * - On a ticket branch (name contains TICKET-NNN) every commit subject starts "TICKET-NNN: ".
  */
 import { readFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
@@ -34,7 +34,7 @@ export function cleanMessage(raw) {
 }
 
 export function ticketProblems(message, branch) {
-  const id = /WED-\d{3}/.exec(branch ?? "")?.[0];
+  const id = /(?:TICKET|WED)-\d{3}/.exec(branch ?? "")?.[0];
   if (!id) return [];
   const subject = message.split("\n")[0] ?? "";
   if (/^(Merge|Revert|fixup!|squash!|amend!)/.test(subject)) return [];
@@ -65,10 +65,10 @@ function main() {
     const body = process.env.PR_BODY ?? "";
     problems = attributionProblems(`${title}\n${body}`);
     if (
-      !/^WED-\d{3}: \S/.test(title) &&
+      !/^(?:TICKET|WED)-\d{3}: \S/.test(title) &&
       !/^(chore|docs|fix|feat|refactor|test|ci|build|perf|style|revert)(\(.+\))?!?: \S/.test(title)
     )
-      problems.push(`PR title must start with a ticket id ("WED-014: …"): "${title}"`);
+      problems.push(`PR title must start with a ticket id ("TICKET-014: …"): "${title}"`);
   } else {
     console.error("Usage: commit-rules.mjs commit-msg <file> | pr (reads PR_TITLE, PR_BODY)");
     process.exit(2);

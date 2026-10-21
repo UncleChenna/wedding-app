@@ -8,7 +8,7 @@ All work is tracked as tickets in [`tickets/`](../tickets/). There is one Markdo
 
 ## Files
 
-`tickets/WED-NNN-short-slug.md`. Ids are sequential and are never reused or deleted: cancel a ticket instead. The slug
+`tickets/TICKET-NNN-short-slug.md`. Ids are sequential and are never reused or deleted: cancel a ticket instead. The slug
 is fixed when the ticket is created. Start from [`tickets/TEMPLATE.md`](../tickets/TEMPLATE.md) using `pnpm t:new`.
 `tickets/` is excluded from Prettier because the CLI rewrites these files and they must round-trip exactly.
 
@@ -16,7 +16,7 @@ is fixed when the ticket is created. Start from [`tickets/TEMPLATE.md`](../ticke
 
 | Field                                        | Meaning                                                                                    |
 | -------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| `id`                                         | `WED-NNN`                                                                                  |
+| `id`                                         | `TICKET-NNN`                                                                               |
 | `title`                                      | Imperative, under 70 characters, no trailing punctuation                                   |
 | `epic`                                       | One of the epics in `scripts/tickets/model.ts` (listed in ROADMAP.md)                      |
 | `status`                                     | See statuses below                                                                         |
@@ -78,20 +78,20 @@ the coordination checkout stays clean.
 
 ## Commands
 
-| Command                                                                                           | Does                                                                                                                  |
-| ------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| `pnpm t:list [--status s] [--epic e] [--module m] [--owner o] [--label l] [--json]`               | Table of tickets (live)                                                                                               |
-| `pnpm t:board`                                                                                    | Terminal kanban (live)                                                                                                |
-| `pnpm t:next [--module m] [--human] [--json]`                                                     | Best `todo` ticket with every blocker done. Skips `human` tickets unless `--human`                                    |
-| `pnpm t:show <id> [--json]`                                                                       | One ticket (live)                                                                                                     |
-| `pnpm t:claim <id> --owner <name> --agent <name>`                                                 | Atomic claim; fails if claimed or blocked                                                                             |
-| `pnpm t:release <id>`                                                                             | Owner gives back a claimed `todo` ticket                                                                              |
-| `pnpm t:move <id> <status> [--reason text] [--push]`                                              | Enforced transition; `--push` commits `tickets/` as `WED-NNN: move to <status>` and pushes                            |
-| `pnpm t:pr <id>`                                                                                  | Verify, push, open the PR (title `WED-NNN: <title>`, body from `docs/plans/WED-NNN-pr.md`), move to `in_review`, push |
-| `pnpm t:new --title … --epic … --module … [--priority --estimate --labels --blocked-by --status]` | Scaffold the next id                                                                                                  |
-| `pnpm t:sync`                                                                                     | Write ledger state into ticket files (on a branch)                                                                    |
-| `pnpm t:validate`                                                                                 | Schema, sections, unique and contiguous ids, real dependencies, no cycles, status/branch/PR consistency, boards fresh |
-| `pnpm t:render`                                                                                   | Recompute `blocks`, regenerate BOARD.md and ROADMAP.md                                                                |
+| Command                                                                                           | Does                                                                                                                        |
+| ------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm t:list [--status s] [--epic e] [--module m] [--owner o] [--label l] [--json]`               | Table of tickets (live)                                                                                                     |
+| `pnpm t:board`                                                                                    | Terminal kanban (live)                                                                                                      |
+| `pnpm t:next [--module m] [--human] [--json]`                                                     | Best `todo` ticket with every blocker done. Skips `human` tickets unless `--human`                                          |
+| `pnpm t:show <id> [--json]`                                                                       | One ticket (live)                                                                                                           |
+| `pnpm t:claim <id> --owner <name> --agent <name>`                                                 | Atomic claim; fails if claimed or blocked                                                                                   |
+| `pnpm t:release <id>`                                                                             | Owner gives back a claimed `todo` ticket                                                                                    |
+| `pnpm t:move <id> <status> [--reason text] [--push]`                                              | Enforced transition; `--push` commits `tickets/` as `TICKET-NNN: move to <status>` and pushes                               |
+| `pnpm t:pr <id>`                                                                                  | Verify, push, open the PR (title `TICKET-NNN: <title>`, body from `docs/plans/TICKET-NNN-pr.md`), move to `in_review`, push |
+| `pnpm t:new --title … --epic … --module … [--priority --estimate --labels --blocked-by --status]` | Scaffold the next id                                                                                                        |
+| `pnpm t:sync`                                                                                     | Write ledger state into ticket files (on a branch)                                                                          |
+| `pnpm t:validate`                                                                                 | Schema, sections, unique and contiguous ids, real dependencies, no cycles, status/branch/PR consistency, boards fresh       |
+| `pnpm t:render`                                                                                   | Recompute `blocks`, regenerate BOARD.md and ROADMAP.md                                                                      |
 
 `owner` defaults to `git config harness.owner` or `AGENT_OWNER`. `agent` defaults to `TICKETS_AGENT`.
 
@@ -100,7 +100,7 @@ the coordination checkout stays clean.
 - `t:validate` runs in the pre-commit hook, as the first step of `pnpm verify`, and in CI (`tickets` job and
   `verify`).
 - The pre-commit hook runs `t:render --staged` first, so hand edits keep BOARD.md and ROADMAP.md fresh.
-- The `commit-msg` hook requires `WED-NNN: …` subjects on ticket branches and rejects AI attribution.
+- The `commit-msg` hook requires `TICKET-NNN: …` subjects on ticket branches and rejects AI attribution.
 - If two merged PRs both regenerate BOARD.md, resolve the conflict by taking either side and running `pnpm t:render`.
 
 ## The `human` label
@@ -109,3 +109,13 @@ the coordination checkout stays clean.
 email provider, the venue visit, kit, printing, training, rehearsal, sending IVs. They are prioritised early and
 listed under "Waiting on people" in BOARD.md, and agents skip them in `t:next`. An agent may prepare documents for a
 human ticket and record its outcome. A person makes the decision, and creates any account or spends any money.
+
+## Prefix migration
+
+Canonical ticket IDs, filenames and new branch/commit examples use `TICKET-NNN`.
+The CLI also accepts old `WED-NNN` arguments during rollout. Existing branch names
+are not renamed automatically. The shared coordination ledger deliberately retains
+its original `WED-NNN` storage keys: both tool versions therefore consult and update
+the same claim, rather than creating independent claims for one ticket. These are
+internal compatibility keys, not the visible ticket names. Keep this boundary until
+all older worktrees are retired; do not rename ledger keys independently.

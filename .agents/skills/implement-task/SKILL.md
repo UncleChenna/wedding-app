@@ -1,6 +1,6 @@
 ---
 name: implement-task
-description: Use when implementing a WED ticket's code or docs; wraps ticket-workflow with the build and verification details.
+description: Use when implementing a TICKET ticket's code or docs; wraps ticket-workflow with the build and verification details.
 ---
 
 # Implement Task

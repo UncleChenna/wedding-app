@@ -74,7 +74,7 @@ Drizzle, Zod, Vitest, Playwright, pnpm 12, Node 24. Product: [PRD](docs/prd.md).
 - Ask before paid/new account services, native-build dependencies, CI/RLS changes or data deletion,
   unless the current user request already authorizes the specific action.
 - Never weaken/skip/delete tests, lint rules or hooks to get green.
-- Ticket commits start `WED-NNN: `; other commits use Conventional Commits. Stage only ticket files.
+- Ticket commits start `TICKET-NNN: `; other commits use Conventional Commits. Stage only ticket files.
   No AI attribution (see below). See [engineering conventions](docs/engineering.md).
 
 ## Frontend work
@@ -93,7 +93,7 @@ Exact commands: the [`ticket-workflow` skill](.agents/skills/ticket-workflow/SKI
 2. **Isolate it.** `pnpm wt:new <id>`; work only in `.worktrees/<id>` on its branch (the name contains the id).
 3. **Start.** `pnpm t:move <id> in_progress --push`, so the change is committed and pushed immediately.
 4. **Build.** Dated plan, failing tests, implementation, `pnpm verify`. Commit in small steps; every subject starts
-   with the ticket id, e.g. `WED-014: add RSVP form validation`.
+   with the ticket id, e.g. `TICKET-014: add RSVP form validation`.
 5. **Finish.** Tick the acceptance criteria, fill in the notes, write the PR body, then `pnpm t:pr <id>`. It verifies,
    pushes, opens a PR titled `<id>: <title>` from the template, moves the ticket to `in_review` and pushes.
 6. **Close.** After merge: `pnpm t:move <id> done` (records completion date and PR link), then `pnpm wt:remove <id>`.

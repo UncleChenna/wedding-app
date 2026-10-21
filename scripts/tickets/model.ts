@@ -152,8 +152,8 @@ export const EPIC_KEYS = EPICS.map((e) => e.key) as [EpicKey, ...EpicKey[]];
 
 /** Milestones that ROADMAP.md computes a critical path to. Ids must exist. */
 export const MILESTONES = [
-  { id: "WED-154", name: "Deployed and installable as a PWA" },
-  { id: "WED-164", name: "Wedding day ready (code freeze, go/no-go)" },
+  { id: "TICKET-154", name: "Deployed and installable as a PWA" },
+  { id: "TICKET-164", name: "Wedding day ready (code freeze, go/no-go)" },
 ] as const;
 
 /** Required body sections, in order. */
@@ -169,8 +169,8 @@ export const SECTIONS = [
 ] as const;
 export type SectionName = (typeof SECTIONS)[number];
 
-export const ID_PATTERN = /^WED-\d{3}$/;
-const ticketId = z.string().regex(ID_PATTERN, "ids look like WED-001");
+export const ID_PATTERN = /^TICKET-\d{3}$/;
+const ticketId = z.string().regex(ID_PATTERN, "ids look like TICKET-001");
 const date = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "dates are YYYY-MM-DD");
 const optionalDate = z.union([z.literal(""), date]);
 
@@ -212,7 +212,7 @@ export const FIELD_ORDER = Object.keys(frontmatterSchema.shape) as (keyof Frontm
 export interface Ticket {
   meta: Frontmatter;
   sections: Record<SectionName, string>;
-  /** Repository-relative path, e.g. tickets/WED-001-fix-hooks.md */
+  /** Repository-relative path, e.g. tickets/TICKET-001-fix-hooks.md */
   path: string;
 }
 
@@ -242,10 +242,10 @@ export interface LedgerData {
 }
 
 export function idNumber(id: string): number {
-  return Number(id.slice(4));
+  return Number(id.split("-").at(-1));
 }
 export function formatId(n: number): string {
-  return `WED-${String(n).padStart(3, "0")}`;
+  return `TICKET-${String(n).padStart(3, "0")}`;
 }
 export function slugify(title: string): string {
   return (
@@ -256,4 +256,14 @@ export function slugify(title: string): string {
       .slice(0, 48)
       .replace(/-$/, "") || "ticket"
   );
+}
+
+/** Stable storage key shared with active worktrees that still use the old prefix. */
+export function ledgerKey(id: string): string {
+  return `WED-${String(idNumber(id)).padStart(3, "0")}`;
+}
+
+/** Accept legacy branch names without renaming another worker's checkout. */
+export function branchHasTicket(branch: string, id: string): boolean {
+  return new RegExp(`(?:TICKET|WED)-${String(idNumber(id)).padStart(3, "0")}(?!\\d)`).test(branch);
 }
