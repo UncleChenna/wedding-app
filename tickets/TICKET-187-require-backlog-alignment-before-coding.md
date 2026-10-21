@@ -2,7 +2,7 @@
 id: TICKET-187
 title: Require backlog alignment before coding
 epic: foundations
-status: in_progress
+status: in_review
 priority: urgent
 estimate: S
 labels: [docs]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: []
 blocks: []
 branch: divine/TICKET-187-require-backlog-alignment-before-coding
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/5
 created: 2026-10-21
 updated: 2026-10-21
 started: 2026-10-21
@@ -61,3 +61,4 @@ The user requires agents to review the task list before coding to confirm alignm
 - 2026-10-21 — new → todo — divine
 - 2026-10-21 — todo → claimed — divine (codex)
 - 2026-10-21 — todo → in_progress — divine (codex)
+- 2026-10-21 — in_progress → in_review — divine (codex)
