@@ -20,4 +20,4 @@ Request IDs are untrusted correlation metadata, never authorization. Key-based r
 
 ## Integration verification
 
-Updated against develop at cb365fe after PR #9 merged. Later PR merges can create fresh shared-file conflicts. Preserved both handoff histories, regenerated boards and retained prerequisite hook fixes. Quick and full verification passed: 120 unit tests, production build, 17 browser smoke passes and 7 existing skips.
+Updated against develop d7b8862 after the dashboard changes merged. Kept develop's stable board/roadmap links and historical progress unchanged; moved this ticket's prior handoffs into docs/handoffs/TICKET-141.md. No logging implementation changes. Quick and full verification passed: 127 unit tests, production build, 23 browser passes and 7 existing conditional skips. Pairwise Git merge simulations with TICKET-004 and TICKET-016 report no conflicts. Human review and merge only.
