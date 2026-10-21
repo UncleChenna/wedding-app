@@ -2,7 +2,7 @@
 id: TICKET-002
 title: Allow reads outside the checkout and fix shell-guard false positives
 epic: foundations
-status: in_review
+status: in_progress
 priority: urgent
 estimate: S
 labels: [infra, test, security]
@@ -65,3 +65,4 @@ See: [Current state](../docs/current-state.md) · [Working together](../docs/col
 - 2026-10-21 — todo → claimed — divine (codex)
 - 2026-10-21 — todo → in_progress — divine (codex)
 - 2026-10-21 — in_progress → in_review — divine (codex)
+- 2026-10-21 — in_review → in_progress — divine (codex) — Resolve conflicts with develop after TICKET-001 merge
