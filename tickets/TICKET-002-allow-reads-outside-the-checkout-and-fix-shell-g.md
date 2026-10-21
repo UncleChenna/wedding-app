@@ -2,7 +2,7 @@
 id: TICKET-002
 title: Allow reads outside the checkout and fix shell-guard false positives
 epic: foundations
-status: in_progress
+status: in_review
 priority: urgent
 estimate: S
 labels: [infra, test, security]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: []
 blocks: [TICKET-003, TICKET-006]
 branch: TICKET-002
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/8
 created: 2026-10-21
 updated: 2026-10-21
 started: 2026-10-21
@@ -64,3 +64,4 @@ See: [Current state](../docs/current-state.md) · [Working together](../docs/col
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-10-21 — todo → claimed — divine (codex)
 - 2026-10-21 — todo → in_progress — divine (codex)
+- 2026-10-21 — in_progress → in_review — divine (codex)
