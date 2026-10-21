@@ -110,9 +110,11 @@ Open tickets labelled `human` (decisions, accounts, physical tasks), in `pnpm t:
 
 ## Board
 
-### In progress (0)
+### In progress (1)
 
-_None._
+| Ticket | Title | Epic | Priority | Est. | Owner | Blocked by |
+| ------ | ----- | ---- | -------- | ---- | ----- | ---------- |
+| [TICKET-141](TICKET-141-add-request-ids-and-structured-logs-to-server-ac.md) | Add request ids and structured logs to server actions | observability | medium | S | divine |  |
 
 ### In review (4)
 
@@ -127,7 +129,7 @@ _None._
 
 _None._
 
-### Todo (181)
+### Todo (180)
 
 | Ticket | Title | Epic | Priority | Est. | Owner | Blocked by |
 | ------ | ----- | ---- | -------- | ---- | ----- | ---------- |
@@ -268,7 +270,6 @@ _None._
 | [TICKET-138](TICKET-138-test-the-guest-flow-in-whatsapp-s-browser-on-ios.md) | Test the guest flow in WhatsApp's browser on iOS and Android | testing | urgent | S |  | TICKET-044, TICKET-047, TICKET-045, TICKET-107, TICKET-149, TICKET-055, TICKET-041, TICKET-039 |
 | [TICKET-139](TICKET-139-create-the-sentry-project-and-share-its-dsn.md) | Create the Sentry project and share its DSN | observability | urgent | S |  | TICKET-145 |
 | [TICKET-140](TICKET-140-add-sentry-error-tracking-to-server-and-client.md) | Add Sentry error tracking to server and client | observability | urgent | M |  | TICKET-139 |
-| [TICKET-141](TICKET-141-add-request-ids-and-structured-logs-to-server-ac.md) | Add request ids and structured logs to server actions | observability | medium | S |  |  |
 | [TICKET-142](TICKET-142-set-up-uptime-checks-for-guest-scanner-and-board.md) | Set up uptime checks for guest, scanner and board routes | observability | medium | S |  | TICKET-143, TICKET-147 |
 | [TICKET-143](TICKET-143-build-the-admin-health-page.md) | Build the admin health page | observability | medium | M |  | TICKET-066, TICKET-084, TICKET-088 |
 | [TICKET-144](TICKET-144-create-the-production-supabase-project.md) | Create the production Supabase project | deployment | urgent | S |  | TICKET-145 |

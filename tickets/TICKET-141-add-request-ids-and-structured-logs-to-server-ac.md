@@ -2,20 +2,20 @@
 id: TICKET-141
 title: Add request ids and structured logs to server actions
 epic: observability
-status: todo
+status: in_progress
 priority: medium
 estimate: S
 labels: [backend]
 module: shared
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: []
 blocks: []
-branch: ""
+branch: TICKET-141
 pr: ""
 created: 2026-10-21
 updated: 2026-10-21
-started: ""
+started: 2026-10-21
 completed: ""
 reason: ""
 resume_to: ""
@@ -58,3 +58,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-21 — todo → claimed — divine (codex)
+- 2026-10-21 — todo → in_progress — divine (codex)
