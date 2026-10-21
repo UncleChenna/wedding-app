@@ -4,7 +4,8 @@
  *   pnpm screenshots                                   # default routes
  *   SCREENSHOT_ROUTES=/,/invite pnpm screenshots       # custom routes
  *
- * Output: artifacts/screenshots/<theme>/<width>/<route>.png
+ * Output: artifacts/screenshots/<theme>/<width>/<route>.png (+ <route>.part-N.png
+ * viewport-height slices for long pages)
  * Each theme is applied by overriding the theme variables on <html>, so pages
  * can be reviewed in every theme without changing the active theme.
  */
@@ -13,6 +14,7 @@ import { expect, test } from "@playwright/test";
 import { listThemes, themeToCssVars } from "../../src/modules/theming";
 
 const WIDTHS = [375, 768, 1280] as const;
+const SLICE_HEIGHT = 900;
 const ROUTES = (process.env.SCREENSHOT_ROUTES ?? "/,/dev/theme")
   .split(",")
   .map((route) => route.trim())
@@ -43,10 +45,26 @@ for (const theme of listThemes()) {
         );
         expect.soft(overflow, `horizontal overflow at ${width}px`).toBeLessThanOrEqual(0);
 
-        await page.screenshot({
-          path: `artifacts/screenshots/${theme.id}/${width}/${slug(route)}.png`,
-          fullPage: true,
-        });
+        const dir = `artifacts/screenshots/${theme.id}/${width}`;
+        await page.screenshot({ path: `${dir}/${slug(route)}.png`, fullPage: true });
+
+        // Long pages shrink too much to inspect as one image, so also save
+        // viewport-height slices: <route>.part-1.png, part-2, ...
+        const height = await page.evaluate(() => document.documentElement.scrollHeight);
+        if (height > SLICE_HEIGHT * 1.5) {
+          for (let i = 0; i * SLICE_HEIGHT < height; i++) {
+            await page.screenshot({
+              path: `${dir}/${slug(route)}.part-${i + 1}.png`,
+              fullPage: true,
+              clip: {
+                x: 0,
+                y: i * SLICE_HEIGHT,
+                width,
+                height: Math.min(SLICE_HEIGHT, height - i * SLICE_HEIGHT),
+              },
+            });
+          }
+        }
       });
     }
   }

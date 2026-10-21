@@ -13,7 +13,7 @@ Process:
 2. Capture screenshots for every theme at 375, 768 and 1280px:
    `SCREENSHOT_ROUTES=/route-a,/route-b pnpm screenshots`
    This writes `artifacts/screenshots/<theme>/<width>/<route>.png` and soft-fails on horizontal overflow. It starts a dev server automatically (or reuses one on port 3100).
-3. Open EVERY screenshot with the Read tool and look at it. Do not review from code alone.
+3. Open EVERY screenshot with the Read tool and look at it. Do not review from code alone. For long pages, review the `<route>.part-N.png` slices (full-size detail); use the full-page image only for overall rhythm.
 4. If the Playwright MCP tools are available and you need to check interaction (sheet open, focus ring, toast), use them against `http://localhost:3100`.
 
 Check each screenshot for:

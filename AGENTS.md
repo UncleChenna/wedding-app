@@ -113,4 +113,6 @@ Details: `docs/architecture.md`. Decisions: `docs/decisions/`.
 8. **Update `docs/progress.md`** (append only: done / learned / next) and the task status.
 9. **Commit** with a conventional commit message.
 
+**Parallel agents:** run each concurrent agent session in its own git worktree (`claude -w <name>`, or `git worktree add`). Sessions sharing one working tree see each other's uncommitted files, and the Stop hook will make one agent "fix" another's work in progress.
+
 Never mark a task done with failing checks. Never weaken, skip, or delete a test to make it pass. If blocked, set the task to `blocked`, write why in `docs/progress.md`, and stop.
