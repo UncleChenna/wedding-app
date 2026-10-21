@@ -5,13 +5,14 @@
     "WED-001": {
       "log": [
         "- 2026-10-21 — todo → claimed — unclechenna (claude)",
-        "- 2026-10-21 — todo → in_progress — unclechenna (claude)"
+        "- 2026-10-21 — todo → in_progress — unclechenna (claude)",
+        "- 2026-10-21 — in_progress → in_review — unclechenna (claude)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "unclechenna",
       "agent": "claude",
       "branch": "unclechenna/WED-001-fix-hooks-failing-on-the-symlinked-claude-skills",
-      "pr": "",
+      "pr": "https://github.com/UncleChenna/wedding-app/pull/3",
       "started": "2026-10-21",
       "completed": "",
       "updated": "2026-10-21",
