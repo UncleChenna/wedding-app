@@ -84,7 +84,7 @@ Target TICKET-164. 20 open tickets in the longest chain, 42 points (about 42 age
 - [TICKET-007](TICKET-007-prove-ticket-claims-across-two-clones-against-gi.md) Prove ticket claims across two clones against GitHub · medium · S · todo
 - [TICKET-186](TICKET-186-use-ticket-prefix.md) Use TICKET as the ticket prefix · urgent · M · in_review
 - [TICKET-187](TICKET-187-require-backlog-alignment-before-coding.md) Require backlog alignment before coding · urgent · S · in_review
-- [TICKET-188](TICKET-188-require-ticket-named-branches-and-detailed-devel.md) Require ticket-named branches and detailed develop PRs · urgent · S · in_progress
+- [TICKET-188](TICKET-188-require-ticket-named-branches-and-detailed-devel.md) Require ticket-named branches and detailed develop PRs · urgent · S · in_review
 
 ### Design system and theming
 

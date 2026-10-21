@@ -2,7 +2,7 @@
 id: TICKET-188
 title: Require ticket-named branches and detailed develop PRs
 epic: foundations
-status: in_progress
+status: in_review
 priority: urgent
 estimate: S
 labels: [docs, infra, test]
@@ -11,8 +11,8 @@ owner: divine
 agent: codex
 blocked_by: []
 blocks: []
-branch: divine/TICKET-188-require-ticket-named-branches-and-detailed-devel
-pr: ""
+branch: TICKET-188
+pr: https://github.com/UncleChenna/wedding-app/pull/6
 created: 2026-10-21
 updated: 2026-10-21
 started: 2026-10-21
@@ -63,3 +63,4 @@ The user requires traceable work: exact ticket-ID branches, pushed changes and d
 - 2026-10-21 — new → todo — divine
 - 2026-10-21 — todo → claimed — divine (codex)
 - 2026-10-21 — todo → in_progress — divine (codex)
+- 2026-10-21 — in_progress → in_review — divine (codex)
