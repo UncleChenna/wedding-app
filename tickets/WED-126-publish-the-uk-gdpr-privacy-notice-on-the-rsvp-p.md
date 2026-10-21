@@ -3,14 +3,14 @@ id: WED-126
 title: Publish the UK GDPR privacy notice on the RSVP page
 epic: security
 status: todo
-priority: high
+priority: urgent
 estimate: M
 labels: [frontend, docs, security]
 module: invitations
 owner: ""
 agent: ""
 blocked_by: [WED-040, WED-122]
-blocks: [WED-154]
+blocks: [WED-154, WED-176, WED-177]
 branch: ""
 pr: ""
 created: 2026-10-21

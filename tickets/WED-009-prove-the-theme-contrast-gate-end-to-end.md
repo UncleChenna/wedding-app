@@ -3,14 +3,14 @@ id: WED-009
 title: Prove the theme contrast gate end to end
 epic: design-system
 status: todo
-priority: high
+priority: urgent
 estimate: S
 labels: [test, design]
 module: theming
 owner: ""
 agent: ""
 blocked_by: []
-blocks: [WED-010, WED-011, WED-015]
+blocks: [WED-010, WED-011, WED-015, WED-170]
 branch: ""
 pr: ""
 created: 2026-10-21

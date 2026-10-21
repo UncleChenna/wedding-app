@@ -7,56 +7,69 @@ Epics in delivery order. Points: S = 1, M = 2, L = 4 (L is about half a day of a
 | # | Epic | Goal | Tickets | Done | Open points | Human |
 | - | ---- | ---- | ------- | ---- | ----------- | ----- |
 | 1 | Foundations fix-ups | Repair and finish what the bootstrap left broken or unverified. | 7 | 0 | 9 | 1 |
-| 2 | Design system and theming | Tokens, preset themes, base components, motion and contrast gates. | 15 | 0 | 26 | 1 |
-| 3 | Data and auth | PRD-shaped schema, RLS, admin auth with 2FA, staff PINs and seed data. | 11 | 0 | 25 | 1 |
-| 4 | Invitations and RSVP | The personal IV, envelope reveal, RSVP with tag-alongs and the QR pass. | 15 | 0 | 34 | 2 |
+| 2 | Design system and theming | Tokens, preset themes, base components, motion and contrast gates. | 17 | 0 | 30 | 2 |
+| 3 | Data and auth | PRD-shaped schema, RLS, admin auth with 2FA, staff PINs and seed data. | 13 | 0 | 27 | 1 |
+| 4 | Invitations and RSVP | The personal IV, envelope reveal, RSVP with tag-alongs and the QR pass. | 17 | 0 | 38 | 2 |
 | 5 | Sharing | Share menu, sent tracking and reminder re-shares without paid providers. | 6 | 0 | 8 | 0 |
-| 6 | Gate check-in | Fast, offline-first scanning with signed QR tokens and partial admission. | 15 | 0 | 32 | 1 |
+| 6 | Gate check-in | Fast, offline-first scanning with signed QR tokens and partial admission. | 17 | 0 | 35 | 2 |
 | 7 | Table ordering | Menu, order page, kitchen and bar boards with live status and limits. | 13 | 0 | 28 | 0 |
 | 8 | Order alerts | Batched WhatsApp alerts to station leads with a safe fallback. | 5 | 0 | 7 | 1 |
-| 9 | Admin dashboard | Guest list, seating, menu, themes, staff and live counters. | 14 | 0 | 36 | 0 |
-| 10 | PWA | Installable app with offline pass, offline scanner and update prompts. | 13 | 0 | 25 | 1 |
-| 11 | Accessibility, performance and SEO | WCAG AA, Lighthouse 95+ and correct metadata on guest pages. | 7 | 0 | 17 | 0 |
-| 12 | Security and privacy | Rate limits, headers, secrets, UK GDPR notice and data retention. | 8 | 0 | 13 | 1 |
+| 9 | Admin dashboard | Guest list, seating, menu, themes, staff and live counters. | 17 | 0 | 36 | 0 |
+| 10 | PWA | Installable app with offline pass, offline scanner and update prompts. | 15 | 0 | 30 | 1 |
+| 11 | Accessibility, performance and SEO | WCAG AA, Lighthouse 95+ and correct metadata on guest pages. | 7 | 0 | 17 | 2 |
+| 12 | Security and privacy | Rate limits, headers, secrets, UK GDPR notice and data retention. | 9 | 0 | 15 | 1 |
 | 13 | Testing | Critical-logic coverage, journey e2e, visual regression and load tests. | 9 | 0 | 19 | 1 |
 | 14 | Observability | Error tracking, structured logs, uptime checks and a health page. | 5 | 0 | 7 | 2 |
-| 15 | Deployment | Production Supabase and Vercel, previews, migrations, backups, rollback. | 11 | 0 | 18 | 3 |
-| 16 | Launch and the day itself | Real data, rehearsal, runbook, the day, and the post-wedding wind-down. | 14 | 0 | 19 | 12 |
-| | **Total** | | **168** | **0** | **323** | **27** |
+| 15 | Deployment | Production Supabase and Vercel, previews, migrations, backups, rollback. | 13 | 0 | 24 | 4 |
+| 16 | Launch and the day itself | Real data, rehearsal, runbook, the day, and the post-wedding wind-down. | 15 | 0 | 20 | 13 |
+| | **Total** | | **185** | **0** | **350** | **33** |
 
 ## Critical path: Deployed and installable as a PWA
 
-Target WED-154. 10 open tickets in the longest chain, 30 points (about 30 agent-hours of serial work; parallel work happens alongside).
+Target WED-154. 17 open tickets in the longest chain, 38 points (about 38 agent-hours of serial work; parallel work happens alongside).
 
-1. [WED-003](WED-003-verify-database-bootstrap-is-idempotent.md) Verify database bootstrap is idempotent · M · todo
-2. [WED-023](WED-023-redesign-invitation-guest-and-rsvp-tables-to-mat.md) Redesign invitation, guest and RSVP tables to match the PRD · L · todo
-3. [WED-024](WED-024-redesign-check-in-menu-order-and-staff-tables-to.md) Redesign check-in, menu, order and staff tables to match the PRD · L · todo
-4. [WED-031](WED-031-add-staff-pin-sign-in-with-hashed-expiring-pins.md) Add staff PIN sign-in with hashed, expiring PINs · M · todo
-5. [WED-059](WED-059-build-the-scanner-page-with-camera-qr-reading.md) Build the scanner page with camera QR reading · L · todo
-6. [WED-060](WED-060-show-scan-results-within-one-second-with-sound-a.md) Show scan results within one second with sound and vibration · M · todo
-7. [WED-061](WED-061-admit-arriving-guests-with-partial-counts.md) Admit arriving guests with partial counts · M · todo
-8. [WED-065](WED-065-cache-the-guest-list-and-revocations-on-each-sca.md) Cache the guest list and revocations on each scanner · L · todo
-9. [WED-066](WED-066-queue-offline-check-ins-and-sync-them-when-signa.md) Queue offline check-ins and sync them when signal returns · L · todo
-10. [WED-154](WED-154-release-to-production-and-confirm-the-site-insta.md) Release to production and confirm the site installs as a PWA · M · todo
+1. [WED-001](WED-001-fix-hooks-failing-on-the-symlinked-claude-skills.md) Fix hooks failing on the symlinked .claude/skills directory · S · todo
+2. [WED-003](WED-003-verify-database-bootstrap-is-idempotent.md) Verify database bootstrap is idempotent · M · todo
+3. [WED-023](WED-023-redesign-invitation-guest-and-rsvp-tables-to-mat.md) Redesign invitation, guest and RSVP tables to match the PRD · L · todo
+4. [WED-025](WED-025-add-event-settings-and-rsvp-change-log-tables.md) Add event settings and RSVP change-log tables · M · todo
+5. [WED-029](WED-029-add-admin-sign-in-with-email-codes-and-an-allowl.md) Add admin sign-in with email codes and an allowlist · M · todo
+6. [WED-030](WED-030-require-totp-two-factor-auth-for-admin-accounts.md) Require TOTP two-factor auth for admin accounts · M · todo
+7. [WED-032](WED-032-protect-admin-and-staff-routes-in-the-request-pr.md) Protect admin and staff routes in the request proxy · M · todo
+8. [WED-059](WED-059-build-the-scanner-page-with-camera-qr-reading.md) Build the scanner page with camera QR reading · L · todo
+9. [WED-060](WED-060-show-scan-results-within-one-second-with-sound-a.md) Show scan results within one second with sound and vibration · M · todo
+10. [WED-061](WED-061-admit-arriving-guests-with-partial-counts.md) Admit arriving guests with partial counts · M · todo
+11. [WED-065](WED-065-cache-the-guest-list-and-revocations-on-each-sca.md) Cache the guest list and revocations on each scanner · L · todo
+12. [WED-066](WED-066-queue-offline-check-ins-and-sync-them-when-signa.md) Queue offline check-ins and sync them when signal returns · M · todo
+13. [WED-180](WED-180-preserve-queued-events-across-worker-and-data-up.md) Preserve queued events across worker and data upgrades · M · todo
+14. [WED-111](WED-111-show-an-update-available-prompt-for-new-versions.md) Show an update-available prompt for new versions · M · todo
+15. [WED-113](WED-113-automate-installability-and-offline-checks-in-pl.md) Automate installability and offline checks in Playwright · M · todo
+16. [WED-114](WED-114-test-installation-on-real-android-and-ios-device.md) Test installation on real Android and iOS devices · S · todo
+17. [WED-154](WED-154-release-to-production-and-confirm-the-site-insta.md) Release to production and confirm the site installs as a PWA · M · todo
 
 ## Critical path: Wedding day ready (code freeze, go/no-go)
 
-Target WED-164. 14 open tickets in the longest chain, 36 points (about 36 agent-hours of serial work; parallel work happens alongside).
+Target WED-164. 20 open tickets in the longest chain, 42 points (about 42 agent-hours of serial work; parallel work happens alongside).
 
-1. [WED-003](WED-003-verify-database-bootstrap-is-idempotent.md) Verify database bootstrap is idempotent · M · todo
-2. [WED-023](WED-023-redesign-invitation-guest-and-rsvp-tables-to-mat.md) Redesign invitation, guest and RSVP tables to match the PRD · L · todo
-3. [WED-024](WED-024-redesign-check-in-menu-order-and-staff-tables-to.md) Redesign check-in, menu, order and staff tables to match the PRD · L · todo
-4. [WED-031](WED-031-add-staff-pin-sign-in-with-hashed-expiring-pins.md) Add staff PIN sign-in with hashed, expiring PINs · M · todo
-5. [WED-059](WED-059-build-the-scanner-page-with-camera-qr-reading.md) Build the scanner page with camera QR reading · L · todo
-6. [WED-060](WED-060-show-scan-results-within-one-second-with-sound-a.md) Show scan results within one second with sound and vibration · M · todo
-7. [WED-061](WED-061-admit-arriving-guests-with-partial-counts.md) Admit arriving guests with partial counts · M · todo
-8. [WED-065](WED-065-cache-the-guest-list-and-revocations-on-each-sca.md) Cache the guest list and revocations on each scanner · L · todo
-9. [WED-066](WED-066-queue-offline-check-ins-and-sync-them-when-signa.md) Queue offline check-ins and sync them when signal returns · L · todo
-10. [WED-143](WED-143-build-the-admin-health-page.md) Build the admin health page · M · todo
-11. [WED-161](WED-161-write-the-day-of-runbook-with-fallbacks.md) Write the day-of runbook with fallbacks · M · todo
-12. [WED-162](WED-162-train-ushers-and-caterers-on-their-screens.md) Train ushers and caterers on their screens · S · todo
-13. [WED-163](WED-163-rehearse-at-the-venue-with-real-devices-and-the.md) Rehearse at the venue with real devices and the network off · M · todo
-14. [WED-164](WED-164-freeze-the-code-and-make-the-go-no-go-decision.md) Freeze the code and make the go/no-go decision · S · todo
+1. [WED-001](WED-001-fix-hooks-failing-on-the-symlinked-claude-skills.md) Fix hooks failing on the symlinked .claude/skills directory · S · todo
+2. [WED-003](WED-003-verify-database-bootstrap-is-idempotent.md) Verify database bootstrap is idempotent · M · todo
+3. [WED-023](WED-023-redesign-invitation-guest-and-rsvp-tables-to-mat.md) Redesign invitation, guest and RSVP tables to match the PRD · L · todo
+4. [WED-025](WED-025-add-event-settings-and-rsvp-change-log-tables.md) Add event settings and RSVP change-log tables · M · todo
+5. [WED-029](WED-029-add-admin-sign-in-with-email-codes-and-an-allowl.md) Add admin sign-in with email codes and an allowlist · M · todo
+6. [WED-030](WED-030-require-totp-two-factor-auth-for-admin-accounts.md) Require TOTP two-factor auth for admin accounts · M · todo
+7. [WED-032](WED-032-protect-admin-and-staff-routes-in-the-request-pr.md) Protect admin and staff routes in the request proxy · M · todo
+8. [WED-059](WED-059-build-the-scanner-page-with-camera-qr-reading.md) Build the scanner page with camera QR reading · L · todo
+9. [WED-060](WED-060-show-scan-results-within-one-second-with-sound-a.md) Show scan results within one second with sound and vibration · M · todo
+10. [WED-061](WED-061-admit-arriving-guests-with-partial-counts.md) Admit arriving guests with partial counts · M · todo
+11. [WED-065](WED-065-cache-the-guest-list-and-revocations-on-each-sca.md) Cache the guest list and revocations on each scanner · L · todo
+12. [WED-066](WED-066-queue-offline-check-ins-and-sync-them-when-signa.md) Queue offline check-ins and sync them when signal returns · M · todo
+13. [WED-180](WED-180-preserve-queued-events-across-worker-and-data-up.md) Preserve queued events across worker and data upgrades · M · todo
+14. [WED-111](WED-111-show-an-update-available-prompt-for-new-versions.md) Show an update-available prompt for new versions · M · todo
+15. [WED-113](WED-113-automate-installability-and-offline-checks-in-pl.md) Automate installability and offline checks in Playwright · M · todo
+16. [WED-114](WED-114-test-installation-on-real-android-and-ios-device.md) Test installation on real Android and iOS devices · S · todo
+17. [WED-154](WED-154-release-to-production-and-confirm-the-site-insta.md) Release to production and confirm the site installs as a PWA · M · todo
+18. [WED-162](WED-162-train-ushers-and-caterers-on-their-screens.md) Train ushers and caterers on their screens · S · todo
+19. [WED-163](WED-163-rehearse-at-the-venue-with-real-devices-and-the.md) Rehearse at the venue with real devices and the network off · M · todo
+20. [WED-164](WED-164-freeze-the-code-and-make-the-go-no-go-decision.md) Freeze the code and make the go/no-go decision · S · todo
 
 ## Tickets by epic
 
@@ -64,100 +77,108 @@ Target WED-164. 14 open tickets in the longest chain, 36 points (about 36 agent-
 
 - [WED-001](WED-001-fix-hooks-failing-on-the-symlinked-claude-skills.md) Fix hooks failing on the symlinked .claude/skills directory · urgent · S · todo
 - [WED-002](WED-002-allow-reads-outside-the-checkout-and-fix-shell-g.md) Allow reads outside the checkout and fix shell-guard false positives · urgent · S · todo
-- [WED-003](WED-003-verify-database-bootstrap-is-idempotent.md) Verify database bootstrap is idempotent · high · M · todo
-- [WED-004](WED-004-get-the-first-green-ci-run-and-confirm-parity-wi.md) Get the first green CI run and confirm parity with pnpm verify · high · S · todo
-- [WED-005](WED-005-replace-codeowners-placeholders-and-enable-branc.md) Replace CODEOWNERS placeholders and enable branch protection · high · S · todo · human
+- [WED-003](WED-003-verify-database-bootstrap-is-idempotent.md) Verify database bootstrap is idempotent · urgent · M · todo
+- [WED-004](WED-004-get-the-first-green-ci-run-and-confirm-parity-wi.md) Get the first green CI run and confirm parity with pnpm verify · urgent · S · todo
+- [WED-005](WED-005-replace-codeowners-placeholders-and-enable-branc.md) Replace CODEOWNERS placeholders and enable branch protection · urgent · S · todo · human
 - [WED-006](WED-006-prove-the-managed-worktree-lifecycle-end-to-end.md) Prove the managed worktree lifecycle end to end · high · M · todo
 - [WED-007](WED-007-prove-ticket-claims-across-two-clones-against-gi.md) Prove ticket claims across two clones against GitHub · medium · S · todo
 
 ### Design system and theming
 
-- [WED-008](WED-008-decide-domain-wedding-colours-and-photos-for-the.md) Decide domain, wedding colours and photos for the first theme · high · S · todo · human
-- [WED-009](WED-009-prove-the-theme-contrast-gate-end-to-end.md) Prove the theme contrast gate end to end · high · S · todo
-- [WED-010](WED-010-add-fixed-semantic-status-tokens-for-valid-used.md) Add fixed semantic status tokens for valid, used and invalid · high · M · todo
-- [WED-011](WED-011-align-theme-files-with-the-prd-pattern-texture-a.md) Align theme files with the PRD: pattern texture and radius · medium · M · todo
-- [WED-012](WED-012-store-the-active-theme-in-the-database-and-apply.md) Store the active theme in the database and apply it on the server · high · M · todo
-- [WED-013](WED-013-ship-third-and-fourth-preset-themes.md) Ship third and fourth preset themes · medium · M · todo
-- [WED-014](WED-014-create-the-couple-s-theme-from-their-colours-and.md) Create the couple's theme from their colours and photos · medium · S · todo
-- [WED-015](WED-015-define-the-typography-scale-and-font-roles.md) Define the typography scale and font roles · high · M · todo
-- [WED-016](WED-016-add-motion-primitives-that-honour-reduced-motion.md) Add motion primitives that honour reduced motion · high · M · todo
-- [WED-017](WED-017-harden-base-components-for-focus-tap-targets-and.md) Harden base components for focus, tap targets and dialogs · high · L · todo
-- [WED-018](WED-018-add-form-components-for-rsvp-ordering-and-admin.md) Add form components for RSVP, ordering and admin · high · M · todo
-- [WED-019](WED-019-add-staff-status-panels-and-badges-for-arm-s-len.md) Add staff status panels and badges for arm's-length reading · high · S · todo
-- [WED-020](WED-020-add-theme-driven-dividers-monogram-and-paper-tex.md) Add theme-driven dividers, monogram and paper texture · medium · S · todo
-- [WED-021](WED-021-ui-review-of-dev-theme-in-every-theme-and-width.md) UI review of /dev/theme in every theme and width · medium · S · todo
+- [WED-008](WED-008-decide-domain-wedding-colours-and-photos-for-the.md) Decide domain, wedding colours and photos for the first theme · urgent · S · todo · human
+- [WED-009](WED-009-prove-the-theme-contrast-gate-end-to-end.md) Prove the theme contrast gate end to end · urgent · S · todo
+- [WED-010](WED-010-add-fixed-semantic-status-tokens-for-valid-used.md) Add fixed semantic status tokens for valid, used and invalid · urgent · M · todo
+- [WED-011](WED-011-align-theme-files-with-the-prd-pattern-texture-a.md) Align theme files with the PRD: pattern texture and radius · urgent · M · todo
+- [WED-012](WED-012-store-the-active-theme-in-the-database-and-apply.md) Store the active theme in the database and apply it on the server · urgent · M · todo
+- [WED-013](WED-013-ship-third-and-fourth-preset-themes.md) Ship third and fourth preset themes · urgent · M · todo
+- [WED-014](WED-014-create-the-couple-s-theme-from-their-colours-and.md) Create the couple's theme from their colours and photos · urgent · S · todo · human
+- [WED-015](WED-015-define-the-typography-scale-and-font-roles.md) Define the typography scale and font roles · urgent · M · todo
+- [WED-016](WED-016-add-motion-primitives-that-honour-reduced-motion.md) Add motion primitives that honour reduced motion · urgent · M · todo
+- [WED-017](WED-017-harden-base-components-for-focus-tap-targets-and.md) Harden base components for focus, tap targets and dialogs · urgent · L · todo
+- [WED-018](WED-018-add-form-components-for-rsvp-ordering-and-admin.md) Add form components for RSVP, ordering and admin · urgent · M · todo
+- [WED-019](WED-019-add-staff-status-panels-and-badges-for-arm-s-len.md) Add staff status panels and badges for arm's-length reading · urgent · S · todo
+- [WED-020](WED-020-add-theme-driven-dividers-monogram-and-paper-tex.md) Add theme-driven dividers, monogram and paper texture · urgent · S · todo
+- [WED-021](WED-021-ui-review-of-dev-theme-in-every-theme-and-width.md) UI review of /dev/theme in every theme and width · urgent · S · todo
 - [WED-022](WED-022-generate-a-full-palette-from-one-or-two-seed-col.md) Generate a full palette from one or two seed colours · low · M · backlog
+- [WED-170](WED-170-add-qr-paper-and-accessible-decorative-accent-to.md) Add QR paper and accessible decorative accent tokens · urgent · M · todo
+- [WED-181](WED-181-persist-validated-theme-drafts-and-activate-them.md) Persist validated theme drafts and activate them atomically · high · M · todo
 
 ### Data and auth
 
 - [WED-023](WED-023-redesign-invitation-guest-and-rsvp-tables-to-mat.md) Redesign invitation, guest and RSVP tables to match the PRD · urgent · L · todo
-- [WED-024](WED-024-redesign-check-in-menu-order-and-staff-tables-to.md) Redesign check-in, menu, order and staff tables to match the PRD · urgent · L · todo
-- [WED-025](WED-025-add-event-settings-and-rsvp-change-log-tables.md) Add event settings and RSVP change-log tables · high · M · todo
-- [WED-026](WED-026-rebuild-deterministic-seed-data-for-the-new-sche.md) Rebuild deterministic seed data for the new schema · high · M · todo
-- [WED-027](WED-027-write-the-rls-adr-and-least-privilege-policies.md) Write the RLS ADR and least-privilege policies · high · M · todo
-- [WED-028](WED-028-set-up-the-email-provider-for-admin-login-codes.md) Set up the email provider for admin login codes · high · S · todo · human
+- [WED-024](WED-024-redesign-check-in-menu-order-and-staff-tables-to.md) Migrate admission counters and scan event tables · urgent · M · todo
+- [WED-025](WED-025-add-event-settings-and-rsvp-change-log-tables.md) Add event settings and RSVP change-log tables · urgent · M · todo
+- [WED-026](WED-026-rebuild-deterministic-seed-data-for-the-new-sche.md) Rebuild deterministic seed data for the new schema · urgent · M · todo
+- [WED-027](WED-027-write-the-rls-adr-and-least-privilege-policies.md) Write the RLS ADR and least-privilege policies · urgent · M · todo
+- [WED-028](WED-028-set-up-the-email-provider-for-admin-login-codes.md) Set up the email provider for admin login codes · urgent · S · todo · human
 - [WED-029](WED-029-add-admin-sign-in-with-email-codes-and-an-allowl.md) Add admin sign-in with email codes and an allowlist · urgent · M · todo
-- [WED-030](WED-030-require-totp-two-factor-auth-for-admin-accounts.md) Require TOTP two-factor auth for admin accounts · high · M · todo
+- [WED-030](WED-030-require-totp-two-factor-auth-for-admin-accounts.md) Require TOTP two-factor auth for admin accounts · urgent · M · todo
 - [WED-031](WED-031-add-staff-pin-sign-in-with-hashed-expiring-pins.md) Add staff PIN sign-in with hashed, expiring PINs · urgent · M · todo
-- [WED-032](WED-032-protect-admin-and-staff-routes-in-the-request-pr.md) Protect admin and staff routes in the request proxy · high · M · todo
+- [WED-032](WED-032-protect-admin-and-staff-routes-in-the-request-pr.md) Protect admin and staff routes in the request proxy · urgent · M · todo
 - [WED-033](WED-033-set-up-realtime-channels-for-boards-and-scanners.md) Set up realtime channels for boards and scanners · high · M · todo
+- [WED-171](WED-171-migrate-menu-and-station-order-tables-independen.md) Migrate menu and station order tables independently · urgent · M · todo
+- [WED-172](WED-172-migrate-staff-identities-and-device-registration.md) Migrate staff identities and device registrations · urgent · M · todo
 
 ### Invitations and RSVP
 
-- [WED-034](WED-034-decide-wedding-date-rsvp-lock-tag-along-limit-an.md) Decide wedding date, RSVP lock, tag-along limit and Wallet scope · high · S · todo · human
-- [WED-035](WED-035-choose-the-invitation-voice-and-approve-guest-fa.md) Choose the invitation voice and approve guest-facing copy · medium · S · todo · human
+- [WED-034](WED-034-decide-wedding-date-rsvp-lock-tag-along-limit-an.md) Decide wedding date, RSVP lock, tag-along limit and Wallet scope · urgent · S · todo · human
+- [WED-035](WED-035-choose-the-invitation-voice-and-approve-guest-fa.md) Choose the invitation voice and approve guest-facing copy · urgent · S · todo · human
 - [WED-036](WED-036-generate-invitation-tokens-and-the-personal-i-to.md) Generate invitation tokens and the personal /i/[token] route · urgent · M · todo
-- [WED-037](WED-037-build-the-iv-page-with-names-date-venue-dress-co.md) Build the IV page with names, date, venue, dress code and map · high · L · todo
-- [WED-038](WED-038-add-the-full-bleed-hero-photo-with-blur-placehol.md) Add the full-bleed hero photo with blur placeholder · high · M · todo
-- [WED-039](WED-039-add-the-envelope-opening-reveal-with-reduced-mot.md) Add the envelope-opening reveal with reduced-motion fallback · medium · M · todo
+- [WED-037](WED-037-build-the-iv-page-with-names-date-venue-dress-co.md) Build the IV page with names, date, venue, dress code and map · urgent · L · todo
+- [WED-038](WED-038-add-the-full-bleed-hero-photo-with-blur-placehol.md) Add the full-bleed hero photo with blur placeholder · urgent · M · todo
+- [WED-039](WED-039-add-the-envelope-opening-reveal-with-reduced-mot.md) Add the envelope-opening reveal with reduced-motion fallback · urgent · M · todo
 - [WED-040](WED-040-build-the-rsvp-form-for-attending-yes-or-no.md) Build the RSVP form for attending yes or no · urgent · M · todo
 - [WED-041](WED-041-let-guests-add-tag-alongs-with-meals-and-dietary.md) Let guests add tag-alongs with meals and dietary notes · urgent · L · todo
-- [WED-042](WED-042-lock-rsvp-edits-on-the-wedding-day-and-log-every.md) Lock RSVP edits on the wedding day and log every change · high · M · todo
-- [WED-043](WED-043-revoke-and-reissue-invitations-so-old-links-and.md) Revoke and reissue invitations so old links and QRs stop working · high · M · todo
+- [WED-042](WED-042-lock-rsvp-edits-on-the-wedding-day-and-log-every.md) Lock RSVP edits on the wedding day and log every change · urgent · M · todo
+- [WED-043](WED-043-revoke-and-reissue-invitations-so-old-links-and.md) Revoke and reissue invitations so old links and QRs stop working · urgent · M · todo
 - [WED-044](WED-044-show-the-guest-s-qr-pass-after-they-rsvp-yes.md) Show the guest's QR pass after they RSVP yes · urgent · M · todo
-- [WED-045](WED-045-let-guests-save-their-pass-as-an-image.md) Let guests save their pass as an image · high · M · todo
-- [WED-046](WED-046-offer-a-printable-pdf-invitation-with-the-qr.md) Offer a printable PDF invitation with the QR · medium · L · todo
-- [WED-047](WED-047-add-open-graph-previews-for-iv-links-without-gue.md) Add Open Graph previews for IV links without guest details · high · M · todo
-- [WED-048](WED-048-let-guests-request-their-link-again.md) Let guests request their link again · medium · M · todo
+- [WED-045](WED-045-let-guests-save-their-pass-as-an-image.md) Let guests save their pass as an image · urgent · M · todo
+- [WED-046](WED-046-offer-a-printable-pdf-invitation-with-the-qr.md) Offer a printable PDF invitation with the QR · urgent · L · todo
+- [WED-047](WED-047-add-open-graph-previews-for-iv-links-without-gue.md) Add Open Graph previews for IV links without guest details · urgent · M · todo
+- [WED-048](WED-048-let-guests-request-their-link-again.md) Let guests request their link again · urgent · M · todo
+- [WED-178](WED-178-offer-an-optional-guest-portrait-for-gate-identi.md) Offer an optional guest portrait for gate identification · low · M · backlog
+- [WED-183](WED-183-resolve-signed-pass-urls-without-exposing-invita.md) Resolve signed pass URLs without exposing invitation editing · urgent · M · todo
 
 ### Sharing
 
-- [WED-049](WED-049-normalise-guest-phone-numbers-for-wa-me-links.md) Normalise guest phone numbers for wa.me links · high · S · todo
+- [WED-049](WED-049-normalise-guest-phone-numbers-for-wa-me-links.md) Normalise guest phone numbers for wa.me links · urgent · S · todo
 - [WED-050](WED-050-build-the-share-menu-whatsapp-email-copy-link-an.md) Build the Share menu: WhatsApp, email, copy link and native share · urgent · M · todo
-- [WED-051](WED-051-mark-invitations-as-sent-when-shared.md) Mark invitations as sent when shared · high · S · todo
-- [WED-052](WED-052-fill-share-messages-from-the-prd-wording-templat.md) Fill share messages from the PRD wording templates · high · S · todo
+- [WED-051](WED-051-mark-invitations-as-sent-when-shared.md) Mark invitations as sent when shared · urgent · S · todo
+- [WED-052](WED-052-fill-share-messages-from-the-prd-wording-templat.md) Fill share messages from the PRD wording templates · urgent · S · todo
 - [WED-053](WED-053-show-a-reminder-list-and-re-share-nudges-to-non.md) Show a reminder list and re-share nudges to non-responders · medium · M · todo
 - [WED-054](WED-054-prepare-the-day-before-pass-reminder-batch.md) Prepare the day-before pass reminder batch · low · S · todo
 
 ### Gate check-in
 
-- [WED-055](WED-055-decide-who-runs-the-gate-and-boards-and-on-which.md) Decide who runs the gate and boards, and on which devices · medium · S · todo · human
+- [WED-055](WED-055-decide-who-runs-the-gate-and-boards-and-on-which.md) Decide who runs the gate and boards, and on which devices · urgent · S · todo · human
 - [WED-056](WED-056-sign-gate-pass-tokens-with-ed25519-and-document.md) Sign gate pass tokens with Ed25519 and document key handling · urgent · M · todo
-- [WED-057](WED-057-verify-gate-tokens-on-the-scanner-device.md) Verify gate tokens on the scanner device · urgent · M · todo
-- [WED-058](WED-058-implement-admission-rules-and-partial-admission.md) Implement admission rules and partial admission · urgent · M · todo
-- [WED-059](WED-059-build-the-scanner-page-with-camera-qr-reading.md) Build the scanner page with camera QR reading · urgent · L · todo
-- [WED-060](WED-060-show-scan-results-within-one-second-with-sound-a.md) Show scan results within one second with sound and vibration · urgent · M · todo
-- [WED-061](WED-061-admit-arriving-guests-with-partial-counts.md) Admit arriving guests with partial counts · urgent · M · todo
+- [WED-057](WED-057-verify-gate-tokens-on-the-scanner-device.md) Verify gate tokens on the scanner device · high · M · todo
+- [WED-058](WED-058-implement-admission-rules-and-partial-admission.md) Implement admission rules and partial admission · high · M · todo
+- [WED-059](WED-059-build-the-scanner-page-with-camera-qr-reading.md) Build the scanner page with camera QR reading · high · L · todo
+- [WED-060](WED-060-show-scan-results-within-one-second-with-sound-a.md) Show scan results within one second with sound and vibration · high · M · todo
+- [WED-061](WED-061-admit-arriving-guests-with-partial-counts.md) Admit arriving guests with partial counts · high · M · todo
 - [WED-062](WED-062-log-every-scan-with-time-device-staff-and-result.md) Log every scan with time, device, staff and result · high · S · todo
 - [WED-063](WED-063-add-manual-search-and-check-in-by-guest-name.md) Add manual search and check-in by guest name · high · M · todo
 - [WED-064](WED-064-register-and-name-scanner-and-board-devices.md) Register and name scanner and board devices · medium · S · todo
-- [WED-065](WED-065-cache-the-guest-list-and-revocations-on-each-sca.md) Cache the guest list and revocations on each scanner · urgent · L · todo
-- [WED-066](WED-066-queue-offline-check-ins-and-sync-them-when-signa.md) Queue offline check-ins and sync them when signal returns · urgent · L · todo
+- [WED-065](WED-065-cache-the-guest-list-and-revocations-on-each-sca.md) Cache the guest list and revocations on each scanner · high · L · todo
+- [WED-066](WED-066-queue-offline-check-ins-and-sync-them-when-signa.md) Queue offline check-ins and sync them when signal returns · high · M · todo
 - [WED-067](WED-067-flag-and-resolve-double-entries-from-offline-sca.md) Flag and resolve double entries from offline scanners · high · M · todo
 - [WED-068](WED-068-sync-check-ins-across-scanners-within-two-second.md) Sync check-ins across scanners within two seconds · high · M · todo
 - [WED-069](WED-069-export-a-printable-gate-guest-list.md) Export a printable gate guest list · high · S · todo
+- [WED-169](WED-169-approve-offline-freshness-and-the-gate-credentia.md) Approve offline freshness and the gate credential contract · urgent · S · todo · human
+- [WED-173](WED-173-reconcile-offline-admissions-atomically-on-the-s.md) Reconcile offline admissions atomically on the server · high · L · todo
 
 ### Table ordering
 
-- [WED-070](WED-070-start-the-order-page-by-typing-and-validating-a.md) Start the order page by typing and validating a table number · urgent · M · todo
-- [WED-071](WED-071-show-the-menu-by-category-with-live-sold-out-sta.md) Show the menu by category with live sold-out state · urgent · M · todo
-- [WED-072](WED-072-submit-orders-with-quantities-note-and-honest-re.md) Submit orders with quantities, note and honest retrying · urgent · L · todo
-- [WED-073](WED-073-enforce-order-limits-per-table-cooldown-and-item.md) Enforce order limits per table, cooldown and item caps · urgent · M · todo
-- [WED-074](WED-074-route-order-items-to-kitchen-and-bar-stations.md) Route order items to kitchen and bar stations · urgent · M · todo
+- [WED-070](WED-070-start-the-order-page-by-typing-and-validating-a.md) Start the order page by typing and validating a table number · high · M · todo
+- [WED-071](WED-071-show-the-menu-by-category-with-live-sold-out-sta.md) Show the menu by category with live sold-out state · high · M · todo
+- [WED-072](WED-072-submit-orders-with-quantities-note-and-honest-re.md) Submit orders with quantities, note and honest retrying · high · L · todo
+- [WED-073](WED-073-enforce-order-limits-per-table-cooldown-and-item.md) Enforce order limits per table, cooldown and item caps · high · M · todo
+- [WED-074](WED-074-route-order-items-to-kitchen-and-bar-stations.md) Route order items to kitchen and bar stations · high · M · todo
 - [WED-075](WED-075-show-guests-live-status-for-their-order.md) Show guests live status for their order · high · M · todo
-- [WED-076](WED-076-build-the-kitchen-board-with-oldest-first-live-o.md) Build the kitchen board with oldest-first live orders · urgent · L · todo
+- [WED-076](WED-076-build-the-kitchen-board-with-oldest-first-live-o.md) Build the kitchen board with oldest-first live orders · high · L · todo
 - [WED-077](WED-077-add-the-bar-board-using-the-shared-board-compone.md) Add the bar board using the shared board component · high · S · todo
-- [WED-078](WED-078-let-staff-move-orders-through-received-preparing.md) Let staff move orders through received, preparing and served · urgent · M · todo
+- [WED-078](WED-078-let-staff-move-orders-through-received-preparing.md) Let staff move orders through received, preparing and served · high · M · todo
 - [WED-079](WED-079-let-staff-enter-an-order-for-a-table-from-the-bo.md) Let staff enter an order for a table from the board · high · M · todo
 - [WED-080](WED-080-open-and-close-ordering-on-admin-command.md) Open and close ordering on admin command · high · S · todo
 - [WED-081](WED-081-keep-the-order-page-under-200-kb-and-fast-on-slo.md) Keep the order page under 200 KB and fast on slow networks · high · M · todo
@@ -165,7 +186,7 @@ Target WED-164. 14 open tickets in the longest chain, 36 points (about 36 agent-
 
 ### Order alerts
 
-- [WED-083](WED-083-set-up-the-whatsapp-alert-number-and-confirm-rec.md) Set up the WhatsApp alert number and confirm recipients · high · S · todo · human
+- [WED-083](WED-083-set-up-the-whatsapp-alert-number-and-confirm-rec.md) Set up the WhatsApp alert number and confirm recipients · urgent · S · todo · human
 - [WED-084](WED-084-queue-order-alerts-in-an-outbox-and-batch-them-p.md) Queue order alerts in an outbox and batch them per station · high · M · todo
 - [WED-085](WED-085-send-alerts-through-the-whatsapp-cloud-api-with.md) Send alerts through the WhatsApp Cloud API with retries · high · M · todo
 - [WED-086](WED-086-manage-alert-opt-ins-and-recipients-per-station.md) Manage alert opt-ins and recipients per station · medium · S · todo
@@ -173,99 +194,107 @@ Target WED-164. 14 open tickets in the longest chain, 36 points (about 36 agent-
 
 ### Admin dashboard
 
-- [WED-088](WED-088-build-the-admin-shell-and-navigation.md) Build the admin shell and navigation · high · M · todo
+- [WED-088](WED-088-build-the-admin-shell-and-navigation.md) Build the admin shell and navigation · urgent · M · todo
 - [WED-089](WED-089-build-the-guest-list-with-rsvp-status-and-filter.md) Build the guest list with RSVP status and filters · urgent · L · todo
 - [WED-090](WED-090-add-and-edit-invitations-and-guests-one-by-one.md) Add and edit invitations and guests one by one · urgent · M · todo
-- [WED-091](WED-091-import-guests-from-csv-with-a-validation-preview.md) Import guests from CSV with a validation preview · high · L · todo
-- [WED-092](WED-092-export-the-guest-list-to-csv.md) Export the guest list to CSV · high · S · todo
+- [WED-091](WED-091-import-guests-from-csv-with-a-validation-preview.md) Import guests from CSV with a validation preview · urgent · M · todo
+- [WED-092](WED-092-export-the-guest-list-to-csv.md) Export the guest list to CSV · urgent · S · todo
 - [WED-093](WED-093-build-the-seating-plan-tables-and-assignments.md) Build the seating plan: tables and assignments · high · L · todo
 - [WED-094](WED-094-print-table-cards-with-the-shared-order-qr-and-w.md) Print table cards with the shared order QR and Wi-Fi details · high · M · todo
-- [WED-095](WED-095-build-the-menu-editor-with-a-live-sold-out-toggl.md) Build the menu editor with a live sold-out toggle · urgent · M · todo
-- [WED-096](WED-096-manage-staff-pins-and-expiry.md) Manage staff, PINs and expiry · urgent · M · todo
+- [WED-095](WED-095-build-the-menu-editor-with-a-live-sold-out-toggl.md) Build the menu editor with a live sold-out toggle · high · M · todo
+- [WED-096](WED-096-manage-staff-pins-and-expiry.md) Manage staff, PINs and expiry · high · M · todo
 - [WED-097](WED-097-show-live-counters-on-the-admin-dashboard.md) Show live counters on the admin dashboard · high · M · todo
-- [WED-098](WED-098-build-the-admin-theme-editor-with-preview-and-ac.md) Build the admin theme editor with preview and activate · medium · L · todo
-- [WED-099](WED-099-add-the-iv-design-editor-for-photo-and-text.md) Add the IV design editor for photo and text · medium · L · todo
+- [WED-098](WED-098-build-the-admin-theme-editor-with-preview-and-ac.md) Build the admin theme editor with preview and activate · medium · M · todo
+- [WED-099](WED-099-add-the-iv-design-editor-for-photo-and-text.md) Add the IV design editor for photo and text · medium · M · todo
 - [WED-100](WED-100-show-each-invitation-s-rsvp-change-history.md) Show each invitation's RSVP change history · medium · S · todo
-- [WED-101](WED-101-build-the-event-settings-page.md) Build the event settings page · high · M · todo
+- [WED-101](WED-101-build-the-event-settings-page.md) Build the event settings page · urgent · M · todo
+- [WED-174](WED-174-add-the-admin-scan-log-and-dispute-filters.md) Add the admin scan log and dispute filters · medium · M · todo
+- [WED-175](WED-175-validate-and-store-invitation-photo-uploads.md) Validate and store invitation photo uploads · medium · M · todo
+- [WED-182](WED-182-validate-and-commit-guest-csv-imports-atomically.md) Validate and commit guest CSV imports atomically · urgent · M · todo
 
 ### PWA
 
-- [WED-102](WED-102-choose-the-service-worker-approach-for-next-js-1.md) Choose the service worker approach for Next.js 16 in an ADR · high · S · todo
+- [WED-102](WED-102-choose-the-service-worker-approach-for-next-js-1.md) Choose the service worker approach for Next.js 16 in an ADR · urgent · S · todo
 - [WED-103](WED-103-generate-the-web-app-manifest-from-the-active-th.md) Generate the web app manifest from the active theme · high · M · todo
 - [WED-104](WED-104-generate-maskable-icons-apple-touch-icons-and-sp.md) Generate maskable icons, Apple touch icons and splash screens · high · M · todo
-- [WED-105](WED-105-add-the-service-worker-with-per-route-caching.md) Add the service worker with per-route caching · high · L · todo
+- [WED-105](WED-105-add-the-service-worker-with-per-route-caching.md) Add the service worker with per-route caching · urgent · L · todo
 - [WED-106](WED-106-add-an-offline-fallback-page.md) Add an offline fallback page · high · S · todo
-- [WED-107](WED-107-keep-the-guest-s-own-qr-pass-available-offline-o.md) Keep the guest's own QR pass available offline once opened · high · M · todo
-- [WED-108](WED-108-make-the-scanner-app-shell-work-fully-offline.md) Make the scanner app shell work fully offline · urgent · M · todo
+- [WED-107](WED-107-keep-the-guest-s-own-qr-pass-available-offline-o.md) Keep the guest's own QR pass available offline once opened · urgent · M · todo
+- [WED-108](WED-108-make-the-scanner-app-shell-work-fully-offline.md) Make the scanner app shell work fully offline · high · M · todo
 - [WED-109](WED-109-prompt-installation-on-android-and-chrome.md) Prompt installation on Android and Chrome · medium · M · todo
 - [WED-110](WED-110-add-an-ios-add-to-home-screen-guide.md) Add an iOS Add to Home Screen guide · medium · S · todo
-- [WED-111](WED-111-show-an-update-available-prompt-for-new-versions.md) Show an update-available prompt for new versions · high · S · todo
+- [WED-111](WED-111-show-an-update-available-prompt-for-new-versions.md) Show an update-available prompt for new versions · high · M · todo
 - [WED-112](WED-112-send-web-push-to-staff-boards-where-supported.md) Send web push to staff boards where supported · low · L · todo
 - [WED-113](WED-113-automate-installability-and-offline-checks-in-pl.md) Automate installability and offline checks in Playwright · high · M · todo
 - [WED-114](WED-114-test-installation-on-real-android-and-ios-device.md) Test installation on real Android and iOS devices · high · S · todo · human
+- [WED-180](WED-180-preserve-queued-events-across-worker-and-data-up.md) Preserve queued events across worker and data upgrades · high · M · todo
+- [WED-184](WED-184-expire-private-offline-data-and-recover-from-sto.md) Expire private offline data and recover from storage eviction · high · M · todo
 
 ### Accessibility, performance and SEO
 
 - [WED-115](WED-115-add-automated-accessibility-checks-to-playwright.md) Add automated accessibility checks to Playwright · high · M · todo
 - [WED-116](WED-116-gate-guest-pages-on-lighthouse-mobile-scores-of.md) Gate guest pages on Lighthouse mobile scores of 95 or more · high · M · todo
-- [WED-117](WED-117-audit-guest-journeys-for-wcag-2-2-aa-and-fix-fin.md) Audit guest journeys for WCAG 2.2 AA and fix findings · high · L · todo
-- [WED-118](WED-118-audit-staff-and-admin-screens-for-accessibility.md) Audit staff and admin screens for accessibility and legibility · medium · L · todo
-- [WED-119](WED-119-optimise-every-image-for-avif-webp-sizes-and-blu.md) Optimise every image for AVIF/WebP, sizes and blur · medium · M · todo
-- [WED-120](WED-120-set-metadata-and-keep-private-pages-out-of-searc.md) Set metadata and keep private pages out of search engines · medium · S · todo
+- [WED-117](WED-117-audit-guest-journeys-for-wcag-2-2-aa-and-fix-fin.md) Audit guest journeys for WCAG 2.2 AA and fix findings · high · L · todo · human
+- [WED-118](WED-118-audit-staff-and-admin-screens-for-accessibility.md) Audit staff and admin screens for accessibility and legibility · medium · L · todo · human
+- [WED-119](WED-119-optimise-every-image-for-avif-webp-sizes-and-blu.md) Optimise every image for AVIF/WebP, sizes and blur · urgent · M · todo
+- [WED-120](WED-120-set-metadata-and-keep-private-pages-out-of-searc.md) Set metadata and keep private pages out of search engines · urgent · S · todo
 - [WED-121](WED-121-fail-e2e-on-layout-shift-or-console-errors-on-gu.md) Fail e2e on layout shift or console errors on guest pages · medium · M · todo
 
 ### Security and privacy
 
-- [WED-122](WED-122-agree-data-retention-and-privacy-notice-details.md) Agree data retention and privacy notice details · medium · S · todo · human
-- [WED-123](WED-123-rate-limit-iv-lookups-order-creation-and-pin-att.md) Rate-limit IV lookups, order creation and PIN attempts · urgent · M · todo
+- [WED-122](WED-122-agree-data-retention-and-privacy-notice-details.md) Agree data retention and privacy notice details · urgent · S · todo · human
+- [WED-123](WED-123-rate-limit-iv-lookups-order-creation-and-pin-att.md) Apply ordering abuse limits and regress shared endpoint protection · high · M · todo
 - [WED-124](WED-124-review-security-headers-and-csp-for-camera-worke.md) Review security headers and CSP for camera, workers and realtime · high · S · todo
-- [WED-125](WED-125-document-and-enforce-secrets-handling-and-key-ro.md) Document and enforce secrets handling and key rotation · high · M · todo
-- [WED-126](WED-126-publish-the-uk-gdpr-privacy-notice-on-the-rsvp-p.md) Publish the UK GDPR privacy notice on the RSVP page · high · M · todo
+- [WED-125](WED-125-document-and-enforce-secrets-handling-and-key-ro.md) Document and enforce secrets handling and key rotation · urgent · M · todo
+- [WED-126](WED-126-publish-the-uk-gdpr-privacy-notice-on-the-rsvp-p.md) Publish the UK GDPR privacy notice on the RSVP page · urgent · M · todo
 - [WED-127](WED-127-add-the-data-retention-job-that-deletes-guest-da.md) Add the data-retention job that deletes guest data on schedule · high · M · todo
-- [WED-128](WED-128-restrict-dietary-notes-to-admin-and-kitchen.md) Restrict dietary notes to admin and kitchen · high · S · todo
+- [WED-128](WED-128-restrict-dietary-notes-to-admin-and-kitchen.md) Restrict dietary notes to admin and kitchen · urgent · S · todo
 - [WED-129](WED-129-run-a-security-review-of-tokens-access-control-a.md) Run a security review of tokens, access control and actions · high · M · todo
+- [WED-185](WED-185-protect-invitation-and-pin-endpoints-before-invi.md) Protect invitation and PIN endpoints before invitations launch · urgent · M · todo
 
 ### Testing
 
 - [WED-130](WED-130-enforce-coverage-on-critical-logic.md) Enforce coverage on critical logic · high · M · todo
-- [WED-131](WED-131-cover-the-invitation-rsvp-and-pass-journey-end-t.md) Cover the invitation, RSVP and pass journey end to end · high · M · todo
+- [WED-131](WED-131-cover-the-invitation-rsvp-and-pass-journey-end-t.md) Cover the invitation, RSVP and pass journey end to end · urgent · M · todo
 - [WED-132](WED-132-cover-gate-scanning-partial-admission-and-search.md) Cover gate scanning, partial admission and search end to end · high · M · todo
 - [WED-133](WED-133-cover-table-ordering-to-the-boards-end-to-end.md) Cover table ordering to the boards end to end · high · M · todo
 - [WED-134](WED-134-cover-admin-guest-import-seating-menu-and-staff.md) Cover admin guest import, seating, menu and staff end to end · high · M · todo
 - [WED-135](WED-135-add-visual-regression-across-themes-and-prd-devi.md) Add visual regression across themes and PRD device sizes · medium · M · todo
-- [WED-136](WED-136-test-the-gate-end-to-end-with-the-network-switch.md) Test the gate end to end with the network switched off · urgent · M · todo
+- [WED-136](WED-136-test-the-gate-end-to-end-with-the-network-switch.md) Test the gate end to end with the network switched off · high · M · todo
 - [WED-137](WED-137-load-test-350-guests-at-the-gate-and-30-tables-o.md) Load test 350 guests at the gate and 30 tables ordering · high · L · todo
-- [WED-138](WED-138-test-the-guest-flow-in-whatsapp-s-browser-on-ios.md) Test the guest flow in WhatsApp's browser on iOS and Android · high · S · todo · human
+- [WED-138](WED-138-test-the-guest-flow-in-whatsapp-s-browser-on-ios.md) Test the guest flow in WhatsApp's browser on iOS and Android · urgent · S · todo · human
 
 ### Observability
 
-- [WED-139](WED-139-create-the-sentry-project-and-share-its-dsn.md) Create the Sentry project and share its DSN · medium · S · todo · human
-- [WED-140](WED-140-add-sentry-error-tracking-to-server-and-client.md) Add Sentry error tracking to server and client · high · M · todo
+- [WED-139](WED-139-create-the-sentry-project-and-share-its-dsn.md) Create the Sentry project and share its DSN · urgent · S · todo · human
+- [WED-140](WED-140-add-sentry-error-tracking-to-server-and-client.md) Add Sentry error tracking to server and client · urgent · M · todo
 - [WED-141](WED-141-add-request-ids-and-structured-logs-to-server-ac.md) Add request ids and structured logs to server actions · medium · S · todo
 - [WED-142](WED-142-set-up-uptime-checks-for-guest-scanner-and-board.md) Set up uptime checks for guest, scanner and board routes · medium · S · todo · human
 - [WED-143](WED-143-build-the-admin-health-page.md) Build the admin health page · medium · M · todo
 
 ### Deployment
 
-- [WED-144](WED-144-create-the-production-supabase-project.md) Create the production Supabase project · high · S · todo · human
-- [WED-145](WED-145-create-the-vercel-project-and-connect-the-reposi.md) Create the Vercel project and connect the repository · high · S · todo · human
-- [WED-146](WED-146-buy-the-domain-and-point-it-at-vercel-with-https.md) Buy the domain and point it at Vercel with HTTPS · medium · S · todo · human
-- [WED-147](WED-147-configure-vercel-builds-and-preview-deployments.md) Configure Vercel builds and preview deployments per PR · high · M · todo
-- [WED-148](WED-148-define-and-validate-environment-variables-per-en.md) Define and validate environment variables per environment · high · M · todo
-- [WED-149](WED-149-decide-and-set-up-the-database-for-previews-and.md) Decide and set up the database for previews and staging · medium · M · todo
-- [WED-150](WED-150-run-migrations-safely-in-the-deploy-pipeline.md) Run migrations safely in the deploy pipeline · high · M · todo
-- [WED-151](WED-151-set-up-database-backups-and-prove-a-restore.md) Set up database backups and prove a restore · high · M · todo
-- [WED-152](WED-152-run-smoke-tests-against-every-deployment.md) Run smoke tests against every deployment · high · M · todo
-- [WED-153](WED-153-write-and-rehearse-the-rollback-plan.md) Write and rehearse the rollback plan · high · S · todo
-- [WED-154](WED-154-release-to-production-and-confirm-the-site-insta.md) Release to production and confirm the site installs as a PWA · urgent · M · todo
+- [WED-144](WED-144-create-the-production-supabase-project.md) Create the production Supabase project · urgent · S · todo · human
+- [WED-145](WED-145-create-the-vercel-project-and-connect-the-reposi.md) Create the Vercel project and connect the repository · urgent · S · todo · human
+- [WED-146](WED-146-buy-the-domain-and-point-it-at-vercel-with-https.md) Buy the domain and point it at Vercel with HTTPS · urgent · S · todo · human
+- [WED-147](WED-147-configure-vercel-builds-and-preview-deployments.md) Configure Vercel builds and preview deployments per PR · urgent · M · todo
+- [WED-148](WED-148-define-and-validate-environment-variables-per-en.md) Define and validate environment variables per environment · urgent · M · todo
+- [WED-149](WED-149-decide-and-set-up-the-database-for-previews-and.md) Decide and set up the database for previews and staging · urgent · M · todo · human
+- [WED-150](WED-150-run-migrations-safely-in-the-deploy-pipeline.md) Run migrations safely in the deploy pipeline · urgent · M · todo
+- [WED-151](WED-151-set-up-database-backups-and-prove-a-restore.md) Configure database and media backups with failure alerts · urgent · M · todo
+- [WED-152](WED-152-run-smoke-tests-against-every-deployment.md) Run smoke tests against every deployment · urgent · M · todo
+- [WED-153](WED-153-write-and-rehearse-the-rollback-plan.md) Write and rehearse the rollback plan · urgent · S · todo
+- [WED-154](WED-154-release-to-production-and-confirm-the-site-insta.md) Release to production and confirm the site installs as a PWA · high · M · todo
+- [WED-176](WED-176-release-invitations-before-the-wedding-day-featu.md) Release invitations before the wedding-day feature launch · urgent · M · todo
+- [WED-179](WED-179-rehearse-database-and-asset-recovery-in-an-isola.md) Rehearse database and asset recovery in an isolated target · urgent · L · todo
 
 ### Launch and the day itself
 
 - [WED-155](WED-155-visit-the-venue-and-measure-signal-at-the-gate-a.md) Visit the venue and measure signal at the gate and hall · high · S · todo · human
 - [WED-156](WED-156-buy-the-4g-router-backup-sim-power-banks-and-bac.md) Buy the 4G router, backup SIM, power banks and backup device · medium · S · todo · human
-- [WED-157](WED-157-load-the-real-guest-list-and-menu.md) Load the real guest list and menu · high · M · todo · human
-- [WED-158](WED-158-proof-read-every-guest-facing-message-and-screen.md) Proof-read every guest-facing message and screen · medium · S · todo · human
-- [WED-159](WED-159-share-the-invitations-with-every-guest.md) Share the invitations with every guest · high · M · todo · human
+- [WED-157](WED-157-load-the-real-guest-list-and-menu.md) Load and reconcile the real wedding menu · high · M · todo · human
+- [WED-158](WED-158-proof-read-every-guest-facing-message-and-screen.md) Proof-read every guest-facing message and screen · urgent · S · todo · human
+- [WED-159](WED-159-share-the-invitations-with-every-guest.md) Share the invitations with every guest · urgent · M · todo · human
 - [WED-160](WED-160-print-the-table-cards.md) Print the table cards · medium · S · todo · human
 - [WED-161](WED-161-write-the-day-of-runbook-with-fallbacks.md) Write the day-of runbook with fallbacks · high · M · todo
 - [WED-162](WED-162-train-ushers-and-caterers-on-their-screens.md) Train ushers and caterers on their screens · high · S · todo · human
@@ -275,4 +304,5 @@ Target WED-164. 14 open tickets in the longest chain, 36 points (about 36 agent-
 - [WED-166](WED-166-close-the-event-expire-pins-close-ordering-expor.md) Close the event: expire PINs, close ordering, export memories · medium · M · todo
 - [WED-167](WED-167-hand-the-couple-their-memories-export.md) Hand the couple their memories export · low · S · todo · human
 - [WED-168](WED-168-confirm-guest-personal-data-is-deleted-after-ret.md) Confirm guest personal data is deleted after retention · high · S · todo · human
+- [WED-177](WED-177-import-and-reconcile-the-real-invitation-guest-l.md) Import and reconcile the real invitation guest list · urgent · S · todo · human
 

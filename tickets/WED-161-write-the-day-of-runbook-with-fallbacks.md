@@ -9,7 +9,7 @@ labels: [docs]
 module: ops
 owner: ""
 agent: ""
-blocked_by: [WED-069, WED-143, WED-153]
+blocked_by: [WED-069, WED-143, WED-153, WED-055, WED-155, WED-169]
 blocks: [WED-162]
 branch: ""
 pr: ""
@@ -43,10 +43,14 @@ See: [Performance and reliability](../docs/prd.md#performance-and-reliability) Â
 - [ ] Every failure mode in the PRD testing plan has a step-by-step fallback.
 - [ ] Printable one-pager fits on A4.
 
+- [ ] Include printed morning guest list, staff manual-order fallback, router with external antenna/backup SIM, spare charged devices and Wi-Fi instructions on table cards; keep passwords in private operational handoff, not git.
+
 ## Test plan
 
 - Manual: Read-through with the couple.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: Manual: airplane-mode rehearsal and router/SIM failover at the venue with named staff roles.
 
 ## Files likely touched
 

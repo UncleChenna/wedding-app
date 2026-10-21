@@ -3,7 +3,7 @@ id: WED-019
 title: Add staff status panels and badges for arm's-length reading
 epic: design-system
 status: todo
-priority: high
+priority: urgent
 estimate: S
 labels: [frontend, design]
 module: shared

@@ -3,14 +3,14 @@ id: WED-012
 title: Store the active theme in the database and apply it on the server
 epic: design-system
 status: todo
-priority: high
+priority: urgent
 estimate: M
 labels: [backend, db, frontend]
 module: theming
 owner: ""
 agent: ""
 blocked_by: [WED-011, WED-025]
-blocks: [WED-098, WED-103]
+blocks: [WED-103, WED-154, WED-176, WED-181]
 branch: ""
 pr: ""
 created: 2026-10-21

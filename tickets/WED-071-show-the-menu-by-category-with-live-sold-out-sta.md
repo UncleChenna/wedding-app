@@ -3,7 +3,7 @@ id: WED-071
 title: Show the menu by category with live sold-out state
 epic: ordering
 status: todo
-priority: urgent
+priority: high
 estimate: M
 labels: [frontend, backend]
 module: ordering
@@ -45,10 +45,14 @@ See: [Table ordering](../docs/prd.md#table-ordering) (ORD-2).
 - [ ] Sold-out state is announced with text.
 - [ ] Menu renders in every theme at 375px without overflow.
 
+- [ ] Live availability changes remove sold-out items from new choices; the server still revalidates items at commit time. Use seeded menu fixtures until WED-095 exists.
+
 ## Test plan
 
 - End-to-end: Sold-out live update.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: End-to-end: menu changes after loading and before submission; stale cart gets a clear recoverable error.
 
 ## Files likely touched
 

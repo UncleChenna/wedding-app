@@ -3,14 +3,14 @@ id: WED-048
 title: Let guests request their link again
 epic: invitations
 status: todo
-priority: medium
+priority: urgent
 estimate: M
 labels: [frontend, backend]
 module: invitations
 owner: ""
 agent: ""
-blocked_by: [WED-036, WED-088]
-blocks: []
+blocked_by: [WED-036, WED-088, WED-050, WED-185]
+blocks: [WED-123, WED-176]
 branch: ""
 pr: ""
 created: 2026-10-21

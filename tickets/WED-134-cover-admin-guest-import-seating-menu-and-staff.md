@@ -9,8 +9,8 @@ labels: [test]
 module: admin
 owner: ""
 agent: ""
-blocked_by: [WED-091, WED-093, WED-095, WED-096]
-blocks: []
+blocked_by: [WED-091, WED-093, WED-095, WED-096, WED-050]
+blocks: [WED-154]
 branch: ""
 pr: ""
 created: 2026-10-21

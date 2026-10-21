@@ -3,14 +3,14 @@ id: WED-091
 title: Import guests from CSV with a validation preview
 epic: admin
 status: todo
-priority: high
-estimate: L
+priority: urgent
+estimate: M
 labels: [frontend, backend]
 module: admin
 owner: ""
 agent: ""
-blocked_by: [WED-090]
-blocks: [WED-134, WED-154, WED-157]
+blocked_by: [WED-090, WED-182]
+blocks: [WED-134, WED-176, WED-177]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -31,9 +31,7 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-1).
 
 ## Scope
 
-- Columns: name, phone, email, party size, side, table.
-- Preview with per-row errors and duplicates before commit; all-or-nothing import.
-- Template CSV download.
+- Preview and confirm WED-182 validated imports in the admin UI; parsing, duplicate handling and transactional writes are WED-182.
 
 ## Out of scope
 
@@ -45,11 +43,15 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-1).
 - [ ] Rows with errors are shown and nothing is written until fixed.
 - [ ] Re-importing the same file creates no duplicates.
 
+- [ ] Use WED-182 preview/commit service; show row-specific errors and duplicate decisions and disable commit until the preview is valid.
+
 ## Test plan
 
 - Unit: Parser and dedupe.
 - End-to-end: Upload fixture CSV.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: End-to-end: invalid CSV preview, corrected upload, repeat submit and unchanged pre-existing RSVP.
 
 ## Files likely touched
 

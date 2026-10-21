@@ -3,7 +3,7 @@ id: WED-125
 title: Document and enforce secrets handling and key rotation
 epic: security
 status: todo
-priority: high
+priority: urgent
 estimate: M
 labels: [security, docs]
 module: shared

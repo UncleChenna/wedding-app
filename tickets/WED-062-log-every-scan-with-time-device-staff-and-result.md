@@ -9,8 +9,8 @@ labels: [backend]
 module: checkin
 owner: ""
 agent: ""
-blocked_by: [WED-061]
-blocks: [WED-132]
+blocked_by: [WED-061, WED-064]
+blocks: [WED-063, WED-066, WED-132, WED-136, WED-174]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -31,8 +31,7 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-5).
 
 ## Scope
 
-- scan_log write on every scan result, online or synced later.
-- Admin view filter by result and device.
+- Write online scan attempts with staff/device, result and reported/server timestamps. WED-066 queues offline events; WED-173 merges them; WED-174 supplies admin filtering.
 
 ## Out of scope
 
@@ -40,8 +39,9 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-5).
 
 ## Acceptance criteria
 
-- [ ] Each of the five result types produces exactly one log row (unit).
-- [ ] Offline scans are logged with their device time when synced.
+- [ ] Each of the five online results creates a log row, including unknown tokens with no invitation id.
+- [ ] Manual lookup is recorded as the source while preserving the result vocabulary.
+- [ ] Staff identifiers are recorded without raw PINs, pass tokens or dietary notes; unauthorized log reads fail.
 
 ## Test plan
 

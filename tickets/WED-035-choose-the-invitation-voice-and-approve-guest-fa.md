@@ -3,14 +3,14 @@ id: WED-035
 title: Choose the invitation voice and approve guest-facing copy
 epic: invitations
 status: todo
-priority: medium
+priority: urgent
 estimate: S
 labels: [human, docs]
 module: invitations
 owner: ""
 agent: ""
 blocked_by: []
-blocks: [WED-158]
+blocks: [WED-040, WED-052, WED-101, WED-158, WED-176]
 branch: ""
 pr: ""
 created: 2026-10-21

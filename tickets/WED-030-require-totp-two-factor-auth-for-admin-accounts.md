@@ -3,7 +3,7 @@ id: WED-030
 title: Require TOTP two-factor auth for admin accounts
 epic: data-auth
 status: todo
-priority: high
+priority: urgent
 estimate: M
 labels: [security, backend, frontend]
 module: admin

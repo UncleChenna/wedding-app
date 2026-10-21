@@ -9,7 +9,7 @@ labels: [frontend]
 module: ordering
 owner: ""
 agent: ""
-blocked_by: [WED-033, WED-074]
+blocked_by: [WED-033, WED-074, WED-078]
 blocks: [WED-081, WED-117, WED-133, WED-135]
 branch: ""
 pr: ""
@@ -43,10 +43,14 @@ See: [Table ordering](../docs/prd.md#table-ordering) (ORD-3) · [Journey 3: orde
 - [ ] A board status change shows on the guest page within 2s (e2e).
 - [ ] Another submission's id cannot be guessed (≥96-bit id, unit).
 
+- [ ] Anonymous status responses disclose only the opaque order receipt and public item/status information, not guest identities, dietary notes or other tables.
+
 ## Test plan
 
 - End-to-end: Two-context status update.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: Integration: guessed ids and cross-table access fail; station/public projections contain no private fields.
 
 ## Files likely touched
 

@@ -9,7 +9,7 @@ labels: [security]
 module: shared
 owner: ""
 agent: ""
-blocked_by: [WED-033, WED-059, WED-105]
+blocked_by: [WED-033, WED-059, WED-105, WED-149]
 blocks: [WED-154]
 branch: ""
 pr: ""
@@ -42,10 +42,14 @@ See: [Security](../docs/prd.md#security).
 - [ ] securityheaders.com grade A or better on production (screenshot).
 - [ ] No CSP violations in e2e console logs.
 
+- [ ] Verify security headers and CSP on the HTTPS staging deployment before production, including camera/worker/font requirements; repeat the same smoke checks after release.
+
 ## Test plan
 
 - Unit: security-headers tests.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: Integration: assert required headers and blocked script injection while camera and worker flows still function.
 
 ## Files likely touched
 

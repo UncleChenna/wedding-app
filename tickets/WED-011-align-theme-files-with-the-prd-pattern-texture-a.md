@@ -3,14 +3,14 @@ id: WED-011
 title: "Align theme files with the PRD: pattern texture and radius"
 epic: design-system
 status: todo
-priority: medium
+priority: urgent
 estimate: M
 labels: [design, frontend]
 module: theming
 owner: ""
 agent: ""
 blocked_by: [WED-009]
-blocks: [WED-012, WED-013, WED-020, WED-046, WED-094]
+blocks: [WED-012, WED-013, WED-020, WED-046, WED-094, WED-170]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -45,10 +45,14 @@ See: [How theming works](../docs/prd.md#how-theming-works) (THM-1).
 - [ ] docs/theming.md contains the PRD-to-token mapping table.
 - [ ] theme.schema.json is regenerated, not hand-edited.
 
+- [ ] Pattern is optional and off by default; document scale, placement and strength rather than adding decorative grain everywhere. Keep one canonical schema with explicit PRD-name mappings.
+
 ## Test plan
 
 - Unit: Schema accepts/rejects pattern paths.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: Unit: missing pattern produces no texture; invalid paths and out-of-range strength fail.
 
 ## Files likely touched
 

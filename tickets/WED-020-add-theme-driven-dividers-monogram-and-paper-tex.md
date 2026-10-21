@@ -3,7 +3,7 @@ id: WED-020
 title: Add theme-driven dividers, monogram and paper texture
 epic: design-system
 status: todo
-priority: medium
+priority: urgent
 estimate: S
 labels: [design, frontend]
 module: shared
@@ -43,10 +43,12 @@ See: [Design principles](../docs/prd.md#design-principles) · [Design principles
 - [ ] Components use only theme tokens (lint passes, no literals).
 - [ ] Demonstrated on /dev/theme in all themes.
 
+
 ## Test plan
 
 - Unit: Render tests.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
 
 ## Files likely touched
 

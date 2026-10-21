@@ -3,14 +3,14 @@ id: WED-148
 title: Define and validate environment variables per environment
 epic: deployment
 status: todo
-priority: high
+priority: urgent
 estimate: M
 labels: [infra, security]
 module: shared
 owner: ""
 agent: ""
 blocked_by: [WED-125, WED-144, WED-147]
-blocks: [WED-150, WED-154]
+blocks: [WED-150, WED-154, WED-176]
 branch: ""
 pr: ""
 created: 2026-10-21

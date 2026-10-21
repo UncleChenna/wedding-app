@@ -5,12 +5,12 @@ epic: quality
 status: todo
 priority: high
 estimate: L
-labels: [frontend, test]
+labels: [frontend, test, human]
 module: invitations
 owner: ""
 agent: ""
 blocked_by: [WED-041, WED-044, WED-075, WED-115]
-blocks: [WED-164]
+blocks: [WED-154, WED-164]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -43,10 +43,14 @@ See: [Usability and accessibility](../docs/prd.md#usability-and-accessibility).
 - [ ] Audit report in docs/audits/ with every finding and its fix or ticket.
 - [ ] No open serious finding on guest pages.
 
+- [ ] Scope this ticket to audit evidence and at most one bounded remediation per reviewed journey; create separate tickets for larger fixes and make release depend on their completion. All applicable A/AA findings must be resolved before sign-off.
+
 ## Test plan
 
 - Manual: Screen reader passes on iOS and Android.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: Manual: keyboard/screen-reader checklist with reproducible findings, linked fixes and retest evidence.
 
 ## Files likely touched
 

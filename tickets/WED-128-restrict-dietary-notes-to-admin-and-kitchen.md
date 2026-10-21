@@ -3,14 +3,14 @@ id: WED-128
 title: Restrict dietary notes to admin and kitchen
 epic: security
 status: todo
-priority: high
+priority: urgent
 estimate: S
 labels: [security, backend]
 module: shared
 owner: ""
 agent: ""
-blocked_by: [WED-076, WED-089]
-blocks: []
+blocked_by: [WED-027]
+blocks: [WED-076, WED-129, WED-176]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -42,10 +42,14 @@ See: [Privacy (UK GDPR)](../docs/prd.md#privacy-uk-gdpr).
 
 - [ ] Gate and bar responses contain no dietary fields (test per endpoint).
 
+- [ ] Publish an executable role/field projection contract early: only admin/kitchen receive dietary information. Every later query, subscription and export must reuse or test this contract.
+
 ## Test plan
 
 - Unit: Role projection tests.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: Unit/integration: gate/bar/anonymous projections omit sensitive fields, including nested JSON and free-text notes.
 
 ## Files likely touched
 

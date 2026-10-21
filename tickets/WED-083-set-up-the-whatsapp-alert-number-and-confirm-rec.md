@@ -3,7 +3,7 @@ id: WED-083
 title: Set up the WhatsApp alert number and confirm recipients
 epic: alerts
 status: todo
-priority: high
+priority: urgent
 estimate: S
 labels: [human, infra]
 module: ops

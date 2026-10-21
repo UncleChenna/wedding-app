@@ -3,14 +3,14 @@ id: WED-066
 title: Queue offline check-ins and sync them when signal returns
 epic: checkin
 status: todo
-priority: urgent
-estimate: L
+priority: high
+estimate: M
 labels: [frontend, backend, pwa]
 module: checkin
 owner: ""
 agent: ""
-blocked_by: [WED-065]
-blocks: [WED-067, WED-129, WED-136, WED-143, WED-154]
+blocked_by: [WED-065, WED-173, WED-062]
+blocks: [WED-067, WED-111, WED-129, WED-136, WED-143, WED-180]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -31,9 +31,7 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-6) · [Security](../docs
 
 ## Scope
 
-- Persistent queue with client_event_id; retry with backoff; Background Sync where supported.
-- Server merge that is idempotent and reports conflicts.
-- Visible pending count.
+- Client IndexedDB queue, durable event ids, retry/backoff and visible pending count. The server merge is WED-173; conflict UI is WED-067.
 
 ## Out of scope
 
@@ -41,9 +39,10 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-6) · [Security](../docs
 
 ## Acceptance criteria
 
-- [ ] Ten offline admissions sync exactly once after reconnect, even if sync runs twice (e2e).
-- [ ] A reload while offline keeps the queue.
-- [ ] Pending count returns to 0 after a successful sync.
+- [ ] Persist every offline scan attempt transactionally before reporting an admission as recorded; quota/write failure shows a recovery state.
+- [ ] Ten offline admissions survive reload and sync exactly once after repeated reconnects, using WED-173 per-event acknowledgements.
+- [ ] Foreground and manual retry work on Safari without Background Sync; failures remain queued with visible pending count.
+- [ ] Invalid, used and revoked attempts are logged as well as successful admissions; pending count clears only after committed acknowledgement.
 
 ## Test plan
 

@@ -10,7 +10,7 @@ module: shared
 owner: ""
 agent: ""
 blocked_by: [WED-013, WED-044, WED-075]
-blocks: []
+blocks: [WED-154]
 branch: ""
 pr: ""
 created: 2026-10-21

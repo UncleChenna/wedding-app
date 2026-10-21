@@ -3,14 +3,14 @@ id: WED-119
 title: Optimise every image for AVIF/WebP, sizes and blur
 epic: quality
 status: todo
-priority: medium
+priority: urgent
 estimate: M
 labels: [frontend]
 module: shared
 owner: ""
 agent: ""
 blocked_by: [WED-038]
-blocks: []
+blocks: [WED-154, WED-176]
 branch: ""
 pr: ""
 created: 2026-10-21

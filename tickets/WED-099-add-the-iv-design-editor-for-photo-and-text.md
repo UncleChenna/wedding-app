@@ -4,12 +4,12 @@ title: Add the IV design editor for photo and text
 epic: admin
 status: todo
 priority: medium
-estimate: L
+estimate: M
 labels: [frontend, backend]
 module: admin
 owner: ""
 agent: ""
-blocked_by: [WED-038, WED-098]
+blocked_by: [WED-038, WED-088, WED-175]
 blocks: []
 branch: ""
 pr: ""
@@ -31,8 +31,7 @@ See: [Admin dashboard](../docs/prd.md#admin-dashboard) (ADM-5).
 
 ## Scope
 
-- Upload hero photo to Supabase Storage with size/type limits; generate blur placeholder.
-- Edit headline, sub-line, venue text with preview.
+- Invitation photo and wording editor UI using WED-175 validated upload service; approved wording and fallback hero are retained.
 
 ## Out of scope
 
@@ -43,11 +42,15 @@ See: [Admin dashboard](../docs/prd.md#admin-dashboard) (ADM-5).
 - [ ] Uploads over 8 MB or non-images are rejected (unit).
 - [ ] Changes appear on /i/<token> after save (e2e).
 
+- [ ] Use WED-175 upload service; do not reimplement image parsing or storage policies in the editor. Preview approved wording and recover from upload failure without losing saved text.
+
 ## Test plan
 
 - Unit: Upload validation.
 - End-to-end: Edit and preview.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: End-to-end: rejected image, valid photo, failed save and reload of saved invitation.
 
 ## Files likely touched
 

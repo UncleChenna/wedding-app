@@ -3,14 +3,14 @@ id: WED-149
 title: Decide and set up the database for previews and staging
 epic: deployment
 status: todo
-priority: medium
+priority: urgent
 estimate: M
-labels: [infra, db]
+labels: [human, infra]
 module: shared
 owner: ""
 agent: ""
 blocked_by: [WED-144, WED-147]
-blocks: [WED-137, WED-150]
+blocks: [WED-114, WED-124, WED-137, WED-138, WED-150, WED-151]
 branch: ""
 pr: ""
 created: 2026-10-21

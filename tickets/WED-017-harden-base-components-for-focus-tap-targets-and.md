@@ -3,14 +3,14 @@ id: WED-017
 title: Harden base components for focus, tap targets and dialogs
 epic: design-system
 status: todo
-priority: high
+priority: urgent
 estimate: L
 labels: [frontend, design]
 module: shared
 owner: ""
 agent: ""
 blocked_by: [WED-010]
-blocks: [WED-018, WED-019, WED-037, WED-088, WED-115]
+blocks: [WED-018, WED-019, WED-029, WED-037, WED-088, WED-115]
 branch: ""
 pr: ""
 created: 2026-10-21

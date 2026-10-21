@@ -3,14 +3,14 @@ id: WED-027
 title: Write the RLS ADR and least-privilege policies
 epic: data-auth
 status: todo
-priority: high
+priority: urgent
 estimate: M
 labels: [security, db]
 module: shared
 owner: ""
 agent: ""
-blocked_by: [WED-024]
-blocks: [WED-033]
+blocked_by: [WED-024, WED-025, WED-171, WED-172, WED-031]
+blocks: [WED-033, WED-128, WED-176]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -45,10 +45,14 @@ See: [Security](../docs/prd.md#security) · [Privacy (UK GDPR)](../docs/prd.md#p
 - [ ] Tests: anon/publishable key gets zero rows from every table; staff claim reads only permitted columns.
 - [ ] Dietary notes are not readable through any browser policy except kitchen staff.
 
+- [ ] RLS and Realtime grants must enforce role access, while server projections omit private columns. Gate/bar/anonymous queries and subscriptions never return dietary notes or other households.
+
 ## Test plan
 
 - Unit: Policy tests against the local stack.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: Integration: exercise each role with direct queries, joins, subscriptions and guessed identifiers; ensure no bypass through a generic endpoint.
 
 ## Files likely touched
 

@@ -3,14 +3,14 @@ id: WED-042
 title: Lock RSVP edits on the wedding day and log every change
 epic: invitations
 status: todo
-priority: high
+priority: urgent
 estimate: M
 labels: [backend, frontend]
 module: invitations
 owner: ""
 agent: ""
-blocked_by: [WED-025, WED-041]
-blocks: [WED-100, WED-131]
+blocked_by: [WED-025, WED-041, WED-034]
+blocks: [WED-100, WED-131, WED-176]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -45,11 +45,15 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-6) · [On 
 - [ ] Each change writes before/after JSON with a timestamp.
 - [ ] Locked IVs still show the QR pass.
 
+- [ ] Enforce the approved event timezone/lock boundary on the server, log previous/new values and timestamp, and apply the approved pass-version rule when party size changes.
+
 ## Test plan
 
 - Unit: Lock and change-log tests with fake time.
 - End-to-end: Locked fixture shows the locked copy.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: Integration: one millisecond before/at/after lock, timezone/DST boundary, concurrent edits and changed signed-pass party size.
 
 ## Files likely touched
 

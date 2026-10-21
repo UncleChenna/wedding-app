@@ -9,8 +9,8 @@ labels: [frontend]
 module: ordering
 owner: ""
 agent: ""
-blocked_by: [WED-078]
-blocks: []
+blocked_by: [WED-078, WED-073]
+blocks: [WED-154]
 branch: ""
 pr: ""
 created: 2026-10-21

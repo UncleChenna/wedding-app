@@ -3,14 +3,14 @@ id: WED-028
 title: Set up the email provider for admin login codes
 epic: data-auth
 status: todo
-priority: high
+priority: urgent
 estimate: S
 labels: [human, infra]
 module: ops
 owner: ""
 agent: ""
-blocked_by: []
-blocks: []
+blocked_by: [WED-144, WED-146]
+blocks: [WED-176]
 branch: ""
 pr: ""
 created: 2026-10-21

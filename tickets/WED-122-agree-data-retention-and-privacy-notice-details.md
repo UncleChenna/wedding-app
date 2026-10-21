@@ -3,7 +3,7 @@ id: WED-122
 title: Agree data retention and privacy notice details
 epic: security
 status: todo
-priority: medium
+priority: urgent
 estimate: S
 labels: [human, security, docs]
 module: ops

@@ -3,14 +3,14 @@ id: WED-120
 title: Set metadata and keep private pages out of search engines
 epic: quality
 status: todo
-priority: medium
+priority: urgent
 estimate: S
 labels: [frontend, security]
 module: shared
 owner: ""
 agent: ""
 blocked_by: [WED-047]
-blocks: []
+blocks: [WED-154, WED-176]
 branch: ""
 pr: ""
 created: 2026-10-21

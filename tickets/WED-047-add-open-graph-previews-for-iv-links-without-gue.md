@@ -3,14 +3,14 @@ id: WED-047
 title: Add Open Graph previews for IV links without guest details
 epic: invitations
 status: todo
-priority: high
+priority: urgent
 estimate: M
 labels: [frontend, design, security]
 module: invitations
 owner: ""
 agent: ""
 blocked_by: [WED-037]
-blocks: [WED-120, WED-138]
+blocks: [WED-120, WED-138, WED-176]
 branch: ""
 pr: ""
 created: 2026-10-21

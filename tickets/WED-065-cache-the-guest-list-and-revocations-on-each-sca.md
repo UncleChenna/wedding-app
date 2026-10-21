@@ -3,14 +3,14 @@ id: WED-065
 title: Cache the guest list and revocations on each scanner
 epic: checkin
 status: todo
-priority: urgent
+priority: high
 estimate: L
 labels: [frontend, pwa]
 module: checkin
 owner: ""
 agent: ""
 blocked_by: [WED-043, WED-061, WED-108]
-blocks: [WED-066]
+blocks: [WED-063, WED-066, WED-068, WED-184]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -45,11 +45,15 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-6) · [Connectivity plan
 - [ ] The cache contains no email, phone or dietary data (test).
 - [ ] Signing out clears the cache.
 
+- [ ] Show snapshot age and apply WED-169 maximum freshness, expiry and changed-party policy. Do not claim disconnected revocations are immediate.
+
 ## Test plan
 
 - Unit: Snapshot reducer.
 - End-to-end: Playwright `context.setOffline(true)`.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: End-to-end: stale and expired snapshots, reissue while offline, refresh and missing storage.
 
 ## Files likely touched
 

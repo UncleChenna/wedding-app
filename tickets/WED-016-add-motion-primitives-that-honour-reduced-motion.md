@@ -3,7 +3,7 @@ id: WED-016
 title: Add motion primitives that honour reduced motion
 epic: design-system
 status: todo
-priority: high
+priority: urgent
 estimate: M
 labels: [design, frontend]
 module: shared
@@ -45,11 +45,15 @@ See: [Design principles](../docs/prd.md#design-principles) · [Design principles
 - [ ] With reduced motion emulated, no transform animation runs.
 - [ ] Demonstrated on /dev/theme.
 
+- [ ] Use 180ms control transitions and the 600ms signature envelope reveal; reduced motion removes transforms and uses no animation or at most 150ms fade.
+
 ## Test plan
 
 - Unit: Render tests for class output.
 - End-to-end: Playwright `emulateMedia({ reducedMotion: 'reduce' })` check.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: End-to-end: assert computed durations and reduced-motion behavior without delaying controls.
 
 ## Files likely touched
 

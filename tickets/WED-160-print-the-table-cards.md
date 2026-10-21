@@ -9,8 +9,8 @@ labels: [human]
 module: ops
 owner: ""
 agent: ""
-blocked_by: [WED-094, WED-156, WED-157]
-blocks: []
+blocked_by: [WED-094, WED-156, WED-157, WED-146]
+blocks: [WED-164]
 branch: ""
 pr: ""
 created: 2026-10-21

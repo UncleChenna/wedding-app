@@ -3,14 +3,14 @@ id: WED-146
 title: Buy the domain and point it at Vercel with HTTPS
 epic: deployment
 status: todo
-priority: medium
+priority: urgent
 estimate: S
 labels: [human, infra]
 module: ops
 owner: ""
 agent: ""
 blocked_by: [WED-008, WED-145]
-blocks: [WED-154]
+blocks: [WED-028, WED-094, WED-154, WED-160, WED-176]
 branch: ""
 pr: ""
 created: 2026-10-21

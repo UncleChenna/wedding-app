@@ -9,8 +9,8 @@ labels: [frontend, backend]
 module: checkin
 owner: ""
 agent: ""
-blocked_by: [WED-033, WED-061]
-blocks: [WED-137]
+blocked_by: [WED-033, WED-061, WED-065]
+blocks: [WED-137, WED-154]
 branch: ""
 pr: ""
 created: 2026-10-21

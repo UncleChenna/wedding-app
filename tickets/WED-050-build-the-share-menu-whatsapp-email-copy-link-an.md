@@ -10,7 +10,7 @@ module: admin
 owner: ""
 agent: ""
 blocked_by: [WED-018, WED-036, WED-049]
-blocks: [WED-051, WED-052, WED-154]
+blocks: [WED-048, WED-051, WED-052, WED-089, WED-134, WED-154, WED-176]
 branch: ""
 pr: ""
 created: 2026-10-21

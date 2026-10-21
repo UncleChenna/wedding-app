@@ -3,7 +3,7 @@ id: WED-018
 title: Add form components for RSVP, ordering and admin
 epic: design-system
 status: todo
-priority: high
+priority: urgent
 estimate: M
 labels: [frontend, design]
 module: shared

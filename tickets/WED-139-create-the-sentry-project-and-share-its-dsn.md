@@ -3,13 +3,13 @@ id: WED-139
 title: Create the Sentry project and share its DSN
 epic: observability
 status: todo
-priority: medium
+priority: urgent
 estimate: S
 labels: [human, infra]
 module: ops
 owner: ""
 agent: ""
-blocked_by: []
+blocked_by: [WED-145]
 blocks: [WED-140]
 branch: ""
 pr: ""

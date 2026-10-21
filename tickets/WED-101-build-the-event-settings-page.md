@@ -3,14 +3,14 @@ id: WED-101
 title: Build the event settings page
 epic: admin
 status: todo
-priority: high
+priority: urgent
 estimate: M
 labels: [frontend, backend]
 module: admin
 owner: ""
 agent: ""
-blocked_by: [WED-025, WED-088]
-blocks: []
+blocked_by: [WED-025, WED-088, WED-034, WED-035]
+blocks: [WED-154, WED-176]
 branch: ""
 pr: ""
 created: 2026-10-21

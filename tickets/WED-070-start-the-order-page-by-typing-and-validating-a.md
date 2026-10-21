@@ -3,13 +3,13 @@ id: WED-070
 title: Start the order page by typing and validating a table number
 epic: ordering
 status: todo
-priority: urgent
+priority: high
 estimate: M
 labels: [frontend, backend]
 module: ordering
 owner: ""
 agent: ""
-blocked_by: [WED-018, WED-024]
+blocked_by: [WED-018, WED-171]
 blocks: [WED-071]
 branch: ""
 pr: ""

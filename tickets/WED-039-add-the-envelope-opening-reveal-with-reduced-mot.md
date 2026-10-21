@@ -3,14 +3,14 @@ id: WED-039
 title: Add the envelope-opening reveal with reduced-motion fallback
 epic: invitations
 status: todo
-priority: medium
+priority: urgent
 estimate: M
 labels: [frontend, design]
 module: invitations
 owner: ""
 agent: ""
 blocked_by: [WED-016, WED-037]
-blocks: []
+blocks: [WED-138]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -31,7 +31,7 @@ See: [Design principles](../docs/prd.md#design-principles) · [Design principles
 
 ## Scope
 
-- Opacity/transform-only unfold on first visit (≤800ms).
+- Opacity/transform-only unfold on first visit (600ms).
 - Skippable; content is in the DOM and readable immediately.
 - Reduced motion: ≤150ms fade or none.
 
@@ -41,14 +41,18 @@ See: [Design principles](../docs/prd.md#design-principles) · [Design principles
 
 ## Acceptance criteria
 
-- [ ] Reveal completes in ≤800ms and animates only opacity/transform (asserted).
+- [ ] Reveal completes in 600ms and animates only opacity/transform (asserted).
 - [ ] With reduced motion, no transform animation runs (e2e).
 - [ ] RSVP is reachable by keyboard during the animation.
+
+- [ ] Use the spike-tested 600ms reveal and 180ms controls; returning guests bypass it. Content, focus and RSVP remain usable throughout.
 
 ## Test plan
 
 - End-to-end: Animation duration and reduced-motion checks.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: End-to-end: first/return visit and reduced-motion timing assertions at 375px.
 
 ## Files likely touched
 

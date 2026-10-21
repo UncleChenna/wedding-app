@@ -3,14 +3,14 @@ id: WED-045
 title: Let guests save their pass as an image
 epic: invitations
 status: todo
-priority: high
+priority: urgent
 estimate: M
 labels: [frontend, backend]
 module: invitations
 owner: ""
 agent: ""
 blocked_by: [WED-044]
-blocks: []
+blocks: [WED-131, WED-138, WED-158, WED-176]
 branch: ""
 pr: ""
 created: 2026-10-21

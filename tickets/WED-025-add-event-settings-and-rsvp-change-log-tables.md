@@ -3,14 +3,14 @@ id: WED-025
 title: Add event settings and RSVP change-log tables
 epic: data-auth
 status: todo
-priority: high
+priority: urgent
 estimate: M
 labels: [db, backend]
 module: shared
 owner: ""
 agent: ""
 blocked_by: [WED-023]
-blocks: [WED-012, WED-026, WED-029, WED-037, WED-042, WED-073, WED-080, WED-101]
+blocks: [WED-012, WED-026, WED-027, WED-029, WED-031, WED-037, WED-040, WED-042, WED-052, WED-073, WED-080, WED-101]
 branch: ""
 pr: ""
 created: 2026-10-21

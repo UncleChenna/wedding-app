@@ -10,7 +10,7 @@ module: ordering
 owner: ""
 agent: ""
 blocked_by: [WED-076, WED-085]
-blocks: []
+blocks: [WED-154]
 branch: ""
 pr: ""
 created: 2026-10-21

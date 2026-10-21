@@ -5,12 +5,12 @@ epic: quality
 status: todo
 priority: medium
 estimate: L
-labels: [frontend, test]
+labels: [frontend, test, human]
 module: admin
 owner: ""
 agent: ""
 blocked_by: [WED-060, WED-078, WED-093, WED-115]
-blocks: []
+blocks: [WED-154, WED-164]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -42,10 +42,14 @@ See: [Usability and accessibility](../docs/prd.md#usability-and-accessibility) �
 - [ ] Audit report in docs/audits/; no open serious finding.
 - [ ] Staff text ≥18px and identifiers ≥32px verified in every theme.
 
+- [ ] Scope this review to the stated devices/journeys and bounded fixes; split larger remediation through t:new and block release on those tickets instead of accepting failed device evidence.
+
 ## Test plan
 
 - Manual: Arm's-length reading test.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: Manual: record device/browser/version, screenshots, failures, linked fixes and successful retests.
 
 ## Files likely touched
 

@@ -1,6 +1,6 @@
 ---
 id: WED-157
-title: Load the real guest list and menu
+title: Load and reconcile the real wedding menu
 epic: launch
 status: todo
 priority: high
@@ -9,8 +9,8 @@ labels: [human, db]
 module: ops
 owner: ""
 agent: ""
-blocked_by: [WED-091, WED-095, WED-154]
-blocks: [WED-159, WED-160]
+blocked_by: [WED-095, WED-154, WED-177]
+blocks: [WED-160]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -21,7 +21,7 @@ reason: ""
 resume_to: ""
 ---
 
-# WED-157: Load the real guest list and menu
+# WED-157: Load and reconcile the real wedding menu
 
 ## Context
 
@@ -31,7 +31,7 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-1) · [Adm
 
 ## Scope
 
-- Import the CSV, fix errors, set party sizes and tag-along limits, enter the menu with stations and caps.
+- Load owner-approved kitchen/bar menu, prices fixed at free, item caps and initial availability. Real guests are imported earlier in WED-177.
 
 ## Out of scope
 
@@ -39,8 +39,9 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-1) · [Adm
 
 ## Acceptance criteria
 
-- [ ] Guest and menu counts in production match the source spreadsheet (notes).
-- [ ] No validation errors remain.
+- [ ] Owner verifies every menu category, station, item cap, dietary label and availability against the approved menu.
+- [ ] Kitchen and bar previews receive only their station items; no real guest import or RSVP reset occurs.
+- [ ] Record menu counts and sign-off without committing private guest data.
 
 ## Test plan
 

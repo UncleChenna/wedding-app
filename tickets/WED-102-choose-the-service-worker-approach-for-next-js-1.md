@@ -3,7 +3,7 @@ id: WED-102
 title: Choose the service worker approach for Next.js 16 in an ADR
 epic: pwa
 status: todo
-priority: high
+priority: urgent
 estimate: S
 labels: [pwa, docs]
 module: shared

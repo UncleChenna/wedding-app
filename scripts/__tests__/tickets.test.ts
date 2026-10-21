@@ -10,7 +10,7 @@ import { criteria, parseTicket, serializeTicket } from "../tickets/format";
 import { criticalPath, findCycle, ready, upcoming } from "../tickets/graph";
 import { SECTIONS } from "../tickets/model";
 import type { Frontmatter, SectionName, Ticket } from "../tickets/model";
-import { renderOutputs } from "../tickets/store";
+import { loadTicketsSafely, renderOutputs } from "../tickets/store";
 import { validateTickets } from "../tickets/validate";
 import { claim, move, release } from "../tickets/workflow";
 import type { MoveFacts } from "../tickets/workflow";
@@ -62,6 +62,23 @@ const facts = (overrides: Partial<MoveFacts> = {}): MoveFacts => ({
 });
 
 describe("ticket file format", () => {
+  it("allows the backlog audit while rejecting unexpected Markdown files", () => {
+    const root = mkdtempSync(join(tmpdir(), "ticket-audit-"));
+    try {
+      mkdirSync(join(root, "tickets"));
+      writeFileSync(join(root, "tickets/AUDIT.md"), "# Backlog audit\n");
+      const sample = ticket("WED-001");
+      writeFileSync(join(root, sample.path), serializeTicket(sample));
+      expect(loadTicketsSafely(root).errors).toEqual([]);
+      expect(loadTicketsSafely(root).tickets).toHaveLength(1);
+      writeFileSync(join(root, "tickets/stray.md"), "# Not a ticket\n");
+      expect(loadTicketsSafely(root).errors).toEqual([
+        "tickets/stray.md: ticket files are named WED-NNN-slug.md",
+      ]);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
   it("round-trips exactly, including quoted titles", () => {
     const t = ticket("WED-001", {
       title: "Fix hooks: symlinked skills dir",

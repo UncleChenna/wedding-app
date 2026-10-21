@@ -10,7 +10,7 @@ module: harness
 owner: ""
 agent: ""
 blocked_by: []
-blocks: [WED-006]
+blocks: [WED-003, WED-006]
 branch: ""
 pr: ""
 created: 2026-10-21

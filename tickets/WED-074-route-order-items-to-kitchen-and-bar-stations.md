@@ -3,14 +3,14 @@ id: WED-074
 title: Route order items to kitchen and bar stations
 epic: ordering
 status: todo
-priority: urgent
+priority: high
 estimate: M
 labels: [backend]
 module: ordering
 owner: ""
 agent: ""
 blocked_by: [WED-072]
-blocks: [WED-075, WED-076, WED-084]
+blocks: [WED-073, WED-075, WED-076, WED-084]
 branch: ""
 pr: ""
 created: 2026-10-21

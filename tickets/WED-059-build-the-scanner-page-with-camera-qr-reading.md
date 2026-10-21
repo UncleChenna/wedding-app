@@ -3,13 +3,13 @@ id: WED-059
 title: Build the scanner page with camera QR reading
 epic: checkin
 status: todo
-priority: urgent
+priority: high
 estimate: L
 labels: [frontend]
 module: checkin
 owner: ""
 agent: ""
-blocked_by: [WED-019, WED-031, WED-057]
+blocked_by: [WED-019, WED-031, WED-057, WED-032]
 blocks: [WED-060, WED-108, WED-124]
 branch: ""
 pr: ""

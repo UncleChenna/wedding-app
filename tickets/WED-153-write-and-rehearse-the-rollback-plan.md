@@ -3,14 +3,14 @@ id: WED-153
 title: Write and rehearse the rollback plan
 epic: deployment
 status: todo
-priority: high
+priority: urgent
 estimate: S
 labels: [infra, docs]
 module: ops
 owner: ""
 agent: ""
-blocked_by: [WED-151, WED-152]
-blocks: [WED-154, WED-161]
+blocked_by: [WED-179, WED-152]
+blocks: [WED-154, WED-161, WED-176]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -39,8 +39,10 @@ See: [Performance and reliability](../docs/prd.md#performance-and-reliability).
 
 ## Acceptance criteria
 
-- [ ] Rollback rehearsed on staging in <2 minutes (timing in notes).
-- [ ] docs/runbook.md has the steps.
+- [ ] Rehearse application rollback within two minutes using the previous deployment against the current schema; record elapsed time and smoke results.
+- [ ] Expand/contract migrations preserve the previous application contract; incompatible changes require a documented maintenance/roll-forward decision.
+- [ ] Routine rollback never restores an old database over new orders/check-ins; data recovery uses WED-179 approved RPO/RTO.
+- [ ] Full wedding-day release additionally verifies old/new service workers and pending queues through WED-180.
 
 ## Test plan
 

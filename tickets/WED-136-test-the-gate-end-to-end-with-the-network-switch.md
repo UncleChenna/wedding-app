@@ -3,14 +3,14 @@ id: WED-136
 title: Test the gate end to end with the network switched off
 epic: testing
 status: todo
-priority: urgent
+priority: high
 estimate: M
 labels: [test, pwa]
 module: checkin
 owner: ""
 agent: ""
-blocked_by: [WED-066, WED-067, WED-108]
-blocks: [WED-163]
+blocked_by: [WED-066, WED-067, WED-108, WED-063, WED-062, WED-184]
+blocks: [WED-154, WED-163]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -39,7 +39,9 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-6) · [Milestones, scope
 
 ## Acceptance criteria
 
-- [ ] Counts on the server equal admissions made offline; conflicts flagged; runs in CI.
+- [ ] Two disconnected scanners retain every scan report across reload and reconcile duplicate event retries without duplicate canonical admissions.
+- [ ] Over-allowance reports remain visible conflicts: four allowed and eight reported yields four canonical admissions, eight reports and a resolvable conflict.
+- [ ] Invalid/used/revoked scans, stale snapshots, expired devices and quota failure follow WED-169/WED-184; no silent evidence loss.
 
 ## Test plan
 

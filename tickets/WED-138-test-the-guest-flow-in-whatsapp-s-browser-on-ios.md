@@ -3,14 +3,14 @@ id: WED-138
 title: Test the guest flow in WhatsApp's browser on iOS and Android
 epic: testing
 status: todo
-priority: high
+priority: urgent
 estimate: S
 labels: [human, test]
 module: ops
 owner: ""
 agent: ""
-blocked_by: [WED-044, WED-047, WED-154]
-blocks: [WED-159]
+blocked_by: [WED-044, WED-047, WED-045, WED-107, WED-149, WED-055, WED-041, WED-039]
+blocks: [WED-154, WED-159, WED-176]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -42,10 +42,14 @@ See: [Design principles](../docs/prd.md#design-principles) · [What "flawless" m
 - [ ] Device/OS/WhatsApp versions and pass/fail per step recorded with screenshots.
 - [ ] Every failure has a fix-up ticket.
 
+- [ ] Run real iOS and Android WhatsApp link/preview/share/save-pass journeys against staging before WED-176; failures require fixes and retest. Do not wait for full wedding-day deployment.
+
 ## Test plan
 
 - Manual: Real devices.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
+
+- Audit verification: Manual: record app/OS/browser versions, approved wording, QR image save and link behavior without private guest screenshots.
 
 ## Files likely touched
 

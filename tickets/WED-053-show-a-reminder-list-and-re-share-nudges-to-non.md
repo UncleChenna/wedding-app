@@ -9,7 +9,7 @@ labels: [frontend, backend]
 module: admin
 owner: ""
 agent: ""
-blocked_by: [WED-051, WED-089]
+blocked_by: [WED-051, WED-089, WED-052]
 blocks: [WED-054]
 branch: ""
 pr: ""

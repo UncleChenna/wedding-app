@@ -3,14 +3,14 @@ id: WED-038
 title: Add the full-bleed hero photo with blur placeholder
 epic: invitations
 status: todo
-priority: high
+priority: urgent
 estimate: M
 labels: [frontend, design]
 module: invitations
 owner: ""
 agent: ""
-blocked_by: [WED-037]
-blocks: [WED-099, WED-116, WED-119]
+blocked_by: [WED-037, WED-008]
+blocks: [WED-099, WED-116, WED-119, WED-154, WED-176]
 branch: ""
 pr: ""
 created: 2026-10-21

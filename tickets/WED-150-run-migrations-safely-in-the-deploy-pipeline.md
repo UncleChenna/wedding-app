@@ -3,14 +3,14 @@ id: WED-150
 title: Run migrations safely in the deploy pipeline
 epic: deployment
 status: todo
-priority: high
+priority: urgent
 estimate: M
 labels: [infra, db]
 module: shared
 owner: ""
 agent: ""
-blocked_by: [WED-148, WED-149]
-blocks: [WED-152]
+blocked_by: [WED-148, WED-149, WED-026]
+blocks: [WED-152, WED-176, WED-179]
 branch: ""
 pr: ""
 created: 2026-10-21

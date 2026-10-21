@@ -3,14 +3,14 @@ id: WED-076
 title: Build the kitchen board with oldest-first live orders
 epic: ordering
 status: todo
-priority: urgent
+priority: high
 estimate: L
 labels: [frontend]
 module: ordering
 owner: ""
 agent: ""
-blocked_by: [WED-019, WED-031, WED-033, WED-074]
-blocks: [WED-077, WED-078, WED-087, WED-112, WED-128]
+blocked_by: [WED-019, WED-031, WED-033, WED-074, WED-128]
+blocks: [WED-077, WED-078, WED-087, WED-112]
 branch: ""
 pr: ""
 created: 2026-10-21

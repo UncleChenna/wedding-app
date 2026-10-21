@@ -3,14 +3,14 @@ id: WED-055
 title: Decide who runs the gate and boards, and on which devices
 epic: checkin
 status: todo
-priority: medium
+priority: urgent
 estimate: S
 labels: [human]
 module: ops
 owner: ""
 agent: ""
 blocked_by: []
-blocks: [WED-162]
+blocks: [WED-057, WED-114, WED-138, WED-161, WED-162]
 branch: ""
 pr: ""
 created: 2026-10-21
