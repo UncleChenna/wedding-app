@@ -7,7 +7,7 @@ Live state (including claims not yet merged): `pnpm t:board`. Rules: [docs/ticke
 ## Progress by epic
 
 ```text
-Foundations fix-ups                  ░░░░░░░░░░░░░░░░░░░░   0/10    0%
+Foundations fix-ups                  ██░░░░░░░░░░░░░░░░░░   1/10   10%
 Design system and theming            ░░░░░░░░░░░░░░░░░░░░   0/17    0%
 Data and auth                        ░░░░░░░░░░░░░░░░░░░░   0/13    0%
 Invitations and RSVP                 ░░░░░░░░░░░░░░░░░░░░   0/17    0%
@@ -29,7 +29,7 @@ Launch and the day itself            ░░░░░░░░░░░░░░�
 
 Longest remaining dependency chain: 21 tickets, 43 points (about 43 agent-hours).
 
-1. [TICKET-001](TICKET-001-fix-hooks-failing-on-the-symlinked-claude-skills.md) Fix hooks failing on the symlinked .claude/skills directory · S · todo
+1. [TICKET-002](TICKET-002-allow-reads-outside-the-checkout-and-fix-shell-g.md) Allow reads outside the checkout and fix shell-guard false positives · S · in_review
 2. [TICKET-003](TICKET-003-verify-database-bootstrap-is-idempotent.md) Verify database bootstrap is idempotent · M · todo
 3. [TICKET-023](TICKET-023-redesign-invitation-guest-and-rsvp-tables-to-mat.md) Redesign invitation, guest and RSVP tables to match the PRD · L · todo
 4. [TICKET-025](TICKET-025-add-event-settings-and-rsvp-change-log-tables.md) Add event settings and RSVP change-log tables · M · todo
@@ -57,16 +57,16 @@ Agent work in `pnpm t:next` order (priority, then work unblocked, then id), assu
 
 | # | Ticket | Title | Priority | Est. | Module |
 | - | ------ | ----- | -------- | ---- | ------ |
-| 1 | [TICKET-001](TICKET-001-fix-hooks-failing-on-the-symlinked-claude-skills.md) | Fix hooks failing on the symlinked .claude/skills directory | urgent | S | harness |
-| 2 | [TICKET-003](TICKET-003-verify-database-bootstrap-is-idempotent.md) | Verify database bootstrap is idempotent | urgent | M | shared |
-| 3 | [TICKET-009](TICKET-009-prove-the-theme-contrast-gate-end-to-end.md) | Prove the theme contrast gate end to end | urgent | S | theming |
-| 4 | [TICKET-010](TICKET-010-add-fixed-semantic-status-tokens-for-valid-used.md) | Add fixed semantic status tokens for valid, used and invalid | urgent | M | theming |
-| 5 | [TICKET-023](TICKET-023-redesign-invitation-guest-and-rsvp-tables-to-mat.md) | Redesign invitation, guest and RSVP tables to match the PRD | urgent | L | shared |
-| 6 | [TICKET-017](TICKET-017-harden-base-components-for-focus-tap-targets-and.md) | Harden base components for focus, tap targets and dialogs | urgent | L | shared |
-| 7 | [TICKET-025](TICKET-025-add-event-settings-and-rsvp-change-log-tables.md) | Add event settings and RSVP change-log tables | urgent | M | shared |
-| 8 | [TICKET-029](TICKET-029-add-admin-sign-in-with-email-codes-and-an-allowl.md) | Add admin sign-in with email codes and an allowlist | urgent | M | admin |
-| 9 | [TICKET-172](TICKET-172-migrate-staff-identities-and-device-registration.md) | Migrate staff identities and device registrations | urgent | M | shared |
-| 10 | [TICKET-018](TICKET-018-add-form-components-for-rsvp-ordering-and-admin.md) | Add form components for RSVP, ordering and admin | urgent | M | shared |
+| 1 | [TICKET-003](TICKET-003-verify-database-bootstrap-is-idempotent.md) | Verify database bootstrap is idempotent | urgent | M | shared |
+| 2 | [TICKET-009](TICKET-009-prove-the-theme-contrast-gate-end-to-end.md) | Prove the theme contrast gate end to end | urgent | S | theming |
+| 3 | [TICKET-010](TICKET-010-add-fixed-semantic-status-tokens-for-valid-used.md) | Add fixed semantic status tokens for valid, used and invalid | urgent | M | theming |
+| 4 | [TICKET-023](TICKET-023-redesign-invitation-guest-and-rsvp-tables-to-mat.md) | Redesign invitation, guest and RSVP tables to match the PRD | urgent | L | shared |
+| 5 | [TICKET-017](TICKET-017-harden-base-components-for-focus-tap-targets-and.md) | Harden base components for focus, tap targets and dialogs | urgent | L | shared |
+| 6 | [TICKET-025](TICKET-025-add-event-settings-and-rsvp-change-log-tables.md) | Add event settings and RSVP change-log tables | urgent | M | shared |
+| 7 | [TICKET-029](TICKET-029-add-admin-sign-in-with-email-codes-and-an-allowl.md) | Add admin sign-in with email codes and an allowlist | urgent | M | admin |
+| 8 | [TICKET-172](TICKET-172-migrate-staff-identities-and-device-registration.md) | Migrate staff identities and device registrations | urgent | M | shared |
+| 9 | [TICKET-018](TICKET-018-add-form-components-for-rsvp-ordering-and-admin.md) | Add form components for RSVP, ordering and admin | urgent | M | shared |
+| 10 | [TICKET-171](TICKET-171-migrate-menu-and-station-order-tables-independen.md) | Migrate menu and station order tables independently | urgent | M | shared |
 
 ## Waiting on people
 
@@ -110,16 +110,17 @@ Open tickets labelled `human` (decisions, accounts, physical tasks), in `pnpm t:
 
 ## Board
 
-### In progress (0)
+### In progress (1)
 
-_None._
+| Ticket | Title | Epic | Priority | Est. | Owner | Blocked by |
+| ------ | ----- | ---- | -------- | ---- | ----- | ---------- |
+| [TICKET-004](TICKET-004-get-the-first-green-ci-run-and-confirm-parity-wi.md) | Get the first green CI run and confirm parity with pnpm verify | foundations | urgent | S | divine |  |
 
-### In review (5)
+### In review (4)
 
 | Ticket | Title | Epic | Priority | Est. | Owner | Blocked by |
 | ------ | ----- | ---- | -------- | ---- | ----- | ---------- |
 | [TICKET-002](TICKET-002-allow-reads-outside-the-checkout-and-fix-shell-g.md) | Allow reads outside the checkout and fix shell-guard false positives | foundations | urgent | S | divine |  |
-| [TICKET-004](TICKET-004-get-the-first-green-ci-run-and-confirm-parity-wi.md) | Get the first green CI run and confirm parity with pnpm verify | foundations | urgent | S | divine |  |
 | [TICKET-186](TICKET-186-use-ticket-prefix.md) | Use TICKET as the ticket prefix | foundations | urgent | M | divine |  |
 | [TICKET-187](TICKET-187-require-backlog-alignment-before-coding.md) | Require backlog alignment before coding | foundations | urgent | S | divine |  |
 | [TICKET-188](TICKET-188-require-ticket-named-branches-and-detailed-devel.md) | Require ticket-named branches and detailed develop PRs | foundations | urgent | S | divine |  |
@@ -128,11 +129,10 @@ _None._
 
 _None._
 
-### Todo (180)
+### Todo (179)
 
 | Ticket | Title | Epic | Priority | Est. | Owner | Blocked by |
 | ------ | ----- | ---- | -------- | ---- | ----- | ---------- |
-| [TICKET-001](TICKET-001-fix-hooks-failing-on-the-symlinked-claude-skills.md) | Fix hooks failing on the symlinked .claude/skills directory | foundations | urgent | S |  |  |
 | [TICKET-003](TICKET-003-verify-database-bootstrap-is-idempotent.md) | Verify database bootstrap is idempotent | foundations | urgent | M |  | TICKET-001, TICKET-002 |
 | [TICKET-005](TICKET-005-replace-codeowners-placeholders-and-enable-branc.md) | Replace CODEOWNERS placeholders and enable branch protection | foundations | urgent | S |  | TICKET-004 |
 | [TICKET-006](TICKET-006-prove-the-managed-worktree-lifecycle-end-to-end.md) | Prove the managed worktree lifecycle end to end | foundations | high | M |  | TICKET-001, TICKET-002, TICKET-003 |
@@ -321,9 +321,11 @@ _None._
 | [TICKET-082](TICKET-082-add-the-optional-table-host-view-for-a-section-s.md) | Add the optional table host view for a section's tables | ordering | low | M |  | TICKET-078 |
 | [TICKET-178](TICKET-178-offer-an-optional-guest-portrait-for-gate-identi.md) | Offer an optional guest portrait for gate identification | invitations | low | M |  | TICKET-040, TICKET-175 |
 
-### Done (0)
+### Done (1)
 
-_None._
+| Ticket | Title | Epic | Priority | Est. | Owner | Blocked by |
+| ------ | ----- | ---- | -------- | ---- | ----- | ---------- |
+| [TICKET-001](TICKET-001-fix-hooks-failing-on-the-symlinked-claude-skills.md) | Fix hooks failing on the symlinked .claude/skills directory | foundations | urgent | S | unclechenna |  |
 
 ### Cancelled (0)
 
