@@ -57,6 +57,8 @@ See: [Current state](../docs/current-state.md) · [Testing plan](../docs/prd.md#
 
 ## Notes / decisions
 
+- 2026-10-21: Resolved develop conflicts, preserving merged prerequisite fixes and progress history. Quick and full verification passed: 110 unit tests, production build, 17 browser smoke passes and 7 existing skips.
+
 - 2026-10-21: Resolved develop conflicts, preserving merged prerequisite fixes and progress history. Quick and full verification passed: 108 unit tests, production build, 17 browser smoke passes and 7 existing skips.
 
 - 2026-10-21: All required jobs are green on [PR #8](https://github.com/UncleChenna/wedding-app/pull/8), [CI run 39586928907](https://github.com/UncleChenna/wedding-app/actions/runs/39586928907): tickets valid, no attribution, pnpm verify, migrations + seed. The optional review job is intentionally disabled. CI verify already invokes exactly pnpm verify after setup; no workflow edit was necessary. Added documentation for POSTGRES_PASSWORD, PR_TITLE and PR_BODY as comments in .env.example, plus regression checks. Before fix: 1 test failed / 1 passed. Quick and full local gates pass: 106 unit tests, build, 17 smoke passes, 7 existing skips. This ticket PR will also receive a fresh CI run.
