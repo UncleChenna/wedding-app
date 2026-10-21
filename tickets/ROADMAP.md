@@ -89,7 +89,7 @@ Target TICKET-164. 20 open tickets in the longest chain, 42 points (about 42 age
 ### Design system and theming
 
 - [TICKET-008](TICKET-008-decide-domain-wedding-colours-and-photos-for-the.md) Decide domain, wedding colours and photos for the first theme · urgent · S · todo · human
-- [TICKET-009](TICKET-009-prove-the-theme-contrast-gate-end-to-end.md) Prove the theme contrast gate end to end · urgent · S · todo
+- [TICKET-009](TICKET-009-prove-the-theme-contrast-gate-end-to-end.md) Prove the theme contrast gate end to end · urgent · S · in_review
 - [TICKET-010](TICKET-010-add-fixed-semantic-status-tokens-for-valid-used.md) Add fixed semantic status tokens for valid, used and invalid · urgent · M · todo
 - [TICKET-011](TICKET-011-align-theme-files-with-the-prd-pattern-texture-a.md) Align theme files with the PRD: pattern texture and radius · urgent · M · todo
 - [TICKET-012](TICKET-012-store-the-active-theme-in-the-database-and-apply.md) Store the active theme in the database and apply it on the server · urgent · M · todo
