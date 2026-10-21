@@ -5,6 +5,7 @@ import { join, resolve } from "node:path";
 
 import { afterEach, describe, expect, it } from "vitest";
 
+import { isolatedGitEnv } from "./git-env";
 import { attributionProblems, cleanMessage, ticketProblems } from "../harness/commit-rules.mjs";
 import { criteria, parseTicket, serializeTicket } from "../tickets/format";
 import { criticalPath, findCycle, ready, upcoming } from "../tickets/graph";
@@ -349,6 +350,7 @@ afterEach(() => {
 function git(cwd: string, ...args: string[]) {
   return execFileSync("git", args, {
     cwd,
+    env: isolatedGitEnv(),
     encoding: "utf8",
     stdio: ["ignore", "pipe", "pipe"],
   }).trim();
@@ -393,7 +395,7 @@ function t(cwd: string, ...args: string[]) {
     const child = spawn(tsx, [cli, ...args], {
       cwd,
       env: {
-        ...process.env,
+        ...isolatedGitEnv(),
         AGENT_OWNER: "",
         TICKETS_LEDGER: "origin",
         TICKETS_TODAY: "2026-10-22",

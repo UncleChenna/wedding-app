@@ -57,6 +57,8 @@ See: [Current state](../docs/current-state.md) · [Working together](../docs/col
 
 ## Notes / decisions
 
+- 2026-10-21 — Resolved develop conflicts after TICKET-001 merged, preserving both hook fixes and history. Quick verification passed (58 tests); full gate passed (106 unit tests, build, 17 smoke passes, 7 existing skips).
+
 - 2026-10-21 — Implemented safe external reads, symlink-aware secret checks, and operand-based shell access inspection. Regression tests failed before the fix (12 failures); focused tests now pass (39). Full `pnpm verify` passed: 104 unit tests, production build, 17 smoke passes and 7 existing skips. Static inspection is not a shell sandbox; interactive Claude integration remains unverified. Ready for human review on `TICKET-002`.
 
 ## Activity log
@@ -65,3 +67,4 @@ See: [Current state](../docs/current-state.md) · [Working together](../docs/col
 - 2026-10-21 — todo → claimed — divine (codex)
 - 2026-10-21 — todo → in_progress — divine (codex)
 - 2026-10-21 — in_progress → in_review — divine (codex)
+- 2026-10-21 — in_review → in_progress — divine (codex) — Resolve conflicts with develop after TICKET-001 merge

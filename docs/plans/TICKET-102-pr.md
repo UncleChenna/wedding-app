@@ -16,4 +16,8 @@ ADR documents the decision and rejected alternatives for review. Clarified the o
 
 ## Risks and rollout
 
-Custom cache logic and asset-manifest generation require maintenance and explicit route tests. Prototype scope is synthetic and does not prove production privacy or offline guest/scanner flows. ADR remains proposed until human merge. Earlier unmerged harness/workflow history is included; focused changes follow 5506f63. No deployment or migration; reverting the ticket commit removes the proposal and experiment.
+Custom cache logic and asset-manifest generation require maintenance and explicit route tests. Prototype scope is synthetic and does not prove production privacy or offline guest/scanner flows. ADR remains proposed until human merge. Prerequisite harness/workflow changes are now merged into develop. No deployment or migration; reverting the ticket commit removes the proposal and experiment.
+
+## Integration verification
+
+Updated against develop after TICKET-001 and TICKET-002 merged. Preserved both handoff histories, regenerated boards and retained prerequisite hook fixes. Quick and full verification passed: 106 unit tests, production build, 17 browser smoke passes and 7 existing skips.
