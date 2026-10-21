@@ -39,11 +39,11 @@ See docs/tickets.md: the local board currently needs regeneration. Collaborators
 
 ## Acceptance criteria
 
-- [ ] Server binds only to loopback; only board GET endpoints are served and cross-origin reads are rejected.
-- [ ] File changes and remote ledger updates refresh without rewriting tracked files or blocking requests during Git operations.
-- [ ] Filters, theme, open details and focus survive updates; offline/recovery and last-success states are visible.
-- [ ] Snapshot export remains available and optional VS Code startup is documented for collaborators.
-- [ ] Server and browser regression tests and full verification pass.
+- [x] Server binds only to loopback; only board GET endpoints are served and cross-origin reads are rejected.
+- [x] File changes and remote ledger updates refresh without rewriting tracked files or blocking requests during Git operations.
+- [x] Filters, theme, open details and focus survive updates; offline/recovery and last-success states are visible.
+- [x] Snapshot export remains available and optional VS Code startup is documented for collaborators.
+- [x] Server and browser regression tests and full verification pass.
 
 ## Test plan
 
@@ -59,6 +59,8 @@ See docs/tickets.md: the local board currently needs regeneration. Collaborators
 ## Notes / decisions
 
 - One server per collaborator/checkout, with their Git access; no shared hosting or new service.
+
+- 2026-10-21 — Implemented read-only live board, isolated refresh subprocess, recovery UX and optional editor startup. Full gate passes; review evidence in docs/reviews/TICKET-190/.
 
 ## Activity log
 

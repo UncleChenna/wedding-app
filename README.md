@@ -67,4 +67,8 @@ and opens a PR. It stops on failure and retains the claim for a handoff.
 
 ## Visual ticket board
 
-Run `pnpm t:dashboard` and open the printed `artifacts/tickets/index.html` path in your browser. Search and filter tickets, inspect acceptance criteria and PR links, and view progress in either theme. Regenerate and reload to refresh the snapshot. This development tool is separate from the wedding website.
+Run `pnpm t:dashboard` once and open http://127.0.0.1:4173. The local read-only server watches ticket files and checks the shared ledger every 20 seconds. The browser updates without losing filters, theme or open ticket details. Connection state and last successful refresh are visible. Stop with Ctrl+C; use `pnpm t:dashboard --port 4174` for another checkout.
+
+VS Code can start it when this folder opens: approve **Ticket dashboard (local)** when prompted to allow automatic tasks (in a trusted workspace). Otherwise use **Tasks: Run Task**. Disable it through **Tasks: Manage Automatic Tasks in Folder**. Each collaborator needs dependencies installed and their own working Git authentication; nothing is hosted or shared over the network.
+
+Ticket definitions come from the selected checkout, including local edits. Pull merged definitions normally; the dashboard never pulls or merges your branch. Shared claims/status refresh from the ledger automatically. `pnpm t:dashboard:snapshot` still exports a standalone HTML snapshot to `artifacts/tickets/index.html`.

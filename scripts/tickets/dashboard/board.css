@@ -50,6 +50,9 @@ footer {
   color: var(--muted-foreground);
   font-size: 14px;
 }
+#freshness {
+  overflow-wrap: anywhere;
+}
 .summary {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

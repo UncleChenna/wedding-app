@@ -1,10 +1,10 @@
 # Ticket board
 
-Open the visual dashboard with `pnpm t:dashboard`, then open the printed HTML path in your browser.
+Run `pnpm t:dashboard` and open http://127.0.0.1:4173. VS Code can start it automatically after you approve the optional folder-open task.
 
 - Search, filter, and open ticket details in status columns.
-- Status comes from the shared ledger when available; snapshots show their timestamp and offline fallback.
-- Run the command again and reload the page to refresh.
+- Local ticket files are watched; shared-ledger status refreshes every 20 seconds. Connection and last-success time are visible.
+- Filters and open details survive refresh. Export an offline file with `pnpm t:dashboard:snapshot`.
 - Terminal view: `pnpm t:board`. Next ready task: `pnpm t:next`.
 - Markdown snapshot: `pnpm t:render` → `artifacts/tickets/BOARD.md`.
 
