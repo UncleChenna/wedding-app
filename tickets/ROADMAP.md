@@ -6,7 +6,7 @@ Epics in delivery order. Points: S = 1, M = 2, L = 4 (L is about half a day of a
 
 | # | Epic | Goal | Tickets | Done | Open points | Human |
 | - | ---- | ---- | ------- | ---- | ----------- | ----- |
-| 1 | Foundations fix-ups | Repair and finish what the bootstrap left broken or unverified. | 10 | 0 | 13 | 1 |
+| 1 | Foundations fix-ups | Repair and finish what the bootstrap left broken or unverified. | 10 | 1 | 12 | 1 |
 | 2 | Design system and theming | Tokens, preset themes, base components, motion and contrast gates. | 17 | 0 | 30 | 2 |
 | 3 | Data and auth | PRD-shaped schema, RLS, admin auth with 2FA, staff PINs and seed data. | 13 | 0 | 27 | 1 |
 | 4 | Invitations and RSVP | The personal IV, envelope reveal, RSVP with tag-alongs and the QR pass. | 17 | 0 | 38 | 2 |
@@ -22,13 +22,13 @@ Epics in delivery order. Points: S = 1, M = 2, L = 4 (L is about half a day of a
 | 14 | Observability | Error tracking, structured logs, uptime checks and a health page. | 5 | 0 | 7 | 2 |
 | 15 | Deployment | Production Supabase and Vercel, previews, migrations, backups, rollback. | 13 | 0 | 24 | 4 |
 | 16 | Launch and the day itself | Real data, rehearsal, runbook, the day, and the post-wedding wind-down. | 15 | 0 | 20 | 13 |
-| | **Total** | | **188** | **0** | **354** | **33** |
+| | **Total** | | **188** | **1** | **353** | **33** |
 
 ## Critical path: Deployed and installable as a PWA
 
 Target TICKET-154. 17 open tickets in the longest chain, 38 points (about 38 agent-hours of serial work; parallel work happens alongside).
 
-1. [TICKET-001](TICKET-001-fix-hooks-failing-on-the-symlinked-claude-skills.md) Fix hooks failing on the symlinked .claude/skills directory · S · todo
+1. [TICKET-002](TICKET-002-allow-reads-outside-the-checkout-and-fix-shell-g.md) Allow reads outside the checkout and fix shell-guard false positives · S · in_review
 2. [TICKET-003](TICKET-003-verify-database-bootstrap-is-idempotent.md) Verify database bootstrap is idempotent · M · todo
 3. [TICKET-023](TICKET-023-redesign-invitation-guest-and-rsvp-tables-to-mat.md) Redesign invitation, guest and RSVP tables to match the PRD · L · todo
 4. [TICKET-025](TICKET-025-add-event-settings-and-rsvp-change-log-tables.md) Add event settings and RSVP change-log tables · M · todo
@@ -50,7 +50,7 @@ Target TICKET-154. 17 open tickets in the longest chain, 38 points (about 38 age
 
 Target TICKET-164. 20 open tickets in the longest chain, 42 points (about 42 agent-hours of serial work; parallel work happens alongside).
 
-1. [TICKET-001](TICKET-001-fix-hooks-failing-on-the-symlinked-claude-skills.md) Fix hooks failing on the symlinked .claude/skills directory · S · todo
+1. [TICKET-002](TICKET-002-allow-reads-outside-the-checkout-and-fix-shell-g.md) Allow reads outside the checkout and fix shell-guard false positives · S · in_review
 2. [TICKET-003](TICKET-003-verify-database-bootstrap-is-idempotent.md) Verify database bootstrap is idempotent · M · todo
 3. [TICKET-023](TICKET-023-redesign-invitation-guest-and-rsvp-tables-to-mat.md) Redesign invitation, guest and RSVP tables to match the PRD · L · todo
 4. [TICKET-025](TICKET-025-add-event-settings-and-rsvp-change-log-tables.md) Add event settings and RSVP change-log tables · M · todo
@@ -75,7 +75,7 @@ Target TICKET-164. 20 open tickets in the longest chain, 42 points (about 42 age
 
 ### Foundations fix-ups
 
-- [TICKET-001](TICKET-001-fix-hooks-failing-on-the-symlinked-claude-skills.md) Fix hooks failing on the symlinked .claude/skills directory · urgent · S · todo
+- [TICKET-001](TICKET-001-fix-hooks-failing-on-the-symlinked-claude-skills.md) Fix hooks failing on the symlinked .claude/skills directory · urgent · S · done
 - [TICKET-002](TICKET-002-allow-reads-outside-the-checkout-and-fix-shell-g.md) Allow reads outside the checkout and fix shell-guard false positives · urgent · S · in_review
 - [TICKET-003](TICKET-003-verify-database-bootstrap-is-idempotent.md) Verify database bootstrap is idempotent · urgent · M · todo
 - [TICKET-004](TICKET-004-get-the-first-green-ci-run-and-confirm-parity-wi.md) Get the first green CI run and confirm parity with pnpm verify · urgent · S · todo
@@ -96,7 +96,7 @@ Target TICKET-164. 20 open tickets in the longest chain, 42 points (about 42 age
 - [TICKET-013](TICKET-013-ship-third-and-fourth-preset-themes.md) Ship third and fourth preset themes · urgent · M · todo
 - [TICKET-014](TICKET-014-create-the-couple-s-theme-from-their-colours-and.md) Create the couple's theme from their colours and photos · urgent · S · todo · human
 - [TICKET-015](TICKET-015-define-the-typography-scale-and-font-roles.md) Define the typography scale and font roles · urgent · M · todo
-- [TICKET-016](TICKET-016-add-motion-primitives-that-honour-reduced-motion.md) Add motion primitives that honour reduced motion · urgent · M · in_review
+- [TICKET-016](TICKET-016-add-motion-primitives-that-honour-reduced-motion.md) Add motion primitives that honour reduced motion · urgent · M · in_progress
 - [TICKET-017](TICKET-017-harden-base-components-for-focus-tap-targets-and.md) Harden base components for focus, tap targets and dialogs · urgent · L · todo
 - [TICKET-018](TICKET-018-add-form-components-for-rsvp-ordering-and-admin.md) Add form components for RSVP, ordering and admin · urgent · M · todo
 - [TICKET-019](TICKET-019-add-staff-status-panels-and-badges-for-arm-s-len.md) Add staff status panels and badges for arm's-length reading · urgent · S · todo
