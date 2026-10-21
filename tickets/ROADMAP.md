@@ -28,7 +28,7 @@ Epics in delivery order. Points: S = 1, M = 2, L = 4 (L is about half a day of a
 
 Target TICKET-154. 17 open tickets in the longest chain, 38 points (about 38 agent-hours of serial work; parallel work happens alongside).
 
-1. [TICKET-001](TICKET-001-fix-hooks-failing-on-the-symlinked-claude-skills.md) Fix hooks failing on the symlinked .claude/skills directory · S · in_progress
+1. [TICKET-001](TICKET-001-fix-hooks-failing-on-the-symlinked-claude-skills.md) Fix hooks failing on the symlinked .claude/skills directory · S · in_review
 2. [TICKET-003](TICKET-003-verify-database-bootstrap-is-idempotent.md) Verify database bootstrap is idempotent · M · todo
 3. [TICKET-023](TICKET-023-redesign-invitation-guest-and-rsvp-tables-to-mat.md) Redesign invitation, guest and RSVP tables to match the PRD · L · todo
 4. [TICKET-025](TICKET-025-add-event-settings-and-rsvp-change-log-tables.md) Add event settings and RSVP change-log tables · M · todo
@@ -50,7 +50,7 @@ Target TICKET-154. 17 open tickets in the longest chain, 38 points (about 38 age
 
 Target TICKET-164. 20 open tickets in the longest chain, 42 points (about 42 agent-hours of serial work; parallel work happens alongside).
 
-1. [TICKET-001](TICKET-001-fix-hooks-failing-on-the-symlinked-claude-skills.md) Fix hooks failing on the symlinked .claude/skills directory · S · in_progress
+1. [TICKET-001](TICKET-001-fix-hooks-failing-on-the-symlinked-claude-skills.md) Fix hooks failing on the symlinked .claude/skills directory · S · in_review
 2. [TICKET-003](TICKET-003-verify-database-bootstrap-is-idempotent.md) Verify database bootstrap is idempotent · M · todo
 3. [TICKET-023](TICKET-023-redesign-invitation-guest-and-rsvp-tables-to-mat.md) Redesign invitation, guest and RSVP tables to match the PRD · L · todo
 4. [TICKET-025](TICKET-025-add-event-settings-and-rsvp-change-log-tables.md) Add event settings and RSVP change-log tables · M · todo
@@ -75,7 +75,7 @@ Target TICKET-164. 20 open tickets in the longest chain, 42 points (about 42 age
 
 ### Foundations fix-ups
 
-- [TICKET-001](TICKET-001-fix-hooks-failing-on-the-symlinked-claude-skills.md) Fix hooks failing on the symlinked .claude/skills directory · urgent · S · in_progress
+- [TICKET-001](TICKET-001-fix-hooks-failing-on-the-symlinked-claude-skills.md) Fix hooks failing on the symlinked .claude/skills directory · urgent · S · in_review
 - [TICKET-002](TICKET-002-allow-reads-outside-the-checkout-and-fix-shell-g.md) Allow reads outside the checkout and fix shell-guard false positives · urgent · S · todo
 - [TICKET-003](TICKET-003-verify-database-bootstrap-is-idempotent.md) Verify database bootstrap is idempotent · urgent · M · todo
 - [TICKET-004](TICKET-004-get-the-first-green-ci-run-and-confirm-parity-wi.md) Get the first green CI run and confirm parity with pnpm verify · urgent · S · todo

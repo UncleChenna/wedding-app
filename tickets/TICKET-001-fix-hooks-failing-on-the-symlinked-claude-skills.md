@@ -2,7 +2,7 @@
 id: TICKET-001
 title: Fix hooks failing on the symlinked .claude/skills directory
 epic: foundations
-status: in_progress
+status: in_review
 priority: urgent
 estimate: S
 labels: [infra, test]
@@ -11,8 +11,8 @@ owner: unclechenna
 agent: claude
 blocked_by: []
 blocks: [TICKET-003, TICKET-006]
-branch: unclechenna/WED-001-fix-hooks-failing-on-the-symlinked-claude-skills
-pr: https://github.com/UncleChenna/wedding-app/pull/3
+branch: TICKET-001
+pr: https://github.com/UncleChenna/wedding-app/pull/7
 created: 2026-10-21
 updated: 2026-10-21
 started: 2026-10-21
