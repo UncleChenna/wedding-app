@@ -16,7 +16,7 @@ Every page restyles. No component changes.
 
 1. **Copy** an existing theme: `cp src/modules/theming/themes/ivory-gold.json src/modules/theming/themes/sage-garden.json`
 2. **Edit** the copy: set `"id": "sage-garden"` (must match the file name), `"name"`, `"colorScheme"` (`light` | `dark`), then the colours (6-digit hex), fonts, radii and shadows. Your editor autocompletes and validates via `theme.schema.json`.
-3. **Register** it in `src/modules/theming/themes/index.ts`:
+3. **Register** it alongside the existing imports and entries in `src/modules/theming/themes/index.ts`:
    ```ts
    import sageGarden from "./sage-garden.json" with { type: "json" };
    export const themes = [ivoryGold, midnightChampagne, sageGarden].map(loadTheme);
@@ -24,6 +24,7 @@ Every page restyles. No component changes.
 4. **Check**: `pnpm test src/modules/theming`. If a colour pair fails contrast you get a message like
    `Theme "sage-garden" fails WCAG AA contrast: - muted-foreground on background: 3.80:1 (needs 4.5:1, secondary text on page)`.
    Darken/lighten the named token and re-run.
+   Registration validates every theme when the registry loads, even if the new theme is not active. The error includes the theme ID and every failing text or control pair. A passing check also verifies that every theme JSON is registered and its ID matches its filename.
 5. **Look**: `pnpm dev` → http://localhost:3000/dev/theme shows every component in every theme. For phone/tablet/desktop screenshots: `pnpm screenshots`.
 
 ## Colour tokens

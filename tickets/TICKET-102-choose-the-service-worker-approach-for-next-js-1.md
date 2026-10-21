@@ -54,6 +54,8 @@ See: [Tech stack and architecture](../docs/prd.md#tech-stack-and-architecture).
 
 ## Notes / decisions
 
+- 2026-10-21: Resolved develop conflicts, preserving merged prerequisite fixes and progress history. Quick and full verification passed: 108 unit tests, production build, 17 browser smoke passes and 7 existing skips.
+
 - 2026-10-21: Resolved develop conflicts, preserving merged prerequisite fixes and progress history. Quick and full verification passed: 106 unit tests, production build, 17 browser smoke passes and 7 existing skips.
 
 - 2026-10-21: ADR 0014 proposes a custom allowlisted worker; Serwist Turbopack evaluated from its primary documentation without installation. Prototype production builds and Chromium offline checks passed. Worker: 1,494 bytes / 643 gzip; static build output unchanged at 1,373,288 bytes; sequential warm builds 9,184ms baseline / 4,817ms prototype (not a comparative benchmark). Quick and full gates passed: 104 unit tests, 17 smoke passes, 7 existing skips. Production registration, private offline data, iOS and update/outbox behavior remain downstream work. Clarified the original merged-ADR criterion to distinguish review readiness from the mandatory human merge required for done; no merge performed.

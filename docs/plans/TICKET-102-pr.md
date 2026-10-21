@@ -20,4 +20,4 @@ Custom cache logic and asset-manifest generation require maintenance and explici
 
 ## Integration verification
 
-Updated against develop after TICKET-001 and TICKET-002 merged. Preserved both handoff histories, regenerated boards and retained prerequisite hook fixes. Quick and full verification passed: 106 unit tests, production build, 17 browser smoke passes and 7 existing skips.
+Updated against develop at cb365fe after PR #9 merged. Later PR merges can create fresh shared-file conflicts. Preserved both handoff histories, regenerated boards and retained prerequisite hook fixes. Quick and full verification passed: 108 unit tests, production build, 17 browser smoke passes and 7 existing skips.

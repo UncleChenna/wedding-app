@@ -14,6 +14,14 @@ Add-only history, newest first: prepend new entries below this template, never r
 
 ---
 
+## 2026-10-21 — TICKET-102 — Resolve conflicts after PR #9
+
+- **Who / agent / branch:** divine · codex · `TICKET-102`.
+- **Changed:** Integrated develop at cb365fe after PR #9 merged, preserved both progress histories and merged prerequisite fixes, and regenerated ticket boards. Ticket implementation remains unchanged.
+- **Checks:** Quick and full verification passed: 108 unit tests, production build, 17 browser smoke passes and 7 existing skips.
+- **Learned:** Shared handoff entries and generated boards require reconciliation when parallel ticket PRs integrate.
+- **Next:** Human review of this ticket PR into develop; no PR merged automatically.
+
 ## 2026-10-21 — TICKET-102 — Resolve develop conflicts
 
 - **Who / agent / branch:** divine · codex · `TICKET-102`.
@@ -29,6 +37,22 @@ Add-only history, newest first: prepend new entries below this template, never r
 - **Checks:** Two production builds; Chromium registration, precache, runtime fallback, offline reload and cache inspection passed. Worker 1,494 bytes (643 gzip); static output unchanged. Quick and full gates passed: 104 unit tests, build, 17 smoke passes, 7 existing skips.
 - **Learned:** Serwist has a Turbopack integration, but its convenience policies still require privacy/update review. Build timings are warm-cache observations, not a speed benchmark.
 - **Next:** Human reviews ADR and PR into develop. TICKET-105 implements root-scope policy; private data, upgrades and real iOS tests remain downstream.
+
+## 2026-10-21 — TICKET-009 — Resolve develop conflicts
+
+- **Who / agent / branch:** divine · codex · `TICKET-009`.
+- **Changed:** Integrated develop, preserved both progress histories and merged prerequisite fixes, and regenerated ticket boards. Ticket implementation remains unchanged.
+- **Checks:** Quick and full verification passed: 108 unit tests, production build, 17 browser smoke passes and 7 existing skips.
+- **Learned:** Shared handoff entries and generated boards require reconciliation when parallel ticket PRs integrate.
+- **Next:** Human review of this ticket PR into develop; no PR merged automatically.
+
+## 2026-10-21 — TICKET-009 — Contrast gate evidence
+
+- **Who / agent / branch:** divine · codex · `TICKET-009`.
+- **Changed:** Theme loader regression coverage now verifies every failing pair and registry-import rejection; theming guide clarifies import/registration checks. Shipped themes are unchanged.
+- **Checks:** Temporary third theme passed the documented command; invalid foreground failed with its identity. Quick gate and full verify passed: 106 unit tests, build, 17 browser passes, 7 existing skips. UI review N/A: tests and docs only.
+- **Learned:** Existing loader already enforces this contract; additional production code is unnecessary.
+- **Next:** Human reviews the PR into develop; dependent tickets wait for merge.
 
 ## 2026-10-21 — TICKET-002 — Resolve develop conflicts
 
