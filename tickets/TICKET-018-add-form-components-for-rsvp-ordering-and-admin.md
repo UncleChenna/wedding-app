@@ -2,20 +2,20 @@
 id: TICKET-018
 title: Add form components for RSVP, ordering and admin
 epic: design-system
-status: todo
+status: in_progress
 priority: urgent
 estimate: M
 labels: [frontend, design]
 module: shared
-owner: ""
-agent: ""
+owner: unclechenna
+agent: claude
 blocked_by: [TICKET-017]
 blocks: [TICKET-021, TICKET-040, TICKET-050, TICKET-070]
-branch: ""
+branch: TICKET-018
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-10-22
+started: 2026-10-22
 completed: ""
 reason: ""
 resume_to: ""
@@ -61,3 +61,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-22 — todo → claimed — unclechenna (claude)
+- 2026-10-22 — todo → in_progress — unclechenna (claude)
