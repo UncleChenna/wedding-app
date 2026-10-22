@@ -2,20 +2,20 @@
 id: TICKET-010
 title: Add fixed semantic status tokens for valid, used and invalid
 epic: design-system
-status: todo
+status: in_progress
 priority: urgent
 estimate: M
 labels: [design, frontend]
 module: theming
-owner: ""
-agent: ""
+owner: unclechenna
+agent: claude
 blocked_by: [TICKET-009]
 blocks: [TICKET-013, TICKET-017, TICKET-019, TICKET-022]
-branch: ""
+branch: TICKET-010
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-10-22
+started: 2026-10-22
 completed: ""
 reason: ""
 resume_to: ""
@@ -65,3 +65,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-22 — todo → claimed — unclechenna (claude)
+- 2026-10-22 — todo → in_progress — unclechenna (claude)
