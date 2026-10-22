@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useRef, type ReactNode } from "react";
+import { useEffect, useId, useRef, type KeyboardEvent, type ReactNode } from "react";
 
 import { cn } from "../../lib/cn";
 
@@ -13,10 +13,33 @@ export interface SheetProps {
   className?: string;
 }
 
+const FOCUSABLE =
+  'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
 /**
- * A modal panel built on the native <dialog> element (focus trap, Escape and
- * inert background for free). Slides up from the bottom on phones and sits
- * centred on larger screens.
+ * Keep Tab inside the dialog. A modal <dialog> makes the page behind it inert,
+ * but Tab past the last control still escapes to the browser UI.
+ */
+function trapTab(event: KeyboardEvent<HTMLDialogElement>) {
+  if (event.key !== "Tab") return;
+  const focusable = [...event.currentTarget.querySelectorAll<HTMLElement>(FOCUSABLE)];
+  const first = focusable[0];
+  const last = focusable.at(-1);
+  if (!first || !last) return;
+  const active = document.activeElement;
+  if (event.shiftKey && (active === first || !event.currentTarget.contains(active))) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && active === last) {
+    event.preventDefault();
+    first.focus();
+  }
+}
+
+/**
+ * A modal panel built on the native <dialog> element (Escape, inert background
+ * and focus return for free; Tab is trapped explicitly). Slides up from the
+ * bottom on phones and sits centred on larger screens.
  */
 export function Sheet({ open, onOpenChange, title, description, children, className }: SheetProps) {
   const ref = useRef<HTMLDialogElement>(null);
@@ -36,6 +59,7 @@ export function Sheet({ open, onOpenChange, title, description, children, classN
       aria-labelledby={titleId}
       aria-describedby={description ? descriptionId : undefined}
       onClose={() => onOpenChange(false)}
+      onKeyDown={trapTab}
       onClick={(event) => {
         // A click on the dialog element itself (not its content) is a backdrop click.
         if (event.target === event.currentTarget) onOpenChange(false);
