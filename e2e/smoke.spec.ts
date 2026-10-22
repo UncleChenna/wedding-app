@@ -38,6 +38,22 @@ test.describe("smoke @smoke", () => {
       await expect(section.getByLabel("Full name")).toBeVisible();
       await expect(section.getByText("RSVP saved")).toBeVisible();
 
+      // Fixed status meanings render with text labels and the theme's status tokens (TICKET-010).
+      const statuses = section.getByTestId("status-swatches");
+      for (const [kind, label] of [
+        ["success", "Valid"],
+        ["warning", "Already used"],
+        ["danger", "Invalid"],
+      ] as const) {
+        const item = statuses.locator(`[data-status="${kind}"]`);
+        await expect(item.getByText(label, { exact: true })).toBeVisible();
+        // The panel paints exactly this theme's `<kind>-subtle` token.
+        const panelColour = await item.evaluate((el) => getComputedStyle(el).backgroundColor);
+        const hex = theme.colors[`${kind}-subtle`];
+        const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
+        expect(panelColour).toBe(`rgb(${r}, ${g}, ${b})`);
+      }
+
       // Each section carries its own theme variables.
       const bg = await section.evaluate((el) =>
         getComputedStyle(el).getPropertyValue("--t-color-background").trim(),
