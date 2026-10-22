@@ -30,6 +30,8 @@
     "db:migrate": "drizzle-kit migrate",
     "db:seed": "tsx scripts/seed.ts",
     "db:reset": "node scripts/db-local.mjs reset",
+    "db:check-rls": "tsx scripts/db-check.ts rls",
+    "db:counts": "tsx scripts/db-check.ts counts",
     "themes:schema": "tsx scripts/generate-theme-schema.ts",
     "agent:loop": "bash scripts/agent-loop.sh",
     "prepare": "husky",
