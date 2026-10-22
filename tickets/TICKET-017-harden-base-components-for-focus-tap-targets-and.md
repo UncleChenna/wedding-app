@@ -2,7 +2,7 @@
 id: TICKET-017
 title: Harden base components for focus, tap targets and dialogs
 epic: design-system
-status: in_progress
+status: in_review
 priority: urgent
 estimate: L
 labels: [frontend, design]
@@ -12,7 +12,7 @@ agent: claude
 blocked_by: [TICKET-010]
 blocks: [TICKET-018, TICKET-019, TICKET-029, TICKET-037, TICKET-088, TICKET-115]
 branch: TICKET-017
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/18
 created: 2026-10-21
 updated: 2026-10-22
 started: 2026-10-22
@@ -68,3 +68,4 @@ See: [Design principles](../docs/prd.md#design-principles) · [Usability and acc
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-10-22 — todo → claimed — unclechenna (claude)
 - 2026-10-22 — todo → in_progress — unclechenna (claude)
+- 2026-10-22 — in_progress → in_review — unclechenna (claude)
