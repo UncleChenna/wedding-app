@@ -262,15 +262,16 @@
         "- 2026-10-22 — todo → in_progress — unclechenna (claude)",
         "- 2026-10-22 — in_progress → blocked — unclechenna (claude) — Needs human exact-path approval (.harness/approved-writes.json) to regenerate protected src/modules/theming/themes/theme.schema.json via pnpm themes:schema; implementation is complete locally but uncommitted",
         "- 2026-10-22 — blocked → in_progress — unclechenna (claude)",
-        "- 2026-10-22 — in_progress → in_review — unclechenna (claude)"
+        "- 2026-10-22 — in_progress → in_review — unclechenna (claude)",
+        "- 2026-10-22 — in_review → done — unclechenna (claude)"
       ],
-      "status": "in_review",
+      "status": "done",
       "owner": "unclechenna",
       "agent": "claude",
       "branch": "TICKET-010",
       "pr": "https://github.com/UncleChenna/wedding-app/pull/17",
       "started": "2026-10-22",
-      "completed": "",
+      "completed": "2026-10-22",
       "updated": "2026-10-22",
       "reason": "",
       "resume_to": ""
