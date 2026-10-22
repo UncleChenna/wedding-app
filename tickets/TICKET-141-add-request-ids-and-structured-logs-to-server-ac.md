@@ -2,20 +2,20 @@
 id: TICKET-141
 title: Add request ids and structured logs to server actions
 epic: observability
-status: todo
+status: in_review
 priority: medium
 estimate: S
 labels: [backend]
 module: shared
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: []
 blocks: []
-branch: ""
-pr: ""
+branch: TICKET-141
+pr: https://github.com/UncleChenna/wedding-app/pull/13
 created: 2026-10-21
 updated: 2026-10-21
-started: ""
+started: 2026-10-21
 completed: ""
 reason: ""
 resume_to: ""
@@ -39,8 +39,8 @@ See: [Tech stack and architecture](../docs/prd.md#tech-stack-and-architecture).
 
 ## Acceptance criteria
 
-- [ ] Each server action log line has a request id (unit).
-- [ ] Tokens are redacted in logs (unit).
+- [x] Each server action log line has a request id (unit).
+- [x] Tokens are redacted in logs (unit).
 
 ## Test plan
 
@@ -53,8 +53,17 @@ See: [Tech stack and architecture](../docs/prd.md#tech-stack-and-architecture).
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-10-21: Resolved develop conflicts, preserving merged prerequisite fixes and progress history. Quick and full verification passed: 120 unit tests, production build, 17 browser smoke passes and 7 existing skips.
+
+- 2026-10-21: Resolved develop conflicts, preserving merged prerequisite fixes and progress history. Quick and full verification passed: 118 unit tests, production build, 17 browser smoke passes and 7 existing skips.
+
+- 2026-10-21: Added server-only runLoggedAction with validated incoming request ID or UUID, request-local child logs, safe lifecycle records and unchanged handler return/throw behavior. Request IDs cannot be overridden by later fields/children; objects beyond the redaction depth limit are truncated rather than emitted raw. Initial logger regressions: 2 failed / 5 passed. Focused suite: 17 passed. Quick/full gates: 116 unit tests, production build, 17 smoke passes, 7 existing skips. No feature Server Actions exist yet; docs/observability.md requires future actions to use the helper and explains safe fields and redaction limits.
 
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-21 — todo → claimed — divine (codex)
+- 2026-10-21 — todo → in_progress — divine (codex)
+- 2026-10-21 — in_progress → in_review — divine (codex)
+- 2026-10-21 — in_review → in_progress — divine (codex) — Resolve remaining PR conflicts with develop
+- 2026-10-21 — in_review → in_progress — divine (codex) — Resolve new conflicts after PR 9 merged

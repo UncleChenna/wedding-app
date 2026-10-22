@@ -72,3 +72,22 @@ describe("logger", () => {
     expect(json()[0]).toMatchObject({ app: "test", module: "ordering" });
   });
 });
+
+describe("request correlation and bounded redaction", () => {
+  it("keeps a bound request id on child and per-message fields", () => {
+    const { log, json } = capture();
+    const request = log.child({ requestId: "request-a" });
+    request.info("first", { requestId: "spoofed" });
+    request.child({ requestId: "spoofed-child" }).warn("second");
+    expect(json().map((line) => line.requestId)).toEqual(["request-a", "request-a"]);
+  });
+
+  it("never emits raw objects beyond the recursion limit", () => {
+    const { log, lines } = capture();
+    let value: Record<string, unknown> = { token: "deep-secret-fixture" };
+    for (let depth = 0; depth < 10; depth++) value = { nested: value };
+    log.info("bounded", { value });
+    expect(lines[0]?.line).not.toContain("deep-secret-fixture");
+    expect(lines[0]?.line).toContain("[truncated]");
+  });
+});
