@@ -242,15 +242,16 @@
       "log": [
         "- 2026-10-22 — todo → claimed — unclechenna (claude)",
         "- 2026-10-22 — todo → in_progress — unclechenna (claude)",
-        "- 2026-10-22 — in_progress → in_review — unclechenna (claude)"
+        "- 2026-10-22 — in_progress → in_review — unclechenna (claude)",
+        "- 2026-10-22 — in_review → done — unclechenna (claude)"
       ],
-      "status": "in_review",
+      "status": "done",
       "owner": "unclechenna",
       "agent": "claude",
       "branch": "TICKET-003",
       "pr": "https://github.com/UncleChenna/wedding-app/pull/16",
       "started": "2026-10-22",
-      "completed": "",
+      "completed": "2026-10-22",
       "updated": "2026-10-22",
       "reason": "",
       "resume_to": ""
