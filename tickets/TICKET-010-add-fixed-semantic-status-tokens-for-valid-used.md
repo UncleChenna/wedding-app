@@ -2,7 +2,7 @@
 id: TICKET-010
 title: Add fixed semantic status tokens for valid, used and invalid
 epic: design-system
-status: in_progress
+status: in_review
 priority: urgent
 estimate: M
 labels: [design, frontend]
@@ -12,7 +12,7 @@ agent: claude
 blocked_by: [TICKET-009]
 blocks: [TICKET-013, TICKET-017, TICKET-019, TICKET-022]
 branch: TICKET-010
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/17
 created: 2026-10-21
 updated: 2026-10-22
 started: 2026-10-22
@@ -74,3 +74,4 @@ See: [How theming works](../docs/prd.md#how-theming-works) (THM-4) · [Design pr
 - 2026-10-22 — todo → in_progress — unclechenna (claude)
 - 2026-10-22 — in_progress → blocked — unclechenna (claude) — Needs human exact-path approval (.harness/approved-writes.json) to regenerate protected src/modules/theming/themes/theme.schema.json via pnpm themes:schema; implementation is complete locally but uncommitted
 - 2026-10-22 — blocked → in_progress — unclechenna (claude)
+- 2026-10-22 — in_progress → in_review — unclechenna (claude)
