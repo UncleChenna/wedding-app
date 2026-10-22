@@ -2,20 +2,20 @@
 id: TICKET-003
 title: Verify database bootstrap is idempotent
 epic: foundations
-status: todo
+status: in_progress
 priority: urgent
 estimate: M
 labels: [db, test]
 module: shared
-owner: ""
-agent: ""
+owner: unclechenna
+agent: claude
 blocked_by: [TICKET-001, TICKET-002]
 blocks: [TICKET-006, TICKET-023]
-branch: ""
+branch: TICKET-003
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-10-22
+started: 2026-10-22
 completed: ""
 reason: ""
 resume_to: ""
@@ -65,3 +65,5 @@ See: [Data model](../docs/prd.md#data-model) · [Current state](../docs/current-
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-22 — todo → claimed — unclechenna (claude)
+- 2026-10-22 — todo → in_progress — unclechenna (claude)
