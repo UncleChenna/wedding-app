@@ -41,6 +41,35 @@ const tones: Record<ToastTone, string> = {
   danger: "border-transparent bg-danger text-danger-foreground",
 };
 
+// Tone is never colour alone: an icon plus a screen-reader label carry the meaning.
+const toneLabels: Partial<Record<ToastTone, string>> = { success: "Success:", danger: "Error:" };
+
+function ToneIcon({ tone }: { tone: ToastTone }) {
+  if (tone === "default") return null;
+  return (
+    <svg
+      aria-hidden="true"
+      data-tone-icon={tone}
+      viewBox="0 0 24 24"
+      className="mt-0.5 size-5 shrink-0"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      {tone === "success" ? (
+        <path d="M5 12.5l4.5 4.5L19 7.5" />
+      ) : (
+        <>
+          <circle cx="12" cy="12" r="9" />
+          <path d="M12 7.5v5.5M12 16.5h.01" />
+        </>
+      )}
+    </svg>
+  );
+}
+
 export function ToastView({
   title,
   description,
@@ -54,8 +83,12 @@ export function ToastView({
         tones[tone],
       )}
     >
+      <ToneIcon tone={tone} />
       <div className="flex flex-1 flex-col gap-0.5">
-        <p className="text-sm font-semibold">{title}</p>
+        <p className="text-sm font-semibold">
+          {toneLabels[tone] && <span className="sr-only">{toneLabels[tone]} </span>}
+          {title}
+        </p>
         {description && <p className="text-sm opacity-90">{description}</p>}
       </div>
       {onDismiss && (
@@ -63,7 +96,7 @@ export function ToastView({
           type="button"
           onClick={onDismiss}
           aria-label="Dismiss notification"
-          className="-m-1.5 inline-flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-sm opacity-80 hover:opacity-100"
+          className="-m-2.5 inline-flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-sm opacity-80 hover:opacity-100 focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-current"
         >
           <svg
             aria-hidden="true"
@@ -117,16 +150,30 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   return (
     <ToastContext value={value}>
       {children}
-      <div
-        role="status"
-        aria-live="polite"
-        className="pointer-events-none fixed inset-x-0 bottom-0 z-50 flex flex-col items-center gap-2 p-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:items-end"
-      >
-        {items.map((item) => (
-          <div key={item.id} className="w-full max-w-sm">
-            <ToastView {...item} onDismiss={() => dismiss(item.id)} />
-          </div>
-        ))}
+      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-50 flex flex-col items-center gap-2 p-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:items-end">
+        {/* Errors interrupt (assertive); everything else waits its turn (polite). */}
+        <div role="alert" className="flex w-full flex-col items-center gap-2 sm:items-end">
+          {items
+            .filter((item) => item.tone === "danger")
+            .map((item) => (
+              <div key={item.id} className="w-full max-w-sm">
+                <ToastView {...item} onDismiss={() => dismiss(item.id)} />
+              </div>
+            ))}
+        </div>
+        <div
+          role="status"
+          aria-live="polite"
+          className="flex w-full flex-col items-center gap-2 sm:items-end"
+        >
+          {items
+            .filter((item) => item.tone !== "danger")
+            .map((item) => (
+              <div key={item.id} className="w-full max-w-sm">
+                <ToastView {...item} onDismiss={() => dismiss(item.id)} />
+              </div>
+            ))}
+        </div>
       </div>
     </ToastContext>
   );

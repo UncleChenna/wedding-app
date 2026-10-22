@@ -12,9 +12,10 @@ const variants: Record<ButtonVariant, string> = {
   danger: "bg-danger text-danger-foreground shadow-sm hover:bg-danger/90",
 };
 
-// Every size keeps a touch target of at least 44px tall except `sm` (36px, for dense admin UI).
+// Every size keeps a touch target of at least 44×44px (design principles §6); `sm` only
+// tightens padding and type for dense admin UI.
 const sizes: Record<ButtonSize, string> = {
-  sm: "min-h-9 px-3 text-sm",
+  sm: "min-h-11 px-3 text-sm",
   md: "min-h-11 px-5 text-base",
   lg: "min-h-13 px-7 text-lg",
 };
@@ -43,7 +44,7 @@ export function Button({
       disabled={disabled || loading}
       aria-busy={loading || undefined}
       className={cn(
-        "inline-flex cursor-pointer items-center justify-center gap-2 rounded-md font-medium tracking-wide transition-colors duration-150 select-none",
+        "inline-flex min-w-11 cursor-pointer items-center justify-center gap-2 rounded-md font-medium tracking-wide transition-colors duration-150 select-none",
         "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
         "disabled:cursor-not-allowed disabled:opacity-50",
         variants[variant],
@@ -56,7 +57,7 @@ export function Button({
       {loading && (
         <span
           aria-hidden="true"
-          className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent"
+          className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent motion-reduce:animate-none"
         />
       )}
       {children}
