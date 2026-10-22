@@ -22,7 +22,7 @@ export function Textarea({ label, hint, error, id, className, rows = 4, ...props
         aria-describedby={ids.describedBy}
         className={cn(
           controlClasses,
-          "min-h-28 py-3 leading-relaxed",
+          "min-h-28 w-full py-3 leading-relaxed",
           error && "border-danger",
           className,
         )}

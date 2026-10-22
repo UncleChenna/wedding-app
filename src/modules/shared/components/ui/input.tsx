@@ -21,7 +21,7 @@ export function Input({ label, hint, error, id, className, ...props }: InputProp
         id={ids.controlId}
         aria-invalid={ids.invalid || undefined}
         aria-describedby={ids.describedBy}
-        className={cn(controlClasses, "min-h-11", error && "border-danger", className)}
+        className={cn(controlClasses, "min-h-11 w-full", error && "border-danger", className)}
         {...props}
       />
       <FieldMessages hint={hint} error={error} ids={ids} />

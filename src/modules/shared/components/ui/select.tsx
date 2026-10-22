@@ -22,7 +22,7 @@ export function Select({ label, hint, error, id, className, children, ...props }
           aria-describedby={ids.describedBy}
           className={cn(
             controlClasses,
-            "min-h-11 cursor-pointer appearance-none pr-10",
+            "min-h-11 w-full cursor-pointer appearance-none pr-10",
             error && "border-danger",
             className,
           )}

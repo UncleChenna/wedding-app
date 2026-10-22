@@ -85,9 +85,12 @@ export function Field({ label, hint, error, id, children }: FieldProps) {
   );
 }
 
-/** Shared look for text-like controls (input, textarea, select). */
+/**
+ * Shared look for text-like controls. No width: `cn` does not resolve conflicting
+ * utilities, so each control sets its own (`w-full`, or `w-20` for the stepper).
+ */
 export const controlClasses = cn(
-  "w-full rounded-md border border-input bg-surface px-3.5 text-base text-foreground",
+  "rounded-md border border-input bg-surface px-3.5 text-base text-foreground",
   "placeholder:text-muted-foreground",
   "transition-shadow focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ring",
   "disabled:cursor-not-allowed disabled:bg-surface-muted disabled:opacity-60",
