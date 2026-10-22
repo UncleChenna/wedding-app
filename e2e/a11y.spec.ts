@@ -41,13 +41,19 @@ test.describe("base components @smoke", () => {
   test("every control on /dev/theme is at least 44×44px", async ({ page }) => {
     await page.goto("/dev/theme");
     const small = await page
-      .locator("main button:visible, main input:visible, main a[href]:visible")
+      .locator(
+        "main button:visible, main input:visible, main select:visible, main textarea:visible, main a[href]:visible",
+      )
       .evaluateAll((elements) =>
         elements
           .map((el) => {
-            const { width, height } = el.getBoundingClientRect();
+            // A checkbox or radio is tapped through its whole label row, so measure that.
+            const isToggle =
+              el instanceof HTMLInputElement && ["checkbox", "radio"].includes(el.type);
+            const target = (isToggle && el.closest("label")) || el;
+            const { width, height } = target.getBoundingClientRect();
             return {
-              label: el.getAttribute("aria-label") ?? el.textContent?.trim(),
+              label: el.getAttribute("aria-label") ?? target.textContent?.trim(),
               width,
               height,
             };
@@ -55,6 +61,33 @@ test.describe("base components @smoke", () => {
           .filter(({ width, height }) => width < 44 || height < 44),
       );
     expect(small).toEqual([]);
+  });
+
+  test("form controls are labelled and the stepper works by keyboard (TICKET-018)", async ({
+    page,
+  }) => {
+    await page.goto("/dev/theme");
+    for (const theme of listThemes()) {
+      const form = page.getByTestId(`theme-${theme.id}`).getByTestId("form-controls");
+      await expect(form.getByRole("radiogroup", { name: "Will you join us?" })).toBeVisible();
+      await form.getByText("I'll be there in spirit").click();
+      await expect(form.getByRole("radio", { name: "I'll be there in spirit" })).toBeChecked();
+      await expect(form.getByRole("combobox", { name: "Meal" })).toBeVisible();
+      await expect(
+        form.getByRole("checkbox", { name: "I agree to the privacy notice" }),
+      ).toHaveAttribute("aria-invalid", "true");
+
+      const stepper = form.getByRole("spinbutton", { name: "Jollof rice" });
+      await stepper.focus();
+      await page.keyboard.press("ArrowUp");
+      await expect(stepper).toHaveValue("2");
+      await page.keyboard.press("End");
+      await expect(stepper).toHaveValue("5");
+      await expect(form.getByRole("button", { name: "Increase Jollof rice" })).toBeDisabled();
+      await page.keyboard.press("Home");
+      await expect(stepper).toHaveValue("0");
+      await expect(form.getByRole("button", { name: "Decrease Jollof rice" })).toBeDisabled();
+    }
   });
 
   test("axe finds no violations on /dev/theme, with the Sheet closed and open", async ({
