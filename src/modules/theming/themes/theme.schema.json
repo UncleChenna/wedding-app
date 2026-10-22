@@ -88,11 +88,43 @@
           "type": "string",
           "pattern": "^#[0-9a-fA-F]{6}$"
         },
+        "danger-subtle": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "danger-subtle-foreground": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
         "success": {
           "type": "string",
           "pattern": "^#[0-9a-fA-F]{6}$"
         },
         "success-foreground": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "success-subtle": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "success-subtle-foreground": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "warning": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "warning-foreground": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "warning-subtle": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "warning-subtle-foreground": {
           "type": "string",
           "pattern": "^#[0-9a-fA-F]{6}$"
         }
@@ -114,8 +146,16 @@
         "ring",
         "danger",
         "danger-foreground",
+        "danger-subtle",
+        "danger-subtle-foreground",
         "success",
-        "success-foreground"
+        "success-foreground",
+        "success-subtle",
+        "success-subtle-foreground",
+        "warning",
+        "warning-foreground",
+        "warning-subtle",
+        "warning-subtle-foreground"
       ],
       "additionalProperties": false
     },

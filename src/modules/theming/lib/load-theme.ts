@@ -1,5 +1,6 @@
 import { checkThemeContrast, formatContrastFailures } from "./contrast";
 import { themeSchema, type Theme } from "./schema";
+import { checkStatusHues, formatStatusHueFailures } from "./status";
 
 export class ThemeValidationError extends Error {
   override name = "ThemeValidationError";
@@ -22,6 +23,10 @@ export function loadTheme(raw: unknown): Theme {
   const failures = checkThemeContrast(parsed.data);
   if (failures.length > 0) {
     throw new ThemeValidationError(formatContrastFailures(parsed.data.id, failures));
+  }
+  const hueFailures = checkStatusHues(parsed.data);
+  if (hueFailures.length > 0) {
+    throw new ThemeValidationError(formatStatusHueFailures(parsed.data.id, hueFailures));
   }
   return parsed.data;
 }
