@@ -20,8 +20,16 @@
     "ring": "#D9B97A",
     "danger": "#F08A8A",
     "danger-foreground": "#2A0909",
+    "danger-subtle": "#3A1717",
+    "danger-subtle-foreground": "#F5A3A3",
     "success": "#7CC79A",
-    "success-foreground": "#0B1F13"
+    "success-foreground": "#0B1F13",
+    "success-subtle": "#15301F",
+    "success-subtle-foreground": "#9FDDB6",
+    "warning": "#E8B04B",
+    "warning-foreground": "#241700",
+    "warning-subtle": "#33260A",
+    "warning-subtle-foreground": "#F2C877"
   },
   "fonts": {
     "display": "playfair",

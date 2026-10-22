@@ -13,8 +13,40 @@ import {
 
 import { themeStyle } from "../lib/css-vars";
 import { COLOR_TOKENS, type Theme } from "../lib/schema";
+import { STATUS_HUE_NAMES, type StatusKind } from "../lib/status";
 import { MotionShowcase } from "./motion-showcase";
 import { ShowcaseInteractive } from "./showcase-interactive";
+
+/** Fixed status meanings (THM-4). Class names are literal so Tailwind can see them. */
+const STATUS_EXAMPLES: ReadonlyArray<{
+  kind: StatusKind;
+  label: string;
+  detail: string;
+  panel: string;
+  badge: string;
+}> = [
+  {
+    kind: "success",
+    label: "Valid",
+    detail: "Welcome, Ada. Table 7 is ready for you.",
+    panel: "bg-success-subtle text-success-subtle-foreground",
+    badge: "bg-success text-success-foreground",
+  },
+  {
+    kind: "warning",
+    label: "Already used",
+    detail: "Admitted at 19:42 by Gate 1.",
+    panel: "bg-warning-subtle text-warning-subtle-foreground",
+    badge: "bg-warning text-warning-foreground",
+  },
+  {
+    kind: "danger",
+    label: "Invalid",
+    detail: "Not on the guest list. Refer to the couple's contact.",
+    panel: "bg-danger-subtle text-danger-subtle-foreground",
+    badge: "bg-danger text-danger-foreground",
+  },
+];
 
 /** Every base component rendered in one theme. Used by /dev/theme. */
 export function ThemeShowcase({ theme, active }: { theme: Theme; active: boolean }) {
@@ -53,6 +85,29 @@ export function ThemeShowcase({ theme, active }: { theme: Theme; active: boolean
                     style={{ backgroundColor: `var(--t-color-${token})` }}
                   />
                   <span className="truncate text-xs text-muted-foreground">{token}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="flex flex-col gap-3">
+            <h3 className="text-sm font-semibold tracking-wider text-muted-foreground uppercase">
+              Status
+            </h3>
+            <ul className="grid gap-3 sm:grid-cols-3" data-testid="status-swatches">
+              {STATUS_EXAMPLES.map(({ kind, label, detail, panel, badge }) => (
+                <li
+                  key={kind}
+                  data-status={kind}
+                  data-hue={STATUS_HUE_NAMES[kind]}
+                  className={`flex flex-col gap-2 rounded-md p-4 ${panel}`}
+                >
+                  <span
+                    className={`self-start rounded-sm px-2 py-0.5 text-xs font-semibold tracking-wider uppercase ${badge}`}
+                  >
+                    {label}
+                  </span>
+                  <span className="text-base">{detail}</span>
                 </li>
               ))}
             </ul>

@@ -19,8 +19,16 @@
     "ring": "#F0C060",
     "danger": "#A12C2C",
     "danger-foreground": "#FFFFFF",
+    "danger-subtle": "#FBE7E5",
+    "danger-subtle-foreground": "#8A1F1F",
     "success": "#2F6B47",
-    "success-foreground": "#FFFFFF"
+    "success-foreground": "#FFFFFF",
+    "success-subtle": "#E3F1E7",
+    "success-subtle-foreground": "#1F5234",
+    "warning": "#946000",
+    "warning-foreground": "#FFFFFF",
+    "warning-subtle": "#FCEFC7",
+    "warning-subtle-foreground": "#6B4500"
   },
   "fonts": { "display": "cormorant", "body": "inter" },
   "radii": { "sm": "0.25rem", "md": "0.5rem", "lg": "1rem" },

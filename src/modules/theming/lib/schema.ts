@@ -16,10 +16,21 @@ export const COLOR_TOKENS = [
   "border",
   "input",
   "ring",
+  // Semantic statuses, fixed in meaning across every theme (THM-4; see lib/status.ts):
+  // success = valid/done (green), warning = already used/waiting (amber), danger = invalid/problem (red).
+  // Each has a solid fill, text on that fill, a tinted panel and text on the panel.
   "danger",
   "danger-foreground",
+  "danger-subtle",
+  "danger-subtle-foreground",
   "success",
   "success-foreground",
+  "success-subtle",
+  "success-subtle-foreground",
+  "warning",
+  "warning-foreground",
+  "warning-subtle",
+  "warning-subtle-foreground",
 ] as const;
 
 /**

@@ -32,6 +32,14 @@
   --color-danger-foreground: var(--t-color-danger-foreground);
   --color-success: var(--t-color-success);
   --color-success-foreground: var(--t-color-success-foreground);
+  --color-danger-subtle: var(--t-color-danger-subtle);
+  --color-danger-subtle-foreground: var(--t-color-danger-subtle-foreground);
+  --color-success-subtle: var(--t-color-success-subtle);
+  --color-success-subtle-foreground: var(--t-color-success-subtle-foreground);
+  --color-warning: var(--t-color-warning);
+  --color-warning-foreground: var(--t-color-warning-foreground);
+  --color-warning-subtle: var(--t-color-warning-subtle);
+  --color-warning-subtle-foreground: var(--t-color-warning-subtle-foreground);
 
   --font-display: var(--t-font-display), ui-serif, Georgia, serif;
   --font-sans: var(--t-font-body), ui-sans-serif, system-ui, sans-serif;
