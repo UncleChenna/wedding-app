@@ -259,9 +259,10 @@
       "log": [
         "- 2026-10-22 — todo → claimed — unclechenna (claude)",
         "- 2026-10-22 — todo → in_progress — unclechenna (claude)",
-        "- 2026-10-22 — in_progress → blocked — unclechenna (claude) — Needs human exact-path approval (.harness/approved-writes.json) to regenerate protected src/modules/theming/themes/theme.schema.json via pnpm themes:schema; implementation is complete locally but uncommitted"
+        "- 2026-10-22 — in_progress → blocked — unclechenna (claude) — Needs human exact-path approval (.harness/approved-writes.json) to regenerate protected src/modules/theming/themes/theme.schema.json via pnpm themes:schema; implementation is complete locally but uncommitted",
+        "- 2026-10-22 — blocked → in_progress — unclechenna (claude)"
       ],
-      "status": "blocked",
+      "status": "in_progress",
       "owner": "unclechenna",
       "agent": "claude",
       "branch": "TICKET-010",
@@ -269,8 +270,8 @@
       "started": "2026-10-22",
       "completed": "",
       "updated": "2026-10-22",
-      "reason": "Needs human exact-path approval (.harness/approved-writes.json) to regenerate protected src/modules/theming/themes/theme.schema.json via pnpm themes:schema; implementation is complete locally but uncommitted",
-      "resume_to": "in_progress"
+      "reason": "",
+      "resume_to": ""
     }
   }
 }
