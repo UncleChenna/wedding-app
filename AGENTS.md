@@ -49,6 +49,7 @@ Drizzle, Zod, Vitest, Playwright, pnpm 12, Node 24. Product: [PRD](docs/prd.md).
 | `pnpm db:start` / `db:stop` / `db:status`                            | This checkout's local Supabase stack                        |
 | `pnpm db:generate` / `db:migrate`                                    | Generate/apply Drizzle migrations                           |
 | `pnpm db:seed` / `db:reset`                                          | Disposable local data only; reset checks stack identity     |
+| `pnpm db:check-rls` / `db:counts`                                    | Fail if a public table lacks RLS; diffable row counts       |
 | `pnpm themes:schema`                                                 | Generate theme JSON schema                                  |
 | `pnpm t:next [--module m]` / `t:board` / `t:list` / `t:show <id>`    | Read the queue (live, includes unmerged claims)             |
 | `pnpm t:claim <id> --owner <you> --agent <agent>` / `t:release <id>` | Atomic claim via the shared ticket ledger                   |
