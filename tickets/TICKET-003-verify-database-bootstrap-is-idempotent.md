@@ -2,7 +2,7 @@
 id: TICKET-003
 title: Verify database bootstrap is idempotent
 epic: foundations
-status: in_progress
+status: in_review
 priority: urgent
 estimate: M
 labels: [db, test]
@@ -12,7 +12,7 @@ agent: claude
 blocked_by: [TICKET-001, TICKET-002]
 blocks: [TICKET-006, TICKET-023]
 branch: TICKET-003
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/16
 created: 2026-10-21
 updated: 2026-10-22
 started: 2026-10-22
@@ -72,3 +72,4 @@ See: [Data model](../docs/prd.md#data-model) · [Current state](../docs/current-
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-10-22 — todo → claimed — unclechenna (claude)
 - 2026-10-22 — todo → in_progress — unclechenna (claude)
+- 2026-10-22 — in_progress → in_review — unclechenna (claude)
