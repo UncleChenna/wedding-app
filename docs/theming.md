@@ -29,20 +29,37 @@ Every page restyles. No component changes.
 
 ## Colour tokens
 
-| Token                                | Used for                                      | Must contrast with (AA)                                    |
-| ------------------------------------ | --------------------------------------------- | ---------------------------------------------------------- |
-| `background`                         | Page                                          | —                                                          |
-| `foreground`                         | Body text                                     | background, surface, surface-muted (4.5)                   |
-| `surface` / `surface-muted`          | Cards, sheets / muted panels, disabled inputs | —                                                          |
-| `muted-foreground`                   | Secondary text, hints                         | background, surface (4.5)                                  |
-| `primary` / `primary-foreground`     | Main buttons, links / text on primary         | primary on background & surface (4.5); fg on primary (4.5) |
-| `secondary` / `secondary-foreground` | Secondary buttons                             | 4.5                                                        |
-| `accent` / `accent-foreground`       | Highlights                                    | 4.5                                                        |
-| `border`                             | Decorative dividers                           | —                                                          |
-| `input`                              | Form field borders                            | surface (3.0, non-text)                                    |
-| `ring`                               | Focus outline                                 | background, surface (3.0)                                  |
-| `danger` / `danger-foreground`       | Errors, destructive                           | danger on surface (4.5); fg on danger (4.5)                |
-| `success` / `success-foreground`     | Confirmations                                 | 4.5                                                        |
+| Token                                | Used for                                       | Must contrast with (AA)                                    |
+| ------------------------------------ | ---------------------------------------------- | ---------------------------------------------------------- |
+| `background`                         | Page                                           | —                                                          |
+| `foreground`                         | Body text                                      | background, surface, surface-muted (4.5)                   |
+| `surface` / `surface-muted`          | Cards, sheets / muted panels, disabled inputs  | —                                                          |
+| `muted-foreground`                   | Secondary text, hints                          | background, surface (4.5)                                  |
+| `primary` / `primary-foreground`     | Main buttons, links / text on primary          | primary on background & surface (4.5); fg on primary (4.5) |
+| `secondary` / `secondary-foreground` | Secondary buttons                              | 4.5                                                        |
+| `accent` / `accent-foreground`       | Highlights                                     | 4.5                                                        |
+| `border`                             | Decorative dividers                            | —                                                          |
+| `input`                              | Form field borders                             | surface (3.0, non-text)                                    |
+| `ring`                               | Focus outline                                  | background, surface (3.0)                                  |
+| `danger` / `danger-foreground`       | Errors, destructive                            | danger on surface (4.5); fg on danger (4.5)                |
+| `success` / `success-foreground`     | Valid / done; confirmations                    | fg on success (4.5); success on surface (3.0, indicator)   |
+| `warning` / `warning-foreground`     | Already used / waiting                         | fg on warning (4.5); warning on surface (3.0, indicator)   |
+| `<status>-subtle`                    | Tinted status panel (success, warning, danger) | —                                                          |
+| `<status>-subtle-foreground`         | Text on the tinted panel or on cards           | on `<status>-subtle` and on surface (4.5)                  |
+
+### Fixed status meanings
+
+Staff screens use three statuses whose meaning never changes between themes (PRD THM-4, design principles §9):
+
+| Status    | Meaning               | Hue range (HSL) | Tokens                                                                         |
+| --------- | --------------------- | --------------- | ------------------------------------------------------------------------------ |
+| `success` | Valid, done           | 90–170° (green) | `success`, `success-foreground`, `success-subtle`, `success-subtle-foreground` |
+| `warning` | Already used, waiting | 25–60° (amber)  | `warning`, `warning-foreground`, `warning-subtle`, `warning-subtle-foreground` |
+| `danger`  | Invalid, problem      | 345–15° (red)   | `danger`, `danger-foreground`, `danger-subtle`, `danger-subtle-foreground`     |
+
+A theme may change a status colour's lightness to meet contrast, but `loadTheme` rejects any theme whose solid status colour or `-subtle-foreground` falls outside its hue range or below 30% saturation (it would read as grey). The error names the token and the expected colour family. The ranges live in `STATUS_HUE_RANGES` in `src/modules/theming/lib/status.ts`.
+
+On light themes a bright amber cannot reach 3:1 against a white card, so the solid `warning` is a deep honey colour and the tinted `warning-subtle` panel carries the bright amber look. Always pair a status colour with a text label or icon; colour alone never carries meaning. `/dev/theme` shows all three statuses in every theme.
 
 The full list of checked pairs is `CONTRAST_PAIRS` in `src/modules/theming/lib/contrast.ts`.
 
