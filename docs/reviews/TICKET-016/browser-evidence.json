@@ -1,0 +1,38 @@
+[
+  {
+    "theme": "ivory-gold",
+    "width": 375,
+    "hoverContrast": 4.809099178310875,
+    "overflow": 0
+  },
+  {
+    "theme": "midnight-champagne",
+    "width": 375,
+    "hoverContrast": 7.808559803669781,
+    "overflow": 0
+  },
+  {
+    "theme": "ivory-gold",
+    "width": 768,
+    "hoverContrast": 4.809099178310875,
+    "overflow": 0
+  },
+  {
+    "theme": "midnight-champagne",
+    "width": 768,
+    "hoverContrast": 7.808559803669781,
+    "overflow": 0
+  },
+  {
+    "theme": "ivory-gold",
+    "width": 1280,
+    "hoverContrast": 4.809099178310875,
+    "overflow": 0
+  },
+  {
+    "theme": "midnight-champagne",
+    "width": 1280,
+    "hoverContrast": 7.808559803669781,
+    "overflow": 0
+  }
+]

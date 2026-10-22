@@ -2,20 +2,20 @@
 id: TICKET-016
 title: Add motion primitives that honour reduced motion
 epic: design-system
-status: todo
+status: in_review
 priority: urgent
 estimate: M
 labels: [design, frontend]
 module: shared
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: []
 blocks: [TICKET-021, TICKET-039]
-branch: ""
-pr: ""
+branch: TICKET-016
+pr: https://github.com/UncleChenna/wedding-app/pull/12
 created: 2026-10-21
 updated: 2026-10-21
-started: ""
+started: 2026-10-21
 completed: ""
 reason: ""
 resume_to: ""
@@ -41,11 +41,11 @@ See: [Design principles](../docs/prd.md#design-principles) · [Design principles
 
 ## Acceptance criteria
 
-- [ ] Primitives animate only `opacity` and `transform` (asserted in tests).
-- [ ] With reduced motion emulated, no transform animation runs.
-- [ ] Demonstrated on /dev/theme.
+- [x] Primitives animate only `opacity` and `transform` (asserted in tests).
+- [x] With reduced motion emulated, no transform animation runs.
+- [x] Demonstrated on /dev/theme.
 
-- [ ] Use 180ms control transitions and the 600ms signature envelope reveal; reduced motion removes transforms and uses no animation or at most 150ms fade.
+- [x] Use 180ms control transitions and the 600ms signature envelope reveal; reduced motion removes transforms and uses no animation or at most 150ms fade.
 
 ## Test plan
 
@@ -62,8 +62,17 @@ See: [Design principles](../docs/prd.md#design-principles) · [Design principles
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-10-21: Resolved develop conflicts, preserving merged prerequisite fixes and progress history. Quick and full verification passed: 111 unit tests, production build, 21 browser smoke passes and 7 existing skips.
+
+- 2026-10-21: Resolved develop conflicts, preserving merged prerequisite fixes and progress history. Quick and full verification passed: 109 unit tests, production build, 21 browser smoke passes and 7 existing skips.
+
+- 2026-10-21: Added CSS FadeIn/Rise, shared 180ms control / 240ms entrance / 600ms signature tokens and a replay demo in both themes. The actual envelope remains TICKET-039. Reduced motion disables animations and transforms. Unit test first failed on missing primitives; browser timing check then caught CSS-module integration failing in this custom loader, fixed through the existing global styling path. Final quick/full gates pass: 107 unit tests, build, 21 smoke passes, 7 existing skips. Screenshots and scoped UI checklist: docs/reviews/TICKET-016/README.md. Actual hover contrast 4.809:1 ivory / 7.809:1 dark; CLS 0 at all widths.
 
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-21 — todo → claimed — divine (codex)
+- 2026-10-21 — todo → in_progress — divine (codex)
+- 2026-10-21 — in_progress → in_review — divine (codex)
+- 2026-10-21 — in_review → in_progress — divine (codex) — Resolve remaining PR conflicts with develop
+- 2026-10-21 — in_review → in_progress — divine (codex) — Resolve new conflicts after PR 9 merged

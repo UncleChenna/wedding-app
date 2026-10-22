@@ -13,6 +13,7 @@ import {
 
 import { themeStyle } from "../lib/css-vars";
 import { COLOR_TOKENS, type Theme } from "../lib/schema";
+import { MotionShowcase } from "./motion-showcase";
 import { ShowcaseInteractive } from "./showcase-interactive";
 
 /** Every base component rendered in one theme. Used by /dev/theme. */
@@ -75,6 +76,8 @@ export function ThemeShowcase({ theme, active }: { theme: Theme; active: boolean
               <Button size="lg">Large</Button>
             </div>
           </div>
+
+          <MotionShowcase />
 
           <div className="grid gap-6 md:grid-cols-2">
             <Card>
