@@ -166,4 +166,20 @@
     -webkit-mask-repeat: repeat;
     mask-repeat: repeat;
   }
+
+  /* Same texture as .theme-pattern, scoped to a panel (the Paper component). */
+  .paper-texture {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-color: var(--t-color-foreground);
+    opacity: var(--t-pattern-opacity, 0);
+    -webkit-mask-image: var(--t-pattern-image);
+    mask-image: var(--t-pattern-image);
+    -webkit-mask-size: var(--t-pattern-size);
+    mask-size: var(--t-pattern-size);
+    -webkit-mask-repeat: repeat;
+    mask-repeat: repeat;
+  }
 }

@@ -27,3 +27,11 @@ export {
 } from "./status-panel";
 export { ToastProvider, ToastView, useToast, type ToastOptions, type ToastTone } from "./toast";
 export { FadeIn, Rise, type MotionProps } from "./motion";
+export {
+  Divider,
+  Monogram,
+  Paper,
+  type DividerProps,
+  type MonogramProps,
+  type PaperProps,
+} from "./decorations";
