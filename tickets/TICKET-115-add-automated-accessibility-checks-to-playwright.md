@@ -2,20 +2,20 @@
 id: TICKET-115
 title: Add automated accessibility checks to Playwright
 epic: quality
-status: todo
+status: in_progress
 priority: high
 estimate: M
 labels: [test, frontend]
 module: shared
-owner: ""
-agent: ""
+owner: unclechenna
+agent: claude
 blocked_by: [TICKET-017]
 blocks: [TICKET-117, TICKET-118]
-branch: ""
+branch: TICKET-115
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-10-25
+started: 2026-10-25
 completed: ""
 reason: ""
 resume_to: ""
@@ -63,3 +63,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-25 — todo → claimed — unclechenna (claude)
+- 2026-10-25 — todo → in_progress — unclechenna (claude)
