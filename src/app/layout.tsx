@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 
+import { ServiceWorkerRegistration } from "@/modules/shared/components/service-worker-registration";
 import { ToastProvider } from "@/modules/shared/components/ui";
 import { getActiveTheme, themeStyle } from "@/modules/theming";
 import { fontVariables } from "@/modules/theming/components/fonts";
@@ -27,6 +28,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="en" data-theme={theme.id} style={themeStyle(theme)} className={fontVariables}>
       <body className="min-h-dvh bg-background font-sans text-foreground">
         <ToastProvider>{children}</ToastProvider>
+        <ServiceWorkerRegistration />
       </body>
     </html>
   );
