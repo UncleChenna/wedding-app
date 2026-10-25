@@ -2,7 +2,7 @@
 id: TICKET-011
 title: "Align theme files with the PRD: pattern texture and radius"
 epic: design-system
-status: in_progress
+status: in_review
 priority: urgent
 estimate: M
 labels: [design, frontend]
@@ -12,7 +12,7 @@ agent: claude
 blocked_by: [TICKET-009]
 blocks: [TICKET-012, TICKET-013, TICKET-020, TICKET-046, TICKET-094, TICKET-170]
 branch: TICKET-011
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/22
 created: 2026-10-21
 updated: 2026-10-25
 started: 2026-10-25
@@ -74,3 +74,4 @@ See: [How theming works](../docs/prd.md#how-theming-works) (THM-1).
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-10-25 — todo → claimed — unclechenna (claude)
 - 2026-10-25 — todo → in_progress — unclechenna (claude)
+- 2026-10-25 — in_progress → in_review — unclechenna (claude)
