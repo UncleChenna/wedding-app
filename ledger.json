@@ -415,6 +415,21 @@
       "updated": "2026-10-25",
       "reason": "Criterion 3 needs Lighthouse: npx lighthouse was denied (external code) and adding it as a dependency needs owner lockfile approval. E2E Layout Instability measurement shows CLS 0; owner to approve Lighthouse or accept that evidence. Draft PR open.",
       "resume_to": "in_progress"
+    },
+    "WED-020": {
+      "log": [
+        "- 2026-10-25 — todo → claimed — unclechenna (claude)"
+      ],
+      "status": "todo",
+      "owner": "unclechenna",
+      "agent": "claude",
+      "branch": "TICKET-020",
+      "pr": "",
+      "started": "",
+      "completed": "",
+      "updated": "2026-10-25",
+      "reason": "",
+      "resume_to": ""
     }
   }
 }
