@@ -11,7 +11,8 @@
  */
 import { expect, test } from "@playwright/test";
 
-import { listThemes, themeToCssVars } from "../../src/modules/theming";
+import { listThemes } from "../../src/modules/theming";
+import { applyTheme } from "../support/theme";
 
 const WIDTHS = [375, 768, 1280] as const;
 const SLICE_HEIGHT = 900;
@@ -29,20 +30,7 @@ for (const theme of listThemes()) {
       test(`${theme.id} @ ${width}px ${route}`, async ({ page }) => {
         await page.setViewportSize({ width, height: 900 });
         await page.goto(route);
-        await page.evaluate(
-          ({ vars, scheme, id }) => {
-            const root = document.documentElement;
-            // Clear the active theme's variables first: optional ones (e.g. --t-pattern-*)
-            // must not leak into a theme that does not define them.
-            for (const key of [...root.style])
-              if (key.startsWith("--t-")) root.style.removeProperty(key);
-            for (const [key, value] of Object.entries(vars)) root.style.setProperty(key, value);
-            root.style.colorScheme = scheme;
-            root.dataset.theme = id;
-          },
-          { vars: themeToCssVars(theme), scheme: theme.colorScheme, id: theme.id },
-        );
-        await page.evaluate(() => document.fonts.ready);
+        await applyTheme(page, theme);
 
         const overflow = await page.evaluate(
           () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
