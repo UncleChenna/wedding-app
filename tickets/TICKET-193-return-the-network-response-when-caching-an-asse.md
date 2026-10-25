@@ -2,7 +2,7 @@
 id: TICKET-193
 title: Return the network response when caching an asset fails
 epic: pwa
-status: in_progress
+status: in_review
 priority: high
 estimate: S
 labels: [pwa, frontend]
@@ -12,7 +12,7 @@ agent: claude
 blocked_by: [TICKET-105]
 blocks: []
 branch: TICKET-193
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/23
 created: 2026-10-25
 updated: 2026-10-25
 started: 2026-10-25
@@ -66,3 +66,4 @@ Review of PR #21 (TICKET-105) found that the service worker awaits `cache.put` b
 - 2026-10-25 — new → todo — unclechenna (claude)
 - 2026-10-25 — todo → claimed — unclechenna (claude)
 - 2026-10-25 — todo → in_progress — unclechenna (claude)
+- 2026-10-25 — in_progress → in_review — unclechenna (claude)
