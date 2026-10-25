@@ -40,8 +40,8 @@ See: [Design principles](../docs/prd.md#design-principles) · [Design principles
 
 ## Acceptance criteria
 
-- [ ] Components use only theme tokens (lint passes, no literals).
-- [ ] Demonstrated on /dev/theme in all themes.
+- [x] Components use only theme tokens (lint passes, no literals).
+- [x] Demonstrated on /dev/theme in all themes.
 
 ## Test plan
 
@@ -55,6 +55,8 @@ See: [Design principles](../docs/prd.md#design-principles) · [Design principles
 ## Notes / decisions
 
 _Agents append dated notes here while working._
+
+- 2026-10-25 (unclechenna): `Divider`, `Monogram` and `Paper` in `src/modules/shared/components/ui/decorations.tsx`, shown in a Decoration section on /dev/theme. The monogram takes initials as a prop until event settings exist (TICKET-025) and uses the display font (the script role arrives with TICKET-015). Found and fixed: a plain theme nested in a patterned one inherited its texture; `themeToCssVars` now resets `--t-pattern-*` when a theme has no pattern. Unit tests 218 passed; `pnpm verify` passed; decoration e2e passes in both themes at mobile and desktop.
 
 ## Activity log
 

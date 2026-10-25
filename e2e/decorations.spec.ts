@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 import { listThemes } from "../src/modules/theming";
 
 /** Theme-driven divider, monogram and paper texture (TICKET-020), checked in every theme. */
-test.describe("decorations on /dev/theme", () => {
+test.describe("decorations on /dev/theme @smoke", () => {
   for (const theme of listThemes()) {
     test(`${theme.id}: decorations follow the theme's tokens`, async ({ page }) => {
       await page.goto("/dev/theme");
