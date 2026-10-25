@@ -16,6 +16,7 @@ export function themeToCssVars(theme: Theme): CssVars {
   for (const token of SHADOW_TOKENS) vars[`--t-shadow-${token}`] = theme.shadows[token];
   vars["--t-font-display"] = `var(--font-${theme.fonts.display})`;
   vars["--t-font-body"] = `var(--font-${theme.fonts.body})`;
+  if (theme.fonts.script) vars["--t-font-script"] = `var(--font-${theme.fonts.script})`;
   if (theme.pattern) {
     vars["--t-pattern-image"] = `url(${JSON.stringify(theme.pattern.src)})`;
     vars["--t-pattern-opacity"] = String(theme.pattern.strength);

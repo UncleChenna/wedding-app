@@ -179,6 +179,15 @@
             "inter",
             "jost"
           ]
+        },
+        "script": {
+          "type": "string",
+          "enum": [
+            "cormorant",
+            "playfair",
+            "inter",
+            "jost"
+          ]
         }
       },
       "required": [
