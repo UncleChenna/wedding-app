@@ -54,16 +54,29 @@ describe("cachePolicy: the documented strategy table (docs/pwa.md)", () => {
 });
 
 /** Run the exact script /sw.js serves inside a fake worker global. */
-function loadWorker() {
+interface WorkerOptions {
+  /** Status of the network response (206 = partial range response). */
+  status?: number;
+  /** cache.put rejects, as when storage quota is exhausted. */
+  putRejects?: boolean;
+  /** caches.open throws, as when storage is unavailable. */
+  openRejects?: boolean;
+}
+
+function loadWorker(options: WorkerOptions = {}) {
   const listeners = new Map<string, (event: unknown) => void>();
   const store = new Map<string, Map<string, Response>>();
   const caches = {
     open: vi.fn(async (name: string) => {
+      if (options.openRejects) throw new Error("SecurityError: storage unavailable");
       const entries = store.get(name) ?? new Map<string, Response>();
       store.set(name, entries);
       return {
         match: async (r: Request) => entries.get(r.url),
-        put: async (r: Request, res: Response) => void entries.set(r.url, res),
+        put: async (r: Request, res: Response) => {
+          if (options.putRejects) throw new Error("QuotaExceededError");
+          entries.set(r.url, res);
+        },
       };
     }),
     keys: async () => [...store.keys()],
@@ -71,7 +84,9 @@ function loadWorker() {
   };
   // A same-origin browser response has type "basic" (Node's constructed Response is "default").
   const fetchMock = vi.fn(async () =>
-    Object.defineProperty(new Response("asset", { status: 200 }), "type", { value: "basic" }),
+    Object.defineProperty(new Response("asset", { status: options.status ?? 200 }), "type", {
+      value: "basic",
+    }),
   );
   const self = {
     location: { origin: ORIGIN },
@@ -96,11 +111,22 @@ function fetchEvent(
   init: { method?: string; headers?: Record<string, string> } = {},
 ) {
   const respondWith = vi.fn();
+  const background: Promise<unknown>[] = [];
+  const waitUntil = vi.fn((p: Promise<unknown>) => void background.push(p));
   const request = new Request(`${ORIGIN}${path}`, {
     method: init.method ?? "GET",
     headers: init.headers,
   });
-  return { event: { request, respondWith }, respondWith };
+  return {
+    event: { request, respondWith, waitUntil },
+    respondWith,
+    /** Resolve the page's response, then any background cache writes. */
+    async settle(): Promise<Response> {
+      const response = (await respondWith.mock.calls[0]?.[0]) as Response;
+      await Promise.allSettled(background);
+      return response;
+    },
+  };
 }
 
 describe("served worker script", () => {
@@ -117,7 +143,7 @@ describe("served worker script", () => {
     const asset = fetchEvent("/_next/static/chunks/app.js");
     onFetch(asset.event);
     expect(asset.respondWith).toHaveBeenCalledOnce();
-    await asset.respondWith.mock.calls[0]?.[0];
+    await asset.settle();
     expect(store.get(SW_STATIC_CACHE)?.has(`${ORIGIN}/_next/static/chunks/app.js`)).toBe(true);
 
     for (const path of ["/admin", "/i/abc", "/api/orders", "/"]) {
@@ -128,6 +154,37 @@ describe("served worker script", () => {
     expect([...(store.get(SW_STATIC_CACHE)?.keys() ?? [])]).toEqual([
       `${ORIGIN}/_next/static/chunks/app.js`,
     ]);
+  });
+
+  describe("caching is best-effort and never breaks the page (TICKET-193)", () => {
+    const asset = "/_next/static/media/clip.mp4";
+
+    it("returns a partial 206 response to the page without storing it", async () => {
+      const { listeners, store } = loadWorker({ status: 206 });
+      const event = fetchEvent(asset);
+      listeners.get("fetch")?.(event.event);
+      const response = await event.settle();
+      expect(response.status).toBe(206);
+      expect(store.get(SW_STATIC_CACHE)?.has(`${ORIGIN}${asset}`) ?? false).toBe(false);
+    });
+
+    it("still returns the asset when storing it fails (quota exhausted)", async () => {
+      const { listeners } = loadWorker({ putRejects: true });
+      const event = fetchEvent(asset);
+      listeners.get("fetch")?.(event.event);
+      const response = await event.settle();
+      expect(response.status).toBe(200);
+      expect(await response.text()).toBe("asset");
+    });
+
+    it("falls through to the network when Cache Storage itself throws", async () => {
+      const { listeners, fetchMock } = loadWorker({ openRejects: true });
+      const event = fetchEvent(asset);
+      listeners.get("fetch")?.(event.event);
+      const response = await event.settle();
+      expect(response.status).toBe(200);
+      expect(fetchMock).toHaveBeenCalledOnce();
+    });
   });
 
   it("never skips waiting, and on activate deletes only obsolete app-owned caches", async () => {

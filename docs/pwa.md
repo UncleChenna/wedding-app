@@ -8,6 +8,7 @@ Decision: [ADR 0014](decisions/0014-service-worker.md). This page records what t
 - Registered at scope `/` with `updateViaCache: "none"` by `ServiceWorkerRegistration` in the root layout, **in production builds only**. Development never installs a worker.
 - The fetch rules are `cachePolicy` in `src/modules/shared/lib/sw-policy.ts`. `/sw.js` embeds that exact function, so unit tests and the browser run the same code.
 - No automatic `skipWaiting`: a new version waits until tabs using the old one close. TICKET-111 adds the update prompt.
+- Caching is best-effort: a hit is served from cache, otherwise the network response is returned immediately and a copy is stored in the background (`event.waitUntil`). Only complete `200` same-origin responses are stored (never `206` partial range responses), and any Cache Storage error (quota, private mode, eviction) falls back to the network instead of failing the request.
 - Caches are named `wedding-<kind>-v<SW_CACHE_VERSION>`. On activate, only obsolete `wedding-` caches are deleted; other caches and IndexedDB (offline queues) are never touched. Bump `SW_CACHE_VERSION` when cached content or layout changes.
 
 ## Strategy table
