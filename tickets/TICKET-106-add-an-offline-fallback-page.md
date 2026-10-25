@@ -2,7 +2,7 @@
 id: TICKET-106
 title: Add an offline fallback page
 epic: pwa
-status: in_progress
+status: in_review
 priority: high
 estimate: S
 labels: [pwa, frontend]
@@ -12,7 +12,7 @@ agent: claude
 blocked_by: [TICKET-105]
 blocks: [TICKET-113]
 branch: TICKET-106
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/27
 created: 2026-10-21
 updated: 2026-10-25
 started: 2026-10-25
@@ -65,3 +65,4 @@ _Agents append dated notes here while working._
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-10-25 — todo → claimed — unclechenna (claude)
 - 2026-10-25 — todo → in_progress — unclechenna (claude)
+- 2026-10-25 — in_progress → in_review — unclechenna (claude)
