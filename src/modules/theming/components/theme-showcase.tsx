@@ -6,7 +6,12 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
+  Checkbox,
   Input,
+  QuantityStepper,
+  RadioGroup,
+  Select,
+  Textarea,
   ToastProvider,
   ToastView,
 } from "@/modules/shared/components/ui";
@@ -133,6 +138,56 @@ export function ThemeShowcase({ theme, active }: { theme: Theme; active: boolean
           </div>
 
           <MotionShowcase />
+
+          <Card data-testid="form-controls">
+            <CardHeader>
+              <CardTitle>Who&apos;s walking in with you?</CardTitle>
+              <CardDescription>
+                Radios, select, checkbox, textarea and quantity stepper.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="grid gap-6 md:grid-cols-2">
+              <RadioGroup
+                name={`rsvp-${theme.id}`}
+                legend="Will you join us?"
+                defaultValue="yes"
+                options={[
+                  { value: "yes", label: "Count me in" },
+                  { value: "no", label: "I'll be there in spirit" },
+                ]}
+              />
+              <Select label="Meal" hint="Choose one per guest." defaultValue="">
+                <option value="" disabled>
+                  Choose a meal…
+                </option>
+                <option value="jollof">Jollof rice &amp; grilled chicken</option>
+                <option value="plantain">Plantain &amp; bean stew (vegan)</option>
+              </Select>
+              <Checkbox label="I'm vegetarian" hint="We'll let the kitchen know." />
+              <Checkbox label="I agree to the privacy notice" error="Please tick to continue." />
+              <Textarea
+                label="Dietary notes"
+                hint="Allergies or anything the kitchen should know."
+                placeholder="e.g. no peanuts"
+              />
+              <div className="flex flex-col gap-6">
+                <QuantityStepper
+                  label="Jollof rice"
+                  min={0}
+                  max={5}
+                  defaultValue={1}
+                  hint="Up to 5 per order."
+                />
+                <QuantityStepper
+                  label="Water"
+                  min={0}
+                  max={5}
+                  defaultValue={5}
+                  error="That's the limit for one order."
+                />
+              </div>
+            </CardContent>
+          </Card>
 
           <div className="grid gap-6 md:grid-cols-2">
             <Card>
