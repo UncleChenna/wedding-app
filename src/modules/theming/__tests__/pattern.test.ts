@@ -12,11 +12,14 @@ if (!base) throw new Error("midnight-champagne theme missing");
 const withPattern = (pattern: unknown) => ({ ...base, pattern });
 
 describe("theme pattern texture (THM-1)", () => {
-  it("is optional: a theme without a pattern is valid and emits no pattern variables", () => {
+  it("is optional: a theme without a pattern is valid and resets the pattern variables", () => {
     const parsed = themeSchema.parse({ ...base, pattern: undefined });
     expect(parsed.pattern).toBeUndefined();
-    const vars = themeToCssVars(parsed);
-    expect(Object.keys(vars).some((k) => k.startsWith("--t-pattern"))).toBe(false);
+    // Explicit reset so a plain theme nested inside a patterned one does not inherit its texture.
+    expect(themeToCssVars(parsed)).toMatchObject({
+      "--t-pattern-image": "none",
+      "--t-pattern-opacity": "0",
+    });
   });
 
   it("accepts a pattern under the theme's own /themes/<id>/ folder with bounded strength and size", () => {
