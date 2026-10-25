@@ -65,6 +65,39 @@ The full list of checked pairs is `CONTRAST_PAIRS` in `src/modules/theming/lib/c
 
 Tailwind classes: `bg-<token>`, `text-<token>`, `border-<token>`, `outline-<token>`, with opacity (`bg-primary/90`). Also `font-display`, `font-sans`, `rounded-{sm,md,lg}`, `shadow-{sm,md,lg}`.
 
+## PRD theme names
+
+The PRD (THM-1) sketches a theme file with a smaller set of names. There is one canonical schema (`src/modules/theming/lib/schema.ts`); this is how the PRD names map onto it:
+
+| PRD name                       | Theme file field                                             | Notes                                                                            |
+| ------------------------------ | ------------------------------------------------------------ | -------------------------------------------------------------------------------- |
+| `name`                         | `name` (plus a kebab-case `id`)                              | `id` must match the file name                                                    |
+| `colors.background`            | `colors.background`                                          |                                                                                  |
+| `colors.surface`               | `colors.surface` (and `surface-muted`)                       |                                                                                  |
+| `colors.text`                  | `colors.foreground`                                          |                                                                                  |
+| `colors.muted`                 | `colors["muted-foreground"]`                                 |                                                                                  |
+| `colors.primary`               | `colors.primary`                                             |                                                                                  |
+| `colors.onPrimary`             | `colors["primary-foreground"]`                               |                                                                                  |
+| `colors.accent`                | `colors.accent` (and `accent-foreground`)                    |                                                                                  |
+| (none)                         | `secondary`, `border`, `input`, `ring` and the status tokens | Needed for controls, focus and fixed status meanings                             |
+| `fonts.display` / `fonts.body` | `fonts.display` / `fonts.body`                               | A curated font key (`cormorant`, `playfair`, `inter`, `jost`), not a family name |
+| `radius`                       | `radii.sm`, `radii.md`, `radii.lg`                           | Use the PRD radius as `md`; scale `sm` and `lg` around it                        |
+| `pattern`                      | `pattern.src` (plus `strength` and `size`)                   | Optional; see below                                                              |
+
+## Paper pattern (optional, off by default)
+
+A theme may add a subtle texture behind **guest pages only**, never staff or admin screens:
+
+```json
+"pattern": { "src": "/themes/ivory-gold/paper.svg", "strength": 0.05, "size": "240px" }
+```
+
+- **Asset:** an SVG in `public/themes/<theme-id>/`. The schema rejects other folders, other themes' folders and non-SVG files. Draw marks in any opaque colour on a transparent background: the SVG is a CSS mask painted in the theme's `foreground` colour, so it never adds colours of its own and always matches the theme.
+- **Strength:** opacity from 0.02 to 0.12. Start at 0.04–0.06; the texture should be felt, not seen. The cap protects text contrast; check the UI checklist screenshots after changing it.
+- **Size:** tile size from 64px to 512px. Larger tiles repeat less visibly; 200–300px suits paper grain.
+- **Placement:** one fixed layer behind the page content (`<ThemePattern>` in the guest layout), `aria-hidden`, never intercepting taps. Do not add textures to individual components.
+- Leave `pattern` out for a plain background. Ivory & Gold ships a faint paper grain; Midnight & Champagne is plain.
+
 ## Fonts
 
 Themes pick fonts by key: `cormorant`, `playfair`, `inter`, `jost`. To add a font, load it with `next/font/google` in `src/modules/theming/components/fonts.ts` (variable `--font-<key>`), add the key to `FONT_KEYS` in `lib/schema.ts`, then run `pnpm themes:schema`.

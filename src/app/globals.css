@@ -145,3 +145,25 @@
     transition: none;
   }
 }
+
+/*
+ * Optional theme paper texture (THM-1). The SVG is a mask painted in the theme's
+ * foreground colour at the theme's strength, so it adds no colours of its own.
+ * Rendered only on guest pages by <ThemePattern>, and only when the theme defines it.
+ */
+@layer base {
+  .theme-pattern {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-color: var(--t-color-foreground);
+    opacity: var(--t-pattern-opacity, 0);
+    -webkit-mask-image: var(--t-pattern-image);
+    mask-image: var(--t-pattern-image);
+    -webkit-mask-size: var(--t-pattern-size);
+    mask-size: var(--t-pattern-size);
+    -webkit-mask-repeat: repeat;
+    mask-repeat: repeat;
+  }
+}
