@@ -9,6 +9,8 @@ import {
   Input,
   ToastProvider,
   ToastView,
+  StatusBadge,
+  StatusPanel,
 } from "@/modules/shared/components/ui";
 
 import { themeStyle } from "../lib/css-vars";
@@ -111,6 +113,40 @@ export function ThemeShowcase({ theme, active }: { theme: Theme; active: boolean
                 </li>
               ))}
             </ul>
+          </div>
+
+          <div className="flex flex-col gap-3" data-testid="staff-status">
+            <h3 className="text-sm font-semibold tracking-wider text-muted-foreground uppercase">
+              Staff status panels
+            </h3>
+            <div className="grid gap-4 md:grid-cols-2">
+              <StatusPanel status="valid" identifier="Ada Lovelace" detail="Party of 2 · Table 7" />
+              <StatusPanel
+                status="used"
+                identifier="Ada Lovelace"
+                detail="Admitted 19:42 by Gate 1 · 2 of 2"
+              />
+              <StatusPanel
+                status="not-rsvpd"
+                identifier="Grace Hopper"
+                detail="No RSVP yet. Check with the couple's contact."
+              />
+              <StatusPanel
+                status="invalid"
+                identifier="Unknown code"
+                detail="Not on the guest list."
+              />
+              <StatusPanel
+                status="revoked"
+                identifier="Old invitation"
+                detail="This pass was replaced. Ask for the new one."
+              />
+            </div>
+            <div className="flex flex-wrap gap-3">
+              <StatusBadge tone="success">Served</StatusBadge>
+              <StatusBadge tone="warning">Preparing</StatusBadge>
+              <StatusBadge tone="danger">Cancelled</StatusBadge>
+            </div>
           </div>
 
           <div className="flex flex-col gap-3">

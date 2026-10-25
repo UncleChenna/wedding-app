@@ -57,6 +57,25 @@ test.describe("base components @smoke", () => {
     expect(small).toEqual([]);
   });
 
+  test("staff status panels read at arm's length in every theme (TICKET-019)", async ({ page }) => {
+    await page.goto("/dev/theme");
+    for (const theme of listThemes()) {
+      const staff = page.getByTestId(`theme-${theme.id}`).getByTestId("staff-status");
+      for (const label of ["Valid", "Already used", "Not RSVP'd", "Invalid", "Revoked"]) {
+        // exact: "Valid" must not also match "Invalid".
+        const panel = staff.getByRole("region", { name: label, exact: true });
+        await expect(panel).toBeVisible();
+        await expect(panel.getByRole("img", { name: `${label} icon`, exact: true })).toBeVisible();
+        const sizes = await panel.evaluate((el) =>
+          [...el.querySelectorAll("p")].map((p) => parseFloat(getComputedStyle(p).fontSize)),
+        );
+        const [labelSize = 0, identifierSize = 0, detailSize = 0] = sizes;
+        expect(identifierSize).toBeGreaterThanOrEqual(32);
+        expect(Math.min(labelSize, detailSize)).toBeGreaterThanOrEqual(18);
+      }
+    }
+  });
+
   test("axe finds no violations on /dev/theme, with the Sheet closed and open", async ({
     page,
   }) => {
