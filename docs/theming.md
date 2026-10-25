@@ -95,8 +95,18 @@ A theme may add a subtle texture behind **guest pages only**, never staff or adm
 - **Asset:** an SVG in `public/themes/<theme-id>/`. The schema rejects other folders, other themes' folders and non-SVG files. Draw marks in any opaque colour on a transparent background: the SVG is a CSS mask painted in the theme's `foreground` colour, so it never adds colours of its own and always matches the theme.
 - **Strength:** opacity from 0.02 to 0.12. Start at 0.04–0.06; the texture should be felt, not seen. The cap protects text contrast; check the UI checklist screenshots after changing it.
 - **Size:** tile size from 64px to 512px. Larger tiles repeat less visibly; 200–300px suits paper grain.
-- **Placement:** one fixed layer behind the page content (`<ThemePattern>` in the guest layout), `aria-hidden`, never intercepting taps. Do not add textures to individual components.
+- **Placement:** one fixed layer behind the page content (`<ThemePattern>` in the guest layout), `aria-hidden`, never intercepting taps. For a single invitation-style panel use the shared `<Paper>` component, which applies the same texture inside its bounds; do not hand-roll textures elsewhere.
 - Leave `pattern` out for a plain background. Ivory & Gold ships a faint paper grain; Midnight & Champagne is plain.
+
+## Dividers, monogram and paper
+
+Shared decoration components live in `src/modules/shared/components/ui/decorations.tsx` and are shown on `/dev/theme`:
+
+- **`<Divider />`**: a hairline in the `border` token with a small ornament in `primary`; a separator for assistive technology. `variant="staff"` drops the ornament and lightens the line for staff and admin screens.
+- **`<Monogram initials={["A", "G"]} />`**: the couple's initials in the display font inside a hairline `primary` ring, named "A & G monogram". Pass `decorative` when the names already appear nearby. Initials will come from event settings (TICKET-025); until then pass them in.
+- **`<Paper>`**: a panel with the theme's paper pattern behind its children; plain when the theme has none. Themes without a pattern reset `--t-pattern-*` so they never inherit a parent theme's texture.
+
+Use at most one monogram per page and dividers only between major sections.
 
 ## Fonts
 
