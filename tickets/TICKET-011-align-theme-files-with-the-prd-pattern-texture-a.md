@@ -2,20 +2,20 @@
 id: TICKET-011
 title: "Align theme files with the PRD: pattern texture and radius"
 epic: design-system
-status: todo
+status: in_progress
 priority: urgent
 estimate: M
 labels: [design, frontend]
 module: theming
-owner: ""
-agent: ""
+owner: unclechenna
+agent: claude
 blocked_by: [TICKET-009]
 blocks: [TICKET-012, TICKET-013, TICKET-020, TICKET-046, TICKET-094, TICKET-170]
-branch: ""
+branch: TICKET-011
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-10-25
+started: 2026-10-25
 completed: ""
 reason: ""
 resume_to: ""
@@ -67,3 +67,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-25 — todo → claimed — unclechenna (claude)
+- 2026-10-25 — todo → in_progress — unclechenna (claude)
