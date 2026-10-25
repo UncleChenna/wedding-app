@@ -2,7 +2,13 @@ import { runInNewContext } from "node:vm";
 
 import { describe, expect, it, vi } from "vitest";
 
-import { cachePolicy, SW_CACHE_PREFIX, SW_STATIC_CACHE } from "../lib/sw-policy";
+import {
+  cachePolicy,
+  SW_CACHE_PREFIX,
+  SW_OFFLINE_CACHE,
+  SW_OFFLINE_URL,
+  SW_STATIC_CACHE,
+} from "../lib/sw-policy";
 import { serviceWorkerSource } from "../server/service-worker";
 
 const ORIGIN = "https://wedding.example";
@@ -51,6 +57,23 @@ describe("cachePolicy: the documented strategy table (docs/pwa.md)", () => {
     expect(cachePolicy(req("https://cdn.example/_next/static/chunks/a.js"))).toBe("network-only");
     expect(cachePolicy(req("/_next/static/../admin"))).toBe("network-only");
   });
+
+  it.each(["/", "/order", "/i/8fK2abcdef", "/admin", "/checkin?gate=1"])(
+    "page navigations try the network and fall back to the offline page: %s (TICKET-106)",
+    (path) => {
+      expect(cachePolicy({ ...req(path), mode: "navigate" })).toBe("network-offline-fallback");
+    },
+  );
+
+  it("never gives the offline fallback to fetches, mutations or other origins", () => {
+    expect(cachePolicy({ ...req("/admin"), mode: "cors" })).toBe("network-only");
+    expect(cachePolicy({ ...req("/order", { method: "POST" }), mode: "navigate" })).toBe(
+      "network-only",
+    );
+    expect(cachePolicy({ ...req("https://elsewhere.example/"), mode: "navigate" })).toBe(
+      "network-only",
+    );
+  });
 });
 
 /** Run the exact script /sw.js serves inside a fake worker global. */
@@ -61,7 +84,11 @@ interface WorkerOptions {
   putRejects?: boolean;
   /** caches.open throws, as when storage is unavailable. */
   openRejects?: boolean;
+  /** Response bodies by path; anything else answers "asset". */
+  bodies?: Record<string, string>;
 }
+
+const keyOf = (r: Request | string) => (typeof r === "string" ? new URL(r, ORIGIN).href : r.url);
 
 function loadWorker(options: WorkerOptions = {}) {
   const listeners = new Map<string, (event: unknown) => void>();
@@ -72,10 +99,10 @@ function loadWorker(options: WorkerOptions = {}) {
       const entries = store.get(name) ?? new Map<string, Response>();
       store.set(name, entries);
       return {
-        match: async (r: Request) => entries.get(r.url),
-        put: async (r: Request, res: Response) => {
+        match: async (r: Request | string) => entries.get(keyOf(r))?.clone(),
+        put: async (r: Request | string, res: Response) => {
           if (options.putRejects) throw new Error("QuotaExceededError");
-          entries.set(r.url, res);
+          entries.set(keyOf(r), res);
         },
       };
     }),
@@ -83,11 +110,14 @@ function loadWorker(options: WorkerOptions = {}) {
     delete: vi.fn(async (name: string) => store.delete(name)),
   };
   // A same-origin browser response has type "basic" (Node's constructed Response is "default").
-  const fetchMock = vi.fn(async () =>
-    Object.defineProperty(new Response("asset", { status: options.status ?? 200 }), "type", {
+  let online = true;
+  const fetchMock = vi.fn(async (input: Request | string) => {
+    if (!online) throw new TypeError("Failed to fetch");
+    const body = options.bodies?.[new URL(keyOf(input)).pathname] ?? "asset";
+    return Object.defineProperty(new Response(body, { status: options.status ?? 200 }), "type", {
       value: "basic",
-    }),
-  );
+    });
+  });
   const self = {
     location: { origin: ORIGIN },
     clients: { claim: vi.fn(async () => undefined) },
@@ -103,12 +133,18 @@ function loadWorker(options: WorkerOptions = {}) {
     URL,
     console,
   });
-  return { listeners, store, caches, fetchMock, self };
+  const setOnline = (value: boolean) => void (online = value);
+  async function install() {
+    let done: Promise<unknown> | undefined;
+    listeners.get("install")?.({ waitUntil: (p: Promise<unknown>) => (done = p) });
+    await done;
+  }
+  return { listeners, store, caches, fetchMock, self, setOnline, install };
 }
 
 function fetchEvent(
   path: string,
-  init: { method?: string; headers?: Record<string, string> } = {},
+  init: { method?: string; headers?: Record<string, string>; mode?: string } = {},
 ) {
   const respondWith = vi.fn();
   const background: Promise<unknown>[] = [];
@@ -117,6 +153,8 @@ function fetchEvent(
     method: init.method ?? "GET",
     headers: init.headers,
   });
+  // Node's Request cannot be constructed with mode "navigate"; a browser navigation has it.
+  if (init.mode) Object.defineProperty(request, "mode", { value: init.mode });
   return {
     event: { request, respondWith, waitUntil },
     respondWith,
@@ -188,20 +226,81 @@ describe("served worker script", () => {
   });
 
   it("never skips waiting, and on activate deletes only obsolete app-owned caches", async () => {
-    const { listeners, store, caches, self } = loadWorker();
+    const { listeners, store, caches, self, install } = loadWorker();
     store.set(`${SW_CACHE_PREFIX}static-v0`, new Map());
+    store.set(`${SW_CACHE_PREFIX}offline-v0`, new Map());
     store.set(SW_STATIC_CACHE, new Map());
     store.set("someone-elses-cache", new Map());
 
-    let installDone: Promise<unknown> | undefined;
-    listeners.get("install")?.({ waitUntil: (p: Promise<unknown>) => (installDone = p) });
-    await installDone;
+    await install();
     expect(self.skipWaiting).not.toHaveBeenCalled();
 
     let activateDone: Promise<unknown> | undefined;
     listeners.get("activate")?.({ waitUntil: (p: Promise<unknown>) => (activateDone = p) });
     await activateDone;
     expect(caches.delete).toHaveBeenCalledWith(`${SW_CACHE_PREFIX}static-v0`);
-    expect([...store.keys()].sort()).toEqual([SW_STATIC_CACHE, "someone-elses-cache"].sort());
+    expect(caches.delete).toHaveBeenCalledWith(`${SW_CACHE_PREFIX}offline-v0`);
+    expect([...store.keys()].sort()).toEqual(
+      [SW_STATIC_CACHE, SW_OFFLINE_CACHE, "someone-elses-cache"].sort(),
+    );
+  });
+
+  describe("offline fallback page (TICKET-106)", () => {
+    const offlineHtml = `<!doctype html><link rel="stylesheet" href="/_next/static/css/app.css">
+      <script src="/_next/static/chunks/main.js"></script>
+      <script src="/_next/static/chunks/tracked.js?v=1"></script>`;
+    const css = `@font-face{src:url(../media/serif.woff2) format("woff2")}`;
+    const bodies = { [SW_OFFLINE_URL]: offlineHtml, "/_next/static/css/app.css": css };
+
+    it("precaches the offline page and the build assets it needs on install", async () => {
+      const { store, install } = loadWorker({ bodies });
+      await install();
+      expect([...(store.get(SW_OFFLINE_CACHE)?.keys() ?? [])]).toEqual([
+        `${ORIGIN}${SW_OFFLINE_URL}`,
+      ]);
+      expect([...(store.get(SW_STATIC_CACHE)?.keys() ?? [])].sort()).toEqual(
+        [
+          `${ORIGIN}/_next/static/chunks/main.js`,
+          `${ORIGIN}/_next/static/css/app.css`,
+          `${ORIGIN}/_next/static/media/serif.woff2`,
+        ].sort(),
+      );
+    });
+
+    it("an asset that fails to precache does not fail the install", async () => {
+      const { install, fetchMock } = loadWorker({ bodies });
+      fetchMock.mockImplementation(async (input: Request | string) => {
+        const path = new URL(keyOf(input)).pathname;
+        if (path !== SW_OFFLINE_URL) throw new TypeError("Failed to fetch");
+        return Object.defineProperty(new Response(offlineHtml), "type", { value: "basic" });
+      });
+      await expect(install()).resolves.toBeUndefined();
+    });
+
+    it("serves the network page while online and the offline page when the network fails", async () => {
+      const { listeners, install, setOnline, store } = loadWorker({ bodies });
+      await install();
+      const onFetch = listeners.get("fetch");
+
+      const online = fetchEvent("/order", { mode: "navigate" });
+      onFetch?.(online.event);
+      expect(await (await online.settle()).text()).toBe("asset");
+
+      setOnline(false);
+      const offline = fetchEvent("/i/never-visited", { mode: "navigate" });
+      onFetch?.(offline.event);
+      expect(await (await offline.settle()).text()).toBe(offlineHtml);
+      // Nothing about the visited pages is stored.
+      expect([...(store.get(SW_OFFLINE_CACHE)?.keys() ?? [])]).toEqual([
+        `${ORIGIN}${SW_OFFLINE_URL}`,
+      ]);
+    });
+
+    it("offline fetches (not navigations) still fail instead of getting the offline page", () => {
+      const { listeners } = loadWorker({ bodies });
+      const event = fetchEvent("/admin", { mode: "cors" });
+      listeners.get("fetch")?.(event.event);
+      expect(event.respondWith).not.toHaveBeenCalled();
+    });
   });
 });
