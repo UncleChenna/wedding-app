@@ -41,11 +41,11 @@ See: [How theming works](../docs/prd.md#how-theming-works) (THM-1).
 
 ## Acceptance criteria
 
-- [ ] A theme with a pattern renders it on guest pages; one without renders a plain background.
-- [ ] docs/theming.md contains the PRD-to-token mapping table.
-- [ ] theme.schema.json is regenerated, not hand-edited.
+- [x] A theme with a pattern renders it on guest pages; one without renders a plain background.
+- [x] docs/theming.md contains the PRD-to-token mapping table.
+- [x] theme.schema.json is regenerated, not hand-edited.
 
-- [ ] Pattern is optional and off by default; document scale, placement and strength rather than adding decorative grain everywhere. Keep one canonical schema with explicit PRD-name mappings.
+- [x] Pattern is optional and off by default; document scale, placement and strength rather than adding decorative grain everywhere. Keep one canonical schema with explicit PRD-name mappings.
 
 ## Test plan
 
@@ -62,7 +62,12 @@ See: [How theming works](../docs/prd.md#how-theming-works) (THM-1).
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-10-25: Pattern = optional {src, strength, size}. src must be an SVG under the theme's own /themes/<id>/ (schema regex plus a whole-object refine); strength 0.02–0.12 so text contrast is protected; size 64–512px. The SVG is used as a CSS mask filled with the theme foreground, so it adds no colours. Off by default; Ivory & Gold ships a faint grain (0.05, 240px), Midnight & Champagne is plain.
+- 2026-10-25: Rendering: <ThemePattern> (fixed, z-index -1, aria-hidden, pointer-events none) in the guest layout only; staff and admin stay plain (browser-tested). CSS variables --t-pattern-* are emitted only when a theme defines a pattern.
+- 2026-10-25: theme.schema.json rebuilt only by pnpm themes:schema under the owner's standing approval for theme-schema writes in this run; approval file deleted after commit.
+- 2026-10-25: Found and fixed: the screenshot harness overlaid a theme's variables without clearing the active theme's, so Ivory's pattern leaked into Midnight screenshots. It now removes --t-* variables before applying a theme.
+- 2026-10-25: TICKET-010's hue test copied Ivory under a new id; it now drops the inherited pattern (the new own-folder rule is correct).
+- 2026-10-25: Evidence: unit tests for optional/accepted/rejected patterns (external URL, other theme's folder, path escape, raster, strength and size out of range), CSS variable output, asset existence, and one patterned plus one plain theme; browser tests for the guest-page layer (mask URL, opacity, z-index, aria-hidden, asset served) and plain staff/admin pages. `pnpm verify` passed on develop 5725c80: 208 unit tests, build, 44 browser tests. Screenshots of / inspected in both themes.
 
 ## Activity log
 
