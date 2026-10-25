@@ -2,7 +2,7 @@
 id: TICKET-020
 title: Add theme-driven dividers, monogram and paper texture
 epic: design-system
-status: in_progress
+status: in_review
 priority: urgent
 estimate: S
 labels: [design, frontend]
@@ -12,7 +12,7 @@ agent: claude
 blocked_by: [TICKET-011]
 blocks: [TICKET-021]
 branch: TICKET-020
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/25
 created: 2026-10-21
 updated: 2026-10-25
 started: 2026-10-25
@@ -63,3 +63,4 @@ _Agents append dated notes here while working._
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-10-25 — todo → claimed — unclechenna (claude)
 - 2026-10-25 — todo → in_progress — unclechenna (claude)
+- 2026-10-25 — in_progress → in_review — unclechenna (claude)
