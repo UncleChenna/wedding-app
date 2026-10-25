@@ -41,9 +41,9 @@ See: [Journey 2: check-in at the gate](../docs/prd.md#journey-2-check-in-at-the-
 
 ## Acceptance criteria
 
-- [ ] Panels render text and an icon for every status; no meaning depends on colour.
-- [ ] Identifiers render ≥32px and body ≥18px.
-- [ ] AA contrast in every theme (tested).
+- [x] Panels render text and an icon for every status; no meaning depends on colour.
+- [x] Identifiers render ≥32px and body ≥18px.
+- [x] AA contrast in every theme (tested).
 
 ## Test plan
 
@@ -56,7 +56,11 @@ See: [Journey 2: check-in at the gate](../docs/prd.md#journey-2-check-in-at-the-
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-10-25: Decision: scan result → colour mapping. Valid = green (success); Already used and Not RSVP'd = amber (warning: stop and check, not a refusal); Invalid and Revoked = red (danger: a problem). Each of the five has its own icon and text label so meaning never depends on colour. Recorded in `status-panel.tsx`.
+- 2026-10-25: StatusPanel is a labelled `section` (role region named by its status label) with a `role=img` icon named "<label> icon", 36px display identifier (`text-4xl`) and 18px label/detail (`text-lg`). StatusBadge is a 44px-tall icon + text chip on the solid status colour for board cards.
+- 2026-10-25: Evidence: 11 unit tests (labels, distinct icons, sizes, tone mapping, AA contrast of the exact panel and badge token pairs in every theme). Browser test checks computed font sizes (identifier ≥32px, label and detail ≥18px) and named icons for all five panels in both themes. axe 0 violations. Screenshots inspected at 375/768/1280.
+- 2026-10-25: Integrated develop 4a81730 (TICKET-018) before PR; resolved an a11y.spec.ts conflict by keeping both tests. `pnpm verify` passed: 178 unit tests, build, 32 browser tests.
+- 2026-10-25: Also filed TICKET-191 (stepper focus and typed-value fixes) from the PR #19 review nits.
 
 ## Activity log
 
