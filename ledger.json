@@ -402,9 +402,10 @@
     "WED-015": {
       "log": [
         "- 2026-10-25 — todo → claimed — unclechenna (claude)",
-        "- 2026-10-25 — todo → in_progress — unclechenna (claude)"
+        "- 2026-10-25 — todo → in_progress — unclechenna (claude)",
+        "- 2026-10-25 — in_progress → blocked — unclechenna (claude) — Criterion 3 needs Lighthouse: npx lighthouse was denied (external code) and adding it as a dependency needs owner lockfile approval. E2E Layout Instability measurement shows CLS 0; owner to approve Lighthouse or accept that evidence. Draft PR open."
       ],
-      "status": "in_progress",
+      "status": "blocked",
       "owner": "unclechenna",
       "agent": "claude",
       "branch": "TICKET-015",
@@ -412,8 +413,8 @@
       "started": "2026-10-25",
       "completed": "",
       "updated": "2026-10-25",
-      "reason": "",
-      "resume_to": ""
+      "reason": "Criterion 3 needs Lighthouse: npx lighthouse was denied (external code) and adding it as a dependency needs owner lockfile approval. E2E Layout Instability measurement shows CLS 0; owner to approve Lighthouse or accept that evidence. Draft PR open.",
+      "resume_to": "in_progress"
     }
   }
 }
