@@ -15,5 +15,15 @@ export { RadioGroup, type RadioGroupProps, type RadioOption } from "./radio-grou
 export { Select, type SelectProps } from "./select";
 export { Textarea, type TextareaProps } from "./textarea";
 export { Sheet, type SheetProps } from "./sheet";
+export {
+  SCAN_STATUSES,
+  StatusBadge,
+  StatusPanel,
+  statusAppearance,
+  type ScanStatus,
+  type StatusBadgeProps,
+  type StatusPanelProps,
+  type StatusTone,
+} from "./status-panel";
 export { ToastProvider, ToastView, useToast, type ToastOptions, type ToastTone } from "./toast";
 export { FadeIn, Rise, type MotionProps } from "./motion";
