@@ -10,6 +10,7 @@ export const PAGE_ROUTES = [
   "/checkin",
   "/kitchen",
   "/admin",
+  "/offline",
   "/dev/theme",
 ] as const;
 
