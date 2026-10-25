@@ -39,9 +39,9 @@ Review of PR #21 (TICKET-105) found that the service worker awaits `cache.put` b
 
 ## Acceptance criteria
 
-- [ ] A 206 response is returned to the page and not stored (unit test on the served worker).
-- [ ] When `cache.put` rejects (quota), the asset response is still returned (unit test).
-- [ ] When Cache Storage itself throws, the request falls through to the network (unit test).
+- [x] A 206 response is returned to the page and not stored (unit test on the served worker).
+- [x] When `cache.put` rejects (quota), the asset response is still returned (unit test).
+- [x] When Cache Storage itself throws, the request falls through to the network (unit test).
 
 ## Test plan
 
@@ -58,6 +58,8 @@ Review of PR #21 (TICKET-105) found that the service worker awaits `cache.put` b
 ## Notes / decisions
 
 - 2026-10-25: Raised by the PR #21 review; classified as a real user-facing failure, so fixed promptly.
+- 2026-10-25: Fix: cache lookup wrapped (errors fall through to the network); network response returned immediately; copy stored in the background via event.waitUntil only for status 200, basic, non-redirected responses; storage errors swallowed. Previously `response.ok` also stored 206 partials and an awaited put rejection failed the load.
+- 2026-10-25: Evidence: three new unit tests run the served worker with a 206 response, a rejecting put and a throwing caches.open; all failed before the fix and pass now (22 worker tests). e2e/pwa.spec.ts still passes. `pnpm verify` passed on develop 5725c80: 200 unit tests, build, 40 browser tests.
 
 ## Activity log
 
