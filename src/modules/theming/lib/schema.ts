@@ -56,6 +56,32 @@ function record<const K extends readonly string[], V extends z.ZodType>(keys: K,
   return z.object(Object.fromEntries(keys.map((key) => [key, value])) as Record<K[number], V>);
 }
 
+/**
+ * Optional paper texture (PRD THM-1 `pattern`). The SVG is used as a CSS mask painted in the
+ * theme's foreground colour, so it never introduces its own colours. Strength is capped so
+ * the texture cannot erode text contrast; see docs/theming.md.
+ */
+export const patternSchema = z
+  .object({
+    src: z
+      .string()
+      .regex(
+        /^\/themes\/[a-z0-9]+(-[a-z0-9]+)*\/[a-z0-9]+(-[a-z0-9]+)*\.svg$/,
+        "pattern.src must be /themes/<theme-id>/<name>.svg",
+      ),
+    /** Opacity of the texture over the page background. */
+    strength: z.number().min(0.02).max(0.12),
+    /** Tile size, e.g. "240px". */
+    size: z
+      .string()
+      .regex(/^\d+px$/, "pattern.size must be pixels, e.g. 240px")
+      .refine((s) => {
+        const px = Number.parseInt(s, 10);
+        return px >= 64 && px <= 512;
+      }, "pattern.size must be between 64px and 512px"),
+  })
+  .strict();
+
 export const themeSchema = z
   .object({
     $schema: z.string().optional(),
@@ -66,7 +92,12 @@ export const themeSchema = z
     fonts: z.object({ display: z.enum(FONT_KEYS), body: z.enum(FONT_KEYS) }).strict(),
     radii: record(RADIUS_TOKENS, cssLength).strict(),
     shadows: record(SHADOW_TOKENS, z.string().min(1)).strict(),
+    pattern: patternSchema.optional(),
   })
-  .strict();
+  .strict()
+  .refine((theme) => !theme.pattern || theme.pattern.src.startsWith(`/themes/${theme.id}/`), {
+    path: ["pattern", "src"],
+    message: "pattern.src must live in the theme's own /themes/<id>/ folder",
+  });
 
 export type Theme = z.infer<typeof themeSchema>;

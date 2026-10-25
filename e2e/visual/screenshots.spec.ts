@@ -32,6 +32,10 @@ for (const theme of listThemes()) {
         await page.evaluate(
           ({ vars, scheme, id }) => {
             const root = document.documentElement;
+            // Clear the active theme's variables first: optional ones (e.g. --t-pattern-*)
+            // must not leak into a theme that does not define them.
+            for (const key of [...root.style])
+              if (key.startsWith("--t-")) root.style.removeProperty(key);
             for (const [key, value] of Object.entries(vars)) root.style.setProperty(key, value);
             root.style.colorScheme = scheme;
             root.dataset.theme = id;

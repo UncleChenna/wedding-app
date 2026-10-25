@@ -64,7 +64,13 @@ describe("status hue ranges", () => {
   it("rejects a theme whose 'valid' colour is not green, naming the token", () => {
     const base = themes[0];
     if (!base) throw new Error("no themes registered");
-    const blue = { ...base, id: "blue-success", colors: { ...base.colors, success: "#1D4ED8" } };
+    // A renamed copy must not inherit the base theme's pattern (patterns live in /themes/<own-id>/).
+    const blue = {
+      ...base,
+      id: "blue-success",
+      pattern: undefined,
+      colors: { ...base.colors, success: "#1D4ED8" },
+    };
     expect(checkStatusHues(blue).map((f) => f.token)).toContain("success");
     expect(() => loadTheme(blue)).toThrow(/success[\s\S]*green/);
   });

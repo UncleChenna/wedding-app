@@ -232,6 +232,30 @@
         "lg"
       ],
       "additionalProperties": false
+    },
+    "pattern": {
+      "type": "object",
+      "properties": {
+        "src": {
+          "type": "string",
+          "pattern": "^\\/themes\\/[a-z0-9]+(-[a-z0-9]+)*\\/[a-z0-9]+(-[a-z0-9]+)*\\.svg$"
+        },
+        "strength": {
+          "type": "number",
+          "minimum": 0.02,
+          "maximum": 0.12
+        },
+        "size": {
+          "type": "string",
+          "pattern": "^\\d+px$"
+        }
+      },
+      "required": [
+        "src",
+        "strength",
+        "size"
+      ],
+      "additionalProperties": false
     }
   },
   "required": [
