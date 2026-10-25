@@ -2,20 +2,20 @@
 id: TICKET-106
 title: Add an offline fallback page
 epic: pwa
-status: todo
+status: in_progress
 priority: high
 estimate: S
 labels: [pwa, frontend]
 module: shared
-owner: ""
-agent: ""
+owner: unclechenna
+agent: claude
 blocked_by: [TICKET-105]
 blocks: [TICKET-113]
-branch: ""
+branch: TICKET-106
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-10-25
+started: 2026-10-25
 completed: ""
 reason: ""
 resume_to: ""
@@ -57,3 +57,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-25 — todo → claimed — unclechenna (claude)
+- 2026-10-25 — todo → in_progress — unclechenna (claude)
