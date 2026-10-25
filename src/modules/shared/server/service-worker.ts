@@ -43,12 +43,23 @@ self.addEventListener("fetch", (event) => {
   if (policy !== "cache-first") return; // network-only: the browser handles it untouched
   event.respondWith(
     (async () => {
-      const cache = await caches.open(SW_STATIC_CACHE);
-      const cached = await cache.match(request);
-      if (cached) return cached;
+      // Caching is best-effort: storage errors must never fail the page's request.
+      try {
+        const cached = await (await caches.open(SW_STATIC_CACHE)).match(request);
+        if (cached) return cached;
+      } catch {
+        // Cache Storage unavailable (private mode, quota, eviction): use the network.
+      }
       const response = await fetch(request);
-      if (response.ok && response.type === "basic" && !response.redirected) {
-        await cache.put(request, response.clone());
+      // Only complete responses: 206 partial (range) responses cannot be stored.
+      if (response.status === 200 && response.type === "basic" && !response.redirected) {
+        const copy = response.clone();
+        event.waitUntil(
+          caches
+            .open(SW_STATIC_CACHE)
+            .then((cache) => cache.put(request, copy))
+            .catch(() => undefined),
+        );
       }
       return response;
     })(),
