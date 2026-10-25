@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-const ROUTES = ["/", "/invite", "/order", "/checkin", "/kitchen", "/admin", "/dev/theme"];
+import { PAGE_ROUTES as ROUTES } from "./support/routes";
 
 test.describe("no horizontal overflow at 375px @smoke", () => {
   // Pixel 7 (the mobile project) is 412px wide; we design at 375px.
