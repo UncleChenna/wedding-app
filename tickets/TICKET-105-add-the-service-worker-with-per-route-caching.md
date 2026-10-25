@@ -2,7 +2,7 @@
 id: TICKET-105
 title: Add the service worker with per-route caching
 epic: pwa
-status: in_progress
+status: in_review
 priority: urgent
 estimate: L
 labels: [pwa, frontend]
@@ -12,7 +12,7 @@ agent: claude
 blocked_by: [TICKET-102]
 blocks: [TICKET-106, TICKET-107, TICKET-108, TICKET-111, TICKET-112, TICKET-124, TICKET-180]
 branch: TICKET-105
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/21
 created: 2026-10-21
 updated: 2026-10-25
 started: 2026-10-25
@@ -75,3 +75,4 @@ See: [Tech stack and architecture](../docs/prd.md#tech-stack-and-architecture) �
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-10-25 — todo → claimed — unclechenna (claude)
 - 2026-10-25 — todo → in_progress — unclechenna (claude)
+- 2026-10-25 — in_progress → in_review — unclechenna (claude)
