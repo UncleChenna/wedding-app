@@ -397,6 +397,21 @@
       "updated": "2026-10-25",
       "reason": "Needs a QR encoder (e.g. the qrcode npm package) to render and verify a real dark-on-light QR per theme (acceptance criterion 3). Adding a package changes pnpm-lock.yaml, which the owner has not authorised for this run (only theme-schema writes). Unblock by approving the dependency.",
       "resume_to": "todo"
+    },
+    "WED-015": {
+      "log": [
+        "- 2026-10-25 — todo → claimed — unclechenna (claude)"
+      ],
+      "status": "todo",
+      "owner": "unclechenna",
+      "agent": "claude",
+      "branch": "TICKET-015",
+      "pr": "",
+      "started": "",
+      "completed": "",
+      "updated": "2026-10-25",
+      "reason": "",
+      "resume_to": ""
     }
   }
 }
