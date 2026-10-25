@@ -41,11 +41,11 @@ See: [Tech stack and architecture](../docs/prd.md#tech-stack-and-architecture) Â
 
 ## Acceptance criteria
 
-- [ ] Strategy table documented and matched by tests on routes.
-- [ ] Admin and API responses are never cached (test).
-- [ ] `pnpm build` and smoke pass with the worker registered.
+- [x] Strategy table documented and matched by tests on routes.
+- [x] Admin and API responses are never cached (test).
+- [x] `pnpm build` and smoke pass with the worker registered.
 
-- [ ] Route caching explicitly excludes admin HTML, private API responses and arbitrary invitation pages. Cache only an authorized own-pass copy through TICKET-107 and approved scanner data through TICKET-108.
+- [x] Route caching explicitly excludes admin HTML, private API responses and arbitrary invitation pages. Cache only an authorized own-pass copy through TICKET-107 and approved scanner data through TICKET-108.
 
 ## Test plan
 
@@ -63,7 +63,12 @@ See: [Tech stack and architecture](../docs/prd.md#tech-stack-and-architecture) Â
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-10-25: Implemented ADR 0014 as an explicit allowlist. Only same-origin, query-free `GET /_next/static/**` (content-hashed, immutable) is cache-first in `wedding-static-v1`; everything else is network-only (the worker never calls respondWith). The policy is a self-contained function embedded verbatim in /sw.js, so the unit-tested code is the shipped code.
+- 2026-10-25: /sw.js is a route handler that calls `connection()` so it renders per request; prerendering would attach framework cache headers. Headers: JavaScript content type, `no-cache, no-store, must-revalidate`, `Service-Worker-Allowed: /`. Registration only in production builds, scope `/`, `updateViaCache: none`. No automatic skipWaiting (TICKET-111). Activate deletes only obsolete `wedding-` caches, never other caches or IndexedDB.
+- 2026-10-25: Precaching of the offline page and scanner shell is left to TICKET-106/108 (nothing to precache exists yet); versioned caches and cleanup are implemented and tested now.
+- 2026-10-25: Audit verification: e2e visits admin, an arbitrary invitation URL, order, check-in and an API URL, then inspects Cache Storage: only /_next/static entries. Offline, a cached asset loads and /admin fails rather than being served from cache. Staff logout and cross-household pass checks need auth and the own-pass copy (TICKET-030/107/184); not testable yet.
+- 2026-10-25: Evidence: 19 unit tests (policy matrix plus the served script run in a sandboxed worker global: handlers, cache-first only for assets, no skipWaiting, cleanup scope). 4 browser tests on mobile and desktop. `pnpm verify` passed on develop 67aaea4: 197 unit tests, build, 40 browser tests.
+- 2026-10-25: Also filed TICKET-192 for the PR #20 review nits.
 
 ## Activity log
 
