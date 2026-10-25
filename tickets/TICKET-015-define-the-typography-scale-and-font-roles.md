@@ -2,7 +2,7 @@
 id: TICKET-015
 title: Define the typography scale and font roles
 epic: design-system
-status: in_progress
+status: blocked
 priority: urgent
 estimate: M
 labels: [design, frontend]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-10-25
 started: 2026-10-25
 completed: ""
-reason: ""
-resume_to: ""
+reason: "Criterion 3 needs Lighthouse: npx lighthouse was denied (external code) and adding it as a dependency needs owner lockfile approval. E2E Layout Instability measurement shows CLS 0; owner to approve Lighthouse or accept that evidence. Draft PR open."
+resume_to: in_progress
 ---
 
 # TICKET-015: Define the typography scale and font roles
@@ -67,3 +67,4 @@ See: [Design principles](../docs/prd.md#design-principles) · [Design principles
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-10-25 — todo → claimed — unclechenna (claude)
 - 2026-10-25 — todo → in_progress — unclechenna (claude)
+- 2026-10-25 — in_progress → blocked — unclechenna (claude) — Criterion 3 needs Lighthouse: npx lighthouse was denied (external code) and adding it as a dependency needs owner lockfile approval. E2E Layout Instability measurement shows CLS 0; owner to approve Lighthouse or accept that evidence. Draft PR open.
