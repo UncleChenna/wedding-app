@@ -2,7 +2,7 @@
 id: TICKET-019
 title: Add staff status panels and badges for arm's-length reading
 epic: design-system
-status: in_progress
+status: in_review
 priority: urgent
 estimate: S
 labels: [frontend, design]
@@ -12,7 +12,7 @@ agent: claude
 blocked_by: [TICKET-010, TICKET-017]
 blocks: [TICKET-021, TICKET-059, TICKET-076]
 branch: TICKET-019
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/20
 created: 2026-10-21
 updated: 2026-10-25
 started: 2026-10-25
@@ -67,3 +67,4 @@ See: [Journey 2: check-in at the gate](../docs/prd.md#journey-2-check-in-at-the-
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-10-25 — todo → claimed — unclechenna (claude)
 - 2026-10-25 — todo → in_progress — unclechenna (claude)
+- 2026-10-25 — in_progress → in_review — unclechenna (claude)
