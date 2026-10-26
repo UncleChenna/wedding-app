@@ -778,14 +778,15 @@
     },
     "WED-204": {
       "log": [
-        "- 2026-10-26 — todo → claimed — unclechenna (claude)"
+        "- 2026-10-26 — todo → claimed — unclechenna (claude)",
+        "- 2026-10-26 — todo → in_progress — unclechenna (claude)"
       ],
-      "status": "todo",
+      "status": "in_progress",
       "owner": "unclechenna",
       "agent": "claude",
       "branch": "TICKET-204",
       "pr": "",
-      "started": "",
+      "started": "2026-10-26",
       "completed": "",
       "updated": "2026-10-26",
       "reason": "",
