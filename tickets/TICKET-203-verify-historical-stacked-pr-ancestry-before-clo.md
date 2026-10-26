@@ -55,6 +55,8 @@ TICKET-186 and TICKET-187 remain in_review because their merged PRs targeted his
 
 ## Notes / decisions
 
+- 2026-10-26: Final integrated t:pr gate passes after PR #36 merged: 266 unit tests, 163 browser passes, 17 conditional skips. PR #37 is ready for required CI.
+
 - 2026-10-26: Fresh ancestry and same-commit criteria checks implemented; 31 focused tests and full gate pass (258 unit, 155 browser, 17 skips). PR #4/#5 merge commits are not reachable from inspected develop; CLI correctly refuses both historical closures. Conditional closure criterion is satisfied by refusal, not by marking those tickets done. Exact evidence is in docs/handoffs/TICKET-203.md.
 
 - 2026-10-26: Discovered during the user-authorized backlog completion run. Do not bypass the existing guard while this ticket is pending.

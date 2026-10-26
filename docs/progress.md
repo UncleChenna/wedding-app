@@ -2,7 +2,7 @@
 
 ## 2026-10-26 — TICKET-203 — Historical completion evidence
 
-Added fresh merge ancestry and same-commit criteria checks. Historical PR #4/#5 did not satisfy ancestry, so their tickets remain open. See [handoff](handoffs/TICKET-203.md) for evidence and pending integration verification.
+Added fresh merge ancestry and same-commit criteria checks. Historical PR #4/#5 did not satisfy ancestry, so their tickets remain open. See [handoff](handoffs/TICKET-203.md) for evidence and passing integration verification.
 
 ## 2026-10-26 — TICKET-035 — Warm invitation voice
 
