@@ -761,9 +761,10 @@
       "log": [
         "- 2026-10-26 — todo → claimed — divine (codex)",
         "- 2026-10-26 — todo → in_progress — divine (codex)",
-        "- 2026-10-26 — in_progress → blocked — divine (codex) — Awaiting exact-path authorization for generated migration SQL, snapshot and journal; implementation local, plan pushed, draft PR https://github.com/UncleChenna/wedding-app/pull/41. Eight DB tests and independent build/browser checks pass; full gate blocked by protected-file hook."
+        "- 2026-10-26 — in_progress → blocked — divine (codex) — Awaiting exact-path authorization for generated migration SQL, snapshot and journal; implementation local, plan pushed, draft PR https://github.com/UncleChenna/wedding-app/pull/41. Eight DB tests and independent build/browser checks pass; full gate blocked by protected-file hook.",
+        "- 2026-10-26 — blocked → in_progress — divine (codex)"
       ],
-      "status": "blocked",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-023",
@@ -771,8 +772,8 @@
       "started": "2026-10-26",
       "completed": "",
       "updated": "2026-10-26",
-      "reason": "Awaiting exact-path authorization for generated migration SQL, snapshot and journal; implementation local, plan pushed, draft PR https://github.com/UncleChenna/wedding-app/pull/41. Eight DB tests and independent build/browser checks pass; full gate blocked by protected-file hook.",
-      "resume_to": "in_progress"
+      "reason": "",
+      "resume_to": ""
     }
   }
 }
