@@ -1,0 +1,26 @@
+[
+  {
+    "page": "home",
+    "url": "http://localhost:3002/",
+    "performance": 92,
+    "accessibility": 100,
+    "cls": 0,
+    "lcp_ms": 3127.8669
+  },
+  {
+    "page": "guide",
+    "url": "http://localhost:3002/invite",
+    "performance": 96,
+    "accessibility": 100,
+    "cls": 0,
+    "lcp_ms": 2811.41165
+  },
+  {
+    "page": "preview",
+    "url": "http://localhost:3002/dev/invitation",
+    "performance": 94,
+    "accessibility": 100,
+    "cls": 0,
+    "lcp_ms": 3037.891
+  }
+]

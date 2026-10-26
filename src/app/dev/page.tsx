@@ -1,0 +1,48 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+export const metadata: Metadata = { title: "Page previews", robots: { index: false } };
+const pages = [
+  ["/", "Wedding home"],
+  ["/invite", "Invitation guidance"],
+  ["/dev/invitation", "Invitation preview"],
+  ["/dev/theme", "Components and themes"],
+] as const;
+export default function PreviewIndex() {
+  return (
+    <main className="mx-auto max-w-3xl px-6 py-16">
+      <p className="mb-6 text-base tracking-widest text-primary uppercase">Work in progress</p>
+      <h1 className="font-display text-5xl tracking-tight md:text-6xl">
+        See the celebration take shape
+      </h1>
+      <p className="mt-8 text-lg leading-relaxed">
+        Browse the pages built so far. Previews use sample details and do not submit responses or
+        orders.
+      </p>
+      <nav aria-label="Available pages" className="my-12">
+        <ul className="space-y-6">
+          {pages.map(([href, label]) => (
+            <li key={href}>
+              <Link
+                href={href}
+                className="inline-flex min-h-11 items-center text-lg text-primary underline underline-offset-4"
+              >
+                {label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <h2 className="font-display text-3xl">Coming next</h2>
+      <ol className="mt-6 list-inside list-decimal space-y-4 text-base leading-relaxed">
+        <li>RSVP and confirmation screens</li>
+        <li>Table entry and menu ordering</li>
+        <li>Gate check-in and kitchen screens</li>
+        <li>Admin pages</li>
+      </ol>
+      <p className="mt-8 text-base leading-relaxed">
+        These screens are not ready yet. Personal invitation links, saved RSVPs and staff access
+        will follow their integration tickets.
+      </p>
+    </main>
+  );
+}
