@@ -18,7 +18,7 @@ All three product criteria remain incomplete: secure tokens with uniqueness retr
 
 # Verification
 
-203 tickets validated during the initial status commit. Plan and handoff pass Prettier. Locked dependencies installed. Existing Colima runtime started successfully after initial setup failed; isolated PostgreSQL became healthy. Full Supabase setup is still running. Twenty new token/resolver tests pass after initial missing-module failures; targeted ESLint and Prettier pass. No full gate or database/browser route tests have run for this ticket.
+203 tickets validated during the initial status commit. Plan and handoff pass Prettier. Locked dependencies installed. Existing Colima runtime started successfully after initial setup failed; isolated PostgreSQL became healthy. The first resumed Supabase startup failed. Stopped the completed TICKET-023 stack with data backup and retried TICKET-036 setup; this new attempt is running. Twenty new token/resolver tests pass after initial missing-module failures; targeted ESLint and Prettier pass. The pre-commit quick gate also passed after correcting strict test-array indexing. No full gate or database/browser route tests have run for this ticket.
 
 # Risks and rollout
 
