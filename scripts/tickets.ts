@@ -10,6 +10,8 @@ import { join } from "node:path";
 import { activity, criteria, parseTicket, serializeTicket } from "./tickets/format";
 import { dashboardHtml } from "./tickets/dashboard";
 import { REVIEW_BASE, reviewBodyProblems } from "./tickets/review";
+import { mergedReviewEvidence } from "./tickets/merged-review";
+import type { ReviewPr } from "./tickets/merged-review";
 import { ready } from "./tickets/graph";
 import {
   git,
@@ -239,16 +241,11 @@ function pushTickets(cwd: string, id: string, message: string) {
   if (!stream("git", ["push", "-u", "origin", "HEAD"], cwd)) throw new Error("Push failed.");
 }
 
-function prFor(
-  cwd: string,
-  ref: string,
-): { url: string; state: string; baseRefName: string } | null {
+function prFor(cwd: string, ref: string): ReviewPr | null {
   try {
-    return JSON.parse(run("gh", ["pr", "view", ref, "--json", "url,state,baseRefName"], cwd)) as {
-      url: string;
-      state: string;
-      baseRefName: string;
-    };
+    return JSON.parse(
+      run("gh", ["pr", "view", ref, "--json", "url,state,baseRefName,mergeCommit"], cwd),
+    ) as ReviewPr;
   } catch {
     return null;
   }
@@ -286,16 +283,11 @@ function gatherFacts(
   }
   if (to === "done") {
     const pr = prFor(cwd, ticket.meta.pr || ticket.meta.branch);
-    facts.mergedPr = pr?.state === "MERGED" && pr.baseRefName === REVIEW_BASE ? pr.url : undefined;
-    // Criteria are judged on what actually merged.
-    let merged = ticket;
-    if (tryGit(["fetch", "--quiet", "origin", REVIEW_BASE], cwd) !== null) {
-      const text =
-        tryGit(["show", `refs/remotes/origin/${REVIEW_BASE}:${ticket.path}`], cwd) ??
-        tryGit(["show", `FETCH_HEAD:${ticket.path}`], cwd);
-      if (text) merged = parseTicket(text, ticket.path);
-    }
-    facts.criteriaTicked = criteria(merged).every((c) => c.checked);
+    const evidence = mergedReviewEvidence(cwd, pr, ticket.path);
+    facts.mergedPr = evidence?.url;
+    facts.criteriaTicked = evidence
+      ? criteria(parseTicket(evidence.ticketText, ticket.path)).every((c) => c.checked)
+      : false;
   }
   return facts;
 }
