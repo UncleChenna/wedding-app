@@ -2,7 +2,7 @@
 id: TICKET-191
 title: Keep stepper focus and typed value when stepping
 epic: design-system
-status: in_progress
+status: in_review
 priority: medium
 estimate: S
 labels: [frontend]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-018]
 blocks: []
 branch: TICKET-191
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/29
 created: 2026-10-25
 updated: 2026-10-26
 started: 2026-10-26
@@ -65,3 +65,4 @@ Review of PR #19 (TICKET-018) found two keyboard issues in the shared QuantitySt
 - 2026-10-25 — new → todo — unclechenna (claude)
 - 2026-10-26 — todo → claimed — divine (codex)
 - 2026-10-26 — todo → in_progress — divine (codex)
+- 2026-10-26 — in_progress → in_review — divine (codex)
