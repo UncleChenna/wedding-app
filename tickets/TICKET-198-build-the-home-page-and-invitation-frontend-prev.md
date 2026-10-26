@@ -2,7 +2,7 @@
 id: TICKET-198
 title: Build the home page and invitation frontend preview
 epic: invitations
-status: in_review
+status: in_progress
 priority: urgent
 estimate: M
 labels: [frontend, design]
@@ -68,3 +68,4 @@ The user cannot navigate or review guest pages because routes contain placeholde
 - 2026-10-26 — todo → claimed — divine (codex)
 - 2026-10-26 — todo → in_progress — divine (codex)
 - 2026-10-26 — in_progress → in_review — divine (codex)
+- 2026-10-26 — in_review → in_progress — divine (codex) — Finish performance evidence and review readiness before continuing frontend delivery
