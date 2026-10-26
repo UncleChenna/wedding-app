@@ -12,6 +12,8 @@ export const PAGE_ROUTES = [
   "/admin",
   "/offline",
   "/dev/theme",
+  "/dev",
+  "/dev/invitation",
 ] as const;
 
 /** Any unknown path renders the themed not-found page. */

@@ -1,5 +1,9 @@
 # Progress log
 
+## 2026-10-26 — TICKET-198 — Visible wedding pages
+
+Home, invitation guidance and review navigation now available. See [ticket handoff](handoffs/TICKET-198.md) for verification and remaining device checks. RSVP (199) and ordering (200) are the next frontend priorities; 015 stays paused.
+
 Add-only history, newest first: prepend new entries below this template, never rewrite old entries. Legacy entries below retain their original wording; authors/agents were not recorded at the time.
 
 ```markdown
