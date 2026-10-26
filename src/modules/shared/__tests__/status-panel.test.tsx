@@ -8,6 +8,17 @@ import { listThemes } from "@/modules/theming";
 import { SCAN_STATUSES, StatusBadge, StatusPanel, statusAppearance } from "../components/ui";
 
 describe("StatusPanel", () => {
+  it.each([0, false, null, undefined, ""])("omits empty detail %s without stray text", (detail) => {
+    render(<StatusPanel status="valid" identifier="Alex" detail={detail} />);
+    expect(screen.getByRole("region", { name: "Valid" })).toHaveTextContent(/^ValidAlex$/);
+    expect(screen.queryByTestId("status-detail")).not.toBeInTheDocument();
+  });
+
+  it("preserves a supplied detail node", () => {
+    render(<StatusPanel status="valid" identifier="Alex" detail={<strong>Party of 2</strong>} />);
+    expect(screen.getByTestId("status-detail")).toHaveTextContent("Party of 2");
+  });
+
   it.each(SCAN_STATUSES)("%s shows a text label and a named icon, not colour alone", (status) => {
     const { label } = statusAppearance(status);
     render(<StatusPanel status={status} identifier="Ada Lovelace" detail="Party of 2 · Table 7" />);
@@ -39,6 +50,30 @@ describe("StatusPanel", () => {
 });
 
 describe("StatusBadge", () => {
+  it.each([
+    ["success", "check"],
+    ["warning", "clock"],
+    ["danger", "cross"],
+  ] as const)("defaults %s to %s and permits a decorative icon override", (tone, icon) => {
+    const { container, rerender } = render(<StatusBadge tone={tone}>Status</StatusBadge>);
+    const defaultIcon = container.querySelector("svg")?.innerHTML;
+    expect(defaultIcon).toBeTruthy();
+    rerender(
+      <StatusBadge tone={tone} icon={icon}>
+        Status
+      </StatusBadge>,
+    );
+    expect(container.querySelector("svg")?.innerHTML).toBe(defaultIcon);
+    rerender(
+      <StatusBadge tone={tone} icon="ban">
+        Cancelled
+      </StatusBadge>,
+    );
+    expect(container.querySelector("svg")?.innerHTML).not.toBe(defaultIcon);
+    expect(container.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
+    expect(screen.getByText("Cancelled")).toHaveAttribute("data-tone", tone);
+  });
+
   it("shows its label in text with an icon, at ≥18px", () => {
     render(<StatusBadge tone="warning">Preparing</StatusBadge>);
     const badge = screen.getByText("Preparing").closest("[data-tone]");

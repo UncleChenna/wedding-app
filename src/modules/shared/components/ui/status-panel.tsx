@@ -9,12 +9,12 @@ export type StatusTone = "success" | "warning" | "danger";
 export const SCAN_STATUSES = ["valid", "used", "invalid", "revoked", "not-rsvpd"] as const;
 export type ScanStatus = (typeof SCAN_STATUSES)[number];
 
-type IconName = "check" | "repeat" | "cross" | "ban" | "clock";
+export type StatusIconName = "check" | "repeat" | "cross" | "ban" | "clock";
 
 interface Appearance {
   tone: StatusTone;
   label: string;
-  icon: IconName;
+  icon: StatusIconName;
 }
 
 /**
@@ -45,13 +45,13 @@ const BADGE: Record<StatusTone, string> = {
   warning: "bg-warning text-warning-foreground",
   danger: "bg-danger text-danger-foreground",
 };
-const TONE_ICON: Record<StatusTone, IconName> = {
+const TONE_ICON: Record<StatusTone, StatusIconName> = {
   success: "check",
   warning: "clock",
   danger: "cross",
 };
 
-const PATHS: Record<IconName, ReactNode> = {
+const PATHS: Record<StatusIconName, ReactNode> = {
   check: <path d="M5 12.5l4.5 4.5L19 7.5" />,
   repeat: (
     <>
@@ -81,7 +81,7 @@ function StatusIcon({
   label,
   className,
 }: {
-  name: IconName;
+  name: StatusIconName;
   label?: string;
   className?: string;
 }) {
@@ -124,12 +124,25 @@ export function StatusPanel({ status, identifier, detail, children, className }:
     >
       <div className="flex items-center gap-3">
         <StatusIcon name={icon} label={`${label} icon`} className="size-10" />
-        <p id={labelId} className="text-lg font-semibold tracking-wider uppercase">
+        <p
+          data-testid="status-label"
+          id={labelId}
+          className="text-lg font-semibold tracking-wider uppercase"
+        >
           {label}
         </p>
       </div>
-      <p className="font-display text-4xl leading-tight font-medium break-words">{identifier}</p>
-      {detail && <p className="text-lg leading-relaxed">{detail}</p>}
+      <p
+        data-testid="status-identifier"
+        className="font-display text-4xl leading-tight font-medium break-words"
+      >
+        {identifier}
+      </p>
+      {detail ? (
+        <p data-testid="status-detail" className="text-lg leading-relaxed">
+          {detail}
+        </p>
+      ) : null}
       {children}
     </section>
   );
@@ -137,12 +150,14 @@ export function StatusPanel({ status, identifier, detail, children, className }:
 
 export interface StatusBadgeProps {
   tone: StatusTone;
+  /** Override the tone icon when the label has a more specific meaning. */
+  icon?: StatusIconName;
   children: ReactNode;
   className?: string;
 }
 
 /** Compact status for board cards: icon + text on the solid status colour. */
-export function StatusBadge({ tone, children, className }: StatusBadgeProps) {
+export function StatusBadge({ tone, icon, children, className }: StatusBadgeProps) {
   return (
     <span
       data-tone={tone}
@@ -152,7 +167,7 @@ export function StatusBadge({ tone, children, className }: StatusBadgeProps) {
         className,
       )}
     >
-      <StatusIcon name={TONE_ICON[tone]} className="size-5" />
+      <StatusIcon name={icon ?? TONE_ICON[tone]} className="size-5" />
       {children}
     </span>
   );

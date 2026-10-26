@@ -153,7 +153,9 @@ export function ThemeShowcase({ theme, active }: { theme: Theme; active: boolean
             <div className="flex flex-wrap gap-3">
               <StatusBadge tone="success">Served</StatusBadge>
               <StatusBadge tone="warning">Preparing</StatusBadge>
-              <StatusBadge tone="danger">Cancelled</StatusBadge>
+              <StatusBadge tone="danger" icon="ban">
+                Cancelled
+              </StatusBadge>
             </div>
           </div>
 
