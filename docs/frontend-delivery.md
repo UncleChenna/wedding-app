@@ -16,6 +16,7 @@ User priority, 26 October 2026: visible, navigable pages before further foundati
 - `/dev`: reviewer navigation and clearly labelled pending work.
 - `/dev/invitation`: layout preview, theme links, sample photo/venue/dress code. No submission.
 - `/dev/rsvp`: attendance, companions, sample meal selection, review and both confirmation outcomes. Drafts exist only in memory and reset on reload.
+- `/dev/order`: sample table entry, menu filters, quantities, review and simulated Received/Served states. No orders are sent or saved.
 - `/dev/theme`: existing shared component showcase.
 
 Development home links to /dev. In a production build, reviewers open /dev directly; it contains no guest records or private links. Existing /order, /checkin, /kitchen and /admin are still placeholders.

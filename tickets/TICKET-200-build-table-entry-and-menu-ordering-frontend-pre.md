@@ -2,20 +2,20 @@
 id: TICKET-200
 title: Build table entry and menu ordering frontend previews
 epic: ordering
-status: todo
+status: in_review
 priority: urgent
 estimate: M
 labels: [frontend, design]
 module: ordering
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-198]
 blocks: []
-branch: ""
-pr: ""
+branch: TICKET-200
+pr: https://github.com/UncleChenna/wedding-app/pull/32
 created: 2026-10-26
 updated: 2026-10-26
-started: ""
+started: 2026-10-26
 completed: ""
 reason: ""
 resume_to: ""
@@ -37,11 +37,11 @@ Persisted guest data, authentication, QR credentials, live orders and deployment
 
 ## Acceptance criteria
 
-- [ ] The complete preview journey works with clear sample-data and non-submission labels.
-- [ ] Input errors, empty states, back navigation and the terminal states are testable without a backend.
-- [ ] /dev navigation links the new preview; keyboard and reduced-motion behavior work.
-- [ ] Both registered themes pass axe and fit 375/768/1280px; screenshots are recorded and inspected.
-- [ ] Unit, end-to-end and full verification pass; production integration boundaries are documented.
+- [x] The complete preview journey works with clear sample-data and non-submission labels.
+- [x] Input errors, empty states, back navigation and the terminal states are testable without a backend.
+- [x] /dev navigation links the new preview; keyboard and reduced-motion behavior work.
+- [x] Both registered themes pass axe and fit 375/768/1280px; screenshots are recorded and inspected.
+- [x] Unit, end-to-end and full verification pass; production integration boundaries are documented.
 
 ## Test plan
 
@@ -55,8 +55,13 @@ Persisted guest data, authentication, QR credentials, live orders and deployment
 
 ## Notes / decisions
 
+- 2026-10-26: Complete labelled frontend preview; quick/full verification passed (242 unit, 155 browser, 17 conditional skips), 48 state screenshots reviewed and 12 route captures passed. No backend calls. Release QA deferred to TICKET-201 under explicit user approval; local Supabase startup failed and database readiness is not claimed.
+
 - User-directed frontend priority. TICKET-015 stays paused. Depends on TICKET-198 for navigation and shared visual context.
 
 ## Activity log
 
 - 2026-10-26 — new → todo — divine
+- 2026-10-26 — todo → claimed — divine (codex)
+- 2026-10-26 — todo → in_progress — divine (codex)
+- 2026-10-26 — in_progress → in_review — divine (codex)
