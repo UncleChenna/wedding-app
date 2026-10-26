@@ -596,9 +596,10 @@
     "WED-006": {
       "log": [
         "- 2026-10-26 — todo → claimed — divine (codex)",
-        "- 2026-10-26 — todo → in_progress — divine (codex)"
+        "- 2026-10-26 — todo → in_progress — divine (codex)",
+        "- 2026-10-26 — in_progress → blocked — divine (codex) — Local Docker database unhealthy: no response and health-check timeouts; concurrent migration/smoke and successful cleanup unverified."
       ],
-      "status": "in_progress",
+      "status": "blocked",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-006",
@@ -606,8 +607,8 @@
       "started": "2026-10-26",
       "completed": "",
       "updated": "2026-10-26",
-      "reason": "",
-      "resume_to": ""
+      "reason": "Local Docker database unhealthy: no response and health-check timeouts; concurrent migration/smoke and successful cleanup unverified.",
+      "resume_to": "in_progress"
     }
   }
 }
