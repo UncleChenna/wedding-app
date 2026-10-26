@@ -484,6 +484,21 @@
       "updated": "2026-10-26",
       "reason": "",
       "resume_to": ""
+    },
+    "WED-196": {
+      "log": [
+        "- 2026-10-26 — backlog → cancelled — divine — Unused allocation: t:new failed after reserving id; implementation is TICKET-197"
+      ],
+      "status": "cancelled",
+      "owner": "",
+      "agent": "",
+      "branch": "",
+      "pr": "",
+      "started": "",
+      "completed": "",
+      "updated": "2026-10-26",
+      "reason": "Unused allocation: t:new failed after reserving id; implementation is TICKET-197",
+      "resume_to": ""
     }
   }
 }
