@@ -2,6 +2,8 @@ import type { Page } from "@playwright/test";
 
 import { themeToCssVars, type Theme } from "../../src/modules/theming";
 
+import { settleAnimations } from "./axe";
+
 /**
  * Render the current page in `theme` by overriding the theme variables on <html>, so every
  * theme can be checked without changing the active one. The active theme's variables are
@@ -22,4 +24,5 @@ export async function applyTheme(page: Page, theme: Theme): Promise<void> {
     { vars: themeToCssVars(theme), scheme: theme.colorScheme, id: theme.id },
   );
   await page.evaluate(() => document.fonts.ready);
+  await settleAnimations(page);
 }
