@@ -2,20 +2,20 @@
 id: TICKET-036
 title: "Generate invitation tokens and the personal /i/[token] route"
 epic: invitations
-status: todo
+status: in_progress
 priority: urgent
 estimate: M
 labels: [backend, security]
 module: invitations
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-023]
 blocks: [TICKET-037, TICKET-040, TICKET-043, TICKET-048, TICKET-050, TICKET-090, TICKET-183, TICKET-185]
-branch: ""
+branch: TICKET-036
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-10-26
+started: 2026-10-26
 completed: ""
 reason: ""
 resume_to: ""
@@ -65,3 +65,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-26 — todo → claimed — divine (codex)
+- 2026-10-26 — todo → in_progress — divine (codex)
