@@ -649,12 +649,13 @@
     },
     "WED-203": {
       "log": [
-        "- 2026-10-26 — backlog → todo — divine"
+        "- 2026-10-26 — backlog → todo — divine",
+        "- 2026-10-26 — todo → claimed — divine (codex)"
       ],
       "status": "todo",
-      "owner": "",
-      "agent": "",
-      "branch": "",
+      "owner": "divine",
+      "agent": "codex",
+      "branch": "TICKET-203",
       "pr": "",
       "started": "",
       "completed": "",
