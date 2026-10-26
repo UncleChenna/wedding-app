@@ -2,7 +2,7 @@
 id: TICKET-034
 title: Decide wedding date, RSVP lock, tag-along limit and Wallet scope
 epic: invitations
-status: in_progress
+status: in_review
 priority: urgent
 estimate: S
 labels: [human, docs]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: []
 blocks: [TICKET-023, TICKET-042, TICKET-096, TICKET-101, TICKET-176, TICKET-177]
 branch: TICKET-034
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/39
 created: 2026-10-21
 updated: 2026-10-26
 started: 2026-10-26
@@ -69,3 +69,4 @@ See: [Open questions](../docs/prd.md#open-questions) · [Invitations and RSVP](.
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-10-26 — todo → claimed — divine (codex)
 - 2026-10-26 — todo → in_progress — divine (codex)
+- 2026-10-26 — in_progress → in_review — divine (codex)
