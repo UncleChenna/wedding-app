@@ -85,6 +85,14 @@ export function InvitationView({ details }: { details: InvitationDetails }) {
           This preview does not send an RSVP. Your personal invitation will let you reply when
           invitations are ready.
         </p>
+        <div>
+          <Link
+            href="/dev/rsvp"
+            className="mt-6 inline-flex min-h-11 items-center text-primary underline underline-offset-4"
+          >
+            Try RSVP preview
+          </Link>
+        </div>
         <Link
           className="mt-6 inline-flex min-h-11 items-center text-primary underline underline-offset-4"
           href="/dev"
