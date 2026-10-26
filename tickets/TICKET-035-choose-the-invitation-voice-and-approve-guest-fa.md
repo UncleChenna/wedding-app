@@ -40,8 +40,8 @@ See: [Invitation wording](../docs/prd.md#invitation-wording) · [On the website]
 
 ## Acceptance criteria
 
-- [ ] docs/prd.md records the chosen voice and any edited copy.
-- [ ] Copy is stored in one module (`src/modules/invitations/lib/copy.ts`) referenced by TICKET-052.
+- [x] docs/prd.md records the chosen voice and any edited copy.
+- [x] Copy is stored in one module (`src/modules/invitations/lib/copy.ts`) referenced by TICKET-052.
 
 ## Test plan
 
@@ -53,6 +53,8 @@ See: [Invitation wording](../docs/prd.md#invitation-wording) · [On the website]
 - `docs/prd.md`
 
 ## Notes / decisions
+
+- 2026-10-26: User selected Warm. Recorded the decision in the PRD and all 20 existing message/on-site strings in `src/modules/invitations/lib/copy.ts`; exact whitespace-normalized parity checked. TICKET-052 explicitly references the module. Quick/full gates pass (251 unit, 155 browser, 17 conditional skips). No rendered UI changes or message delivery.
 
 - 2026-10-21: Needs a person (decision, account or physical task). Agents may prepare docs and record the outcome.
 
