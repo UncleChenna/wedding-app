@@ -2,7 +2,7 @@
 id: TICKET-023
 title: Redesign invitation, guest and RSVP tables to match the PRD
 epic: data-auth
-status: in_progress
+status: in_review
 priority: urgent
 estimate: L
 labels: [db, backend]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-003, TICKET-034]
 blocks: [TICKET-024, TICKET-025, TICKET-036, TICKET-040, TICKET-049, TICKET-056, TICKET-089, TICKET-171, TICKET-172]
 branch: TICKET-023
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/41
 created: 2026-10-21
 updated: 2026-10-26
 started: 2026-10-26
@@ -71,5 +71,5 @@ _Agents append dated notes here while working._
 - 2026-10-26 — todo → in_progress — divine (codex)
 - 2026-10-26 — in_progress → blocked — divine (codex) — Awaiting exact-path authorization for generated migration SQL, snapshot and journal; implementation local, plan pushed, draft PR https://github.com/UncleChenna/wedding-app/pull/41. Eight DB tests and independent build/browser checks pass; full gate blocked by protected-file hook.
 - 2026-10-26 — blocked → in_progress — divine (codex)
-
 - 2026-10-26 — Eight real PostgreSQL constraints passed, migration applied twice with identical counts, RLS preserved, and compatible seed verified. User approved the exact generated migration SQL/snapshot/journal paths and recording that approval. Final integrated gate remains required before review.
+- 2026-10-26 — in_progress → in_review — divine (codex)
