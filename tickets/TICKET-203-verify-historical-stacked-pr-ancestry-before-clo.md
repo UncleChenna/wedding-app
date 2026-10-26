@@ -2,7 +2,7 @@
 id: TICKET-203
 title: Verify historical stacked PR ancestry before closing tickets
 epic: foundations
-status: in_review
+status: done
 priority: high
 estimate: S
 labels: [infra, test]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/37
 created: 2026-10-26
 updated: 2026-10-26
 started: 2026-10-26
-completed: ""
+completed: 2026-10-26
 reason: ""
 resume_to: ""
 ---
@@ -68,3 +68,4 @@ TICKET-186 and TICKET-187 remain in_review because their merged PRs targeted his
 - 2026-10-26 — todo → claimed — divine (codex)
 - 2026-10-26 — todo → in_progress — divine (codex)
 - 2026-10-26 — in_progress → in_review — divine (codex)
+- 2026-10-26 — in_review → done — divine (codex)
