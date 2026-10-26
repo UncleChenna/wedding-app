@@ -1,8 +1,38 @@
 # Progress log
 
+## 2026-10-26 — TICKET-007 — Real GitHub claim race
+
+Two-clone claim race passed and the probe claim was released. See [handoff](handoffs/TICKET-007.md) and [evidence](reviews/TICKET-007/README.md). The user selected warm wording and authorized resuming TICKET-015. TICKET-006 remains blocked on Docker health.
+
+## 2026-10-26 — TICKET-192 — Staff status follow-up
+
+Fixed empty detail rendering, added badge icon overrides and stable typography test selectors. See [handoff](handoffs/TICKET-192.md) and [review](reviews/TICKET-192/README.md). Shared-component PR stays for human review; TICKET-015 remains paused.
+
+## 2026-10-26 — TICKET-200 — Ordering preview
+
+Built the sample table/menu/review/service journey. See [handoff](handoffs/TICKET-200.md) and [UI evidence](reviews/TICKET-200/README.md). TICKET-201 tracks deferred release QA; TICKET-015 remains paused.
+
+## 2026-10-26 — TICKET-199 — RSVP preview
+
+Built the complete sample RSVP journey. See [handoff](handoffs/TICKET-199.md) and [UI evidence](reviews/TICKET-199/README.md). TICKET-201 tracks deferred release QA under the approved preview exception; TICKET-015 remains paused.
+
+## 2026-10-26 — TICKET-198 — Visible wedding pages
+
+Home, invitation guidance and review navigation now available. See [ticket handoff](handoffs/TICKET-198.md) for verification and remaining device checks. RSVP (199) and ordering (200) are the next frontend priorities; 015 stays paused.
+
 Add-only history, newest first: prepend new entries below this template, never rewrite old entries. Legacy entries below retain their original wording; authors/agents were not recorded at the time.
 
 ```markdown
+## 2026-10-26 — TICKET-191 — Quantity stepper keyboard fix
+
+- **Changed:** Preserve typed quantities and focus at bounds; forward input props.
+- **Checks:** Quick/full gates pass (235 unit tests, 95 browser passes, 13 conditional skips). See docs/handoffs/TICKET-191.md and docs/reviews/TICKET-191/. TICKET-015 remains paused.
+
+## 2026-10-26 — TICKET-197 — Hook pnpm lookup
+
+- **Changed:** Added existing-installation lookup for minimal GUI PATH; verification failures remain blocking.
+- **Evidence / next:** See docs/handoffs/TICKET-197.md for checks and review status. Human merge only.
+
 ## YYYY-MM-DD HH:mm UTC — TASK-ID — Title
 
 - **Who / agent / branch:** owner · agent · branch

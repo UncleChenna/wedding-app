@@ -2,20 +2,20 @@
 id: TICKET-106
 title: Add an offline fallback page
 epic: pwa
-status: todo
+status: in_review
 priority: high
 estimate: S
 labels: [pwa, frontend]
 module: shared
-owner: ""
-agent: ""
+owner: unclechenna
+agent: claude
 blocked_by: [TICKET-105]
 blocks: [TICKET-113]
-branch: ""
-pr: ""
+branch: TICKET-106
+pr: https://github.com/UncleChenna/wedding-app/pull/27
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-10-25
+started: 2026-10-25
 completed: ""
 reason: ""
 resume_to: ""
@@ -39,7 +39,7 @@ See: [Connectivity plan](../docs/prd.md#connectivity-plan-signal-unknown).
 
 ## Acceptance criteria
 
-- [ ] Offline navigation to an uncached route shows the offline page (e2e).
+- [x] Offline navigation to an uncached route shows the offline page (e2e).
 
 ## Test plan
 
@@ -54,6 +54,15 @@ See: [Connectivity plan](../docs/prd.md#connectivity-plan-signal-unknown).
 
 _Agents append dated notes here while working._
 
+- 2026-10-25 (unclechenna): `/offline` is a static guest page (no guest data). The worker precaches it on install into `wedding-offline-v1`, together with its build assets and CSS fonts (best-effort). Same-origin navigations get `network-offline-fallback`: the network as normal, and the offline page only when the fetch fails. `fetch()` calls are not navigations, so `/admin` still fails offline.
+  - **e2e:** offline navigation to the never-visited `/i/never-opened-token` shows the styled page, and "Try again" recovers once online.
+  - **Mutation check:** without the fallback, the test fails with `ERR_INTERNET_DISCONNECTED`.
+  - **Not done here:** the scope's "link to the cached pass if present" depends on TICKET-107, which defines the saved pass; that ticket's planned-extensions row now says to add the link.
+  - **Filed:** TICKET-195 (screenshots captured mid-transition after a theme swap) and TICKET-194 (`t:new` burns an id on invalid input).
+
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-25 — todo → claimed — unclechenna (claude)
+- 2026-10-25 — todo → in_progress — unclechenna (claude)
+- 2026-10-25 — in_progress → in_review — unclechenna (claude)

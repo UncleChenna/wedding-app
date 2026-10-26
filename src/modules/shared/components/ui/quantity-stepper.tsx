@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type KeyboardEvent } from "react";
+import { useRef, useState, type KeyboardEvent } from "react";
 
 import { cn } from "../../lib/cn";
 import { controlClasses, FieldMessages, useFieldIds, type FieldMessageProps } from "./field";
@@ -16,6 +16,8 @@ export interface QuantityStepperProps extends FieldMessageProps {
   defaultValue?: number;
   onValueChange?: (value: number) => void;
   disabled?: boolean;
+  className?: string;
+  required?: boolean;
 }
 
 const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n));
@@ -38,9 +40,12 @@ export function QuantityStepper({
   defaultValue,
   onValueChange,
   disabled,
+  className,
+  required,
   hint,
   error,
 }: QuantityStepperProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
   const ids = useFieldIds({ id, hint, error });
   const [internal, setInternal] = useState(clamp(defaultValue ?? min, min, max));
   const current = value ?? internal;
@@ -55,15 +60,24 @@ export function QuantityStepper({
   };
 
   const onKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    const parsed = draft === null ? current : Number(draft);
+    const base = clamp(Number.isFinite(parsed) ? parsed : min, min, max);
     const moves: Record<string, number> = {
-      ArrowUp: current + step,
-      ArrowDown: current - step,
+      ArrowUp: base + step,
+      ArrowDown: base - step,
       Home: min,
       End: max,
     };
     const next = moves[event.key];
     if (next === undefined) return;
     event.preventDefault();
+    commit(next);
+  };
+
+  const stepFromButton = (delta: number) => {
+    const next = clamp(current + delta, min, max);
+    // A newly disabled button cannot retain keyboard focus reliably across browsers.
+    if (next === min || next === max) inputRef.current?.focus();
     commit(next);
   };
 
@@ -78,7 +92,7 @@ export function QuantityStepper({
           aria-label={`Decrease ${label}`}
           aria-controls={ids.controlId}
           disabled={disabled || current <= min}
-          onClick={() => commit(current - step)}
+          onClick={() => stepFromButton(-step)}
           className={stepButton}
         >
           <svg
@@ -93,6 +107,8 @@ export function QuantityStepper({
           </svg>
         </button>
         <input
+          ref={inputRef}
+          required={required}
           id={ids.controlId}
           name={name}
           type="number"
@@ -111,6 +127,7 @@ export function QuantityStepper({
             controlClasses,
             "min-h-11 w-20 [appearance:textfield] text-center tabular-nums [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
             error && "border-danger",
+            className,
           )}
         />
         <button
@@ -118,7 +135,7 @@ export function QuantityStepper({
           aria-label={`Increase ${label}`}
           aria-controls={ids.controlId}
           disabled={disabled || current >= max}
-          onClick={() => commit(current + step)}
+          onClick={() => stepFromButton(step)}
           className={stepButton}
         >
           <svg

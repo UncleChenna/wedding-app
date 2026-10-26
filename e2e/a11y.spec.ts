@@ -1,7 +1,7 @@
-import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
 import { listThemes } from "../src/modules/theming";
+import { scanA11y } from "./support/axe";
 
 /**
  * Base component accessibility (TICKET-017): keyboard-only Sheet use, 44px tap
@@ -72,12 +72,16 @@ test.describe("base components @smoke", () => {
         const panel = staff.getByRole("region", { name: label, exact: true });
         await expect(panel).toBeVisible();
         await expect(panel.getByRole("img", { name: `${label} icon`, exact: true })).toBeVisible();
-        const sizes = await panel.evaluate((el) =>
-          [...el.querySelectorAll("p")].map((p) => parseFloat(getComputedStyle(p).fontSize)),
-        );
-        const [labelSize = 0, identifierSize = 0, detailSize = 0] = sizes;
-        expect(identifierSize).toBeGreaterThanOrEqual(32);
-        expect(Math.min(labelSize, detailSize)).toBeGreaterThanOrEqual(18);
+        for (const [testId, minimum] of [
+          ["status-label", 18],
+          ["status-identifier", 32],
+          ["status-detail", 18],
+        ] as const) {
+          const text = panel.getByTestId(testId);
+          await expect(text).toBeVisible();
+          const size = await text.evaluate((el) => parseFloat(getComputedStyle(el).fontSize));
+          expect(size, testId).toBeGreaterThanOrEqual(minimum);
+        }
       }
     }
   });
@@ -113,32 +117,12 @@ test.describe("base components @smoke", () => {
     page,
   }) => {
     await page.goto("/dev/theme");
-    // Scan the settled page: mid-fade text has partial opacity and would be measured wrongly.
-    // Infinite animations (the loading spinner) never finish, so wait only for finite ones.
-    await page.evaluate(() =>
-      Promise.all(
-        document
-          .getAnimations()
-          .filter((a) => a.effect?.getTiming().iterations !== Infinity)
-          .map((a) => a.finished),
-      ),
-    );
-    const closed = await new AxeBuilder({ page })
-      .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
-      .analyze();
-    expect(
-      closed.violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target).join(", ")}`),
-    ).toEqual([]);
+    expect(await scanA11y(page)).toEqual([]);
 
     const first = listThemes()[0];
     if (!first) throw new Error("no themes registered");
     await page.getByTestId(`theme-${first.id}`).getByRole("button", { name: "Open sheet" }).click();
     await expect(page.getByRole("dialog", { name: "Your order" })).toBeVisible();
-    const open = await new AxeBuilder({ page })
-      .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
-      .analyze();
-    expect(
-      open.violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target).join(", ")}`),
-    ).toEqual([]);
+    expect(await scanA11y(page)).toEqual([]);
   });
 });

@@ -13,7 +13,10 @@ const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
   display: "swap",
 });
+// Alternate-theme fonts remain available on demand without competing with the
+// default invitation fonts during the first page load.
 const playfair = Playfair_Display({
+  preload: false,
   subsets: ["latin"],
   variable: "--font-playfair",
   display: "swap",
@@ -24,6 +27,7 @@ const inter = Inter({
   display: "swap",
 });
 const jost = Jost({
+  preload: false,
   subsets: ["latin"],
   variable: "--font-jost",
   display: "swap",

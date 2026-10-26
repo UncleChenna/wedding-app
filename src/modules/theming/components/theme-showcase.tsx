@@ -7,7 +7,10 @@ import {
   CardHeader,
   CardTitle,
   Checkbox,
+  Divider,
   Input,
+  Monogram,
+  Paper,
   QuantityStepper,
   RadioGroup,
   Select,
@@ -170,8 +173,27 @@ export function ThemeShowcase({ theme, active }: { theme: Theme; active: boolean
             <div className="flex flex-wrap gap-3">
               <StatusBadge tone="success">Served</StatusBadge>
               <StatusBadge tone="warning">Preparing</StatusBadge>
-              <StatusBadge tone="danger">Cancelled</StatusBadge>
+              <StatusBadge tone="danger" icon="ban">
+                Cancelled
+              </StatusBadge>
             </div>
+          </div>
+
+          <div className="flex flex-col gap-4" data-testid="decorations">
+            <h3 className="text-sm font-semibold tracking-wider text-muted-foreground uppercase">
+              Decoration
+            </h3>
+            <Paper className="bg-card text-card-foreground flex flex-col items-center gap-6 rounded-lg border border-border px-6 py-10 text-center">
+              <Monogram initials={["A", "G"]} />
+              <p className="max-w-prose text-base leading-relaxed">
+                Together with their families, Ada and Grace invite you to celebrate their wedding.
+              </p>
+              <Divider className="max-w-xs" />
+              <p className="text-xs font-semibold tracking-widest text-muted-foreground uppercase">
+                The celebration
+              </p>
+            </Paper>
+            <Divider variant="staff" />
           </div>
 
           <div className="flex flex-col gap-3">

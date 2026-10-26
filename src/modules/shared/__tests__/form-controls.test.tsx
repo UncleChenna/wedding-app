@@ -177,6 +177,37 @@ describe("QuantityStepper", () => {
     expect(input).toHaveValue(5);
   });
 
+  it("steps from the typed draft and forwards input props", () => {
+    render(
+      <QuantityStepper label="Meals" defaultValue={1} max={5} className="custom-input" required />,
+    );
+    const input = screen.getByRole("spinbutton", { name: "Meals" });
+    expect(input).toBeRequired();
+    expect(input).toHaveClass("custom-input");
+    fireEvent.change(input, { target: { value: "3" } });
+    fireEvent.keyDown(input, { key: "ArrowUp" });
+    expect(input).toHaveValue(4);
+    fireEvent.change(input, { target: { value: "3" } });
+    fireEvent.keyDown(input, { key: "ArrowDown" });
+    expect(input).toHaveValue(2);
+  });
+
+  it("returns focus to the input when either button reaches its bound", () => {
+    render(<QuantityStepper label="Meals" defaultValue={1} max={2} />);
+    const input = screen.getByRole("spinbutton", { name: "Meals" });
+    const plus = screen.getByRole("button", { name: "Increase Meals" });
+    const minus = screen.getByRole("button", { name: "Decrease Meals" });
+    plus.focus();
+    fireEvent.click(plus);
+    expect(input).toHaveFocus();
+    minus.focus();
+    fireEvent.click(minus);
+    expect(minus).toHaveFocus();
+    fireEvent.click(minus);
+    expect(input).toHaveFocus();
+    expect(input).toHaveValue(0);
+  });
+
   it("links hint and error like every other control", () => {
     render(<QuantityStepper label="Chicken" hint="Max 5 per order" error="Too many" />);
     expectErrorContract(

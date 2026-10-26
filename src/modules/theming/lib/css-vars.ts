@@ -21,6 +21,10 @@ export function themeToCssVars(theme: Theme): CssVars {
     vars["--t-pattern-image"] = `url(${JSON.stringify(theme.pattern.src)})`;
     vars["--t-pattern-opacity"] = String(theme.pattern.strength);
     vars["--t-pattern-size"] = theme.pattern.size;
+  } else {
+    // Reset rather than omit: a plain theme scoped inside a patterned one must not inherit it.
+    vars["--t-pattern-image"] = "none";
+    vars["--t-pattern-opacity"] = "0";
   }
   return vars;
 }
