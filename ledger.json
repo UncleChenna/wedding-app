@@ -405,15 +405,16 @@
         "- 2026-10-25 — todo → in_progress — unclechenna (claude)",
         "- 2026-10-25 — in_progress → blocked — unclechenna (claude) — Criterion 3 needs Lighthouse: npx lighthouse was denied (external code) and adding it as a dependency needs owner lockfile approval. E2E Layout Instability measurement shows CLS 0; owner to approve Lighthouse or accept that evidence. Draft PR open.",
         "- 2026-10-26 — blocked → in_progress — unclechenna (codex) — User explicitly resumed TICKET-015; pinned Lighthouse 13.5.0 is now available without project dependency changes.",
-        "- 2026-10-26 — in_progress → in_review — unclechenna (claude)"
+        "- 2026-10-26 — in_progress → in_review — unclechenna (claude)",
+        "- 2026-10-26 — in_review → done — unclechenna (claude)"
       ],
-      "status": "in_review",
+      "status": "done",
       "owner": "unclechenna",
       "agent": "claude",
       "branch": "TICKET-015",
       "pr": "https://github.com/UncleChenna/wedding-app/pull/24",
       "started": "2026-10-25",
-      "completed": "",
+      "completed": "2026-10-26",
       "updated": "2026-10-26",
       "reason": "",
       "resume_to": ""
