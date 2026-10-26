@@ -1,5 +1,9 @@
 # Progress log
 
+## 2026-10-26 — TICKET-203 — Historical completion evidence
+
+Added fresh merge ancestry and same-commit criteria checks. Historical PR #4/#5 did not satisfy ancestry, so their tickets remain open. See [handoff](handoffs/TICKET-203.md) for evidence and pending integration verification.
+
 ## 2026-10-26 — TICKET-035 — Warm invitation voice
 
 Recorded the user-approved Warm wording and shared copy catalogue. See [handoff](handoffs/TICKET-035.md) for verification and downstream integration scope.

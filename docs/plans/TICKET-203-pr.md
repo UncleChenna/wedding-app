@@ -21,6 +21,8 @@ Actual PR #4/#5 merge commits are NOT reachable from inspected develop `fa36b00`
 
 # Verification
 
+Draft: the results below precede rebasing onto the typography merge. Final integration verification is pending; this PR is not ready to merge yet.
+
 Quick/full gates passed: 258 unit tests, production build, 155 browser passes and 17 conditional skips. Focused regression plus existing ticket tests: 31 passed, including a rerun after the diagnostic update. Ticket validation: 203 definitions valid.
 
 # Risks and rollout

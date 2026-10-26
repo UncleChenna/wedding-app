@@ -19,3 +19,9 @@ An earlier invalid t:new consumed ID 202 without creating a definition; committi
 ## Next
 
 Integrate current develop, run the PR gate and publish the review. Merge only after required CI passes under the user's standing authorization. Historical tickets need separate evidence reconciliation; do not weaken the ancestry check.
+
+## Integration status
+
+Draft PR: https://github.com/UncleChenna/wedding-app/pull/37. Rebased onto typography merge `d22e37a7b88e6dfc33b265584833d1f79da98ee4`. The full-gate result above predates that rebase; final integration verification and t:pr remain required. TICKET-035 is undergoing clean-checkout verification after its existing Turbopack cache repeatedly omitted typography utilities; its CI passed. Await that merge before integrating its shared progress entry.
+
+Next commands: fetch/rebase origin/develop after PR #36 merges, run quick/full gates and `pnpm t:pr TICKET-203`, ready PR #37, and verify required CI on its final head before merging. Keep TICKET-186/187 in_review unless new evidence satisfies the guard.
