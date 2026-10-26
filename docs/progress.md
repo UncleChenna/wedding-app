@@ -1,5 +1,9 @@
 # Progress log
 
+## 2026-10-26 — TICKET-195 — Settled theme screenshots
+
+The test helper now waits for finite colour transitions. Four red/green browser regressions and six inspected screenshots prove the fix; full verification is running. See [handoff](handoffs/TICKET-195.md).
+
 ## 2026-10-26 — TICKET-194 — Validate before allocation
 
 Rejected ticket requests now preserve the ledger and next ID. See [handoff](handoffs/TICKET-194.md) for regression evidence, gate results and disclosed retries. TICKET-203 is merged; TICKET-106 completion was reconciled against its merged PR.
