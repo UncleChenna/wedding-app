@@ -2,7 +2,7 @@
 id: TICKET-197
 title: Resolve pnpm for hooks launched with a minimal PATH
 epic: foundations
-status: in_progress
+status: in_review
 priority: urgent
 estimate: S
 labels: [infra, test]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: []
 blocks: []
 branch: TICKET-197
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/28
 created: 2026-10-26
 updated: 2026-10-26
 started: 2026-10-26
@@ -66,3 +66,4 @@ GUI-launched agent hooks cannot locate pnpm when its user installation directory
 - 2026-10-26 — new → todo — divine
 - 2026-10-26 — todo → claimed — divine (codex)
 - 2026-10-26 — todo → in_progress — divine (codex)
+- 2026-10-26 — in_progress → in_review — divine (codex)
