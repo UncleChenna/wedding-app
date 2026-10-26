@@ -1,5 +1,9 @@
 # Progress log
 
+## 2026-10-26 — TICKET-200 — Ordering preview
+
+Built the sample table/menu/review/service journey. See [handoff](handoffs/TICKET-200.md) and [UI evidence](reviews/TICKET-200/README.md). TICKET-201 tracks deferred release QA; TICKET-015 remains paused.
+
 ## 2026-10-26 — TICKET-199 — RSVP preview
 
 Built the complete sample RSVP journey. See [handoff](handoffs/TICKET-199.md) and [UI evidence](reviews/TICKET-199/README.md). TICKET-201 tracks deferred release QA under the approved preview exception; TICKET-015 remains paused.

@@ -37,11 +37,11 @@ Persisted guest data, authentication, QR credentials, live orders and deployment
 
 ## Acceptance criteria
 
-- [ ] The complete preview journey works with clear sample-data and non-submission labels.
-- [ ] Input errors, empty states, back navigation and the terminal states are testable without a backend.
-- [ ] /dev navigation links the new preview; keyboard and reduced-motion behavior work.
-- [ ] Both registered themes pass axe and fit 375/768/1280px; screenshots are recorded and inspected.
-- [ ] Unit, end-to-end and full verification pass; production integration boundaries are documented.
+- [x] The complete preview journey works with clear sample-data and non-submission labels.
+- [x] Input errors, empty states, back navigation and the terminal states are testable without a backend.
+- [x] /dev navigation links the new preview; keyboard and reduced-motion behavior work.
+- [x] Both registered themes pass axe and fit 375/768/1280px; screenshots are recorded and inspected.
+- [x] Unit, end-to-end and full verification pass; production integration boundaries are documented.
 
 ## Test plan
 
@@ -54,6 +54,8 @@ Persisted guest data, authentication, QR credentials, live orders and deployment
 - src/app/dev/, relevant feature module components and tests, e2e/, per-ticket handoff and review evidence.
 
 ## Notes / decisions
+
+- 2026-10-26: Complete labelled frontend preview; quick/full verification passed (242 unit, 155 browser, 17 conditional skips), 48 state screenshots reviewed and 12 route captures passed. No backend calls. Release QA deferred to TICKET-201 under explicit user approval; local Supabase startup failed and database readiness is not claimed.
 
 - User-directed frontend priority. TICKET-015 stays paused. Depends on TICKET-198 for navigation and shared visual context.
 
