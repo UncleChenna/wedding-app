@@ -525,15 +525,16 @@
         "- 2026-10-26 — todo → in_progress — divine (codex)",
         "- 2026-10-26 — in_progress → in_review — divine (codex)",
         "- 2026-10-26 — in_review → in_progress — divine (codex) — Finish performance evidence and review readiness before continuing frontend delivery",
-        "- 2026-10-26 — in_progress → in_review — divine (codex)"
+        "- 2026-10-26 — in_progress → in_review — divine (codex)",
+        "- 2026-10-26 — in_review → done — divine (codex)"
       ],
-      "status": "in_review",
+      "status": "done",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-198",
       "pr": "https://github.com/UncleChenna/wedding-app/pull/30",
       "started": "2026-10-26",
-      "completed": "",
+      "completed": "2026-10-26",
       "updated": "2026-10-26",
       "reason": "",
       "resume_to": ""
