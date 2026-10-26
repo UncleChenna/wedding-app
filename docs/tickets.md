@@ -149,3 +149,7 @@ VS Code: approve **Ticket dashboard (local)** on folder open, or use **Tasks: Ru
 ## Historical stacked PR completion
 
 New PRs still target `develop`. Completion checks fetch `origin/develop`, resolve its exact commit, and require the merged PR’s merge commit to be an ancestor of that snapshot. This also supports historical PRs merged through stacked branches. Acceptance criteria are read from the ticket file at the same fetched commit; local checkboxes and stale tracking refs cannot substitute. Missing merge history, ticket content or a failed fetch prevents completion. Owner and lifecycle checks still apply.
+
+## Validate before reserving an ID
+
+`t:new` validates its owner and provisional ticket metadata before changing the ledger. Invalid estimates, priorities or creation statuses report allowed values without consuming an ID. New tickets start in `backlog` or `todo`; use `t:move` for later lifecycle states. A successful allocation remains permanent, including if a later filesystem write fails.
