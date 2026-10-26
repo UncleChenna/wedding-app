@@ -74,7 +74,7 @@ describe("typography scale", () => {
   });
 
   it("the script role is only for the couple's names and falls back to the display font", () => {
-    expect(utility("type-script")["font-family"]).toContain("var(--font-script)");
+    expect(utility("type-script")["font-family"]).toContain("var(--t-font-script,");
     expect(css).toMatch(/--font-script:\s*var\(--t-font-script, var\(--t-font-display\)\)/);
     const script = TYPE_STYLES.find((s) => s.className === "type-script");
     expect(script?.use).toMatch(/couple's names only/i);
@@ -82,12 +82,12 @@ describe("typography scale", () => {
 });
 
 describe("optional script font in themes", () => {
-  it("emits --t-font-script only when a theme sets fonts.script", () => {
+  it("resets the script role to its own display font when a theme omits fonts.script", () => {
     const base = themes[0];
     if (!base) throw new Error("no themes");
-    expect(
-      themeToCssVars({ ...base, fonts: { ...base.fonts } })["--t-font-script"],
-    ).toBeUndefined();
+    expect(themeToCssVars({ ...base, fonts: { ...base.fonts } })["--t-font-script"]).toBe(
+      `var(--font-${base.fonts.display})`,
+    );
     const withScript = themeSchema.parse({
       ...base,
       fonts: { ...base.fonts, script: "cormorant" },

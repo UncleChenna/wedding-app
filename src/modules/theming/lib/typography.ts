@@ -15,7 +15,7 @@ export const TYPE_STYLES: readonly TypeStyle[] = [
     className: "type-script",
     name: "Script",
     use: "The couple's names only. Uses the theme's script font, or the display font.",
-    sample: "Ada & Grace",
+    sample: "Uchenna & Adaora",
   },
   {
     className: "type-display",

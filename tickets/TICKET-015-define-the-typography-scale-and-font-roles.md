@@ -43,7 +43,7 @@ See: [Design principles](../docs/prd.md#design-principles) · [Design principles
 
 - [x] Headings are ≥32px at 375px and ≥48px at 1280px; body ≥16px with line-height 1.5–1.7; labels 0.08–0.15em tracking.
 - [x] /dev/theme shows every text style in every theme.
-- [ ] Lighthouse reports CLS 0 on `/dev/theme`.
+- [x] Lighthouse reports CLS 0 on `/dev/theme`.
 
 ## Test plan
 
@@ -57,6 +57,8 @@ See: [Design principles](../docs/prd.md#design-principles) · [Design principles
 - `src/modules/theming/components/fonts.ts`
 
 ## Notes / decisions
+
+- 2026-10-26: User resumed work. Lighthouse 13.5.0 ran without project dependency changes: mobile and desktop CLS exactly 0, Accessibility 100; Performance 85 mobile/100 desktop on the component catalog. Scoped-font regression fixed and verified. See docs/reviews/TICKET-015/README.md for screenshots, full-gate results and deferred guest-release QA.
 
 - 2026-10-25: Named @utility styles in globals.css (type-script, -display, -heading, -subheading, -label, -body-lg, -body, -staff-id, -staff), listed with intended uses in src/modules/theming/lib/typography.ts. Fluid clamp() sizes: display 40px at 375 to 69px at 1280, heading 32px at 375 to 48px at 1280. Optional fonts.script (schema rebuilt by pnpm themes:schema under the owner's approval); --font-script falls back to the display font, so no extra font is loaded.
 - 2026-10-25: Evidence: unit tests parse globals.css and check every style's rules; browser tests check computed sizes, tracking and line height at 375 and 1280 in both themes; an e2e Layout Instability observer measures CLS exactly 0 on /dev/theme (mobile and desktop). `pnpm verify` passed on develop 36fdf31: 219 unit tests, build, 50 browser tests. Screenshots inspected.

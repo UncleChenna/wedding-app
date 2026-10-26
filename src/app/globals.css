@@ -192,35 +192,35 @@
  * Fluid sizes: headings ≥32px at 375px and ≥48px at 1280px.
  */
 @utility type-script {
-  font-family: var(--font-script);
+  font-family: var(--t-font-script, var(--t-font-display));
   font-size: clamp(2.5rem, 1.75rem + 3.2vw, 4.5rem);
   line-height: 1.1;
   letter-spacing: 0;
   font-weight: 400;
 }
 @utility type-display {
-  font-family: var(--font-display);
+  font-family: var(--t-font-display);
   font-size: clamp(2.5rem, 1.75rem + 3.2vw, 4.5rem);
   line-height: 1.05;
   letter-spacing: -0.02em;
   font-weight: 500;
 }
 @utility type-heading {
-  font-family: var(--font-display);
+  font-family: var(--t-font-display);
   font-size: clamp(2rem, 1.5rem + 2.2vw, 3rem);
   line-height: 1.15;
   letter-spacing: -0.01em;
   font-weight: 500;
 }
 @utility type-subheading {
-  font-family: var(--font-display);
+  font-family: var(--t-font-display);
   font-size: clamp(1.375rem, 1.2rem + 0.75vw, 1.75rem);
   line-height: 1.25;
   letter-spacing: 0;
   font-weight: 500;
 }
 @utility type-label {
-  font-family: var(--font-sans);
+  font-family: var(--t-font-body);
   font-size: 0.8125rem;
   line-height: 1.4;
   letter-spacing: 0.12em;
@@ -228,24 +228,24 @@
   font-weight: 600;
 }
 @utility type-body-lg {
-  font-family: var(--font-sans);
+  font-family: var(--t-font-body);
   font-size: 1.125rem;
   line-height: 1.6;
 }
 @utility type-body {
-  font-family: var(--font-sans);
+  font-family: var(--t-font-body);
   font-size: 1rem;
   line-height: 1.6;
 }
 @utility type-staff-id {
-  font-family: var(--font-display);
+  font-family: var(--t-font-display);
   font-size: 2.25rem;
   line-height: 1.1;
   letter-spacing: 0;
   font-weight: 500;
 }
 @utility type-staff {
-  font-family: var(--font-sans);
+  font-family: var(--t-font-body);
   font-size: 1.125rem;
   line-height: 1.5;
 }

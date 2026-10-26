@@ -1,5 +1,9 @@
 # Progress log
 
+## 2026-10-26 — TICKET-015 — Typography resumed
+
+User authorized resumption. Lighthouse now confirms CLS 0; scoped font roles corrected and verified in both themes. See [handoff](handoffs/TICKET-015.md) and [review](reviews/TICKET-015/README.md). Warm invitation voice is approved for TICKET-035.
+
 ## 2026-10-26 — TICKET-007 — Real GitHub claim race
 
 Two-clone claim race passed and the probe claim was released. See [handoff](handoffs/TICKET-007.md) and [evidence](reviews/TICKET-007/README.md). The user selected warm wording and authorized resuming TICKET-015. TICKET-006 remains blocked on Docker health.

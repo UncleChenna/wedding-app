@@ -112,6 +112,8 @@ Use at most one monogram per page and dividers only between major sections.
 
 Themes pick fonts by key: `cormorant`, `playfair`, `inter`, `jost`. To add a font, load it with `next/font/google` in `src/modules/theming/components/fonts.ts` (variable `--font-<key>`), add the key to `FONT_KEYS` in `lib/schema.ts`, then run `pnpm themes:schema`.
 
+Themes may optionally set `fonts.script` to a curated font key for the couple’s names. When omitted, the script role explicitly resets to that theme’s display font, including inside another theme. Named `type-*` utilities read the scoped `--t-font-*` variables directly so nested previews retain their own font roles. No additional script font is loaded by default.
+
 ## Adding a new token
 
 1. Add it to `COLOR_TOKENS` in `lib/schema.ts` (and a contrast pair in `lib/contrast.ts` if it carries text).

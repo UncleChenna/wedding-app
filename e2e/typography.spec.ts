@@ -20,6 +20,44 @@ async function measure(page: Page, themeId: string, className: string) {
 }
 
 test.describe("typography scale @smoke", () => {
+  test("font roles follow each scoped theme instead of inheriting outer aliases", async ({
+    page,
+  }) => {
+    await page.goto("/dev/theme");
+    await page.evaluate(() =>
+      document.documentElement.style.setProperty("--t-font-script", "var(--font-inter)"),
+    );
+    for (const theme of listThemes()) {
+      const scope = page.getByTestId(`theme-${theme.id}`);
+      for (const [style, key] of [
+        ["type-display", theme.fonts.display],
+        ["type-heading", theme.fonts.display],
+        ["type-subheading", theme.fonts.display],
+        ["type-staff-id", theme.fonts.display],
+        ["type-script", theme.fonts.script ?? theme.fonts.display],
+        ["type-body", theme.fonts.body],
+        ["type-body-lg", theme.fonts.body],
+        ["type-label", theme.fonts.body],
+        ["type-staff", theme.fonts.body],
+      ]) {
+        const fonts = await scope.evaluate(
+          (el, { style, key }) => {
+            const probe = document.createElement("span");
+            probe.style.fontFamily = `var(--font-${key})`;
+            el.append(probe);
+            const expected = getComputedStyle(probe).fontFamily.split(",")[0];
+            probe.remove();
+            const sample = el.querySelector(`[data-type-style="${style}"]`);
+            if (!sample) throw new Error(`Missing sample ${style}`);
+            return { expected, actual: getComputedStyle(sample).fontFamily.split(",")[0] };
+          },
+          { style, key },
+        );
+        expect(fonts.actual, `${theme.id} ${style}`).toBe(fonts.expected);
+      }
+    }
+  });
+
   for (const [width, minHeading] of [
     [375, 32],
     [1280, 48],
