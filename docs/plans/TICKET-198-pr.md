@@ -21,7 +21,7 @@ All four ticket criteria are checked: navigable public pages, honest invitation 
 
 pnpm verify:quick and pnpm verify passed: 200 ticket definitions, formatting, lint, types, 234 unit tests, production build and 117 browser tests; 15 pre-existing skips. UI checklist and performance measurements are in docs/reviews/TICKET-198.md. Real WhatsApp iOS/Android testing is not available and remains unverified.
 
-Performance follow-up: alternate-theme fonts load on demand, hero loads eagerly at high priority, and guest links defer destination loading until activation. Latest mobile scores: home 92, guidance 96, preview 94; all accessibility 100 and CLS 0. Home varied between 92 and 95. Performance threshold and actual WhatsApp-device evidence remain unresolved; this PR remains draft.
+Performance follow-up: alternate-theme fonts load on demand, hero loads eagerly at high priority, and guest links defer destination loading until activation. Latest mobile scores: home 92, guidance 96, preview 94; all accessibility 100 and CLS 0. Home varied between 92 and 95. Performance threshold and actual WhatsApp-device evidence remain unresolved; the user explicitly approved merging this preview with those checks tracked separately in TICKET-201.
 
 # Risks and rollout
 
@@ -38,3 +38,7 @@ See docs/reviews/TICKET-198.md for per-item PASS/PARTIAL/NOT VERIFIED/N/A and ev
 # Harness changes, if any
 
 No hook, CI or shared workflow changes. The next frontend delivery order is recorded in docs/frontend-delivery.md and scoped follow-up tickets.
+
+# Approved preview exception
+
+The user approved "Merge previews; track remaining QA separately" on 26 October 2026. TICKET-201 records the exact remaining performance, WhatsApp iOS/Android and sharing requirements. Automated gates still apply. This merge does not certify production guest release.

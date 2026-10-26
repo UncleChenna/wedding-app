@@ -22,3 +22,7 @@ Development home links to /dev. In a production build, reviewers open /dev direc
 ## Photo provenance
 
 Invitation preview uses the spike's sample image, originally https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1800&q=85&fm=webp. It is labelled as a sample and is not represented as the couple. Replace it with an approved photograph before real invitation delivery. User confirmed names and date; all other sample details remain provisional.
+
+## Preview merge policy
+
+On 26 October 2026 the user approved merging previews with remaining QA tracked separately in TICKET-201. Continue automated verification, accessibility and responsive reviews for each preview. Do not release real guest flows until TICKET-201's performance and physical-device evidence is complete.

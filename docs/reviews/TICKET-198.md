@@ -37,3 +37,7 @@ CHANGES REQUESTED before final UI approval: bring home and preview consistently 
 ## 26 October follow-up
 
 Disabled alternate-theme font preloads (fonts remain available on demand), set the hero to eager/high-priority loading and disabled speculative prefetch on guest navigation links. The latter trades automatic background downloads for loading the destination on activation; navigation behavior is covered by the browser tests. No font faces, typography scale or theme tokens changed; TICKET-015 remains paused. Full gate repeated: 234 unit tests, 117 browser tests, 15 existing skips. Both-theme layout captures repeat successfully. Review decision remains CHANGES REQUESTED pending the stated evidence or an explicit preview-only exception from the user.
+
+## User-approved preview exception — 26 October 2026
+
+The user explicitly approved: "Merge previews; track remaining QA separately". Remaining performance and actual-device checks are tracked by TICKET-201. This approves merging labelled previews once automated gates pass; it does not approve guest production release or claim pending checks passed. TICKET-015 remains paused. Proceed with TICKET-199 after 198 merges.
