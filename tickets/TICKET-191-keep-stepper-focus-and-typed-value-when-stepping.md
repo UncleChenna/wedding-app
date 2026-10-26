@@ -2,20 +2,20 @@
 id: TICKET-191
 title: Keep stepper focus and typed value when stepping
 epic: design-system
-status: todo
+status: in_progress
 priority: medium
 estimate: S
 labels: [frontend]
 module: shared
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-018]
 blocks: []
-branch: ""
+branch: TICKET-191
 pr: ""
 created: 2026-10-25
-updated: 2026-10-25
-started: ""
+updated: 2026-10-26
+started: 2026-10-26
 completed: ""
 reason: ""
 resume_to: ""
@@ -60,5 +60,6 @@ Review of PR #19 (TICKET-018) found two keyboard issues in the shared QuantitySt
 
 ## Activity log
 
-
 - 2026-10-25 — new → todo — unclechenna (claude)
+- 2026-10-26 — todo → claimed — divine (codex)
+- 2026-10-26 — todo → in_progress — divine (codex)
