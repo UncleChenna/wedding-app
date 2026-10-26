@@ -2,20 +2,20 @@
 id: TICKET-192
 title: Tidy StatusPanel detail rendering and test selectors
 epic: design-system
-status: todo
+status: in_progress
 priority: low
 estimate: S
 labels: [frontend, test]
 module: shared
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-019]
 blocks: []
-branch: ""
+branch: TICKET-192
 pr: ""
 created: 2026-10-25
-updated: 2026-10-25
-started: ""
+updated: 2026-10-26
+started: 2026-10-26
 completed: ""
 reason: ""
 resume_to: ""
@@ -61,5 +61,6 @@ Non-blocking review notes on PR #20 (TICKET-019) for the shared staff status com
 
 ## Activity log
 
-
 - 2026-10-25 — new → todo — unclechenna (claude)
+- 2026-10-26 — todo → claimed — divine (codex)
+- 2026-10-26 — todo → in_progress — divine (codex)
