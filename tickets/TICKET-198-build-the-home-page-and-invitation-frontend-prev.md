@@ -2,7 +2,7 @@
 id: TICKET-198
 title: Build the home page and invitation frontend preview
 epic: invitations
-status: in_progress
+status: in_review
 priority: urgent
 estimate: M
 labels: [frontend, design]
