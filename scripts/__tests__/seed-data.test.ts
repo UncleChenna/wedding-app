@@ -12,13 +12,14 @@ describe("buildSeedData", () => {
   it("produces a realistic 200-300 guest wedding", () => {
     expect(data.guests.length).toBeGreaterThanOrEqual(200);
     expect(data.guests.length).toBeLessThanOrEqual(300);
-    expect(data.rsvps).toHaveLength(data.invitations.length);
+    expect(data.rsvps.length).toBeLessThan(data.invitations.length);
+    expect(data.rsvps.length).toBeGreaterThan(0);
   });
 
   it("never exceeds an invitation's seat allowance or a table's capacity", () => {
     for (const invitation of data.invitations) {
       const count = data.guests.filter((g) => g.invitationId === invitation.id).length;
-      expect(count).toBeLessThanOrEqual(invitation.maxGuests ?? 1);
+      expect(count).toBeLessThanOrEqual(1 + (invitation.maxTagAlongs ?? 1));
     }
     for (const table of data.tables) {
       expect(data.guests.filter((g) => g.tableId === table.id).length).toBeLessThanOrEqual(
@@ -27,8 +28,21 @@ describe("buildSeedData", () => {
     }
   });
 
-  it("uses unique secrets for invitation codes and QR tokens", () => {
-    expect(new Set(data.invitations.map((i) => i.code)).size).toBe(data.invitations.length);
-    expect(new Set(data.guests.map((g) => g.qrToken)).size).toBe(data.guests.length);
+  it("keeps response counts and statuses consistent with named guests", () => {
+    for (const response of data.rsvps) {
+      const invitation = data.invitations.find((item) => item.id === response.invitationId);
+      expect(invitation?.status).toBe(response.attending ? "rsvp_yes" : "rsvp_no");
+      expect(response.countAttending).toBe(
+        response.attending
+          ? data.guests.filter((guest) => guest.invitationId === response.invitationId).length
+          : 0,
+      );
+      expect(response.respondedAt).toBeInstanceOf(Date);
+    }
+  });
+
+  it("uses unique invitation tokens of sufficient length", () => {
+    expect(new Set(data.invitations.map((i) => i.token)).size).toBe(data.invitations.length);
+    expect(data.invitations.every((i) => (i.token?.length ?? 0) >= 22)).toBe(true);
   });
 });

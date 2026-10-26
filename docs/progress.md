@@ -1,5 +1,9 @@
 # Progress log
 
+## 2026-10-26 — TICKET-023 — Invitation schema prepared
+
+Generated the invitation/guest/RSVP migration and verified eight real database constraint cases, repeated migration counts and RLS. The user approved the exact generated paths; final integrated verification is pending. See [handoff](handoffs/TICKET-023.md).
+
 ## 2026-10-26 — TICKET-195 — Settled theme screenshots
 
 The test helper now waits for finite colour transitions. Four red/green browser regressions and six inspected screenshots prove the fix; full verification passed (270 unit tests, 167 browser passes, 17 conditional skips). See [handoff](handoffs/TICKET-195.md).
