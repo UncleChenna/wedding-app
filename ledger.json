@@ -524,9 +524,10 @@
         "- 2026-10-26 — todo → claimed — divine (codex)",
         "- 2026-10-26 — todo → in_progress — divine (codex)",
         "- 2026-10-26 — in_progress → in_review — divine (codex)",
-        "- 2026-10-26 — in_review → in_progress — divine (codex) — Finish performance evidence and review readiness before continuing frontend delivery"
+        "- 2026-10-26 — in_review → in_progress — divine (codex) — Finish performance evidence and review readiness before continuing frontend delivery",
+        "- 2026-10-26 — in_progress → in_review — divine (codex)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-198",
