@@ -628,12 +628,13 @@
     },
     "WED-005": {
       "log": [
-        "- 2026-10-26 — todo → claimed — rehearsal-a (codex)"
+        "- 2026-10-26 — todo → claimed — rehearsal-a (codex)",
+        "- 2026-10-26 — todo → released — rehearsal-a (codex) — TICKET-007 claim-race rehearsal complete"
       ],
       "status": "todo",
-      "owner": "rehearsal-a",
-      "agent": "codex",
-      "branch": "TICKET-005",
+      "owner": "",
+      "agent": "",
+      "branch": "",
       "pr": "",
       "started": "",
       "completed": "",
