@@ -1,5 +1,9 @@
 # Progress log
 
+## 2026-10-26 — TICKET-035 — Warm invitation voice
+
+Recorded the user-approved Warm wording and shared copy catalogue. See [handoff](handoffs/TICKET-035.md) for verification and downstream integration scope.
+
 ## 2026-10-26 — TICKET-015 — Typography resumed
 
 User authorized resumption. Lighthouse now confirms CLS 0; scoped font roles corrected and verified in both themes. See [handoff](handoffs/TICKET-015.md) and [review](reviews/TICKET-015/README.md). Warm invitation voice is approved for TICKET-035.

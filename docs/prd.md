@@ -295,10 +295,11 @@ is rehearsal, not coding.
 
 ## Invitation wording
 
-Ready-to-use copy for every message and key screen; pick one voice and use it throughout. Placeholders in braces are
-filled in by the site.
+**Selected voice: Warm**, approved by the couple on 2026-10-26 (TICKET-035). Use the Warm WhatsApp invitation, email, reminders and on-site wording below without copy edits. Playful and Formal remain reference alternatives, not the selected defaults. Final pre-send proofreading remains TICKET-158.
 
-### WhatsApp invitation (pick a voice)
+Application copy lives in `src/modules/invitations/lib/copy.ts`. TICKET-052 will fill the named placeholders and use the selected voice when generating messages. The on-site table is the approved copy contract for downstream screens.
+
+### WhatsApp invitation (Warm selected)
 
 - **Warm:** "Hi {GuestName}, two hearts, one date, and a seat with your name on it. {Couple} are getting married, and
   the day won't feel whole without you. Your personal invitation is waiting here: {Link}. Open it to RSVP and add
@@ -345,20 +346,20 @@ filled in by the site.
 
 These change the scope or the timeline; answer them before week 2.
 
-| Question                                                                           | Answer so far                                                            |
-| ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| How IVs go out                                                                     | Share menu (WhatsApp, Email, Copy link), no business account             |
-| Payment at the table                                                               | None, all food and drink is free                                         |
-| Venue signal                                                                       | Unknown, so offline check-in is a Must and a router is budgeted          |
-| Look and feel                                                                      | Premium, mobile-first, plug-and-play themes                              |
-| Wedding date and venue                                                             | Not needed for the build                                                 |
-| Guest count                                                                        | 200-300                                                                  |
-| IVs                                                                                | One per guest; the guest adds and edits tag-alongs until the wedding day |
-| Who can order                                                                      | Anyone at the table                                                      |
-| Table number                                                                       | Typed by the guest; one shared QR on every table card                    |
-| Caterer                                                                            | Watches the tablet and gets WhatsApp alerts                              |
-| Message wording                                                                    | Drafted above                                                            |
-| Maximum tag-alongs per IV, or no limit?                                            | **Open**                                                                 |
-| Which numbers get order alerts, and one message per order or a batch every minute? | **Open**                                                                 |
-| Who runs the gate and the boards on the day, and on whose devices?                 | **Open**                                                                 |
-| Domain name, wedding colours and photos for the first theme                        | **Open**                                                                 |
+| Question                                                                           | Answer so far                                                             |
+| ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| How IVs go out                                                                     | Share menu (WhatsApp, Email, Copy link), no business account              |
+| Payment at the table                                                               | None, all food and drink is free                                          |
+| Venue signal                                                                       | Unknown, so offline check-in is a Must and a router is budgeted           |
+| Look and feel                                                                      | Premium, mobile-first, plug-and-play themes                               |
+| Wedding date and venue                                                             | Not needed for the build                                                  |
+| Guest count                                                                        | 200-300                                                                   |
+| IVs                                                                                | One per guest; the guest adds and edits tag-alongs until the wedding day  |
+| Who can order                                                                      | Anyone at the table                                                       |
+| Table number                                                                       | Typed by the guest; one shared QR on every table card                     |
+| Caterer                                                                            | Watches the tablet and gets WhatsApp alerts                               |
+| Message wording                                                                    | Warm selected on 2026-10-26; approved copy below and in the shared module |
+| Maximum tag-alongs per IV, or no limit?                                            | **Open**                                                                  |
+| Which numbers get order alerts, and one message per order or a batch every minute? | **Open**                                                                  |
+| Who runs the gate and the boards on the day, and on whose devices?                 | **Open**                                                                  |
+| Domain name, wedding colours and photos for the first theme                        | **Open**                                                                  |
