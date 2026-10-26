@@ -2,7 +2,7 @@
 id: TICKET-006
 title: Prove the managed worktree lifecycle end to end
 epic: foundations
-status: in_progress
+status: blocked
 priority: high
 estimate: M
 labels: [infra, test]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-10-26
 started: 2026-10-26
 completed: ""
-reason: ""
-resume_to: ""
+reason: "Local Docker database unhealthy: no response and health-check timeouts; concurrent migration/smoke and successful cleanup unverified."
+resume_to: in_progress
 ---
 
 # TICKET-006: Prove the managed worktree lifecycle end to end
@@ -66,3 +66,4 @@ See: [Working together](../docs/collaboration.md) · [Current state](../docs/cur
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-10-26 — todo → claimed — divine (codex)
 - 2026-10-26 — todo → in_progress — divine (codex)
+- 2026-10-26 — in_progress → blocked — divine (codex) — Local Docker database unhealthy: no response and health-check timeouts; concurrent migration/smoke and successful cleanup unverified.
