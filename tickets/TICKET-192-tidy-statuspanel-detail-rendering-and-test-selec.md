@@ -2,7 +2,7 @@
 id: TICKET-192
 title: Tidy StatusPanel detail rendering and test selectors
 epic: design-system
-status: in_progress
+status: in_review
 priority: low
 estimate: S
 labels: [frontend, test]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-019]
 blocks: []
 branch: TICKET-192
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/33
 created: 2026-10-25
 updated: 2026-10-26
 started: 2026-10-26
@@ -66,3 +66,4 @@ Non-blocking review notes on PR #20 (TICKET-019) for the shared staff status com
 - 2026-10-25 — new → todo — unclechenna (claude)
 - 2026-10-26 — todo → claimed — divine (codex)
 - 2026-10-26 — todo → in_progress — divine (codex)
+- 2026-10-26 — in_progress → in_review — divine (codex)
