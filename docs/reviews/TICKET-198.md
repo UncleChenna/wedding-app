@@ -13,8 +13,8 @@ Home `/`, invitation guidance `/invite`, reviewer index `/dev`, and `/dev/invita
 - Motion: PASS — no added animation; reduced-motion browser coverage included.
 - Keyboard: PASS — start focus established on the document, Tab reaches links; native links and global visible outline used. No dialogs.
 - Contrast: PASS — axe checks every page/theme/width; labels accompany all navigation states.
-- Load/images: PARTIAL — image dimensions reserved, next/image static WebP with blur placeholder, responsive sizes, descriptive sample-photo alt. Home Lighthouse CLS measured 0. Complete page matrix CLS measurement pending.
-- Performance: FAIL — isolated production home Lighthouse mobile scored Performance 93 (target 95), Accessibility 100, CLS 0. An earlier run during concurrent build/tests scored 74/100; the isolated result is the useful baseline. Other routes still need performance evidence.
+- Load/images: PASS for measured routes — image dimensions reserved, next/image static WebP with blur placeholder, responsive sizes, descriptive sample-photo alt. Home, guidance and default invitation preview measured CLS 0. Alternate-theme physical-device behavior remains unverified.
+- Performance: FAIL — latest isolated mobile results: home 92, guidance 96, preview 94; all Accessibility 100 and CLS 0. Home also measured 95 after disabling unused font preloads, so it is not consistently meeting 95. Baseline was 93. See TICKET-198-performance.json; do not treat a single passing run as a stable pass.
 - Copy: PASS — PRD headline/subline reused. Confirmed names/date; all venue, photograph and dress-code samples labelled. Guidance wording provisional.
 - Shared components: PASS — no new reusable UI primitives; semantic links use existing global focus rules. Feature presentation isolated in invitations module.
 - Sharing/devices: NOT VERIFIED — generated 1200×630 public preview image and metadata; actual WhatsApp sharing and iOS/Android in-app checks require real devices.
@@ -32,4 +32,8 @@ pnpm verify:quick and pnpm verify PASS: 200 ticket definitions, formatting, lint
 
 ## Review decision
 
-CHANGES REQUESTED before final UI approval: bring home Performance 93 to the 95 target, record remaining route performance/CLS, and verify actual WhatsApp previews and iOS/Android navigation. Publish a draft PR for visible progress and review; do not mark the ticket done.
+CHANGES REQUESTED before final UI approval: bring home and preview consistently to Performance 95, and verify actual WhatsApp previews and iOS/Android navigation. Publish a draft PR for visible progress and review; do not mark the ticket done.
+
+## 26 October follow-up
+
+Disabled alternate-theme font preloads (fonts remain available on demand), set the hero to eager/high-priority loading and disabled speculative prefetch on guest navigation links. The latter trades automatic background downloads for loading the destination on activation; navigation behavior is covered by the browser tests. No font faces, typography scale or theme tokens changed; TICKET-015 remains paused. Full gate repeated: 234 unit tests, 117 browser tests, 15 existing skips. Both-theme layout captures repeat successfully. Review decision remains CHANGES REQUESTED pending the stated evidence or an explicit preview-only exception from the user.

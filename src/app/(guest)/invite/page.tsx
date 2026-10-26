@@ -26,6 +26,7 @@ export default function InvitationGuidePage() {
         Uchenna or Adaora.
       </p>
       <Link
+        prefetch={false}
         href="/"
         className="mt-10 inline-flex min-h-11 items-center self-start text-primary underline underline-offset-4"
       >

@@ -25,6 +25,7 @@ export default function HomePage() {
         Venue and time details will follow.
       </p>
       <Link
+        prefetch={false}
         href="/invite"
         className="mt-10 inline-flex min-h-11 items-center text-lg text-primary underline underline-offset-4"
       >
@@ -32,6 +33,7 @@ export default function HomePage() {
       </Link>
       {process.env.NODE_ENV === "development" && (
         <Link
+          prefetch={false}
           href="/dev"
           className="mt-8 inline-flex min-h-11 items-center text-primary underline underline-offset-4"
         >

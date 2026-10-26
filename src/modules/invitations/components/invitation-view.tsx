@@ -20,6 +20,8 @@ export function InvitationView({ details }: { details: InvitationDetails }) {
       <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
         <Image
           src={celebration}
+          loading="eager"
+          fetchPriority="high"
           alt="A wedding couple holding a bouquet in warm afternoon light; sample photograph"
           placeholder="blur"
           sizes="(min-width: 1024px) 50vw, 100vw"

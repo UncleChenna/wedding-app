@@ -62,6 +62,8 @@ The user cannot navigate or review guest pages because routes contain placeholde
 
 - 2026-10-26 — User confirmed Uchenna and Adaora, 19 December 2026. Venue/time remain pending; preview photograph and venue are explicitly samples.
 
+- 2026-10-26 — Loading follow-up passes quick/full gates; see review for performance variance and unverified device QA. PR remains draft; preview-only exception question is pending.
+
 ## Activity log
 
 - 2026-10-26 — new → todo — divine

@@ -21,6 +21,8 @@ All four ticket criteria are checked: navigable public pages, honest invitation 
 
 pnpm verify:quick and pnpm verify passed: 200 ticket definitions, formatting, lint, types, 234 unit tests, production build and 117 browser tests; 15 pre-existing skips. UI checklist and performance measurements are in docs/reviews/TICKET-198.md. Real WhatsApp iOS/Android testing is not available and remains unverified.
 
+Performance follow-up: alternate-theme fonts load on demand, hero loads eagerly at high priority, and guest links defer destination loading until activation. Latest mobile scores: home 92, guidance 96, preview 94; all accessibility 100 and CLS 0. Home varied between 92 and 95. Performance threshold and actual WhatsApp-device evidence remain unresolved; this PR remains draft.
+
 # Risks and rollout
 
 Presentation only: no database migration, token authentication, RSVP persistence or staff integration. `/dev` contains public samples, no guest data, and is noindex. Replace sample photo/location before sending real invitations. Human review/merge into develop only. Rollback by reverting this ticket's commit; no data changes to undo.
