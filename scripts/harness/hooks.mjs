@@ -3,6 +3,7 @@ import { fileURLToPath } from "node:url";
 import { existsSync, lstatSync, readFileSync, realpathSync } from "node:fs";
 import { dirname, relative, resolve, sep } from "node:path";
 import { spawnSync } from "node:child_process";
+import { pnpmRuntime } from "./pnpm-runtime.mjs";
 import { shellAccess } from "./shell-access.mjs";
 import { protectedPath } from "./core.mjs";
 import { git, isMain, root } from "./io.mjs";
@@ -69,7 +70,9 @@ function changed(cwd, staged = false) {
   ];
 }
 function command(cwd, args) {
-  const result = spawnSync(process.platform === "win32" ? "pnpm.cmd" : "pnpm", args, {
+  const runtime = pnpmRuntime();
+  const result = spawnSync(runtime.executable, args, {
+    env: runtime.env,
     cwd,
     encoding: "utf8",
     shell: process.platform === "win32",

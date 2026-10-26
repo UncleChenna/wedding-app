@@ -108,3 +108,18 @@ To share a package, run `pnpm plugin:build` and distribute the entire `tooling/p
 After the same mistake twice, propose one specific improvement to a hook, skill or doc line in the session summary. Apply an approved fix at its canonical source and add a one-line verified lesson to `docs/learnings.md`. Do not multiply agent-specific copies of the rule. Preserve incomplete work, state failed/unrun checks, and give the next agent an exact next command.
 
 See [the verified tool-format sources](agent-tooling-sources.md) and [ADRs](decisions/README.md) for rationale and compatibility limits.
+
+## Agent hooks and GUI PATH
+
+Hooks first use pnpm from their inherited PATH. If a GUI launch omits its installation
+folder, they also check the running Node directory, PNPM_HOME, ~/.npm-global/bin,
+~/.local/share/pnpm and ~/Library/pnpm. The selected pnpm directory and running Node
+directory are passed to child commands so verification can launch nested scripts.
+No package manager is downloaded automatically, and failing checks still block.
+
+For another installation location, put it on the agent process's PATH or set
+PNPM_HOME before launching the editor/agent. Restart after changing its environment.
+A shell export inside an agent command cannot modify the parent hook's environment.
+The hook launcher itself still requires node and git. Run agents in the ticket
+worktree containing the repair, or pull it after human review and merge; an older
+checkout continues using its own older hook code.
