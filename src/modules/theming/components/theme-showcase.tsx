@@ -24,6 +24,7 @@ import {
 import { themeStyle } from "../lib/css-vars";
 import { COLOR_TOKENS, type Theme } from "../lib/schema";
 import { STATUS_HUE_NAMES, type StatusKind } from "../lib/status";
+import { TYPE_STYLES } from "../lib/typography";
 import { MotionShowcase } from "./motion-showcase";
 import { ShowcaseInteractive } from "./showcase-interactive";
 
@@ -121,6 +122,25 @@ export function ThemeShowcase({ theme, active }: { theme: Theme; active: boolean
                 </li>
               ))}
             </ul>
+          </div>
+
+          <div className="flex flex-col gap-4" data-testid="typography">
+            <h3 className="type-label text-muted-foreground">Typography</h3>
+            <dl className="flex flex-col gap-5">
+              {TYPE_STYLES.map((style) => (
+                <div key={style.className} className="flex flex-col gap-1">
+                  <dt className="text-sm text-muted-foreground">
+                    <code>{style.className}</code> · {style.use}
+                  </dt>
+                  <dd
+                    data-type-style={style.className}
+                    className={`${style.className} max-w-[65ch]`}
+                  >
+                    {style.sample}
+                  </dd>
+                </div>
+              ))}
+            </dl>
           </div>
 
           <div className="flex flex-col gap-3" data-testid="staff-status">

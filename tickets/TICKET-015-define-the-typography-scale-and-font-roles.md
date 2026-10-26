@@ -2,20 +2,20 @@
 id: TICKET-015
 title: Define the typography scale and font roles
 epic: design-system
-status: todo
+status: in_review
 priority: urgent
 estimate: M
 labels: [design, frontend]
 module: theming
-owner: ""
-agent: ""
+owner: unclechenna
+agent: claude
 blocked_by: [TICKET-009]
 blocks: [TICKET-021, TICKET-037]
-branch: ""
-pr: ""
+branch: TICKET-015
+pr: https://github.com/UncleChenna/wedding-app/pull/24
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-10-26
+started: 2026-10-25
 completed: ""
 reason: ""
 resume_to: ""
@@ -41,9 +41,9 @@ See: [Design principles](../docs/prd.md#design-principles) · [Design principles
 
 ## Acceptance criteria
 
-- [ ] Headings are ≥32px at 375px and ≥48px at 1280px; body ≥16px with line-height 1.5–1.7; labels 0.08–0.15em tracking.
-- [ ] /dev/theme shows every text style in every theme.
-- [ ] Lighthouse reports CLS 0 on `/dev/theme`.
+- [x] Headings are ≥32px at 375px and ≥48px at 1280px; body ≥16px with line-height 1.5–1.7; labels 0.08–0.15em tracking.
+- [x] /dev/theme shows every text style in every theme.
+- [x] Lighthouse reports CLS 0 on `/dev/theme`.
 
 ## Test plan
 
@@ -58,8 +58,17 @@ See: [Design principles](../docs/prd.md#design-principles) · [Design principles
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-10-26: User resumed work. Lighthouse 13.5.0 ran without project dependency changes: mobile and desktop CLS exactly 0, Accessibility 100; Performance 85 mobile/100 desktop on the component catalog. Scoped-font regression fixed and verified. See docs/reviews/TICKET-015/README.md for screenshots, full-gate results and deferred guest-release QA.
+
+- 2026-10-25: Named @utility styles in globals.css (type-script, -display, -heading, -subheading, -label, -body-lg, -body, -staff-id, -staff), listed with intended uses in src/modules/theming/lib/typography.ts. Fluid clamp() sizes: display 40px at 375 to 69px at 1280, heading 32px at 375 to 48px at 1280. Optional fonts.script (schema rebuilt by pnpm themes:schema under the owner's approval); --font-script falls back to the display font, so no extra font is loaded.
+- 2026-10-25: Evidence: unit tests parse globals.css and check every style's rules; browser tests check computed sizes, tracking and line height at 375 and 1280 in both themes; an e2e Layout Instability observer measures CLS exactly 0 on /dev/theme (mobile and desktop). `pnpm verify` passed on develop 36fdf31: 219 unit tests, build, 50 browser tests. Screenshots inspected.
+- 2026-10-25: NOT DONE: criterion 3 requires Lighthouse itself. Running Lighthouse via npx was denied (external code), and adding it as a dependency needs a lockfile approval the owner has not given. The e2e CLS measurement uses the same browser API Lighthouse uses, but it is not Lighthouse, so the criterion stays unticked. Ticket blocked; draft PR opened.
 
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-25 — todo → claimed — unclechenna (claude)
+- 2026-10-25 — todo → in_progress — unclechenna (claude)
+- 2026-10-25 — in_progress → blocked — unclechenna (claude) — Criterion 3 needs Lighthouse: npx lighthouse was denied (external code) and adding it as a dependency needs owner lockfile approval. E2E Layout Instability measurement shows CLS 0; owner to approve Lighthouse or accept that evidence. Draft PR open.
+- 2026-10-26 — blocked → in_progress — unclechenna (codex) — User explicitly resumed TICKET-015; pinned Lighthouse 13.5.0 is now available without project dependency changes.
+- 2026-10-26 — in_progress → in_review — unclechenna (claude)

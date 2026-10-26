@@ -89,7 +89,14 @@ export const themeSchema = z
     name: z.string().min(1),
     colorScheme: z.enum(["light", "dark"]),
     colors: record(COLOR_TOKENS, hexColor).strict(),
-    fonts: z.object({ display: z.enum(FONT_KEYS), body: z.enum(FONT_KEYS) }).strict(),
+    fonts: z
+      .object({
+        display: z.enum(FONT_KEYS),
+        body: z.enum(FONT_KEYS),
+        /** Optional script font for the couple's names only; defaults to `display`. */
+        script: z.enum(FONT_KEYS).optional(),
+      })
+      .strict(),
     radii: record(RADIUS_TOKENS, cssLength).strict(),
     shadows: record(SHADOW_TOKENS, z.string().min(1)).strict(),
     pattern: patternSchema.optional(),
