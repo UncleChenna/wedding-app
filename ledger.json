@@ -739,12 +739,13 @@
     },
     "WED-195": {
       "log": [
-        "- 2026-10-26 — backlog → todo — divine — Ready test-helper fix needed for accurate multi-theme review"
+        "- 2026-10-26 — backlog → todo — divine — Ready test-helper fix needed for accurate multi-theme review",
+        "- 2026-10-26 — todo → claimed — divine (codex)"
       ],
       "status": "todo",
-      "owner": "",
-      "agent": "",
-      "branch": "",
+      "owner": "divine",
+      "agent": "codex",
+      "branch": "TICKET-195",
       "pr": "",
       "started": "",
       "completed": "",
