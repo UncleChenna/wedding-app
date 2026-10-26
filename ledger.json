@@ -795,14 +795,15 @@
     },
     "WED-036": {
       "log": [
-        "- 2026-10-26 — todo → claimed — divine (codex)"
+        "- 2026-10-26 — todo → claimed — divine (codex)",
+        "- 2026-10-26 — todo → in_progress — divine (codex)"
       ],
-      "status": "todo",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-036",
       "pr": "",
-      "started": "",
+      "started": "2026-10-26",
       "completed": "",
       "updated": "2026-10-26",
       "reason": "",
