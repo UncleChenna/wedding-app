@@ -2,7 +2,7 @@
 id: TICKET-200
 title: Build table entry and menu ordering frontend previews
 epic: ordering
-status: in_progress
+status: in_review
 priority: urgent
 estimate: M
 labels: [frontend, design]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-198]
 blocks: []
 branch: TICKET-200
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/32
 created: 2026-10-26
 updated: 2026-10-26
 started: 2026-10-26
@@ -64,3 +64,4 @@ Persisted guest data, authentication, QR credentials, live orders and deployment
 - 2026-10-26 — new → todo — divine
 - 2026-10-26 — todo → claimed — divine (codex)
 - 2026-10-26 — todo → in_progress — divine (codex)
+- 2026-10-26 — in_progress → in_review — divine (codex)
