@@ -2,7 +2,7 @@
 id: TICKET-198
 title: Build the home page and invitation frontend preview
 epic: invitations
-status: in_progress
+status: in_review
 priority: urgent
 estimate: M
 labels: [frontend, design]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: []
 blocks: []
 branch: TICKET-198
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/30
 created: 2026-10-26
 updated: 2026-10-26
 started: 2026-10-26
@@ -67,3 +67,4 @@ The user cannot navigate or review guest pages because routes contain placeholde
 - 2026-10-26 — new → todo — divine
 - 2026-10-26 — todo → claimed — divine (codex)
 - 2026-10-26 — todo → in_progress — divine (codex)
+- 2026-10-26 — in_progress → in_review — divine (codex)
