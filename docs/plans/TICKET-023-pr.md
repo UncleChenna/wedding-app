@@ -40,3 +40,5 @@ Not applicable to this schema-only change; no rendered interfaces changed. Full 
 # Harness changes
 
 No hooks, checks or CI configuration changed. Database regressions explicitly opt in with RUN_INVITATION_DB_TESTS=1, verify the managed local database address and roll back fixtures. The normal unit gate is not evidence that DB constraints ran.
+
+Final local `pnpm t:pr TICKET-023` gate exited successfully: 271 unit passes, eight opt-in DB skips, build passed; browser results were 165 first-attempt passes, two retry passes (desktop ivory-gold invitation keyboard-focus checks at 768/1280), and 17 conditional skips. These two flaky checks are disclosed rather than counted as first-attempt passes. The CLI moved the ticket to in_review and pushed its metadata. Hosted checks on the final head remain required before merge.
