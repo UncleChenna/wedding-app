@@ -2,20 +2,20 @@
 id: TICKET-007
 title: Prove ticket claims across two clones against GitHub
 epic: foundations
-status: todo
+status: in_progress
 priority: medium
 estimate: S
 labels: [test, infra]
 module: harness
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-004]
 blocks: []
-branch: ""
+branch: TICKET-007
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-10-26
+started: 2026-10-26
 completed: ""
 reason: ""
 resume_to: ""
@@ -61,3 +61,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-26 — todo → claimed — divine (codex)
+- 2026-10-26 — todo → in_progress — divine (codex)
