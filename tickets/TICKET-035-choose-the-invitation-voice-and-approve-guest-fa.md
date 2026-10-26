@@ -2,7 +2,7 @@
 id: TICKET-035
 title: Choose the invitation voice and approve guest-facing copy
 epic: invitations
-status: in_progress
+status: in_review
 priority: urgent
 estimate: S
 labels: [human, docs]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: []
 blocks: [TICKET-040, TICKET-052, TICKET-101, TICKET-158, TICKET-176]
 branch: TICKET-035
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/36
 created: 2026-10-21
 updated: 2026-10-26
 started: 2026-10-26
@@ -63,3 +63,4 @@ See: [Invitation wording](../docs/prd.md#invitation-wording) · [On the website]
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-10-26 — todo → claimed — divine (codex)
 - 2026-10-26 — todo → in_progress — divine (codex)
+- 2026-10-26 — in_progress → in_review — divine (codex)
