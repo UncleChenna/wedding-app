@@ -2,20 +2,20 @@
 id: TICKET-194
 title: Validate new-ticket input before allocating an id
 epic: foundations
-status: backlog
+status: in_progress
 priority: medium
 estimate: S
 labels: [infra, test]
 module: harness
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: []
 blocks: []
-branch: ""
+branch: TICKET-194
 pr: ""
 created: 2026-10-25
-updated: 2026-10-25
-started: ""
+updated: 2026-10-26
+started: 2026-10-26
 completed: ""
 reason: ""
 resume_to: ""
@@ -59,3 +59,6 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-25 — new → backlog — unclechenna
+- 2026-10-26 — backlog → todo — divine — Ready prerequisite-free allocator repair encountered during backlog completion
+- 2026-10-26 — todo → claimed — divine (codex)
+- 2026-10-26 — todo → in_progress — divine (codex)
