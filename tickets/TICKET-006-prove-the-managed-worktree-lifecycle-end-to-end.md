@@ -2,20 +2,20 @@
 id: TICKET-006
 title: Prove the managed worktree lifecycle end to end
 epic: foundations
-status: todo
+status: in_progress
 priority: high
 estimate: M
 labels: [infra, test]
 module: harness
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-001, TICKET-002, TICKET-003]
 blocks: []
-branch: ""
+branch: TICKET-006
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-10-26
+started: 2026-10-26
 completed: ""
 reason: ""
 resume_to: ""
@@ -62,3 +62,5 @@ See: [Working together](../docs/collaboration.md) · [Current state](../docs/cur
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-26 — todo → claimed — divine (codex)
+- 2026-10-26 — todo → in_progress — divine (codex)
