@@ -10,4 +10,4 @@ Allocation 196 failed before file creation due to missing owner; its recovered d
 
 Full verification passed: 223 unit tests, production build, 86 browser passes and 12 existing conditional skips.
 
-Next: publish the verified PR to develop for human review. Use this worktree's hook code for testing; the old primary checkout will not acquire the repair automatically. No automatic merge. Earlier homepage 404 is separate: current develop has src/app/(guest)/page.tsx; the running server checkout still needs diagnosis.
+Next: human review of [PR #28](https://github.com/UncleChenna/wedding-app/pull/28) into develop. Ticket is in_review and all commits pushed. The PR workflow repeated the full gate successfully (223 unit tests, 86 browser passes, 12 conditional skips); log /tmp/t197-pr.log. Use this worktree's hook code for testing; the old primary checkout will not acquire the repair automatically. No automatic merge. Earlier homepage 404 is separate: current develop has src/app/(guest)/page.tsx; the running server checkout still needs diagnosis.
