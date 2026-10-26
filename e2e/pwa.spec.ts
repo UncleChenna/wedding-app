@@ -52,7 +52,40 @@ test.describe("service worker @smoke", () => {
     await page.evaluate(() => fetch("/api/does-not-exist").catch(() => undefined));
     const urls = await cachedUrls(page);
     expect(urls.length).toBeGreaterThan(0);
-    for (const url of urls) expect(url).toMatch(/^\/_next\/static\//);
+    // The only page ever stored is the generic, public offline page (TICKET-106).
+    expect(urls.filter((url) => url === "/offline")).toHaveLength(1);
+    for (const url of urls.filter((url) => url !== "/offline")) {
+      expect(url).toMatch(/^\/_next\/static\//);
+    }
+  });
+
+  test("offline, navigating to a page never visited shows the styled offline page (TICKET-106)", async ({
+    page,
+    context,
+  }) => {
+    await controlledPage(page);
+    await context.setOffline(true);
+
+    await page.goto("/i/never-opened-token");
+    await expect(page.getByRole("heading", { level: 1, name: "You're offline" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Try again" })).toBeVisible();
+    // Its stylesheet and fonts were precached, so it is themed rather than bare HTML.
+    const styled = await page.evaluate(() => {
+      const h1 = document.querySelector("h1");
+      return {
+        sheets: document.styleSheets.length,
+        size: h1 ? parseFloat(getComputedStyle(h1).fontSize) : 0,
+        background: getComputedStyle(document.body).backgroundColor,
+      };
+    });
+    expect(styled.sheets).toBeGreaterThan(0);
+    expect(styled.size).toBeGreaterThanOrEqual(32);
+    expect(styled.background).not.toBe("rgba(0, 0, 0, 0)");
+
+    // Back online, "Try again" loads the page the guest was after.
+    await context.setOffline(false);
+    await page.getByRole("button", { name: "Try again" }).click();
+    await expect(page.getByRole("heading", { name: "You're offline" })).toBeHidden();
   });
 
   test("offline, cached assets still load but private pages are not served from cache", async ({
