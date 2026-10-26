@@ -23,3 +23,7 @@ Requested SIGINT only for this rehearsal's Supabase start process. It exited wit
 4. Prove the surviving stack still responds; run full verification before moving to review/completion.
 
 Corrected two documentation inaccuracies found during inspection: exact ticket-ID branch names and per-ticket-branch status syncing. No harness feature changes or checks weakened.
+
+## 2026-10-26 — recovery attempt after TICKET-195 merged
+
+Retried managed setup for TICKET-006 after a separate stack recovered. Its Postgres container became healthy, but studio, pg_meta and storage reported unhealthy and setup exited 1. A completed, clean TICKET-195 checkout was selected as control: its HEAD and origin branch were both 00872cb, and its tree matched merged commit ea5e2fa exactly. The control's isolated Postgres reported unhealthy. Requested SIGINT only for that control startup after the TICKET-006 attempt had failed; no Docker restart or unrelated container action was taken. No migration, browser race, marker write or successful cleanup is claimed. Ticket remains blocked; PR #34 remains draft.

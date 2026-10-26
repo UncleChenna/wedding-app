@@ -1,5 +1,9 @@
 # Progress log
 
+## 2026-10-26 — TICKET-006 — Recovery still blocked
+
+Retried managed setup after another local stack recovered. The rehearsal setup exited 1; service health and control database checks remain unhealthy. No lifecycle completion is claimed. See [handoff](handoffs/TICKET-006.md).
+
 ## 2026-10-26 — TICKET-192 — Staff status follow-up
 
 Fixed empty detail rendering, added badge icon overrides and stable typography test selectors. See [handoff](handoffs/TICKET-192.md) and [review](reviews/TICKET-192/README.md). Shared-component PR stays for human review; TICKET-015 remains paused.
