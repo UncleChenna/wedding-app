@@ -48,7 +48,7 @@ A guest touches the site three times: when the IV arrives, at the gate, and at t
 3. The link opens a digital IV: names, date, venue, dress code, map, and an RSVP form.
 4. Guest confirms attendance, adds their tag-alongs by name and picks meals. They can come back and change this
    until the wedding day.
-5. On confirming, the page shows their QR code with Save to Photos / Add to Wallet and a downloadable PDF. The same
+5. On confirming, the page shows their QR code with Save to Photos and a downloadable PDF. The same
    link always shows their QR, so on the day they can reopen it from the WhatsApp chat.
 
 ### Journey 2: Check-in at the gate
@@ -342,6 +342,26 @@ Application copy lives in `src/modules/invitations/lib/copy.ts`. TICKET-052 will
 | Order served     | Enjoy every bite.                                                 |
 | Edits locked     | The big day is here, so your RSVP is locked. See you inside.      |
 
+## Approved event defaults
+
+Owner decisions recorded on **2026-10-26** in TICKET-034. These are the inputs for TICKET-101; they do not configure a live event or authorize sending invitations.
+
+| Setting                                       | Approved value                                                                         |
+| --------------------------------------------- | -------------------------------------------------------------------------------------- |
+| Couple                                        | Uchenna and Adaora                                                                     |
+| Wedding date                                  | 19 December 2026 (`2026-12-19`)                                                        |
+| Venue, ceremony time, map link and dress code | **TBD**, explicitly left undecided by the owner                                        |
+| Event time zone                               | **TBD**; do not infer Europe/London from development settings or the owner's computer  |
+| Default tag-alongs                            | 1, editable per invitation                                                             |
+| RSVP edit lock                                | 00:00 on 19 December 2026 in the venue's configured time zone                          |
+| Guest-data retention                          | 90 days after the wedding                                                              |
+| Launch pass saving                            | QR webpage, saved screenshot/image and downloadable PDF; offline pass remains required |
+| Apple/Google Wallet                           | Explicitly deferred by the owner; not required for launch                              |
+
+The lock policy is approved, but its UTC timestamp cannot be calculated until a valid venue time zone is supplied. TICKET-101 must allow draft/TBD event details while preventing live publication/RSVP activation with a missing time zone; TICKET-042 must never substitute a development default. TICKET-176 must confirm real event details before first send. Test fixtures may use an explicitly labelled test time zone.
+
+Wallet deferral amends Journey 1's original Add to Wallet requirement; no Wallet pass or issuer setup is claimed delivered. TICKET-045, TICKET-046 and TICKET-107 retain image, PDF and offline-pass work. Retention implementation and privacy wording remain TICKET-127 and TICKET-122; this decision does not run a deletion.
+
 ## Open questions
 
 These change the scope or the timeline; answer them before week 2.
@@ -352,14 +372,14 @@ These change the scope or the timeline; answer them before week 2.
 | Payment at the table                                                               | None, all food and drink is free                                          |
 | Venue signal                                                                       | Unknown, so offline check-in is a Must and a router is budgeted           |
 | Look and feel                                                                      | Premium, mobile-first, plug-and-play themes                               |
-| Wedding date and venue                                                             | Not needed for the build                                                  |
+| Wedding date and venue                                                             | 19 December 2026; venue and time zone TBD (owner, 2026-10-26)             |
 | Guest count                                                                        | 200-300                                                                   |
 | IVs                                                                                | One per guest; the guest adds and edits tag-alongs until the wedding day  |
 | Who can order                                                                      | Anyone at the table                                                       |
 | Table number                                                                       | Typed by the guest; one shared QR on every table card                     |
 | Caterer                                                                            | Watches the tablet and gets WhatsApp alerts                               |
 | Message wording                                                                    | Warm selected on 2026-10-26; approved copy below and in the shared module |
-| Maximum tag-alongs per IV, or no limit?                                            | **Open**                                                                  |
+| Maximum tag-alongs per IV, or no limit?                                            | Default 1, editable per invitation; no global maximum approved here       |
 | Which numbers get order alerts, and one message per order or a batch every minute? | **Open**                                                                  |
 | Who runs the gate and the boards on the day, and on whose devices?                 | **Open**                                                                  |
 | Domain name, wedding colours and photos for the first theme                        | **Open**                                                                  |

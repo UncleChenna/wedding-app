@@ -47,6 +47,8 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-6) · [On 
 
 - [ ] Enforce the approved event timezone/lock boundary on the server, log previous/new values and timestamp, and apply the approved pass-version rule when party size changes.
 
+- [ ] Missing or invalid event time zone rejects live lock configuration; a development/test time zone is never substituted for the TBD venue time zone.
+
 ## Test plan
 
 - Unit: Lock and change-log tests with fake time.
@@ -60,6 +62,8 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-6) · [On 
 - `src/modules/invitations/server/`
 
 ## Notes / decisions
+
+- 2026-10-26: Owner approved event-local midnight on 2026-12-19; exact UTC rsvp_lock_at remains unset until venue time zone is configured. See docs/prd.md#approved-event-defaults.
 
 _Agents append dated notes here while working._
 

@@ -62,4 +62,4 @@ _Agents append dated notes here while working._
 - 2026-10-26 — todo → claimed — divine (codex)
 - 2026-10-26 — todo → in_progress — divine (codex)
 
-- 2026-10-26 — Reproduced all four old-colour assertions, fixed with settleAnimations, and inspected six screenshots; see docs/reviews/TICKET-195/README.md. Full verification pending.
+- 2026-10-26 — Reproduced all four old-colour assertions, fixed with settleAnimations, and inspected six screenshots; see docs/reviews/TICKET-195/README.md. Full verification passed: 270 unit tests, 167 browser passes, 17 conditional skips.

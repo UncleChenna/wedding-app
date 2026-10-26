@@ -20,7 +20,7 @@ Reuse settleAnimations after the existing font wait. Add smoke regressions again
 - Focused Playwright: 4 passed, 0 retries.
 - SCREENSHOT_ROUTES=/offline pnpm screenshots --workers=1: 6 passed.
 - pnpm verify:quick: passed.
-- Full gate: in progress; final result will be recorded before review.
+- Full gate: passed; 270 unit tests, 167 browser passes, 17 existing conditional skips. Integrated PR gate will run again before publication.
 
 # Risks and rollout
 
