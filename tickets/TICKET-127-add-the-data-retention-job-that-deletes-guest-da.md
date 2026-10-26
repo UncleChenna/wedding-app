@@ -59,6 +59,8 @@ See: [Privacy (UK GDPR)](../docs/prd.md#privacy-uk-gdpr).
 
 ## Notes / decisions
 
+- 2026-10-26: Owner approved 90-day post-wedding guest-data retention on 2026-10-26. Wedding date is 2026-12-19; venue time zone remains TBD. Record and test the configured retention boundary before enabling the job. This decision performs no deletion.
+
 _Agents append dated notes here while working._
 
 ## Activity log

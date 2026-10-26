@@ -6,7 +6,7 @@ Reviewed 2026-10-21 against backlog base `07b6a46512bc29ce85fac17c76d090fee80bce
 
 All 36 numbered requirements have explicit ticket coverage. Coverage means planned work, not implementation or acceptance. There were no baseline dependency cycles; the principal defects were semantic ordering, overloaded scope and missing failure cases. Added TICKET-169–TICKET-185 with `pnpm t:new`; all original statuses/claims remain unchanged. TICKET-178 is optional backlog; other additions are todo.
 
-- Wallet remains a genuine scope decision: TICKET-034 must obtain an approved PRD amendment or create implementation/account tickets and block TICKET-176 on them. It is not declared delivered or silently dropped.
+- Wallet scope was explicitly amended by the owner on 2026-10-26 in TICKET-034: defer Apple/Google Wallet and launch with QR/image/PDF plus the offline pass. See docs/prd.md#approved-event-defaults. Wallet is not declared implemented.
 - INV-2 signed pass URL versus IV-link wording and INV-7 immediate revocation versus CHK-6 disconnected operation need the explicit TICKET-169 decision. No technical implementation can revoke a token on a device that has received no new information.
 - The approved primary palette is ivory + champagne gold + chocolate brown. Photo rights, dates, accounts, provider consent and actual device/venue results are still pending humans.
 
@@ -71,7 +71,7 @@ All 36 numbered requirements have explicit ticket coverage. Coverage means plann
 | THM-5 | TICKET-013, TICKET-014 | Fixed: spike preset names and font pairings explicitly specified. |
 | THM-6 | TICKET-098, TICKET-181 | No missing ticket; acceptance and dependencies reviewed. |
 | THM-7 | TICKET-022 | No missing ticket; acceptance and dependencies reviewed. |
-| JOURNEY-WALLET — Save to Apple/Google Wallet | TICKET-034, TICKET-176 | Decision gap remains: explicit scope amendment or implementation tickets required before invitation release. |
+| JOURNEY-WALLET — Save to Apple/Google Wallet | TICKET-034, TICKET-176 | Resolved by explicit owner-approved PRD amendment on 2026-10-26: Wallet deferred; QR/image/PDF and offline-pass requirements remain. |
 | JOURNEY-PHOTO — Optional gate identification portrait | TICKET-178, TICKET-175 | Tracked as optional backlog; disabled pending consent/approval. |
 | SEC-TOKEN — Random 128-bit tokens; signature/public-key-only verifier | TICKET-036, TICKET-056, TICKET-057, TICKET-169, TICKET-183 | Covered; URL and freshness contract pending 169. |
 | SEC-SHARING — Forwarded screenshots limited per seat; name/first-use time | TICKET-058, TICKET-060, TICKET-061, TICKET-173 | Covered; disconnected over-admission retained as conflict. |

@@ -89,18 +89,10 @@ fix-up ticket changes a fact recorded here.
 
 Each assumption is reversible. Tickets labelled `human` confirm the ones that need a person.
 
-1. **Wedding date, venue, RSVP lock.** The PRD says the date is "not needed for the build", but RSVP locking, reminders,
-   PIN expiry and data retention depend on it. Assumption: one `event_settings` row holds the date, venue and time
-   zone (Europe/London). RSVPs lock at 00:00 local time on the wedding day. Confirmed by TICKET-034.
-2. **Tag-along limit** (open question). Assumption: the admin sets it per invitation, with a default of 1 and an
-   allowed range of 0–10. Confirmed by TICKET-034.
-3. **IV token vs signed QR.** INV-2 says the QR encodes the IV link; Security says the QR carries an Ed25519-signed
-   token that scanners verify offline. Assumption: the personal link `/i/<token>` uses the 128-bit random token. The
-   gate pass QR encodes `/p/<signed-token>`, so a phone camera still opens the guest's pass while scanners verify the
-   signature offline. Revocation and reissue bump a version in the signed payload, and scanners receive a revocation
-   list. Decided in an ADR by TICKET-056.
-4. **"Add to Wallet".** Apple and Google Wallet passes need paid or registered issuer accounts. Assumption: v1 offers
-   Save image, PDF and the PWA offline pass. Wallet passes are out of scope unless TICKET-034 says otherwise.
+1. **Wedding date, venue, RSVP lock — changed/confirmed (owner, 2026-10-26).** Uchenna and Adaora, 19 December 2026. Venue, ceremony time, map, dress code and venue time zone are explicitly **TBD**. The approved lock is 00:00 on the wedding day in the configured venue time zone; no UTC lock value exists yet. The former Europe/London assumption is removed. TICKET-101 records draft details; TICKET-042 requires an explicit valid time zone, and TICKET-176 checks actual details before first send. See [approved defaults](prd.md#approved-event-defaults).
+2. **Tag-along limit — confirmed (owner, 2026-10-26).** Default 1, editable per invitation. The previous global 0–10 cap was an unconfirmed assumption and is not an approved policy. Per-invitation limits remain validated by the RSVP/settings implementation.
+3. **IV token vs signed QR — changed clarification (TICKET-034).** The PRD requires unguessable personal-link tokens and an Ed25519-signed pass verified offline with public keys. Those requirements are retained. The earlier `/i/<token>` versus `/p/<signed-token>` split, payload versioning and revocation protocol remain proposed implementation details for TICKET-056's ADR, not decisions attributed to the owner in this ticket.
+4. **Add to Wallet — changed with explicit owner approval (2026-10-26).** Apple/Google Wallet support is deferred for launch. Launch uses the QR webpage, saved screenshot/image, downloadable PDF and the existing offline-pass requirement. The PRD journey is amended accordingly; Wallet has not been implemented or silently considered delivered.
 5. **Guest photo at RSVP** (optional in the PRD). Out of v1, not ticketed.
 6. **Email.** Email is only for admin login codes; IVs go out through the Share menu. "Email sending" in the
    Invitations milestone is read as the Share menu's `mailto:` option. A transactional provider (Resend) needs an
@@ -121,7 +113,7 @@ Each assumption is reversible. Tickets labelled `human` confirm the ones that ne
     (TICKET-145, TICKET-144).
 13. **Service worker library.** Not specified. TICKET-102 writes the ADR, evaluating Serwist against a hand-written
     worker for Next.js 16.
-14. **Data retention.** The PRD gives "e.g. 90 days". Assumption: 90 days after the wedding, confirmed by TICKET-122.
+14. **Data retention — confirmed (owner, 2026-10-26).** 90 days after the wedding. TICKET-127 implements the retention mechanism; TICKET-122 still covers privacy wording and other privacy decisions. No deletion has been performed by this decision.
 15. **Devices and gate staffing** (open question). Assumption: 3 scanner phones, 2 board tablets, 1 backup device.
     Confirmed by TICKET-055.
 16. **Table host role** (optional in the PRD). Ticketed as low priority in `backlog`.
