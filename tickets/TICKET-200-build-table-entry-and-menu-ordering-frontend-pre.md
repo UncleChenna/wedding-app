@@ -2,20 +2,20 @@
 id: TICKET-200
 title: Build table entry and menu ordering frontend previews
 epic: ordering
-status: todo
+status: in_progress
 priority: urgent
 estimate: M
 labels: [frontend, design]
 module: ordering
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-198]
 blocks: []
-branch: ""
+branch: TICKET-200
 pr: ""
 created: 2026-10-26
 updated: 2026-10-26
-started: ""
+started: 2026-10-26
 completed: ""
 reason: ""
 resume_to: ""
@@ -60,3 +60,5 @@ Persisted guest data, authentication, QR credentials, live orders and deployment
 ## Activity log
 
 - 2026-10-26 — new → todo — divine
+- 2026-10-26 — todo → claimed — divine (codex)
+- 2026-10-26 — todo → in_progress — divine (codex)
