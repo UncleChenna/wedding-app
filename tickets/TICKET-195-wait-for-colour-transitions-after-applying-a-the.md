@@ -2,20 +2,20 @@
 id: TICKET-195
 title: Wait for colour transitions after applying a theme in e2e helpers
 epic: quality
-status: backlog
+status: in_review
 priority: medium
 estimate: S
 labels: [test]
 module: shared
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: []
 blocks: []
-branch: ""
-pr: ""
+branch: TICKET-195
+pr: https://github.com/UncleChenna/wedding-app/pull/40
 created: 2026-10-25
-updated: 2026-10-25
-started: ""
+updated: 2026-10-26
+started: 2026-10-26
 completed: ""
 reason: ""
 resume_to: ""
@@ -39,8 +39,8 @@ See: [Design principles (repo)](../docs/design-principles.md) §10 (review every
 
 ## Acceptance criteria
 
-- [ ] Immediately after `applyTheme(page, midnight)`, a Button's background equals the midnight primary (e2e test).
-- [ ] `pnpm screenshots` shows themed buttons in midnight-champagne (inspected).
+- [x] Immediately after `applyTheme(page, midnight)`, a Button's background equals the midnight primary (e2e test).
+- [x] `pnpm screenshots` shows themed buttons in midnight-champagne (inspected).
 
 ## Test plan
 
@@ -58,3 +58,8 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-25 — new → backlog — unclechenna
+- 2026-10-26 — backlog → todo — divine — Ready test-helper fix needed for accurate multi-theme review
+- 2026-10-26 — todo → claimed — divine (codex)
+- 2026-10-26 — todo → in_progress — divine (codex)
+- 2026-10-26 — Reproduced all four old-colour assertions, fixed with settleAnimations, and inspected six screenshots; see docs/reviews/TICKET-195/README.md. Full verification passed: 270 unit tests, 167 browser passes, 17 conditional skips.
+- 2026-10-26 — in_progress → in_review — divine (codex)
