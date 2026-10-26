@@ -2,20 +2,20 @@
 id: TICKET-034
 title: Decide wedding date, RSVP lock, tag-along limit and Wallet scope
 epic: invitations
-status: todo
+status: in_progress
 priority: urgent
 estimate: S
 labels: [human, docs]
 module: invitations
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: []
 blocks: [TICKET-023, TICKET-042, TICKET-096, TICKET-101, TICKET-176, TICKET-177]
-branch: ""
+branch: TICKET-034
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-10-26
+started: 2026-10-26
 completed: ""
 reason: ""
 resume_to: ""
@@ -65,3 +65,5 @@ See: [Open questions](../docs/prd.md#open-questions) · [Invitations and RSVP](.
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-26 — todo → claimed — divine (codex)
+- 2026-10-26 — todo → in_progress — divine (codex)
