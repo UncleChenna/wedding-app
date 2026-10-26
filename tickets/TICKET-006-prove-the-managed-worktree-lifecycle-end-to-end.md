@@ -57,6 +57,8 @@ See: [Working together](../docs/collaboration.md) · [Current state](../docs/cur
 
 ## Notes / decisions
 
+- 2026-10-26: Rehearsal blocked by unhealthy local Postgres startup (no response; health checks timed out). Build passed; concurrent database/browser and cleanup criteria remain unverified. See docs/reviews/TICKET-006/README.md and handoff for resume steps.
+
 - 2026-10-21: Migrated from `docs/tasks.json` HARNESS-001 (remaining verification).
 
 ## Activity log
