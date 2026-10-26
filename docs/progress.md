@@ -3,6 +3,11 @@
 Add-only history, newest first: prepend new entries below this template, never rewrite old entries. Legacy entries below retain their original wording; authors/agents were not recorded at the time.
 
 ```markdown
+## 2026-10-26 — TICKET-197 — Hook pnpm lookup
+
+- **Changed:** Added existing-installation lookup for minimal GUI PATH; verification failures remain blocking.
+- **Evidence / next:** See docs/handoffs/TICKET-197.md for checks and review status. Human merge only.
+
 ## YYYY-MM-DD HH:mm UTC — TASK-ID — Title
 
 - **Who / agent / branch:** owner · agent · branch
