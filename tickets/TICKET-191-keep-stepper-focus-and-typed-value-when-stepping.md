@@ -39,9 +39,9 @@ Review of PR #19 (TICKET-018) found two keyboard issues in the shared QuantitySt
 
 ## Acceptance criteria
 
-- [ ] After pressing + until the maximum with the keyboard, focus is still on a focusable element inside the stepper (browser test).
-- [ ] Typing 3 and pressing ArrowUp yields 4, not the previous value plus one (unit test).
-- [ ] `className` and `required` reach the input (unit test).
+- [x] After pressing + until the maximum with the keyboard, focus is still on a focusable element inside the stepper (browser test).
+- [x] Typing 3 and pressing ArrowUp yields 4, not the previous value plus one (unit test).
+- [x] `className` and `required` reach the input (unit test).
 
 ## Test plan
 
@@ -55,6 +55,8 @@ Review of PR #19 (TICKET-018) found two keyboard issues in the shared QuantitySt
 - `src/modules/shared/__tests__/form-controls.test.tsx`
 
 ## Notes / decisions
+
+- 2026-10-26: Fixed draft stepping, focus at bounds and input props. Quick/full gates pass: 235 unit tests, 95 browser passes, 13 conditional skips. Theme/width evidence in docs/reviews/TICKET-191/.
 
 - 2026-10-25: Raised by the PR #19 review (non-blocking nits); filed so the work is tracked.
 
