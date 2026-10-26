@@ -3,6 +3,11 @@
 Add-only history, newest first: prepend new entries below this template, never rewrite old entries. Legacy entries below retain their original wording; authors/agents were not recorded at the time.
 
 ```markdown
+## 2026-10-26 — TICKET-191 — Quantity stepper keyboard fix
+
+- **Changed:** Preserve typed quantities and focus at bounds; forward input props.
+- **Checks:** Quick/full gates pass (235 unit tests, 95 browser passes, 13 conditional skips). See docs/handoffs/TICKET-191.md and docs/reviews/TICKET-191/. TICKET-015 remains paused.
+
 ## 2026-10-26 — TICKET-197 — Hook pnpm lookup
 
 - **Changed:** Added existing-installation lookup for minimal GUI PATH; verification failures remain blocking.

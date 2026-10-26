@@ -2,20 +2,20 @@
 id: TICKET-191
 title: Keep stepper focus and typed value when stepping
 epic: design-system
-status: todo
+status: in_review
 priority: medium
 estimate: S
 labels: [frontend]
 module: shared
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-018]
 blocks: []
-branch: ""
-pr: ""
+branch: TICKET-191
+pr: https://github.com/UncleChenna/wedding-app/pull/29
 created: 2026-10-25
-updated: 2026-10-25
-started: ""
+updated: 2026-10-26
+started: 2026-10-26
 completed: ""
 reason: ""
 resume_to: ""
@@ -39,9 +39,9 @@ Review of PR #19 (TICKET-018) found two keyboard issues in the shared QuantitySt
 
 ## Acceptance criteria
 
-- [ ] After pressing + until the maximum with the keyboard, focus is still on a focusable element inside the stepper (browser test).
-- [ ] Typing 3 and pressing ArrowUp yields 4, not the previous value plus one (unit test).
-- [ ] `className` and `required` reach the input (unit test).
+- [x] After pressing + until the maximum with the keyboard, focus is still on a focusable element inside the stepper (browser test).
+- [x] Typing 3 and pressing ArrowUp yields 4, not the previous value plus one (unit test).
+- [x] `className` and `required` reach the input (unit test).
 
 ## Test plan
 
@@ -56,9 +56,13 @@ Review of PR #19 (TICKET-018) found two keyboard issues in the shared QuantitySt
 
 ## Notes / decisions
 
+- 2026-10-26: Fixed draft stepping, focus at bounds and input props. Quick/full gates pass: 235 unit tests, 95 browser passes, 13 conditional skips. Theme/width evidence in docs/reviews/TICKET-191/.
+
 - 2026-10-25: Raised by the PR #19 review (non-blocking nits); filed so the work is tracked.
 
 ## Activity log
 
-
 - 2026-10-25 — new → todo — unclechenna (claude)
+- 2026-10-26 — todo → claimed — divine (codex)
+- 2026-10-26 — todo → in_progress — divine (codex)
+- 2026-10-26 — in_progress → in_review — divine (codex)
