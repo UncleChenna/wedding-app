@@ -2,7 +2,7 @@
 
 ## 2026-10-26 — TICKET-034 — Approved event defaults
 
-Recorded the owner-approved RSVP/retention defaults and Wallet deferral. Venue details and time zone remain explicitly TBD, with configuration and first-send checks in downstream tickets. See [handoff](handoffs/TICKET-034.md) for evidence and pending final integration verification.
+Recorded the owner-approved RSVP/retention defaults and Wallet deferral. Venue details and time zone remain explicitly TBD, with configuration and first-send checks in downstream tickets. See [handoff](handoffs/TICKET-034.md) for evidence and passing final integration verification.
 
 ## 2026-10-26 — TICKET-194 — Validate before allocation
 

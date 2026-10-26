@@ -60,6 +60,8 @@ See: [Open questions](../docs/prd.md#open-questions) · [Invitations and RSVP](.
 
 ## Notes / decisions
 
+- 2026-10-26: Final integrated t:pr gate passed (270 unit, 163 browser, 17 conditional skips); PR #39 records the approved scope and TBD release prerequisites.
+
 - 2026-10-26: Owner approved the stated RSVP/retention defaults and explicitly deferred Wallet for launch in favour of QR/image/PDF. Venue, ceremony time, time zone, map and dress code are TBD by owner response. PRD/current-state records distinguish approved policies from unknown details; TICKET-101 and TICKET-176 track configuration/release requirements. Exact UTC cutoff remains undefined until the venue zone is configured. No live configuration or deletion occurred.
 
 - 2026-10-21: Needs a person (decision, account or physical task). Agents may prepare docs and record the outcome.

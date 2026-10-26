@@ -19,7 +19,7 @@ The owner replied “Use these defaults”, “Defer Wallet; launch with QR and 
 
 # Verification
 
-Quick/full verification passed before integrating PR #38: formatting, ticket validation, lint, types, 266 unit tests, production build, 163 browser passes and 17 conditional skips. Final post-rebase verification and required CI remain pending.
+Quick/full verification passed before integrating PR #38: formatting, ticket validation, lint, types, 266 unit tests, production build, 163 browser passes and 17 conditional skips. Final post-rebase t:pr verification also passed: 270 unit tests, production build, 163 browser passes and 17 conditional skips. Required CI remains the merge gate.
 
 # Risks and rollout
 

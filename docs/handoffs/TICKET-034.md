@@ -8,6 +8,6 @@ The owner answered TBD for venue, ceremony time, time zone, dress code and map. 
 
 PRD/current-state assumptions, Wallet traceability and downstream settings/lock/privacy/retention/release ticket notes are updated. The signed-pass requirement remains in the PRD; exact URL/payload/revocation design stays with TICKET-056 rather than being attributed to the owner.
 
-Quick and full verification passed before integrating PR #38: 266 unit tests, production build, 163 browser passes and 17 conditional skips. Final post-rebase PR verification remains pending. No live settings, accounts, messages or deletion changed; UI/device checks are N/A for documentation.
+Quick and full verification passed before integrating PR #38: 266 unit tests, production build, 163 browser passes and 17 conditional skips. Final post-rebase t:pr gate passed: 270 unit tests, production build, 163 browser passes and 17 conditional skips. PR: https://github.com/UncleChenna/wedding-app/pull/39. No live settings, accounts, messages or deletion changed; UI/device checks are N/A for documentation.
 
-Rebased onto allocator merge `140acb7b95721e1b88a76c8b68ff33affbe4ee64` without source conflicts. Next: run t:pr, record final verification results, mark the draft ready and check required CI on its exact final head before the authorized merge.
+Rebased onto allocator merge `140acb7b95721e1b88a76c8b68ff33affbe4ee64` without source conflicts. Next: mark PR #39 ready, check required CI on its exact final head, merge under standing authorization and record done through the CLI.
