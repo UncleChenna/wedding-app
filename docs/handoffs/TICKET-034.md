@@ -10,4 +10,4 @@ PRD/current-state assumptions, Wallet traceability and downstream settings/lock/
 
 Quick and full verification passed before integrating PR #38: 266 unit tests, production build, 163 browser passes and 17 conditional skips. Final post-rebase PR verification remains pending. No live settings, accounts, messages or deletion changed; UI/device checks are N/A for documentation.
 
-Next: finish verification and evidence, run t:pr, check required CI and use the authorized merge workflow.
+Rebased onto allocator merge `140acb7b95721e1b88a76c8b68ff33affbe4ee64` without source conflicts. Next: run t:pr, record final verification results, mark the draft ready and check required CI on its exact final head before the authorized merge.
