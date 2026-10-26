@@ -2,7 +2,7 @@
 id: TICKET-194
 title: Validate new-ticket input before allocating an id
 epic: foundations
-status: in_progress
+status: in_review
 priority: medium
 estimate: S
 labels: [infra, test]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: []
 blocks: []
 branch: TICKET-194
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/38
 created: 2026-10-25
 updated: 2026-10-26
 started: 2026-10-26
@@ -64,3 +64,4 @@ _Agents append dated notes here while working._
 - 2026-10-26 — backlog → todo — divine — Ready prerequisite-free allocator repair encountered during backlog completion
 - 2026-10-26 — todo → claimed — divine (codex)
 - 2026-10-26 — todo → in_progress — divine (codex)
+- 2026-10-26 — in_progress → in_review — divine (codex)
