@@ -2,7 +2,7 @@
 id: TICKET-015
 title: Define the typography scale and font roles
 epic: design-system
-status: in_progress
+status: in_review
 priority: urgent
 estimate: M
 labels: [design, frontend]
@@ -12,7 +12,7 @@ agent: claude
 blocked_by: [TICKET-009]
 blocks: [TICKET-021, TICKET-037]
 branch: TICKET-015
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/24
 created: 2026-10-21
 updated: 2026-10-26
 started: 2026-10-25
@@ -71,3 +71,4 @@ See: [Design principles](../docs/prd.md#design-principles) · [Design principles
 - 2026-10-25 — todo → in_progress — unclechenna (claude)
 - 2026-10-25 — in_progress → blocked — unclechenna (claude) — Criterion 3 needs Lighthouse: npx lighthouse was denied (external code) and adding it as a dependency needs owner lockfile approval. E2E Layout Instability measurement shows CLS 0; owner to approve Lighthouse or accept that evidence. Draft PR open.
 - 2026-10-26 — blocked → in_progress — unclechenna (codex) — User explicitly resumed TICKET-015; pinned Lighthouse 13.5.0 is now available without project dependency changes.
+- 2026-10-26 — in_progress → in_review — unclechenna (claude)
