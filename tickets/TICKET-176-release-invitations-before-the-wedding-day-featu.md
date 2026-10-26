@@ -44,6 +44,8 @@ Backlog audit coverage: INV-1–7, milestone invitations week 2–3. See [PRD](.
 
 - [ ] Before first send, record mobile invitation performance/accessibility scores of at least 95, CLS 0, keyboard/reduced-motion checks and zero applicable AA failures, independently of the later order-page hardening.
 
+- [ ] Before first send, the owner supplies actual venue/time/dress-code/map details as applicable and a valid venue time zone; the configured RSVP cutoff is verified against 2026-12-19 00:00 in that zone. TBD values are not treated as release-ready.
+
 ## Test plan
 
 - End-to-end: production-safe synthetic invitation journey and negative disabled-route tests. Manual: signed release checklist, real-device evidence and recovery drill references; remove synthetic personal records under the approved procedure.
@@ -56,6 +58,8 @@ Backlog audit coverage: INV-1–7, milestone invitations week 2–3. See [PRD](.
 - docs/runbooks/; release configuration; e2e/
 
 ## Notes / decisions
+
+- 2026-10-26: Owner explicitly deferred Apple/Google Wallet on 2026-10-26. Launch still requires QR/image/PDF and offline-pass journeys; do not require issuer accounts or claim Wallet is implemented. Event details are currently TBD; see docs/prd.md#approved-event-defaults.
 
 - 2026-10-21 — Added by HARNESS-002. All criteria describe future work; no completion or human approval is implied.
 
