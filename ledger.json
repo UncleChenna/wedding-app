@@ -701,12 +701,13 @@
     },
     "WED-194": {
       "log": [
-        "- 2026-10-26 — backlog → todo — divine — Ready prerequisite-free allocator repair encountered during backlog completion"
+        "- 2026-10-26 — backlog → todo — divine — Ready prerequisite-free allocator repair encountered during backlog completion",
+        "- 2026-10-26 — todo → claimed — divine (codex)"
       ],
       "status": "todo",
-      "owner": "",
-      "agent": "",
-      "branch": "",
+      "owner": "divine",
+      "agent": "codex",
+      "branch": "TICKET-194",
       "pr": "",
       "started": "",
       "completed": "",
