@@ -502,6 +502,63 @@ describe("ticket CLI with a shared remote", () => {
     expect((await t(loser, "release", "TICKET-001")).code).not.toBe(0);
   }, 30000);
 
+  it.each([
+    ["--estimate", "XS", ["S", "M", "L"]],
+    ["--priority", "critical", ["urgent", "high", "medium", "low"]],
+    ["--status", "finished", ["backlog", "todo"]],
+  ])(
+    "rejects invalid %s before allocating an ID",
+    async (flag, value, allowed) => {
+      const { a, remote } = setup();
+      expect((await t(a, "claim", "TICKET-001", "--agent", "codex")).code).toBe(0);
+      const before = git(remote, "rev-parse", "refs/heads/ticket-ledger");
+      const beforeData = JSON.parse(git(remote, "show", "refs/heads/ticket-ledger:ledger.json"));
+      const args = [
+        "new",
+        "--title",
+        "Add a third thing",
+        "--epic",
+        "testing",
+        "--module",
+        "shared",
+      ];
+      const rejected = await t(a, ...args, flag, value);
+      expect(rejected.code).not.toBe(0);
+      for (const option of allowed) expect(rejected.out).toContain(option);
+      expect(git(remote, "rev-parse", "refs/heads/ticket-ledger")).toBe(before);
+      expect(JSON.parse(git(remote, "show", "refs/heads/ticket-ledger:ledger.json")).lastId).toBe(
+        beforeData.lastId,
+      );
+      const valid = await t(a, ...args);
+      expect(valid.code, valid.out).toBe(0);
+      expect(valid.out).toContain("TICKET-003-add-a-third-thing.md");
+      expect(JSON.parse(git(remote, "show", "refs/heads/ticket-ledger:ledger.json")).lastId).toBe(
+        3,
+      );
+    },
+    30000,
+  );
+
+  it("does not allocate an ID when the required owner is missing", async () => {
+    const { a, remote } = setup();
+    expect((await t(a, "claim", "TICKET-001", "--agent", "codex")).code).toBe(0);
+    const before = git(remote, "rev-parse", "refs/heads/ticket-ledger");
+    git(a, "config", "harness.owner", "");
+    const rejected = await t(
+      a,
+      "new",
+      "--title",
+      "Add a third thing",
+      "--epic",
+      "testing",
+      "--module",
+      "shared",
+    );
+    expect(rejected.code).not.toBe(0);
+    expect(rejected.out).toMatch(/owner/);
+    expect(git(remote, "rev-parse", "refs/heads/ticket-ledger")).toBe(before);
+  }, 30000);
+
   it("writes the ticket file only on the ticket branch, and allocates fresh ids", async () => {
     const { a } = setup();
     expect((await t(a, "claim", "TICKET-001", "--agent", "claude")).code).toBe(0);
