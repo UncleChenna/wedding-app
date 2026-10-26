@@ -8,4 +8,4 @@ Red: two new unit regressions failed on the previous component. Green: targeted 
 
 Full gate passed: 235 unit tests, production build, 95 browser passes and 13 conditional skips. Six screenshots inspected; review in docs/reviews/TICKET-191/.
 
-Next: open a PR into develop for human review; never auto-merge. Prioritize prerequisite completion or explicitly scoped page work to deliver visible guest pages next: the invitation ticket still depends on paused typography and unfinished backend tickets.
+Next: human review of [PR #29](https://github.com/UncleChenna/wedding-app/pull/29) into develop; never auto-merge. Ticket is in_review. The PR workflow repeated the full gate successfully; /tmp/t191-pr.log records 235 unit tests and 95 browser passes with 13 conditional skips. Prioritize prerequisite completion or explicitly scoped page work to deliver visible guest pages next: the invitation ticket still depends on paused typography and unfinished backend tickets.
