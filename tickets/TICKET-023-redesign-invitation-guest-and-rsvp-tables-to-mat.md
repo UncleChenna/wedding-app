@@ -69,3 +69,5 @@ _Agents append dated notes here while working._
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-10-26 — todo → claimed — divine (codex)
 - 2026-10-26 — todo → in_progress — divine (codex)
+- 2026-10-26 — in_progress → blocked — divine (codex) — Awaiting exact-path authorization for generated migration SQL, snapshot and journal; implementation local, plan pushed, draft PR https://github.com/UncleChenna/wedding-app/pull/41. Eight DB tests and independent build/browser checks pass; full gate blocked by protected-file hook.
+- 2026-10-26 — blocked → in_progress — divine (codex)
