@@ -2,20 +2,20 @@
 id: TICKET-023
 title: Redesign invitation, guest and RSVP tables to match the PRD
 epic: data-auth
-status: todo
+status: in_progress
 priority: urgent
 estimate: L
 labels: [db, backend]
 module: shared
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-003, TICKET-034]
 blocks: [TICKET-024, TICKET-025, TICKET-036, TICKET-040, TICKET-049, TICKET-056, TICKET-089, TICKET-171, TICKET-172]
-branch: ""
+branch: TICKET-023
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-10-26
+started: 2026-10-26
 completed: ""
 reason: ""
 resume_to: ""
@@ -67,3 +67,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-26 — todo → claimed — divine (codex)
+- 2026-10-26 — todo → in_progress — divine (codex)
