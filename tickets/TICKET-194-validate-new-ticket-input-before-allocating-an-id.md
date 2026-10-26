@@ -40,8 +40,8 @@ See: [Tickets](../docs/tickets.md).
 
 ## Acceptance criteria
 
-- [ ] `t:new` with an invalid `--estimate` fails without changing the ledger's `lastId` (script test).
-- [ ] The error lists the valid values.
+- [x] `t:new` with an invalid `--estimate` fails without changing the ledger's `lastId` (script test).
+- [x] The error lists the valid values.
 
 ## Test plan
 
@@ -53,6 +53,8 @@ See: [Tickets](../docs/tickets.md).
 - `scripts/tickets.ts`
 
 ## Notes / decisions
+
+- 2026-10-26: Validate provisional metadata, initial status and actor before reserving an ID. Four real-Git regressions failed before the fix; all 28 ticket tests pass afterward, including unchanged ledger head/lastId and exact next valid ID. Integrated quick/full gates pass (270 unit; 157 browser first-attempt passes, six retry passes, 17 skips). Retry evidence and the original worktree-base timeout are disclosed in docs/handoffs/TICKET-194.md.
 
 _Agents append dated notes here while working._
 
