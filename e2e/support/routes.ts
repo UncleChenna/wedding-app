@@ -14,6 +14,7 @@ export const PAGE_ROUTES = [
   "/dev/theme",
   "/dev",
   "/dev/invitation",
+  "/dev/rsvp",
 ] as const;
 
 /** Any unknown path renders the themed not-found page. */

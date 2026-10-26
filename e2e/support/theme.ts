@@ -8,6 +8,9 @@ import { themeToCssVars, type Theme } from "../../src/modules/theming";
  * cleared first: optional ones (e.g. --t-pattern-*) must not leak into another theme.
  */
 export async function applyTheme(page: Page, theme: Theme): Promise<void> {
+  // Interactive previews scope variables below <html>; switch their real control too.
+  const previewTheme = page.getByRole("combobox", { name: "Preview theme", exact: true });
+  if (await previewTheme.count()) await previewTheme.selectOption(theme.id);
   await page.evaluate(
     ({ vars, scheme, id }) => {
       const root = document.documentElement;

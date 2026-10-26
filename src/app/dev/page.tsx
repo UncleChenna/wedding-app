@@ -5,6 +5,7 @@ const pages = [
   ["/", "Wedding home"],
   ["/invite", "Invitation guidance"],
   ["/dev/invitation", "Invitation preview"],
+  ["/dev/rsvp", "RSVP preview"],
   ["/dev/theme", "Components and themes"],
 ] as const;
 export default function PreviewIndex() {
@@ -34,7 +35,6 @@ export default function PreviewIndex() {
       </nav>
       <h2 className="font-display text-3xl">Coming next</h2>
       <ol className="mt-6 list-inside list-decimal space-y-4 text-base leading-relaxed">
-        <li>RSVP and confirmation screens</li>
         <li>Table entry and menu ordering</li>
         <li>Gate check-in and kitchen screens</li>
         <li>Admin pages</li>

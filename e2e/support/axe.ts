@@ -26,14 +26,28 @@ export function describeViolations(violations: readonly Violation[]): string[] {
  * measured wrongly. Infinite ones (a loading spinner) never finish, so they are skipped.
  */
 export async function settleAnimations(page: Page): Promise<void> {
-  await page.evaluate(() =>
-    Promise.all(
-      document
+  await page.evaluate(async () => {
+    // Changing steps/focus can cancel a CSS transition. Cancellation is expected,
+    // but a replacement animation must finish before measuring contrast.
+    for (;;) {
+      const animations = document
         .getAnimations()
-        .filter((a) => a.effect?.getTiming().iterations !== Infinity)
-        .map((a) => a.finished),
-    ),
-  );
+        .filter(
+          (animation) =>
+            animation.effect?.getTiming().iterations !== Infinity &&
+            animation.playState !== "finished" &&
+            animation.playState !== "idle",
+        );
+      if (!animations.length) return;
+      await Promise.all(
+        animations.map((animation) =>
+          animation.finished.catch((error: unknown) => {
+            if (!(error instanceof DOMException && error.name === "AbortError")) throw error;
+          }),
+        ),
+      );
+    }
+  });
 }
 
 /** Scan the settled page for WCAG A/AA violations; an empty list means it passed. */

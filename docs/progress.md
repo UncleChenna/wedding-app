@@ -1,5 +1,9 @@
 # Progress log
 
+## 2026-10-26 — TICKET-199 — RSVP preview
+
+Built the complete sample RSVP journey. See [handoff](handoffs/TICKET-199.md) and [UI evidence](reviews/TICKET-199/README.md). TICKET-201 tracks deferred release QA under the approved preview exception; TICKET-015 remains paused.
+
 ## 2026-10-26 — TICKET-198 — Visible wedding pages
 
 Home, invitation guidance and review navigation now available. See [ticket handoff](handoffs/TICKET-198.md) for verification and remaining device checks. RSVP (199) and ordering (200) are the next frontend priorities; 015 stays paused.

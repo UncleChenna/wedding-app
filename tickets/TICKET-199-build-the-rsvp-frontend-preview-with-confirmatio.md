@@ -37,11 +37,11 @@ Persisted guest data, authentication, QR credentials, live orders and deployment
 
 ## Acceptance criteria
 
-- [ ] The complete preview journey works with clear sample-data and non-submission labels.
-- [ ] Input errors, empty states, back navigation and the terminal states are testable without a backend.
-- [ ] /dev navigation links the new preview; keyboard and reduced-motion behavior work.
-- [ ] Both registered themes pass axe and fit 375/768/1280px; screenshots are recorded and inspected.
-- [ ] Unit, end-to-end and full verification pass; production integration boundaries are documented.
+- [x] The complete preview journey works with clear sample-data and non-submission labels.
+- [x] Input errors, empty states, back navigation and the terminal states are testable without a backend.
+- [x] /dev navigation links the new preview; keyboard and reduced-motion behavior work.
+- [x] Both registered themes pass axe and fit 375/768/1280px; screenshots are recorded and inspected.
+- [x] Unit, end-to-end and full verification pass; production integration boundaries are documented.
 
 ## Test plan
 
@@ -56,6 +56,8 @@ Persisted guest data, authentication, QR credentials, live orders and deployment
 ## Notes / decisions
 
 - User-directed frontend priority. TICKET-015 stays paused. Depends on TICKET-198 for navigation and shared visual context.
+
+- 2026-10-26 — Implemented full in-memory RSVP preview; quick/full gates and responsive/accessibility matrix pass. Release-only performance/device checks tracked by TICKET-201 under explicit user approval.
 
 ## Activity log
 

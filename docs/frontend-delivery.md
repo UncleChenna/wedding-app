@@ -15,6 +15,7 @@ User priority, 26 October 2026: visible, navigable pages before further foundati
 - `/invite`: how guests will receive their personal link; no token lookup or RSVP yet.
 - `/dev`: reviewer navigation and clearly labelled pending work.
 - `/dev/invitation`: layout preview, theme links, sample photo/venue/dress code. No submission.
+- `/dev/rsvp`: attendance, companions, sample meal selection, review and both confirmation outcomes. Drafts exist only in memory and reset on reload.
 - `/dev/theme`: existing shared component showcase.
 
 Development home links to /dev. In a production build, reviewers open /dev directly; it contains no guest records or private links. Existing /order, /checkin, /kitchen and /admin are still placeholders.
