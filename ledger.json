@@ -625,6 +625,21 @@
       "updated": "2026-10-26",
       "reason": "",
       "resume_to": ""
+    },
+    "WED-005": {
+      "log": [
+        "- 2026-10-26 — todo → claimed — rehearsal-a (codex)"
+      ],
+      "status": "todo",
+      "owner": "rehearsal-a",
+      "agent": "codex",
+      "branch": "TICKET-005",
+      "pr": "",
+      "started": "",
+      "completed": "",
+      "updated": "2026-10-26",
+      "reason": "",
+      "resume_to": ""
     }
   }
 }
