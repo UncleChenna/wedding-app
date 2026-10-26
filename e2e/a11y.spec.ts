@@ -72,12 +72,16 @@ test.describe("base components @smoke", () => {
         const panel = staff.getByRole("region", { name: label, exact: true });
         await expect(panel).toBeVisible();
         await expect(panel.getByRole("img", { name: `${label} icon`, exact: true })).toBeVisible();
-        const sizes = await panel.evaluate((el) =>
-          [...el.querySelectorAll("p")].map((p) => parseFloat(getComputedStyle(p).fontSize)),
-        );
-        const [labelSize = 0, identifierSize = 0, detailSize = 0] = sizes;
-        expect(identifierSize).toBeGreaterThanOrEqual(32);
-        expect(Math.min(labelSize, detailSize)).toBeGreaterThanOrEqual(18);
+        for (const [testId, minimum] of [
+          ["status-label", 18],
+          ["status-identifier", 32],
+          ["status-detail", 18],
+        ] as const) {
+          const text = panel.getByTestId(testId);
+          await expect(text).toBeVisible();
+          const size = await text.evaluate((el) => parseFloat(getComputedStyle(el).fontSize));
+          expect(size, testId).toBeGreaterThanOrEqual(minimum);
+        }
       }
     }
   });

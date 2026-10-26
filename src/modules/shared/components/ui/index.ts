@@ -24,6 +24,7 @@ export {
   type StatusBadgeProps,
   type StatusPanelProps,
   type StatusTone,
+  type StatusIconName,
 } from "./status-panel";
 export { ToastProvider, ToastView, useToast, type ToastOptions, type ToastTone } from "./toast";
 export { FadeIn, Rise, type MotionProps } from "./motion";

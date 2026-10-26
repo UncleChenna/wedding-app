@@ -1,5 +1,9 @@
 # Progress log
 
+## 2026-10-26 — TICKET-192 — Staff status follow-up
+
+Fixed empty detail rendering, added badge icon overrides and stable typography test selectors. See [handoff](handoffs/TICKET-192.md) and [review](reviews/TICKET-192/README.md). Shared-component PR stays for human review; TICKET-015 remains paused.
+
 ## 2026-10-26 — TICKET-200 — Ordering preview
 
 Built the sample table/menu/review/service journey. See [handoff](handoffs/TICKET-200.md) and [UI evidence](reviews/TICKET-200/README.md). TICKET-201 tracks deferred release QA; TICKET-015 remains paused.

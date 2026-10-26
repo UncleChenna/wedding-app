@@ -39,9 +39,9 @@ Non-blocking review notes on PR #20 (TICKET-019) for the shared staff status com
 
 ## Acceptance criteria
 
-- [ ] Passing `detail={0}` renders no stray "0" (unit test).
-- [ ] The e2e size check selects elements by test id or role, not position (code review).
-- [ ] `StatusBadge` accepts an icon override and defaults to the tone icon (unit test).
+- [x] Passing `detail={0}` renders no stray "0" (unit test).
+- [x] The e2e size check selects elements by test id or role, not position (code review).
+- [x] `StatusBadge` accepts an icon override and defaults to the tone icon (unit test).
 
 ## Test plan
 
@@ -56,6 +56,8 @@ Non-blocking review notes on PR #20 (TICKET-019) for the shared staff status com
 - `e2e/a11y.spec.ts`
 
 ## Notes / decisions
+
+- 2026-10-26: Fixed detail and icon handling with regression coverage, stable sizing selectors and showcase evidence. Clean quick/full gate: 251 unit, 155 browser passes, 17 conditional skips; screenshots six passed. Shared-component PR remains for human review.
 
 - 2026-10-25: Filed from the PR #20 review (non-blocking nits) so the follow-up is tracked.
 
