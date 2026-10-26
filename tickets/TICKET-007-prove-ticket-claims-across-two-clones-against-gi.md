@@ -40,9 +40,9 @@ See: [Working together](../docs/collaboration.md).
 
 ## Acceptance criteria
 
-- [ ] Exactly one claim succeeds; the other prints `already claimed`.
-- [ ] The loser's `pnpm t:next` skips the claimed ticket.
-- [ ] The ledger commit is visible on `origin/ticket-ledger`.
+- [x] Exactly one claim succeeds; the other prints `already claimed`.
+- [x] The loser's `pnpm t:next` skips the claimed ticket.
+- [x] The ledger commit is visible on `origin/ticket-ledger`.
 
 ## Test plan
 
@@ -55,6 +55,8 @@ See: [Working together](../docs/collaboration.md).
 - `docs/tickets.md`
 
 ## Notes / decisions
+
+- 2026-10-26: Real GitHub two-clone race passed: exactly one winner, loser rejected as already claimed and observes winner in board/show; next skips probe. Remote ledger commit recorded. Temporary TICKET-005 claim released and confirmed unowned. See docs/reviews/TICKET-007/README.md.
 
 _Agents append dated notes here while working._
 

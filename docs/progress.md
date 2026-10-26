@@ -1,5 +1,9 @@
 # Progress log
 
+## 2026-10-26 — TICKET-007 — Real GitHub claim race
+
+Two-clone claim race passed and the probe claim was released. See [handoff](handoffs/TICKET-007.md) and [evidence](reviews/TICKET-007/README.md). The user selected warm wording and authorized resuming TICKET-015. TICKET-006 remains blocked on Docker health.
+
 ## 2026-10-26 — TICKET-192 — Staff status follow-up
 
 Fixed empty detail rendering, added badge icon overrides and stable typography test selectors. See [handoff](handoffs/TICKET-192.md) and [review](reviews/TICKET-192/README.md). Shared-component PR stays for human review; TICKET-015 remains paused.
