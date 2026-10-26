@@ -38,10 +38,10 @@ TICKET-186 and TICKET-187 remain in_review because their merged PRs targeted his
 
 ## Acceptance criteria
 
-- [ ] A merged stacked PR can close only when its merge commit is proven reachable from freshly fetched develop.
-- [ ] Open, closed-unmerged, unrelated, unreachable and unavailable-history cases refuse completion.
-- [ ] Direct develop merges, owner checks and merged acceptance-criteria validation retain existing behavior.
-- [ ] TICKET-186 and TICKET-187 close through the CLI only if the evidence satisfies the new checks.
+- [x] A merged stacked PR can close only when its merge commit is proven reachable from freshly fetched develop.
+- [x] Open, closed-unmerged, unrelated, unreachable and unavailable-history cases refuse completion.
+- [x] Direct develop merges, owner checks and merged acceptance-criteria validation retain existing behavior.
+- [x] TICKET-186 and TICKET-187 close through the CLI only if the evidence satisfies the new checks.
 
 ## Test plan
 
@@ -54,6 +54,8 @@ TICKET-186 and TICKET-187 remain in_review because their merged PRs targeted his
 - scripts/tickets.ts and ticket PR helpers/tests; docs/tickets.md; per-ticket handoff.
 
 ## Notes / decisions
+
+- 2026-10-26: Fresh ancestry and same-commit criteria checks implemented; 31 focused tests and full gate pass (258 unit, 155 browser, 17 skips). PR #4/#5 merge commits are not reachable from inspected develop; CLI correctly refuses both historical closures. Conditional closure criterion is satisfied by refusal, not by marking those tickets done. Exact evidence is in docs/handoffs/TICKET-203.md.
 
 - 2026-10-26: Discovered during the user-authorized backlog completion run. Do not bypass the existing guard while this ticket is pending.
 

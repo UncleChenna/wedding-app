@@ -22,7 +22,7 @@ export interface MoveFacts {
   pushed?: boolean;
   verified?: boolean;
   openPr?: string;
-  /** done: the PR is merged. */
+  /** done: the merged PR is proven reachable from fresh develop history. */
   mergedPr?: string;
   /** in_review and done: every acceptance criterion is ticked. */
   criteriaTicked?: boolean;
@@ -117,7 +117,7 @@ export function move(meta: Frontmatter, to: Status, facts: MoveFacts): Change {
   }
 
   if (to === "done") {
-    if (!facts.mergedPr) throw new TransitionError(`${meta.id}'s PR is not merged yet.`);
+    if (!facts.mergedPr) throw new TransitionError(`${meta.id}'s PR is not merged into verified develop history yet. Check fetch access, ancestry and the merged ticket file.`);
     if (!facts.criteriaTicked)
       throw new TransitionError(`${meta.id} has unticked acceptance criteria on main.`);
     change.pr = facts.mergedPr;
