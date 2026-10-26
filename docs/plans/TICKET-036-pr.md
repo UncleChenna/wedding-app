@@ -4,20 +4,21 @@ Ticket: TICKET-036
 
 # Summary
 
-Personal invitation URLs need unguessable tokens and server-side resolution. This draft tracks the implementation plan; no product functionality is delivered yet.
+Personal invitation URLs need unguessable tokens and server-side resolution. This draft adds tested token and resolver helpers; persistence and the personal route remain unfinished.
 
 # Changes
 
 - Claim and isolated worktree based on the merged invitation schema.
 - Dated implementation plan and handoff documenting real HTTP 404 requirements and local database startup.
+- 256-bit token generator, input validation, bounded atomic-reservation retries and guest-only invitation resolution.
 
 # Acceptance criteria and evidence
 
-All three product criteria remain incomplete: secure tokens with uniqueness retry, valid invitation rendering and neutral unknown/revoked 404s, and token-only guest URLs. Implementation and tests are next.
+All three product criteria remain incomplete: secure tokens with uniqueness retry, valid invitation rendering and neutral unknown/revoked 404s, and token-only guest URLs. Token/resolver helpers have 20 passing tests; Drizzle persistence, the real route and browser evidence remain required.
 
 # Verification
 
-203 tickets validated during the initial status commit. Plan and handoff pass Prettier. Locked dependencies installed. Existing Colima runtime started successfully after initial setup failed; isolated PostgreSQL became healthy. Full Supabase setup is still running. No product tests or full gate have run for this ticket.
+203 tickets validated during the initial status commit. Plan and handoff pass Prettier. Locked dependencies installed. Existing Colima runtime started successfully after initial setup failed; isolated PostgreSQL became healthy. Full Supabase setup is still running. Twenty new token/resolver tests pass after initial missing-module failures; targeted ESLint and Prettier pass. No full gate or database/browser route tests have run for this ticket.
 
 # Risks and rollout
 
