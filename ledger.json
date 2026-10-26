@@ -698,6 +698,21 @@
       "updated": "2026-10-26",
       "reason": "Unused allocation from failed t:new; allocator repair tracked by TICKET-194",
       "resume_to": ""
+    },
+    "WED-194": {
+      "log": [
+        "- 2026-10-26 — backlog → todo — divine — Ready prerequisite-free allocator repair encountered during backlog completion"
+      ],
+      "status": "todo",
+      "owner": "",
+      "agent": "",
+      "branch": "",
+      "pr": "",
+      "started": "",
+      "completed": "",
+      "updated": "2026-10-26",
+      "reason": "",
+      "resume_to": ""
     }
   }
 }
