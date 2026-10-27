@@ -881,6 +881,21 @@
       "updated": "2026-10-27",
       "reason": "Awaiting exact-path authorization for generated migration 0002_staff-device-identities SQL, snapshot and journal; source proposal in PR47.",
       "resume_to": "in_progress"
+    },
+    "WED-171": {
+      "log": [
+        "- 2026-10-27 — todo → claimed — divine (codex)"
+      ],
+      "status": "todo",
+      "owner": "divine",
+      "agent": "codex",
+      "branch": "TICKET-171",
+      "pr": "",
+      "started": "",
+      "completed": "",
+      "updated": "2026-10-27",
+      "reason": "",
+      "resume_to": ""
     }
   }
 }
