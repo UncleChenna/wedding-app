@@ -2,7 +2,7 @@
 id: TICKET-172
 title: Migrate staff identities and device registrations
 epic: data-auth
-status: in_progress
+status: blocked
 priority: urgent
 estimate: M
 labels: [db, security]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-10-27
 started: 2026-10-27
 completed: ""
-reason: ""
-resume_to: ""
+reason: "Awaiting exact-path authorization for generated migration 0002_staff-device-identities SQL, snapshot and journal; source proposal in PR47."
+resume_to: in_progress
 ---
 
 # TICKET-172: Migrate staff identities and device registrations
@@ -59,5 +59,4 @@ Backlog audit coverage: CHK-5, ADM-4. See [PRD](../docs/prd.md) and [audit](AUDI
 - 2026-10-21 — new → todo — divine
 - 2026-10-27 — todo → claimed — divine (codex)
 - 2026-10-27 — todo → in_progress — divine (codex)
-
-2026-10-27 — Source schema/seed proposal prepared; seven seed tests and quick gate pass. Five isolated DB regressions fail before migration. No migration generated/applied; see docs/reviews/TICKET-172/migration-approval.md.
+- 2026-10-27 — in_progress → blocked — divine (codex) — Awaiting exact-path authorization for generated migration 0002_staff-device-identities SQL, snapshot and journal; source proposal in PR47.
