@@ -867,14 +867,15 @@
     },
     "WED-172": {
       "log": [
-        "- 2026-10-27 — todo → claimed — divine (codex)"
+        "- 2026-10-27 — todo → claimed — divine (codex)",
+        "- 2026-10-27 — todo → in_progress — divine (codex)"
       ],
-      "status": "todo",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-172",
       "pr": "",
-      "started": "",
+      "started": "2026-10-27",
       "completed": "",
       "updated": "2026-10-27",
       "reason": "",
