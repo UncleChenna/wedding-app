@@ -59,3 +59,5 @@ Backlog audit coverage: CHK-5, ADM-4. See [PRD](../docs/prd.md) and [audit](AUDI
 - 2026-10-21 — new → todo — divine
 - 2026-10-27 — todo → claimed — divine (codex)
 - 2026-10-27 — todo → in_progress — divine (codex)
+
+2026-10-27 — Source schema/seed proposal prepared; seven seed tests and quick gate pass. Five isolated DB regressions fail before migration. No migration generated/applied; see docs/reviews/TICKET-172/migration-approval.md.

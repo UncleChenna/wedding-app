@@ -66,16 +66,61 @@ export const themes = pgTable("themes", {
 
 // ─── Staff ────────────────────────────────────────────────────────────────
 
-export const staff = pgTable("staff", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  /** Supabase auth.users id, linked when the staff member first signs in. */
-  authUserId: uuid("auth_user_id").unique(),
-  name: text("name").notNull(),
-  email: text("email").notNull().unique(),
-  role: staffRole("role").notNull(),
-  createdAt: createdAt(),
-  updatedAt: updatedAt(),
-}).enableRLS();
+export const staff = pgTable(
+  "staff",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    /** Supabase Auth is for admins; PIN-only staff do not need an email account. */
+    authUserId: uuid("auth_user_id").unique(),
+    name: text("name").notNull(),
+    email: text("email").unique(),
+    role: staffRole("role").notNull(),
+    /** Encoded scrypt parameters, salt and digest. Never a raw PIN. */
+    pinHash: text("pin_hash"),
+    pinIssuedAt: timestamp("pin_issued_at", { withTimezone: true }),
+    pinExpiresAt: timestamp("pin_expires_at", { withTimezone: true }),
+    credentialVersion: integer("credential_version").notNull().default(1),
+    revokedAt: timestamp("revoked_at", { withTimezone: true }),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  (t) => [
+    check("staff_credential_version_positive", sql`${t.credentialVersion} > 0`),
+    check(
+      "staff_pin_credential_complete",
+      sql`
+      (${t.pinHash} is null and ${t.pinIssuedAt} is null and ${t.pinExpiresAt} is null)
+      or
+      (${t.pinHash} is not null and ${t.pinIssuedAt} is not null and ${t.pinExpiresAt} is not null
+       and ${t.pinExpiresAt} > ${t.pinIssuedAt} and ${t.role} <> 'admin'
+       and ${t.pinHash} ~ '^scrypt[$][1-9][0-9]{0,6}[$][1-9][0-9]{0,3}[$][1-9][0-9]{0,3}[$][0-9a-f]{32,128}[$][0-9a-f]{64,256}$')
+    `,
+    ),
+  ],
+).enableRLS();
+
+/** Stable IDs survive renaming and revocation. Legacy text IDs remain representable. */
+export const registeredDevices = pgTable(
+  "registered_devices",
+  {
+    id: text("id")
+      .primaryKey()
+      .default(sql`gen_random_uuid()::text`),
+    name: text("name").notNull(),
+    role: staffRole("role").notNull(),
+    registeredByStaffId: uuid("registered_by_staff_id").references(() => staff.id, {
+      onDelete: "restrict",
+    }),
+    registeredAt: timestamp("registered_at", { withTimezone: true }).notNull().defaultNow(),
+    revokedAt: timestamp("revoked_at", { withTimezone: true }),
+    updatedAt: updatedAt(),
+  },
+  (t) => [
+    check("registered_devices_id_format", sql`${t.id} ~ '^[A-Za-z0-9][A-Za-z0-9._:-]{0,199}$'`),
+    check("registered_devices_name_length", sql`char_length(trim(${t.name})) between 1 and 120`),
+    check("registered_devices_staff_role", sql`${t.role} in ('gate', 'kitchen', 'bar')`),
+  ],
+).enableRLS();
 
 // ─── Invitations ──────────────────────────────────────────────────────────
 
