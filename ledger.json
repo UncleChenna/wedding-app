@@ -602,18 +602,19 @@
       "log": [
         "- 2026-10-26 — todo → claimed — divine (codex)",
         "- 2026-10-26 — todo → in_progress — divine (codex)",
-        "- 2026-10-26 — in_progress → blocked — divine (codex) — Local Docker database unhealthy: no response and health-check timeouts; concurrent migration/smoke and successful cleanup unverified."
+        "- 2026-10-26 — in_progress → blocked — divine (codex) — Local Docker database unhealthy: no response and health-check timeouts; concurrent migration/smoke and successful cleanup unverified.",
+        "- 2026-10-27 — blocked → in_progress — divine (codex) — Isolated stack recovered; startup and existing migrations passed on 2026-10-27. Resuming concurrent lifecycle proof."
       ],
-      "status": "blocked",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-006",
       "pr": "",
       "started": "2026-10-26",
       "completed": "",
-      "updated": "2026-10-26",
-      "reason": "Local Docker database unhealthy: no response and health-check timeouts; concurrent migration/smoke and successful cleanup unverified.",
-      "resume_to": "in_progress"
+      "updated": "2026-10-27",
+      "reason": "",
+      "resume_to": ""
     },
     "WED-007": {
       "log": [
