@@ -21,7 +21,7 @@ Add the invitation Share menu: WhatsApp and email drafts, copy-link confirmation
 
 # Verification
 
-Full pnpm verify passed: 359 unit tests, 10 opt-in database skips, production build and 207 browser passes with 29 conditional skips, no retries. Added a separate production CLS test (0) after that run; final t:pr gate will include it. Quick gate passes. 15 focused production browser tests and 12 screenshot captures pass.
+Full pnpm verify passed: 359 unit tests, 10 opt-in database skips, production build and 209 browser passes with 29 conditional skips, no retries. Final t:pr gate also passed with the CLS test (0) included. Quick gate passes. 15 focused production browser tests and 12 screenshot captures pass.
 Base: bc15aa088fc27164e0108ab9fb17dc313d3ae0ec.
 Logs: .harness/t050-verify.log and .harness/t050-screenshots.log.
 

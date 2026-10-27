@@ -35,3 +35,5 @@ APPROVE for the authorized preview scope with the disclosed device QA deferral. 
 Run pnpm dev in this worktree and visit http://localhost:22610/dev/share (also linked from /dev). Open Share invitation, tab through controls, copy the link, switch theme and repeat. WhatsApp/email targets contain sample contacts; inspecting their URLs does not send a message. Browsers with native sharing expose More ways to share. Automated failure-path fixtures are in e2e/share-menu.spec.ts.
 
 Source behavior references: [native sharing and cancellation](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share), [clipboard permissions](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/writeText).
+
+Final CLI gate passed after the CLS-test type annotation fix: 359 unit passes (10 conditional skips), build, 209 browser passes (29 conditional skips), no retries. PR46 is in_review; hosted CI remains required.

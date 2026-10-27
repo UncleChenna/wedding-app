@@ -1,6 +1,6 @@
 # TICKET-050 — 2026-10-27
 
-Owner divine; agent codex; branch TICKET-050; base bc15aa088fc27164e0108ab9fb17dc313d3ae0ec. App port 22610; browser 22611. PR: https://github.com/UncleChenna/wedding-app/pull/46. In progress pending final review transition.
+Owner divine; agent codex; branch TICKET-050; base bc15aa088fc27164e0108ab9fb17dc313d3ae0ec. App port 22610; browser 22611. PR: https://github.com/UncleChenna/wedding-app/pull/46. CLI status in_review; final local gate passed.
 
 ## Implementation
 
@@ -14,6 +14,6 @@ Initial URL tests failed on missing module; a throwing relative-URL refinement w
 
 ## Next
 
-Commit UI/evidence, push, update draft PR46 body from docs/plans/TICKET-050-pr.md, run AGENT_OWNER=divine pnpm t:pr TICKET-050, promote from draft only with passing final gate. Inspect hosted CI on exact final head before merging under the user's standing authorization; record done through CLI only after confirmed merge.
+UI/evidence committed in 96383c6; CLI review transition cd3034f. Final pnpm t:pr passed: 359 unit passes, 10 opt-in DB skips, build, 209 browser passes and 29 conditional skips, no retries; log .harness/t050-pr.log. The added CLS test initially failed the pre-commit TypeScript annotation check; corrected to optional initialized state without weakening checks. Promote PR46 from draft and confirm final-head CI. Inspect hosted CI on exact final head before merging under the user's standing authorization; record done through CLI only after confirmed merge.
 
 The CLI records PR metadata at verified in_review transition; do not hand-edit status. Preserve unclechenna's TICKET-204. TICKET-025 remains blocked on its own exact-path approval, not covered by TICKET-023.
