@@ -15,6 +15,20 @@
       "when": 1793046541507,
       "tag": "0001_invitation-rsvp-model",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1793110119195,
+      "tag": "0002_event-settings-rsvp-history",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1793110119531,
+      "tag": "0003_rsvp-history-append-only",
+      "breakpoints": true
     }
   ]
 }
