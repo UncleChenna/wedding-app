@@ -11,6 +11,17 @@ Each guest sees the theme that matches their phone or computer's appearance sett
 | Light          | Ivory & Gold         |
 | Dark           | Midnight & Champagne |
 
+## Presets
+
+| Theme                | Scheme | Fonts (display + body)     | Mood                               |
+| -------------------- | ------ | -------------------------- | ---------------------------------- |
+| Ivory & Gold         | light  | Cormorant Garamond + Inter | Printed stationery (default light) |
+| Midnight & Champagne | dark   | Playfair Display + Jost    | Evening glamour (default dark)     |
+| Emerald Night        | dark   | Playfair Display + Inter   | Rich evening celebration           |
+| Blush & Sage         | light  | Cormorant Garamond + Jost  | Relaxed garden wedding             |
+
+Emerald Night and Blush & Sage come from the invitation design spike. Either can take its scheme's slot below.
+
 ## Switch a theme (10 seconds)
 
 Edit `src/modules/theming/config.ts`:
