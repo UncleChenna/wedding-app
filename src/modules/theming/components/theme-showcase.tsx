@@ -1,4 +1,5 @@
 import {
+  ActionBar,
   Button,
   Card,
   CardContent,
@@ -213,6 +214,11 @@ export function ThemeShowcase({ theme, active }: { theme: Theme; active: boolean
               <Button size="md">Medium</Button>
               <Button size="lg">Large</Button>
             </div>
+            {/* Shown in place; on a phone a real step keeps it pinned to the bottom of the screen. */}
+            <ActionBar sticky={false} status="2 menu items selected." data-testid="action-bar">
+              <Button>Review order</Button>
+              <Button variant="ghost">Change table</Button>
+            </ActionBar>
           </div>
 
           <MotionShowcase />

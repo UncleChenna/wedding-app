@@ -1,16 +1,30 @@
 # Theming
 
-Themes are JSON files. The server turns the active theme into CSS variables on `<html>`; Tailwind classes read those variables. Every theme must pass WCAG AA contrast or the tests and build fail.
+Themes are JSON files. The site has two active themes, one for each device colour scheme. The server turns both into one stylesheet of CSS variables: the light theme on `:root`, the dark theme inside `@media (prefers-color-scheme: dark)`. Tailwind classes read those variables. Every theme must pass WCAG AA contrast or the tests and build fail.
 
-## Switch the active theme (10 seconds)
+## Light and dark (follows the guest's device)
 
-Edit one line in `src/modules/theming/config.ts`:
+Each guest sees the theme that matches their phone or computer's appearance setting, from the first paint, with no flash and no JavaScript. If they switch the setting while the page is open, it restyles live. The browser bar colour (`theme-color`) follows too.
+
+| Device setting | Theme                |
+| -------------- | -------------------- |
+| Light          | Ivory & Gold         |
+| Dark           | Midnight & Champagne |
+
+## Switch a theme (10 seconds)
+
+Edit `src/modules/theming/config.ts`:
 
 ```ts
-export const ACTIVE_THEME_ID = "midnight-champagne";
+export const ACTIVE_THEME_IDS = {
+  light: "ivory-gold",
+  dark: "midnight-champagne",
+} as const;
 ```
 
-Every page restyles. No component changes.
+Each slot takes a theme with that `colorScheme`; putting a dark theme in the light slot fails at startup with a message naming it. Every page restyles. No component changes.
+
+Where there is no viewer to ask (the link-preview image, seed data), the `DEFAULT_COLOR_SCHEME` theme (light) is used. Never write theme variables inline on `<html>`: an inline style beats the media query and pins one theme. Scoping a theme to an element below `<html>` with `themeStyle(theme)` is fine (previews do this).
 
 ## Add a new theme (under 5 minutes)
 
@@ -96,7 +110,7 @@ A theme may add a subtle texture behind **guest pages only**, never staff or adm
 - **Strength:** opacity from 0.02 to 0.12. Start at 0.04–0.06; the texture should be felt, not seen. The cap protects text contrast; check the UI checklist screenshots after changing it.
 - **Size:** tile size from 64px to 512px. Larger tiles repeat less visibly; 200–300px suits paper grain.
 - **Placement:** one fixed layer behind the page content (`<ThemePattern>` in the guest layout), `aria-hidden`, never intercepting taps. For a single invitation-style panel use the shared `<Paper>` component, which applies the same texture inside its bounds; do not hand-roll textures elsewhere.
-- Leave `pattern` out for a plain background. Ivory & Gold ships a faint paper grain; Midnight & Champagne is plain.
+- Leave `pattern` out for a plain background. Ivory & Gold ships a faint paper grain; Midnight & Champagne is plain, so the grain shows only in light mode.
 
 ## Dividers, monogram and paper
 

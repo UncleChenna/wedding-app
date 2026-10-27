@@ -13,7 +13,6 @@ test.describe("smoke @smoke", () => {
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 
     const html = page.locator("html");
-    await expect(html).toHaveAttribute("data-theme", /.+/);
     const background = await html.evaluate((el) =>
       getComputedStyle(el).getPropertyValue("--t-color-background").trim(),
     );
