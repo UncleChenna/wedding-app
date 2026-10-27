@@ -930,13 +930,14 @@
     "WED-013": {
       "log": [
         "- 2026-10-27 — todo → claimed — unclechenna (claude)",
-        "- 2026-10-27 — todo → in_progress — unclechenna (claude)"
+        "- 2026-10-27 — todo → in_progress — unclechenna (claude)",
+        "- 2026-10-27 — in_progress → in_review — unclechenna (claude)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "unclechenna",
       "agent": "claude",
       "branch": "TICKET-013",
-      "pr": "",
+      "pr": "https://github.com/UncleChenna/wedding-app/pull/51",
       "started": "2026-10-27",
       "completed": "",
       "updated": "2026-10-27",
