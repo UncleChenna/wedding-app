@@ -42,9 +42,9 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-3) · [Jou
 
 ## Acceptance criteria
 
-- [ ] Generated wa.me and mailto URLs are correctly encoded (unit, including emoji and line breaks).
-- [ ] Native share appears only when supported; copy shows a confirmation toast.
-- [ ] Works by keyboard and at 375px (e2e).
+- [x] Generated wa.me and mailto URLs are correctly encoded (unit, including emoji and line breaks).
+- [x] Native share appears only when supported; copy shows a confirmation toast.
+- [x] Works by keyboard and at 375px (e2e).
 
 ## Test plan
 
@@ -66,3 +66,5 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-3) · [Jou
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-10-27 — todo → claimed — divine (codex)
 - 2026-10-27 — todo → in_progress — divine (codex)
+
+2026-10-27 — Share menu and sample preview implemented. Full gate passes (359 unit / 207 browser, 10 / 29 conditional skips); separate CLS regression passes. Eighteen theme/width screenshots inspected. Physical-device sharing remains deferred under preview authorization/TICKET-201; final PR gate and hosted CI pending.

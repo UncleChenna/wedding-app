@@ -1,21 +1,19 @@
 # TICKET-050 — 2026-10-27
 
-Owner divine; agent codex; branch TICKET-050; base bc15aa088fc27164e0108ab9fb17dc313d3ae0ec. Managed worktree app port 22610. All prerequisites are done; TICKET-049 merged as PR45 after final CI run 40428499075 passed all required jobs.
+Owner divine; agent codex; branch TICKET-050; base bc15aa088fc27164e0108ab9fb17dc313d3ae0ec. App port 22610; browser 22611. PR: https://github.com/UncleChenna/wedding-app/pull/46. In progress pending final review transition.
 
-## Implemented so far
+## Implementation
 
-Dated plan plus pure sharing URL builder and 17 tests. Zod validates input, the TICKET-049 phone helper normalizes the WhatsApp recipient, URI encoding preserves emoji/line breaks and separates mail recipient/subject/body. Empty contacts permit sender selection; invalid supplied contacts are errors. No sending, sent tracking, database access or UI exists for this ticket yet.
+Validated sharing URL builder (17 tests), reusable admin ShareMenu, sample-only /dev/share linked from /dev, route inventory and 16 browser scenarios. Shared Sheet/Button/Input/Toast are reused. Clipboard API then legacy copy then manual-selection fallback; native support detected on menu open, call directly on user click, cancellation quiet and failure recoverable. No sending/status writes, guest reads, dependency or migration changes.
 
 ## Evidence
 
-Tests first failed because the module did not exist. First implementation exposed a throwing URL refinement on relative URLs; fixed with explicit parse failure handling. All 17 tests now pass. Quick gate passed lint, types and the 17 related tests; full gate, browser checks, screenshots and UI checklist have not run. Do not mark complete.
+Initial URL tests failed on missing module; a throwing relative-URL refinement was fixed. Initial browser regression failed because the menu did not exist. Lint found two unescaped JSX apostrophes, fixed; quick gate now passes. Full pnpm verify passed: 359 unit tests (10 opt-in DB skips), build, 207 browser passes (29 conditional skips), no retries. Fifteen focused production browser cases pass, including real Chromium clipboard readback and native outcome mocks. A subsequent CLS regression passes at 0; final CLI gate will include it.
 
-Draft PR: https://github.com/UncleChenna/wedding-app/pull/46. Implementation step pushed as dbaa3b3. Ticket remains in_progress; the CLI records PR metadata at the verified in_review transition, which is not appropriate yet.
+18 screenshots captured and inspected across both themes and 375/768/1280; evidence and complete checklist in docs/reviews/TICKET-050/README.md. Physical-device sharing not verified, tracked in TICKET-201 under explicit preview authorization. No Lighthouse score claimed for these admin/development pages. Logs .harness/t050-verify.log and .harness/t050-screenshots.log.
 
-## Next steps
+## Next
 
-Build admin/components/share-menu.tsx using existing Sheet, Button, Input and Toast, plus sample-only /dev/share linked from /dev and added to e2e/support/routes.ts. Clipboard success should close the modal before showing the toast; failures need a usable manual-selection fallback inside the modal. Native sharing is feature-detected, user-triggered, and cancellation is not an error. Browser tests must cover keyboard/focus/Escape, copy success/failure/fallback, native support/cancellation/rejection, themes and widths.
+Commit UI/evidence, push, update draft PR46 body from docs/plans/TICKET-050-pr.md, run AGENT_OWNER=divine pnpm t:pr TICKET-050, promote from draft only with passing final gate. Inspect hosted CI on exact final head before merging under the user's standing authorization; record done through CLI only after confirmed merge.
 
-Reuse the read skills: ticket-workflow, implement-task and ui-review. Design principles, theming and UI checklist read; installed Next server/client guide read. No new dependencies or shared component modifications planned. No per-ticket handoff existed before this one. Preserve TICKET-204 work owned by unclechenna. TICKET-025 remains blocked pending its own exact-path migration approval; TICKET-023 approval does not cover it.
-
-Run quick/full gates and capture/inspect UI evidence before promoting the draft. Physical WhatsApp/device checks remain unverified unless actually performed; user authorized preview merges with outstanding QA tracked separately in TICKET-201.
+The CLI records PR metadata at verified in_review transition; do not hand-edit status. Preserve unclechenna's TICKET-204. TICKET-025 remains blocked on its own exact-path approval, not covered by TICKET-023.
