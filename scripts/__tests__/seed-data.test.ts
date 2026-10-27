@@ -46,3 +46,53 @@ describe("buildSeedData", () => {
     expect(data.invitations.every((i) => (i.token?.length ?? 0) >= 22)).toBe(true);
   });
 });
+
+describe("station order seed contract", () => {
+  const data = buildSeedData();
+
+  it("uses the three PRD categories and bounded item caps", () => {
+    expect(new Set(data.menuItems.map((item) => item.category))).toEqual(
+      new Set(["meal", "soft_drink", "alcohol"]),
+    );
+    for (const item of data.menuItems) {
+      expect(item.maxPerOrder).toBeGreaterThan(0);
+      expect(item.maxPerOrder).toBeLessThanOrEqual(100);
+    }
+  });
+
+  it("keeps one submission and idempotency key across kitchen/bar children", () => {
+    expect(new Set(data.orders.map((order) => order.clientRequestId)).size).toBe(
+      data.orders.length,
+    );
+    expect(data.orders.every((order) => typeof order.clientRequestId === "string")).toBe(true);
+    const mixed = data.orders.filter(
+      (order) =>
+        new Set(
+          data.stationOrders
+            .filter((child) => child.orderId === order.id)
+            .map((child) => child.station),
+        ).size === 2,
+    );
+    expect(mixed.length).toBeGreaterThan(0);
+    expect(
+      new Set(data.stationOrders.map((child) => child.orderId + ":" + child.station)).size,
+    ).toBe(data.stationOrders.length);
+  });
+
+  it("routes each line to a matching child without duplicating quantities", () => {
+    for (const line of data.orderItems) {
+      const child = data.stationOrders.find((item) => item.id === line.stationOrderId);
+      const menu = data.menuItems.find((item) => item.id === line.menuItemId);
+      expect(child).toBeDefined();
+      expect(child?.orderId).toBe(line.orderId);
+      expect(child?.station).toBe(menu?.station);
+      expect(line.quantity).toBeGreaterThan(0);
+      expect(line.quantity).toBeLessThanOrEqual(line.quantityLimit ?? 0);
+      expect(line.quantityLimit).toBe(menu?.maxPerOrder);
+    }
+    for (const child of data.stationOrders) {
+      expect(["received", "preparing", "served", "cancelled"]).toContain(child.status);
+      expect(data.orderItems.some((line) => line.stationOrderId === child.id)).toBe(true);
+    }
+  });
+});

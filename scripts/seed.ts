@@ -33,7 +33,7 @@ async function main() {
 
   await db.transaction(async (tx) => {
     await tx.execute(sql`
-      truncate table order_items, orders, menu_items, check_ins, rsvps, guests,
+      truncate table order_items, station_orders, orders, menu_items, check_ins, rsvps, guests,
         tables, invitations, staff, themes restart identity cascade
     `);
     await tx.insert(schema.themes).values(data.themes);
@@ -45,6 +45,7 @@ async function main() {
     await tx.insert(schema.checkIns).values(data.checkIns);
     await tx.insert(schema.menuItems).values(data.menuItems);
     await tx.insert(schema.orders).values(data.orders);
+    await tx.insert(schema.stationOrders).values(data.stationOrders);
     await tx.insert(schema.orderItems).values(data.orderItems);
   });
 

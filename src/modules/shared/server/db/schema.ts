@@ -4,6 +4,7 @@ import { sql } from "drizzle-orm";
 import {
   boolean,
   check,
+  foreignKey,
   index,
   integer,
   jsonb,
@@ -42,7 +43,14 @@ export const invitationStatus = pgEnum("invitation_status", [
   "rsvp_no",
   "revoked",
 ]);
-export const menuCategory = pgEnum("menu_category", ["food", "drink"]);
+export const legacyMenuCategory = pgEnum("menu_category", ["food", "drink"]);
+export const menuCategory = pgEnum("menu_category_v2", ["meal", "soft_drink", "alcohol"]);
+export const stationOrderStatus = pgEnum("station_order_status", [
+  "received",
+  "preparing",
+  "served",
+  "cancelled",
+]);
 export const station = pgEnum("station", ["kitchen", "bar"]);
 export const orderStatus = pgEnum("order_status", [
   "received",
@@ -200,26 +208,34 @@ export const checkIns = pgTable(
 
 // ─── Table ordering ───────────────────────────────────────────────────────
 
-export const menuItems = pgTable("menu_items", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  name: text("name").notNull(),
-  description: text("description"),
-  category: menuCategory("category").notNull(),
-  station: station("station").notNull(),
-  isAvailable: boolean("is_available").notNull().default(true),
-  sortOrder: integer("sort_order").notNull().default(0),
-  dietaryTags: text("dietary_tags")
-    .array()
-    .notNull()
-    .default(sql`'{}'::text[]`),
-  createdAt: createdAt(),
-  updatedAt: updatedAt(),
-}).enableRLS();
+export const menuItems = pgTable(
+  "menu_items",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    name: text("name").notNull(),
+    description: text("description"),
+    /** Archived classification retained for pre-migration records. */
+    legacyCategory: legacyMenuCategory("category"),
+    category: menuCategory("category_v2").notNull(),
+    maxPerOrder: integer("max_per_order").notNull().default(5),
+    station: station("station").notNull(),
+    isAvailable: boolean("is_available").notNull().default(true),
+    sortOrder: integer("sort_order").notNull().default(0),
+    dietaryTags: text("dietary_tags")
+      .array()
+      .notNull()
+      .default(sql`'{}'::text[]`),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  (t) => [check("menu_items_quantity_cap", sql`${t.maxPerOrder} between 1 and 100`)],
+).enableRLS();
 
 export const orders = pgTable(
   "orders",
   {
     id: uuid("id").primaryKey().defaultRandom(),
+    clientRequestId: uuid("client_request_id").notNull().defaultRandom().unique(),
     tableId: uuid("table_id")
       .notNull()
       .references(() => tables.id, { onDelete: "restrict" }),
@@ -232,6 +248,26 @@ export const orders = pgTable(
   (t) => [index("orders_status_created_at_idx").on(t.status, t.createdAt)],
 ).enableRLS();
 
+/** One kitchen/bar projection per guest submission; table limits count orders, not these rows. */
+export const stationOrders = pgTable(
+  "station_orders",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    orderId: uuid("order_id")
+      .notNull()
+      .references(() => orders.id, { onDelete: "cascade" }),
+    station: station("station").notNull(),
+    status: stationOrderStatus("status").notNull().default("received"),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  (t) => [
+    uniqueIndex("station_orders_order_station_key").on(t.orderId, t.station),
+    uniqueIndex("station_orders_order_id_id_key").on(t.orderId, t.id),
+    index("station_orders_queue_idx").on(t.station, t.status, t.createdAt),
+  ],
+).enableRLS();
+
 export const orderItems = pgTable(
   "order_items",
   {
@@ -239,6 +275,8 @@ export const orderItems = pgTable(
     orderId: uuid("order_id")
       .notNull()
       .references(() => orders.id, { onDelete: "cascade" }),
+    stationOrderId: uuid("station_order_id").notNull(),
+    quantityLimit: integer("quantity_limit").notNull().default(5),
     menuItemId: uuid("menu_item_id")
       .notNull()
       .references(() => menuItems.id, { onDelete: "restrict" }),
@@ -248,6 +286,16 @@ export const orderItems = pgTable(
   },
   (t) => [
     index("order_items_order_id_idx").on(t.orderId),
+    uniqueIndex("order_items_order_menu_key").on(t.orderId, t.menuItemId),
+    foreignKey({
+      columns: [t.orderId, t.stationOrderId],
+      foreignColumns: [stationOrders.orderId, stationOrders.id],
+      name: "order_items_station_submission_fk",
+    }).onDelete("cascade"),
+    check(
+      "order_items_quantity_cap",
+      sql`${t.quantityLimit} between 1 and 100 and ${t.quantity} <= ${t.quantityLimit}`,
+    ),
     check("order_items_quantity_positive", sql`${t.quantity} > 0`),
   ],
 ).enableRLS();

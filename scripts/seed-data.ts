@@ -15,88 +15,89 @@ export interface SeedData {
   checkIns: Insert<typeof schema.checkIns>[];
   menuItems: Insert<typeof schema.menuItems>[];
   orders: Insert<typeof schema.orders>[];
+  stationOrders: Insert<typeof schema.stationOrders>[];
   orderItems: Insert<typeof schema.orderItems>[];
 }
 
 const MENU: Array<Omit<Insert<typeof schema.menuItems>, "id" | "sortOrder">> = [
   {
     name: "Jollof rice & grilled chicken",
-    category: "food",
+    category: "meal",
     station: "kitchen",
     dietaryTags: [],
   },
   {
     name: "Coconut fried rice",
-    category: "food",
+    category: "meal",
     station: "kitchen",
     dietaryTags: ["vegetarian"],
   },
   {
     name: "Beef suya skewers",
-    category: "food",
+    category: "meal",
     station: "kitchen",
     dietaryTags: ["gluten-free"],
   },
   {
     name: "Plantain & bean stew",
-    category: "food",
+    category: "meal",
     station: "kitchen",
     dietaryTags: ["vegan"],
   },
   {
     name: "Pepper soup",
-    category: "food",
+    category: "meal",
     station: "kitchen",
     dietaryTags: [],
   },
   {
     name: "Garden salad",
-    category: "food",
+    category: "meal",
     station: "kitchen",
     dietaryTags: ["vegan", "gluten-free"],
   },
   {
     name: "Small chops platter",
-    category: "food",
+    category: "meal",
     station: "kitchen",
     dietaryTags: [],
   },
   {
     name: "Wedding cake slice",
-    category: "food",
+    category: "meal",
     station: "kitchen",
     dietaryTags: ["vegetarian"],
   },
-  { name: "Chapman", category: "drink", station: "bar", dietaryTags: [] },
-  { name: "Zobo", category: "drink", station: "bar", dietaryTags: ["vegan"] },
+  { name: "Chapman (non-alcoholic)", category: "soft_drink", station: "bar", dietaryTags: [] },
+  { name: "Zobo", category: "soft_drink", station: "bar", dietaryTags: ["vegan"] },
   {
     name: "Sparkling water",
-    category: "drink",
+    category: "soft_drink",
     station: "bar",
     dietaryTags: ["vegan"],
   },
   {
     name: "Orange juice",
-    category: "drink",
+    category: "soft_drink",
     station: "bar",
     dietaryTags: ["vegan"],
   },
   {
     name: "House red wine",
-    category: "drink",
+    category: "alcohol",
     station: "bar",
     dietaryTags: [],
   },
   {
     name: "House white wine",
-    category: "drink",
+    category: "alcohol",
     station: "bar",
     dietaryTags: [],
   },
-  { name: "Lager", category: "drink", station: "bar", dietaryTags: [] },
+  { name: "Lager", category: "alcohol", station: "bar", dietaryTags: [] },
   {
     name: "Champagne toast",
-    category: "drink",
+    category: "alcohol",
     station: "bar",
     dietaryTags: [],
   },
@@ -260,6 +261,7 @@ export function buildSeedData(seed = 20261021): SeedData {
     ...item,
     id: faker.string.uuid(),
     sortOrder: i,
+    maxPerOrder: 5,
     description:
       faker.helpers.maybe(() => faker.lorem.sentence({ min: 4, max: 9 }), {
         probability: 0.6,
@@ -267,26 +269,56 @@ export function buildSeedData(seed = 20261021): SeedData {
   }));
 
   const orders: SeedData["orders"] = [];
+  const stationOrders: SeedData["stationOrders"] = [];
   const orderItems: SeedData["orderItems"] = [];
   const usedTables = tables.filter((t) => seated.has(t.id!));
+  const firstMeal = menuItems.find((item) => item.station === "kitchen");
+  const firstDrink = menuItems.find((item) => item.station === "bar");
+  if (!firstMeal || !firstDrink) throw new Error("Seed menu must cover both stations");
   for (let i = 0; i < 18; i++) {
     const orderId = faker.string.uuid();
+    const status = faker.helpers.arrayElement([
+      "received",
+      "preparing",
+      "ready",
+      "served",
+    ] as const);
+    const submittedAt = faker.date.recent({ days: 1, refDate: now });
     orders.push({
       id: orderId,
+      clientRequestId: faker.string.uuid(),
       tableId: faker.helpers.arrayElement(usedTables).id!,
       guestName: faker.person.firstName(),
-      status: faker.helpers.arrayElement(["received", "preparing", "ready", "served"] as const),
-      createdAt: faker.date.recent({ days: 1, refDate: now }),
+      status,
+      createdAt: submittedAt,
     });
-    for (const item of faker.helpers.arrayElements(menuItems, {
-      min: 1,
-      max: 3,
-    })) {
+    const selected =
+      i === 0
+        ? [firstMeal, firstDrink]
+        : faker.helpers.arrayElements(menuItems, { min: 1, max: 3 });
+    const children = new Map<"kitchen" | "bar", string>();
+    for (const item of selected) {
+      let childId = children.get(item.station);
+      if (!childId) {
+        childId = faker.string.uuid();
+        children.set(item.station, childId);
+        stationOrders.push({
+          id: childId,
+          orderId,
+          station: item.station,
+          status: status === "ready" ? "preparing" : status,
+          createdAt: submittedAt,
+        });
+      }
+      if (!item.id) throw new Error("Seed menu item requires an ID");
+      const quantityLimit = item.maxPerOrder ?? 5;
       orderItems.push({
         id: faker.string.uuid(),
         orderId,
-        menuItemId: item.id!,
-        quantity: faker.number.int({ min: 1, max: 3 }),
+        stationOrderId: childId,
+        menuItemId: item.id,
+        quantity: faker.number.int({ min: 1, max: Math.min(3, quantityLimit) }),
+        quantityLimit,
       });
     }
   }
@@ -301,6 +333,7 @@ export function buildSeedData(seed = 20261021): SeedData {
     checkIns,
     menuItems,
     orders,
+    stationOrders,
     orderItems,
   };
 }
