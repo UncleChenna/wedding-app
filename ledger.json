@@ -388,14 +388,15 @@
       "log": [
         "- 2026-10-25 — todo → blocked — unclechenna (claude) — Needs a QR encoder (e.g. the qrcode npm package) to render and verify a real dark-on-light QR per theme (acceptance criterion 3). Adding a package changes pnpm-lock.yaml, which the owner has not authorised for this run (only theme-schema writes). Unblock by approving the dependency.",
         "- 2026-10-27 — blocked → todo — unclechenna — Owner approved adding the qrcode dependency on 2026-10-27",
-        "- 2026-10-27 — todo → claimed — unclechenna (claude)"
+        "- 2026-10-27 — todo → claimed — unclechenna (claude)",
+        "- 2026-10-27 — todo → in_progress — unclechenna (claude)"
       ],
-      "status": "todo",
+      "status": "in_progress",
       "owner": "unclechenna",
       "agent": "claude",
       "branch": "TICKET-170",
       "pr": "",
-      "started": "",
+      "started": "2026-10-27",
       "completed": "",
       "updated": "2026-10-27",
       "reason": "",
