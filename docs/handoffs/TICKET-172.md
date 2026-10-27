@@ -10,6 +10,8 @@ Source schema adds unprovisioned/encoded PIN lifecycle fields and device registr
 
 RUN_STAFF_DB_TESTS=1 pnpm test scripts/**tests**/staff-devices.integration.test.ts: five expected failures against missing old columns/table. pnpm verify:quick passes lint/types/related tests (DB cases skipped). Seven seed unit tests pass. pnpm db:counts shows all ten tables empty, two applied migrations. Full gate and migrated DB verification not run.
 
+Draft PR: https://github.com/UncleChenna/wedding-app/pull/47. Source/proposal pushed in a9c5363. Exact-path approval requested; awaiting actual user reply.
+
 ## Next action
 
 Obtain explicit approval for drizzle/0002_staff-device-identities.sql, drizzle/meta/0002_snapshot.json, drizzle/meta/_journal.json and recording it in this worktree's ignored .harness/approved-writes.json. Do not generate or apply equivalent SQL before approval. Then generate through Drizzle, inspect SQL, test empty and existing bootstrap preservation, migrate twice/counts, all new and existing DB regressions, RLS, seed repeatability, full gate. The five DB failures must turn green before completion.
