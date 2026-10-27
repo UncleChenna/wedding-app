@@ -2,20 +2,20 @@
 id: TICKET-036
 title: "Generate invitation tokens and the personal /i/[token] route"
 epic: invitations
-status: todo
+status: in_review
 priority: urgent
 estimate: M
 labels: [backend, security]
 module: invitations
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-023]
 blocks: [TICKET-037, TICKET-040, TICKET-043, TICKET-048, TICKET-050, TICKET-090, TICKET-183, TICKET-185]
-branch: ""
-pr: ""
+branch: TICKET-036
+pr: https://github.com/UncleChenna/wedding-app/pull/42
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-10-27
+started: 2026-10-26
 completed: ""
 reason: ""
 resume_to: ""
@@ -42,9 +42,9 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-2) · [Sec
 
 ## Acceptance criteria
 
-- [ ] Tokens have ≥128 bits of entropy and are URL-safe (unit test on length/charset over 10k samples, no collisions).
-- [ ] /i/<valid> renders the guest's invitation; /i/<unknown> and /i/<revoked> render the same neutral page with status 404.
-- [ ] No sequential ids appear in any guest URL.
+- [x] Tokens have ≥128 bits of entropy and are URL-safe (unit test on length/charset over 10k samples, no collisions).
+- [x] /i/<valid> renders the guest's invitation; /i/<unknown> and /i/<revoked> render the same neutral page with status 404.
+- [x] No sequential ids appear in any guest URL.
 
 ## Test plan
 
@@ -65,3 +65,7 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-26 — todo → claimed — divine (codex)
+- 2026-10-26 — todo → in_progress — divine (codex)
+- 2026-10-27 — Token/resolver tests (20), real database lifecycle tests (2), production valid/unknown/revoked/revocation browser checks and all-theme screenshots pass. Real HTTP status and privacy headers verified; CLS 0 and 44px targets pass. Full recovery gate passed 301 unit/DB tests and build, with 181 browser passes and one invalid-fixture status assumption now fixed and independently passing. Final t:pr full gate remains required; physical-device/Lighthouse release QA remains TICKET-201 under the preview approval.
+- 2026-10-27 — in_progress → in_review — divine (codex)

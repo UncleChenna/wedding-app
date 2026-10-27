@@ -6,6 +6,8 @@
 export const PAGE_ROUTES = [
   "/",
   "/invite",
+  // Neutral token state runs without a database; valid states use personal-invitation.spec.ts.
+  "/i/invalid",
   "/order",
   "/checkin",
   "/kitchen",
@@ -23,3 +25,8 @@ export const NOT_FOUND_ROUTE = "/this-page-does-not-exist";
 
 /** Pages plus the not-found page: what a guest or staff member can actually land on. */
 export const ALL_ROUTES = [...PAGE_ROUTES, NOT_FOUND_ROUTE] as const;
+
+/** Explicit unavailable fixture; every other listed page must still return 200. */
+export function expectedRouteStatus(path: string): 200 | 404 {
+  return path === "/i/invalid" ? 404 : 200;
+}
