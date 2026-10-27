@@ -41,10 +41,10 @@ TICKET-006's 2026-10-27 rehearsal found that TICKET-195's failed stack startup l
 
 ## Acceptance criteria
 
-- [ ] A managed worktree with a primary/other-stack URL fails before any database connection or destructive statement for migrate, seed and checks.
-- [ ] Correct worktree configuration passes; missing/mismatched metadata and effective environment overrides fail with sanitized actionable errors.
-- [ ] Tests cover copied-primary URL after failed setup, another worktree URL, host/port/database/path mismatches and valid primary/deployment behavior.
-- [ ] Command-level regression proves no SQL executes on the wrong target; quick and full verification pass.
+- [x] A managed worktree with a primary/other-stack URL fails before any database connection or destructive statement for migrate, seed and checks.
+- [x] Correct worktree configuration passes; missing/mismatched metadata and effective environment overrides fail with sanitized actionable errors.
+- [x] Tests cover copied-primary URL after failed setup, another worktree URL, host/port/database/path mismatches and valid primary/deployment behavior.
+- [x] Command-level regression proves no SQL executes on the wrong target; quick and full verification pass.
 
 ## Test plan
 
@@ -61,6 +61,8 @@ TICKET-006's 2026-10-27 rehearsal found that TICKET-195's failed stack startup l
 ## Notes / decisions
 
 - 2026-10-27 — Discovered by TICKET-006 rehearsal; protects against accidental cross-worktree writes, not a database access-control boundary.
+
+- 2026-10-27 — Implemented pre-connection target guard.22 targeted tests and full gate pass; see handoff and PR body for actual counts and scope limits.
 
 ## Activity log
 
