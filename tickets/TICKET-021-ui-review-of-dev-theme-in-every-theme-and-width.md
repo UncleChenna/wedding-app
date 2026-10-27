@@ -2,20 +2,20 @@
 id: TICKET-021
 title: UI review of /dev/theme in every theme and width
 epic: design-system
-status: todo
+status: in_progress
 priority: urgent
 estimate: S
 labels: [design, test]
 module: theming
-owner: ""
-agent: ""
+owner: unclechenna
+agent: claude
 blocked_by: [TICKET-015, TICKET-016, TICKET-018, TICKET-019, TICKET-020, TICKET-013]
 blocks: [TICKET-037]
-branch: ""
+branch: TICKET-021
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-10-27
+started: 2026-10-27
 completed: ""
 reason: ""
 resume_to: ""
@@ -65,3 +65,5 @@ See: [What "flawless" means in testing](../docs/prd.md#what-flawless-means-in-te
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-27 — todo → claimed — unclechenna (claude)
+- 2026-10-27 — todo → in_progress — unclechenna (claude)
