@@ -10,6 +10,8 @@ Dated plan plus pure sharing URL builder and 17 tests. Zod validates input, the 
 
 Tests first failed because the module did not exist. First implementation exposed a throwing URL refinement on relative URLs; fixed with explicit parse failure handling. All 17 tests now pass. Quick gate passed lint, types and the 17 related tests; full gate, browser checks, screenshots and UI checklist have not run. Do not mark complete.
 
+Draft PR: https://github.com/UncleChenna/wedding-app/pull/46. Implementation step pushed as dbaa3b3. Ticket remains in_progress; the CLI records PR metadata at the verified in_review transition, which is not appropriate yet.
+
 ## Next steps
 
 Build admin/components/share-menu.tsx using existing Sheet, Button, Input and Toast, plus sample-only /dev/share linked from /dev and added to e2e/support/routes.ts. Clipboard success should close the modal before showing the toast; failures need a usable manual-selection fallback inside the modal. Native sharing is feature-detected, user-triggered, and cancellation is not an error. Browser tests must cover keyboard/focus/Escape, copy success/failure/fallback, native support/cancellation/rejection, themes and widths.
