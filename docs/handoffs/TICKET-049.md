@@ -14,4 +14,4 @@ Regression suite initially failed because the phone module was absent. After imp
 
 ## Next action
 
-Commit completed evidence and open PR with `AGENT_OWNER=divine pnpm t:pr TICKET-049`. Do not mark done before a verified merge.
+PR [#45](https://github.com/UncleChenna/wedding-app/pull/45) is open to develop; CLI status is in_review. Implementation commit cd892e2; review-status commit 77a2dd0. The CLI reran the full gate successfully with the same 342 unit / 172 browser passes and 10 / 28 conditional skips, no retries; log `.harness/t049-pr.log`. Check required hosted CI on the latest head before any merge. Do not mark done before a verified merge.
