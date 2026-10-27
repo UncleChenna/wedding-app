@@ -907,13 +907,14 @@
         "- 2026-10-27 — todo → claimed — divine (codex)",
         "- 2026-10-27 — todo → in_progress — divine (codex)",
         "- 2026-10-27 — in_progress → blocked — divine (codex) — Initial commit rejected: contiguous-ID validator requires unmerged TICKET-204 definition. Await explicit exception to carry unchanged definition only, or PR43 merge into develop; no hook bypass.",
-        "- 2026-10-27 — blocked → in_progress — divine (codex) — PR43 merged; ticket definition gap resolved. Resume database target guard."
+        "- 2026-10-27 — blocked → in_progress — divine (codex) — PR43 merged; ticket definition gap resolved. Resume database target guard.",
+        "- 2026-10-27 — in_progress → in_review — divine (codex)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-205",
-      "pr": "",
+      "pr": "https://github.com/UncleChenna/wedding-app/pull/49",
       "started": "2026-10-27",
       "completed": "",
       "updated": "2026-10-27",
