@@ -1,0 +1,11 @@
+check_ins 0
+guests 0
+invitations 0
+menu_items 0
+order_items 0
+orders 0
+rsvps 0
+staff 0
+tables 0
+themes 0
+(drizzle migrations applied) 2

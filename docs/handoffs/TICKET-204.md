@@ -21,3 +21,11 @@
 - **Next / blockers:**
   - Human review of the PR into develop.
   - TICKET-012 (database-stored theme) must store a light/dark pair, not one active theme.
+
+## 2026-10-27 — requested merge integration
+
+User explicitly requested merging PR43 into develop. Integrated develop3752e0591e225a0dd4421c84c225917dca270e29. The only content conflict was e2e/overflow.spec.ts: preserved both device schemes and tap-target coverage, and retained develop's expectedRouteStatus for the invalid-invitation404 fixture. No product behavior was changed by the conflict resolution.
+
+The first full gate stopped in three hook tests because the merge staged TICKET-023's protected artifacts. Confirmed all three files byte-identical to origin/develop and recorded narrowly scoped authorization to carry those previously approved files unchanged. No migration was edited or applied.
+
+Rerun pnpm verify passed: 364 unit tests,10 opt-in DB skips; build passed; browser287 passed,103 conditional skips,zero retries. Format/lint/types/ticket validation passed. Real devices, WhatsApp and Lighthouse remain under the previously disclosed QA limitations. Push integration and require final-head CI before the authorized merge.

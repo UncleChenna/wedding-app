@@ -19,3 +19,5 @@ Short records of decisions that are expensive to reverse. Add one per new decisi
 | [0013](0013-ticket-system.md)           | In-repo tickets with a shared claim ledger                            |
 
 Proposed: [0014 — Explicit service-worker caching](0014-service-worker.md) (TICKET-102; acceptance awaits human merge).
+
+Proposed: [0017 — Invitation-scoped identity and RSVP](0017-invitation-rsvp-model.md) (TICKET-023).

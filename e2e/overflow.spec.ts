@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-import { PAGE_ROUTES as ROUTES } from "./support/routes";
+import { expectedRouteStatus, PAGE_ROUTES as ROUTES } from "./support/routes";
 
 /**
  * Phone layout on every page in both device colour schemes (TICKET-204): the light and dark
@@ -19,7 +19,7 @@ test.describe("phone layout at 375px @smoke", () => {
       test(`${path} in ${colorScheme} mode does not scroll sideways`, async ({ page }) => {
         await page.emulateMedia({ colorScheme });
         const response = await page.goto(path, { waitUntil: "load" });
-        expect(response?.status(), path).toBe(200);
+        expect(response?.status(), path).toBe(expectedRouteStatus(path));
         await page.evaluate(() => document.fonts.ready);
 
         const { scrollWidth, clientWidth } = await page.evaluate(() => ({
