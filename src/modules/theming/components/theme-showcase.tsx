@@ -175,6 +175,11 @@ export function ThemeShowcase({ theme, active }: { theme: Theme; active: boolean
                 identifier="Old invitation"
                 detail="This pass was replaced. Ask for the new one."
               />
+              <StatusPanel
+                status="valid"
+                identifier="Oluwaseunfunmilayo Chukwuemeka-Fitzwilliam"
+                detail="Party of 4 · Table 12 · Long names wrap instead of overflowing."
+              />
             </div>
             <div className="flex flex-wrap gap-3">
               <StatusBadge tone="success">Served</StatusBadge>
