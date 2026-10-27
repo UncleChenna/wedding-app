@@ -2,7 +2,7 @@
 id: TICKET-170
 title: Add QR paper and accessible decorative accent tokens
 epic: design-system
-status: in_progress
+status: in_review
 priority: urgent
 estimate: M
 labels: [design, frontend]
@@ -12,7 +12,7 @@ agent: claude
 blocked_by: [TICKET-009, TICKET-011]
 blocks: [TICKET-013, TICKET-014, TICKET-044, TICKET-094, TICKET-176, TICKET-181]
 branch: TICKET-170
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/50
 created: 2026-10-21
 updated: 2026-10-27
 started: 2026-10-27
@@ -64,3 +64,4 @@ Backlog audit coverage: THM-1–7. See [PRD](../docs/prd.md) and [audit](AUDIT.m
 - 2026-10-27 — blocked → todo — unclechenna — Owner approved adding the qrcode dependency on 2026-10-27
 - 2026-10-27 — todo → claimed — unclechenna (claude)
 - 2026-10-27 — todo → in_progress — unclechenna (claude)
+- 2026-10-27 — in_progress → in_review — unclechenna (claude)
