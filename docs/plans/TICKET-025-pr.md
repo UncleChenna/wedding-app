@@ -4,7 +4,7 @@ Ticket: TICKET-025
 
 # Summary
 
-Event configuration and RSVP audit history need a persistent database contract. This draft starts with typed draft defaults and validation; tables, migrations and database verification remain unfinished.
+Event configuration and RSVP audit history need a persistent database contract. This draft includes typed defaults, table schema and a Drizzle accessor; protected migration generation awaits exact-path approval.
 
 # Changes
 
@@ -35,3 +35,7 @@ N/A: no rendered interface, styles, images or motion changed.
 # Harness changes
 
 None. Existing shell guard remains enabled; quoted commands avoid its multiline parsing false positive.
+
+# Migration approval blocker
+
+The schema now defines singleton event_settings and rsvp_changes with RLS, bounds, JSON-object constraints and restrictive history references. Five real database regressions fail against the old schema because the tables are absent. No migration has run. Source typecheck and quick gate pass; opt-in database skips are not claimed as migration verification. Automatic approval review rejected generation pending fresh exact-path authorization. The concrete proposal is in [the approval packet](https://github.com/UncleChenna/wedding-app/blob/TICKET-025/docs/reviews/TICKET-025/migration-approval.md), including exact custom append-only SQL, grants and retention/rollback limits. This draft is intentionally not deployable until the migration is approved, generated and tested.
