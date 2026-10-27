@@ -44,7 +44,9 @@ export function Button({
       disabled={disabled || loading}
       aria-busy={loading || undefined}
       className={cn(
-        "inline-flex min-w-11 cursor-pointer items-center justify-center gap-2 rounded-md font-medium tracking-wide transition-colors duration-150 select-none",
+        // Fade fills and text only: animating outline-color would start the focus ring in the
+        // label colour, invisible on the page for 150ms.
+        "inline-flex min-w-11 cursor-pointer items-center justify-center gap-2 rounded-md font-medium tracking-wide transition-[color,background-color,border-color] duration-150 select-none",
         "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
         "disabled:cursor-not-allowed disabled:opacity-50",
         variants[variant],

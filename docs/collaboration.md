@@ -123,3 +123,9 @@ A shell export inside an agent command cannot modify the parent hook's environme
 The hook launcher itself still requires node and git. Run agents in the ticket
 worktree containing the repair, or pull it after human review and merge; an older
 checkout continues using its own older hook code.
+
+## Database command target checks
+
+In a managed worktree, migration configuration (including db:generate), db:seed and db:counts/db:check-rls validate the effective DATABASE_URL before creating a database client. The worktree path, project ID and reserved database port must match .harness/worktree.json and the generated Supabase configuration. The URL must use a loopback host, that exact port and the postgres database, without query parameters or a fragment. This also catches shell overrides that would otherwise override .env.local.
+
+If startup failed, do not run database commands with the copied primary URL. Complete pnpm db:start in the worktree and remove conflicting shell overrides. A linked checkout without managed metadata is refused; recreate/resume it through wt:new. No credentials are printed by the guard. Ordinary primary checkouts and deployment archives retain their configured migration/check targets; seed remains local-only and rejects URL query overrides. This is accidental-target protection, not a substitute for database credentials or RLS.

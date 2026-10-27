@@ -13,17 +13,14 @@ import * as schema from "../src/modules/shared/server/db/schema";
 import { parseServerEnv } from "../src/modules/shared/lib/env/schema";
 import { createLogger } from "../src/modules/shared/lib/logger";
 import { buildSeedData } from "./seed-data";
+import { assertDatabaseTarget } from "./database-target";
 
 const log = createLogger({ script: "seed" }, { format: "pretty" });
 
 if (existsSync(".env.local")) process.loadEnvFile(".env.local");
 const env = parseServerEnv(process.env);
 
-const host = new URL(env.DATABASE_URL).hostname;
-if (!["127.0.0.1", "localhost", "::1"].includes(host)) {
-  log.error("refusing to seed a non-local database", { host });
-  process.exit(1);
-}
+assertDatabaseTarget(env.DATABASE_URL, { localOnly: true });
 
 const client = postgres(env.DATABASE_URL, { max: 1, onnotice: () => {} });
 const db = drizzle(client, { schema });

@@ -1,7 +1,7 @@
 import { Faker, en } from "@faker-js/faker";
 
 import type * as schema from "../src/modules/shared/server/db/schema";
-import { listThemes, ACTIVE_THEME_ID } from "../src/modules/theming";
+import { ACTIVE_THEME_IDS, listThemes } from "../src/modules/theming";
 
 type Insert<T extends { $inferInsert: unknown }> = T["$inferInsert"];
 
@@ -113,7 +113,8 @@ export function buildSeedData(seed = 20261021): SeedData {
     id: theme.id,
     name: theme.name,
     tokens: theme,
-    isActive: theme.id === ACTIVE_THEME_ID,
+    // One theme per device colour scheme is active (src/modules/theming/config.ts).
+    isActive: ACTIVE_THEME_IDS[theme.colorScheme] === theme.id,
   }));
 
   const staff: SeedData["staff"] = (

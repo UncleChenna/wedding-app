@@ -134,7 +134,9 @@ export function StatusPanel({ status, identifier, detail, children, className }:
       </div>
       <p
         data-testid="status-identifier"
-        className="font-display text-4xl leading-tight font-medium break-words"
+        // `anywhere`, not `break-word`: it also lowers the min-content width, so a long
+        // single-word name cannot stretch the grid around the panel on a phone.
+        className="font-display text-4xl leading-tight font-medium wrap-anywhere"
       >
         {identifier}
       </p>

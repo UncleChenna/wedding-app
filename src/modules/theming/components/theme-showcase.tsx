@@ -1,4 +1,5 @@
 import {
+  ActionBar,
   Button,
   Card,
   CardContent,
@@ -20,6 +21,7 @@ import {
   StatusBadge,
   StatusPanel,
 } from "@/modules/shared/components/ui";
+import { QrCode } from "@/modules/shared/components/ui/qr-code";
 
 import { themeStyle } from "../lib/css-vars";
 import { COLOR_TOKENS, type Theme } from "../lib/schema";
@@ -27,6 +29,10 @@ import { STATUS_HUE_NAMES, type StatusKind } from "../lib/status";
 import { TYPE_STYLES } from "../lib/typography";
 import { MotionShowcase } from "./motion-showcase";
 import { ShowcaseInteractive } from "./showcase-interactive";
+
+/** Realistic length for a signed gate pass URL; TICKET-056 defines the real format. */
+const SAMPLE_PASS =
+  "https://wedding.example/p/eyJ2IjoxLCJpbnYiOiJpbnZfOGs0bTJ4IiwicCI6Mn0.MEUCIQD3pQx7Zr9nW1vYH5kTq2LsA8cJdF0eRgUoBiNtPmXwVhIgK4sZ";
 
 /** Fixed status meanings (THM-4). Class names are literal so Tailwind can see them. */
 const STATUS_EXAMPLES: ReadonlyArray<{
@@ -169,6 +175,11 @@ export function ThemeShowcase({ theme, active }: { theme: Theme; active: boolean
                 identifier="Old invitation"
                 detail="This pass was replaced. Ask for the new one."
               />
+              <StatusPanel
+                status="valid"
+                identifier="Oluwaseunfunmilayo Chukwuemeka-Fitzwilliam"
+                detail="Party of 4 · Table 12 · Long names wrap instead of overflowing."
+              />
             </div>
             <div className="flex flex-wrap gap-3">
               <StatusBadge tone="success">Served</StatusBadge>
@@ -194,6 +205,21 @@ export function ThemeShowcase({ theme, active }: { theme: Theme; active: boolean
               </p>
             </Paper>
             <Divider variant="staff" />
+            <p className="self-start rounded-sm bg-decorative px-3 py-1 text-xs font-semibold tracking-widest text-decorative-foreground uppercase">
+              Table 12
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-3" data-testid="qr-code">
+            <h3 className="text-sm font-semibold tracking-wider text-muted-foreground uppercase">
+              QR pass
+            </h3>
+            <div className="w-48 rounded-md border border-border">
+              <QrCode value={SAMPLE_PASS} label="Sample gate pass QR code" />
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Always dark on light, with a four-module quiet zone.
+            </p>
           </div>
 
           <div className="flex flex-col gap-3">
@@ -213,6 +239,11 @@ export function ThemeShowcase({ theme, active }: { theme: Theme; active: boolean
               <Button size="md">Medium</Button>
               <Button size="lg">Large</Button>
             </div>
+            {/* Shown in place; on a phone a real step keeps it pinned to the bottom of the screen. */}
+            <ActionBar sticky={false} status="2 menu items selected." data-testid="action-bar">
+              <Button>Review order</Button>
+              <Button variant="ghost">Change table</Button>
+            </ActionBar>
           </div>
 
           <MotionShowcase />
