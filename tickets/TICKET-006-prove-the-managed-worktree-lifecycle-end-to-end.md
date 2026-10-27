@@ -2,7 +2,7 @@
 id: TICKET-006
 title: Prove the managed worktree lifecycle end to end
 epic: foundations
-status: in_progress
+status: blocked
 priority: high
 estimate: M
 labels: [infra, test]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-10-27
 started: 2026-10-26
 completed: ""
-reason: ""
-resume_to: ""
+reason: "TICKET-205: failed control startup left DATABASE_URL on primary port54322 instead of reserved39281. Browser concurrency passed, but isolated migrations and cleanup remain unproved; target guard required before retry."
+resume_to: in_progress
 ---
 
 # TICKET-006: Prove the managed worktree lifecycle end to end
@@ -69,3 +69,4 @@ See: [Working together](../docs/collaboration.md) · [Current state](../docs/cur
 - 2026-10-26 — in_progress → blocked — divine (codex) — Local Docker database unhealthy: no response and health-check timeouts; concurrent migration/smoke and successful cleanup unverified.
 - 2026-10-26 — Recovery attempt still blocked: managed setup exited 1 after service health failures; control DB unhealthy. No concurrent migrations/smoke or cleanup success claimed. Evidence appended to docs/reviews/TICKET-006/README.md; PR #34 stays draft.
 - 2026-10-27 — blocked → in_progress — divine (codex) — Isolated stack recovered; startup and existing migrations passed on 2026-10-27. Resuming concurrent lifecycle proof.
+- 2026-10-27 — in_progress → blocked — divine (codex) — TICKET-205: failed control startup left DATABASE_URL on primary port54322 instead of reserved39281. Browser concurrency passed, but isolated migrations and cleanup remain unproved; target guard required before retry.
