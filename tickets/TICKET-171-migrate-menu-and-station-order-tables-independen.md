@@ -2,20 +2,20 @@
 id: TICKET-171
 title: Migrate menu and station order tables independently
 epic: data-auth
-status: todo
+status: in_progress
 priority: urgent
 estimate: M
 labels: [db, backend]
 module: shared
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-023]
 blocks: [TICKET-026, TICKET-027, TICKET-041, TICKET-070, TICKET-084, TICKET-095]
-branch: ""
+branch: TICKET-171
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-10-27
+started: 2026-10-27
 completed: ""
 reason: ""
 resume_to: ""
@@ -57,3 +57,5 @@ Backlog audit coverage: ORD-1–9. See [PRD](../docs/prd.md) and [audit](AUDIT.m
 ## Activity log
 
 - 2026-10-21 — new → todo — divine
+- 2026-10-27 — todo → claimed — divine (codex)
+- 2026-10-27 — todo → in_progress — divine (codex)
