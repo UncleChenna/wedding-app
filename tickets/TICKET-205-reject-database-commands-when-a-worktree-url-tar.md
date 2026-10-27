@@ -2,7 +2,7 @@
 id: TICKET-205
 title: Reject database commands when a worktree URL targets another stack
 epic: foundations
-status: in_progress
+status: in_review
 priority: urgent
 estimate: M
 labels: [infra, test]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: []
 blocks: []
 branch: TICKET-205
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/49
 created: 2026-10-27
 updated: 2026-10-27
 started: 2026-10-27
@@ -71,3 +71,4 @@ TICKET-006's 2026-10-27 rehearsal found that TICKET-195's failed stack startup l
 - 2026-10-27 — todo → in_progress — divine (codex)
 - 2026-10-27 — in_progress → blocked — divine (codex) — Initial commit rejected: contiguous-ID validator requires unmerged TICKET-204 definition. Await explicit exception to carry unchanged definition only, or PR43 merge into develop; no hook bypass.
 - 2026-10-27 — blocked → in_progress — divine (codex) — PR43 merged; ticket definition gap resolved. Resume database target guard.
+- 2026-10-27 — in_progress → in_review — divine (codex)
