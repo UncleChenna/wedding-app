@@ -60,6 +60,15 @@ Where there is no viewer to ask (the link-preview image, seed data), the `DEFAUL
 | `warning` / `warning-foreground`     | Already used / waiting                         | fg on warning (4.5); warning on surface (3.0, indicator)   |
 | `<status>-subtle`                    | Tinted status panel (success, warning, danger) | —                                                          |
 | `<status>-subtle-foreground`         | Text on the tinted panel or on cards           | on `<status>-subtle` and on surface (4.5)                  |
+| `decorative`                         | Ornamental fill (labels, panels); never text   | —                                                          |
+| `decorative-foreground`              | Text on the decorative fill                    | decorative (4.5)                                           |
+| `qr-ink` / `qr-paper`                | QR modules / QR background and quiet zone      | ink on paper (4.5), and ink darker than paper              |
+
+### Decorative fill and QR codes
+
+`decorative` is for fills such as the champagne table label; text on it uses `decorative-foreground`. It is deliberately not checked against the page, because it must never be used as text: in Ivory & Gold, champagne `#D6BE8D` on the page is under 2:1.
+
+QR codes are **always dark on light**, even in dark themes, because many phone cameras cannot read an inverted code. `loadTheme` rejects a theme whose `qr-ink` is lighter than its `qr-paper` or under 4.5:1 against it. Render codes with the shared `<QrCode value label />` (`src/modules/shared/components/ui/qr-code.tsx`): it draws the modules in `qr-ink` on `qr-paper` with a four-module quiet zone, and nothing may be laid over it. Import it from its own file; it is kept out of the `ui` barrel so client bundles never include the encoder. `/dev/theme` shows one per theme, and an e2e test decodes the rendered pixels.
 
 ### Fixed status meanings
 

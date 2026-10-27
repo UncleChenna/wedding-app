@@ -31,6 +31,14 @@ export const COLOR_TOKENS = [
   "warning-foreground",
   "warning-subtle",
   "warning-subtle-foreground",
+  // Decorative fill (e.g. champagne) for ornaments and panels; never body text. Text placed
+  // on it uses `decorative-foreground`.
+  "decorative",
+  "decorative-foreground",
+  // QR codes are always dark ink on light paper, even in dark themes, so every phone can scan
+  // them (design principles §5; validated in lib/contrast.ts).
+  "qr-ink",
+  "qr-paper",
 ] as const;
 
 /**

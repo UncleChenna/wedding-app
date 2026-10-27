@@ -40,6 +40,10 @@
   --color-warning-foreground: var(--t-color-warning-foreground);
   --color-warning-subtle: var(--t-color-warning-subtle);
   --color-warning-subtle-foreground: var(--t-color-warning-subtle-foreground);
+  --color-decorative: var(--t-color-decorative);
+  --color-decorative-foreground: var(--t-color-decorative-foreground);
+  --color-qr-ink: var(--t-color-qr-ink);
+  --color-qr-paper: var(--t-color-qr-paper);
 
   --font-display: var(--t-font-display), ui-serif, Georgia, serif;
   --font-sans: var(--t-font-body), ui-sans-serif, system-ui, sans-serif;
