@@ -2,7 +2,7 @@
 id: TICKET-021
 title: UI review of /dev/theme in every theme and width
 epic: design-system
-status: in_progress
+status: in_review
 priority: urgent
 estimate: S
 labels: [design, test]
@@ -12,7 +12,7 @@ agent: claude
 blocked_by: [TICKET-015, TICKET-016, TICKET-018, TICKET-019, TICKET-020, TICKET-013]
 blocks: [TICKET-037]
 branch: TICKET-021
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/52
 created: 2026-10-21
 updated: 2026-10-27
 started: 2026-10-27
@@ -91,3 +91,4 @@ See: [What "flawless" means in testing](../docs/prd.md#what-flawless-means-in-te
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-10-27 — todo → claimed — unclechenna (claude)
 - 2026-10-27 — todo → in_progress — unclechenna (claude)
+- 2026-10-27 — in_progress → in_review — unclechenna (claude)
