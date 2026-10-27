@@ -947,14 +947,15 @@
     },
     "WED-021": {
       "log": [
-        "- 2026-10-27 — todo → claimed — unclechenna (claude)"
+        "- 2026-10-27 — todo → claimed — unclechenna (claude)",
+        "- 2026-10-27 — todo → in_progress — unclechenna (claude)"
       ],
-      "status": "todo",
+      "status": "in_progress",
       "owner": "unclechenna",
       "agent": "claude",
       "branch": "TICKET-021",
       "pr": "",
-      "started": "",
+      "started": "2026-10-27",
       "completed": "",
       "updated": "2026-10-27",
       "reason": "",
