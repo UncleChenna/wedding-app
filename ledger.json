@@ -389,13 +389,14 @@
         "- 2026-10-25 — todo → blocked — unclechenna (claude) — Needs a QR encoder (e.g. the qrcode npm package) to render and verify a real dark-on-light QR per theme (acceptance criterion 3). Adding a package changes pnpm-lock.yaml, which the owner has not authorised for this run (only theme-schema writes). Unblock by approving the dependency.",
         "- 2026-10-27 — blocked → todo — unclechenna — Owner approved adding the qrcode dependency on 2026-10-27",
         "- 2026-10-27 — todo → claimed — unclechenna (claude)",
-        "- 2026-10-27 — todo → in_progress — unclechenna (claude)"
+        "- 2026-10-27 — todo → in_progress — unclechenna (claude)",
+        "- 2026-10-27 — in_progress → in_review — unclechenna (claude)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "unclechenna",
       "agent": "claude",
       "branch": "TICKET-170",
-      "pr": "",
+      "pr": "https://github.com/UncleChenna/wedding-app/pull/50",
       "started": "2026-10-27",
       "completed": "",
       "updated": "2026-10-27",
