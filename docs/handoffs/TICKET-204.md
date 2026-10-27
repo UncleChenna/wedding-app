@@ -14,7 +14,6 @@
   - `pnpm verify` passed: 275 unit tests, build, 235 browser tests (81 phone-only checks skipped in the desktop project by design).
   - New/changed specs: `e2e/color-scheme.spec.ts`, `e2e/overflow.spec.ts` (both schemes plus 44px targets), `e2e/theme-pattern.spec.ts`, and a sticky-bar test in `e2e/order-preview.spec.ts`.
 - **Not verified:**
-  - Inspection of every screenshot.
   - Real phones and the WhatsApp in-app browser (TICKET-201).
   - Lighthouse scores.
   - The new e2e tests were not run against the old code to watch them fail first.

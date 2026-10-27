@@ -38,7 +38,7 @@ The ticket also covers a phone usability pass over the whole site. Every page wa
 - [x] `theme-color` exists per scheme (`#FBF8F3` light, `#0F1420` dark), plus `color-scheme: light dark`. Evidence: e2e.
 - [x] The paper texture shows in light mode only; staff and admin stay plain. Evidence: `e2e/theme-pattern.spec.ts`, both schemes.
 - [x] At 375px, no route scrolls sideways and no control is under 44×44px, in both schemes. Evidence: `e2e/overflow.spec.ts`.
-- [ ] Screenshots inspected. All were generated, but only part was inspected by eye: 375px of every guest/staff route in at least one theme, and the order menu at 375/768 in both. **Please review `artifacts/screenshots/`.**
+- [x] Screenshots of all 13 routes at 375/768/1280 in both themes, regenerated on the final code and inspected side by side. No overflow, clipping or wrong-theme panels.
 - [x] `pnpm verify` passes.
 
 # Verification
@@ -63,11 +63,11 @@ The ticket also covers a phone usability pass over the whole site. Every page wa
 
 # Screenshots
 
-`pnpm screenshots` with `SCREENSHOT_ROUTES=/,/invite,/order,/checkin,/kitchen,/admin,/offline,/dev/invitation,/dev/rsvp,/dev/order,/nope` writes `artifacts/screenshots/{ivory-gold,midnight-champagne}/{375,768,1280}/`. Order flow screenshots from verify are in `artifacts/ordering/`.
+`pnpm screenshots` with `SCREENSHOT_ROUTES=/,/invite,/order,/checkin,/kitchen,/admin,/offline,/dev,/dev/theme,/dev/invitation,/dev/rsvp,/dev/order,/nope` writes `artifacts/screenshots/{ivory-gold,midnight-champagne}/{375,768,1280}/`. Order flow screenshots from verify are in `artifacts/ordering/`.
 
 # UI checklist
 
-- [ ] **Screenshots:** Generated for every route at 375/768/1280 in both themes; only partly inspected (see above).
+- [x] **Screenshots:** Every route at 375/768/1280 in both themes, inspected.
 - [x] **Tokens:** No hard-coded colours, fonts, radii or shadows in changed files (lint rule passes). `ActionBar` uses `bg-background` and `border-border`.
 - [x] **Restraint and typography:** The bar is a hairline divider and the page background, with no shadow. No type changes.
 - [x] **Mobile:** No overflow at 375px in both schemes (e2e). 44px targets (e2e). The sticky bar uses `env(safe-area-inset-bottom)`, and a focused field scrolls clear of it (e2e). Keyboard behaviour on real devices is not verified.
