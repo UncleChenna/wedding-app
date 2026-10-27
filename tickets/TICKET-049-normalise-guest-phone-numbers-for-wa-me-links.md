@@ -2,20 +2,20 @@
 id: TICKET-049
 title: Normalise guest phone numbers for wa.me links
 epic: sharing
-status: todo
+status: in_progress
 priority: urgent
 estimate: S
 labels: [backend]
 module: invitations
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-023]
 blocks: [TICKET-050, TICKET-086, TICKET-090]
-branch: ""
+branch: TICKET-049
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-10-27
+started: 2026-10-27
 completed: ""
 reason: ""
 resume_to: ""
@@ -59,3 +59,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-27 — todo → claimed — divine (codex)
+- 2026-10-27 — todo → in_progress — divine (codex)
