@@ -23,3 +23,5 @@ The initial t:move start commit raced with writing red tests and was rejected by
 5. Prove empty and existing bootstrap migrations, repeat migrate/counts and seed/counts, RLS and constraints; then full gate, complete evidence, PR review transition and final-head CI.
 
 No production work or destructive reset authorized. Other owner's TICKET-204 is untouched. TICKET-172 is blocked in PR47; TICKET-025 in PR44. Prior TICKET-023 approval covers neither.
+
+Draft PR: https://github.com/UncleChenna/wedding-app/pull/48. Source f0515b8 is pushed. See docs/reviews/TICKET-171/migration-approval.md for the concrete staged proposal and exact protected paths. Await explicit authorization before generating migrations.
