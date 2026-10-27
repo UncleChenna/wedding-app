@@ -2,7 +2,7 @@
 id: TICKET-050
 title: "Build the Share menu: WhatsApp, email, copy link and native share"
 epic: sharing
-status: in_progress
+status: in_review
 priority: urgent
 estimate: M
 labels: [frontend]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-018, TICKET-036, TICKET-049]
 blocks: [TICKET-048, TICKET-051, TICKET-052, TICKET-089, TICKET-134, TICKET-154, TICKET-176]
 branch: TICKET-050
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/46
 created: 2026-10-21
 updated: 2026-10-27
 started: 2026-10-27
@@ -66,5 +66,4 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-3) · [Jou
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-10-27 — todo → claimed — divine (codex)
 - 2026-10-27 — todo → in_progress — divine (codex)
-
-2026-10-27 — Share menu and sample preview implemented. Full gate passes (359 unit / 207 browser, 10 / 29 conditional skips); separate CLS regression passes. Eighteen theme/width screenshots inspected. Physical-device sharing remains deferred under preview authorization/TICKET-201; final PR gate and hosted CI pending.
+- 2026-10-27 — in_progress → in_review — divine (codex)
