@@ -2,20 +2,20 @@
 id: TICKET-172
 title: Migrate staff identities and device registrations
 epic: data-auth
-status: todo
+status: in_progress
 priority: urgent
 estimate: M
 labels: [db, security]
 module: shared
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-023]
 blocks: [TICKET-024, TICKET-026, TICKET-027, TICKET-031]
-branch: ""
+branch: TICKET-172
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-10-27
+started: 2026-10-27
 completed: ""
 reason: ""
 resume_to: ""
@@ -57,3 +57,5 @@ Backlog audit coverage: CHK-5, ADM-4. See [PRD](../docs/prd.md) and [audit](AUDI
 ## Activity log
 
 - 2026-10-21 — new → todo — divine
+- 2026-10-27 — todo → claimed — divine (codex)
+- 2026-10-27 — todo → in_progress — divine (codex)
