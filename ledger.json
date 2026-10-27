@@ -906,9 +906,10 @@
       "log": [
         "- 2026-10-27 — todo → claimed — divine (codex)",
         "- 2026-10-27 — todo → in_progress — divine (codex)",
-        "- 2026-10-27 — in_progress → blocked — divine (codex) — Initial commit rejected: contiguous-ID validator requires unmerged TICKET-204 definition. Await explicit exception to carry unchanged definition only, or PR43 merge into develop; no hook bypass."
+        "- 2026-10-27 — in_progress → blocked — divine (codex) — Initial commit rejected: contiguous-ID validator requires unmerged TICKET-204 definition. Await explicit exception to carry unchanged definition only, or PR43 merge into develop; no hook bypass.",
+        "- 2026-10-27 — blocked → in_progress — divine (codex) — PR43 merged; ticket definition gap resolved. Resume database target guard."
       ],
-      "status": "blocked",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-205",
@@ -916,8 +917,8 @@
       "started": "2026-10-27",
       "completed": "",
       "updated": "2026-10-27",
-      "reason": "Initial commit rejected: contiguous-ID validator requires unmerged TICKET-204 definition. Await explicit exception to carry unchanged definition only, or PR43 merge into develop; no hook bypass.",
-      "resume_to": "in_progress"
+      "reason": "",
+      "resume_to": ""
     }
   }
 }
