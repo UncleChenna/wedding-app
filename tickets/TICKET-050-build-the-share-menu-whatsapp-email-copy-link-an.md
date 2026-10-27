@@ -59,7 +59,7 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-3) · [Jou
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-10-27 — Started from bc15aa0 after TICKET-049 merged. URL builder and 17 tests implemented; quick gate passes. Share menu UI, browser evidence and full gate remain outstanding; no completion claimed.
 
 ## Activity log
 
