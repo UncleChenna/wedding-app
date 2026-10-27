@@ -40,8 +40,8 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-3).
 
 ## Acceptance criteria
 
-- [ ] `07700 900123`, `+44 7700 900123` and `447700900123` normalise to `+447700900123` (unit).
-- [ ] Invalid numbers return a typed error, not an exception.
+- [x] `07700 900123`, `+44 7700 900123` and `447700900123` normalise to `+447700900123` (unit).
+- [x] Invalid numbers return a typed error, not an exception.
 
 ## Test plan
 
@@ -54,7 +54,7 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-3).
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-10-27 — Added pure structural normalisation and typed validation errors. All 51 phone cases pass. Full gate passes: 342 unit tests, 10 opt-in DB skips, production build, 172 browser passes and 28 conditional skips. No UI or database changes. Allocation and WhatsApp registration are not verified; sharing integration is TICKET-050.
 
 ## Activity log
 
