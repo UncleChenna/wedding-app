@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 
-import { ACTIVE_THEME_ID } from "../config";
-import { themeStyle, themeToCssText, themeToCssVars } from "../lib/css-vars";
-import { getActiveTheme, getTheme } from "../lib/registry";
+import { ACTIVE_THEME_IDS, DEFAULT_COLOR_SCHEME } from "../config";
+import { activeThemesToCssText, themeStyle, themeToCssText, themeToCssVars } from "../lib/css-vars";
+import { getActiveTheme, getActiveThemes, getTheme, resolveActiveThemes } from "../lib/registry";
 import { COLOR_TOKENS } from "../lib/schema";
 
 describe("themeToCssVars", () => {
@@ -28,9 +28,52 @@ describe("themeToCssVars", () => {
   });
 });
 
+describe("activeThemesToCssText", () => {
+  const themes = getActiveThemes();
+  const css = activeThemesToCssText(themes);
+
+  it("puts the light theme on :root and the dark theme behind prefers-color-scheme: dark", () => {
+    const [light, dark] = css.split("@media (prefers-color-scheme: dark)");
+    expect(light).toContain(`--t-color-background: ${themes.light.colors.background};`);
+    expect(light).toContain("color-scheme: light;");
+    expect(dark).toMatch(/^ \{ :root \{ /);
+    expect(dark).toContain(`--t-color-background: ${themes.dark.colors.background};`);
+    expect(dark).toContain("color-scheme: dark;");
+  });
+
+  it("resets the paper texture in a plain dark theme", () => {
+    const dark = css.split("@media")[1];
+    expect(dark).toContain("--t-pattern-image: none;");
+    expect(dark).toContain("--t-pattern-opacity: 0;");
+  });
+
+  it("refuses values that could close the <style> element", () => {
+    const evil = {
+      ...themes.dark,
+      shadows: { ...themes.dark.shadows, sm: "0 0 0 red</style><script>" },
+    };
+    expect(() => activeThemesToCssText({ light: themes.light, dark: evil })).toThrow(/"<"/);
+  });
+});
+
 describe("registry", () => {
-  it("returns the configured active theme", () => {
-    expect(getActiveTheme().id).toBe(ACTIVE_THEME_ID);
+  it("returns the configured theme for each device colour scheme", () => {
+    const themes = getActiveThemes();
+    expect(themes.light.id).toBe(ACTIVE_THEME_IDS.light);
+    expect(themes.dark.id).toBe(ACTIVE_THEME_IDS.dark);
+    expect(themes.light.colorScheme).toBe("light");
+    expect(themes.dark.colorScheme).toBe("dark");
+  });
+
+  it("uses the default scheme where no viewer is known", () => {
+    expect(getActiveTheme().id).toBe(ACTIVE_THEME_IDS[DEFAULT_COLOR_SCHEME]);
+    expect(getActiveTheme("dark").id).toBe(ACTIVE_THEME_IDS.dark);
+  });
+
+  it("rejects a theme placed in the other scheme's slot", () => {
+    expect(() =>
+      resolveActiveThemes({ light: "midnight-champagne", dark: "midnight-champagne" }),
+    ).toThrow(/"midnight-champagne" is a dark theme and cannot be the light-mode theme/);
   });
 
   it("throws a helpful error for unknown themes", () => {

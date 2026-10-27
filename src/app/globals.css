@@ -3,8 +3,8 @@
 /*
  * Design tokens. Tailwind's default palette, fonts, radii and shadows are
  * removed so that every utility resolves to a theme variable (--t-*). The
- * variables are set on <html> by the root layout from the active theme JSON
- * (src/modules/theming). See docs/theming.md.
+ * variables are set on :root by the root layout from the light and dark theme JSON
+ * (src/modules/theming), switched by prefers-color-scheme. See docs/theming.md.
  */
 @theme {
   --color-*: initial;
@@ -72,6 +72,13 @@
   html {
     -webkit-text-size-adjust: 100%;
     text-rendering: optimizeLegibility;
+  }
+
+  /* A sticky ActionBar must never hide the field that has focus: scroll it clear of the bar. */
+  @media (width < 48rem) {
+    html:has([data-action-bar="sticky"]) {
+      scroll-padding-bottom: 9rem;
+    }
   }
 
   body {

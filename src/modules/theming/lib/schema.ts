@@ -108,3 +108,6 @@ export const themeSchema = z
   });
 
 export type Theme = z.infer<typeof themeSchema>;
+export type ColorScheme = Theme["colorScheme"];
+/** The theme shown for each device colour scheme. */
+export type ActiveThemes = Readonly<Record<ColorScheme, Theme>>;

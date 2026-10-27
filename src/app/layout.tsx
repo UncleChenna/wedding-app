@@ -2,12 +2,13 @@ import type { Metadata, Viewport } from "next";
 
 import { ServiceWorkerRegistration } from "@/modules/shared/components/service-worker-registration";
 import { ToastProvider } from "@/modules/shared/components/ui";
-import { getActiveTheme, themeStyle } from "@/modules/theming";
+import { getActiveThemes } from "@/modules/theming";
 import { fontVariables } from "@/modules/theming/components/fonts";
+import { ThemeStyles } from "@/modules/theming/components/theme-styles";
 
 import "./globals.css";
 
-const theme = getActiveTheme();
+const themes = getActiveThemes();
 
 export const metadata: Metadata = {
   title: { default: "Our Wedding", template: "%s · Our Wedding" },
@@ -18,14 +19,22 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: theme.colors.background,
-  colorScheme: theme.colorScheme,
+  // The browser bar follows the device setting, like the page.
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: themes.light.colors.background },
+    { media: "(prefers-color-scheme: dark)", color: themes.dark.colors.background },
+  ],
+  colorScheme: "light dark",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    // The theme's CSS variables are rendered on the server, so there is no flash of the wrong theme.
-    <html lang="en" data-theme={theme.id} style={themeStyle(theme)} className={fontVariables}>
+    // Both themes are rendered on the server as one stylesheet keyed on prefers-color-scheme,
+    // so each device paints its own theme first, with no flash and no client JS.
+    <html lang="en" className={fontVariables}>
+      <head>
+        <ThemeStyles themes={themes} />
+      </head>
       <body className="min-h-dvh bg-background font-sans text-foreground">
         <ToastProvider>{children}</ToastProvider>
         <ServiceWorkerRegistration />

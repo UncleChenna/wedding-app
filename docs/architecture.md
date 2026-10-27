@@ -46,14 +46,14 @@ flowchart LR
 | --------------- | -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
 | Routes          | `src/app/**`                                       | Routing, layouts, metadata. Call module components/actions. No logic or queries.                                 |
 | Feature modules | `src/modules/{invitations,checkin,ordering,admin}` | `components/` (UI), `server/` (queries + Server Actions, `server-only`), `lib/` (pure logic + Zod), `__tests__/` |
-| Theming         | `src/modules/theming`                              | Theme JSON → validated (Zod + WCAG AA) → CSS variables. `config.ts` holds the active theme.                      |
+| Theming         | `src/modules/theming`                              | Theme JSON → validated (Zod + WCAG AA) → CSS variables. `config.ts` holds the light and dark themes.             |
 | Shared          | `src/modules/shared`                               | Base UI (`components/ui`), DB (`server/db`), env (`lib/env`, `server/env`), logger, security headers.            |
 
 Dependency direction: `app → feature modules → theming/shared`. Never the reverse.
 
 ## Rendering and theming
 
-- The root layout reads the active theme and renders its CSS variables as an inline `style` on `<html>`. Pages are statically prerendered with the theme baked in, so there is no flash of the wrong theme and no client JS for theming.
+- The root layout renders the light and dark themes as one server-side `<style>`: light on `:root`, dark inside `@media (prefers-color-scheme: dark)`. Each guest sees the theme matching their device setting. Pages are statically prerendered with both baked in, so there is no flash of the wrong theme and no client JS for theming. Nothing writes theme variables inline on `<html>`; an inline style would beat the media query.
 - Tailwind 4 maps utilities to those variables (`src/app/globals.css`). The default palette is removed, so only token classes exist.
 - Any element can render in another theme by applying `themeStyle(theme)` to it (used by `/dev/theme`).
 
