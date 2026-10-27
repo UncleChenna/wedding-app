@@ -46,13 +46,13 @@ See: [Design principles (repo)](../docs/design-principles.md) §6 (mobile and th
 
 ## Acceptance criteria
 
-- [ ] With `prefers-color-scheme: light` every page renders in Ivory & Gold; with `dark` in Midnight & Champagne (e2e test with emulated media).
-- [ ] The server HTML contains both themes' variables; `<html>` has no inline `--t-*` variables (unit + e2e).
-- [ ] `theme-color` meta tags exist for light and dark with each theme's background.
-- [ ] The guest paper texture shows only in light mode; staff and admin stay plain.
-- [ ] Every route has no horizontal scroll at 375px in both schemes, and interactive controls are at least 44×44px (e2e).
+- [x] With `prefers-color-scheme: light` every page renders in Ivory & Gold; with `dark` in Midnight & Champagne (e2e test with emulated media).
+- [x] The server HTML contains both themes' variables; `<html>` has no inline `--t-*` variables (unit + e2e).
+- [x] `theme-color` meta tags exist for light and dark with each theme's background.
+- [x] The guest paper texture shows only in light mode; staff and admin stay plain.
+- [x] Every route has no horizontal scroll at 375px in both schemes, and interactive controls are at least 44×44px (e2e).
 - [ ] Screenshots of every route at 375/768/1280 in both themes inspected.
-- [ ] `pnpm verify` passes.
+- [x] `pnpm verify` passes.
 
 ## Test plan
 
@@ -70,6 +70,11 @@ See: [Design principles (repo)](../docs/design-principles.md) §6 (mobile and th
 ## Notes / decisions
 
 _Agents append dated notes here while working._
+
+- 2026-10-27 — Both themes ship in one server-rendered `<style>` (light on `:root`, dark under `prefers-color-scheme: dark`). Nothing is inline on `<html>`, because an inline style beats the media query. `resolveActiveThemes` rejects a theme in the wrong scheme slot. The generated CSS throws on `<` so a theme string cannot close the element; this matters once TICKET-012 stores themes in the database.
+- 2026-10-27 — Dev previews (`/dev/invitation`, `/dev/rsvp`, `/dev/order`) default to "Match my device" instead of pinning Ivory & Gold.
+- 2026-10-27 — Mobile audit at 375px, both schemes, every route: no sideways scroll and no control under 44×44px on load (now enforced by `e2e/overflow.spec.ts`). The one real phone problem found: the order menu put "Review order" below the whole menu. A new shared `ActionBar` pins it to the bottom of phone screens (safe-area aware, an ordinary row from 768px), with scroll padding so a focused field is never hidden under it. It is shown on `/dev/theme`.
+- 2026-10-27 — Screenshots were generated for every route × 375/768/1280 × both themes, but only a subset was inspected by eye (375px of every guest and staff route in at least one theme; order menu at 375/768 in both). The criterion stays open for the reviewer.
 
 ## Activity log
 
