@@ -2,20 +2,20 @@
 id: TICKET-049
 title: Normalise guest phone numbers for wa.me links
 epic: sharing
-status: todo
+status: in_review
 priority: urgent
 estimate: S
 labels: [backend]
 module: invitations
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-023]
 blocks: [TICKET-050, TICKET-086, TICKET-090]
-branch: ""
-pr: ""
+branch: TICKET-049
+pr: https://github.com/UncleChenna/wedding-app/pull/45
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-10-27
+started: 2026-10-27
 completed: ""
 reason: ""
 resume_to: ""
@@ -40,8 +40,8 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-3).
 
 ## Acceptance criteria
 
-- [ ] `07700 900123`, `+44 7700 900123` and `447700900123` normalise to `+447700900123` (unit).
-- [ ] Invalid numbers return a typed error, not an exception.
+- [x] `07700 900123`, `+44 7700 900123` and `447700900123` normalise to `+447700900123` (unit).
+- [x] Invalid numbers return a typed error, not an exception.
 
 ## Test plan
 
@@ -54,8 +54,11 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-3).
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-10-27 — Added pure structural normalisation and typed validation errors. All 51 phone cases pass. Full gate passes: 342 unit tests, 10 opt-in DB skips, production build, 172 browser passes and 28 conditional skips. No UI or database changes. Allocation and WhatsApp registration are not verified; sharing integration is TICKET-050.
 
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-27 — todo → claimed — divine (codex)
+- 2026-10-27 — todo → in_progress — divine (codex)
+- 2026-10-27 — in_progress → in_review — divine (codex)
