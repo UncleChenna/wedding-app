@@ -34,10 +34,11 @@ async function main() {
   await db.transaction(async (tx) => {
     await tx.execute(sql`
       truncate table order_items, orders, menu_items, check_ins, rsvps, guests,
-        tables, invitations, staff, themes restart identity cascade
+        tables, invitations, registered_devices, staff, themes restart identity cascade
     `);
     await tx.insert(schema.themes).values(data.themes);
     await tx.insert(schema.staff).values(data.staff);
+    await tx.insert(schema.registeredDevices).values(data.registeredDevices);
     await tx.insert(schema.tables).values(data.tables);
     await tx.insert(schema.invitations).values(data.invitations);
     await tx.insert(schema.guests).values(data.guests);
