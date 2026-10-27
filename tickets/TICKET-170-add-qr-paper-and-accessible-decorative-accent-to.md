@@ -2,20 +2,20 @@
 id: TICKET-170
 title: Add QR paper and accessible decorative accent tokens
 epic: design-system
-status: todo
+status: in_progress
 priority: urgent
 estimate: M
 labels: [design, frontend]
 module: theming
-owner: ""
-agent: ""
+owner: unclechenna
+agent: claude
 blocked_by: [TICKET-009, TICKET-011]
 blocks: [TICKET-013, TICKET-014, TICKET-044, TICKET-094, TICKET-176, TICKET-181]
-branch: ""
+branch: TICKET-170
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-10-27
+started: 2026-10-27
 completed: ""
 reason: ""
 resume_to: ""
@@ -57,3 +57,7 @@ Backlog audit coverage: THM-1–7. See [PRD](../docs/prd.md) and [audit](AUDIT.m
 ## Activity log
 
 - 2026-10-21 — new → todo — divine
+- 2026-10-25 — todo → blocked — unclechenna (claude) — Needs a QR encoder (e.g. the qrcode npm package) to render and verify a real dark-on-light QR per theme (acceptance criterion 3). Adding a package changes pnpm-lock.yaml, which the owner has not authorised for this run (only theme-schema writes). Unblock by approving the dependency.
+- 2026-10-27 — blocked → todo — unclechenna — Owner approved adding the qrcode dependency on 2026-10-27
+- 2026-10-27 — todo → claimed — unclechenna (claude)
+- 2026-10-27 — todo → in_progress — unclechenna (claude)
