@@ -2,20 +2,20 @@
 id: TICKET-025
 title: Add event settings and RSVP change-log tables
 epic: data-auth
-status: todo
+status: in_progress
 priority: urgent
 estimate: M
 labels: [db, backend]
 module: shared
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-023]
 blocks: [TICKET-012, TICKET-026, TICKET-027, TICKET-029, TICKET-031, TICKET-037, TICKET-040, TICKET-042, TICKET-052, TICKET-073, TICKET-080, TICKET-101]
-branch: ""
+branch: TICKET-025
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-10-27
+started: 2026-10-27
 completed: ""
 reason: ""
 resume_to: ""
@@ -63,3 +63,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-27 — todo → claimed — divine (codex)
+- 2026-10-27 — todo → in_progress — divine (codex)
