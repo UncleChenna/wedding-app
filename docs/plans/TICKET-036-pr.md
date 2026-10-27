@@ -25,7 +25,7 @@ Personal invitation URLs previously returned 404. This change creates secure inv
 
 20 token/resolver tests pass; two real database tests pass. Initial production route suite: eight passes, including both themes at 375/768/1280 with axe, overflow and keyboard checks. Production build and quick gate pass. A keyboard test initially failed with body-focus setup; the replacement verifies Tab from a visible heading reaches the exact return link.
 
-First full gate: 301 unit/database passes, build passed, 173 browser passes, 17 conditional skips, two route-inventory failures. Added the missing dynamic-route sample without weakening the inventory guard. Next run: 300 passes and an existing DB query timed out at the unchanged five-second limit. Stopped only completed TICKET-034/TICKET-195 stacks with backups preserved after observing 54 Docker containers. Recovery gate: all 301 unit/database tests and build passed; 181 browser passes, 18 conditional skips, one failed status assumption for the new invalid fixture. The fixture now explicitly expects 404 while all other pages still require 200; its targeted overflow check passes. CLS is 0 and link dimensions are at least 44px on both browser projects. Final t:pr full gate remains pending; no complete gate pass is claimed yet.
+First full gate: 301 unit/database passes, build passed, 173 browser passes, 17 conditional skips, two route-inventory failures. Added the missing dynamic-route sample without weakening the inventory guard. Next run: 300 passes and an existing DB query timed out at the unchanged five-second limit. Stopped only completed TICKET-034/TICKET-195 stacks with backups preserved after observing 54 Docker containers. Recovery gate: all 301 unit/database tests and build passed; 181 browser passes, 18 conditional skips, one failed status assumption for the new invalid fixture. The fixture now explicitly expects 404 while all other pages still require 200; its targeted overflow check passes. CLS is 0 and link dimensions are at least 44px on both browser projects. Final `RUN_INVITATION_DB_TESTS=1 RUN_INVITATION_ROUTE_TESTS=1 pnpm t:pr TICKET-036` passed: 301 unit/database tests, production build and 182 browser tests, with 18 existing conditional skips. No retries or failures in that final run. The CLI moved the ticket to in_review and pushed its metadata.
 
 # Risks and rollout
 
@@ -37,7 +37,7 @@ Twelve images in `docs/reviews/TICKET-036/`: valid and unavailable states, ivory
 
 # UI checklist
 
-Automated responsive, keyboard, contrast and reduced-motion evidence passes. The review records every checklist item. Lighthouse and physical WhatsApp/iOS/Android QA are not verified; track them under TICKET-201 using the user's existing authorization to merge previews with remaining release QA separate. This is not wedding-day release approval. CLS and tap-target assertions pass. Final full-gate result remains pending.
+Automated responsive, keyboard, contrast and reduced-motion evidence passes. The review records every checklist item. Lighthouse and physical WhatsApp/iOS/Android QA are not verified; track them under TICKET-201 using the user's existing authorization to merge previews with remaining release QA separate. This is not wedding-day release approval. CLS and tap-target assertions pass. Final full gate passed as recorded above.
 
 # Harness changes
 

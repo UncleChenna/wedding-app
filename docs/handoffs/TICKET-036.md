@@ -1,35 +1,30 @@
-# TICKET-036 — 26 October 2026
+# TICKET-036 — 27 October 2026
 
-Owner divine; agent codex; branch TICKET-036. Base fdfa3ab716918a9ea3c9ed6dff088db795eeecf6. TICKET-023 PR41 merged after all required checks passed and is recorded done in the shared ledger.
+Owner divine; agent codex; branch TICKET-036. Base fdfa3ab716918a9ea3c9ed6dff088db795eeecf6. PR: https://github.com/UncleChenna/wedding-app/pull/42. TICKET-023 PR41 is merged and recorded done.
 
 ## Current state
 
-Claimed TICKET-036 through the CLI; managed worktree created with isolated project wedding-be0bb60d242c (database 33021, dev 33030, browser 33031). Dependencies installed with the locked package set. Initial setup failed because Colima was stopped. Starting the existing Colima instance succeeded. Resumed `AGENT_OWNER=divine pnpm wt:new TICKET-036`; the PostgreSQL container became healthy and full Supabase startup is still running. Recheck its live process before retrying. Token generation, bounded collision allocation and a safe resolver are now implemented. No acceptance criterion is complete because database persistence and the real route are still missing.
+Implementation pushed in d33f7fd; final t:pr gate passed and moved the ticket to in_review in db1c432. All three acceptance criteria have evidence. Await required GitHub checks on the final documentation commit, then merge under the user's standing authorization and record completion through the CLI. Do not claim completion before that merge.
 
-## Investigation
+## Result
 
-Read the ticket and relevant PRD token/security requirements, collaboration/learnings, current state and installed Next.js dynamic-route/not-found guidance. Next.js may send 200 when notFound happens after streaming; the acceptance test must assert real HTTP 404 for both unknown and revoked tokens. See the dated plan for proposed scope and verification.
+256-bit URL-safe tokens with bounded atomic collision retries; Drizzle draft creation and guest-only field projection; published-token Proxy check before streaming; personal /i/[token] page with confirmed names/date and honest pending venue/RSVP/pass details. Unknown/draft/revoked tokens get the same neutral 404, not a streamed 200. Private no-store/no-referrer/noindex headers. No migration, RLS, dependency or CI changes. Full invitation design remains TICKET-037.
 
-## Next
+## Verification
 
-Confirm setup exits successfully and applies migrations, then implement the failing token/resolver and real-route tests from the plan. Complete the implementation and full gate before making the PR ready. Keep personal data/token values out of logs. Do not touch the unrelated untracked TICKET-204 in the primary checkout.
+- Token/resolver suites first failed on missing modules, then 20 tests passed (10,000 samples, input bounds, collision retries, outage propagation, safe fields/statuses).
+- Real isolated PostgreSQL lifecycle tests first failed on missing repository, then both passed; fixtures roll back.
+- Browser valid-token test first returned 404 before route implementation. Production checks then passed real valid/unknown/revoked statuses, privacy headers and revocation after an earlier visit.
+- Twelve screenshots (two states × two themes × three widths) inspected in docs/reviews/TICKET-036. Keyboard, axe, overflow, reduced motion, CLS=0 and >=44px return links pass.
+- Final `AGENT_OWNER=divine RUN_INVITATION_DB_TESTS=1 RUN_INVITATION_ROUTE_TESTS=1 pnpm t:pr TICKET-036` exited 0: 301 unit/database tests, build and 182 browser passes; 18 conditional skips, no retries. Log .harness/t036-pr.log.
+- Physical WhatsApp/iOS/Android and Lighthouse are not verified; remain TICKET-201 under the user's preview-with-separate-QA authorization. No wedding-day release claim.
 
-## Tested increment
+## Failures corrected and runtime recovery
 
-PR: https://github.com/UncleChenna/wedding-app/pull/42 (draft). New token and resolver suites first failed on missing modules, then passed all 20 tests. They cover 10,000 distinct 32-byte random tokens, input bounds, atomic-reservation callback retries (at most five), propagation of database errors, published invitation states, neutral missing/draft/revoked results and guest-only field projection. Targeted ESLint and Prettier pass. No database or browser test is claimed for this increment. The resumed setup process exited 1 with Supabase startup failure; no isolated containers remained in the next docker ps check. It is no longer live. Next implement Drizzle persistence and actual HTTP route behavior, then complete the full gate.
+Initial pre-commit gate caught strict call-array indexing in a test; replaced with distinct captured-token set assertion. Initial keyboard matrix used body focus and failed; visible heading interaction plus the exact expected focused link passes. Full gate caught missing dynamic-route inventory; added /i/invalid. Its overflow check initially assumed 200; now only that intentional invalid fixture requires 404, all other routes still require 200 and every overflow assertion remains.
 
-The pre-commit quick gate caught strict indexed-access errors in the collision test. Replaced direct call-array indexing with a set of captured tokens, retaining the two-call and two-distinct-token assertions; rerun the required gate before claiming this increment is pushed.
+Colima was stopped; starting the existing instance succeeded. Initial full Supabase startup failed. Stopped only completed TICKET-023's stack through db:stop with backup=true; retry succeeded with migrations applied. A later gate passed 300 tests but one existing RLS query timed out at the unchanged five-second limit. Docker had 54 containers. Stopped only completed TICKET-034 and TICKET-195 stacks, backup=true; unchanged recovery tests passed all 301. No other stacks or data were removed and no timeouts/checks were weakened.
 
-## Recovery after the tested increment
+## Environment and next action
 
-Commit 722b2f0 is pushed. The corrected pre-commit quick gate passed (lint, typecheck and all 20 related tests). Colima reports 4 CPUs and 6 GiB memory with several stacks running. Stopped only the completed TICKET-023 stack through `pnpm db:stop`; its output confirmed project wedding-13b237dc87ea and backup=true. No other stack or data was removed. Retried managed TICKET-036 setup after freeing that capacity; this new attempt is live. Revalidate it before any further restart.
-
-## 27 October — persistence and route implementation
-
-Managed setup succeeded after stopping completed TICKET-023: all services healthy, migrations applied. Added Drizzle creation/resolution, published-token Proxy check, personal route and minimal themed landing component. Two isolated PostgreSQL lifecycle tests pass; fixtures roll back. Production build passes. Eight initial production browser tests pass, including real 200/404 status, identical unknown/revoked UI, no-store/no-referrer/noindex headers and revocation after a visit. Twelve screenshots inspected; see docs/reviews/TICKET-036/README.md.
-
-Initial full gate: 301 unit/database passes, build passed, 173 browser passes, 17 conditional skips, two route-inventory failures. Registered /i/invalid; valid-state coverage stays in the opt-in database suite. Added CLS=0 and >=44px target assertions. Second gate: 300 passes, one existing constraint query timed out at five seconds. No tests/timeouts changed. Docker had 54 containers. Stopped only completed TICKET-034 (wedding-0372a4a78ee3) and TICKET-195 (wedding-174c6ebcb152) through db:stop with backup=true. Recovery gate is running, log .harness/t036-verify-recovery.log. This is the current attempt; revalidate its process before any restart.
-
-Next: inspect the recovery result, fix actual failures, record final UI/gate evidence, commit/push the implementation and use t:pr. Keep draft PR42 until final required checks pass. The earlier sections describe history, not the current healthy stack. Physical-device/Lighthouse release QA remains disclosed under TICKET-201 and the existing preview authorization.
-
-Recovery gate ended: 301 unit/database passes and build passed; 181 browser passes, 18 skips, one failure because generic overflow expected 200 for the intentionally invalid-token fixture. Added exact 404 expectation only for that fixture (all other routes still 200); targeted overflow rerun passes. Both projects passed new CLS=0 and >=44px link assertions. All ticket acceptance criteria now have evidence; do not mark done until final gate and PR checks pass. Next run t:pr with RUN_INVITATION_DB_TESTS=1 and RUN_INVITATION_ROUTE_TESTS=1 so real local data-path tests participate.
+Managed project wedding-be0bb60d242c; database 33021, app 33030, browser 33031. Stack healthy at successful setup and database verification; no setup process remains live. Current gate process completed. Check final GitHub CI, mark draft ready, merge only after required checks pass and record done. Next ready invitation ticket was TICKET-049; TICKET-037 still depends on event settings and design review. Preserve the unrelated primary-checkout untracked TICKET-204. Recheck live queue/ownership before starting another ticket.
