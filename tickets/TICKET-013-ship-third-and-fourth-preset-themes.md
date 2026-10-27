@@ -2,7 +2,7 @@
 id: TICKET-013
 title: Ship third and fourth preset themes
 epic: design-system
-status: in_progress
+status: in_review
 priority: urgent
 estimate: M
 labels: [design, frontend]
@@ -12,7 +12,7 @@ agent: claude
 blocked_by: [TICKET-010, TICKET-011, TICKET-170]
 blocks: [TICKET-014, TICKET-021, TICKET-135]
 branch: TICKET-013
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/51
 created: 2026-10-21
 updated: 2026-10-27
 started: 2026-10-27
@@ -69,3 +69,4 @@ _Agents append dated notes here while working._
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-10-27 — todo → claimed — unclechenna (claude)
 - 2026-10-27 — todo → in_progress — unclechenna (claude)
+- 2026-10-27 — in_progress → in_review — unclechenna (claude)
