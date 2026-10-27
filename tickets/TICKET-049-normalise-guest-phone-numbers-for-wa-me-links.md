@@ -2,7 +2,7 @@
 id: TICKET-049
 title: Normalise guest phone numbers for wa.me links
 epic: sharing
-status: in_progress
+status: in_review
 priority: urgent
 estimate: S
 labels: [backend]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-023]
 blocks: [TICKET-050, TICKET-086, TICKET-090]
 branch: TICKET-049
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/45
 created: 2026-10-21
 updated: 2026-10-27
 started: 2026-10-27
@@ -61,3 +61,4 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-3).
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-10-27 — todo → claimed — divine (codex)
 - 2026-10-27 — todo → in_progress — divine (codex)
+- 2026-10-27 — in_progress → in_review — divine (codex)
