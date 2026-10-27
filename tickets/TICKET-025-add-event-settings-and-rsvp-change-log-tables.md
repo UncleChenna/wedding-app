@@ -2,7 +2,7 @@
 id: TICKET-025
 title: Add event settings and RSVP change-log tables
 epic: data-auth
-status: in_progress
+status: blocked
 priority: urgent
 estimate: M
 labels: [db, backend]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-10-27
 started: 2026-10-27
 completed: ""
-reason: ""
-resume_to: ""
+reason: "Automatic approval review rejected migration generation: awaiting exact-path authorization for 0002/0003 SQL, snapshots and journal plus recording approval; review packet in draft PR44."
+resume_to: in_progress
 ---
 
 # TICKET-025: Add event settings and RSVP change-log tables
@@ -65,3 +65,4 @@ _Agents append dated notes here while working._
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-10-27 — todo → claimed — divine (codex)
 - 2026-10-27 — todo → in_progress — divine (codex)
+- 2026-10-27 — in_progress → blocked — divine (codex) — Automatic approval review rejected migration generation: awaiting exact-path authorization for 0002/0003 SQL, snapshots and journal plus recording approval; review packet in draft PR44.
