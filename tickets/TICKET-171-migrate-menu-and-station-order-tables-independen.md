@@ -2,7 +2,7 @@
 id: TICKET-171
 title: Migrate menu and station order tables independently
 epic: data-auth
-status: in_progress
+status: blocked
 priority: urgent
 estimate: M
 labels: [db, backend]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-10-27
 started: 2026-10-27
 completed: ""
-reason: ""
-resume_to: ""
+reason: "Draft PR #48: source and staged migration proposal pushed; awaiting exact-path authorization for 0002 ordering-expand, 0003 ordering-backfill, 0004 ordering-contract and generated metadata. Existing approval covers TICKET-023 only."
+resume_to: in_progress
 ---
 
 # TICKET-171: Migrate menu and station order tables independently
@@ -59,3 +59,4 @@ Backlog audit coverage: ORD-1–9. See [PRD](../docs/prd.md) and [audit](AUDIT.m
 - 2026-10-21 — new → todo — divine
 - 2026-10-27 — todo → claimed — divine (codex)
 - 2026-10-27 — todo → in_progress — divine (codex)
+- 2026-10-27 — in_progress → blocked — divine (codex) — Draft PR #48: source and staged migration proposal pushed; awaiting exact-path authorization for 0002 ordering-expand, 0003 ordering-backfill, 0004 ordering-contract and generated metadata. Existing approval covers TICKET-023 only.
