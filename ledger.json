@@ -826,18 +826,19 @@
       "log": [
         "- 2026-10-27 — todo → claimed — divine (codex)",
         "- 2026-10-27 — todo → in_progress — divine (codex)",
-        "- 2026-10-27 — in_progress → blocked — divine (codex) — Automatic approval review rejected migration generation: awaiting exact-path authorization for 0002/0003 SQL, snapshots and journal plus recording approval; review packet in draft PR44."
+        "- 2026-10-27 — in_progress → blocked — divine (codex) — Automatic approval review rejected migration generation: awaiting exact-path authorization for 0002/0003 SQL, snapshots and journal plus recording approval; review packet in draft PR44.",
+        "- 2026-10-28 — blocked → in_progress — divine (codex) — Existing approved migrations are committed and pushed as e72852a with passing CI; resume isolated acceptance verification and update stale handoff."
       ],
-      "status": "blocked",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-025",
       "pr": "",
       "started": "2026-10-27",
       "completed": "",
-      "updated": "2026-10-27",
-      "reason": "Automatic approval review rejected migration generation: awaiting exact-path authorization for 0002/0003 SQL, snapshots and journal plus recording approval; review packet in draft PR44.",
-      "resume_to": "in_progress"
+      "updated": "2026-10-28",
+      "reason": "",
+      "resume_to": ""
     },
     "WED-049": {
       "log": [
