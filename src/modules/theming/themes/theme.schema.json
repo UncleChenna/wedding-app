@@ -127,6 +127,22 @@
         "warning-subtle-foreground": {
           "type": "string",
           "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "decorative": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "decorative-foreground": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "qr-ink": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "qr-paper": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
         }
       },
       "required": [
@@ -155,7 +171,11 @@
         "warning",
         "warning-foreground",
         "warning-subtle",
-        "warning-subtle-foreground"
+        "warning-subtle-foreground",
+        "decorative",
+        "decorative-foreground",
+        "qr-ink",
+        "qr-paper"
       ],
       "additionalProperties": false
     },
@@ -172,6 +192,15 @@
           ]
         },
         "body": {
+          "type": "string",
+          "enum": [
+            "cormorant",
+            "playfair",
+            "inter",
+            "jost"
+          ]
+        },
+        "script": {
           "type": "string",
           "enum": [
             "cormorant",

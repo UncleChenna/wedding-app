@@ -3,8 +3,8 @@
 /*
  * Design tokens. Tailwind's default palette, fonts, radii and shadows are
  * removed so that every utility resolves to a theme variable (--t-*). The
- * variables are set on <html> by the root layout from the active theme JSON
- * (src/modules/theming). See docs/theming.md.
+ * variables are set on :root by the root layout from the light and dark theme JSON
+ * (src/modules/theming), switched by prefers-color-scheme. See docs/theming.md.
  */
 @theme {
   --color-*: initial;
@@ -40,9 +40,15 @@
   --color-warning-foreground: var(--t-color-warning-foreground);
   --color-warning-subtle: var(--t-color-warning-subtle);
   --color-warning-subtle-foreground: var(--t-color-warning-subtle-foreground);
+  --color-decorative: var(--t-color-decorative);
+  --color-decorative-foreground: var(--t-color-decorative-foreground);
+  --color-qr-ink: var(--t-color-qr-ink);
+  --color-qr-paper: var(--t-color-qr-paper);
 
   --font-display: var(--t-font-display), ui-serif, Georgia, serif;
   --font-sans: var(--t-font-body), ui-sans-serif, system-ui, sans-serif;
+  /* The couple's names only; falls back to the display font when a theme has no script font. */
+  --font-script: var(--t-font-script, var(--t-font-display)), ui-serif, Georgia, serif;
 
   --radius-sm: var(--t-radius-sm);
   --radius-md: var(--t-radius-md);
@@ -70,6 +76,13 @@
   html {
     -webkit-text-size-adjust: 100%;
     text-rendering: optimizeLegibility;
+  }
+
+  /* A sticky ActionBar must never hide the field that has focus: scroll it clear of the bar. */
+  @media (width < 48rem) {
+    html:has([data-action-bar="sticky"]) {
+      scroll-padding-bottom: 9rem;
+    }
   }
 
   body {
@@ -182,4 +195,68 @@
     -webkit-mask-repeat: repeat;
     mask-repeat: repeat;
   }
+}
+
+/*
+ * Typography scale (design principles §2, §9). Named styles instead of ad hoc sizes;
+ * the list and its intended uses live in src/modules/theming/lib/typography.ts.
+ * Fluid sizes: headings ≥32px at 375px and ≥48px at 1280px.
+ */
+@utility type-script {
+  font-family: var(--t-font-script, var(--t-font-display));
+  font-size: clamp(2.5rem, 1.75rem + 3.2vw, 4.5rem);
+  line-height: 1.1;
+  letter-spacing: 0;
+  font-weight: 400;
+}
+@utility type-display {
+  font-family: var(--t-font-display);
+  font-size: clamp(2.5rem, 1.75rem + 3.2vw, 4.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-weight: 500;
+}
+@utility type-heading {
+  font-family: var(--t-font-display);
+  font-size: clamp(2rem, 1.5rem + 2.2vw, 3rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  font-weight: 500;
+}
+@utility type-subheading {
+  font-family: var(--t-font-display);
+  font-size: clamp(1.375rem, 1.2rem + 0.75vw, 1.75rem);
+  line-height: 1.25;
+  letter-spacing: 0;
+  font-weight: 500;
+}
+@utility type-label {
+  font-family: var(--t-font-body);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+@utility type-body-lg {
+  font-family: var(--t-font-body);
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+@utility type-body {
+  font-family: var(--t-font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+@utility type-staff-id {
+  font-family: var(--t-font-display);
+  font-size: 2.25rem;
+  line-height: 1.1;
+  letter-spacing: 0;
+  font-weight: 500;
+}
+@utility type-staff {
+  font-family: var(--t-font-body);
+  font-size: 1.125rem;
+  line-height: 1.5;
 }

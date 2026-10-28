@@ -52,6 +52,8 @@ See: [Privacy (UK GDPR)](../docs/prd.md#privacy-uk-gdpr).
 
 ## Notes / decisions
 
+- 2026-10-26: Owner approved the 90-day post-wedding retention default on 2026-10-26 through TICKET-034. Other privacy wording, lawful handling and disclosure decisions remain in this ticket; no overall privacy approval is implied.
+
 - 2026-10-21: Needs a person (decision, account or physical task). Agents may prepare docs and record the outcome.
 
 ## Activity log

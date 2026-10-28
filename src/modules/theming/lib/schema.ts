@@ -31,6 +31,14 @@ export const COLOR_TOKENS = [
   "warning-foreground",
   "warning-subtle",
   "warning-subtle-foreground",
+  // Decorative fill (e.g. champagne) for ornaments and panels; never body text. Text placed
+  // on it uses `decorative-foreground`.
+  "decorative",
+  "decorative-foreground",
+  // QR codes are always dark ink on light paper, even in dark themes, so every phone can scan
+  // them (design principles §5; validated in lib/contrast.ts).
+  "qr-ink",
+  "qr-paper",
 ] as const;
 
 /**
@@ -89,7 +97,14 @@ export const themeSchema = z
     name: z.string().min(1),
     colorScheme: z.enum(["light", "dark"]),
     colors: record(COLOR_TOKENS, hexColor).strict(),
-    fonts: z.object({ display: z.enum(FONT_KEYS), body: z.enum(FONT_KEYS) }).strict(),
+    fonts: z
+      .object({
+        display: z.enum(FONT_KEYS),
+        body: z.enum(FONT_KEYS),
+        /** Optional script font for the couple's names only; defaults to `display`. */
+        script: z.enum(FONT_KEYS).optional(),
+      })
+      .strict(),
     radii: record(RADIUS_TOKENS, cssLength).strict(),
     shadows: record(SHADOW_TOKENS, z.string().min(1)).strict(),
     pattern: patternSchema.optional(),
@@ -101,3 +116,6 @@ export const themeSchema = z
   });
 
 export type Theme = z.infer<typeof themeSchema>;
+export type ColorScheme = Theme["colorScheme"];
+/** The theme shown for each device colour scheme. */
+export type ActiveThemes = Readonly<Record<ColorScheme, Theme>>;

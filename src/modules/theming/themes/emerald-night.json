@@ -1,0 +1,52 @@
+{
+  "$schema": "./theme.schema.json",
+  "id": "emerald-night",
+  "name": "Emerald Night",
+  "colorScheme": "dark",
+  "colors": {
+    "background": "#102D27",
+    "foreground": "#F5F1E5",
+    "surface": "#153730",
+    "surface-muted": "#1B4239",
+    "muted-foreground": "#C8C2B1",
+    "primary": "#DDC18C",
+    "primary-foreground": "#102D27",
+    "secondary": "#1F4A40",
+    "secondary-foreground": "#F0EADB",
+    "accent": "#E3B7A8",
+    "accent-foreground": "#1A1210",
+    "border": "#2B5248",
+    "input": "#86A096",
+    "ring": "#DDC18C",
+    "danger": "#F29595",
+    "danger-foreground": "#2A0909",
+    "danger-subtle": "#3B1D1D",
+    "danger-subtle-foreground": "#F7AEAE",
+    "success": "#86D0A3",
+    "success-foreground": "#0B1F13",
+    "success-subtle": "#123A28",
+    "success-subtle-foreground": "#A6E2BC",
+    "warning": "#EAB553",
+    "warning-foreground": "#241700",
+    "warning-subtle": "#3A2C0B",
+    "warning-subtle-foreground": "#F4CD80",
+    "decorative": "#DDC18C",
+    "decorative-foreground": "#102D27",
+    "qr-ink": "#18251F",
+    "qr-paper": "#FFFFFF"
+  },
+  "fonts": {
+    "display": "playfair",
+    "body": "inter"
+  },
+  "radii": {
+    "sm": "0.125rem",
+    "md": "0.25rem",
+    "lg": "0.5rem"
+  },
+  "shadows": {
+    "sm": "0 1px 2px 0 rgb(0 0 0 / 0.4)",
+    "md": "0 6px 20px -6px rgb(0 0 0 / 0.55)",
+    "lg": "0 20px 48px -12px rgb(0 0 0 / 0.7)"
+  }
+}

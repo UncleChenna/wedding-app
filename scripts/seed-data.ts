@@ -1,7 +1,7 @@
 import { Faker, en } from "@faker-js/faker";
 
 import type * as schema from "../src/modules/shared/server/db/schema";
-import { listThemes, ACTIVE_THEME_ID } from "../src/modules/theming";
+import { ACTIVE_THEME_IDS, listThemes } from "../src/modules/theming";
 
 type Insert<T extends { $inferInsert: unknown }> = T["$inferInsert"];
 
@@ -113,7 +113,8 @@ export function buildSeedData(seed = 20261021): SeedData {
     id: theme.id,
     name: theme.name,
     tokens: theme,
-    isActive: theme.id === ACTIVE_THEME_ID,
+    // One theme per device colour scheme is active (src/modules/theming/config.ts).
+    isActive: ACTIVE_THEME_IDS[theme.colorScheme] === theme.id,
   }));
 
   const staff: SeedData["staff"] = (
@@ -153,10 +154,10 @@ export function buildSeedData(seed = 20261021): SeedData {
     const tagAlongSeats = faker.helpers.maybe(() => 1, { probability: 0.3 }) ?? 0;
     invitations.push({
       id: invitationId,
-      code: token(12),
+      token: token(43),
       householdName:
         householdSize > 1 ? `The ${lastName} household` : `${faker.person.firstName()} ${lastName}`,
-      maxGuests: householdSize + tagAlongSeats,
+      maxTagAlongs: householdSize - 1 + tagAlongSeats,
       sentAt:
         faker.helpers.maybe(() => faker.date.recent({ days: 30, refDate: now }), {
           probability: 0.8,
@@ -168,33 +169,43 @@ export function buildSeedData(seed = 20261021): SeedData {
       { weight: 12, value: "declined" as const },
       { weight: 18, value: "pending" as const },
     ]);
-    rsvps.push({
-      id: faker.string.uuid(),
-      invitationId,
-      status,
-      message:
+    const currentInvitation = invitations[invitations.length - 1];
+    if (currentInvitation)
+      currentInvitation.status =
         status === "attending"
-          ? (faker.helpers.maybe(() => faker.lorem.sentence(), {
-              probability: 0.4,
-            }) ?? null)
-          : null,
-      respondedAt: status === "pending" ? null : faker.date.recent({ days: 20, refDate: now }),
-    });
+          ? "rsvp_yes"
+          : status === "declined"
+            ? "rsvp_no"
+            : currentInvitation.sentAt
+              ? "sent"
+              : "draft";
+    if (status !== "pending")
+      rsvps.push({
+        id: faker.string.uuid(),
+        invitationId,
+        attending: status === "attending",
+        countAttending: status === "attending" ? householdSize + tagAlongSeats : 0,
+        message:
+          status === "attending"
+            ? (faker.helpers.maybe(() => faker.lorem.sentence(), {
+                probability: 0.4,
+              }) ?? null)
+            : null,
+        respondedAt: faker.date.recent({ days: 20, refDate: now }),
+      });
 
     for (let g = 0; g < householdSize; g++) {
       guests.push({
         id: faker.string.uuid(),
         invitationId,
-        firstName: faker.person.firstName(),
-        lastName,
+        name: `${faker.person.firstName()} ${lastName}`,
         email:
           g === 0
             ? faker.internet.email({ lastName, provider: "example.test" }).toLowerCase()
             : null,
         phone: g === 0 ? faker.phone.number({ style: "international" }) : null,
         isPrimary: g === 0,
-        isTagAlong: false,
-        dietaryRequirements:
+        dietaryNotes:
           faker.helpers.maybe(
             () =>
               faker.helpers.arrayElement([
@@ -206,26 +217,20 @@ export function buildSeedData(seed = 20261021): SeedData {
               ]),
             { probability: 0.15 },
           ) ?? null,
-        qrToken: token(24),
       });
     }
     if (tagAlongSeats && status === "attending") {
       guests.push({
         id: faker.string.uuid(),
         invitationId,
-        firstName: faker.person.firstName(),
-        lastName: faker.person.lastName(),
+        name: faker.person.fullName(),
         isPrimary: false,
-        isTagAlong: true,
-        qrToken: token(24),
       });
     }
   }
 
   // Seat attending guests, filling tables in order (household stays together).
-  const attending = new Set(
-    rsvps.filter((r) => r.status === "attending").map((r) => r.invitationId),
-  );
+  const attending = new Set(rsvps.filter((r) => r.attending).map((r) => r.invitationId));
   const seated = new Map<string, number>();
   let tableIndex = 1; // table 1 is the top table, left empty for the couple
   for (const guest of guests) {

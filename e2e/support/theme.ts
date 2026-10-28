@@ -2,15 +2,19 @@ import type { Page } from "@playwright/test";
 
 import { themeToCssVars, type Theme } from "../../src/modules/theming";
 
+import { settleAnimations } from "./axe";
+
 /**
  * Render the current page in `theme` by overriding the theme variables on <html>, so every
- * theme can be checked without changing the active one. The active theme's variables are
- * cleared first: optional ones (e.g. --t-pattern-*) must not leak into another theme.
+ * theme can be checked without changing the active pair. Variables already inline on <html>
+ * are cleared first: optional ones (e.g. --t-pattern-*) must not leak into another theme.
  */
 export async function applyTheme(page: Page, theme: Theme): Promise<void> {
   // Interactive previews scope variables below <html>; switch their real control too.
   const previewTheme = page.getByRole("combobox", { name: "Preview theme", exact: true });
   if (await previewTheme.count()) await previewTheme.selectOption(theme.id);
+  // Match the device setting too, so scheme-dependent CSS (theme-color, pattern) agrees.
+  await page.emulateMedia({ colorScheme: theme.colorScheme });
   await page.evaluate(
     ({ vars, scheme, id }) => {
       const root = document.documentElement;
@@ -22,4 +26,5 @@ export async function applyTheme(page: Page, theme: Theme): Promise<void> {
     { vars: themeToCssVars(theme), scheme: theme.colorScheme, id: theme.id },
   );
   await page.evaluate(() => document.fonts.ready);
+  await settleAnimations(page);
 }

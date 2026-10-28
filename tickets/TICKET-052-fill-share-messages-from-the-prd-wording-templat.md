@@ -32,7 +32,8 @@ See: [Invitation wording](../docs/prd.md#invitation-wording).
 ## Scope
 
 - Template module for invitation, email, RSVP nudge and day-before messages.
-- Voice selectable in settings; default warm until TICKET-035 decides.
+- Consume `invitationVoice` and `invitationMessages` from `src/modules/invitations/lib/copy.ts`; Warm was selected in TICKET-035 on 2026-10-26.
+- Voice selectable in settings; use the approved Warm default.
 
 ## Out of scope
 

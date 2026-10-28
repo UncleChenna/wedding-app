@@ -1,3 +1,5 @@
+import { randomBytes } from "node:crypto";
+
 import { sql } from "drizzle-orm";
 import {
   boolean,
@@ -33,7 +35,13 @@ const updatedAt = () =>
 // ─── Enums ────────────────────────────────────────────────────────────────
 
 export const staffRole = pgEnum("staff_role", ["admin", "gate", "kitchen", "bar"]);
-export const rsvpStatus = pgEnum("rsvp_status", ["pending", "attending", "declined"]);
+export const invitationStatus = pgEnum("invitation_status", [
+  "draft",
+  "sent",
+  "rsvp_yes",
+  "rsvp_no",
+  "revoked",
+]);
 export const menuCategory = pgEnum("menu_category", ["food", "drink"]);
 export const station = pgEnum("station", ["kitchen", "bar"]);
 export const orderStatus = pgEnum("order_status", [
@@ -71,21 +79,33 @@ export const staff = pgTable("staff", {
 
 // ─── Invitations ──────────────────────────────────────────────────────────
 
-/** One invitation per household. `code` is the secret in the personal link. */
+/** One invitation is the unit of RSVP and gate admission. */
 export const invitations = pgTable(
   "invitations",
   {
     id: uuid("id").primaryKey().defaultRandom(),
-    code: text("code").notNull().unique(),
-    householdName: text("household_name").notNull(),
-    /** Total seats including tag-alongs the household may add. */
-    maxGuests: integer("max_guests").notNull().default(1),
+    // Application inserts use 256 random bits; raw SQL must supply its own secure token.
+    token: text("token")
+      .notNull()
+      .unique()
+      .$defaultFn(() => randomBytes(32).toString("base64url")),
+    householdName: text("household_name"),
+    maxTagAlongs: integer("max_tag_alongs").notNull().default(1),
+    status: invitationStatus("status").notNull().default("draft"),
+    tokenVersion: integer("token_version").notNull().default(1),
+    tableId: uuid("table_id").references(() => tables.id, { onDelete: "set null" }),
+    side: text("side"),
     notes: text("notes"),
     sentAt: timestamp("sent_at", { withTimezone: true }),
     createdAt: createdAt(),
     updatedAt: updatedAt(),
   },
-  (t) => [check("invitations_max_guests_positive", sql`${t.maxGuests} > 0`)],
+  (t) => [
+    check("invitations_tag_along_capacity", sql`${t.maxTagAlongs} between 0 and 10`),
+    check("invitations_token_format", sql`${t.token} ~ '^[A-Za-z0-9_-]{22,}$'`),
+    check("invitations_token_version_positive", sql`${t.tokenVersion} > 0`),
+    index("invitations_table_id_idx").on(t.tableId),
+  ],
 ).enableRLS();
 
 export const tables = pgTable(
@@ -108,41 +128,50 @@ export const guests = pgTable(
     invitationId: uuid("invitation_id")
       .notNull()
       .references(() => invitations.id, { onDelete: "cascade" }),
-    firstName: text("first_name").notNull(),
-    lastName: text("last_name").notNull(),
+    name: text("name").notNull(),
     email: text("email"),
     phone: text("phone"),
     /** The named invitee (false for tag-alongs added by the household). */
     isPrimary: boolean("is_primary").notNull().default(false),
-    isTagAlong: boolean("is_tag_along").notNull().default(false),
-    dietaryRequirements: text("dietary_requirements"),
+    mealChoice: text("meal_choice"),
+    dietaryNotes: text("dietary_notes"),
     tableId: uuid("table_id").references(() => tables.id, {
       onDelete: "set null",
     }),
-    /** Secret encoded in the guest's gate QR code. */
-    qrToken: text("qr_token").notNull().unique(),
     createdAt: createdAt(),
     updatedAt: updatedAt(),
   },
   (t) => [
+    check("guests_name_not_blank", sql`length(trim(${t.name})) > 0`),
+    check("guests_phone_e164", sql`${t.phone} is null or ${t.phone} ~ '^\\+[1-9][0-9]{1,14}$'`),
     index("guests_invitation_id_idx").on(t.invitationId),
     index("guests_table_id_idx").on(t.tableId),
   ],
 ).enableRLS();
 
 /** One RSVP per invitation. */
-export const rsvps = pgTable("rsvps", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  invitationId: uuid("invitation_id")
-    .notNull()
-    .unique()
-    .references(() => invitations.id, { onDelete: "cascade" }),
-  status: rsvpStatus("status").notNull().default("pending"),
-  message: text("message"),
-  respondedAt: timestamp("responded_at", { withTimezone: true }),
-  createdAt: createdAt(),
-  updatedAt: updatedAt(),
-}).enableRLS();
+export const rsvps = pgTable(
+  "rsvps",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    invitationId: uuid("invitation_id")
+      .notNull()
+      .unique()
+      .references(() => invitations.id, { onDelete: "cascade" }),
+    attending: boolean("attending").notNull(),
+    countAttending: integer("count_attending").notNull(),
+    message: text("message"),
+    respondedAt: timestamp("responded_at", { withTimezone: true }).notNull().defaultNow(),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  (t) => [
+    check(
+      "rsvps_attendance_count",
+      sql`(${t.attending} and ${t.countAttending} > 0) or (not ${t.attending} and ${t.countAttending} = 0)`,
+    ),
+  ],
+).enableRLS();
 
 // ─── Gate check-in ────────────────────────────────────────────────────────
 

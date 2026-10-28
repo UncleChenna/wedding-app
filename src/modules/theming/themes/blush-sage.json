@@ -1,0 +1,52 @@
+{
+  "$schema": "./theme.schema.json",
+  "id": "blush-sage",
+  "name": "Blush & Sage",
+  "colorScheme": "light",
+  "colors": {
+    "background": "#F9EFEC",
+    "foreground": "#303C32",
+    "surface": "#FFFAF8",
+    "surface-muted": "#F2E3DE",
+    "muted-foreground": "#56614F",
+    "primary": "#49634E",
+    "primary-foreground": "#FFFFFF",
+    "secondary": "#ECDCD6",
+    "secondary-foreground": "#3A3430",
+    "accent": "#8C4A55",
+    "accent-foreground": "#FFFFFF",
+    "border": "#E5D3CC",
+    "input": "#8A7F7A",
+    "ring": "#49634E",
+    "danger": "#A12C2C",
+    "danger-foreground": "#FFFFFF",
+    "danger-subtle": "#FBE7E5",
+    "danger-subtle-foreground": "#8A1F1F",
+    "success": "#22613E",
+    "success-foreground": "#FFFFFF",
+    "success-subtle": "#E3F1E7",
+    "success-subtle-foreground": "#1F5234",
+    "warning": "#8A5A00",
+    "warning-foreground": "#FFFFFF",
+    "warning-subtle": "#FCEFC7",
+    "warning-subtle-foreground": "#6B4500",
+    "decorative": "#DDBFB4",
+    "decorative-foreground": "#303C32",
+    "qr-ink": "#18251F",
+    "qr-paper": "#FFFFFF"
+  },
+  "fonts": {
+    "display": "cormorant",
+    "body": "jost"
+  },
+  "radii": {
+    "sm": "0.125rem",
+    "md": "0.25rem",
+    "lg": "0.5rem"
+  },
+  "shadows": {
+    "sm": "0 1px 2px 0 rgb(48 60 50 / 0.06)",
+    "md": "0 4px 16px -4px rgb(48 60 50 / 0.12)",
+    "lg": "0 16px 40px -12px rgb(48 60 50 / 0.22)"
+  }
+}

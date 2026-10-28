@@ -145,3 +145,11 @@ Definitions are local to the selected checkout. Update develop normally to recei
 VS Code: approve **Ticket dashboard (local)** on folder open, or use **Tasks: Run Task**. Disable automatic startup through **Tasks: Manage Automatic Tasks in Folder**. Workspace trust/automatic-task consent remain the user's choice; no global editor settings are changed. Install dependencies first (`pnpm install`). If another checkout already uses 4173, open its board or start manually with `pnpm t:dashboard --port 4174`. Stop with Ctrl+C or terminate the VS Code task.
 
 `pnpm t:dashboard:snapshot` retains the self-contained export at `artifacts/tickets/index.html`. It is explicitly labelled a snapshot and has no automatic network refresh. Both interfaces include internal ticket text and must not be publicly hosted. Server endpoints accept same-origin loopback GETs only. All generated files remain ignored; tracked BOARD/ROADMAP entry points and per-ticket handoffs retain the conflict-reduction workflow.
+
+## Historical stacked PR completion
+
+New PRs still target `develop`. Completion checks fetch `origin/develop`, resolve its exact commit, and require the merged PR’s merge commit to be an ancestor of that snapshot. This also supports historical PRs merged through stacked branches. Acceptance criteria are read from the ticket file at the same fetched commit; local checkboxes and stale tracking refs cannot substitute. Missing merge history, ticket content or a failed fetch prevents completion. Owner and lifecycle checks still apply.
+
+## Validate before reserving an ID
+
+`t:new` validates its owner and provisional ticket metadata before changing the ledger. Invalid estimates, priorities or creation statuses report allowed values without consuming an ID. New tickets start in `backlog` or `todo`; use `t:move` for later lifecycle states. A successful allocation remains permanent, including if a later filesystem write fails.

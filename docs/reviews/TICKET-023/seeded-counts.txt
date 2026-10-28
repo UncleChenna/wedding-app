@@ -1,0 +1,11 @@
+check_ins 30
+guests 248
+invitations 110
+menu_items 16
+order_items 36
+orders 18
+rsvps 85
+staff 4
+tables 28
+themes 2
+(drizzle migrations applied) 2

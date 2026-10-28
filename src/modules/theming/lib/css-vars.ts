@@ -1,6 +1,12 @@
 import type { CSSProperties } from "react";
 
-import { COLOR_TOKENS, RADIUS_TOKENS, SHADOW_TOKENS, type Theme } from "./schema";
+import {
+  COLOR_TOKENS,
+  RADIUS_TOKENS,
+  SHADOW_TOKENS,
+  type ActiveThemes,
+  type Theme,
+} from "./schema";
 
 export type CssVars = Record<`--${string}`, string>;
 
@@ -16,6 +22,8 @@ export function themeToCssVars(theme: Theme): CssVars {
   for (const token of SHADOW_TOKENS) vars[`--t-shadow-${token}`] = theme.shadows[token];
   vars["--t-font-display"] = `var(--font-${theme.fonts.display})`;
   vars["--t-font-body"] = `var(--font-${theme.fonts.body})`;
+  // Reset the optional role too: a nested theme must not inherit a parent script font.
+  vars["--t-font-script"] = `var(--font-${theme.fonts.script ?? theme.fonts.display})`;
   if (theme.pattern) {
     vars["--t-pattern-image"] = `url(${JSON.stringify(theme.pattern.src)})`;
     vars["--t-pattern-opacity"] = String(theme.pattern.strength);
@@ -42,4 +50,18 @@ export function themeToCssText(theme: Theme, selector = ":root"): string {
     .map(([key, value]) => `${key}: ${value};`)
     .join(" ");
   return `${selector} { ${body} color-scheme: ${theme.colorScheme}; }`;
+}
+
+/**
+ * The page-root stylesheet: the light theme by default, the dark theme when the device
+ * prefers dark. Rendered on the server, so the right theme paints first with no client JS.
+ */
+export function activeThemesToCssText(themes: ActiveThemes): string {
+  const css = [
+    themeToCssText(themes.light, ":root"),
+    `@media (prefers-color-scheme: dark) { ${themeToCssText(themes.dark, ":root")} }`,
+  ].join("\n");
+  // The text goes inside a <style> element; no theme value may be able to close it.
+  if (css.includes("<")) throw new Error('Theme values must not contain "<".');
+  return css;
 }

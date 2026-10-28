@@ -10,6 +10,8 @@ import { join } from "node:path";
 import { activity, criteria, parseTicket, serializeTicket } from "./tickets/format";
 import { dashboardHtml } from "./tickets/dashboard";
 import { REVIEW_BASE, reviewBodyProblems } from "./tickets/review";
+import { mergedReviewEvidence } from "./tickets/merged-review";
+import type { ReviewPr } from "./tickets/merged-review";
 import { ready } from "./tickets/graph";
 import {
   git,
@@ -239,16 +241,11 @@ function pushTickets(cwd: string, id: string, message: string) {
   if (!stream("git", ["push", "-u", "origin", "HEAD"], cwd)) throw new Error("Push failed.");
 }
 
-function prFor(
-  cwd: string,
-  ref: string,
-): { url: string; state: string; baseRefName: string } | null {
+function prFor(cwd: string, ref: string): ReviewPr | null {
   try {
-    return JSON.parse(run("gh", ["pr", "view", ref, "--json", "url,state,baseRefName"], cwd)) as {
-      url: string;
-      state: string;
-      baseRefName: string;
-    };
+    return JSON.parse(
+      run("gh", ["pr", "view", ref, "--json", "url,state,baseRefName,mergeCommit"], cwd),
+    ) as ReviewPr;
   } catch {
     return null;
   }
@@ -286,16 +283,11 @@ function gatherFacts(
   }
   if (to === "done") {
     const pr = prFor(cwd, ticket.meta.pr || ticket.meta.branch);
-    facts.mergedPr = pr?.state === "MERGED" && pr.baseRefName === REVIEW_BASE ? pr.url : undefined;
-    // Criteria are judged on what actually merged.
-    let merged = ticket;
-    if (tryGit(["fetch", "--quiet", "origin", REVIEW_BASE], cwd) !== null) {
-      const text =
-        tryGit(["show", `refs/remotes/origin/${REVIEW_BASE}:${ticket.path}`], cwd) ??
-        tryGit(["show", `FETCH_HEAD:${ticket.path}`], cwd);
-      if (text) merged = parseTicket(text, ticket.path);
-    }
-    facts.criteriaTicked = criteria(merged).every((c) => c.checked);
+    const evidence = mergedReviewEvidence(cwd, pr, ticket.path);
+    facts.mergedPr = evidence?.url;
+    facts.criteriaTicked = evidence
+      ? criteria(parseTicket(evidence.ticketText, ticket.path)).every((c) => c.checked)
+      : false;
   }
   return facts;
 }
@@ -342,25 +334,8 @@ function newTicket(args: Args): void {
     readFileSync(join(cwd, "tickets/TEMPLATE.md"), "utf8"),
     "tickets/TEMPLATE.md",
   );
-  const files = loadTickets(cwd);
-  // Ids also come from main and the ledger, so parallel branches never reuse a number.
-  tryGit(["fetch", "--quiet", "origin", REVIEW_BASE], cwd);
-  const onMain = (
-    tryGit(["ls-tree", "--name-only", `refs/remotes/origin/${REVIEW_BASE}`, "tickets/"], cwd) ?? ""
-  )
-    .split("\n")
-    .map((p) => /(?:TICKET|WED)-(\d{3})/.exec(p)?.[1])
-    .filter((n): n is string => !!n)
-    .map(Number);
-  const localMax = Math.max(0, ...files.map((t) => idNumber(t.meta.id)), ...onMain);
-  const number =
-    mode === "off"
-      ? localMax + 1
-      : mutateLedger(cwd, mode, (data) => {
-          data.lastId = Math.max(data.lastId, localMax) + 1;
-          return { result: data.lastId, message: `allocate ${formatId(data.lastId)}` };
-        });
-  const id = formatId(number);
+  // A provisional ID lets the normal parser validate before reserving a real one.
+  const id = "TICKET-000";
   const date = today();
   const list = (key: string) =>
     (str(args, key) ?? "")
@@ -396,8 +371,30 @@ function newTicket(args: Args): void {
       ),
     },
   };
-  // Round-trip through the parser so invalid enums fail before anything is written.
+  // Validate creation status, owner (above), enums and all metadata before allocation.
+  if (!["backlog", "todo"].includes(meta.status))
+    throw new Error("t:new --status must be one of: backlog, todo. Use t:move for later statuses.");
   parseTicket(serializeTicket(ticket), ticket.path);
+  const files = loadTickets(cwd);
+  // Ids also come from main and the ledger, so parallel branches never reuse a number.
+  tryGit(["fetch", "--quiet", "origin", REVIEW_BASE], cwd);
+  const onMain = (
+    tryGit(["ls-tree", "--name-only", `refs/remotes/origin/${REVIEW_BASE}`, "tickets/"], cwd) ?? ""
+  )
+    .split("\n")
+    .map((p) => /(?:TICKET|WED)-(\d{3})/.exec(p)?.[1])
+    .filter((n): n is string => !!n)
+    .map(Number);
+  const localMax = Math.max(0, ...files.map((t) => idNumber(t.meta.id)), ...onMain);
+  const number =
+    mode === "off"
+      ? localMax + 1
+      : mutateLedger(cwd, mode, (data) => {
+          data.lastId = Math.max(data.lastId, localMax) + 1;
+          return { result: data.lastId, message: `allocate ${formatId(data.lastId)}` };
+        });
+  ticket.meta.id = formatId(number);
+  ticket.path = `tickets/${ticket.meta.id}-${slugify(title)}.md`;
   writeFileSync(join(cwd, ticket.path), serializeTicket(ticket));
   console.log(`Created ${ticket.path}. Fill in every section, then commit it with your branch.`);
 }
