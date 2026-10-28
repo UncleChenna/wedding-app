@@ -23,7 +23,7 @@ Proves the managed worktree lifecycle against develop `763430841153fe7b8fdba6859
 
 # Verification
 
-Ticket validation, formatting, lint and typecheck passed. Unit tests:405 passed,10 opt-in DB skips. Production builds passed in both checkouts. Concurrent smoke results above cover all526 selected tests per checkout, with111 existing conditional skips. `pnpm t:pr TICKET-006` runs the complete gate before moving to review; inspect its result and required CI checks before merge.
+Ticket validation, formatting, lint and typecheck passed. Unit tests:405 passed,10 opt-in DB skips. Production builds passed in both checkouts. Concurrent smoke results above cover all526 selected tests per checkout, with111 existing conditional skips. `pnpm t:pr TICKET-006` passed the complete gate: 405 unit passes/10 opt-in skips, build success, 415 browser passes/111 conditional skips in3.2m, no retries. The CLI moved the ticket to in_review. Check final-head CI before human merge.
 
 Initial five-worker browser runs timed out on QR decoding under load and were cancelled; complete one-worker reruns passed without weakening tests or timeouts. Initial database commands failed during VM memory exhaustion; after safely stopping two completed owned stacks with backups, the guarded reruns passed. No skipped test is represented as passing.
 

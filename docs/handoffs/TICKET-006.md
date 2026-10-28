@@ -48,3 +48,7 @@ With the TICKET-205 control clean at merged develop 7634308, `AGENT_OWNER=divine
 Ticket validation, formatting, lint, typecheck and unit tests passed: 405 unit tests passed, 10 opt-in database tests skipped. Both production builds passed. The PR workflow will rerun the complete `pnpm verify` gate before review. UI checklist/screenshots are not applicable to this documentation-only change. Historical failed runs above remain part of the evidence, not successful acceptance results.
 
 Verified lesson: insufficient VM memory can make several otherwise isolated Supabase stacks unhealthy at once. Stop verified completed owned projects with backups before retrying; do not restart Docker globally or disable health checks. Collaboration guidance now records this recovery.
+
+## Review handoff — 28 October 2026
+
+Full `pnpm verify` passed through `pnpm t:pr TICKET-006`: 405 unit passes/10 opt-in skips, successful production build, 415 browser passes/111 conditional skips in3.2m with no retries. CLI moved the ticket to in_review and pushed 1a9aeb1. PR: https://github.com/UncleChenna/wedding-app/pull/34 targeting develop. Current checkout remains for review; no merge is authorized by the latest repository instructions. Check final-head CI and review this evidence before human merge, then CLI-close and remove TICKET-006. The live queue currently reports no ready ticket; migration approvals and other human prerequisites remain outstanding.
