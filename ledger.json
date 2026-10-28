@@ -989,14 +989,15 @@
     },
     "WED-030": {
       "log": [
-        "- 2026-10-28 — todo → claimed — divine (codex)"
+        "- 2026-10-28 — todo → claimed — divine (codex)",
+        "- 2026-10-28 — todo → in_progress — divine (codex)"
       ],
-      "status": "todo",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-030",
       "pr": "",
-      "started": "",
+      "started": "2026-10-28",
       "completed": "",
       "updated": "2026-10-28",
       "reason": "",
