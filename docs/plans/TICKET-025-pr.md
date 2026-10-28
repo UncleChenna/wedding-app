@@ -23,7 +23,7 @@ Adds a database contract for draft wedding settings and an append-only RSVP chan
 
 # Verification
 
-Against isolated project wedding-c4ce5584db6b, DB27641: migrations run twice with identical12-table/four-migration counts; RLS check passes on all12 public tables. Deterministic seed runs twice with identical counts, followed by all6 DB tests passing again. Targeted tests:21 passed. Quick gate passes lint/types; its opt-in skips are not database evidence. The full gate is enforced by pnpm t:pr before review. Prior committed migration head e72852a passed CI40519769549, including repeat migrations, seed and schema drift checks. Base develop:763430841153fe7b8fdba68594e0b4af54d56adc.
+Against isolated project wedding-c4ce5584db6b, DB27641: migrations run twice with identical12-table/four-migration counts; RLS check passes on all12 public tables. Deterministic seed runs twice with identical counts, followed by all6 DB tests passing again. Targeted tests:21 passed. Quick gate passes lint/types; its opt-in skips are not database evidence. Full pnpm t:pr verification passed: 420 unit passes/16 opt-in skips, production build success, 415 browser passes/111 conditional skips in 3.5 minutes with no retries. The six database cases were separately enabled and passed. CLI status is in_review; final-head CI must pass before human merge. Prior committed migration head e72852a passed CI40519769549, including repeat migrations, seed and schema drift checks. Base develop:763430841153fe7b8fdba68594e0b4af54d56adc.
 
 # Risks and rollout
 
