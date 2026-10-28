@@ -827,13 +827,14 @@
         "- 2026-10-27 — todo → claimed — divine (codex)",
         "- 2026-10-27 — todo → in_progress — divine (codex)",
         "- 2026-10-27 — in_progress → blocked — divine (codex) — Automatic approval review rejected migration generation: awaiting exact-path authorization for 0002/0003 SQL, snapshots and journal plus recording approval; review packet in draft PR44.",
-        "- 2026-10-28 — blocked → in_progress — divine (codex) — Existing approved migrations are committed and pushed as e72852a with passing CI; resume isolated acceptance verification and update stale handoff."
+        "- 2026-10-28 — blocked → in_progress — divine (codex) — Existing approved migrations are committed and pushed as e72852a with passing CI; resume isolated acceptance verification and update stale handoff.",
+        "- 2026-10-28 — in_progress → in_review — divine (codex)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-025",
-      "pr": "",
+      "pr": "https://github.com/UncleChenna/wedding-app/pull/44",
       "started": "2026-10-27",
       "completed": "",
       "updated": "2026-10-28",
