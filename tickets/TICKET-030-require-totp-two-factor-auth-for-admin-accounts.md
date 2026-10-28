@@ -2,20 +2,20 @@
 id: TICKET-030
 title: Require TOTP two-factor auth for admin accounts
 epic: data-auth
-status: todo
+status: in_progress
 priority: urgent
 estimate: M
 labels: [security, backend, frontend]
 module: admin
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-029]
 blocks: [TICKET-032]
-branch: ""
+branch: TICKET-030
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-10-28
+started: 2026-10-28
 completed: ""
 reason: ""
 resume_to: ""
@@ -62,3 +62,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-28 — todo → claimed — divine (codex)
+- 2026-10-28 — todo → in_progress — divine (codex)
