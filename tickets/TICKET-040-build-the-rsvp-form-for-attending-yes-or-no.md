@@ -2,20 +2,20 @@
 id: TICKET-040
 title: Build the RSVP form for attending yes or no
 epic: invitations
-status: todo
+status: in_progress
 priority: urgent
 estimate: M
 labels: [frontend, backend]
 module: invitations
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-018, TICKET-023, TICKET-036, TICKET-025, TICKET-035]
 blocks: [TICKET-041, TICKET-044, TICKET-126, TICKET-178, TICKET-183]
-branch: ""
+branch: TICKET-040
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-10-28
+started: 2026-10-28
 completed: ""
 reason: ""
 resume_to: ""
@@ -63,3 +63,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-28 — todo → claimed — divine (codex)
+- 2026-10-28 — todo → in_progress — divine (codex)
