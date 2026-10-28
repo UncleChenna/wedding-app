@@ -14,6 +14,7 @@ export const PAGE_ROUTES = [
   "/admin",
   "/admin/sign-in",
   "/admin/sign-out",
+  "/admin/mfa",
   "/offline",
   "/dev/theme",
   "/dev",
