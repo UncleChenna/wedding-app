@@ -50,7 +50,7 @@ A claim writes a metadata-only commit to `origin/ticket-ledger` with a compare-a
 
 Each worktree reserves a block of 20 available ports and a unique Supabase project ID. `.harness/worktree.json` records the app/browser ports and identity; `.harness/supabase-project/supabase/config.toml` is generated from the committed template. `pnpm dev`, `pnpm start`, Playwright and database wrappers use this identity. `pnpm db:reset` explicitly selects the local stack and refuses mismatched database URLs. Never call raw `supabase db reset` in a worktree.
 
-The reservation is locked across worktrees in one clone; live port checks also avoid other clones. Another process can still take a port after allocation; startup fails visibly rather than borrowing a running stack. Stop that process or remove/recreate the unused worktree. Full stacks cost more Docker memory but isolate Auth/Realtime as well as rows.
+The reservation is locked across worktrees in one clone; live port checks also avoid other clones. Another process can still take a port after allocation; startup fails visibly rather than borrowing a running stack. Stop that process or remove/recreate the unused worktree. Full stacks cost more Docker memory but isolate Auth/Realtime as well as rows. If several databases become unhealthy together, check Docker VM memory before repeatedly restarting setup. Stop only verified completed, owned projects with `pnpm exec supabase stop --project-id <id>` (preserves data); never use `--all` on a shared machine. Use `wt:remove` only when the merged checkout and its disposable database are ready for permanent cleanup.
 
 ## PR flow and cleanup
 

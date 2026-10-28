@@ -41,9 +41,9 @@ See: [Working together](../docs/collaboration.md) · [Current state](../docs/cur
 
 ## Acceptance criteria
 
-- [ ] Two worktrees run `pnpm db:migrate` and `pnpm test:e2e:smoke` at the same time without port or data collisions.
-- [ ] `wt:remove` on a dirty worktree fails; on a merged one it removes the checkout and stack.
-- [ ] Steps and outputs are recorded in notes; any doc inaccuracy in collaboration.md is fixed.
+- [x] Two worktrees run `pnpm db:migrate` and `pnpm test:e2e:smoke` at the same time without port or data collisions.
+- [x] `wt:remove` on a dirty worktree fails; on a merged one it removes the checkout and stack.
+- [x] Steps and outputs are recorded in notes; any doc inaccuracy in collaboration.md is fixed.
 
 ## Test plan
 
@@ -56,6 +56,8 @@ See: [Working together](../docs/collaboration.md) · [Current state](../docs/cur
 - `docs/collaboration.md`
 
 ## Notes / decisions
+
+- 2026-10-28: Guarded concurrent migrations, distinct cluster/rolled-back fixture proof, concurrent browser suites (415 passed/111 conditional skips each), automatic dev ports, dirty/unmerged refusal and merged control cleanup all passed on develop 7634308. Survivor DB counts and HTTP200 passed after cleanup. See dated review evidence; full PR gate follows.
 
 - 2026-10-26: Rehearsal blocked by unhealthy local Postgres startup (no response; health checks timed out). Build passed; concurrent database/browser and cleanup criteria remain unverified. See docs/reviews/TICKET-006/README.md and handoff for resume steps.
 

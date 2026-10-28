@@ -1,23 +1,44 @@
-# TICKET-006: managed worktree lifecycle rehearsal
+# Ticket
 
-The rehearsal now proves that two worktrees can build and run browser smoke suites concurrently on distinct ports. It also exposed a database-target mismatch after failed managed startup, so this PR remains draft.
+TICKET-006 — [ticket](../../tickets/TICKET-006-prove-the-managed-worktree-lifecycle-end-to-end.md).
 
-## Changes
+# Summary
 
-- Correct collaboration documentation to use exact ticket-ID branch names and sync completion only on the relevant ticket branch.
-- Preserve dated setup, browser, migration and cleanup evidence and exact resume instructions.
+Proves the managed worktree lifecycle against develop `763430841153fe7b8fdba68594e0b4af54d56adc`. Two isolated worktrees migrated and served browser suites concurrently; cleanup rejected dirty/unmerged work and removed only the merged disposable control. A failed-start target mismatch discovered earlier is fixed by merged TICKET-205, included unchanged here.
 
-## Validation
+# Changes
 
-- TICKET-006 build passed; concurrent browser suite: 155 passed, 17 conditional skips.
-- Completed TICKET-195 control build passed; concurrent browser suite: 167 passed, 17 conditional skips.
-- Browser ports were 34811 and 39291. Both suites exited0 with no retries.
-- TICKET-006 managed startup and baseline migration passed.
-- The control startup eventually failed. Its effective database URL still targeted primary local port54322 rather than reserved39281. Its migration command reported already-applied migrations; this invalidates the claimed concurrent isolated migration proof.
-- No seed, reset, marker write or successful cleanup was performed. Full lifecycle and full verification remain incomplete.
+- Correct exact ticket branch naming and per-ticket status syncing guidance.
+- Document safe recovery from Docker VM memory exhaustion using only completed owned stacks, preserving backups.
+- Record dated lifecycle evidence and historical failed attempts in docs/reviews/TICKET-006/README.md and docs/handoffs/TICKET-006.md.
+- Carry unchanged merged develop artifacts, including explicitly approved lockfile and theme schema; no new application, schema or dependency change.
 
-## Remaining work and risks
+# Acceptance criteria and evidence
 
-TICKET-205 tracks validation of database target identity before migration, seed and checks connect. Complete that safeguard, restore full control startup, then repeat migrations/isolation and cleanup tests before this PR is ready. Do not merge this draft or mark TICKET-006 complete.
+- Concurrent guarded migrations: both exit0, ten empty tables and two migrations each; DB ports34801/25881 and distinct PostgreSQL cluster identifiers. Identical probe IDs held distinct values in concurrent transactions and were rolled back.
+- Concurrent browser smoke: each suite415 passed/111 conditional skips in12.2m, no retries; ports34811/25891. Automatic development ports34810/25890 each served HTTP200.
+- Removal safeguards: dirty control rejected; clean unmerged TICKET-006 rejected by ancestry check. Clean merged TICKET-205 removed successfully; only its containers, volumes and checkout disappeared, branch retained.
+- Survivor: TICKET-006 DB counts unchanged and home page HTTP200 after control cleanup.
+- Documentation corrections and complete historical evidence committed.
 
-Review docs/reviews/TICKET-006/README.md and docs/handoffs/TICKET-006.md. Reverting these documentation changes needs no database rollback.
+# Verification
+
+Ticket validation, formatting, lint and typecheck passed. Unit tests:405 passed,10 opt-in DB skips. Production builds passed in both checkouts. Concurrent smoke results above cover all526 selected tests per checkout, with111 existing conditional skips. `pnpm t:pr TICKET-006` runs the complete gate before moving to review; inspect its result and required CI checks before merge.
+
+Initial five-worker browser runs timed out on QR decoding under load and were cancelled; complete one-worker reruns passed without weakening tests or timeouts. Initial database commands failed during VM memory exhaustion; after safely stopping two completed owned stacks with backups, the guarded reruns passed. No skipped test is represented as passing.
+
+# Risks and rollout
+
+Local rehearsal does not prove arbitrary machine capacity, physical-device QA or production migration safety. Realtime service readiness is not asserted by migration/HTTP checks. No production data was touched, no fixture writes persisted and no application behavior changed. The completed disposable control database was intentionally removed. Revert documentation commits to roll back guidance; no migration rollback is needed.
+
+# Screenshots
+
+N/A: documentation and lifecycle verification only; no UI changes.
+
+# UI checklist
+
+N/A for screenshots, tokens, typography, mobile, motion, keyboard, contrast, images, performance, copy, components, device sharing, QR and staff feedback: no UI source changed. Full verification is enforced by t:pr.
+
+# Harness changes
+
+Documentation only. No tests, checks or hooks were disabled. Database-target guard implementation belongs to merged TICKET-205.
