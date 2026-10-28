@@ -2,20 +2,20 @@
 id: TICKET-029
 title: Add admin sign-in with email codes and an allowlist
 epic: data-auth
-status: todo
+status: in_progress
 priority: urgent
 estimate: M
 labels: [backend, security, frontend]
 module: admin
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-017, TICKET-025]
 blocks: [TICKET-030, TICKET-125]
-branch: ""
+branch: TICKET-029
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-10-28
+started: 2026-10-28
 completed: ""
 reason: ""
 resume_to: ""
@@ -65,3 +65,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-28 — todo → claimed — divine (codex)
+- 2026-10-28 — todo → in_progress — divine (codex)
