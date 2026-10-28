@@ -31,7 +31,7 @@ Physical iOS/Android authenticator scanning remains unverified; release approval
 - MFA UI matrix: two tests pass; 60 screenshots, all theme/width states checked.
 - Shared /dev/theme production capture: 12 pass.
 - Redirect regression rerun: 138 pass, 106 conditional skips.
-- Full local pnpm verify passed: format, lint, types, 446 unit tests (16 opt-in skips), production build and 481 browser checks (129 conditional skips). Final-head CI pending.
+- Full local pnpm verify passed: format, lint, types, 446 unit tests (16 opt-in skips), production build and 481 browser checks (129 conditional skips). CI40685274231 passed all required jobs at 2023ccd; later metadata/docs heads require their own CI before merge. The t:pr full local gate also passed again (481 browser checks).
 - Initial full gate failed on browser redirect races and an oversized test; all original assertions preserved in the fixes.
 
 # Risks and rollout
