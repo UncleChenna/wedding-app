@@ -1,28 +1,35 @@
 # Ticket
 
-Ticket: TICKET-025
+TICKET-025: Add event settings and RSVP change-log tables.
 
 # Summary
 
-Event configuration and RSVP audit history need a persistent database contract. This draft includes typed defaults, table schema and a Drizzle accessor; protected migration generation awaits exact-path approval.
+Adds a database contract for draft wedding settings and an append-only RSVP change history. Missing settings return typed approved defaults; persisted values are validated. Runtime users cannot update, delete or truncate history. This is the storage foundation; it does not implement RSVP editing or the admin settings UI.
 
 # Changes
 
-- Approved couple/date, tag-along and retention defaults; undecided event details remain null.
-- Validated time zone, HTTPS map link, date/time and bounded operational limits.
-- Typed read helper returns fresh defaults only for an absent row; corrupt data and outages remain errors.
+- Singleton settings constrained to id1, with couple/date, optional event details, RSVP cutoff, active theme, tag-along/retention and bounded ordering fields.
+- Preserve Uchenna/Adaora,19 December2026, one tag-along and90-day retention. Undecided venue/time/time zone remain null; ordering remains closed.
+- Typed Drizzle accessor returns fresh defaults only for an absent row; invalid data and database failures remain visible to callers.
+- RSVP before/after object snapshots, actor and timestamp reference invitations with RESTRICT. A statement trigger rejects update/delete/truncate; runtime mutation grants are revoked. RLS remains enabled without browser policies.
+- Approved generated migrations0002/0003 and deterministic local seed support were committed in e72852a. This follow-up corrects the raw-driver date test and verifies the public accessor against Postgres.
 
 # Acceptance criteria and evidence
 
-All database acceptance criteria remain incomplete. Fifteen default/validation/read-helper tests pass after initial missing-module failures. The real singleton constraint, database accessor and append-only history are next.
+- Singleton: database tests reject a second id1 row and id2. An absent draft row is intentionally permitted for accessor defaults.
+- Typed defaults/accessor:15 unit tests and a real Drizzle-backed regression cover unset and configured values, including Date/string/time conversion and unknown venue details.
+- Append-only history: insert succeeds; update/delete/truncate fail even for ordinary owner statements; invitation deletion cannot cascade history away. anon/authenticated/service_role mutation grants are absent.
+- Six real database tests pass and roll back fixture writes. See docs/reviews/TICKET-025/verification.md for exact environment and counts.
 
 # Verification
 
-Managed isolated stack is healthy and existing migrations applied. Fifteen targeted unit tests and Prettier pass. No migration, real database constraint or full-gate results are claimed for this ticket yet.
+Against isolated project wedding-c4ce5584db6b, DB27641: migrations run twice with identical12-table/four-migration counts; RLS check passes on all12 public tables. Deterministic seed runs twice with identical counts, followed by all6 DB tests passing again. Targeted tests:21 passed. Quick gate passes lint/types; its opt-in skips are not database evidence. The full gate is enforced by pnpm t:pr before review. Prior committed migration head e72852a passed CI40519769549, including repeat migrations, seed and schema drift checks. Base develop:763430841153fe7b8fdba68594e0b4af54d56adc.
 
 # Risks and rollout
 
-No live event is activated. Venue time zone is unknown and no UTC cutoff is inferred. Ordering stays closed. Three open orders, 30-second cooldown and ten items are provisional stored defaults, not implemented enforcement. No schema changes yet; revert this increment to remove the new helpers.
+Apply0002 before0003 through Drizzle. No existing data is deleted by migrations; production execution is not authorized by this local rehearsal. No UTC cutoff is inferred while venue time zone is undecided. Ordering limits are stored defaults, not enforcement. Table administrators can alter DDL; history is not tamper-proof against them. Authorized retention maintenance belongs to TICKET-127. The local-only seed temporarily disables the history trigger inside a transaction, then restores it; do not run it against real guest data.
+
+Rollback application code while retaining added tables/history. Destructive down migrations and history purge need separate approval. Consumers and admin UI remain separate tickets. Do not merge while required checks are failing or pending.
 
 # Screenshots
 
@@ -34,8 +41,4 @@ N/A: no rendered interface, styles, images or motion changed.
 
 # Harness changes
 
-None. Existing shell guard remains enabled; quoted commands avoid its multiline parsing false positive.
-
-# Migration approval blocker
-
-The schema now defines singleton event_settings and rsvp_changes with RLS, bounds, JSON-object constraints and restrictive history references. Five real database regressions fail against the old schema because the tables are absent. No migration has run. Source typecheck and quick gate pass; opt-in database skips are not claimed as migration verification. Automatic approval review rejected generation pending fresh exact-path authorization. The concrete proposal is in [the approval packet](https://github.com/UncleChenna/wedding-app/blob/TICKET-025/docs/reviews/TICKET-025/migration-approval.md), including exact custom append-only SQL, grants and retention/rollback limits. This draft is intentionally not deployable until the migration is approved, generated and tested.
+No hooks or gates weakened. Reconciled a stale handoff/ledger blocker against committed and hosted evidence; final verification results follow in the handoff.

@@ -1,5 +1,7 @@
 import { randomBytes } from "node:crypto";
 import { readFileSync } from "node:fs";
+import { drizzle } from "drizzle-orm/postgres-js";
+import * as schema from "../../src/modules/shared/server/db/schema";
 import postgres, { type Sql, type TransactionSql } from "postgres";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
@@ -42,7 +44,7 @@ describe.runIf(process.env.RUN_SETTINGS_DB_TESTS === "1")(
         expect(row).toMatchObject({
           id: 1,
           couple_names: ["Uchenna", "Adaora"],
-          event_date: "2026-12-19",
+          event_date: new Date("2026-12-19T00:00:00.000Z"),
           time_zone: null,
           rsvp_lock_at: null,
           ordering_open: false,
@@ -56,6 +58,40 @@ describe.runIf(process.env.RUN_SETTINGS_DB_TESTS === "1")(
           tx.savepoint((sp) => sp`insert into event_settings (id) values (2)`),
         ).rejects.toMatchObject({ code: "23514" });
       });
+    });
+
+    it("maps real stored settings through the public typed accessor", async () => {
+      const { getEventSettings } = await import("../../src/modules/shared/server/settings");
+      const database = drizzle(db, { schema });
+      expect(await getEventSettings(database)).toMatchObject({
+        eventDate: "2026-12-19",
+        venue: null,
+        rsvpLockAt: null,
+      });
+      const cutoff = new Date("2026-12-18T23:00:00.000Z");
+      try {
+        await database.transaction(async (tx) => {
+          await tx.insert(schema.eventSettings).values({
+            id: 1,
+            venue: "Integration fixture",
+            ceremonyTime: "14:30:00",
+            timeZone: "Africa/Lagos",
+            rsvpLockAt: cutoff,
+          });
+          expect(await getEventSettings(tx)).toMatchObject({
+            coupleNames: ["Uchenna", "Adaora"],
+            eventDate: "2026-12-19",
+            venue: "Integration fixture",
+            ceremonyTime: "14:30:00",
+            timeZone: "Africa/Lagos",
+            rsvpLockAt: cutoff,
+            orderingOpen: false,
+          });
+          throw rollback;
+        });
+      } catch (error) {
+        if (error !== rollback) throw error;
+      }
     });
 
     it("rejects unsafe settings and a cutoff with no event time zone", async () => {

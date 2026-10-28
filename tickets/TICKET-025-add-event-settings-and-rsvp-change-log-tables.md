@@ -41,9 +41,9 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-6) · [Tab
 
 ## Acceptance criteria
 
-- [ ] Exactly one settings row can exist (constraint).
-- [ ] Accessor returns typed defaults when unset.
-- [ ] rsvp_changes rows are append-only (no update/delete grants).
+- [x] Exactly one settings row can exist (constraint).
+- [x] Accessor returns typed defaults when unset.
+- [x] rsvp_changes rows are append-only (no update/delete grants).
 
 ## Test plan
 
@@ -58,7 +58,7 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-6) · [Tab
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-10-28: Reconciled stale blocked status against committed approved migrations e72852a. Six real database tests and15 defaults tests pass, including the public Drizzle accessor; migrations and seeds repeated with identical counts, RLS on all12 tables. Corrected raw-client date expectation. Evidence: docs/reviews/TICKET-025/verification.md. Full PR gate follows.
 
 ## Activity log
 

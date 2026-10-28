@@ -1,6 +1,6 @@
 # TICKET-025 migration approval packet
 
-Generation has not run: automatic approval review requires fresh exact-path authorization. This packet describes the source schema and the exact custom SQL to review; no migration or database change has been applied.
+Historical approval packet: generation was subsequently approved and committed in e72852a. The committed migration and local repeatability/constraint evidence were verified on 28 October; see [verification](verification.md). The proposal below is preserved for review.
 
 ## Generated outputs requested
 
