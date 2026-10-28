@@ -2,7 +2,7 @@
 id: TICKET-030
 title: Require TOTP two-factor auth for admin accounts
 epic: data-auth
-status: in_progress
+status: in_review
 priority: urgent
 estimate: M
 labels: [security, backend, frontend]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-029]
 blocks: [TICKET-032]
 branch: TICKET-030
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/54
 created: 2026-10-21
 updated: 2026-10-28
 started: 2026-10-28
@@ -64,3 +64,4 @@ See: [Users and roles](../docs/prd.md#users-and-roles) · [Security](../docs/prd
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-10-28 — todo → claimed — divine (codex)
 - 2026-10-28 — todo → in_progress — divine (codex)
+- 2026-10-28 — in_progress → in_review — divine (codex)
