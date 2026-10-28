@@ -609,18 +609,19 @@
         "- 2026-10-26 — todo → in_progress — divine (codex)",
         "- 2026-10-26 — in_progress → blocked — divine (codex) — Local Docker database unhealthy: no response and health-check timeouts; concurrent migration/smoke and successful cleanup unverified.",
         "- 2026-10-27 — blocked → in_progress — divine (codex) — Isolated stack recovered; startup and existing migrations passed on 2026-10-27. Resuming concurrent lifecycle proof.",
-        "- 2026-10-27 — in_progress → blocked — divine (codex) — TICKET-205: failed control startup left DATABASE_URL on primary port54322 instead of reserved39281. Browser concurrency passed, but isolated migrations and cleanup remain unproved; target guard required before retry."
+        "- 2026-10-27 — in_progress → blocked — divine (codex) — TICKET-205: failed control startup left DATABASE_URL on primary port54322 instead of reserved39281. Browser concurrency passed, but isolated migrations and cleanup remain unproved; target guard required before retry.",
+        "- 2026-10-28 — blocked → in_progress — divine (codex) — TICKET-205 merged as cc5092d; resume lifecycle proof with target guard and completed TICKET-205 control."
       ],
-      "status": "blocked",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-006",
       "pr": "",
       "started": "2026-10-26",
       "completed": "",
-      "updated": "2026-10-27",
-      "reason": "TICKET-205: failed control startup left DATABASE_URL on primary port54322 instead of reserved39281. Browser concurrency passed, but isolated migrations and cleanup remain unproved; target guard required before retry.",
-      "resume_to": "in_progress"
+      "updated": "2026-10-28",
+      "reason": "",
+      "resume_to": ""
     },
     "WED-007": {
       "log": [
