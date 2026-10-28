@@ -11,6 +11,7 @@ describe("env schema", () => {
       DATABASE_URL: "postgresql://u:p@localhost:5432/db",
       NODE_ENV: "development",
       LOG_LEVEL: "info",
+      ADMIN_EMAIL_ALLOWLIST: "",
     });
   });
 

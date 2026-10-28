@@ -42,9 +42,9 @@ See: [Users and roles](../docs/prd.md#users-and-roles) · [Security](../docs/prd
 
 ## Acceptance criteria
 
-- [ ] An allowlisted email can sign in with a code; any other email is refused with a friendly message.
-- [ ] Sessions use httpOnly cookies; no tokens in localStorage.
-- [ ] Unit tests for the allowlist check; e2e sign-in against local Inbucket.
+- [x] An allowlisted email can sign in with a code; any other email is refused with a friendly message.
+- [x] Sessions use httpOnly cookies; no tokens in localStorage.
+- [x] Unit tests for the allowlist check; e2e sign-in against local Inbucket.
 
 ## Test plan
 
@@ -60,7 +60,7 @@ See: [Users and roles](../docs/prd.md#users-and-roles) · [Security](../docs/prd
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-10-28: Implemented server-only email codes and exact allowlist, httpOnly sessions and accessible sign-in/sign-out pages. Local Mailpit (formerly described here as Inbucket) real email flow passed on mobile and desktop, including wrong/replayed codes and sign-out. Full verify passed: 449 browser checks, 123 conditional skips. All four themes reviewed at 375/768/1280; see docs/reviews/TICKET-029/README.md. Hosted email setup, route guards and MFA remain separate launch requirements.
 
 ## Activity log
 

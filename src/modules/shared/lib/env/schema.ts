@@ -13,6 +13,7 @@ export const serverEnvSchema = z.object({
     .string({ error: "DATABASE_URL is required (Postgres connection string)" })
     .regex(/^postgres(ql)?:\/\//, "DATABASE_URL must start with postgres:// or postgresql://"),
   LOG_LEVEL: z.enum(LOG_LEVELS).default("info"),
+  ADMIN_EMAIL_ALLOWLIST: z.string().default(""),
 });
 
 export const clientEnvSchema = z.object({

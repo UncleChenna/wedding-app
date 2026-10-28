@@ -6,6 +6,7 @@ import {
   readFileSync,
   writeFileSync,
   copyFileSync,
+  cpSync,
   realpathSync,
 } from "node:fs";
 import { createServer } from "node:net";
@@ -149,6 +150,9 @@ async function main() {
           meta.portBase,
         ),
       );
+      const templates = join(path, "supabase", "templates");
+      if (existsSync(templates))
+        cpSync(templates, join(setup, "supabase", "templates"), { recursive: true });
       if (!existsSync(join(path, ".env.local"))) {
         const source = existsSync(join(primary, ".env.local"))
           ? join(primary, ".env.local")
