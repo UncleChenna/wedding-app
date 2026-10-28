@@ -2,7 +2,7 @@
 id: TICKET-025
 title: Add event settings and RSVP change-log tables
 epic: data-auth
-status: in_progress
+status: in_review
 priority: urgent
 estimate: M
 labels: [db, backend]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-023]
 blocks: [TICKET-012, TICKET-026, TICKET-027, TICKET-029, TICKET-031, TICKET-037, TICKET-040, TICKET-042, TICKET-052, TICKET-073, TICKET-080, TICKET-101]
 branch: TICKET-025
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/44
 created: 2026-10-21
 updated: 2026-10-28
 started: 2026-10-27
@@ -67,3 +67,4 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-6) · [Tab
 - 2026-10-27 — todo → in_progress — divine (codex)
 - 2026-10-27 — in_progress → blocked — divine (codex) — Automatic approval review rejected migration generation: awaiting exact-path authorization for 0002/0003 SQL, snapshots and journal plus recording approval; review packet in draft PR44.
 - 2026-10-28 — blocked → in_progress — divine (codex) — Existing approved migrations are committed and pushed as e72852a with passing CI; resume isolated acceptance verification and update stale handoff.
+- 2026-10-28 — in_progress → in_review — divine (codex)
