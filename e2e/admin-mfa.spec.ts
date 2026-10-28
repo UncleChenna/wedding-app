@@ -7,6 +7,9 @@ import { reviewMfa } from "./support/mfa-review";
 test("anonymous admin visits require sign-in @smoke", async ({ page, request }) => {
   const raw = await request.get("/admin", { maxRedirects: 0 });
   expect(await raw.text()).not.toContain("Wedding control room");
+  expect(raw.headers()["referrer-policy"]).toBe("no-referrer");
+  expect(raw.headers()["x-robots-tag"]).toContain("noindex");
+  expect(raw.headers()["cache-control"]).toContain("no-store");
   for (const path of ["/admin", "/admin/mfa"]) {
     await page.goto(path);
     await expect(page).toHaveURL(/\/admin\/sign-in$/);
@@ -24,6 +27,16 @@ test("local TOTP enrolment gates admin and upgrades the session", async ({
     "Requires explicitly enabled isolated local Auth",
   );
   test.setTimeout(process.env.CAPTURE_MFA_SCREENSHOTS === "1" ? 240000 : 90000);
+  await page.addInitScript(() => {
+    const state = window as unknown as { mfaCls: number };
+    state.mfaCls = 0;
+    new PerformanceObserver((list) => {
+      for (const entry of list.getEntries()) {
+        const shift = entry as PerformanceEntry & { hadRecentInput: boolean; value: number };
+        if (!shift.hadRecentInput) state.mfaCls += shift.value;
+      }
+    }).observe({ type: "layout-shift", buffered: true });
+  });
   await localAdminLogin(
     page,
     request,
@@ -33,6 +46,9 @@ test("local TOTP enrolment gates admin and upgrades the session", async ({
   await page.goto("/admin");
   await expect(page).toHaveURL(/\/admin\/mfa$/);
   await expect(page.getByRole("heading", { name: "Protect your account" })).toBeVisible();
+  await page.evaluate(() => document.fonts.ready);
+  await page.waitForLoadState("networkidle");
+  expect(await page.evaluate(() => (window as unknown as { mfaCls: number }).mfaCls)).toBe(0);
   await reviewMfa(page, "enrolment");
   await page.getByRole("button", { name: "Set up authenticator" }).click();
   await expect(page.getByTestId("setup-key")).toBeVisible();
@@ -81,6 +97,9 @@ test("local TOTP enrolment gates admin and upgrades the session", async ({
   await page.goto("/admin");
   await expect(page).toHaveURL(/\/admin\/mfa$/);
   await expect(page.getByRole("heading", { name: "One more step" })).toBeVisible();
+  await page.evaluate(() => document.fonts.ready);
+  await page.waitForLoadState("networkidle");
+  expect(await page.evaluate(() => (window as unknown as { mfaCls: number }).mfaCls)).toBe(0);
   await reviewMfa(page, "challenge");
   // A new time step avoids replaying the enrolment code.
   await expect

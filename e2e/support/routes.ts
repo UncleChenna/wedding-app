@@ -1,3 +1,5 @@
+import { expect, type Page } from "@playwright/test";
+
 /**
  * Every page the app serves, for checks that must cover the whole site (accessibility,
  * overflow). `e2e/a11y-routes.spec.ts` fails if a page under src/app is missing here.
@@ -33,4 +35,12 @@ export const ALL_ROUTES = [...PAGE_ROUTES, NOT_FOUND_ROUTE] as const;
 /** Explicit unavailable fixture; every other listed page must still return 200. */
 export function expectedRouteStatus(path: string): 200 | 404 {
   return path === "/i/invalid" ? 404 : 200;
+}
+
+/** Protected pages stream their redirect after the initial document loads. */
+export async function waitForPublicDestination(page: Page, path: string): Promise<void> {
+  if (path === "/admin" || path === "/admin/mfa") {
+    await expect(page).toHaveURL(/\/admin\/sign-in$/);
+    await expect(page.getByLabel("Email address")).toBeVisible();
+  }
 }

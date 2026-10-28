@@ -40,9 +40,9 @@ See: [Users and roles](../docs/prd.md#users-and-roles) · [Security](../docs/prd
 
 ## Acceptance criteria
 
-- [ ] An admin without a verified factor is sent to enrolment and cannot reach admin pages.
-- [ ] AAL1 sessions are rejected by every admin server action (tested).
-- [ ] Enrolment works at 375px.
+- [x] An admin without a verified factor is sent to enrolment and cannot reach admin pages.
+- [x] AAL1 sessions are rejected by the privileged admin operation boundary (tested); email sign-in/sign-out and MFA bootstrap are explicit exceptions with no wedding-data access.
+- [x] Enrolment works at 375px.
 
 ## Test plan
 
@@ -57,7 +57,7 @@ See: [Users and roles](../docs/prd.md#users-and-roles) · [Security](../docs/prd
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-10-28: Implemented live identity/claims/allowlist/AAL2 checks and protected content rendering. Clarified the action criterion: requiring AAL2 for the actions that establish AAL2 would prevent enrolment; bootstrap actions never access privileged wedding data. Sixteen boundary tests and real local email/TOTP browser checks pass. All-theme screenshots and item-by-item review are in docs/reviews/TICKET-030/README.md. Physical iOS/Android authenticator scanning and native keyboard QA remain unverified; no release approval claimed. Final gate and PR pending.
 
 ## Activity log
 

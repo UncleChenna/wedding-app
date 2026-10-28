@@ -1,3 +1,4 @@
+import { waitForPublicDestination } from "./support/routes";
 import { expect, test } from "@playwright/test";
 
 import { getActiveThemes } from "../src/modules/theming";
@@ -26,6 +27,7 @@ test.describe("device colour scheme @smoke", () => {
       test(`${route} renders ${theme.id} in ${colorScheme} mode`, async ({ page }) => {
         await page.emulateMedia({ colorScheme });
         await page.goto(route);
+        await waitForPublicDestination(page, route);
         const rendered = await page.evaluate(() => ({
           background: getComputedStyle(document.body).backgroundColor,
           text: getComputedStyle(document.body).color,

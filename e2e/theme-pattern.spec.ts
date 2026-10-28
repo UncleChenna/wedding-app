@@ -1,3 +1,4 @@
+import { waitForPublicDestination } from "./support/routes";
 import { expect, test } from "@playwright/test";
 
 import { getActiveThemes } from "../src/modules/theming";
@@ -51,6 +52,7 @@ test.describe("theme pattern @smoke", () => {
   test("staff and admin screens stay plain", async ({ page }) => {
     for (const path of ["/checkin", "/kitchen", "/admin"]) {
       await page.goto(path);
+      await waitForPublicDestination(page, path);
       await expect(page.locator("[data-theme-pattern]"), path).toHaveCount(0);
     }
   });
