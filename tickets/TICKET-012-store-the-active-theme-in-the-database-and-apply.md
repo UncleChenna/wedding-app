@@ -2,20 +2,20 @@
 id: TICKET-012
 title: Store the active theme in the database and apply it on the server
 epic: design-system
-status: todo
+status: in_progress
 priority: urgent
 estimate: M
 labels: [backend, db, frontend]
 module: theming
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-011, TICKET-025]
 blocks: [TICKET-103, TICKET-154, TICKET-176, TICKET-181]
-branch: ""
+branch: TICKET-012
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-10-30
+started: 2026-10-30
 completed: ""
 reason: ""
 resume_to: ""
@@ -63,3 +63,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-30 — todo → claimed — divine (codex)
+- 2026-10-30 — todo → in_progress — divine (codex)
