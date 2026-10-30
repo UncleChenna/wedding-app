@@ -1,6 +1,6 @@
 # TICKET-040 — 29 October 2026
 
-Owner divine; agent codex; branch TICKET-040; base develop f7e8fac048514058030d28d7b3a61f168de014f9. Start97e47ab pushed. In progress, not complete.
+Owner divine; agent codex; branch TICKET-040; base develop f7e8fac048514058030d28d7b3a61f168de014f9. Start97e47ab and implementation ec8855e pushed. Draft PR55: https://github.com/UncleChenna/wedding-app/pull/55. Not complete; cache-clear approval is the current blocker.
 
 Implemented validated yes/no Server Action, transaction-locked published invitation check, one-row RSVP upsert plus invitation status, approved warm confirmation and reload state. A small useActionState form uses a permalink for native no-JavaScript submission. Missing venue timezone keeps live replies closed; the test fixture timezone is explicitly Etc/UTC, not an event decision. Tag-alongs, edit cutoff and audit history remain041/042. No migration/RLS/new dependency.
 
@@ -17,3 +17,5 @@ Environment: isolated project wedding-8ba25aaf3f3c, API34920, DB34921, app34930,
 Next: resolve cache permission, rebuild and run RUN_RSVP_BROWSER_TESTS=1 caffeinate -i pnpm exec playwright test e2e/rsvp-live.spec.ts --project=mobile --project=desktop --workers=1. Then all-theme screenshot/axe/keyboard/44px matrix, CLS/performance, existing personal invitation integration suite, full pnpm verify and detailed final PR. Required checks remain unverified. Check final-head CI before authorized merge.
 
 TICKET-030 is in_review with draft PR54 and full prior local/CI passes; physical authenticator QA deferral is still pending. Never merge it on the assumption that silence is approval.
+
+Latest quick gate passed lint, strict types and18 related tests /7 opt-in skips. Commit ec8855e includes the final Proxy cleanup, which remains unverified in a rebuilt browser. The draft PR preserves all remaining checks. No acceptance criteria have been marked complete.

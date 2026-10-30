@@ -58,7 +58,7 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-4) · [Jou
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-10-30: Draft PR55 (https://github.com/UncleChenna/wedding-app/pull/55), implementation ec8855e pushed. Five isolated DB checks and six browser checks passed before final POST-routing cleanup; latest quick gate passes. Full build/browser/UI verification remains pending exact-path compiler-cache recovery approval. See docs/handoffs/TICKET-040.md; no completion claimed.
 
 ## Activity log
 
