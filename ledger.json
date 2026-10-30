@@ -1020,6 +1020,21 @@
       "updated": "2026-10-30",
       "reason": "Draft PR55 https://github.com/UncleChenna/wedding-app/pull/55; awaiting exact-path compiler-cache recovery approval, then final build/browser/UI verification",
       "resume_to": "in_progress"
+    },
+    "WED-012": {
+      "log": [
+        "- 2026-10-30 — todo → claimed — divine (codex)"
+      ],
+      "status": "todo",
+      "owner": "divine",
+      "agent": "codex",
+      "branch": "TICKET-012",
+      "pr": "",
+      "started": "",
+      "completed": "",
+      "updated": "2026-10-30",
+      "reason": "",
+      "resume_to": ""
     }
   }
 }
