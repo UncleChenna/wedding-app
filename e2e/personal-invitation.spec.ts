@@ -58,7 +58,7 @@ test.describe("personal invitation routes", () => {
     const response = await page.goto(`/i/${valid}`);
     expect(response?.status()).toBe(200);
     expect(response?.headers()["cache-control"]).toContain("no-store");
-    expect(response?.headers()["referrer-policy"]).toBe("no-referrer");
+    expect(response?.headers()["referrer-policy"]).toBe("strict-origin");
     expect(response?.headers()["x-robots-tag"]).toContain("noindex");
     expect(await page.title()).not.toContain("Amara");
     await expect(page.getByText("Amara Testguest", { exact: true })).toBeVisible();

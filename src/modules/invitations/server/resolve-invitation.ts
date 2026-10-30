@@ -5,9 +5,10 @@ import { invitationTokenSchema } from "../lib/token";
 export interface GuestInvitation {
   householdName: string | null;
   primaryNames: string[];
+  attendance: "yes" | "no" | null;
 }
 
-interface StoredInvitation extends GuestInvitation {
+interface StoredInvitation extends Omit<GuestInvitation, "attendance"> {
   status: "draft" | "sent" | "rsvp_yes" | "rsvp_no" | "revoked";
 }
 
@@ -21,6 +22,8 @@ export async function resolveInvitation(
   const invitation = await find(parsed.data);
   if (!invitation || invitation.status === "revoked" || invitation.status === "draft") return null;
   return {
+    attendance:
+      invitation.status === "rsvp_yes" ? "yes" : invitation.status === "rsvp_no" ? "no" : null,
     householdName: invitation.householdName,
     primaryNames: invitation.primaryNames,
   };
