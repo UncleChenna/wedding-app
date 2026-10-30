@@ -1007,18 +1007,19 @@
     "WED-040": {
       "log": [
         "- 2026-10-28 — todo → claimed — divine (codex)",
-        "- 2026-10-28 — todo → in_progress — divine (codex)"
+        "- 2026-10-28 — todo → in_progress — divine (codex)",
+        "- 2026-10-30 — in_progress → blocked — divine (codex) — Draft PR55 https://github.com/UncleChenna/wedding-app/pull/55; awaiting exact-path compiler-cache recovery approval, then final build/browser/UI verification"
       ],
-      "status": "in_progress",
+      "status": "blocked",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-040",
       "pr": "",
       "started": "2026-10-28",
       "completed": "",
-      "updated": "2026-10-28",
-      "reason": "",
-      "resume_to": ""
+      "updated": "2026-10-30",
+      "reason": "Draft PR55 https://github.com/UncleChenna/wedding-app/pull/55; awaiting exact-path compiler-cache recovery approval, then final build/browser/UI verification",
+      "resume_to": "in_progress"
     }
   }
 }
