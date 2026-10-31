@@ -1032,9 +1032,10 @@
         "- 2026-10-31 — in_progress → blocked — divine (codex) — Draft PR #56: awaiting exact-path migration artifact approval; seed, browser and full-gate work remain.",
         "- 2026-10-31 — blocked → in_progress — divine (codex)",
         "- 2026-10-31 — in_progress → in_review — divine (codex)",
-        "- 2026-10-31 — in_review → in_progress — divine (codex) — Fix final CI admin sign-in layout shift and integrate merged RSVP"
+        "- 2026-10-31 — in_review → in_progress — divine (codex) — Fix final CI admin sign-in layout shift and integrate merged RSVP",
+        "- 2026-10-31 — in_progress → in_review — divine (codex)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-012",
