@@ -33,3 +33,7 @@ Physical WhatsApp/iOS/Android checks remain unverified; TICKET-201 now explicitl
 Next: commit/push review evidence, run t:pr040 and update PR55 with actual results. Obtain explicit saved-RSVP device-QA deferral before marking ready/merging. Keep production RSVP closed while venue timezone remains TBD. Stack wedding-8ba25aaf3f3c is running, only synthetic fixture settings; no destructive cleanup.
 
 Final independent t:pr gate PASSED on2026-10-31:455 unit tests/21 opt-in skips;481 browser tests/129 intentional skips; format/lint/types/build pass. CLI moved ticket to in_review and pushed1411992. Draft PR55 awaits final-head CI and the pending explicit physical-device deferral question; no merge performed.
+
+## 2026-10-31 — merged and closed
+
+Owner explicitly approved “Allow merge after CI; retain device release gate”. Recorded on PR55. Final head24a76904f0a2c0586238fcdad69e85ff7727e244 passed all required CI jobs in run41187942043 (verify11m19s). PR55 merged into develop as7191d981231d9fb71f101d308abc05fa4ec79501 at09:27:52 UTC. CLI recorded TICKET-040 done. Physical-device QA remains unverified in TICKET-201, blocking154/176. Isolated stack wedding-8ba25aaf3f3c stopped with backup enabled; retained worktree/data. No product work remains in040. Next frontend ticket is037; PR56 still needs its admin sign-in layout-shift fix before merge.
