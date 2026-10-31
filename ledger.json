@@ -1027,13 +1027,14 @@
         "- 2026-10-30 — todo → claimed — divine (codex)",
         "- 2026-10-30 — todo → in_progress — divine (codex)",
         "- 2026-10-31 — in_progress → blocked — divine (codex) — Draft PR #56: awaiting exact-path migration artifact approval; seed, browser and full-gate work remain.",
-        "- 2026-10-31 — blocked → in_progress — divine (codex)"
+        "- 2026-10-31 — blocked → in_progress — divine (codex)",
+        "- 2026-10-31 — in_progress → in_review — divine (codex)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-012",
-      "pr": "",
+      "pr": "https://github.com/UncleChenna/wedding-app/pull/56",
       "started": "2026-10-30",
       "completed": "",
       "updated": "2026-10-31",
