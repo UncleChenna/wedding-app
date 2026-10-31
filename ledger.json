@@ -1034,9 +1034,10 @@
         "- 2026-10-31 — in_progress → in_review — divine (codex)",
         "- 2026-10-31 — in_review → in_progress — divine (codex) — Fix final CI admin sign-in layout shift and integrate merged RSVP",
         "- 2026-10-31 — in_progress → in_review — divine (codex)",
-        "- 2026-10-31 — in_review → in_progress — divine (codex) — Diagnostic CI identifies heading fallback font moving by 3px; repair metrics"
+        "- 2026-10-31 — in_review → in_progress — divine (codex) — Diagnostic CI identifies heading fallback font moving by 3px; repair metrics",
+        "- 2026-10-31 — in_progress → in_review — divine (codex)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-012",
