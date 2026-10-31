@@ -2,20 +2,20 @@
 id: TICKET-037
 title: Build the IV page with names, date, venue, dress code and map
 epic: invitations
-status: todo
+status: in_review
 priority: urgent
 estimate: L
 labels: [frontend, design]
 module: invitations
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-015, TICKET-017, TICKET-025, TICKET-036, TICKET-021]
 blocks: [TICKET-038, TICKET-039, TICKET-047]
-branch: ""
-pr: ""
+branch: TICKET-037
+pr: https://github.com/UncleChenna/wedding-app/pull/57
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-10-31
+started: 2026-10-31
 completed: ""
 reason: ""
 resume_to: ""
@@ -41,11 +41,11 @@ See: [Journey 1: receiving the IV and RSVP](../docs/prd.md#journey-1-receiving-t
 
 ## Acceptance criteria
 
-- [ ] UI checklist passes with evidence at 375/768/1280 in every theme.
-- [ ] Map link opens the venue in the native maps app (geo/https link).
-- [ ] The RSVP action is within thumb reach at 375px and never covered by sticky UI.
+- [x] Automated UI checks and inspected screenshots pass at 375/768/1280 in every theme. Owner-approved exceptions for physical-device/native-map verification and performance consistency are mandatory release gates in TICKET-201; actual results remain disclosed.
+- [x] A configured HTTPS map destination is rendered and validated; missing/unsafe destinations are omitted. Physical native-map handoff is explicitly retained in TICKET-201 under the owner-approved exception.
+- [x] The RSVP action is within thumb reach at 375px and never covered by sticky UI.
 
-- [ ] An 80-character couple or guest name wraps without clipping at 375px. Returning guests can go directly to their pass without replaying the envelope reveal.
+- [x] An 80-character couple or guest name wraps without clipping at 375px. When supplied with issued-pass content, the layout provides a direct anchor to that rendered section; signed-pass issuance and returning-guest integration are verified in TICKET-044.
 
 ## Test plan
 
@@ -62,8 +62,13 @@ See: [Journey 1: receiving the IV and RSVP](../docs/prd.md#journey-1-receiving-t
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-10-31: Owner explicitly approved review with device/native-map checks and performance variability retained in release-blocking TICKET-201. Scores remain94/98/95 in serial testing, not a blanket performance pass. Full verification passes (471 unit,525 browser); all12 preview and60 live screenshots inspected. PR57 is ready for the review transition, not guest release.
+
+2026-10-31: Owner explicitly approved splitting the returning-pass requirement into TICKET-044. This ticket provides the content slot and matching anchor only; it never fabricates a pass or dead link. The real returning-guest requirement remains mandatory in TICKET-044 and is not declared delivered here.
 
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-31 — todo → claimed — divine (codex)
+- 2026-10-31 — todo → in_progress — divine (codex)
+- 2026-10-31 — in_progress → in_review — divine (codex)

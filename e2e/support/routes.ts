@@ -21,6 +21,7 @@ export const PAGE_ROUTES = [
   "/dev/theme",
   "/dev",
   "/dev/invitation",
+  "/dev/invitation/letter",
   "/dev/rsvp",
   "/dev/order",
   "/dev/share",

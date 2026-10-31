@@ -25,6 +25,7 @@ async function Invitation({ params }: { params: Promise<{ token: string }> }) {
   return (
     <PersonalInvitation
       invitation={invitation}
+      details={settings}
       token={token}
       repliesOpen={settings.timeZone !== null}
     />
