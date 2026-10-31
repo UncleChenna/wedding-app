@@ -5,6 +5,10 @@ Audit of the repository against the [PRD](prd.md) on **2026-10-21**, at commit `
 it was committed). The [ticket backlog](../tickets/ROADMAP.md) starts from this state. Update this file when a
 fix-up ticket changes a fact recorded here.
 
+## TICKET-012 update — 2026-10-31
+
+The older theming-gap entry below is superseded: four registered palettes exist, with status and texture tokens. The active light/dark pair now comes from event_settings, with server-rendered CSS, tagged invalidation and safe defaults during database outages. Admin selection/editing UI remains TICKET-098/181. Verified against develop c22d9d94105817f10c63b7dae239fd2d4f6686e6:458 unit tests and483 browser tests pass; see [evidence](reviews/TICKET-012/README.md). Production guest QA remains201; this is not launch approval.
+
 ## How this was checked
 
 - `pnpm verify` at 06:20 BST: **passed**. Format, lint, typecheck, 52 unit tests in 11 files, production build, 17

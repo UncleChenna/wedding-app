@@ -16,3 +16,6 @@
 - Tests that spawn git must use `isolatedGitEnv()` from `scripts/__tests__/git-env.ts`: git exports `GIT_DIR`/`GIT_INDEX_FILE` to hooks, so a test run by the pre-commit gate can otherwise commit to the real branch or set `core.bare=true`.
 
 - Validate all ticket creation input, including owner and initial status, before reserving a ledger ID. TICKET-194's real-Git regressions verify rejected requests preserve both the ledger commit and lastId; the next valid request receives the expected ID.
+
+- Cached root-layout theme data can make formerly static private placeholders browser-cacheable. TICKET-012's offline regression failed in both browser projects; explicit private no-store proxy headers fixed all twelve PWA checks. Retain both HTTP-header and offline-response assertions when adding root caches.
+- Google-font resolution can fail in cold Turbopack CI even when local builds pass. PR54's exact head passed one retry after the resolver error; the failure recurred on PR56. Track the permanent fix in TICKET-207, preserve failed-run evidence, and require a passing final-head gate rather than weakening it.

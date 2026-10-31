@@ -5,6 +5,16 @@ import { buildSeedData } from "../seed-data";
 describe("buildSeedData", () => {
   const data = buildSeedData();
 
+  it("seeds the approved device theme pair while event details remain undecided", () => {
+    expect(data.eventSettings).toMatchObject({
+      activeThemeId: "ivory-gold",
+      activeDarkThemeId: "midnight-champagne",
+      venue: null,
+      timeZone: null,
+      orderingOpen: false,
+    });
+  });
+
   it("is deterministic", () => {
     expect(buildSeedData()).toEqual(data);
   });

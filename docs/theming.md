@@ -24,7 +24,13 @@ Emerald Night and Blush & Sage come from the invitation design spike. Either can
 
 ## Switch a theme (10 seconds)
 
-Edit `src/modules/theming/config.ts`:
+Live pages read `event_settings.active_theme_id` (light) and `active_dark_theme_id` (dark). Registry validation rejects unknown IDs and themes in the wrong scheme. The server renders both palettes, texture and browser-bar colours before hydration; device media queries choose the palette without JavaScript.
+
+An authorized admin boundary must call the internal `activateThemeSelection({ light, dark })` service. It validates the pair, writes both settings atomically while preserving event details, then expires the `active-theme-pair` cache tag. It is not a public Server Action or authorization boundary; admin UI integration is TICKET-098/181. A subsequent server request gets the new selection; an already-open page requires refresh. Direct SQL changes bypass invalidation: reads revalidate after 30 seconds and expire after 5 minutes. Cache propagation across application instances requires shared cache infrastructure; the default handler is process-local.
+
+Missing, invalid or unavailable settings select the safe defaults and emit a sanitized warning. Reads wait at most 2 seconds; cached valid settings can remain until refresh during an outage. Defaults are also cached on this schedule. The fallback is visual only and never substitutes for authorization or guest data.
+
+For static previews and outage defaults, edit `src/modules/theming/config.ts`:
 
 ```ts
 export const ACTIVE_THEME_IDS = {
@@ -167,3 +173,5 @@ Motion timings are a shared accessibility contract in `src/app/globals.css`, ide
 Use `FadeIn` or `Rise` from shared UI to animate server-rendered content with CSS only. Default pace is `enter`; `pace="signature"` reserves the 600ms timing for special moments. TICKET-039 implements the actual envelope reveal. Wrappers do not wait to mount children, hide content with JavaScript, or block actions. Do not wrap a sticky/fixed overlay in a transformed entrance.
 
 Reduced motion disables these entrance animations and the demo's control transition entirely, leaving content immediately visible. `/dev/theme` has a keyboard-accessible replay demo in each theme. Its replay control uses the 180ms opacity transition; existing unrelated component motion is outside this ticket.
+
+Registered fonts use metric-adjusted local fallbacks: Times New Roman/Liberation Serif for display faces and Arial/Liberation Sans for body faces. The Liberation aliases cover Linux hosts without Microsoft fonts. Overrides in font-fallbacks.css match calculateSizeAdjustValues from the installed Next font-utils module; review them when updating fonts. Both normal and delayed-font admin loads retain a zero-CLS regression, and the browser verifies all four fallback faces load.
