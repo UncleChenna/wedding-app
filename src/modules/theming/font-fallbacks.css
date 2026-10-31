@@ -1,0 +1,14 @@
+/*
+ * Cormorant metrics from Next's installed capsize-font-metrics.json:
+ * ascent924, descent287, unitsPerEm1000; Times-compatible size-adjust96.98%.
+ * Liberation Serif is the metric-compatible Linux alternative to Times New Roman.
+ * Keep these overrides with the font registry when updating the pinned fonts.
+ */
+@font-face {
+  font-family: "Cormorant Metric Fallback";
+  src: local("Times New Roman"), local("Liberation Serif");
+  ascent-override: 95.27%;
+  descent-override: 29.59%;
+  line-gap-override: 0%;
+  size-adjust: 96.98%;
+}

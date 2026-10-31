@@ -173,3 +173,5 @@ Motion timings are a shared accessibility contract in `src/app/globals.css`, ide
 Use `FadeIn` or `Rise` from shared UI to animate server-rendered content with CSS only. Default pace is `enter`; `pace="signature"` reserves the 600ms timing for special moments. TICKET-039 implements the actual envelope reveal. Wrappers do not wait to mount children, hide content with JavaScript, or block actions. Do not wrap a sticky/fixed overlay in a transformed entrance.
 
 Reduced motion disables these entrance animations and the demo's control transition entirely, leaving content immediately visible. `/dev/theme` has a keyboard-accessible replay demo in each theme. Its replay control uses the 180ms opacity transition; existing unrelated component motion is outside this ticket.
+
+Cormorant uses a metric-adjusted local fallback with Times New Roman and Liberation Serif sources. The latter covers Linux hosts without the Microsoft font. The overrides in font-fallbacks.css use the installed Next font metrics (ascent924, descent287 per1000 units, size-adjust96.98%); review them when updating fonts. Both normal and delayed-font admin loads retain a zero-CLS regression.
