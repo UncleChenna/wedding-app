@@ -47,3 +47,7 @@ Homepage tiny CLS is approximately 0.00007339, not zero. Retained Google-font ba
 | Verification             | Final full gate result recorded in handoff; required final-head CI must also pass.                                                                         |
 
 This is engineering evidence, not release/device approval. Do not mark the ticket done with required checks outstanding.
+
+## Review authorization
+
+2026-10-31: The user approved proceeding to review with existing release gates retained in TICKET-201. The FAIL and not-verified results above remain unchanged. Required CI41238775314 passed on7c2f73c9ad97dfe2873d7962457f149f6fb3f7b3. Review permission is not a release pass.

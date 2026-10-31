@@ -16,7 +16,7 @@ Intermittent CI failures originate in Next's virtual Google-font asset resolver.
 
 ## Acceptance and verification
 
-Three final cold production builds pass. Five asset unit tests and 16 targeted browser cases pass. Sixty capture cases cover five routes, four themes and 375/768/1280 widths; reviewed sheets and index are in docs/reviews/TICKET-207. Full pnpm verify passed: 494 unit tests / 26 skips, build, 533 browser tests / 135 skips. Final-head CI remains pending.
+Three final cold production builds pass. Five asset unit tests and 16 targeted browser cases pass. Sixty capture cases cover five routes, four themes and 375/768/1280 widths; reviewed sheets and index are in docs/reviews/TICKET-207. Full pnpm verify passed: 494 unit tests / 26 skips, build, 533 browser tests / 135 skips. CI41238775314 passed on7c2f73c9ad97dfe2873d7962457f149f6fb3f7b3; subsequent review-documentation commits receive their own CI.
 
 Verified base: fd91e877e29b32ef911acfd45036ad65767732c7.
 
@@ -27,3 +27,7 @@ See docs/reviews/TICKET-207/README.md for every checklist item and retained meas
 ## Review and rollback
 
 Build and visit /dev/theme, /dev/invitation and /dev/rsvp; compare themes and inspect local font requests. Check the committed screenshot sheets and provenance. No migration, root dependency or CI change. Revert the ticket's changes to restore the old Google loader if necessary; that also restores exposure to the intermittent resolver failure.
+
+## Approved review disposition
+
+On 2026-10-31 the user approved proceeding to review with the performance, strict zero-CLS and physical-device limitations retained in release-blocking TICKET-201. Measurements and thresholds are unchanged. No release certification or merge is implied.

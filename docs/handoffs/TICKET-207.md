@@ -29,3 +29,7 @@ Supabase is running for this isolated project; stop with backup after tests fini
 ## Tooling lessons
 
 Next's bundled fontkit cannot reliably inspect variable WOFF2 outlines; real-browser raster comparisons supply the proof instead. Evaluate image-heavy guest routes and retained baseline, not only homepage Lighthouse. Explicit-path Python writes avoid the current shell-hook false positives on structured patch payloads.
+
+## 2026-10-31 — review disposition authorized
+
+User approved proceeding to review with TICKET-201 release gates retained. CI41238775314 passed on7c2f73c9ad97dfe2873d7962457f149f6fb3f7b3. The earlier pending-CI/disposition notes are resolved. TICKET-103 clarification has also been applied and PR61 is in review. Current action: record proven ticket criteria and approval, run normal t:pr gate, mark PR63 ready for human review and stop owned stack with backup. Do not merge or certify release checks.
