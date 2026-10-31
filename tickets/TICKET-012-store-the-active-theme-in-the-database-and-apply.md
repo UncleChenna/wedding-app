@@ -2,7 +2,7 @@
 id: TICKET-012
 title: Store the active theme in the database and apply it on the server
 epic: design-system
-status: in_progress
+status: in_review
 priority: urgent
 estimate: M
 labels: [backend, db, frontend]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-011, TICKET-025]
 blocks: [TICKET-103, TICKET-154, TICKET-176, TICKET-181]
 branch: TICKET-012
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/56
 created: 2026-10-21
 updated: 2026-10-31
 started: 2026-10-30
@@ -71,3 +71,4 @@ UI: twelve captures inspected; home Lighthouse100/99/100 Performance,100 Accessi
 - 2026-10-30 — todo → in_progress — divine (codex)
 - 2026-10-31 — in_progress → blocked — divine (codex) — Draft PR #56: awaiting exact-path migration artifact approval; seed, browser and full-gate work remain.
 - 2026-10-31 — blocked → in_progress — divine (codex)
+- 2026-10-31 — in_progress → in_review — divine (codex)
