@@ -1142,12 +1142,13 @@
     },
     "WED-208": {
       "log": [
-        "- 2026-10-31 — backlog → todo — divine (codex)"
+        "- 2026-10-31 — backlog → todo — divine (codex)",
+        "- 2026-10-31 — todo → claimed — divine (codex)"
       ],
       "status": "todo",
-      "owner": "",
-      "agent": "",
-      "branch": "",
+      "owner": "divine",
+      "agent": "codex",
+      "branch": "TICKET-208",
       "pr": "",
       "started": "",
       "completed": "",
