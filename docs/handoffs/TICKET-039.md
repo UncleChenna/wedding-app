@@ -31,3 +31,11 @@ Production review script passed all12 layouts:CLS0, no overflow,44px targets;12 
 Full verification session77334 was deliberately interrupted after184 browser passes to repair CLS; not a pass. Production server session38780 now serves31411. Focused final envelope/shared-decoration suite session12621 is running; poll it. Next: final visual inspection including shared /dev/theme, update evidence, commit/push, stop owned server before final full gate, then t:pr and final-head CI. No physical device verification or completion claimed. DraftPR59 already exists.
 
 Final focused production envelope/shared-decoration suite completed:42 passed in32seconds across mobile and desktop, including strict CLS0, stable control bounds and hover axe. Production server38780 stopped before final full gate.
+
+## 2026-10-31 — isolated verification recovery
+
+TICKET-052 approval is recorded for its three exact migration paths; GitHub confirms PR58 merged at 15:44:55Z. TICKET-039 head de25c37f4a1d41f53a95a23470d73a4ca0a4b855 passed all required CI checks in run41218305039, including full pnpm verify.
+
+The local full gate failed:475 unit passes/22 skips, build passed,554 browser passes/135 skips and5 failures. All five failures were browserContext.close ENOENT for trace network artifacts. A second Playwright invocation ran concurrently using the same test-results directory, invalidating that local run. Keep browser invocations serial within a worktree; do not weaken assertions or delete trace checks. The concurrent RSVP review also timed out after a slow HTTP200 reply. Its unchanged isolated rerun passed all12 theme/width combinations in32.6seconds (artifacts/TICKET-039/live-review-idle.log).
+
+All12 final preview layouts,12 motion frames and12 shared decoration screenshots were inspected. The new live RSVP matrix has60 screenshots captured but still needs visual inspection; no physical-device pass is claimed. The unchanged isolated mobile overflow suite passed all72 tests in16.3seconds; see artifacts/TICKET-039/overflow-idle.log. Keep PR59 draft until remaining screenshot review, device-gate disposition and final PR/ticket evidence are complete.
