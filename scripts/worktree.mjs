@@ -6,13 +6,13 @@ import {
   readFileSync,
   writeFileSync,
   copyFileSync,
-  cpSync,
   realpathSync,
 } from "node:fs";
 import { createServer } from "node:net";
 import { join, dirname } from "node:path";
 import { branchName, isolatedConfig, safeId } from "./harness/core.mjs";
 import { cli, common, git, json, lock, pnpm, root, writeJson } from "./harness/io.mjs";
+import { copySupabaseTemplates } from "./harness/supabase-templates.mjs";
 import { worktreeBase } from "./harness/worktree-base.mjs";
 import { liveTicket, ticketOwner } from "./harness/tickets.mjs";
 
@@ -150,9 +150,7 @@ async function main() {
           meta.portBase,
         ),
       );
-      const templates = join(path, "supabase", "templates");
-      if (existsSync(templates))
-        cpSync(templates, join(setup, "supabase", "templates"), { recursive: true });
+      copySupabaseTemplates(path, setup);
       if (!existsSync(join(path, ".env.local"))) {
         const source = existsSync(join(primary, ".env.local"))
           ? join(primary, ".env.local")

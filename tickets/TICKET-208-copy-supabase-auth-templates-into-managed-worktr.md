@@ -25,7 +25,7 @@ resume_to: ""
 
 ## Context
 
-Managed worktree setup copies supabase/config.toml but omits its referenced auth email templates. Fresh TICKET-047 and TICKET-103 stacks failed with StartInvalidConfigError for supabase/templates/admin-code.html. Copying that unchanged repository template into the isolated stack fixed startup. See [collaboration setup](../docs/collaboration.md).
+Earlier managed setup attempts failed to include referenced auth email templates. Inspection of the current base shows TICKET-029 already added a basic recursive copy; this ticket completes safe copying and regression coverage rather than adding a duplicate copy. Fresh TICKET-047 and TICKET-103 stacks failed with StartInvalidConfigError for supabase/templates/admin-code.html. Copying that unchanged repository template into the isolated stack fixed startup. See [collaboration setup](../docs/collaboration.md).
 
 ## Scope
 
@@ -40,10 +40,10 @@ Managed worktree setup copies supabase/config.toml but omits its referenced auth
 
 ## Acceptance criteria
 
-- [ ] Isolated setup includes the committed admin-code.html referenced by the generated configuration before db:start.
-- [ ] Template content is unchanged, and repeated setup refreshes source changes without touching unrelated files.
-- [ ] Unsafe symlinks/path escapes are rejected by regression tests.
-- [ ] Focused harness tests and pnpm verify pass; setup evidence confirms Supabase can read its configured template.
+- [x] Isolated setup includes the committed admin-code.html referenced by the generated configuration before db:start.
+- [x] Template content is unchanged, and repeated setup refreshes source changes without touching unrelated files.
+- [x] Unsafe symlinks/path escapes are rejected by regression tests.
+- [x] Focused harness tests and pnpm verify pass; setup evidence confirms Supabase can read its configured template.
 
 ## Test plan
 
@@ -59,6 +59,8 @@ Managed worktree setup copies supabase/config.toml but omits its referenced auth
 
 ## Notes / decisions
 
+- 2026-10-31: Nine focused regressions pass; managed startup and migration succeeded; template bytes match. Full verification passed: 498 unit tests, 26 skipped; 525 browser tests, 135 skipped; build, lint, types and formatting passed. No UI changes.
+
 - 2026-10-31: Reproduced in two new worktrees. No credential or database-policy change is needed.
 
 ## Activity log
@@ -67,3 +69,4 @@ Managed worktree setup copies supabase/config.toml but omits its referenced auth
 - 2026-10-31 — backlog → todo — divine (codex)
 - 2026-10-31 — todo → claimed — divine (codex)
 - 2026-10-31 — todo → in_progress — divine (codex)
+
