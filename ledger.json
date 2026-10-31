@@ -1024,18 +1024,19 @@
     "WED-012": {
       "log": [
         "- 2026-10-30 — todo → claimed — divine (codex)",
-        "- 2026-10-30 — todo → in_progress — divine (codex)"
+        "- 2026-10-30 — todo → in_progress — divine (codex)",
+        "- 2026-10-31 — in_progress → blocked — divine (codex) — Draft PR #56: awaiting exact-path migration artifact approval; seed, browser and full-gate work remain."
       ],
-      "status": "in_progress",
+      "status": "blocked",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-012",
       "pr": "",
       "started": "2026-10-30",
       "completed": "",
-      "updated": "2026-10-30",
-      "reason": "",
-      "resume_to": ""
+      "updated": "2026-10-31",
+      "reason": "Draft PR #56: awaiting exact-path migration artifact approval; seed, browser and full-gate work remain.",
+      "resume_to": "in_progress"
     }
   }
 }
