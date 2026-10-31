@@ -65,7 +65,7 @@ test.describe("saved RSVP visual review", () => {
         if (!row) throw new Error("Missing fixture");
         ids.push(row.id);
         await db`insert into guests(invitation_id,name,is_primary) values(${row.id},'Amara Testguest',true)`;
-        const dir = `docs/reviews/TICKET-040/screenshots/${theme.id}/${width}`;
+        const dir = `${process.env.RSVP_REVIEW_DIR ?? "docs/reviews/TICKET-040/screenshots"}/${theme.id}/${width}`;
         mkdirSync(dir, { recursive: true });
         await page.goto(`/i/${token}`);
         await applyTheme(page, theme);
@@ -74,6 +74,9 @@ test.describe("saved RSVP visual review", () => {
           name: invitationSiteCopy.attendance.yes,
           exact: true,
         });
+        await page.getByRole("link", { name: "Kindly reply" }).focus();
+        await page.keyboard.press("Enter");
+        await expect(page.locator("#reply")).toBeFocused();
         await page.keyboard.press("Tab");
         await expect(yes).toBeFocused();
         await page.keyboard.press("Enter");
