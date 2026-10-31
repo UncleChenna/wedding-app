@@ -1025,9 +1025,10 @@
       "log": [
         "- 2026-10-30 — todo → claimed — divine (codex)",
         "- 2026-10-30 — todo → in_progress — divine (codex)",
-        "- 2026-10-31 — in_progress → blocked — divine (codex) — Draft PR #56: awaiting exact-path migration artifact approval; seed, browser and full-gate work remain."
+        "- 2026-10-31 — in_progress → blocked — divine (codex) — Draft PR #56: awaiting exact-path migration artifact approval; seed, browser and full-gate work remain.",
+        "- 2026-10-31 — blocked → in_progress — divine (codex)"
       ],
-      "status": "blocked",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-012",
@@ -1035,8 +1036,8 @@
       "started": "2026-10-30",
       "completed": "",
       "updated": "2026-10-31",
-      "reason": "Draft PR #56: awaiting exact-path migration artifact approval; seed, browser and full-gate work remain.",
-      "resume_to": "in_progress"
+      "reason": "",
+      "resume_to": ""
     }
   }
 }
