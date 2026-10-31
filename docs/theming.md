@@ -24,7 +24,13 @@ Emerald Night and Blush & Sage come from the invitation design spike. Either can
 
 ## Switch a theme (10 seconds)
 
-Edit `src/modules/theming/config.ts`:
+Live pages read `event_settings.active_theme_id` (light) and `active_dark_theme_id` (dark). Registry validation rejects unknown IDs and themes in the wrong scheme. The server renders both palettes, texture and browser-bar colours before hydration; device media queries choose the palette without JavaScript.
+
+An authorized admin boundary must call the internal `activateThemeSelection({ light, dark })` service. It validates the pair, writes both settings atomically while preserving event details, then expires the `active-theme-pair` cache tag. It is not a public Server Action or authorization boundary; admin UI integration is TICKET-098/181. A subsequent server request gets the new selection; an already-open page requires refresh. Direct SQL changes bypass invalidation: reads revalidate after 30 seconds and expire after 5 minutes. Cache propagation across application instances requires shared cache infrastructure; the default handler is process-local.
+
+Missing, invalid or unavailable settings select the safe defaults and emit a sanitized warning. Reads wait at most 2 seconds; cached valid settings can remain until refresh during an outage. Defaults are also cached on this schedule. The fallback is visual only and never substitutes for authorization or guest data.
+
+For static previews and outage defaults, edit `src/modules/theming/config.ts`:
 
 ```ts
 export const ACTIVE_THEME_IDS = {

@@ -3,6 +3,12 @@ import { db } from "@/modules/shared/server/db/client";
 import { hasPublishedInvitation } from "@/modules/invitations/server/repository";
 
 export async function proxy(request: NextRequest) {
+  // Cached public theme data must never make private route responses browser-cacheable.
+  if (!request.nextUrl.pathname.startsWith("/i/")) {
+    const response = NextResponse.next();
+    response.headers.set("Cache-Control", "private, no-store");
+    return response;
+  }
   const token = request.nextUrl.pathname.split("/")[2];
   const available = await hasPublishedInvitation(db, token);
   const response = available
@@ -14,4 +20,6 @@ export async function proxy(request: NextRequest) {
   return response;
 }
 
-export const config = { matcher: "/i/:token" };
+export const config = {
+  matcher: ["/i/:token", "/admin/:path*", "/checkin/:path*", "/kitchen/:path*", "/order/:path*"],
+};

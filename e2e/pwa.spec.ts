@@ -36,6 +36,13 @@ test.describe("service worker @smoke", () => {
     expect(await response.text()).toContain("cachePolicy");
   });
 
+  test("private routes remain no-store even with cached theme data", async ({ request }) => {
+    for (const path of ["/admin", "/admin/sign-in", "/checkin", "/kitchen", "/order"]) {
+      const response = await request.get(path);
+      expect(response.headers()["cache-control"], path).toContain("no-store");
+    }
+  });
+
   test("registers at root scope and controls pages", async ({ page }) => {
     await controlledPage(page);
     const scope = await page.evaluate(async () => (await navigator.serviceWorker.ready).scope);

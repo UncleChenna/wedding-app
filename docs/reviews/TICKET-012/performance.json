@@ -1,0 +1,32 @@
+[
+  {
+    "run": 1,
+    "lighthouse": "13.6.0",
+    "url": "http://localhost:29692/",
+    "performance": 100,
+    "accessibility": 100,
+    "cls": 0.00007339025002649255,
+    "fcp": 786.9470000000001,
+    "lcp": 786.9470000000001
+  },
+  {
+    "run": 2,
+    "lighthouse": "13.6.0",
+    "url": "http://localhost:29692/",
+    "performance": 99,
+    "accessibility": 100,
+    "cls": 0.00007339025002649255,
+    "fcp": 762.2602999999999,
+    "lcp": 762.2602999999999
+  },
+  {
+    "run": 3,
+    "lighthouse": "13.6.0",
+    "url": "http://localhost:29692/",
+    "performance": 100,
+    "accessibility": 100,
+    "cls": 0.00007339025002649255,
+    "fcp": 759.0908999999999,
+    "lcp": 759.0908999999999
+  }
+]
