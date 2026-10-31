@@ -41,11 +41,11 @@ See: [Design principles](../docs/prd.md#design-principles) · [Design principles
 
 ## Acceptance criteria
 
-- [ ] Reveal completes in 600ms and animates only opacity/transform (asserted).
-- [ ] With reduced motion, no transform animation runs (e2e).
-- [ ] RSVP is reachable by keyboard during the animation.
+- [x] Reveal completes in 600ms and animates only opacity/transform (asserted).
+- [x] With reduced motion, no transform animation runs (e2e).
+- [x] RSVP is reachable by keyboard during the animation.
 
-- [ ] Use the spike-tested 600ms reveal and 180ms controls; returning guests bypass it. Content, focus and RSVP remain usable throughout.
+- [x] Use the spike-tested 600ms reveal and 180ms controls; returning guests bypass it. Content, focus and RSVP remain usable throughout.
 
 ## Test plan
 
@@ -60,7 +60,7 @@ See: [Design principles](../docs/prd.md#design-principles) · [Design principles
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-10-31: Functional criteria proven by focused unit/browser tests and all-theme production review. Full source CI passed; final serial local verification and physical-device disposition remain pending. Draft PR59 records the evidence; no completion claimed.
 
 ## Activity log
 
