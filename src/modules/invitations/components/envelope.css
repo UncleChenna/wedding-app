@@ -39,10 +39,20 @@
   text-align: center;
 }
 .invitation-envelope-control {
+  position: relative;
+  transition: none;
+}
+.invitation-envelope-control::after {
+  content: "";
+  position: absolute;
+  inset: auto 1.25rem 0.4rem;
+  border-bottom: 1px solid currentColor;
+  opacity: 0;
   transition: opacity var(--motion-duration-control) var(--motion-easing);
 }
-.invitation-envelope-control:hover {
-  opacity: 0.8;
+.invitation-envelope-control:hover::after,
+.invitation-envelope-control:focus-visible::after {
+  opacity: 1;
 }
 @keyframes invitation-envelope-unfold {
   from {
@@ -70,7 +80,7 @@
   .invitation-envelope-envelope[data-opening="true"] .invitation-envelope-letter {
     animation: none;
   }
-  .invitation-envelope-control {
+  .invitation-envelope-control::after {
     transition: none;
   }
 }

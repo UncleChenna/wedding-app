@@ -17,6 +17,12 @@ for (const theme of listThemes()) {
     await expect(page.locator("html")).toHaveAttribute("data-envelope-animated", "true");
     const replay = page.getByRole("button", { name: "Replay opening" });
     await expect(replay).toBeVisible();
+    await replay.hover();
+    await expect(replay).toHaveCSS("opacity", "1");
+    expect(await scanA11y(page)).toEqual([]);
+    const target = await replay.boundingBox();
+    expect(target?.width).toBeGreaterThanOrEqual(44);
+    expect(target?.height).toBeGreaterThanOrEqual(44);
     await page.clock.install();
     await page.clock.pauseAt(new Date(Date.now() + 100));
     await replay.click();
@@ -25,7 +31,7 @@ for (const theme of listThemes()) {
     expect(
       await envelope
         .getByRole("button")
-        .evaluate((element) => getComputedStyle(element).transitionDuration),
+        .evaluate((element) => getComputedStyle(element, "::after").transitionDuration),
     ).toBe("0.18s");
     const animations = await envelope
       .locator("[aria-hidden]")
