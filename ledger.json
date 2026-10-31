@@ -1139,6 +1139,21 @@
       "updated": "2026-10-31",
       "reason": "Draft PR https://github.com/UncleChenna/wedding-app/pull/61 passes full verification; awaiting approval to clarify circular downstream TICKET-113/114 acceptance wording without claiming those checks complete",
       "resume_to": "in_progress"
+    },
+    "WED-208": {
+      "log": [
+        "- 2026-10-31 — backlog → todo — divine (codex)"
+      ],
+      "status": "todo",
+      "owner": "",
+      "agent": "",
+      "branch": "",
+      "pr": "",
+      "started": "",
+      "completed": "",
+      "updated": "2026-10-31",
+      "reason": "",
+      "resume_to": ""
     }
   }
 }
