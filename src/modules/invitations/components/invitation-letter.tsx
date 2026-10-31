@@ -1,3 +1,4 @@
+import { InstallPrompt } from "@/modules/shared/components/install-prompt";
 import type { ReactNode } from "react";
 import { z } from "zod";
 import { Divider } from "@/modules/shared/components/ui/decorations";
@@ -98,6 +99,7 @@ export function InvitationLetter({
           className="mt-12 scroll-mt-6 focus-visible:outline-2 focus-visible:outline-ring"
         >
           {pass}
+          <InstallPrompt />
         </section>
       )}
       <Divider className="my-12 md:my-16" />

@@ -1,3 +1,4 @@
+import { InstallPrompt } from "@/modules/shared/components/install-prompt";
 import {
   ActionBar,
   Button,
@@ -246,6 +247,7 @@ export function ThemeShowcase({ theme, active }: { theme: Theme; active: boolean
             </ActionBar>
           </div>
 
+          <InstallPrompt />
           <MotionShowcase />
 
           <Card data-testid="form-controls">

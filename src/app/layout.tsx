@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 
+import { InstallPromptRegistration } from "@/modules/shared/components/install-prompt";
 import { ServiceWorkerRegistration } from "@/modules/shared/components/service-worker-registration";
 import { ToastProvider } from "@/modules/shared/components/ui";
 import { getStoredActiveThemes } from "@/modules/theming/server/active-themes";
@@ -40,6 +41,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-dvh bg-background font-sans text-foreground">
         <ToastProvider>{children}</ToastProvider>
         <ServiceWorkerRegistration />
+        <InstallPromptRegistration />
       </body>
     </html>
   );
