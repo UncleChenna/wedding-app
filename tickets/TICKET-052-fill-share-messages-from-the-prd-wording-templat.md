@@ -2,7 +2,7 @@
 id: TICKET-052
 title: Fill share messages from the PRD wording templates
 epic: sharing
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [backend, docs]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/58
 created: 2026-10-21
 updated: 2026-10-31
 started: 2026-10-31
-completed: ""
+completed: 2026-10-31
 reason: ""
 resume_to: ""
 ---
@@ -63,3 +63,4 @@ See: [Invitation wording](../docs/prd.md#invitation-wording).
 - 2026-10-31 — todo → claimed — divine (codex)
 - 2026-10-31 — todo → in_progress — divine (codex)
 - 2026-10-31 — in_progress → in_review — divine (codex)
+- 2026-10-31 — in_review → done — divine (codex)
