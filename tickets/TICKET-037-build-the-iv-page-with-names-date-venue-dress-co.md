@@ -2,7 +2,7 @@
 id: TICKET-037
 title: Build the IV page with names, date, venue, dress code and map
 epic: invitations
-status: in_review
+status: done
 priority: urgent
 estimate: L
 labels: [frontend, design]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/57
 created: 2026-10-21
 updated: 2026-10-31
 started: 2026-10-31
-completed: ""
+completed: 2026-10-31
 reason: ""
 resume_to: ""
 ---
@@ -72,3 +72,4 @@ See: [Journey 1: receiving the IV and RSVP](../docs/prd.md#journey-1-receiving-t
 - 2026-10-31 — todo → claimed — divine (codex)
 - 2026-10-31 — todo → in_progress — divine (codex)
 - 2026-10-31 — in_progress → in_review — divine (codex)
+- 2026-10-31 — in_review → done — divine (codex)
