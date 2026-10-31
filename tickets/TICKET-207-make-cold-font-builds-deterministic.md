@@ -2,20 +2,20 @@
 id: TICKET-207
 title: Make cold font builds deterministic
 epic: design-system
-status: todo
+status: in_progress
 priority: high
 estimate: M
 labels: [frontend, test, infra]
 module: theming
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-015]
 blocks: []
-branch: ""
+branch: TICKET-207
 pr: ""
 created: 2026-10-31
 updated: 2026-10-31
-started: ""
+started: 2026-10-31
 completed: ""
 reason: ""
 resume_to: ""
@@ -58,3 +58,5 @@ Created from two observed CI failures on31October2026. No implementation is incl
 ## Activity log
 
 - 2026-10-31 — new → todo — divine — recurring font build failure
+- 2026-10-31 — todo → claimed — divine (codex)
+- 2026-10-31 — todo → in_progress — divine (codex)
