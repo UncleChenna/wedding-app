@@ -4,7 +4,7 @@ title: Fill share messages from the PRD wording templates
 epic: sharing
 status: in_progress
 priority: urgent
-estimate: S
+estimate: M
 labels: [backend, docs]
 module: invitations
 owner: divine
@@ -55,7 +55,7 @@ See: [Invitation wording](../docs/prd.md#invitation-wording).
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-10-31: Persisted voice selection required an additive settings migration, so estimate updated to M. Renderer, validated internal persistence helper and seed/default behavior implemented. Owner approved the generated SQL/snapshot/journal and exact-path authorization record after isolated database checks. Full verification and review are pending.
 
 ## Activity log
 
