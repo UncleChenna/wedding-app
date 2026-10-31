@@ -22,7 +22,7 @@ Three cold production builds passed. Three unit regressions and eight production
 
 # Verification
 
-See docs/handoffs/TICKET-207.md and artifacts/TICKET-207 logs. Build base fd91e877e29b32ef911acfd45036ad65767732c7. Screenshots currently generating across five routes, four themes and375/768/1280 widths.
+See docs/handoffs/TICKET-207.md and artifacts/TICKET-207 logs. Build base fd91e877e29b32ef911acfd45036ad65767732c7. All60 screenshot captures passed across five routes, four themes and375/768/1280 widths; visual inspection is still pending.
 
 # Risks and rollout
 
@@ -30,7 +30,7 @@ Full font files are larger than Google's individual subsets; performance and pre
 
 # Screenshots
 
-Pending capture and inspection; not yet approved.
+Captured under artifacts/screenshots; inspection pending, not yet approved.
 
 # UI checklist
 
