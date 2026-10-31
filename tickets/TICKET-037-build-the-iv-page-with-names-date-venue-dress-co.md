@@ -2,7 +2,7 @@
 id: TICKET-037
 title: Build the IV page with names, date, venue, dress code and map
 epic: invitations
-status: in_progress
+status: in_review
 priority: urgent
 estimate: L
 labels: [frontend, design]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-015, TICKET-017, TICKET-025, TICKET-036, TICKET-021]
 blocks: [TICKET-038, TICKET-039, TICKET-047]
 branch: TICKET-037
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/57
 created: 2026-10-21
 updated: 2026-10-31
 started: 2026-10-31
@@ -71,3 +71,4 @@ See: [Journey 1: receiving the IV and RSVP](../docs/prd.md#journey-1-receiving-t
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-10-31 — todo → claimed — divine (codex)
 - 2026-10-31 — todo → in_progress — divine (codex)
+- 2026-10-31 — in_progress → in_review — divine (codex)
