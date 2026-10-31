@@ -1,33 +1,49 @@
 # Ticket
 
-TICKET-037
+TICKET-037 — Build the IV page with names, date, venue, dress code and map.
 
-# Problem and result
+# Summary
 
-Personal invitations previously hard-coded the couple/date and omitted venue, dress-code and map details. They now render saved event settings in a restrained invitation layout with the approved warm wording and a working reply anchor. Undecided details remain explicitly pending; missing or unsafe map URLs do not produce links.
+Personal invitations previously hard-coded couple/date details and omitted venue, dress code and maps. They now render saved settings, approved warm wording and a keyboard-operable reply anchor. Undecided details remain clearly pending.
 
 # Changes
 
-Server-rendered InvitationLetter shared by the personal page and a clearly labelled /dev/invitation/letter preview, linked from /dev. Date-only formatting preserves the wedding day across visitor time zones. Real RSVP saving remains in the existing form. Optional pass content can be reached directly when supplied; signed-pass integration is still TICKET-044.
+- Server-rendered InvitationLetter with date-only formatting independent of visitor timezone and validated HTTPS venue maps.
+- Real RSVP form retained, including native no-JavaScript submission, token authorization and saved replies.
+- Conditional pass slot/anchor; owner-approved split keeps real returning-guest signed-pass integration mandatory in TICKET-044.
+- Labelled /dev/invitation/letter preview linked from /dev, with four themes and optional clearly labelled sample arrangements.
+- Deliberate headline sentence breaks and left-aligned letter copy eliminate measured cold-load font movement without hiding content.
 
-# Acceptance and evidence
+# Acceptance criteria and evidence
 
-Owner approved keeping the conditional pass slot/anchor in TICKET-037 and moving actual returning-guest signed-pass integration into TICKET-044. Both ticket definitions record the decision; no functionality is dropped or falsely marked delivered.
+All local functional criteria are verified: four themes at375/768/1280,44px link targets, keyboard navigation, reduced motion, axe checks, long-name wrapping, safe map destinations and unobscured reply actions. All12 preview screenshots and60 actual RSVP state screenshots inspected. Additional16 intermediate-width checks pass.
 
-Four component tests and quick verification pass. Full verification passed: format, lint, types,471 unit tests (22 skipped), production build and525 browser tests (135 skipped). The final targeted browser run passed25 cases:13 preview checks and12 real saved-RSVP visual cases. All12 preview screenshots and60 live screenshots have been refreshed and inspected across four themes and375/768/1280 widths. Earlier tests also proved native no-JavaScript RSVP persistence, token denial and configured event details with80-character guest/couple names.
+Owner explicitly approved two exceptions: physical WhatsApp/native-map verification and remaining performance variability are mandatory in release-blocking TICKET-201. They are not marked passed. Real signed-pass functionality remains in TICKET-044; no placeholder pass is shown.
 
-Merged develop base5bd56a82d37942a1a046fc1b1c93c22f2a6829bc, including the owner-authorized unchanged migration files. Explicit headline sentence lines and letter-aligned body copy eliminated measured cold-load shift in the real test invitation: CLS0/0/0. Accessibility scored100 in all three final Lighthouse runs. Performance90/95/98 does not yet consistently meet the95 threshold; all results are retained.
+# Verification
 
-# Remaining checks
+- pnpm verify: PASS — formatting, lint, types,471 unit tests (22 skipped), production build and525 browser tests (135 skipped).
+- pnpm verify:quick: PASS; focused component tests4 PASS.
+- Targeted browser review:25 PASS, including12 live-state cases producing60 captures.
+- Earlier isolated real-data tests:6 RSVP persistence/authorization checks and2 configured-details/no-JavaScript checks passed.
+- pnpm t:validate:207 tickets valid.
+- Mobile Lighthouse on authorized synthetic personal invitation: final serial Performance94/98/95 (median95), Accessibility100/100/100, CLS0/0/0. Earlier90/95/98 scores retained. Below-target results remain a TICKET-201 release gate.
+- Physical iOS/Android WhatsApp and native map handoff: NOT VERIFIED, owner-approved tracking in TICKET-201.
 
-Draft remains incomplete: investigate performance variability, retain physical WhatsApp/iOS/Android/native-map QA as unverified. TICKET-201 remains the device release gate. The previously failing accessibility route registration has been corrected; no assertion was removed. All16 intermediate-width checks at410/640/900/1024 passed. Signed passes remain mandatory in TICKET-044.
-
-Screenshots and detailed checklist: [review evidence](../reviews/TICKET-037/README.md). Production venue/time/timezone/dress code remain TBD; no sample details are presented as actual arrangements.
+Integrated develop base5bd56a82d37942a1a046fc1b1c93c22f2a6829bc. CI must pass on the final PR head before merge.
 
 # Risks and rollout
 
-No schema, dependency, CI or auth changes. Existing token authorization, private response headers and RSVP validation remain. Production timezone remains TBD and RSVP activation stays guarded. Revert this ticket's application changes to restore the previous layout; no database rollback is needed. This draft does not approve guest release.
+Production venue/time/timezone/dress code remain TBD; RSVP activation remains guarded by timezone availability. No authentication, RLS, dependency or new migration change. Existing migration files arrived unchanged from merged develop with exact-path owner authorization. Revert the ticket's application changes to restore the previous layout; no database rollback required. Device/performance exceptions permit review, not guest release.
 
-# Review
+# Screenshots
 
-Visit /dev, choose Personal invitation layout, and switch among the four themes. For an actual invitation use an authorized test token in the isolated worktree; no personal tokens appear in this PR. See docs/reviews/TICKET-037/README.md for item-by-item results.
+[Full review and screenshot directory](../reviews/TICKET-037/README.md): four themes ×375/768/1280; preview originals plus live initial/yes/no/error/closed states. Contact-sheet padding is not application whitespace; outlines show keyboard focus.
+
+# UI checklist
+
+The item-by-item report is in docs/reviews/TICKET-037/README.md. Automated layout/accessibility/copy/motion checks pass; measured CLS is0. Performance consistency and physical device/native-map verification remain explicit approved exceptions in TICKET-201. QR and staff feedback are not applicable to this change.
+
+# Review steps
+
+Visit /dev, choose Personal invitation layout, switch themes and use Kindly reply with the keyboard. Visit /dev/invitation/letter?details=sample for clearly labelled configured map/time details. Test saved replies only with an authorized synthetic invitation in an isolated database; no personal tokens are included here.

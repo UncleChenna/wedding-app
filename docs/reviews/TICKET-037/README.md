@@ -22,7 +22,7 @@ All 12 refreshed preview screenshots and all 60 refreshed live screenshots were 
 | Staff feedback           | N/A: invitation-only change.                                                                                                                                                                                                                           |
 | Verification             | Quick verification and four component tests PASS. Refreshed targeted browser matrix: 25 PASS. Full verification PASS: format, lint, types,471 unit tests (22 skipped), production build and525 browser tests (135 skipped).                            |
 
-CHANGES REQUESTED: performance consistency and outstanding required device checks. This is not release approval. Earlier performance files preserve the before/after evidence: the font merge alone retained a shift; explicit headline lines reduced it; left-aligned letter copy removed it in the measured fixture.
+APPROVE FOR REVIEW WITH OWNER-APPROVED EXCEPTIONS: performance consistency and physical-device/native-map verification remain mandatory in release-blocking TICKET-201. Their FAIL/NOT VERIFIED results above are unchanged. This is not release approval. Earlier performance files preserve the before/after evidence: the font merge alone retained a shift; explicit headline lines reduced it; left-aligned letter copy removed it in the measured fixture.
 
 ## Serial performance investigation
 
@@ -30,4 +30,4 @@ On the same application code, with no overlapping build or test commands, three 
 
 The slowest run's main script is the existing Next.js/React runtime chunk (234844bytes;401ms script evaluation). No Supabase, Zod or animation-library runtime appears in that chunk. This identifies the observed bottleneck but does not prove the shared framework is defective or excuse the below-target score. No application behavior, runtime scripts or audit settings were disabled to raise the score.
 
-Owner approved moving physical WhatsApp/native-map verification into release-blocking TICKET-201. A separate performance exception is pending; do not infer it from the device approval. Required CI status is checked separately from UI acceptance.
+Owner approved moving physical WhatsApp/native-map verification into release-blocking TICKET-201. Owner separately approved retaining the performance variability in TICKET-201 while this PR proceeds to review. Required CI status is checked separately from UI acceptance.
