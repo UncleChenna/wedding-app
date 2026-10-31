@@ -1186,9 +1186,10 @@
     "WED-104": {
       "log": [
         "- 2026-10-31 — todo → claimed — divine (codex)",
-        "- 2026-10-31 — todo → in_progress — divine (codex)"
+        "- 2026-10-31 — todo → in_progress — divine (codex)",
+        "- 2026-10-31 — in_progress → blocked — divine (codex) — Draft PR64: hosted envelope CLS failures require TICKET-210 diagnosis; physical installation unverified. Publishing210 waits for permission to carry unchanged209 definition required by contiguous-ID validation"
       ],
-      "status": "in_progress",
+      "status": "blocked",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-104",
@@ -1196,8 +1197,8 @@
       "started": "2026-10-31",
       "completed": "",
       "updated": "2026-10-31",
-      "reason": "",
-      "resume_to": ""
+      "reason": "Draft PR64: hosted envelope CLS failures require TICKET-210 diagnosis; physical installation unverified. Publishing210 waits for permission to carry unchanged209 definition required by contiguous-ID validation",
+      "resume_to": "in_progress"
     }
   }
 }
