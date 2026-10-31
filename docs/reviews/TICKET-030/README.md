@@ -39,3 +39,7 @@ Routes: /admin/mfa (enrolment, setup, invalid code, returning challenge), /admin
 CHANGES REQUESTED for release approval: obtain physical iOS and Android authenticator evidence (scan, generated-code verification, returning challenge and keyboard). Automated browser testing does not prove this. Code may be reviewed independently; do not call physical checks passed. A separate explicit QA deferral is required before closing this UI ticket without that evidence.
 
 The first full gate found 11 tests racing the newly streamed admin redirect and one oversized all-theme admin form test exceeding its timeout. Tests now await the verified sign-in destination before measuring or navigating onward; the form matrix is split into route/theme cases with every original assertion retained. Focused rerun passes. No assertion, hook or gate was removed.
+
+## 2026-10-31 — approved merge with release QA outstanding
+
+The user explicitly approved: “Merge after CI; track device QA separately.” TICKET-206 records physical iOS/Android authenticator scanning and keyboard checks; both production-release tickets TICKET-176 and TICKET-154 depend on it. Physical checks remain NOT VERIFIED. Merge is authorized only after all required checks pass on the final commit. This exception does not approve production release.

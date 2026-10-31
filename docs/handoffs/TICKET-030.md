@@ -31,3 +31,7 @@ Project wedding-8ed5c59b2273; app31310, browser31311, API31300, DB31301. Local s
 Keep PR54 draft until physical device evidence or the pending explicit QA deferral arrives. If deferral approved, create the promised human release-blocking QA ticket through t:new and document the exception before closure. Check final-head CI and merge with the exact SHA only once this condition is resolved. Then use t:move done; do not discard completion metadata.
 
 TICKET-040 is independently ready and next in the live queue. Prior tickets006,025,029 are done/merged; their stacks are stopped and CLI completion-file changes must be preserved.
+
+## 2026-10-31 — approved merge with release QA outstanding
+
+The user explicitly approved: “Merge after CI; track device QA separately.” TICKET-206 records physical iOS/Android authenticator scanning and keyboard checks; both production-release tickets TICKET-176 and TICKET-154 depend on it. Physical checks remain NOT VERIFIED. Merge is authorized only after all required checks pass on the final commit. This exception does not approve production release.

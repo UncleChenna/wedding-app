@@ -51,3 +51,7 @@ The [item-by-item evidence](https://github.com/UncleChenna/wedding-app/blob/TICK
 # Harness changes, if any
 
 Browser checks now await the streamed sign-in redirect. Scoped MFA screenshot waits diagnose unfinished finite animations without weakening axe. Centralizing bounded animation diagnostics is a possible separate maintenance task; no hooks or policies changed.
+
+## 2026-10-31 — approved merge with release QA outstanding
+
+The user explicitly approved: “Merge after CI; track device QA separately.” TICKET-206 records physical iOS/Android authenticator scanning and keyboard checks; both production-release tickets TICKET-176 and TICKET-154 depend on it. Physical checks remain NOT VERIFIED. Merge is authorized only after all required checks pass on the final commit. This exception does not approve production release.
