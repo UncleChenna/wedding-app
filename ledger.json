@@ -1089,9 +1089,10 @@
       "log": [
         "- 2026-10-31 — todo → claimed — divine (codex)",
         "- 2026-10-31 — todo → in_progress — divine (codex)",
-        "- 2026-10-31 — in_progress → in_review — divine (codex)"
+        "- 2026-10-31 — in_progress → in_review — divine (codex)",
+        "- 2026-10-31 — in_review → in_progress — divine (codex) — Final CI reproduced nonzero Blush & Sage envelope CLS; diagnose and fix without weakening zero-shift assertion"
       ],
-      "status": "in_review",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-039",
