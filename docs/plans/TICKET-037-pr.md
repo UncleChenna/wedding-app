@@ -27,6 +27,7 @@ Owner explicitly approved two exceptions: physical WhatsApp/native-map verificat
 - Targeted browser review:25 PASS, including12 live-state cases producing60 captures.
 - Earlier isolated real-data tests:6 RSVP persistence/authorization checks and2 configured-details/no-JavaScript checks passed.
 - pnpm t:validate:207 tickets valid.
+- Subsequent mandatory review rerun:524 browser passes,135 skips and one existing mobile stepper test exceeded its30s timeout. The unchanged stepper test passed mobile and desktop in isolation (2 passes); full workflow retry is required before review transition.
 - Mobile Lighthouse on authorized synthetic personal invitation: final serial Performance94/98/95 (median95), Accessibility100/100/100, CLS0/0/0. Earlier90/95/98 scores retained. Below-target results remain a TICKET-201 release gate.
 - Physical iOS/Android WhatsApp and native map handoff: NOT VERIFIED, owner-approved tracking in TICKET-201.
 

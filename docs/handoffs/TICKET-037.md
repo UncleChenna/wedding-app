@@ -59,3 +59,9 @@ Owner approved physical WhatsApp/native-map checks moving to release-blocking201
 ## 2026-10-31 — review exceptions approved
 
 Owner separately approved performance variability remaining in release-blocking201, preserving95 and all measurements. Both device and performance requirements are now explicit201 criteria.037 criteria distinguish verified functional behavior from these approved exceptions; no actual device/performance pass is claimed. PR body rewritten with current evidence and proper required headings. Next: commit, run mandatory t:pr TICKET-037 --owner divine --agent codex, mark existing draft ready after CLI succeeds, then retain in_review for human merge under current AGENTS.md. No permission remains pending.
+
+## 2026-10-31 — required review workflow retry
+
+Mandatory t:pr full verification on be7bcbd ended with471 unit passes,524 browser passes/135 skips and one mobile stepper-focus timeout (30s budget; reported43s including teardown). Earlier full run on the same application code passed525 browser checks. Isolated unchanged stepper tests then passed both mobile and desktop in22.2s total using one worker. No assertions, timing limits or source files were changed. Logs: artifacts/TICKET-037/review-transition.log and stepper-isolated.log. The status transition did not happen; ticket remains in_progress and PR57 draft. Keep this failed run disclosed.
+
+Next: retry pnpm t:pr TICKET-037 --owner divine --agent codex, logging to artifacts/TICKET-037/review-transition-retry.log. Poll the same live process until terminal; do not restart due to observation timeout. If the aggregate stepper test repeatedly times out under normal suite parallelism, track a separate harness ticket to isolate its12 theme/width cases without weakening assertions. Both037 release QA exceptions are already explicitly approved and recorded in201; no further permission is needed for them.
