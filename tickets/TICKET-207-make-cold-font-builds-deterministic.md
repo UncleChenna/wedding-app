@@ -2,7 +2,7 @@
 id: TICKET-207
 title: Make cold font builds deterministic
 epic: design-system
-status: blocked
+status: in_progress
 priority: high
 estimate: M
 labels: [frontend, test, infra]
@@ -17,8 +17,8 @@ created: 2026-10-31
 updated: 2026-10-31
 started: 2026-10-31
 completed: ""
-reason: "Draft PR #63 final assets pass full verification; final-head CI pending, strict UI completion remains limited by invitation performance below 95 and physical-device QA recorded for TICKET-201"
-resume_to: in_progress
+reason: ""
+resume_to: ""
 ---
 
 # TICKET-207: Make cold font builds deterministic
@@ -61,3 +61,4 @@ Created from two observed CI failures on31October2026. No implementation is incl
 - 2026-10-31 — todo → claimed — divine (codex)
 - 2026-10-31 — todo → in_progress — divine (codex)
 - 2026-10-31 — in_progress → blocked — divine (codex) — Draft PR #63 final assets pass full verification; final-head CI pending, strict UI completion remains limited by invitation performance below 95 and physical-device QA recorded for TICKET-201
+- 2026-10-31 — blocked → in_progress — divine (codex) — User approved proceeding to review with TICKET-201 release gates retained; CI41238775314 passed
