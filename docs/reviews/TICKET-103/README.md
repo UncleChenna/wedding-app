@@ -12,4 +12,4 @@
 - Icons remain104, broad installability/offline checks113, actual staging-HTTPS device installs114. No removed Lighthouse PWA audit is required.
 - Full pnpm verify passed: 496 unit tests / 26 skips, production build, 529 browser tests / 135 skips in 4.5 minutes. Log: artifacts/TICKET-103/full-verification.log.
 
-The ticket criterion referencing downstream113/114 remains unchecked. Those tickets depend indirectly on103, so completion wording needs clarification without pretending their tests have run. Automatic approval review rejected checking all criteria before that clarification.
+The user approved the coverage clarification on 2026-10-31. The checked criterion records documentation of downstream ownership, not completed installation tests. TICKET-113 and TICKET-114 remain mandatory and are not certified by TICKET-103.
