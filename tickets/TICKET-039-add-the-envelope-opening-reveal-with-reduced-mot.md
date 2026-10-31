@@ -2,20 +2,20 @@
 id: TICKET-039
 title: Add the envelope-opening reveal with reduced-motion fallback
 epic: invitations
-status: todo
+status: in_progress
 priority: urgent
 estimate: M
 labels: [frontend, design]
 module: invitations
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-016, TICKET-037]
 blocks: [TICKET-138]
-branch: ""
+branch: TICKET-039
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-10-31
+started: 2026-10-31
 completed: ""
 reason: ""
 resume_to: ""
@@ -65,3 +65,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-31 — todo → claimed — divine (codex)
+- 2026-10-31 — todo → in_progress — divine (codex)
