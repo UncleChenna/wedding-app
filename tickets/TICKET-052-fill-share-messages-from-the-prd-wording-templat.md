@@ -2,7 +2,7 @@
 id: TICKET-052
 title: Fill share messages from the PRD wording templates
 epic: sharing
-status: in_progress
+status: in_review
 priority: urgent
 estimate: M
 labels: [backend, docs]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-050, TICKET-035, TICKET-025]
 blocks: [TICKET-053, TICKET-054, TICKET-158, TICKET-176]
 branch: TICKET-052
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/58
 created: 2026-10-21
 updated: 2026-10-31
 started: 2026-10-31
@@ -62,3 +62,4 @@ See: [Invitation wording](../docs/prd.md#invitation-wording).
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-10-31 — todo → claimed — divine (codex)
 - 2026-10-31 — todo → in_progress — divine (codex)
+- 2026-10-31 — in_progress → in_review — divine (codex)
