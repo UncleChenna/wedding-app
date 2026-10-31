@@ -2,7 +2,7 @@
 id: TICKET-039
 title: Add the envelope-opening reveal with reduced-motion fallback
 epic: invitations
-status: in_progress
+status: in_review
 priority: urgent
 estimate: M
 labels: [frontend, design]
