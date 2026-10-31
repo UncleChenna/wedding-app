@@ -1161,9 +1161,10 @@
     "WED-207": {
       "log": [
         "- 2026-10-31 — todo → claimed — divine (codex)",
-        "- 2026-10-31 — todo → in_progress — divine (codex)"
+        "- 2026-10-31 — todo → in_progress — divine (codex)",
+        "- 2026-10-31 — in_progress → blocked — divine (codex) — Draft PR #63 final assets pass full verification; final-head CI pending, strict UI completion remains limited by invitation performance below 95 and physical-device QA recorded for TICKET-201"
       ],
-      "status": "in_progress",
+      "status": "blocked",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-207",
@@ -1171,8 +1172,8 @@
       "started": "2026-10-31",
       "completed": "",
       "updated": "2026-10-31",
-      "reason": "",
-      "resume_to": ""
+      "reason": "Draft PR #63 final assets pass full verification; final-head CI pending, strict UI completion remains limited by invitation performance below 95 and physical-device QA recorded for TICKET-201",
+      "resume_to": "in_progress"
     }
   }
 }
