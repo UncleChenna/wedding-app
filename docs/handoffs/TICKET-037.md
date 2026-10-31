@@ -43,3 +43,9 @@ The merged font fallback alone still produced CLS0.008045/0.006245/0.008045. Del
 Four component tests, quick verification and25 targeted browser cases pass. Refreshed12 previews and60 live-state screenshots are all visually inspected via full-page contact sheets; original PNGs retained. Full gate running in session31226, log artifacts/TICKET-037/final-verification.log. Temporary performance server25592 stopped. Managed synthetic database remains running; other stacks untouched.
 
 Next: collect full gate result, investigate the variable performance result without selecting only favourable runs, check intermediate widths and retain physical device/map limitations. Update PR57 with final evidence and push scoped changes. Latest supplied AGENTS.md requires human merging; do not merge automatically. This ticket remains incomplete until outstanding checks are resolved.
+
+## 2026-10-31 — verification complete, draft checkpoint pushed
+
+Pushed9222728 to PR57: approved037/044 split, layout correction, all refreshed screenshots and metric evidence. Full verification completed successfully:471 unit tests passed/22 skipped, production build passed,525 browser tests passed/135 skipped. All16 intermediate-width checks passed. Ticket validation:207 valid. Temporary performance server is stopped; browser verification server exited normally. Current UI review still requests changes for variable Performance90/95/98 and unverified physical device/native-map checks. All three measured cold loads have CLS0. No blanket UI approval or ticket completion is claimed.
+
+Next action: investigate Lighthouse total-blocking-time/speed-index variability on an otherwise idle production build, keeping every result; retain physical QA in201. Draft PR57 body has actual evidence and limitations. Do not repeat the already applied scope/migration approvals. Current user-supplied AGENTS.md requires human PR merging. Work remains claimed/in_progress, not done.
