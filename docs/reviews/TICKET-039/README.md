@@ -1,6 +1,6 @@
 # TICKET-039 UI review
 
-Current follow-up: final CI found a Blush & Sage font-swap shift. The fixed label origin now passes all36 envelope tests and fresh12-layout CLS checks. All24 refreshed preview/motion images inspected. Full verification and final-head CI for this correction remain pending; earlier full-suite totals below refer to the prior source.
+Current follow-up: final CI found a Blush & Sage font-swap shift. The fixed label origin now passes all36 envelope tests and fresh12-layout CLS checks. All24 refreshed preview/motion images inspected. Corrected source c37da9a passes required full verification:475 unit tests/22 skips,build,561 browser tests/135 skips in5.9minutes. Final-head CI remains required before merge; earlier full-suite totals below refer to the prior source.
 
 2026-10-31. Invitation envelope on the personal invitation and /dev/invitation/letter. Base develop e381c810bc19404d7ded59a6155fc8977c1f474d; final source includes the fixed-width control and stable monogram glyph slots.
 
@@ -24,4 +24,4 @@ Current follow-up: final CI found a Blush & Sage font-swap shift. The fixed labe
 
 Findings resolved: label hover contrast, label-change button shift, Playfair monogram font-swap shift. Still required: final-head CI. Serial full gate passes. The owner approved the physical-device deferral to release-blocking TICKET-201. All96 screenshots have been inspected. This is not release approval.
 
-Review: CHANGES REQUESTED until the corrected source passes full verification and final-head CI; the explicit device-QA exception remains valid. Physical iOS/Android WhatsApp testing remains mandatory in release-blocking TICKET-201; this is not guest-release approval.
+Review: APPROVE for ticket review with the explicit device-QA exception; corrected source passes full local verification. Final-head CI is still required before merge. Physical iOS/Android WhatsApp testing remains mandatory in release-blocking TICKET-201; this is not guest-release approval.

@@ -23,7 +23,7 @@ The personal invitation now opens with a skippable 600ms envelope reveal. The le
 
 # Verification
 
-Current follow-up: final Linux CI85be1db found nonzero Blush & Sage CLS. The control-label font-swap correction passes a new regression and all36 envelope tests locally; fresh screenshots show CLS0 across12 layouts; refreshed Lighthouse99/100/98 Performance,100 Accessibility,CLS0 throughout. Full verification and final-head CI are pending again. Earlier passing totals below are historical, not approval of this new source.
+Current follow-up: final Linux CI85be1db found nonzero Blush & Sage CLS. The control-label font-swap correction passes a new regression and all36 envelope tests locally; fresh screenshots show CLS0 across12 layouts; refreshed Lighthouse99/100/98 Performance,100 Accessibility,CLS0 throughout. Corrected source c37da9a passed the required t:pr gate:475 unit tests/22 skips,production build,561 browser tests/135 skips in5.9minutes. CLI completed and pushed in_review metadata3ccf01b. Final-head CI remains required before merge. Earlier passing totals below are historical, not approval of this new source.
 
 - 15 focused unit tests pass; 42 focused envelope/shared-decoration browser tests pass across mobile and desktop.
 - Saved RSVP: three live tests plus one configured-details/no-JavaScript test pass.
