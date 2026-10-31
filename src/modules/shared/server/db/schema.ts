@@ -269,6 +269,7 @@ export const eventSettings = pgTable(
     rsvpLockAt: timestamp("rsvp_lock_at", { withTimezone: true }),
     orderingOpen: boolean("ordering_open").notNull().default(false),
     activeThemeId: text("active_theme_id").notNull().default("ivory-gold"),
+    activeDarkThemeId: text("active_dark_theme_id").notNull().default("midnight-champagne"),
     defaultMaxTagAlongs: integer("default_max_tag_alongs").notNull().default(1),
     retentionDays: integer("retention_days").notNull().default(90),
     maxOpenOrdersPerTable: integer("max_open_orders_per_table").notNull().default(3),
@@ -299,6 +300,10 @@ export const eventSettings = pgTable(
     check(
       "event_settings_theme_not_blank",
       sql`length(trim(${t.activeThemeId})) between 1 and 100`,
+    ),
+    check(
+      "event_settings_dark_theme_not_blank",
+      sql`length(trim(${t.activeDarkThemeId})) between 1 and 100`,
     ),
     check("event_settings_map_https", sql`${t.mapUrl} is null or ${t.mapUrl} like 'https://%'`),
   ],
