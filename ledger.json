@@ -1126,9 +1126,10 @@
     "WED-103": {
       "log": [
         "- 2026-10-31 — todo → claimed — divine (codex)",
-        "- 2026-10-31 — todo → in_progress — divine (codex)"
+        "- 2026-10-31 — todo → in_progress — divine (codex)",
+        "- 2026-10-31 — in_progress → blocked — divine (codex) — Draft PR https://github.com/UncleChenna/wedding-app/pull/61 passes full verification; awaiting approval to clarify circular downstream TICKET-113/114 acceptance wording without claiming those checks complete"
       ],
-      "status": "in_progress",
+      "status": "blocked",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-103",
@@ -1136,8 +1137,8 @@
       "started": "2026-10-31",
       "completed": "",
       "updated": "2026-10-31",
-      "reason": "",
-      "resume_to": ""
+      "reason": "Draft PR https://github.com/UncleChenna/wedding-app/pull/61 passes full verification; awaiting approval to clarify circular downstream TICKET-113/114 acceptance wording without claiming those checks complete",
+      "resume_to": "in_progress"
     }
   }
 }
