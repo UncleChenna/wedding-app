@@ -28,7 +28,7 @@ All three functional criteria pass: persisted yes/no with approved copy, rejecte
 - Twelve review cases pass: four themes ×375/768/1280, with initial/yes/no/error/closed states, axe, keyboard/focus, reduced motion and44px targets.
 - Three Lighthouse13.6.0 production runs: Performance100/100/100; Accessibility100/100/100; CLS0/0/0.
 - Full local gate completed formatting, lint, types,455 unit tests (21 opt-in skips) and build. Final browser report records passed with no failed tests; the terminal session was lost during continuation, so no unconfirmed browser total is claimed.
-- Independent t:pr gate and final-head CI results will be recorded before readiness.
+- Independent t:pr gate passed: formatting, lint, types,455 unit tests (21 opt-in skips), production build and481 browser tests (129 intentional skips). Final-head GitHub CI remains pending.
 
 Verified develop base: c22d9d94105817f10c63b7dae239fd2d4f6686e6. No tests, hooks or security checks were weakened.
 
@@ -44,7 +44,7 @@ Sixty originals and four inspected contact sheets: [review evidence](docs/review
 
 # UI checklist
 
-PASS: screenshots, token reuse, restraint/typography, emulated mobile layout/targets, reduced motion, keyboard/focus, axe/contrast, load stability, performance, approved copy and shared Button reuse. QR and staff feedback are not applicable. Physical sharing/devices remain NOT VERIFIED; see the full checklist in the review evidence. Final independent verification pending.
+PASS: screenshots, token reuse, restraint/typography, emulated mobile layout/targets, reduced motion, keyboard/focus, axe/contrast, load stability, performance, approved copy and shared Button reuse. QR and staff feedback are not applicable. Physical sharing/devices remain NOT VERIFIED; see the full checklist in the review evidence. Independent full verification passes; final-head GitHub CI and physical-device review remain pending.
 
 # Harness changes, if any
 

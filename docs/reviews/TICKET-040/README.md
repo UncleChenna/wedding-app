@@ -11,22 +11,22 @@
 
 ## Checklist
 
-| Item                 | Result and evidence                                                                                                                                                       |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Screenshots          | PASS:60 saved-state captures, all inspected.                                                                                                                              |
-| Tokens               | PASS: existing classes/tokens, no new colour/font/radius/shadow literals.                                                                                                 |
-| Restraint/typography | PASS: one attendance question, primary yes/secondary no, serif heading and readable body, restrained separator.                                                           |
-| Mobile               | PASS in emulation: all widths fit, targets44px+, safe-area padding; actual device checks remain unverified.                                                               |
-| Motion               | PASS: reduced-motion matrix and existing shared motion rules; no new animation.                                                                                           |
-| Keyboard             | PASS: Tab reaches yes, Enter submits, result receives focus, labelled status and visible outline.                                                                         |
-| Contrast             | PASS: axe at all60 states plus validated tokens; wording conveys errors without colour alone.                                                                             |
-| Load/images          | PASS: CLS0 in three production measurements. No new images; existing next/font with swap.                                                                                 |
-| Performance          | PASS:100/100 across three production mobile measurements.                                                                                                                 |
-| Copy                 | PASS: approved warm yes/no and confirmation wording; generic actionable errors.                                                                                           |
-| Shared components    | PASS: shared Button; this feature-specific form is exercised on its actual invitation route.                                                                              |
-| Sharing/devices      | NOT VERIFIED: actual iOS/Android WhatsApp/native-browser submission and history. Generic invitation metadata remains private/noindex; no guest details added to previews. |
-| QR                   | N/A: no QR output changed.                                                                                                                                                |
-| Staff feedback       | N/A: guest RSVP only.                                                                                                                                                     |
-| Verification         | Full gate currently running; quick lint/types, five DB, six live browser and twelve visual cases pass.                                                                    |
+| Item                 | Result and evidence                                                                                                                                                           |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Screenshots          | PASS:60 saved-state captures, all inspected.                                                                                                                                  |
+| Tokens               | PASS: existing classes/tokens, no new colour/font/radius/shadow literals.                                                                                                     |
+| Restraint/typography | PASS: one attendance question, primary yes/secondary no, serif heading and readable body, restrained separator.                                                               |
+| Mobile               | PASS in emulation: all widths fit, targets44px+, safe-area padding; actual device checks remain unverified.                                                                   |
+| Motion               | PASS: reduced-motion matrix and existing shared motion rules; no new animation.                                                                                               |
+| Keyboard             | PASS: Tab reaches yes, Enter submits, result receives focus, labelled status and visible outline.                                                                             |
+| Contrast             | PASS: axe at all60 states plus validated tokens; wording conveys errors without colour alone.                                                                                 |
+| Load/images          | PASS: CLS0 in three production measurements. No new images; existing next/font with swap.                                                                                     |
+| Performance          | PASS:100/100 across three production mobile measurements.                                                                                                                     |
+| Copy                 | PASS: approved warm yes/no and confirmation wording; generic actionable errors.                                                                                               |
+| Shared components    | PASS: shared Button; this feature-specific form is exercised on its actual invitation route.                                                                                  |
+| Sharing/devices      | NOT VERIFIED: actual iOS/Android WhatsApp/native-browser submission and history. Generic invitation metadata remains private/noindex; no guest details added to previews.     |
+| QR                   | N/A: no QR output changed.                                                                                                                                                    |
+| Staff feedback       | N/A: guest RSVP only.                                                                                                                                                         |
+| Verification         | PASS: independent t:pr gate,455 unit tests/21 opt-in skips, production build,481 browser tests/129 intentional skips; plus five DB, six live browser and twelve visual cases. |
 
 Decision: CHANGES REQUESTED for release approval until real-device WhatsApp checks pass. A merge with those checks tracked separately needs explicit approval because the previous exception covered labelled previews and this form saves replies. The product remains closed with the real venue timezone TBD. No launch readiness is claimed.
