@@ -259,6 +259,7 @@ export const eventSettings = pgTable(
   "event_settings",
   {
     id: integer("id").primaryKey().default(1),
+    invitationVoice: text("invitation_voice").notNull().default("warm"),
     coupleNames: text("couple_names").array().notNull().default(["Uchenna", "Adaora"]),
     eventDate: date("event_date", { mode: "string" }).notNull().default("2026-12-19"),
     ceremonyTime: time("ceremony_time"),
@@ -279,6 +280,10 @@ export const eventSettings = pgTable(
   },
   (t) => [
     check("event_settings_singleton", sql`${t.id} = 1`),
+    check(
+      "event_settings_invitation_voice",
+      sql`${t.invitationVoice} in ('warm', 'playful', 'formal')`,
+    ),
     check(
       "event_settings_couple_names",
       sql`cardinality(${t.coupleNames}) = 2 and array_position(${t.coupleNames}, null) is null and array_ndims(${t.coupleNames}) = 1 and length(trim(${t.coupleNames}[1])) between 1 and 200 and length(trim(${t.coupleNames}[2])) between 1 and 200`,

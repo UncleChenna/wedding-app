@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { defaultInvitationVoice, invitationVoiceSchema } from "./invitation-voice";
 
 const nonblank = z.string().trim().min(1);
 const timeZone = nonblank.refine((value) => {
@@ -12,6 +13,7 @@ const timeZone = nonblank.refine((value) => {
 
 export const eventSettingsSchema = z
   .object({
+    invitationVoice: invitationVoiceSchema,
     coupleNames: z.tuple([nonblank.max(200), nonblank.max(200)]),
     eventDate: z.iso.date(),
     ceremonyTime: z
@@ -41,6 +43,7 @@ export type EventSettings = z.infer<typeof eventSettingsSchema>;
 
 /** Approved draft values; unknown event details stay unknown and ordering stays closed. */
 export const defaultEventSettings = Object.freeze({
+  invitationVoice: defaultInvitationVoice,
   coupleNames: Object.freeze(["Uchenna", "Adaora"] as const),
   eventDate: "2026-12-19",
   ceremonyTime: null,
