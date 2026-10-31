@@ -2,20 +2,20 @@
 id: TICKET-052
 title: Fill share messages from the PRD wording templates
 epic: sharing
-status: todo
+status: in_progress
 priority: urgent
 estimate: S
 labels: [backend, docs]
 module: invitations
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-050, TICKET-035, TICKET-025]
 blocks: [TICKET-053, TICKET-054, TICKET-158, TICKET-176]
-branch: ""
+branch: TICKET-052
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-10-31
+started: 2026-10-31
 completed: ""
 reason: ""
 resume_to: ""
@@ -60,3 +60,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-31 — todo → claimed — divine (codex)
+- 2026-10-31 — todo → in_progress — divine (codex)
