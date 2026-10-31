@@ -12,11 +12,17 @@ Server-rendered InvitationLetter shared by the personal page and a clearly label
 
 # Acceptance and evidence
 
-Draft: all criteria remain unchecked pending final review. Four component tests pass after initial missing-module failure. Production build and quick gate pass. Thirteen preview browser cases cover all themes at375/768/1280, axe,44px targets, keyboard anchor focus and long-name overflow. Six existing live RSVP checks pass, including native no-JavaScript POST. Two new isolated database tests verify configured details and long names in server HTML. All12 preview captures inspected: docs/reviews/TICKET-037.
+Owner approved keeping the conditional pass slot/anchor in TICKET-037 and moving actual returning-guest signed-pass integration into TICKET-044. Both ticket definitions record the decision; no functionality is dropped or falsely marked delivered.
+
+Four component tests and quick verification pass. The final targeted browser run passed25 cases:13 preview checks and12 real saved-RSVP visual cases. All12 preview screenshots and60 live screenshots have been refreshed and inspected across four themes and375/768/1280 widths. Earlier tests also proved native no-JavaScript RSVP persistence, token denial and configured event details with80-character guest/couple names.
+
+Merged develop base5bd56a82d37942a1a046fc1b1c93c22f2a6829bc, including the owner-authorized unchanged migration files. Explicit headline sentence lines and letter-aligned body copy eliminated measured cold-load shift in the real test invitation: CLS0/0/0. Accessibility scored100 in all three final Lighthouse runs. Performance90/95/98 does not yet consistently meet the95 threshold; all results are retained.
 
 # Remaining checks
 
-Full verification reached459 unit passes and505 browser passes, but failed the route-coverage assertion on both projects. The missing preview route has now been added to the accessibility registry; rerun is pending. Live saved-state visual review, Lighthouse/CLS, final integration/CI and physical-device QA remain. The approved RSVP visual-test update passed12 cases and captured60 live states; manual inspection remains. Three real-invitation Lighthouse runs scored99/100/100 Performance and100 Accessibility; CLS0.008045/0/0, so cold-load stability is not yet approved. Integrating the merged012 font repair and remeasurement remain. Real pass navigation cannot be claimed before044. Physical native-map/WhatsApp checks are unverified.
+Draft remains incomplete: investigate performance variability, record the currently running full verification result, retain physical WhatsApp/iOS/Android/native-map QA as unverified. TICKET-201 remains the device release gate. The previously failing accessibility route registration has been corrected; no assertion was removed. All16 intermediate-width checks at410/640/900/1024 passed. Signed passes remain mandatory in TICKET-044.
+
+Screenshots and detailed checklist: [review evidence](../reviews/TICKET-037/README.md). Production venue/time/timezone/dress code remain TBD; no sample details are presented as actual arrangements.
 
 # Risks and rollout
 

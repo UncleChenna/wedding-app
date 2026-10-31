@@ -1,0 +1,26 @@
+[
+  {
+    "run": 1,
+    "lighthouse": "13.6.0",
+    "performance": 0.9,
+    "accessibility": 1,
+    "cls": 0,
+    "lcp": 1129.79
+  },
+  {
+    "run": 2,
+    "lighthouse": "13.6.0",
+    "performance": 0.95,
+    "accessibility": 1,
+    "cls": 0,
+    "lcp": 999.1600000000001
+  },
+  {
+    "run": 3,
+    "lighthouse": "13.6.0",
+    "performance": 0.98,
+    "accessibility": 1,
+    "cls": 0,
+    "lcp": 962.338
+  }
+]

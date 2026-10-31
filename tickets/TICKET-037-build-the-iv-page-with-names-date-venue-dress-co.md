@@ -45,7 +45,7 @@ See: [Journey 1: receiving the IV and RSVP](../docs/prd.md#journey-1-receiving-t
 - [ ] Map link opens the venue in the native maps app (geo/https link).
 - [ ] The RSVP action is within thumb reach at 375px and never covered by sticky UI.
 
-- [ ] An 80-character couple or guest name wraps without clipping at 375px. Returning guests can go directly to their pass without replaying the envelope reveal.
+- [ ] An 80-character couple or guest name wraps without clipping at 375px. When supplied with issued-pass content, the layout provides a direct anchor to that rendered section; signed-pass issuance and returning-guest integration are verified in TICKET-044.
 
 ## Test plan
 
@@ -62,7 +62,7 @@ See: [Journey 1: receiving the IV and RSVP](../docs/prd.md#journey-1-receiving-t
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-10-31: Owner explicitly approved splitting the returning-pass requirement into TICKET-044. This ticket provides the content slot and matching anchor only; it never fabricates a pass or dead link. The real returning-guest requirement remains mandatory in TICKET-044 and is not declared delivered here.
 
 ## Activity log
 

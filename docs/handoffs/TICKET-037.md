@@ -33,3 +33,13 @@ Applied the explicitly approved e2e/rsvp-review.spec.ts update. All12 live visua
 Proposed retaining real returning-pass integration in044 and layout/anchor in037. Automatic approval review rejected edits to both ticket definitions as cross-ticket scope; exact split approval is pending. Neither ticket definition changed. Do not treat silence as approval. Other work can continue.
 
 Next: checkpoint/push, integrate verified origin/develop5bd56a82d37942a1a046fc1b1c93c22f2a6829bc (012), remeasure cold-load CLS and rerun full gate after route-registry correction, inspect live captures, then resolve pending scope decision and final review/CI. TICKET-037 remains draft and incomplete.
+
+## 2026-10-31 — owner approvals applied and layout stability corrected
+
+Owner explicitly approved the TICKET-037/044 requirement split and the three unchanged migration paths plus their local authorization record. Both ticket definitions now retain the requirement in the correct scope. Migration files were integrated unchanged from develop5bd56a82 in pushed415f0ba; no new migration authored. No authorization remains pending for these actions.
+
+The merged font fallback alone still produced CLS0.008045/0.006245/0.008045. Deliberate headline sentence lines reduced it to0.0001367; left-aligning letter greeting/subline produced CLS0 in all three measured cold loads. Final Lighthouse Performance90/95/98 and Accessibility100/100/100: performance is not yet a blanket pass. Preserve all metric files. No test threshold or assertion weakened.
+
+Four component tests, quick verification and25 targeted browser cases pass. Refreshed12 previews and60 live-state screenshots are all visually inspected via full-page contact sheets; original PNGs retained. Full gate running in session31226, log artifacts/TICKET-037/final-verification.log. Temporary performance server25592 stopped. Managed synthetic database remains running; other stacks untouched.
+
+Next: collect full gate result, investigate the variable performance result without selecting only favourable runs, check intermediate widths and retain physical device/map limitations. Update PR57 with final evidence and push scoped changes. Latest supplied AGENTS.md requires human merging; do not merge automatically. This ticket remains incomplete until outstanding checks are resolved.

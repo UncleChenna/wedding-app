@@ -52,9 +52,18 @@ export function InvitationLetter({
           <span className="my-2 block text-primary">{" & "}</span>
           <span className="block">{details.coupleNames[1]}</span>
         </h1>
-        <p className="mt-10 type-heading">{invitationSiteCopy.headline}</p>
-        <p className="mt-6 text-lg leading-relaxed wrap-anywhere">{greeting}</p>
-        <p className="mx-auto mt-6 max-w-prose text-lg leading-relaxed">
+        <p className="mt-10 type-heading">
+          {invitationSiteCopy.headline.split(/(?<=\.) /).map((line, index) => (
+            <span key={line} className="block">
+              {index > 0 ? " " : ""}
+              {line}
+            </span>
+          ))}
+        </p>
+        <p className="mx-auto mt-6 max-w-prose text-left text-lg leading-relaxed wrap-anywhere">
+          {greeting}
+        </p>
+        <p className="mx-auto mt-6 max-w-prose text-left text-lg leading-relaxed">
           {invitationSiteCopy.subline}
         </p>
         <nav

@@ -11,7 +11,9 @@ it("keeps undecided details honest and links to the rendered reply", () => {
     </InvitationLetter>,
   );
   expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Uchenna & Adaora");
-  expect(screen.getByText("Two stories. One ending: forever.")).toBeVisible();
+  expect(screen.getByText("Two stories.").closest("p")).toHaveTextContent(
+    "Two stories. One ending: forever.",
+  );
   expect(screen.getByText("Saturday, 19 December 2026")).toHaveAttribute("datetime", "2026-12-19");
   expect(screen.getByText("Venue to follow")).toBeVisible();
   expect(screen.getByText("Dress code to follow")).toBeVisible();
