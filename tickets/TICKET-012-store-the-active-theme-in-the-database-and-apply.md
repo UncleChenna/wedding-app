@@ -2,7 +2,7 @@
 id: TICKET-012
 title: Store the active theme in the database and apply it on the server
 epic: design-system
-status: in_review
+status: in_progress
 priority: urgent
 estimate: M
 labels: [backend, db, frontend]
@@ -73,3 +73,4 @@ UI: twelve captures inspected; home Lighthouse100/99/100 Performance,100 Accessi
 - 2026-10-31 — blocked → in_progress — divine (codex)
 - 2026-10-31 — in_progress → in_review — divine (codex)
 - 2026-10-31 — in_review → in_progress — divine (codex) — Fix final CI admin sign-in layout shift and integrate merged RSVP
+- 2026-10-31 — in_review → in_progress — divine (codex) — Diagnostic CI identifies heading fallback font moving by 3px; repair metrics
