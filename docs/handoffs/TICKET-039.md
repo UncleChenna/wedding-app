@@ -21,3 +21,13 @@ PR59 https://github.com/UncleChenna/wedding-app/pull/59 is draft, implementation
 Inspected all12 preview theme/width screenshots; older mobile/tablet images had the dev issue badge, and production captures supersede them. No layout clipping found. Still require full fresh production review evidence, motion frames, actual invitation/database regression, Lighthouse/CLS, physical-device exception disposition. Prepared ignored artifacts/TICKET-039/measure-performance.mjs adapted from037 with exact039/31401 fixture guard; do not run until isolated RSVP fixture exists and other load tests stop. Previous dev server43480 is stopped.
 
 Hover correction verification: all4 theme first/return/keyboard/hover-axe tests pass on desktop (12.5s); text stays opaque and the underline retains180ms feedback. Full production gate will rerun on this correction.
+
+## 2026-10-31 — zero-CLS production fixes and performance evidence
+
+Current uncommitted follow-up fixes fixed-width controls and stable glyph positions. The shared Monogram wraps each initial in a span; only envelope CSS applies fixed slots. Initial button-width CLS0.0002254163 fixed; dark-theme font-swap CLS0.0000741877 and0.0000840198 diagnosed using actual shift sources, then fixed with glyph slots. No threshold weakened. Strengthened e2e first-visit tests assert cold-loadCLS0 and identical control width/x before and after label change.
+
+Production review script passed all12 layouts:CLS0, no overflow,44px targets;12 motion frames captured; live reduced-motion and storage denial pass. Saved-RSVP browser tests3pass, real configured-details/no-JavaScript1pass. Three serial mobile Lighthouse runs on a synthetic real invitation:99/99/100 Performance,100 Accessibility throughout,CLS0. Synthetic performance invitation cleaned up in finally. Database retains only the guarded RSVP test settings. Raw files remain artifacts/TICKET-039; review metrics/screenshots now in docs/reviews/TICKET-039.
+
+Full verification session77334 was deliberately interrupted after184 browser passes to repair CLS; not a pass. Production server session38780 now serves31411. Focused final envelope/shared-decoration suite session12621 is running; poll it. Next: final visual inspection including shared /dev/theme, update evidence, commit/push, stop owned server before final full gate, then t:pr and final-head CI. No physical device verification or completion claimed. DraftPR59 already exists.
+
+Final focused production envelope/shared-decoration suite completed:42 passed in32seconds across mobile and desktop, including strict CLS0, stable control bounds and hover axe. Production server38780 stopped before final full gate.

@@ -7,6 +7,15 @@ for (const theme of listThemes()) {
     await page.setViewportSize({ width: 375, height: 900 });
     await page.emulateMedia({ reducedMotion: "no-preference" });
     await page.addInitScript(() => {
+      let shift = 0;
+      new PerformanceObserver((list) => {
+        for (const entry of list.getEntries()) {
+          if ("hadRecentInput" in entry && !entry.hadRecentInput && "value" in entry) {
+            shift += Number(entry.value);
+            document.documentElement.dataset.envelopeCls = String(shift);
+          }
+        }
+      }).observe({ type: "layout-shift", buffered: true });
       document.addEventListener("animationstart", (event) => {
         const target = event.target;
         if (!(target instanceof Element) || !target.closest("[data-envelope]")) return;
@@ -17,6 +26,14 @@ for (const theme of listThemes()) {
     await expect(page.locator("html")).toHaveAttribute("data-envelope-animated", "true");
     const replay = page.getByRole("button", { name: "Replay opening" });
     await expect(replay).toBeVisible();
+    await page.evaluate(() => document.fonts.ready);
+    await page.evaluate(
+      () =>
+        new Promise<void>((resolve) =>
+          requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+        ),
+    );
+    expect((await page.locator("html").getAttribute("data-envelope-cls")) ?? "0").toBe("0");
     await replay.hover();
     await expect(replay).toHaveCSS("opacity", "1");
     expect(await scanA11y(page)).toEqual([]);
@@ -28,6 +45,7 @@ for (const theme of listThemes()) {
     await replay.click();
     const envelope = page.locator("[data-envelope]");
     await expect(envelope).toHaveAttribute("data-opening", "true");
+    const openingBounds = await envelope.getByRole("button").boundingBox();
     expect(
       await envelope
         .getByRole("button")
@@ -70,6 +88,9 @@ for (const theme of listThemes()) {
     await expect(envelope).toHaveAttribute("data-opening", "true");
     await page.clock.runFor(600);
     await expect(replay).toBeVisible();
+    const openBounds = await replay.boundingBox();
+    expect(openBounds?.width).toBe(openingBounds?.width);
+    expect(openBounds?.x).toBe(openingBounds?.x);
     await replay.focus();
     await page.keyboard.press("Enter");
     const skip = page.getByRole("button", { name: "Skip opening" });

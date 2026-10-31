@@ -23,6 +23,20 @@
   inset: 2.5rem 0 auto;
   text-align: center;
 }
+.invitation-envelope-letter [data-initials] {
+  display: grid;
+  grid-template-columns: 1.75rem 1rem 1.75rem;
+  align-items: center;
+  width: 4.5rem;
+  height: 3rem;
+  line-height: 3rem;
+}
+.invitation-envelope-letter [data-initials] > span {
+  display: block;
+  margin: 0;
+  text-align: left;
+  line-height: 3rem;
+}
 .invitation-envelope-flap {
   transform-origin: 50% 40.95%;
   transform: rotateX(180deg);
@@ -40,6 +54,7 @@
 }
 .invitation-envelope-control {
   position: relative;
+  width: min(100%, 14rem);
   transition: none;
 }
 .invitation-envelope-control::after {
