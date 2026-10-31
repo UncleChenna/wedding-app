@@ -9,7 +9,11 @@ import { settleAnimations } from "./axe";
  * theme can be checked without changing the active pair. Variables already inline on <html>
  * are cleared first: optional ones (e.g. --t-pattern-*) must not leak into another theme.
  */
-export async function applyTheme(page: Page, theme: Theme): Promise<void> {
+export async function applyTheme(
+  page: Page,
+  theme: Theme,
+  settle: (page: Page) => Promise<void> = settleAnimations,
+): Promise<void> {
   // Interactive previews scope variables below <html>; switch their real control too.
   const previewTheme = page.getByRole("combobox", { name: "Preview theme", exact: true });
   if (await previewTheme.count()) await previewTheme.selectOption(theme.id);
@@ -26,5 +30,5 @@ export async function applyTheme(page: Page, theme: Theme): Promise<void> {
     { vars: themeToCssVars(theme), scheme: theme.colorScheme, id: theme.id },
   );
   await page.evaluate(() => document.fonts.ready);
-  await settleAnimations(page);
+  await settle(page);
 }
