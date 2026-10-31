@@ -23,7 +23,13 @@ Live pages now resolve a validated light/dark theme pair from event settings and
 
 # Verification
 
-Before integrating develop c22d9d94105817f10c63b7dae239fd2d4f6686e6: full gate passed 442 unit tests (17 opt-in skips), 451 browser tests (123 conditional skips), formatting, lint, strict types and production build. The isolated stored-theme matrix passed; two seed runs produced identical counts. Final integrated t:pr gate passed:458 unit tests (17 opt-in skips),483 browser tests (129 conditional skips), formatting, lint, strict types and production build.
+Verified against integrated develop 7191d981231d9fb71f101d308abc05fa4ec79501. Final local full verification passed 467 unit tests (22 opt-in skips), 485 browser tests (129 conditional skips), formatting, lint, strict types and production build. Seven isolated settings database tests and five RSVP database tests passed separately. The stored-theme matrix passed and two seed runs produced identical counts.
+
+CI exposed a real font swap: the sign-in heading moved 3px. The registry now uses metric-adjusted local fallback faces with Linux Liberation aliases for Cormorant, Inter, Jost and Playfair, preserving primary fonts, weights and swap. Normal and delayed browser tests retain strict zero CLS, assert fallback loading and report shifting nodes. Styled Linux tests with staggered heading/body loading reproduce the body shift before the full repair and measure zero after it; early unstyled Docker runs are excluded.
+
+Twenty-four production screenshot cases passed for sign-in and the showcase. All four themes were visually reviewed at 375/768/1280px; original captures and sectional contact sheets are in docs/reviews/TICKET-012/font-fallback. These verify settled primary-font appearance; cold-load behavior has separate regression coverage.
+
+GitHub run 41198630938 failed during production build at the known Next Google-font resolver error, before browser tests. A retry is pending; required final-head CI must pass before merge.
 
 Home Lighthouse mobile: Performance 100/99/100, Accessibility 100/100/100. CLS was 0.00007339025, not zero; Lighthouse identifies the existing celebration-label web-font swap. Physical WhatsApp checks and strict-zero CLS remain TICKET-201 under the user's existing preview-only QA exception. No production release approval is claimed.
 
@@ -44,11 +50,3 @@ The default cache is process-local. Multi-instance deployment needs coordinated 
 # Harness changes, if any
 
 No hooks, test assertions or policies were weakened. TICKET-207 records the recurring cold font-build resolver failure; only its definition is included here. Added opt-in isolated theme integration coverage and private HTTP cache regression coverage.
-
-## 31 October integration and regression follow-up
-
-Integrated verified develop7191d981231d9fb71f101d308abc05fa4ec79501 (saved RSVP). Full local gate:467 unit tests/22 opt-in skips and483 browser tests/129 conditional skips; five real RSVP DB tests pass. The prior final CI failed a tiny admin font-swap CLS assertion; it was not reproduced on macOS or the matching Linux browser, and no production typography change is claimed as a fix. The zero-CLS test now measures normal and delayed font loads, waits for final paint, preserves focus checking and includes source-node diagnostics. Four targeted tests pass; final complete gate/CI must pass before merge. Physical-device and inherited preview CLS release work remain201.
-
-## Font fallback repair
-
-Diagnostic CI identified the Welcome back heading moving3px during the font swap. The registry now has metric-adjusted local serif and sans fallbacks with Linux Liberation aliases, retaining primary fonts/weights/swap. Four Mac normal/delayed tests assert all fallback faces load. Corrected Linux localhost tests reproduce body CLS0.00516 with serif-only fallback, then zero with the complete repair. Early unstyled Docker runs are explicitly excluded. Twelve admin captures inspected;24 screenshot cases pass, with showcase slice review and final full gate/CI pending. See font-fallback/README.md and handoff for the exact remaining checks.
