@@ -49,13 +49,20 @@
   animation: invitation-envelope-emerge var(--motion-duration-signature) var(--motion-easing) both;
 }
 .invitation-envelope-controlSpace {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
   height: 2.75rem;
-  text-align: center;
 }
 .invitation-envelope-control {
   position: relative;
   width: min(100%, 14rem);
   transition: none;
+}
+.invitation-envelope-controlLabel {
+  display: block;
+  width: 9rem;
+  text-align: left;
 }
 .invitation-envelope-control::after {
   content: "";

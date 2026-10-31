@@ -23,6 +23,8 @@ The personal invitation now opens with a skippable 600ms envelope reveal. The le
 
 # Verification
 
+Current follow-up: final Linux CI85be1db found nonzero Blush & Sage CLS. The control-label font-swap correction passes a new regression and all36 envelope tests locally; fresh screenshots show CLS0 across12 layouts; refreshed Lighthouse99/100/98 Performance,100 Accessibility,CLS0 throughout. Full verification and final-head CI are pending again. Earlier passing totals below are historical, not approval of this new source.
+
 - 15 focused unit tests pass; 42 focused envelope/shared-decoration browser tests pass across mobile and desktop.
 - Saved RSVP: three live tests plus one configured-details/no-JavaScript test pass.
 - All 12 theme/width RSVP reviews pass, including initial, yes, no, error and closed states; axe, overflow and 44px targets checked for each state.
@@ -50,7 +52,7 @@ Reviewed evidence: docs/reviews/TICKET-039 contains 12 full preview layouts,12 m
 - PASS keyboard: invitation and RSVP remain usable during animation; focus retained.
 - PASS contrast: all-theme axe including hover. Text stays opaque; only underline fades.
 - PASS load:CLS0 across12 production layouts and three Lighthouse runs; no photo added.
-- PASS performance: mobile Lighthouse99/99/100 Performance and100 Accessibility in all three serial real-invitation runs.
+- PASS performance: mobile Lighthouse99/100/98 Performance and100 Accessibility in all three serial real-invitation runs.
 - PASS copy: approved invitation copy retained; Skip opening / Replay opening are concise controls.
 - PASS shared components: Button/Monogram reused;12 shared showcase captures reviewed.
 - NOT VERIFIED sharing/devices: physical iOS/Android WhatsApp checks remain release-gated; owner explicitly approved proceeding to review while retaining this release gate on 2026-10-31.

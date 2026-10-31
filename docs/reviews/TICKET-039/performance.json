@@ -4,29 +4,29 @@
     "lighthouse": "13.6.0",
     "performance": 0.99,
     "accessibility": 1,
-    "totalBlockingTime": 110,
-    "speedIndex": 936.992,
+    "totalBlockingTime": 103,
+    "speedIndex": 928.9159999999999,
     "cls": 0,
-    "lcp": 936.992
+    "lcp": 928.9159999999999
   },
   {
     "run": 2,
     "lighthouse": "13.6.0",
-    "performance": 0.99,
+    "performance": 1,
     "accessibility": 1,
-    "totalBlockingTime": 92,
-    "speedIndex": 919.23,
+    "totalBlockingTime": 73,
+    "speedIndex": 918.059,
     "cls": 0,
-    "lcp": 919.23
+    "lcp": 918.059
   },
   {
     "run": 3,
     "lighthouse": "13.6.0",
-    "performance": 1,
+    "performance": 0.98,
     "accessibility": 1,
-    "totalBlockingTime": 81,
-    "speedIndex": 929.012,
+    "totalBlockingTime": 164,
+    "speedIndex": 932.954,
     "cls": 0,
-    "lcp": 929.012
+    "lcp": 932.954
   }
 ]

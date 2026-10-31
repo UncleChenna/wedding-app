@@ -8,10 +8,29 @@ for (const theme of listThemes()) {
     await page.emulateMedia({ reducedMotion: "no-preference" });
     await page.addInitScript(() => {
       let shift = 0;
+      const sources: unknown[] = [];
       new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
           if ("hadRecentInput" in entry && !entry.hadRecentInput && "value" in entry) {
             shift += Number(entry.value);
+            const layout = entry as PerformanceEntry & {
+              sources?: {
+                node?: Node;
+                previousRect: DOMRectReadOnly;
+                currentRect: DOMRectReadOnly;
+              }[];
+            };
+            sources.push(
+              ...(layout.sources ?? []).map((source) => ({
+                element: (source.node instanceof Element
+                  ? source.node
+                  : source.node?.parentElement
+                )?.outerHTML.slice(0, 300),
+                previous: source.previousRect.toJSON(),
+                current: source.currentRect.toJSON(),
+              })),
+            );
+            document.documentElement.dataset.envelopeShiftSources = JSON.stringify(sources);
             document.documentElement.dataset.envelopeCls = String(shift);
           }
         }
@@ -33,7 +52,11 @@ for (const theme of listThemes()) {
           requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
         ),
     );
-    expect((await page.locator("html").getAttribute("data-envelope-cls")) ?? "0").toBe("0");
+    expect(
+      (await page.locator("html").getAttribute("data-envelope-cls")) ?? "0",
+      (await page.locator("html").getAttribute("data-envelope-shift-sources")) ??
+        "No shift sources",
+    ).toBe("0");
     await replay.hover();
     await expect(replay).toHaveCSS("opacity", "1");
     expect(await scanA11y(page)).toEqual([]);
@@ -136,4 +159,26 @@ test("@smoke invitation remains usable without JavaScript", async ({ browser, ba
   await expect(page.getByRole("link", { name: "Try RSVP preview" })).toBeInViewport();
   await expect(page.getByRole("button", { name: /opening/ })).toHaveCount(0);
   await context.close();
+});
+
+test("@smoke envelope control text keeps its origin through a font swap", async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 900 });
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/dev/invitation/letter?theme=blush-sage");
+  const control = page.getByRole("button", { name: "Replay opening" });
+  await expect(control).toBeVisible();
+  await page.evaluate(() => document.fonts.ready);
+  const positions = await control.evaluate((button) => {
+    const text = document.createTreeWalker(button, NodeFilter.SHOW_TEXT).nextNode();
+    if (!text) throw new Error("Missing control label");
+    const range = document.createRange();
+    range.selectNodeContents(text);
+    const original = button.style.fontFamily;
+    const x = range.getBoundingClientRect().x;
+    button.style.fontFamily = "monospace";
+    const fallbackX = range.getBoundingClientRect().x;
+    button.style.fontFamily = original;
+    return { x, fallbackX };
+  });
+  expect(positions.fallbackX).toBe(positions.x);
 });

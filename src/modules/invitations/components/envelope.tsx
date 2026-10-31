@@ -82,7 +82,9 @@ export function Envelope({
             className="invitation-envelope-control"
             onClick={() => setOpening(!opening)}
           >
-            {opening ? "Skip opening" : "Replay opening"}
+            <span className="invitation-envelope-controlLabel">
+              {opening ? "Skip opening" : "Replay opening"}
+            </span>
           </Button>
         )}
       </div>
