@@ -23,3 +23,13 @@ Full rerun on base f7e8fac passed:442 unit,17 opt-in skips;451 browser,123 condi
 ## 2026-10-31 — final integrated gate
 
 Integrated develop c22d9d94105817f10c63b7dae239fd2d4f6686e6 without conflicts. Mandatory t:pr verification passed458 unit tests/17 opt-in skips and483 browser tests/129 conditional skips; build/format/lint/types passed. PR56 is in_review. Final-head CI and ready-for-review publication remain before the authorized merge. TICKET-207 records recurring cold Google-font/Turbopack failures; no font implementation is included. The approved migration and all source/evidence are pushed. Stack012 remains stopped with backup preserved.
+
+## 2026-10-31 — RSVP integration and cold-font diagnostics
+
+PR56's final CI run41185615131 failed admin desktop CLS0 with0.00006491546630859375; no merge performed. Resumed ticket via CLI and integrated verified develop7191d981231d9fb71f101d308abc05fa4ec79501 as2c2c94f. Proxy merge retains private no-store headers and the validated RSVP POST path.
+
+Investigated retained CI screenshots/trace. Mac delayed-font runs and the matching Playwright1.64.1 Linux image with CPU throttling and separate heading/body font delays all reported no shifts. This does not prove the prior failure fixed. No speculative production CSS/font change made. The existing zero-CLS regression now covers both ordinary and delayed font loading, waits for the final paint before interaction, and reports shifting source nodes/rectangles. Focus assertion retained. Four targeted mobile/desktop cases pass.
+
+Integrated full local gate passed467 unit tests/22 opt-in skips and483 browser tests/129 conditional skips, format/lint/types/build, with DB stopped to exercise fallback. Five real RSVP database tests then passed after restarting only stack wedding-4064897a35a1. Later addition of ordinary-load coverage adds two browser cases and requires final t:pr gate/CI. Diagnostic CI run41196773149 is still active on495dc4e; inspect its result rather than assuming a pass. No tests weakened. Approved migration unchanged.
+
+Local diagnostic images/scripts are ignored under artifacts/TICKET-012; no new project dependency. Temporary Docker browser containers removed automatically. Stack012 currently running with preserved synthetic seed; do not reset. Final merge requires final-head required CI and existing UI release limitations remain201. TICKET-207 remains the cold-font build reliability follow-up.

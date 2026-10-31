@@ -44,3 +44,7 @@ The default cache is process-local. Multi-instance deployment needs coordinated 
 # Harness changes, if any
 
 No hooks, test assertions or policies were weakened. TICKET-207 records the recurring cold font-build resolver failure; only its definition is included here. Added opt-in isolated theme integration coverage and private HTTP cache regression coverage.
+
+## 31 October integration and regression follow-up
+
+Integrated verified develop7191d981231d9fb71f101d308abc05fa4ec79501 (saved RSVP). Full local gate:467 unit tests/22 opt-in skips and483 browser tests/129 conditional skips; five real RSVP DB tests pass. The prior final CI failed a tiny admin font-swap CLS assertion; it was not reproduced on macOS or the matching Linux browser, and no production typography change is claimed as a fix. The zero-CLS test now measures normal and delayed font loads, waits for final paint, preserves focus checking and includes source-node diagnostics. Four targeted tests pass; final complete gate/CI must pass before merge. Physical-device and inherited preview CLS release work remain201.
