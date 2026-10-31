@@ -1,0 +1,76 @@
+.invitation-envelope-envelope {
+  width: min(100%, 17.5rem);
+  margin: 0 auto 2rem;
+  color: var(--t-color-primary);
+}
+.invitation-envelope-illustration {
+  position: relative;
+  height: 13.125rem;
+  pointer-events: none;
+}
+.invitation-envelope-outline,
+.invitation-envelope-flap {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.invitation-envelope-front {
+  fill: var(--t-color-background);
+}
+.invitation-envelope-letter {
+  position: absolute;
+  inset: 2.5rem 0 auto;
+  text-align: center;
+}
+.invitation-envelope-flap {
+  transform-origin: 50% 40.95%;
+  transform: rotateX(180deg);
+  opacity: 0;
+}
+.invitation-envelope-envelope[data-opening="true"] .invitation-envelope-flap {
+  animation: invitation-envelope-unfold var(--motion-duration-signature) var(--motion-easing) both;
+}
+.invitation-envelope-envelope[data-opening="true"] .invitation-envelope-letter {
+  animation: invitation-envelope-emerge var(--motion-duration-signature) var(--motion-easing) both;
+}
+.invitation-envelope-controlSpace {
+  height: 2.75rem;
+  text-align: center;
+}
+.invitation-envelope-control {
+  transition: opacity var(--motion-duration-control) var(--motion-easing);
+}
+.invitation-envelope-control:hover {
+  opacity: 0.8;
+}
+@keyframes invitation-envelope-unfold {
+  from {
+    transform: rotateX(0deg);
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  to {
+    transform: rotateX(180deg);
+    opacity: 0;
+  }
+}
+@keyframes invitation-envelope-emerge {
+  from {
+    transform: translateY(2rem);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .invitation-envelope-envelope[data-opening="true"] .invitation-envelope-flap,
+  .invitation-envelope-envelope[data-opening="true"] .invitation-envelope-letter {
+    animation: none;
+  }
+  .invitation-envelope-control {
+    transition: none;
+  }
+}

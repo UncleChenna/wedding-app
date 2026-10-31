@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
+import { connection } from "next/server";
+
+export const instant = false;
 import { InvitationLetterPreview } from "@/modules/invitations/components/invitation-letter-preview";
 
 export const metadata: Metadata = {
@@ -16,12 +18,9 @@ async function Preview({
     <InvitationLetterPreview selectedTheme={params.theme} sample={params.details === "sample"} />
   );
 }
-export default function Page(props: {
+export default async function Page(props: {
   searchParams: Promise<{ theme?: string; details?: string }>;
 }) {
-  return (
-    <Suspense fallback={<main className="p-6 text-lg">Preparing your invitation…</main>}>
-      <Preview {...props} />
-    </Suspense>
-  );
+  await connection();
+  return <Preview {...props} />;
 }

@@ -1,0 +1,15 @@
+# TICKET-039 handoff
+
+2026-10-31 · divine · codex · branch TICKET-039. Base e381c810bc19404d7ded59a6155fc8977c1f474d. Managed stack wedding-f8523ac2ffa8, database31401, dev31410, browser31411. Start f974aec pushed. Ticket remains in_progress.
+
+Implemented a token-coloured stationery envelope around shared Monogram with shared Button. InvitationLetter remains server rendered; only decorative envelope is client code. 600ms unfold/rise, 180ms opacity control; local non-personal flag skips repeat automatic opening. Supplied pass also bypasses it. Skip/replay keeps control identity and focus. Reduced motion removes movement; storage denial is tolerated. Illustration and control reserve space. Preview now matches real invitation request rendering instead of a JavaScript-dependent Suspense shell.
+
+Initial unit suite failed for missing component, then 8 envelope/letter tests passed. Initial browser run exposed missing CSS-module class exports under this repo's configured Tailwind Turbopack loader: use namespaced envelope.css, no framework config changes. Test originally included 180ms button transition in reveal count; separated control/reveal assertions. A Replay-labelled locator incorrectly waited for the animation to finish; now targets the same control regardless of label. Clock-controlled tests preserve assertions for exactly 600ms, opacity/transform only, and focused RSVP during opening. Latest focused browser run:17 passed in17.1s, all4 themes,375/768/1280, reduced motion, first/repeat, skip/replay, no-JavaScript standard browser and axe. A temporary bot UA was removed; actual standard no-JavaScript test passes after preview rendering fix.
+
+Screenshots currently ignored artifacts/TICKET-039/{theme}-{width}.png. Only ivory375 inspected so far; remaining images and motion frames require inspection. Production Lighthouse/CLS, actual personal invitation regression, full verify, physical devices and release-gate disposition remain incomplete. Do not mark done or promote draft yet.
+
+Next: inspect screenshots, strengthen browser storage/media-change/target checks as needed, stop owned dev server before production build, run full verify and production Lighthouse, record full UI checklist, push detailed PR. Existing dev server session43480 serves31411. Quick verification session96308 was running at this handoff writing; poll it before relying on result.
+
+TICKET-052 final head f59425fd303350c09b02a5fc6d4562f23176516d passed CI41215406299 and merged as fd91e877e29b32ef911acfd45036ad65767732c7. CLI done and bookkeeping6be68cf pushed. This039 branch still uses pre052 develop; integrate latest base explicitly before final verification if required, respecting protected migration carry rules.
+
+Tool lesson: applying patch text/heredocs containing JSX was misclassified as dynamic shell writes by the shared pre-tool parser. Properly shell-quoted python -c with explicit output paths succeeded without bypassing a hook. Proposed separate harness fix: parse apply_patch as patches and heredoc bodies as data, with regressions for JSX braces; no harness edits in this feature.
