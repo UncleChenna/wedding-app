@@ -23,7 +23,7 @@ Live pages now resolve a validated light/dark theme pair from event settings and
 
 # Verification
 
-Before integrating develop c22d9d94105817f10c63b7dae239fd2d4f6686e6: full gate passed 442 unit tests (17 opt-in skips), 451 browser tests (123 conditional skips), formatting, lint, strict types and production build. The isolated stored-theme matrix passed; two seed runs produced identical counts. Final integrated gate will be recorded before merge.
+Before integrating develop c22d9d94105817f10c63b7dae239fd2d4f6686e6: full gate passed 442 unit tests (17 opt-in skips), 451 browser tests (123 conditional skips), formatting, lint, strict types and production build. The isolated stored-theme matrix passed; two seed runs produced identical counts. Final integrated t:pr gate passed:458 unit tests (17 opt-in skips),483 browser tests (129 conditional skips), formatting, lint, strict types and production build.
 
 Home Lighthouse mobile: Performance 100/99/100, Accessibility 100/100/100. CLS was 0.00007339025, not zero; Lighthouse identifies the existing celebration-label web-font swap. Physical WhatsApp checks and strict-zero CLS remain TICKET-201 under the user's existing preview-only QA exception. No production release approval is claimed.
 
@@ -43,4 +43,4 @@ The default cache is process-local. Multi-instance deployment needs coordinated 
 
 # Harness changes, if any
 
-No hooks, test assertions or policies were weakened. Added opt-in isolated theme integration coverage and private HTTP cache regression coverage.
+No hooks, test assertions or policies were weakened. TICKET-207 records the recurring cold font-build resolver failure; only its definition is included here. Added opt-in isolated theme integration coverage and private HTTP cache regression coverage.
