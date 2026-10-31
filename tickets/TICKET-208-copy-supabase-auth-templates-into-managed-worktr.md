@@ -2,7 +2,7 @@
 id: TICKET-208
 title: Copy Supabase auth templates into managed worktrees
 epic: foundations
-status: in_progress
+status: in_review
 priority: high
 estimate: S
 labels: [infra, test]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: []
 blocks: []
 branch: TICKET-208
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/62
 created: 2026-10-31
 updated: 2026-10-31
 started: 2026-10-31
@@ -69,4 +69,4 @@ Earlier managed setup attempts failed to include referenced auth email templates
 - 2026-10-31 — backlog → todo — divine (codex)
 - 2026-10-31 — todo → claimed — divine (codex)
 - 2026-10-31 — todo → in_progress — divine (codex)
-
+- 2026-10-31 — in_progress → in_review — divine (codex)
