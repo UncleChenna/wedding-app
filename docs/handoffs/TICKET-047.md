@@ -25,3 +25,7 @@ This ticket starts from merged develop and does not include039 commits.
 ## Setup learning
 
 Managed worktree setup omitted supabase/templates/admin-code.html referenced by its config. Copied unchanged source to .harness/supabase-project/supabase/templates/admin-code.html; db:start and resumed wt:new succeeded. Propose a separate ticket ensuring referenced templates are copied and tested.
+
+## 2026-10-31 — implementation pushed, QA remains
+
+Full pnpm verify passed: 491 unit tests / 26 skips, production build, 529 browser tests / 135 skips in 5.8 minutes. Log: artifacts/TICKET-047/full-verification.log. Full verification session61772 exited0. Implementation966a068 pushed; draft PR https://github.com/UncleChenna/wedding-app/pull/60. All local browser/performance processes stopped. Physical WhatsApp preview testing is still unverified and measured homepage CLS is nonzero; retain release-blocking201 and do not tick the phone criterion. Next: obtain real-device evidence and resolve/explicitly disposition the zero-CLS finding before t:pr can complete. Keep the draft reviewable and use the CLI blocked status while other ready tickets proceed. No merge performed.

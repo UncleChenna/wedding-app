@@ -24,7 +24,7 @@ Invitation links now advertise a themed1200x630 couple-photo preview. Every gues
 # Verification
 
 Two unit contracts pass; production build passes; targeted Playwright3 pass. Twelve endpoint screenshots and four native PNGs inspected. Output tracing includes the JPEG and all four TTF files.
-Public-homepage Lighthouse Performance99/100/100 and Accessibility100. Measured CLS0.00007339025002649255 does not meet zero-CLS. Full verification pending.
+Public-homepage Lighthouse Performance99/100/100 and Accessibility100. Measured CLS0.00007339025002649255 does not meet zero-CLS. Full pnpm verify passed: 491 unit tests / 26 skips, production build, 529 browser tests / 135 skips in 5.8 minutes. Log: artifacts/TICKET-047/full-verification.log.
 
 # Risks and rollout
 

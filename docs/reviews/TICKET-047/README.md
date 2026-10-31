@@ -18,7 +18,7 @@ the optional theme parameter accepts only registered theme IDs. Without it, the 
 | Shared components        | N/A: server PNG rendering cannot reuse browser controls; existing theme registry and approved copy reused.                                                                                                                                      |
 | Sharing/devices          | Crawler-like browser check passes for two isolated synthetic invitations, with identical metadata and no private names, IDs or tokens. Physical WhatsApp iOS/Android remains NOT VERIFIED.                                                      |
 | QR/staff                 | N/A: unchanged.                                                                                                                                                                                                                                 |
-| Verification             | Unit contracts2 pass, production build passes, targeted Playwright3 pass. Full verify pending.                                                                                                                                                  |
+| Verification             | Unit contracts2 pass, production build passes, targeted Playwright3 pass. Full pnpm verify passed: 491 unit tests / 26 skips, production build, 529 browser tests / 135 skips in 5.8 minutes. Log: artifacts/TICKET-047/full-verification.log.  |
 
 Findings resolved: page-level Open Graph overrides dropped inherited image metadata; the old file-convention placeholder took priority over explicit metadata. The new public route replaces that placeholder.
 Metadata comparison retains every tag and compares canonical ordering because viewport tags can stream in a different order.
