@@ -2,7 +2,7 @@
 id: TICKET-039
 title: Add the envelope-opening reveal with reduced-motion fallback
 epic: invitations
-status: in_progress
+status: in_review
 priority: urgent
 estimate: M
 labels: [frontend, design]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-016, TICKET-037]
 blocks: [TICKET-138]
 branch: TICKET-039
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/59
 created: 2026-10-21
 updated: 2026-10-31
 started: 2026-10-31
@@ -67,3 +67,4 @@ See: [Design principles](../docs/prd.md#design-principles) · [Design principles
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-10-31 — todo → claimed — divine (codex)
 - 2026-10-31 — todo → in_progress — divine (codex)
+- 2026-10-31 — in_progress → in_review — divine (codex)
