@@ -127,19 +127,67 @@ test("local email OTP creates only httpOnly session cookies and signs out", asyn
   );
 });
 
-test("admin sign-in loads without layout shifts @smoke", async ({ page }) => {
-  await page.addInitScript(() => {
-    const state = window as unknown as { authCls: number };
-    state.authCls = 0;
-    new PerformanceObserver((list) => {
-      for (const entry of list.getEntries()) {
-        const shift = entry as PerformanceEntry & { hadRecentInput: boolean; value: number };
-        if (!shift.hadRecentInput) state.authCls += shift.value;
-      }
-    }).observe({ type: "layout-shift", buffered: true });
+for (const fontDelay of [0, 500]) {
+  test(`admin sign-in loads without layout shifts with ${fontDelay}ms font delay @smoke`, async ({
+    page,
+  }) => {
+    // Preserve normal loading as well as explicitly exercising a cold font swap.
+    if (fontDelay) {
+      await page.route("**/*.woff2", async (route) => {
+        await new Promise((resolve) => setTimeout(resolve, fontDelay));
+        await route.continue();
+      });
+    }
+    await page.addInitScript(() => {
+      const state = window as unknown as { authCls: number; authShifts: unknown[] };
+      state.authCls = 0;
+      state.authShifts = [];
+      new PerformanceObserver((list) => {
+        for (const entry of list.getEntries()) {
+          const shift = entry as PerformanceEntry & {
+            hadRecentInput: boolean;
+            value: number;
+            sources: { node?: Node; previousRect: DOMRectReadOnly; currentRect: DOMRectReadOnly }[];
+          };
+          if (!shift.hadRecentInput) {
+            state.authCls += shift.value;
+            state.authShifts.push({
+              value: shift.value,
+              sources: shift.sources.map((source) => ({
+                node: source.node?.nodeName,
+                text: source.node?.textContent?.slice(0, 100),
+                before: source.previousRect.toJSON(),
+                after: source.currentRect.toJSON(),
+              })),
+            });
+          }
+        }
+      }).observe({ type: "layout-shift", buffered: true });
+    });
+    await page.goto("/admin/sign-in");
+    await page.evaluate(() => document.fonts.ready);
+    const fallbackFaces = await page.evaluate(async () => {
+      return Promise.all(
+        ["Cormorant", "Inter", "Jost", "Playfair"].map(async (family) => {
+          const faces = await document.fonts.load(`48px "${family} Metric Fallback"`);
+          return faces.map((face) => face.status);
+        }),
+      );
+    });
+    expect(fallbackFaces).toEqual([["loaded"], ["loaded"], ["loaded"], ["loaded"]]);
+    // Let the observer receive the final paint before user input can exclude a shift.
+    await page.evaluate(
+      () =>
+        new Promise<void>((resolve) =>
+          requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+        ),
+    );
+    const measured = await page.evaluate(() => {
+      const state = window as unknown as { authCls: number; authShifts: unknown[] };
+      return { authCls: state.authCls, authShifts: state.authShifts };
+    });
+    expect(measured.authCls, JSON.stringify(measured.authShifts)).toBe(0);
+    await page.getByLabel("Email address").focus();
+    expect(await page.evaluate(() => (window as unknown as { authCls: number }).authCls)).toBe(0);
   });
-  await page.goto("/admin/sign-in");
-  await page.evaluate(() => document.fonts.ready);
-  await page.getByLabel("Email address").focus();
-  expect(await page.evaluate(() => (window as unknown as { authCls: number }).authCls)).toBe(0);
-});
+}

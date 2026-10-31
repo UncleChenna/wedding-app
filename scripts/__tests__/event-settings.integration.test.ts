@@ -50,12 +50,41 @@ describe.runIf(process.env.RUN_SETTINGS_DB_TESTS === "1")(
           ordering_open: false,
           default_max_tag_alongs: 1,
           retention_days: 90,
+          active_theme_id: "ivory-gold",
+          active_dark_theme_id: "midnight-champagne",
         });
         await expect(
           tx.savepoint((sp) => sp`insert into event_settings default values`),
         ).rejects.toMatchObject({ code: "23505" });
         await expect(
           tx.savepoint((sp) => sp`insert into event_settings (id) values (2)`),
+        ).rejects.toMatchObject({ code: "23514" });
+      });
+    });
+
+    it("stores both theme slots without changing event details", async () => {
+      const { loadThemeSelection, saveThemeSelection } =
+        await import("../../src/modules/theming/server/theme-repository");
+      const database = drizzle(db, { schema });
+      try {
+        await database.transaction(async (tx) => {
+          await tx.insert(schema.eventSettings).values({ venue: "Theme test venue" });
+          await saveThemeSelection({ light: "blush-sage", dark: "emerald-night" }, tx);
+          expect(await loadThemeSelection(tx)).toEqual({
+            light: "blush-sage",
+            dark: "emerald-night",
+          });
+          const [row] = await tx.select().from(schema.eventSettings);
+          expect(row?.venue).toBe("Theme test venue");
+          throw rollback;
+        });
+      } catch (error) {
+        if (error !== rollback) throw error;
+      }
+      await exercise(async (tx) => {
+        await tx`insert into event_settings default values`;
+        await expect(
+          tx.savepoint((sp) => sp`update event_settings set active_dark_theme_id = ' '`),
         ).rejects.toMatchObject({ code: "23514" });
       });
     });

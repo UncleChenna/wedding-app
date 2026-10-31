@@ -1,11 +1,12 @@
-import { getActiveThemes } from "@/modules/theming";
+import { getStoredActiveThemes } from "@/modules/theming/server/active-themes";
 import { ThemePattern } from "@/modules/theming/components/theme-pattern";
 
 /** Layout for guest-facing pages (invitation, RSVP, table ordering). */
-export default function GuestLayout({ children }: LayoutProps<"/">) {
+export default async function GuestLayout({ children }: LayoutProps<"/">) {
+  const themes = await getStoredActiveThemes();
   return (
     <div className="flex min-h-dvh flex-col">
-      <ThemePattern themes={getActiveThemes()} />
+      <ThemePattern themes={themes} />
       {children}
     </div>
   );

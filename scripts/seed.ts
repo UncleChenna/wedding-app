@@ -37,6 +37,7 @@ async function main() {
         rsvps, guests, tables, invitations, staff, themes restart identity cascade
     `);
     await tx.execute(sql`alter table rsvp_changes enable trigger rsvp_history_append_only`);
+    await tx.insert(schema.eventSettings).values(data.eventSettings);
     await tx.insert(schema.themes).values(data.themes);
     await tx.insert(schema.staff).values(data.staff);
     await tx.insert(schema.tables).values(data.tables);
