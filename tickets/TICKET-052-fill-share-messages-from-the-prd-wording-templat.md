@@ -41,8 +41,8 @@ See: [Invitation wording](../docs/prd.md#invitation-wording).
 
 ## Acceptance criteria
 
-- [ ] Placeholders are filled and no `{` remains in output (unit, every template).
-- [ ] Changing the voice setting changes the generated message.
+- [x] Placeholders are filled and no `{` remains in output (unit, every template).
+- [x] Changing the voice setting changes the generated message.
 
 ## Test plan
 
