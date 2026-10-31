@@ -1,0 +1,1055 @@
+{
+  "total": 436,
+  "selected": 412,
+  "unique": 188,
+  "frames": [
+    {
+      "path": "artifacts/screenshots/blush-sage/1280/admin_sign-in.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/1280/dev_invitation.part-1.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/1280/dev_invitation.part-2.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/1280/dev_rsvp.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/1280/dev_theme.part-1.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/1280/dev_theme.part-1.png",
+        "artifacts/screenshots/ivory-gold/1280/dev_theme.part-1.png",
+        "artifacts/screenshots/midnight-champagne/1280/dev_theme.part-1.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/1280/dev_theme.part-10.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/1280/dev_theme.part-11.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/1280/dev_theme.part-11.png",
+        "artifacts/screenshots/ivory-gold/1280/dev_theme.part-11.png",
+        "artifacts/screenshots/midnight-champagne/1280/dev_theme.part-11.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/1280/dev_theme.part-12.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/1280/dev_theme.part-12.png",
+        "artifacts/screenshots/ivory-gold/1280/dev_theme.part-12.png",
+        "artifacts/screenshots/midnight-champagne/1280/dev_theme.part-12.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/1280/dev_theme.part-13.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/1280/dev_theme.part-13.png",
+        "artifacts/screenshots/ivory-gold/1280/dev_theme.part-13.png",
+        "artifacts/screenshots/midnight-champagne/1280/dev_theme.part-13.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/1280/dev_theme.part-14.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/1280/dev_theme.part-14.png",
+        "artifacts/screenshots/ivory-gold/1280/dev_theme.part-14.png",
+        "artifacts/screenshots/midnight-champagne/1280/dev_theme.part-14.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/1280/dev_theme.part-15.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/1280/dev_theme.part-16.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/1280/dev_theme.part-16.png",
+        "artifacts/screenshots/ivory-gold/1280/dev_theme.part-16.png",
+        "artifacts/screenshots/midnight-champagne/1280/dev_theme.part-16.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/1280/dev_theme.part-17.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/1280/dev_theme.part-17.png",
+        "artifacts/screenshots/ivory-gold/1280/dev_theme.part-17.png",
+        "artifacts/screenshots/midnight-champagne/1280/dev_theme.part-17.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/1280/dev_theme.part-18.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/1280/dev_theme.part-18.png",
+        "artifacts/screenshots/ivory-gold/1280/dev_theme.part-18.png",
+        "artifacts/screenshots/midnight-champagne/1280/dev_theme.part-18.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/1280/dev_theme.part-19.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/1280/dev_theme.part-19.png",
+        "artifacts/screenshots/ivory-gold/1280/dev_theme.part-19.png",
+        "artifacts/screenshots/midnight-champagne/1280/dev_theme.part-19.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/1280/dev_theme.part-2.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/1280/dev_theme.part-2.png",
+        "artifacts/screenshots/ivory-gold/1280/dev_theme.part-2.png",
+        "artifacts/screenshots/midnight-champagne/1280/dev_theme.part-2.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/1280/dev_theme.part-20.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/1280/dev_theme.part-20.png",
+        "artifacts/screenshots/ivory-gold/1280/dev_theme.part-20.png",
+        "artifacts/screenshots/midnight-champagne/1280/dev_theme.part-20.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/1280/dev_theme.part-21.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/1280/dev_theme.part-22.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/1280/dev_theme.part-22.png",
+        "artifacts/screenshots/ivory-gold/1280/dev_theme.part-22.png",
+        "artifacts/screenshots/midnight-champagne/1280/dev_theme.part-22.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/1280/dev_theme.part-23.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/1280/dev_theme.part-23.png",
+        "artifacts/screenshots/ivory-gold/1280/dev_theme.part-23.png",
+        "artifacts/screenshots/midnight-champagne/1280/dev_theme.part-23.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/1280/dev_theme.part-3.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/1280/dev_theme.part-3.png",
+        "artifacts/screenshots/ivory-gold/1280/dev_theme.part-3.png",
+        "artifacts/screenshots/midnight-champagne/1280/dev_theme.part-3.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/1280/dev_theme.part-4.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/1280/dev_theme.part-5.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/1280/dev_theme.part-5.png",
+        "artifacts/screenshots/ivory-gold/1280/dev_theme.part-5.png",
+        "artifacts/screenshots/midnight-champagne/1280/dev_theme.part-5.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/1280/dev_theme.part-6.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/1280/dev_theme.part-6.png",
+        "artifacts/screenshots/ivory-gold/1280/dev_theme.part-6.png",
+        "artifacts/screenshots/midnight-champagne/1280/dev_theme.part-6.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/1280/dev_theme.part-7.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/1280/dev_theme.part-7.png",
+        "artifacts/screenshots/ivory-gold/1280/dev_theme.part-7.png",
+        "artifacts/screenshots/midnight-champagne/1280/dev_theme.part-7.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/1280/dev_theme.part-8.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/1280/dev_theme.part-8.png",
+        "artifacts/screenshots/ivory-gold/1280/dev_theme.part-8.png",
+        "artifacts/screenshots/midnight-champagne/1280/dev_theme.part-8.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/1280/dev_theme.part-9.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/1280/dev_theme.part-9.png",
+        "artifacts/screenshots/ivory-gold/1280/dev_theme.part-9.png",
+        "artifacts/screenshots/midnight-champagne/1280/dev_theme.part-9.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/1280/home.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/admin_sign-in.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_invitation.part-1.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_invitation.part-2.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_invitation.part-3.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_rsvp.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-1.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/375/dev_theme.part-1.png",
+        "artifacts/screenshots/ivory-gold/375/dev_theme.part-1.png",
+        "artifacts/screenshots/midnight-champagne/375/dev_theme.part-1.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-10.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/375/dev_theme.part-10.png",
+        "artifacts/screenshots/ivory-gold/375/dev_theme.part-10.png",
+        "artifacts/screenshots/midnight-champagne/375/dev_theme.part-10.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-11.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/375/dev_theme.part-11.png",
+        "artifacts/screenshots/ivory-gold/375/dev_theme.part-11.png",
+        "artifacts/screenshots/midnight-champagne/375/dev_theme.part-11.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-12.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/375/dev_theme.part-12.png",
+        "artifacts/screenshots/ivory-gold/375/dev_theme.part-12.png",
+        "artifacts/screenshots/midnight-champagne/375/dev_theme.part-12.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-13.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/375/dev_theme.part-13.png",
+        "artifacts/screenshots/ivory-gold/375/dev_theme.part-13.png",
+        "artifacts/screenshots/midnight-champagne/375/dev_theme.part-13.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-14.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/375/dev_theme.part-14.png",
+        "artifacts/screenshots/ivory-gold/375/dev_theme.part-14.png",
+        "artifacts/screenshots/midnight-champagne/375/dev_theme.part-14.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-15.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/375/dev_theme.part-15.png",
+        "artifacts/screenshots/ivory-gold/375/dev_theme.part-15.png",
+        "artifacts/screenshots/midnight-champagne/375/dev_theme.part-15.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-16.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-17.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/375/dev_theme.part-17.png",
+        "artifacts/screenshots/ivory-gold/375/dev_theme.part-17.png",
+        "artifacts/screenshots/midnight-champagne/375/dev_theme.part-17.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-18.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/375/dev_theme.part-18.png",
+        "artifacts/screenshots/ivory-gold/375/dev_theme.part-18.png",
+        "artifacts/screenshots/midnight-champagne/375/dev_theme.part-18.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-19.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/375/dev_theme.part-19.png",
+        "artifacts/screenshots/ivory-gold/375/dev_theme.part-19.png",
+        "artifacts/screenshots/midnight-champagne/375/dev_theme.part-19.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-2.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/375/dev_theme.part-2.png",
+        "artifacts/screenshots/ivory-gold/375/dev_theme.part-2.png",
+        "artifacts/screenshots/midnight-champagne/375/dev_theme.part-2.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-20.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/375/dev_theme.part-20.png",
+        "artifacts/screenshots/ivory-gold/375/dev_theme.part-20.png",
+        "artifacts/screenshots/midnight-champagne/375/dev_theme.part-20.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-21.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/375/dev_theme.part-21.png",
+        "artifacts/screenshots/ivory-gold/375/dev_theme.part-21.png",
+        "artifacts/screenshots/midnight-champagne/375/dev_theme.part-21.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-22.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/375/dev_theme.part-22.png",
+        "artifacts/screenshots/ivory-gold/375/dev_theme.part-22.png",
+        "artifacts/screenshots/midnight-champagne/375/dev_theme.part-22.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-23.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/375/dev_theme.part-23.png",
+        "artifacts/screenshots/ivory-gold/375/dev_theme.part-23.png",
+        "artifacts/screenshots/midnight-champagne/375/dev_theme.part-23.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-24.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/375/dev_theme.part-24.png",
+        "artifacts/screenshots/ivory-gold/375/dev_theme.part-24.png",
+        "artifacts/screenshots/midnight-champagne/375/dev_theme.part-24.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-25.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-26.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/375/dev_theme.part-26.png",
+        "artifacts/screenshots/ivory-gold/375/dev_theme.part-26.png",
+        "artifacts/screenshots/midnight-champagne/375/dev_theme.part-26.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-27.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/375/dev_theme.part-27.png",
+        "artifacts/screenshots/ivory-gold/375/dev_theme.part-27.png",
+        "artifacts/screenshots/midnight-champagne/375/dev_theme.part-27.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-28.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/375/dev_theme.part-28.png",
+        "artifacts/screenshots/ivory-gold/375/dev_theme.part-28.png",
+        "artifacts/screenshots/midnight-champagne/375/dev_theme.part-28.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-29.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/375/dev_theme.part-29.png",
+        "artifacts/screenshots/ivory-gold/375/dev_theme.part-29.png",
+        "artifacts/screenshots/midnight-champagne/375/dev_theme.part-29.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-3.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/375/dev_theme.part-3.png",
+        "artifacts/screenshots/ivory-gold/375/dev_theme.part-3.png",
+        "artifacts/screenshots/midnight-champagne/375/dev_theme.part-3.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-30.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/375/dev_theme.part-30.png",
+        "artifacts/screenshots/ivory-gold/375/dev_theme.part-30.png",
+        "artifacts/screenshots/midnight-champagne/375/dev_theme.part-30.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-31.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/375/dev_theme.part-31.png",
+        "artifacts/screenshots/ivory-gold/375/dev_theme.part-31.png",
+        "artifacts/screenshots/midnight-champagne/375/dev_theme.part-31.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-32.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/375/dev_theme.part-32.png",
+        "artifacts/screenshots/ivory-gold/375/dev_theme.part-32.png",
+        "artifacts/screenshots/midnight-champagne/375/dev_theme.part-32.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-33.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/375/dev_theme.part-33.png",
+        "artifacts/screenshots/ivory-gold/375/dev_theme.part-33.png",
+        "artifacts/screenshots/midnight-champagne/375/dev_theme.part-33.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-34.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-35.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/375/dev_theme.part-35.png",
+        "artifacts/screenshots/ivory-gold/375/dev_theme.part-35.png",
+        "artifacts/screenshots/midnight-champagne/375/dev_theme.part-35.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-36.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/375/dev_theme.part-36.png",
+        "artifacts/screenshots/ivory-gold/375/dev_theme.part-36.png",
+        "artifacts/screenshots/midnight-champagne/375/dev_theme.part-36.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-37.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/375/dev_theme.part-37.png",
+        "artifacts/screenshots/ivory-gold/375/dev_theme.part-37.png",
+        "artifacts/screenshots/midnight-champagne/375/dev_theme.part-37.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-38.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/375/dev_theme.part-38.png",
+        "artifacts/screenshots/ivory-gold/375/dev_theme.part-38.png",
+        "artifacts/screenshots/midnight-champagne/375/dev_theme.part-38.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-4.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/375/dev_theme.part-4.png",
+        "artifacts/screenshots/ivory-gold/375/dev_theme.part-4.png",
+        "artifacts/screenshots/midnight-champagne/375/dev_theme.part-4.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-5.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/375/dev_theme.part-5.png",
+        "artifacts/screenshots/ivory-gold/375/dev_theme.part-5.png",
+        "artifacts/screenshots/midnight-champagne/375/dev_theme.part-5.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-6.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-7.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/375/dev_theme.part-7.png",
+        "artifacts/screenshots/ivory-gold/375/dev_theme.part-7.png",
+        "artifacts/screenshots/midnight-champagne/375/dev_theme.part-7.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-8.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/375/dev_theme.part-8.png",
+        "artifacts/screenshots/ivory-gold/375/dev_theme.part-8.png",
+        "artifacts/screenshots/midnight-champagne/375/dev_theme.part-8.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/dev_theme.part-9.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/375/dev_theme.part-9.png",
+        "artifacts/screenshots/ivory-gold/375/dev_theme.part-9.png",
+        "artifacts/screenshots/midnight-champagne/375/dev_theme.part-9.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/375/home.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/768/admin_sign-in.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/768/dev_invitation.part-1.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/768/dev_invitation.part-2.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/768/dev_invitation.part-3.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/768/dev_rsvp.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/768/dev_theme.part-1.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/768/dev_theme.part-1.png",
+        "artifacts/screenshots/ivory-gold/768/dev_theme.part-1.png",
+        "artifacts/screenshots/midnight-champagne/768/dev_theme.part-1.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/768/dev_theme.part-10.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/768/dev_theme.part-10.png",
+        "artifacts/screenshots/ivory-gold/768/dev_theme.part-10.png",
+        "artifacts/screenshots/midnight-champagne/768/dev_theme.part-10.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/768/dev_theme.part-11.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/768/dev_theme.part-12.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/768/dev_theme.part-12.png",
+        "artifacts/screenshots/ivory-gold/768/dev_theme.part-12.png",
+        "artifacts/screenshots/midnight-champagne/768/dev_theme.part-12.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/768/dev_theme.part-13.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/768/dev_theme.part-13.png",
+        "artifacts/screenshots/ivory-gold/768/dev_theme.part-13.png",
+        "artifacts/screenshots/midnight-champagne/768/dev_theme.part-13.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/768/dev_theme.part-14.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/768/dev_theme.part-14.png",
+        "artifacts/screenshots/ivory-gold/768/dev_theme.part-14.png",
+        "artifacts/screenshots/midnight-champagne/768/dev_theme.part-14.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/768/dev_theme.part-15.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/768/dev_theme.part-15.png",
+        "artifacts/screenshots/ivory-gold/768/dev_theme.part-15.png",
+        "artifacts/screenshots/midnight-champagne/768/dev_theme.part-15.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/768/dev_theme.part-16.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/768/dev_theme.part-16.png",
+        "artifacts/screenshots/ivory-gold/768/dev_theme.part-16.png",
+        "artifacts/screenshots/midnight-champagne/768/dev_theme.part-16.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/768/dev_theme.part-17.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/768/dev_theme.part-18.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/768/dev_theme.part-18.png",
+        "artifacts/screenshots/ivory-gold/768/dev_theme.part-18.png",
+        "artifacts/screenshots/midnight-champagne/768/dev_theme.part-18.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/768/dev_theme.part-19.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/768/dev_theme.part-19.png",
+        "artifacts/screenshots/ivory-gold/768/dev_theme.part-19.png",
+        "artifacts/screenshots/midnight-champagne/768/dev_theme.part-19.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/768/dev_theme.part-2.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/768/dev_theme.part-2.png",
+        "artifacts/screenshots/ivory-gold/768/dev_theme.part-2.png",
+        "artifacts/screenshots/midnight-champagne/768/dev_theme.part-2.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/768/dev_theme.part-20.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/768/dev_theme.part-20.png",
+        "artifacts/screenshots/ivory-gold/768/dev_theme.part-20.png",
+        "artifacts/screenshots/midnight-champagne/768/dev_theme.part-20.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/768/dev_theme.part-21.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/768/dev_theme.part-21.png",
+        "artifacts/screenshots/ivory-gold/768/dev_theme.part-21.png",
+        "artifacts/screenshots/midnight-champagne/768/dev_theme.part-21.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/768/dev_theme.part-22.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/768/dev_theme.part-22.png",
+        "artifacts/screenshots/ivory-gold/768/dev_theme.part-22.png",
+        "artifacts/screenshots/midnight-champagne/768/dev_theme.part-22.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/768/dev_theme.part-23.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/768/dev_theme.part-24.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/768/dev_theme.part-24.png",
+        "artifacts/screenshots/ivory-gold/768/dev_theme.part-24.png",
+        "artifacts/screenshots/midnight-champagne/768/dev_theme.part-24.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/768/dev_theme.part-25.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/768/dev_theme.part-25.png",
+        "artifacts/screenshots/ivory-gold/768/dev_theme.part-25.png",
+        "artifacts/screenshots/midnight-champagne/768/dev_theme.part-25.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/768/dev_theme.part-3.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/768/dev_theme.part-3.png",
+        "artifacts/screenshots/ivory-gold/768/dev_theme.part-3.png",
+        "artifacts/screenshots/midnight-champagne/768/dev_theme.part-3.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/768/dev_theme.part-4.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/768/dev_theme.part-4.png",
+        "artifacts/screenshots/ivory-gold/768/dev_theme.part-4.png",
+        "artifacts/screenshots/midnight-champagne/768/dev_theme.part-4.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/768/dev_theme.part-5.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/768/dev_theme.part-6.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/768/dev_theme.part-6.png",
+        "artifacts/screenshots/ivory-gold/768/dev_theme.part-6.png",
+        "artifacts/screenshots/midnight-champagne/768/dev_theme.part-6.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/768/dev_theme.part-7.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/768/dev_theme.part-7.png",
+        "artifacts/screenshots/ivory-gold/768/dev_theme.part-7.png",
+        "artifacts/screenshots/midnight-champagne/768/dev_theme.part-7.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/768/dev_theme.part-8.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/768/dev_theme.part-8.png",
+        "artifacts/screenshots/ivory-gold/768/dev_theme.part-8.png",
+        "artifacts/screenshots/midnight-champagne/768/dev_theme.part-8.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/768/dev_theme.part-9.png",
+      "duplicates": [
+        "artifacts/screenshots/emerald-night/768/dev_theme.part-9.png",
+        "artifacts/screenshots/ivory-gold/768/dev_theme.part-9.png",
+        "artifacts/screenshots/midnight-champagne/768/dev_theme.part-9.png"
+      ]
+    },
+    {
+      "path": "artifacts/screenshots/blush-sage/768/home.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/emerald-night/1280/admin_sign-in.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/emerald-night/1280/dev_invitation.part-1.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/emerald-night/1280/dev_invitation.part-2.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/emerald-night/1280/dev_rsvp.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/emerald-night/1280/dev_theme.part-10.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/emerald-night/1280/dev_theme.part-15.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/emerald-night/1280/dev_theme.part-21.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/emerald-night/1280/dev_theme.part-4.png",
+      "duplicates": ["artifacts/screenshots/ivory-gold/1280/dev_theme.part-4.png"]
+    },
+    {
+      "path": "artifacts/screenshots/emerald-night/1280/home.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/emerald-night/375/admin_sign-in.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/emerald-night/375/dev_invitation.part-1.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/emerald-night/375/dev_invitation.part-2.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/emerald-night/375/dev_invitation.part-3.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/emerald-night/375/dev_rsvp.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/emerald-night/375/dev_theme.part-16.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/emerald-night/375/dev_theme.part-25.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/emerald-night/375/dev_theme.part-34.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/emerald-night/375/dev_theme.part-6.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/emerald-night/375/home.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/emerald-night/768/admin_sign-in.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/emerald-night/768/dev_invitation.part-1.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/emerald-night/768/dev_invitation.part-2.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/emerald-night/768/dev_invitation.part-3.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/emerald-night/768/dev_rsvp.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/emerald-night/768/dev_theme.part-11.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/emerald-night/768/dev_theme.part-17.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/emerald-night/768/dev_theme.part-23.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/emerald-night/768/dev_theme.part-5.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/emerald-night/768/home.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/ivory-gold/1280/admin_sign-in.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/ivory-gold/1280/dev_invitation.part-1.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/ivory-gold/1280/dev_invitation.part-2.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/ivory-gold/1280/dev_rsvp.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/ivory-gold/1280/dev_theme.part-10.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/ivory-gold/1280/dev_theme.part-15.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/ivory-gold/1280/dev_theme.part-21.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/ivory-gold/1280/home.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/ivory-gold/375/admin_sign-in.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/ivory-gold/375/dev_invitation.part-1.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/ivory-gold/375/dev_invitation.part-2.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/ivory-gold/375/dev_invitation.part-3.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/ivory-gold/375/dev_rsvp.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/ivory-gold/375/dev_theme.part-16.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/ivory-gold/375/dev_theme.part-25.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/ivory-gold/375/dev_theme.part-34.png",
+      "duplicates": ["artifacts/screenshots/midnight-champagne/375/dev_theme.part-34.png"]
+    },
+    {
+      "path": "artifacts/screenshots/ivory-gold/375/dev_theme.part-6.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/ivory-gold/375/home.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/ivory-gold/768/admin_sign-in.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/ivory-gold/768/dev_invitation.part-1.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/ivory-gold/768/dev_invitation.part-2.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/ivory-gold/768/dev_invitation.part-3.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/ivory-gold/768/dev_rsvp.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/ivory-gold/768/dev_theme.part-11.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/ivory-gold/768/dev_theme.part-17.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/ivory-gold/768/dev_theme.part-23.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/ivory-gold/768/dev_theme.part-5.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/ivory-gold/768/home.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/midnight-champagne/1280/admin_sign-in.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/midnight-champagne/1280/dev_invitation.part-1.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/midnight-champagne/1280/dev_invitation.part-2.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/midnight-champagne/1280/dev_rsvp.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/midnight-champagne/1280/dev_theme.part-10.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/midnight-champagne/1280/dev_theme.part-15.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/midnight-champagne/1280/dev_theme.part-21.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/midnight-champagne/1280/dev_theme.part-4.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/midnight-champagne/1280/home.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/midnight-champagne/375/admin_sign-in.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/midnight-champagne/375/dev_invitation.part-1.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/midnight-champagne/375/dev_invitation.part-2.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/midnight-champagne/375/dev_invitation.part-3.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/midnight-champagne/375/dev_rsvp.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/midnight-champagne/375/dev_theme.part-16.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/midnight-champagne/375/dev_theme.part-25.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/midnight-champagne/375/dev_theme.part-6.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/midnight-champagne/375/home.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/midnight-champagne/768/admin_sign-in.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/midnight-champagne/768/dev_invitation.part-1.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/midnight-champagne/768/dev_invitation.part-2.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/midnight-champagne/768/dev_invitation.part-3.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/midnight-champagne/768/dev_rsvp.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/midnight-champagne/768/dev_theme.part-11.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/midnight-champagne/768/dev_theme.part-17.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/midnight-champagne/768/dev_theme.part-23.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/midnight-champagne/768/dev_theme.part-5.png",
+      "duplicates": []
+    },
+    {
+      "path": "artifacts/screenshots/midnight-champagne/768/home.png",
+      "duplicates": []
+    }
+  ]
+}
