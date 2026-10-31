@@ -2,7 +2,7 @@
 id: TICKET-039
 title: Add the envelope-opening reveal with reduced-motion fallback
 epic: invitations
-status: in_review
+status: in_progress
 priority: urgent
 estimate: M
 labels: [frontend, design]
@@ -69,3 +69,4 @@ See: [Design principles](../docs/prd.md#design-principles) · [Design principles
 - 2026-10-31 — todo → in_progress — divine (codex)
 - 2026-10-31 — in_progress → in_review — divine (codex)
 - 2026-10-31 — in_review → in_progress — divine (codex) — Final CI reproduced nonzero Blush & Sage envelope CLS; diagnose and fix without weakening zero-shift assertion
+- 2026-10-31 — in_review → in_progress — divine (codex) — CI diagnostics identify font-swap shift in invitation family label; fix actual moving text
