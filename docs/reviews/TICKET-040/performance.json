@@ -1,0 +1,29 @@
+[
+  {
+    "run": 1,
+    "lighthouse": "13.6.0",
+    "route": "/i/[synthetic-fixture]",
+    "performance": 100,
+    "accessibility": 100,
+    "cls": 0,
+    "lcp": 783.021
+  },
+  {
+    "run": 2,
+    "lighthouse": "13.6.0",
+    "route": "/i/[synthetic-fixture]",
+    "performance": 100,
+    "accessibility": 100,
+    "cls": 0,
+    "lcp": 770.9290000000001
+  },
+  {
+    "run": 3,
+    "lighthouse": "13.6.0",
+    "route": "/i/[synthetic-fixture]",
+    "performance": 100,
+    "accessibility": 100,
+    "cls": 0,
+    "lcp": 780.8409999999999
+  }
+]
