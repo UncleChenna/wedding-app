@@ -41,9 +41,9 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-4) · [Jou
 
 ## Acceptance criteria
 
-- [ ] Submitting yes/no updates the invitation status and shows the PRD confirmation copy.
-- [ ] Invalid or revoked tokens cannot submit (server-side check, tested).
-- [ ] Form works with JavaScript disabled (e2e).
+- [x] Submitting yes/no updates the invitation status and shows the PRD confirmation copy.
+- [x] Invalid or revoked tokens cannot submit (server-side check, tested).
+- [x] Form works with JavaScript disabled (e2e).
 
 ## Test plan
 
@@ -57,6 +57,8 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-4) · [Jou
 - `src/modules/invitations/server/rsvp.ts`
 
 ## Notes / decisions
+
+2026-10-31: Approved compiler-cache recovery completed. Five database tests, six real browser tests and twelve all-theme review cases pass after the final POST cleanup. Sixty screenshots inspected; three Lighthouse runs score100 Performance/Accessibility with CLS0. Final full browser report records passed; refresh the full gate through t:pr before review. Physical device checks remain unverified in TICKET-201. Verified develop base c22d9d94105817f10c63b7dae239fd2d4f6686e6.
 
 2026-10-30: Draft PR55 (https://github.com/UncleChenna/wedding-app/pull/55), implementation ec8855e pushed. Five isolated DB checks and six browser checks passed before final POST-routing cleanup; latest quick gate passes. Full build/browser/UI verification remains pending exact-path compiler-cache recovery approval. See docs/handoffs/TICKET-040.md; no completion claimed.
 

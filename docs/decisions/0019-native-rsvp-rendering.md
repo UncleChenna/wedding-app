@@ -18,6 +18,6 @@ GET/HEAD requests still check published invitations in Proxy. POST requests reac
 
 A private invitation's first byte can wait for database reads. Measure guest performance and CLS before release; do not cache guest data to mask latency. A native form remains functional with scripts disabled, including confirmation after reload. Proxy's POST handling is not authorization: every mutation must validate its own token and state.
 
-The latest POST routing cleanup still needs a rebuilt browser run. No CSRF allowlist, framework origin check, RLS policy or test assertion was disabled.
+The final POST routing cleanup passed six rebuilt mobile/desktop browser checks, including visible neutral rejection after revocation. Three production Lighthouse runs measured Performance100, Accessibility100 and CLS0; physical-device release checks remain TICKET-201. No CSRF allowlist, framework origin check, RLS policy or test assertion was disabled.
 
 References: installed Next.js docs for connection, instant and forms; [MDN Referrer-Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Referrer-Policy).

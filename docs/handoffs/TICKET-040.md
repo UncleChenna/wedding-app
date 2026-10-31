@@ -19,3 +19,15 @@ Next: resolve cache permission, rebuild and run RUN_RSVP_BROWSER_TESTS=1 caffein
 TICKET-030 is in_review with draft PR54 and full prior local/CI passes; physical authenticator QA deferral is still pending. Never merge it on the assumption that silence is approval.
 
 Latest quick gate passed lint, strict types and18 related tests /7 opt-in skips. Commit ec8855e includes the final Proxy cleanup, which remains unverified in a rebuilt browser. The draft PR preserves all remaining checks. No acceptance criteria have been marked complete.
+
+## 2026-10-31 — recovery and final review
+
+The user approved clearing only this ticket's Turbopack cache; recovery and rebuild succeeded. Integrated develop c22d9d94105817f10c63b7dae239fd2d4f6686e6 (MFA PR54 merged). Earlier cache and POST verification blockers above are resolved.
+
+Five real database tests and six real browser tests pass after the final cleanup. Twelve review cases cover four themes, three widths, five states, keyboard/focus, reduced motion, axe and44px targets. All60 screenshots and four correctly scaled contact sheets were inspected. Three Lighthouse production runs: Performance100/100/100, Accessibility100/100/100, CLS0/0/0. Evidence: docs/reviews/TICKET-040/.
+
+The full gate passed format/lint/types/build and455 unit tests with21 opt-in skips. Its terminal session was lost across continuation; test-results/.last-run.json records the final browser run as passed with no failed tests. Do not invent an exact browser total from that file. The independent t:pr gate will provide fresh final evidence.
+
+Physical WhatsApp/iOS/Android checks remain unverified; TICKET-201 now explicitly covers real saved replies and blocks release tickets154/176. No release approval claimed. PR55 remains draft pending final gate/CI and resolution of that review requirement. TICKET-012 PR56 is not merged: final CI failed admin sign-in zero-CLS assertion (received0.00006491546630859375); no retry counted as a fix.
+
+Next: commit/push review evidence, run t:pr040 and update PR55 with actual results. Obtain explicit saved-RSVP device-QA deferral before marking ready/merging. Keep production RSVP closed while venue timezone remains TBD. Stack wedding-8ba25aaf3f3c is running, only synthetic fixture settings; no destructive cleanup.

@@ -10,7 +10,7 @@ module: invitations
 owner: ""
 agent: ""
 blocked_by: []
-blocks: []
+blocks: [TICKET-154, TICKET-176]
 branch: ""
 pr: ""
 created: 2026-10-26
@@ -28,6 +28,8 @@ resume_to: ""
 On 26 October 2026 the user approved merging labelled previews while tracking remaining performance and WhatsApp/device QA separately. This exception allows frontend preview delivery; it does not certify production guest readiness. Baseline evidence: docs/reviews/TICKET-198.md and TICKET-198-performance.json.
 
 ## Scope
+
+- Verify real saved RSVP yes/no replies on physical iOS and Android, in WhatsApp and native browsers: confirmation, reload persistence, back/forward, keyboard, tampered/revoked links and native submission with scripts disabled where supported. Use synthetic invitations and record build/device/browser versions.
 
 - Resolve inconsistent Lighthouse mobile performance on home and invitation preview (latest 92 and 94 versus target 95; guidance 96).
 - Measure affected guest pages and completed preview flows on production builds with repeatable conditions; preserve raw results and layout-shift evidence.
