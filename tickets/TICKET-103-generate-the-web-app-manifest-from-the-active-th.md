@@ -40,8 +40,8 @@ See: [Design principles](../docs/prd.md#design-principles) · [Tech stack and ar
 
 ## Acceptance criteria
 
-- [ ] /manifest.webmanifest has valid name, start_url, scope, display and theme/background fields; icon requirements are completed by TICKET-104.
-- [ ] Changing the active theme changes theme_color (unit).
+- [x] /manifest.webmanifest has valid name, start_url, scope, display and theme/background fields; icon requirements are completed by TICKET-104.
+- [x] Changing the active theme changes theme_color (unit).
 - [ ] TICKET-113 verifies manifest/HTTPS/worker control and TICKET-114 records actual device installs; no removed Lighthouse PWA audit is required.
 
 ## Test plan
@@ -57,7 +57,7 @@ See: [Design principles](../docs/prd.md#design-principles) · [Tech stack and ar
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-10-31: First two criteria verified by seven unit tests and three production browser checks, including stored theme/name updates without rebuilding. Chromium parsing evidence: docs/reviews/TICKET-103/browser-manifest.json. The113/114 criterion remains unchecked; those downstream tickets are not completed here. Docs/pwa.md records their ownership and staff-start considerations. Full verification pending.
 
 ## Activity log
 
