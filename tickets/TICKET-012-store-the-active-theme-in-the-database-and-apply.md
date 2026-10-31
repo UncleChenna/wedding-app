@@ -2,7 +2,7 @@
 id: TICKET-012
 title: Store the active theme in the database and apply it on the server
 epic: design-system
-status: blocked
+status: in_progress
 priority: urgent
 estimate: M
 labels: [backend, db, frontend]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-10-31
 started: 2026-10-30
 completed: ""
-reason: "Draft PR #56: awaiting exact-path migration artifact approval; seed, browser and full-gate work remain."
-resume_to: in_progress
+reason: ""
+resume_to: ""
 ---
 
 # TICKET-012: Store the active theme in the database and apply it on the server
@@ -66,3 +66,4 @@ _Agents append dated notes here while working._
 - 2026-10-30 — todo → claimed — divine (codex)
 - 2026-10-30 — todo → in_progress — divine (codex)
 - 2026-10-31 — in_progress → blocked — divine (codex) — Draft PR #56: awaiting exact-path migration artifact approval; seed, browser and full-gate work remain.
+- 2026-10-31 — blocked → in_progress — divine (codex)
