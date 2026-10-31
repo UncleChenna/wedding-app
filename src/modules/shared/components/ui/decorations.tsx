@@ -64,9 +64,9 @@ export function Monogram({ initials, decorative = false, className }: MonogramPr
       )}
     >
       <span data-initials className="font-display text-4xl leading-none">
-        {a}
+        <span>{a}</span>
         <span className="mx-0.5 align-middle text-2xl">&amp;</span>
-        {b}
+        <span>{b}</span>
       </span>
     </div>
   );
