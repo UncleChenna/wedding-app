@@ -25,7 +25,7 @@ Every template is covered across all three voices, with no unresolved braces and
 - Generated migration applied twice; all row counts and applied-migration counts matched after the second run. A pre-existing synthetic settings row retained its venue and received Warm.
 - RLS: enabled on all12 public tables. Deterministic seed run twice: identical counts, including248 guests and110 invitations.
 - Quick gate passed lint, types and related unit tests; commit hooks recheck it.
-- Full verification will run through pnpm t:pr; its result and final-head CI remain pending at this checkpoint.
+- Mandatory pnpm t:pr full verification PASS: formatting, lint, types,489 unit tests (26 optional skips), production build and525 browser tests (135 skips). CLI recorded in_review and linked PR58. Final-head CI remains required before merge.
 
 Integrated develop e381c810bc19404d7ded59a6155fc8977c1f474d in2c5048f. All database checks used only TICKET-052's managed stack; no production database was touched.
 

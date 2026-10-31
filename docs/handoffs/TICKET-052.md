@@ -17,3 +17,9 @@ Verified tool lesson: /dev/null redirection is rejected as an outside-checkout w
 Final focused checks before checkpoint:18 template/default/seed tests passed;4 transactional database tests passed on the seeded stack without count changes. The original37-test suite and quick gate results remain recorded above. Remaining work is develop integration, full verification and PR review; generated migration authorization is already recorded.
 
 Checkpoint13d60af committed the implementation and approved migration. Integrated verified develop e381c810bc19404d7ded59a6155fc8977c1f474d without conflicts as2c5048f. Both functional acceptance criteria are proved by focused/unit and real database checks; full gate remains pending. Next: push/open draft PR, run mandatory t:pr with explicit owner/agent, inspect final-head CI and retain no delivery/authorization/UI claims beyond this backend scope.
+
+## 2026-10-31 — full verification passed; PR58 in review
+
+Mandatory t:pr completed on the integrated implementation:489 unit passes/26 optional skips, production build,525 browser passes/135 skips in5.8minutes. CLI moved052 to in_review and pushedbb7fd3e, recording https://github.com/UncleChenna/wedding-app/pull/58. No assertion or timeout was weakened. Local source tree is clean before this evidence update.
+
+Next: commit/push this final result, update PR58 body and mark ready, then inspect every applicable CI job on that exact final head before merge under the user's verified-merge authorization. Record done only after confirmed merge. Mandatory generated-migration approval was already received and recorded; do not ask again. Database contains only deterministic synthetic data. No production migration or invitation delivery occurred. TICKET-039 is the next ready UI ticket; read the spike FINDINGS.md from its separate worktree (the file exists there but is absent from that branch's committed tree).
