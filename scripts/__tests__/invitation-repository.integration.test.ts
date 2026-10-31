@@ -50,6 +50,7 @@ describe.runIf(enabled)("invitation persistence on isolated Postgres", () => {
           .set({ status: "sent", notes: "private note" })
           .where(eq(schema.invitations.id, id));
         expect(await findGuestInvitation(tx, token)).toEqual({
+          attendance: null,
           householdName: "Test household",
           primaryNames: ["Primary guest"],
         });

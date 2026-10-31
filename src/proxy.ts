@@ -10,12 +10,14 @@ export async function proxy(request: NextRequest) {
     return response;
   }
   const token = request.nextUrl.pathname.split("/")[2];
-  const available = await hasPublishedInvitation(db, token);
+  // Actions validate the submitted token themselves. Rewriting POST loses its action module.
+  const available = request.method === "POST" || (await hasPublishedInvitation(db, token));
   const response = available
     ? NextResponse.next()
     : NextResponse.rewrite(new URL("/invitation-unavailable", request.url), { status: 404 });
   response.headers.set("Cache-Control", "private, no-store");
-  response.headers.set("Referrer-Policy", "no-referrer");
+  // Strip the private path/token while retaining the origin required by native form CSRF checks.
+  response.headers.set("Referrer-Policy", "strict-origin");
   response.headers.set("X-Robots-Tag", "noindex, nofollow");
   return response;
 }

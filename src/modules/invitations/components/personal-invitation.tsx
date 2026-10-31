@@ -1,8 +1,17 @@
 import Link from "next/link";
+import { RsvpForm } from "./rsvp-form";
 import { invitationSiteCopy } from "../lib/copy";
 import type { GuestInvitation } from "../server/resolve-invitation";
 
-export function PersonalInvitation({ invitation }: { invitation: GuestInvitation }) {
+export function PersonalInvitation({
+  invitation,
+  token,
+  repliesOpen,
+}: {
+  invitation: GuestInvitation;
+  token: string;
+  repliesOpen: boolean;
+}) {
   const greeting =
     invitation.primaryNames.join(" & ") || invitation.householdName || "Our dear guest";
   return (
@@ -16,9 +25,7 @@ export function PersonalInvitation({ invitation }: { invitation: GuestInvitation
       <p className="mt-6 text-base leading-relaxed">
         Venue and time to follow. Keep this personal link close.
       </p>
-      <p className="mt-6 text-base leading-relaxed text-muted-foreground">
-        Your RSVP and entry pass will be available here when they are ready.
-      </p>
+      <RsvpForm token={token} attendance={invitation.attendance} open={repliesOpen} />
       <Link
         href="/"
         prefetch={false}
