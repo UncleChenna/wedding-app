@@ -26,17 +26,23 @@ const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-playfair",
   display: "swap",
+  adjustFontFallback: false,
+  fallback: ["Playfair Metric Fallback"],
 });
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
   display: "swap",
+  adjustFontFallback: false,
+  fallback: ["Inter Metric Fallback"],
 });
 const jost = Jost({
   preload: false,
   subsets: ["latin"],
   variable: "--font-jost",
   display: "swap",
+  adjustFontFallback: false,
+  fallback: ["Jost Metric Fallback"],
 });
 
 const fonts: Record<FontKey, { variable: string }> = {

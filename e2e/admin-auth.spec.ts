@@ -167,10 +167,14 @@ for (const fontDelay of [0, 500]) {
     await page.goto("/admin/sign-in");
     await page.evaluate(() => document.fonts.ready);
     const fallbackFaces = await page.evaluate(async () => {
-      const faces = await document.fonts.load('48px "Cormorant Metric Fallback"');
-      return faces.map((face) => face.status);
+      return Promise.all(
+        ["Cormorant", "Inter", "Jost", "Playfair"].map(async (family) => {
+          const faces = await document.fonts.load(`48px "${family} Metric Fallback"`);
+          return faces.map((face) => face.status);
+        }),
+      );
     });
-    expect(fallbackFaces).toEqual(["loaded"]);
+    expect(fallbackFaces).toEqual([["loaded"], ["loaded"], ["loaded"], ["loaded"]]);
     // Let the observer receive the final paint before user input can exclude a shift.
     await page.evaluate(
       () =>

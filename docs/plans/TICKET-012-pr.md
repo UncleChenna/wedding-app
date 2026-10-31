@@ -48,3 +48,7 @@ No hooks, test assertions or policies were weakened. TICKET-207 records the recu
 ## 31 October integration and regression follow-up
 
 Integrated verified develop7191d981231d9fb71f101d308abc05fa4ec79501 (saved RSVP). Full local gate:467 unit tests/22 opt-in skips and483 browser tests/129 conditional skips; five real RSVP DB tests pass. The prior final CI failed a tiny admin font-swap CLS assertion; it was not reproduced on macOS or the matching Linux browser, and no production typography change is claimed as a fix. The zero-CLS test now measures normal and delayed font loads, waits for final paint, preserves focus checking and includes source-node diagnostics. Four targeted tests pass; final complete gate/CI must pass before merge. Physical-device and inherited preview CLS release work remain201.
+
+## Font fallback repair
+
+Diagnostic CI identified the Welcome back heading moving3px during the font swap. The registry now has metric-adjusted local serif and sans fallbacks with Linux Liberation aliases, retaining primary fonts/weights/swap. Four Mac normal/delayed tests assert all fallback faces load. Corrected Linux localhost tests reproduce body CLS0.00516 with serif-only fallback, then zero with the complete repair. Early unstyled Docker runs are explicitly excluded. Twelve admin captures inspected;24 screenshot cases pass, with showcase slice review and final full gate/CI pending. See font-fallback/README.md and handoff for the exact remaining checks.
