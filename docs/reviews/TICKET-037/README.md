@@ -23,3 +23,11 @@ All 12 refreshed preview screenshots and all 60 refreshed live screenshots were 
 | Verification             | Quick verification and four component tests PASS. Refreshed targeted browser matrix: 25 PASS. Full verification PASS: format, lint, types,471 unit tests (22 skipped), production build and525 browser tests (135 skipped).                            |
 
 CHANGES REQUESTED: performance consistency and outstanding required device checks. This is not release approval. Earlier performance files preserve the before/after evidence: the font merge alone retained a shift; explicit headline lines reduced it; left-aligned letter copy removed it in the measured fixture.
+
+## Serial performance investigation
+
+On the same application code, with no overlapping build or test commands, three new mobile Lighthouse runs scored94/98/95 Performance (median95),100 Accessibility throughout, and CLS0 throughout. Blocking time was294/170/262ms; LCP was983/967/939ms. All results are retained in performance-idle.json. Earlier90/95/98 results remain valid evidence and are not overwritten.
+
+The slowest run's main script is the existing Next.js/React runtime chunk (234844bytes;401ms script evaluation). No Supabase, Zod or animation-library runtime appears in that chunk. This identifies the observed bottleneck but does not prove the shared framework is defective or excuse the below-target score. No application behavior, runtime scripts or audit settings were disabled to raise the score.
+
+Owner approved moving physical WhatsApp/native-map verification into release-blocking TICKET-201. A separate performance exception is pending; do not infer it from the device approval. Required CI status is checked separately from UI acceptance.

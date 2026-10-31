@@ -42,6 +42,8 @@ Claiming untested checks pass, weakening thresholds, changing TICKET-015's pause
 
 ## Acceptance criteria
 
+- [ ] TICKET-037: verify the personal invitation and configured venue map on physical iOS and Android, including WhatsApp navigation and native map handoff; record exact devices/app versions and actual destinations.
+
 - [ ] Every release-bound guest route scores at least 95 Performance and Accessibility on Lighthouse mobile; record three runs and their range/median per route and build.
 - [ ] CLS is zero on measured page loads; any device-specific differences have reproduced evidence and fixes.
 - [ ] Actual iOS and Android WhatsApp navigation, forms, keyboards and primary actions pass; device/app versions and dates are recorded.
@@ -59,6 +61,8 @@ Claiming untested checks pass, weakening thresholds, changing TICKET-015's pause
 - docs/reviews/, affected feature components and e2e tests; keep code repairs scoped or split them.
 
 ## Notes / decisions
+
+- 2026-10-31: Owner approved TICKET-037 proceeding to review while physical WhatsApp and native-map checks remain mandatory here. This is a release gate, not evidence those checks passed.
 
 - Explicit user approval: "Merge previews; track remaining QA separately". Human label reflects required physical-device participation. No real-device result has been claimed yet.
 
