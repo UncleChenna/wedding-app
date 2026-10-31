@@ -40,9 +40,9 @@ See: [Design principles](../docs/prd.md#design-principles).
 
 ## Acceptance criteria
 
-- [ ] Maskable icon passes maskable.app safe-zone check (screenshot).
+- [x] Maskable icon passes maskable.app safe-zone check (screenshot).
 - [ ] iOS home-screen icon is not a screenshot (manual).
-- [ ] Generation script is reproducible (unit).
+- [x] Generation script is reproducible (unit).
 
 ## Test plan
 
@@ -58,7 +58,9 @@ See: [Design principles](../docs/prd.md#design-principles).
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-10-31: Twelve asset/generator tests pass, including repeated bytes, committed asset parity, both maskable sizes and all startup dimensions; three manifest unit tests and six production browser cases pass. All68 generated PNGs and four Maskable.app minimum-safe-area screenshots inspected. See docs/reviews/TICKET-104 and public/icons/README.md.
+
+Actual iOS/Android installation is unverified. The iOS home-screen criterion remains unchecked; no desktop test is presented as physical proof. Common startup sizes are explicit, not universal device support. UA artwork and preset colors are generated from committed sources; future name/token changes require regeneration.
 
 ## Activity log
 
