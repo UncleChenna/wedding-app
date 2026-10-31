@@ -11,3 +11,25 @@ Next: read installed Next docs and036/040 handoffs, resolve the pass-navigation 
 TICKET-012 PR56 is in_review at239e1b6; full local467unit/485browser pass; final GitHub CI41199576369 pending. PR55 merged7191d981;201 still blocks both releases. Latest user explicitly approved PR55 merging after CI. Follow current user merge authorization and repository rules for subsequent PRs; never merge failing checks.
 
 Draft PR: https://github.com/UncleChenna/wedding-app/pull/57. Planning checkpoint716f06b pushed; no product implementation yet. CLI has no draft-PR metadata command; t:pr records the link on the verified in_review transition.
+
+## 2026-10-31 — invitation layout implemented
+
+Pushede709df2 adds InvitationLetter, event-settings projection into the personal route, safe configured maps, date-only formatting independent of visitor timezone, a reply anchor, optional actual-pass content section, and /dev/invitation/letter linked from/dev. No new client boundary. Pending details stay TBD. Original photo preview is unchanged.
+
+Four component tests first failed on absent implementation, then passed. Production build and quick gate pass. Thirteen preview browser cases pass; all12 theme/width captures inspected. Six real RSVP checks pass (yes/no persistence with/without JS, tampering/revocation). Two new isolated database/no-JS tests verify configured details and80-character couple/guest names at375; e2e/invitation-details-live.spec.ts is the ticket-owned test.
+
+Automatic approval review rejected changes to existing RSVP tests as cross-ticket scope. User then explicitly approved ONLY e2e/rsvp-review.spec.ts keyboard navigation and alternate screenshot folder. Apply that narrow change after the running full gate completes; no permission needed again. Existing e2e/rsvp-live.spec.ts remains untouched. New independent test was used for additional coverage.
+
+Full gate running in session68844; artifacts/TICKET-037/full-verification.log. Do not restart merely because observation times out. Next: approved visual-test adjustment, run RUN_RSVP_REVIEW=1 with RSVP_REVIEW_DIR=docs/reviews/TICKET-037/live, inspect all actual states, measure production Lighthouse/CLS and finish checklist. Scope discrepancy with actual pass044 remains unresolved; no pass criterion ticked and no fake link added. Keep037 in_progress/draft57.
+
+TICKET-012 final CI41199576369 passed and PR56 merged as5bd56a82d37942a1a046fc1b1c93c22f2a6829bc; CLI done, bookkeeping65df63e pushed.037 still based on7191d981 and needs final integration/CI assessment.012 stack stopped with backup preserved.037 stack running with synthetic RSVP browser fixture only. No real guest data. Avoid /dev/null redirection: hook treats it as an outside-checkout write; logs belong under artifacts/TICKET-037.
+
+## 2026-10-31 — review results and next correction
+
+Full gate finished:459 unit tests/21 opt-in skips;505 browser passes/129 skips, but TWO failures because the new preview route was missing from the central accessibility route registry. Added /dev/invitation/letter to e2e/support/routes.ts; rerun still needed. No assertion weakened.
+
+Applied the explicitly approved e2e/rsvp-review.spec.ts update. All12 live visual cases passed, yielding60 captures under docs/reviews/TICKET-037/live; those60 still need manual inspection. Preview12 already inspected. Three production Lighthouse real-invitation runs scored99/100/100 Performance,100 Accessibility; CLS0.008045178049238436/0/0. First-load shift FAILS strict zero and must be investigated/retested after integrating the now-merged012 font fallback repair. Temporary server25592 stopped.
+
+Proposed retaining real returning-pass integration in044 and layout/anchor in037. Automatic approval review rejected edits to both ticket definitions as cross-ticket scope; exact split approval is pending. Neither ticket definition changed. Do not treat silence as approval. Other work can continue.
+
+Next: checkpoint/push, integrate verified origin/develop5bd56a82d37942a1a046fc1b1c93c22f2a6829bc (012), remeasure cold-load CLS and rerun full gate after route-registry correction, inspect live captures, then resolve pending scope decision and final review/CI. TICKET-037 remains draft and incomplete.
