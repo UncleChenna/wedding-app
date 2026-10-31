@@ -175,3 +175,9 @@ Use `FadeIn` or `Rise` from shared UI to animate server-rendered content with CS
 Reduced motion disables these entrance animations and the demo's control transition entirely, leaving content immediately visible. `/dev/theme` has a keyboard-accessible replay demo in each theme. Its replay control uses the 180ms opacity transition; existing unrelated component motion is outside this ticket.
 
 Registered fonts use metric-adjusted local fallbacks: Times New Roman/Liberation Serif for display faces and Arial/Liberation Sans for body faces. The Liberation aliases cover Linux hosts without Microsoft fonts. Overrides in font-fallbacks.css match calculateSizeAdjustValues from the installed Next font-utils module; review them when updating fonts. Both normal and delayed-font admin loads retain a zero-CLS regression, and the browser verifies all four fallback faces load.
+
+## Reproducible font builds
+
+The font registry uses next/font/local with licensed, pinned WOFF2 assets in src/modules/theming/fonts. Provenance, hashes and conversion instructions live beside the assets. Builds do not download Google Fonts. Existing family variables, fallback metrics, swap and selective preload settings remain unchanged.
+
+Use FONT_COLD_BUILD=1 pnpm build to disable Next filesystem compiler caching for a verification run. Normal builds retain caching. Run this three times when updating fonts, then run the regular full gate; cold builds are additional evidence, not a substitute for normal CI.
