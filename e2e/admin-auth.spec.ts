@@ -19,11 +19,13 @@ test("admin sign-in rejects unlisted addresses accessibly @smoke", async ({ page
     expect(await scanA11y(page)).toEqual([]);
   }
 });
-test("admin forms fit all themes and support keyboard/reduced motion @smoke", async ({ page }) => {
-  await page.emulateMedia({ reducedMotion: "reduce" });
-  for (const route of ["/admin/sign-in", "/admin/sign-out"]) {
-    await page.goto(route);
-    for (const theme of listThemes()) {
+for (const route of ["/admin/sign-in", "/admin/sign-out"]) {
+  for (const theme of listThemes()) {
+    test(`admin form ${route} ${theme.id} fits all widths with reduced motion @smoke`, async ({
+      page,
+    }) => {
+      await page.emulateMedia({ reducedMotion: "reduce" });
+      await page.goto(route);
       await applyTheme(page, theme);
       for (const width of [375, 768, 1280]) {
         await page.setViewportSize({ width, height: 812 });
@@ -39,8 +41,10 @@ test("admin forms fit all themes and support keyboard/reduced motion @smoke", as
           await page.locator("h1").evaluate((el) => parseFloat(getComputedStyle(el).fontSize)),
         ).toBeGreaterThanOrEqual(32);
       }
-    }
+    });
   }
+}
+test("admin sign-in supports keyboard focus @smoke", async ({ page }) => {
   await page.goto("/admin/sign-in");
   await page.keyboard.press("Tab");
   await expect(page.getByLabel("Email address")).toBeFocused();

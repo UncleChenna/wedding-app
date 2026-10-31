@@ -1,3 +1,4 @@
+import { waitForPublicDestination } from "./support/routes";
 import { expect, test, type Page } from "@playwright/test";
 
 /**
@@ -48,6 +49,7 @@ test.describe("service worker @smoke", () => {
     await controlledPage(page);
     for (const path of ["/admin", "/i/not-a-real-token", "/order", "/checkin", "/dev/theme"]) {
       await page.goto(path);
+      await waitForPublicDestination(page, path);
     }
     await page.evaluate(() => fetch("/api/does-not-exist").catch(() => undefined));
     const urls = await cachedUrls(page);
@@ -94,6 +96,7 @@ test.describe("service worker @smoke", () => {
   }) => {
     await controlledPage(page);
     await page.goto("/admin");
+    await waitForPublicDestination(page, "/admin");
     const [asset] = (await cachedUrls(page)).filter((url) => url.endsWith(".js"));
     expect(asset).toBeTruthy();
 

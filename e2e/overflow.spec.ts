@@ -1,3 +1,4 @@
+import { waitForPublicDestination } from "./support/routes";
 import { expect, test } from "@playwright/test";
 
 import { expectedRouteStatus, PAGE_ROUTES as ROUTES } from "./support/routes";
@@ -19,6 +20,7 @@ test.describe("phone layout at 375px @smoke", () => {
       test(`${path} in ${colorScheme} mode does not scroll sideways`, async ({ page }) => {
         await page.emulateMedia({ colorScheme });
         const response = await page.goto(path, { waitUntil: "load" });
+        await waitForPublicDestination(page, path);
         expect(response?.status(), path).toBe(expectedRouteStatus(path));
         await page.evaluate(() => document.fonts.ready);
 
@@ -32,6 +34,7 @@ test.describe("phone layout at 375px @smoke", () => {
       test(`${path} in ${colorScheme} mode has 44px tap targets`, async ({ page }) => {
         await page.emulateMedia({ colorScheme });
         await page.goto(path, { waitUntil: "load" });
+        await waitForPublicDestination(page, path);
         await page.evaluate(() => document.fonts.ready);
 
         const small = await page.evaluate(() => {
