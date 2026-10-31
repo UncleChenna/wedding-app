@@ -31,3 +31,5 @@ On the same application code, with no overlapping build or test commands, three 
 The slowest run's main script is the existing Next.js/React runtime chunk (234844bytes;401ms script evaluation). No Supabase, Zod or animation-library runtime appears in that chunk. This identifies the observed bottleneck but does not prove the shared framework is defective or excuse the below-target score. No application behavior, runtime scripts or audit settings were disabled to raise the score.
 
 Owner approved moving physical WhatsApp/native-map verification into release-blocking TICKET-201. Owner separately approved retaining the performance variability in TICKET-201 while this PR proceeds to review. Required CI status is checked separately from UI acceptance.
+
+Mandatory review workflow follow-up: one full run hit a30s mobile stepper timeout (524 passes). The unchanged test passed both projects in isolation, then the complete workflow passed471 unit tests and525 browser tests with no test/config changes. The prior failure is retained in the ticket handoff; CLI recorded in_review after the passing run.
