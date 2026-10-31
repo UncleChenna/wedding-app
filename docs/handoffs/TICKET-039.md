@@ -69,3 +69,15 @@ Font-origin follow-up evidence: all12 refreshed full-page screenshots and12 moti
 ## 2026-10-31 — corrected source passes required full gate
 
 The font-origin t:pr command49142 completed exit0 on source c37da9aac7b97690996360247c29080839258151. Full gate:475 unit tests/22 skips,production build,561 browser tests/135 skips in5.9minutes. Explicit owner/agent flags allowed the CLI to finish and push in_review metadata3ccf01b. Log artifacts/TICKET-039/font-origin-pr-verification.log. All affected screenshots and performance evidence are refreshed and inspected. No Linux-CI pass for this correction is claimed until the final pushed head passes. Next: final docs push, markPR59 ready, inspect exact-head CI and mergeability, merge only after all required checks pass, CLI done, then claim047.
+
+## 2026-10-31 — CI pinpoints separate family-label shift
+
+Final CI41224389641 onfaf0543 failed two desktop envelope cases (Midnight and Blush),559 browser passes/135 skips. Diagnostics identify the Together with our families paragraph, with identical outer bounds but changed centered text during the font swap. The prior control correction did not resolve this separate element. Returned to in_progress via CLI (b43788b) and draftPR59.
+
+Added a targeted family-label font-substitution regression: failed before the fix (x68.71875 versus65.796875). Reserved17rem capped to container width and left-aligned its text, preserving font tokens and immediate content. All64 envelope/invitation-letter browser tests now pass in45.6seconds. New saved-RSVP screenshot review43840 is running; do not overlap another Playwright invocation. Next: complete/inspect refreshed live and preview captures, performance, commit/push, t:pr with explicit owner/agent, then require final Linux CI. No zero-CLS tolerance changed.
+
+## 2026-10-31 — family-label visual and performance review complete
+
+Current family-label follow-up: Linux CI run 41224389641 failed on faf0543 with two nonzero-CLS cases. Diagnostics identified the family paragraph, independently of the earlier control fix. A targeted font-substitution regression failed before reserving a 17rem, left-aligned text slot. The corrected production build and 64 focused browser tests pass; 12 saved-RSVP reviews pass. All 84 refreshed preview, motion and live-state captures were inspected; the 12 unchanged shared-component captures retain their earlier review. Production checks report CLS 0 across 12 layouts. Fresh serial Lighthouse scores are 99/100/100 Performance, 100 Accessibility and CLS 0 throughout. Full verification and final Linux CI for this correction remain pending. Earlier full-suite totals below describe prior source, not this correction.
+
+Performance session73625 completed successfully and cleaned its synthetic fixture. Production server PID32464 was confirmed to belong to this worktree and is being stopped before full verification. Next: commit and push this correction, run t:pr with explicit owner divine / agent codex, and require exact-head CI. The latest supplied AGENTS.md requires human merging; leave the verified PR for review.

@@ -54,7 +54,9 @@ export function InvitationLetter({
           ]}
           returning={Boolean(pass)}
         />
-        <p className="type-label text-primary">Together with our families</p>
+        <p className="mx-auto w-[17rem] max-w-full text-left type-label text-primary">
+          Together with our families
+        </p>
         <h1 className="mt-8 type-script wrap-anywhere">
           <span className="block">{details.coupleNames[0]}</span>
           <span className="my-2 block text-primary">{" & "}</span>

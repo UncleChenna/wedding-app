@@ -182,3 +182,25 @@ test("@smoke envelope control text keeps its origin through a font swap", async 
   });
   expect(positions.fallbackX).toBe(positions.x);
 });
+
+test("@smoke invitation family label keeps its origin through a font swap", async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 900 });
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/dev/invitation/letter?theme=blush-sage");
+  const control = page.getByText("Together with our families", { exact: true });
+  await expect(control).toBeVisible();
+  await page.evaluate(() => document.fonts.ready);
+  const positions = await control.evaluate((button) => {
+    const text = document.createTreeWalker(button, NodeFilter.SHOW_TEXT).nextNode();
+    if (!text) throw new Error("Missing control label");
+    const range = document.createRange();
+    range.selectNodeContents(text);
+    const original = button.style.fontFamily;
+    const x = range.getBoundingClientRect().x;
+    button.style.fontFamily = "monospace";
+    const fallbackX = range.getBoundingClientRect().x;
+    button.style.fontFamily = original;
+    return { x, fallbackX };
+  });
+  expect(positions.fallbackX).toBe(positions.x);
+});
