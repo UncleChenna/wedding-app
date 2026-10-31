@@ -1070,13 +1070,14 @@
     "WED-052": {
       "log": [
         "- 2026-10-31 — todo → claimed — divine (codex)",
-        "- 2026-10-31 — todo → in_progress — divine (codex)"
+        "- 2026-10-31 — todo → in_progress — divine (codex)",
+        "- 2026-10-31 — in_progress → in_review — divine (codex)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-052",
-      "pr": "",
+      "pr": "https://github.com/UncleChenna/wedding-app/pull/58",
       "started": "2026-10-31",
       "completed": "",
       "updated": "2026-10-31",
