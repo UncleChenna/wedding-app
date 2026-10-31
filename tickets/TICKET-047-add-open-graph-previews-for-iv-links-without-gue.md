@@ -2,7 +2,7 @@
 id: TICKET-047
 title: Add Open Graph previews for IV links without guest details
 epic: invitations
-status: in_progress
+status: blocked
 priority: urgent
 estimate: M
 labels: [frontend, design, security]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-10-31
 started: 2026-10-31
 completed: ""
-reason: ""
-resume_to: ""
+reason: "Draft PR https://github.com/UncleChenna/wedding-app/pull/60 passes full verification; physical WhatsApp preview and measured homepage nonzero CLS remain unresolved, retained in release-blocking TICKET-201"
+resume_to: in_progress
 ---
 
 # TICKET-047: Add Open Graph previews for IV links without guest details
@@ -65,3 +65,4 @@ See: [Design principles](../docs/prd.md#design-principles) · [Design principles
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-10-31 — todo → claimed — divine (codex)
 - 2026-10-31 — todo → in_progress — divine (codex)
+- 2026-10-31 — in_progress → blocked — divine (codex) — Draft PR https://github.com/UncleChenna/wedding-app/pull/60 passes full verification; physical WhatsApp preview and measured homepage nonzero CLS remain unresolved, retained in release-blocking TICKET-201
