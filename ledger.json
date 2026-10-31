@@ -1109,9 +1109,10 @@
     "WED-047": {
       "log": [
         "- 2026-10-31 — todo → claimed — divine (codex)",
-        "- 2026-10-31 — todo → in_progress — divine (codex)"
+        "- 2026-10-31 — todo → in_progress — divine (codex)",
+        "- 2026-10-31 — in_progress → blocked — divine (codex) — Draft PR https://github.com/UncleChenna/wedding-app/pull/60 passes full verification; physical WhatsApp preview and measured homepage nonzero CLS remain unresolved, retained in release-blocking TICKET-201"
       ],
-      "status": "in_progress",
+      "status": "blocked",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-047",
@@ -1119,8 +1120,8 @@
       "started": "2026-10-31",
       "completed": "",
       "updated": "2026-10-31",
-      "reason": "",
-      "resume_to": ""
+      "reason": "Draft PR https://github.com/UncleChenna/wedding-app/pull/60 passes full verification; physical WhatsApp preview and measured homepage nonzero CLS remain unresolved, retained in release-blocking TICKET-201",
+      "resume_to": "in_progress"
     }
   }
 }
