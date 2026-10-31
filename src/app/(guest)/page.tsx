@@ -4,10 +4,6 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Uchenna & Adaora",
   description: "Celebrate with us on Saturday, 19 December 2026.",
-  openGraph: {
-    title: "Uchenna & Adaora",
-    description: "Celebrate with us on Saturday, 19 December 2026.",
-  },
 };
 
 export default function HomePage() {
