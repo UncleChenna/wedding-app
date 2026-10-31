@@ -14,3 +14,7 @@ Tooling: typed apply_patch payload again triggered shell-write heuristics. Expli
 ## 2026-10-31 — full verification passed
 
 Full pnpm verify passed: 496 unit tests / 26 skips, production build, 529 browser tests / 135 skips in 4.5 minutes. Log: artifacts/TICKET-103/full-verification.log. Session73375 exited0. Source f87e109 is pushed; draft PR https://github.com/UncleChenna/wedding-app/pull/61. No browser server remains running. Request a narrow clarification of the final criterion: document113 as the owner of manifest/HTTPS/worker checks and114 as owner of actual installs, without claiming either is already complete. The dependency chain103 ->104 ->113 ->114 otherwise makes the wording circular. Keep that criterion unchecked pending approval. No merge performed.
+
+## 2026-10-31 — approved coverage clarification applied
+
+The user explicitly approved changing the last criterion to documentation of TICKET-113 manifest/HTTPS/worker checks and TICKET-114 real-device installs. Both remain mandatory, not certified by103. Updated ticket, docs/pwa.md and PR description; no product source changed. Earlier awaiting-approval instructions above are historical and resolved. Next: validate/render, commit/push, update PR61, run normal t:pr verification and await required CI. Leave merging to the human under current AGENTS.

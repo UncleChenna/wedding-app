@@ -19,7 +19,7 @@ The app now serves /manifest.webmanifest with stored couple names, a short initi
 
 - Complete name/launch/scope/display/colour fields: verified by unit tests, served JSON schema and Chromium parsing.
 - Active theme changes theme_color: unit test and isolated live ivory-to-blush update, without a rebuild; stored names also update.
-- Downstream113/114 checks: NOT COMPLETE. Their documented ownership is retained; the ticket criterion remains unchecked pending clarification because those tickets depend indirectly on103.
+- Downstream coverage documented: TICKET-113 owns manifest/HTTPS/worker checks and TICKET-114 owns real-device installs. Both remain mandatory and are not certified by this PR. The user approved this coverage clarification; it removes circular completion wording without removing any check.
 
 # Verification
 
@@ -44,5 +44,3 @@ https://github.com/UncleChenna/wedding-app/blob/TICKET-103/docs/reviews/TICKET-1
 # Harness changes
 
 No harness source edited. Setup needed the unchanged repository email template copied into its ignored stack folder. The handoff records proposed template-copy and patch-parser regressions.
-
-Proposed clarification, not yet applied: replace the final103 criterion with "Document TICKET-113 ownership of manifest/HTTPS/worker verification and TICKET-114 ownership of actual device installs; those downstream checks remain mandatory and are not certified by TICKET-103." This preserves the real checks and removes the circular completion wording.

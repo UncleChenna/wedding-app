@@ -12,7 +12,7 @@ A separate scanner start URL was considered. For now there is one stable app ide
 
 Names are read on each manifest request, with a two-second failure boundary and sanitized warning before using the approved default names. Theme reads retain the existing tagged cache: ordinary database changes become visible after its30-second revalidation; the authorized activation service expires its tag. Browser/OS refresh of an already-installed app is outside the server cache guarantee. No private-route failure is converted into authorization by these public-branding fallbacks.
 
-Icons remain TICKET-104; no broken placeholder icon URLs are advertised. Missing icons mean this ticket alone does not establish installability. TICKET-113 checks manifest, icons, HTTPS, worker control and offline behavior; TICKET-114 records actual iOS/Android installs on staging HTTPS. No removed Lighthouse PWA audit is required. Lighthouse performance/accessibility checks are separate.
+Icons remain TICKET-104; no broken placeholder icon URLs are advertised. Missing icons mean this ticket alone does not establish installability. TICKET-113 checks manifest, icons, HTTPS, worker control and offline behavior; TICKET-114 records actual iOS/Android installs on staging HTTPS. Both downstream checks remain mandatory and are not certified by TICKET-103. No removed Lighthouse PWA audit is required. Lighthouse performance/accessibility checks are separate.
 
 ## Service worker
 

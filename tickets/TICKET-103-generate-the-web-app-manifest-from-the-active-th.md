@@ -42,7 +42,7 @@ See: [Design principles](../docs/prd.md#design-principles) · [Tech stack and ar
 
 - [x] /manifest.webmanifest has valid name, start_url, scope, display and theme/background fields; icon requirements are completed by TICKET-104.
 - [x] Changing the active theme changes theme_color (unit).
-- [ ] TICKET-113 verifies manifest/HTTPS/worker control and TICKET-114 records actual device installs; no removed Lighthouse PWA audit is required.
+- [x] Document TICKET-113 ownership of manifest/HTTPS/worker checks and TICKET-114 ownership of real-device install checks; both remain mandatory and are not certified by TICKET-103. No removed Lighthouse PWA audit is required.
 
 ## Test plan
 
@@ -57,7 +57,7 @@ See: [Design principles](../docs/prd.md#design-principles) · [Tech stack and ar
 
 ## Notes / decisions
 
-2026-10-31: First two criteria verified by seven unit tests and three production browser checks, including stored theme/name updates without rebuilding. Chromium parsing evidence: docs/reviews/TICKET-103/browser-manifest.json. The113/114 criterion remains unchecked; those downstream tickets are not completed here. Docs/pwa.md records their ownership and staff-start considerations. Full verification pending.
+2026-10-31: First two criteria verified by seven unit tests and three production browser checks, including stored theme/name updates without rebuilding. Chromium parsing evidence: docs/reviews/TICKET-103/browser-manifest.json. Docs/pwa.md records downstream ownership and staff-start considerations. Full verification passed: 496 unit tests / 26 skips, build, 529 browser tests / 135 skips. On 2026-10-31 the user approved clarifying the final criterion as documentation of mandatory downstream checks, not certification that TICKET-113/114 are complete.
 
 ## Activity log
 
