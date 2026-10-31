@@ -2,7 +2,7 @@
 id: TICKET-040
 title: Build the RSVP form for attending yes or no
 epic: invitations
-status: in_progress
+status: in_review
 priority: urgent
 estimate: M
 labels: [frontend, backend]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-018, TICKET-023, TICKET-036, TICKET-025, TICKET-035]
 blocks: [TICKET-041, TICKET-044, TICKET-126, TICKET-178, TICKET-183]
 branch: TICKET-040
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/55
 created: 2026-10-21
 updated: 2026-10-31
 started: 2026-10-28
@@ -69,3 +69,4 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-4) · [Jou
 - 2026-10-28 — todo → in_progress — divine (codex)
 - 2026-10-30 — in_progress → blocked — divine (codex) — Draft PR55 https://github.com/UncleChenna/wedding-app/pull/55; awaiting exact-path compiler-cache recovery approval, then final build/browser/UI verification
 - 2026-10-31 — blocked → in_progress — divine (codex)
+- 2026-10-31 — in_progress → in_review — divine (codex)
