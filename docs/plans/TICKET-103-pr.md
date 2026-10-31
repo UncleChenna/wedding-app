@@ -26,7 +26,7 @@ The app now serves /manifest.webmanifest with stored couple names, a short initi
 Seven unit tests pass, quick verification passes, production build passes.
 Three production browser tests pass, including live settings change; two additional browser-inspection tests pass.
 Chromium reports no parsing or installability diagnostic errors. No actual phone install claimed.
-Full required verification pending.
+Full pnpm verify passed: 496 unit tests / 26 skips, production build, 529 browser tests / 135 skips in 4.5 minutes. Log: artifacts/TICKET-103/full-verification.log.
 
 # Risks and rollout
 
@@ -44,3 +44,5 @@ https://github.com/UncleChenna/wedding-app/blob/TICKET-103/docs/reviews/TICKET-1
 # Harness changes
 
 No harness source edited. Setup needed the unchanged repository email template copied into its ignored stack folder. The handoff records proposed template-copy and patch-parser regressions.
+
+Proposed clarification, not yet applied: replace the final103 criterion with "Document TICKET-113 ownership of manifest/HTTPS/worker verification and TICKET-114 ownership of actual device installs; those downstream checks remain mandatory and are not certified by TICKET-103." This preserves the real checks and removes the circular completion wording.
