@@ -49,3 +49,9 @@ All60 live RSVP screenshots inspected across four themes and375/768/1280 in init
 Serial full gate6495 ended exit1:475 unit passes/22 skips,build passed,554 browser passes/135 skips,five30s timeouts (all four mobile QR decode tests and the mobile stepper). Traces show24–27s pixel extraction and slow browser setup; no assertion mismatch. The unchanged five-test isolated rerun passed in52.6s (artifacts/TICKET-039/qr-stepper-idle.log). Host load averages18/20/18; Docker VM measured346%CPU. Completed owned TICKET-052 stack identity and mergedPR58 reverified; data-preserving stop requested for wedding-e96ff868824f (session49127). Do not restart any live handle.
 
 All functional criteria and96 screenshots remain reviewed. Owner-approved physical-device release gate remains201. Next: confirm completed stack stop, run required t:pr with no competing browser/build/commit process, then exact-head CI and review. Full local pass is not yet claimed.
+
+## 2026-10-31 — full gate passed; ticket in review
+
+Required t:pr verification on4571ba5cfcb3a764ea6b0c9b2b56e6deb96ee3bf passed:475 unit tests/22 skips,production build,559 browser tests/135 skips in10.0minutes. Log: artifacts/TICKET-039/pr-verification.log. The command then failed only because harness.owner was unset. Recovered through t:move in_review --owner divine --agent codex --push using the exact verified SHA; ledger and pushed metadata commit5cdccc7 confirm in_review. No tests bypassed or weakened.
+
+TICKET-052 stack stop49127 completed with backup=true. All96 screenshots reviewed; physical-device exception explicitly approved and release gate201 retained. PR59 targets develop. Next: final documentation commit/push, mark PR ready, require final-head CI and mergeability, then authorized merge/CLI done. Do not treat superseded/cancelled CI as a pass. Next ready ticket047 requires privacy-safe OG metadata and an explicitly tracked missing couple-photo/device dependency.
