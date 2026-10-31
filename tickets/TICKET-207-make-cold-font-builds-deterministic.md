@@ -2,7 +2,7 @@
 id: TICKET-207
 title: Make cold font builds deterministic
 epic: design-system
-status: in_progress
+status: in_review
 priority: high
 estimate: M
 labels: [frontend, test, infra]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-015]
 blocks: []
 branch: TICKET-207
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/63
 created: 2026-10-31
 updated: 2026-10-31
 started: 2026-10-31
@@ -66,3 +66,4 @@ The user explicitly approved proceeding to review while retaining release-blocki
 - 2026-10-31 — todo → in_progress — divine (codex)
 - 2026-10-31 — in_progress → blocked — divine (codex) — Draft PR #63 final assets pass full verification; final-head CI pending, strict UI completion remains limited by invitation performance below 95 and physical-device QA recorded for TICKET-201
 - 2026-10-31 — blocked → in_progress — divine (codex) — User approved proceeding to review with TICKET-201 release gates retained; CI41238775314 passed
+- 2026-10-31 — in_progress → in_review — divine (codex)
