@@ -9,3 +9,5 @@ Managed setup initially failed because the old primary-checkout generator omitte
 Next: read installed Next docs and036/040 handoffs, resolve the pass-navigation prerequisite described in the plan, then write failing UI tests and implement the invitation detail layout. Use approved names/date and explicit TBD event fields. No dead pass or map URLs. Verify screenshots, accessibility, keyboard, reduced motion, performance and full gate. Physical-device QA remains unverified. Do not report this draft as a delivered frontend change.
 
 TICKET-012 PR56 is in_review at239e1b6; full local467unit/485browser pass; final GitHub CI41199576369 pending. PR55 merged7191d981;201 still blocks both releases. Latest user explicitly approved PR55 merging after CI. Follow current user merge authorization and repository rules for subsequent PRs; never merge failing checks.
+
+Draft PR: https://github.com/UncleChenna/wedding-app/pull/57. Planning checkpoint716f06b pushed; no product implementation yet. CLI has no draft-PR metadata command; t:pr records the link on the verified in_review transition.
