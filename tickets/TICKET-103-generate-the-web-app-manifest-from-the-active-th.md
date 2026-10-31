@@ -2,7 +2,7 @@
 id: TICKET-103
 title: Generate the web app manifest from the active theme
 epic: pwa
-status: in_progress
+status: blocked
 priority: high
 estimate: M
 labels: [pwa, frontend]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-10-31
 started: 2026-10-31
 completed: ""
-reason: ""
-resume_to: ""
+reason: "Draft PR https://github.com/UncleChenna/wedding-app/pull/61 passes full verification; awaiting approval to clarify circular downstream TICKET-113/114 acceptance wording without claiming those checks complete"
+resume_to: in_progress
 ---
 
 # TICKET-103: Generate the web app manifest from the active theme
@@ -64,3 +64,4 @@ See: [Design principles](../docs/prd.md#design-principles) · [Tech stack and ar
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-10-31 — todo → claimed — divine (codex)
 - 2026-10-31 — todo → in_progress — divine (codex)
+- 2026-10-31 — in_progress → blocked — divine (codex) — Draft PR https://github.com/UncleChenna/wedding-app/pull/61 passes full verification; awaiting approval to clarify circular downstream TICKET-113/114 acceptance wording without claiming those checks complete
