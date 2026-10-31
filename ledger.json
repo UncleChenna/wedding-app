@@ -1165,13 +1165,14 @@
         "- 2026-10-31 — todo → claimed — divine (codex)",
         "- 2026-10-31 — todo → in_progress — divine (codex)",
         "- 2026-10-31 — in_progress → blocked — divine (codex) — Draft PR #63 final assets pass full verification; final-head CI pending, strict UI completion remains limited by invitation performance below 95 and physical-device QA recorded for TICKET-201",
-        "- 2026-10-31 — blocked → in_progress — divine (codex) — User approved proceeding to review with TICKET-201 release gates retained; CI41238775314 passed"
+        "- 2026-10-31 — blocked → in_progress — divine (codex) — User approved proceeding to review with TICKET-201 release gates retained; CI41238775314 passed",
+        "- 2026-10-31 — in_progress → in_review — divine (codex)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-207",
-      "pr": "",
+      "pr": "https://github.com/UncleChenna/wedding-app/pull/63",
       "started": "2026-10-31",
       "completed": "",
       "updated": "2026-10-31",
