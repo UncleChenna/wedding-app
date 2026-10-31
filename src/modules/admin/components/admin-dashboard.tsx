@@ -1,11 +1,9 @@
-import type { Metadata } from "next";
 import Link from "next/link";
-
 import { PagePlaceholder } from "@/modules/shared/components/page-placeholder";
+import { requireAdminPageAccess } from "../server/current-admin-access";
 
-export const metadata: Metadata = { title: "Admin", robots: { index: false } };
-
-export default function AdminPage() {
+export async function AdminDashboard() {
+  await requireAdminPageAccess();
   return (
     <>
       <PagePlaceholder

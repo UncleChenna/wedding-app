@@ -1,3 +1,4 @@
+import { waitForPublicDestination } from "./support/routes";
 import { readdirSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 
@@ -18,6 +19,7 @@ test.describe("accessibility on every route @smoke", () => {
     for (const route of ALL_ROUTES) {
       test(`${route} in ${theme.id} has no WCAG A/AA violations`, async ({ page }) => {
         await page.goto(route);
+        await waitForPublicDestination(page, route);
         await applyTheme(page, theme);
         expect(await scanA11y(page)).toEqual([]);
       });

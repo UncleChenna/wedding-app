@@ -1,6 +1,6 @@
 # Admin email-code sign-in
 
-Open /admin/sign-in (linked from /admin). /admin/sign-out ends this device's session. The admin dashboard is still a placeholder; route protection and MFA belong to TICKET-032 and TICKET-030. These sign-in pages alone do not authorize future data operations.
+Open /admin/sign-in (linked from /admin). /admin/sign-out ends this device's session. The admin dashboard is still a placeholder and now requires two-step sign-in under TICKET-030. Email verification creates the first-factor session; /admin/mfa enrols or challenges the authenticator before admin access. Staff and future endpoint authorization remain TICKET-032. See [admin MFA](admin-mfa.md); these sign-in pages alone do not authorize data operations.
 
 Set the server-only ADMIN_EMAIL_ALLOWLIST to comma-separated exact approved addresses. Empty denies every request. Addresses are normalized to lowercase; wildcards and malformed addresses are rejected. Do not put the list in a NEXT_PUBLIC variable or commit real addresses. Update the private deployment environment and restart to apply changes. Allowlist membership is checked before requesting a code and again against the verified identity. Future privileged endpoints must independently check the verified user's membership.
 
@@ -23,4 +23,4 @@ Use only the managed isolated stack. Start the production build with the fixture
 
 The tests check worktree identity and local API port, read only matching fixture mail, verify wrong/used-code rejection, httpOnly session cookies, absence of localStorage Auth tokens, and sign-out. Fixture Auth accounts/mail remain only in the disposable local stack. Standard smoke tests also exercise denied addresses and all-theme layout/accessibility without requiring an Auth server.
 
-Rollback application code and the local email template/config if needed; no database migration is included. Keep httpOnly cookie handling consistent with any remaining server Auth consumers. Production readiness still depends on allowlist, HTTPS/SMTP, MFA and route authorization.
+Rollback application code and the local email template/config if needed; no database migration is included. Keep httpOnly cookie handling consistent with any remaining server Auth consumers. Production readiness still depends on allowlist, HTTPS/SMTP, hosted TOTP configuration, device verification and authorization on every new privileged endpoint.

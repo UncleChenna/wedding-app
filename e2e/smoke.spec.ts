@@ -1,3 +1,4 @@
+import { waitForPublicDestination } from "./support/routes";
 import { expect, test } from "@playwright/test";
 
 import { listThemes } from "../src/modules/theming";
@@ -23,6 +24,7 @@ test.describe("smoke @smoke", () => {
   test("placeholder routes for each area respond", async ({ page }) => {
     for (const path of ["/invite", "/order", "/checkin", "/kitchen", "/admin"]) {
       const response = await page.goto(path);
+      await waitForPublicDestination(page, path);
       expect(response?.status(), path).toBe(200);
       await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
     }
