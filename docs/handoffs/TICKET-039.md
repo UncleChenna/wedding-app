@@ -43,3 +43,9 @@ All12 final preview layouts,12 motion frames and12 shared decoration screenshots
 ## 2026-10-31 — final visual review and device disposition
 
 All60 live RSVP screenshots inspected across four themes and375/768/1280 in initial, yes, no, error and closed states. Together with prior captures, all96 review screenshots are inspected with no clipping/layout regression. Owner explicitly answered: Proceed; retain device release gate. TICKET-039 may proceed to review after verification passes; physical iOS/Android WhatsApp testing remains unverified and mandatory in release-blocking TICKET-201. This is not release approval. Serial local full gate session6495 is running; do not overlap another Playwright invocation.
+
+## 2026-10-31 — local resource contention and recovery
+
+Serial full gate6495 ended exit1:475 unit passes/22 skips,build passed,554 browser passes/135 skips,five30s timeouts (all four mobile QR decode tests and the mobile stepper). Traces show24–27s pixel extraction and slow browser setup; no assertion mismatch. The unchanged five-test isolated rerun passed in52.6s (artifacts/TICKET-039/qr-stepper-idle.log). Host load averages18/20/18; Docker VM measured346%CPU. Completed owned TICKET-052 stack identity and mergedPR58 reverified; data-preserving stop requested for wedding-e96ff868824f (session49127). Do not restart any live handle.
+
+All functional criteria and96 screenshots remain reviewed. Owner-approved physical-device release gate remains201. Next: confirm completed stack stop, run required t:pr with no competing browser/build/commit process, then exact-head CI and review. Full local pass is not yet claimed.

@@ -27,7 +27,7 @@ The personal invitation now opens with a skippable 600ms envelope reveal. The le
 - Saved RSVP: three live tests plus one configured-details/no-JavaScript test pass.
 - All 12 theme/width RSVP reviews pass, including initial, yes, no, error and closed states; axe, overflow and 44px targets checked for each state.
 - All 72 mobile overflow tests pass in isolation.
-- Full CI passed source head de25c37 in run41218305039. A fresh serial local full gate is running; its final result will be recorded before promotion.
+- Full CI passed source head de25c37 in run41218305039. A serial local gate had five 30s timeouts (four QR decode tests and one stepper test),554 passes and135 skips. All five unchanged tests passed in isolation in52.6s. Host load was18 with Docker above300%CPU. Required t:pr verification must pass before promotion.
 - An earlier local full run had 554 browser passes,135 skips and five trace-file ENOENT failures because two Playwright runs shared test-results. The unchanged affected suites passed serially. No assertion or timeout was weakened.
 
 # Risks and rollout
@@ -56,7 +56,7 @@ Reviewed evidence: docs/reviews/TICKET-039 contains 12 full preview layouts,12 m
 - NOT VERIFIED sharing/devices: physical iOS/Android WhatsApp checks remain release-gated; owner explicitly approved proceeding to review while retaining this release gate on 2026-10-31.
 - N/A QR: no QR output changed.
 - N/A staff: no staff behavior changed.
-- Verification: source CI passes; serial local gate result pending.
+- Verification: source CI passes; required t:pr gate remains pending.
 
 # Harness changes, if any
 
