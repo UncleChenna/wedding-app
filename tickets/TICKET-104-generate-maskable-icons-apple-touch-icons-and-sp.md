@@ -2,20 +2,20 @@
 id: TICKET-104
 title: Generate maskable icons, Apple touch icons and splash screens
 epic: pwa
-status: todo
+status: in_progress
 priority: high
 estimate: M
 labels: [pwa, design]
 module: shared
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-103]
 blocks: [TICKET-113]
-branch: ""
+branch: TICKET-104
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-10-31
+started: 2026-10-31
 completed: ""
 reason: ""
 resume_to: ""
@@ -63,3 +63,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-31 — todo → claimed — divine (codex)
+- 2026-10-31 — todo → in_progress — divine (codex)
