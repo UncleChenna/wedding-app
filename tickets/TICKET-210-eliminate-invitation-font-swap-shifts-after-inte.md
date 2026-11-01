@@ -2,7 +2,7 @@
 id: TICKET-210
 title: Eliminate invitation font-swap shifts after integration
 epic: design-system
-status: in_progress
+status: in_review
 priority: high
 estimate: M
 labels: [frontend, test]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: []
 blocks: []
 branch: TICKET-210
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/67
 created: 2026-10-31
 updated: 2026-11-01
 started: 2026-11-01
@@ -61,7 +61,4 @@ src/modules/theming/components/fonts.ts, src/modules/theming/font-fallbacks.css,
 - 2026-10-31 — new → todo — divine
 - 2026-11-01 — todo → claimed — divine (codex)
 - 2026-11-01 — todo → in_progress — divine (codex)
-
-2026-11-01: Baseline CI41279198910 reproduces the exact Adaora shift in both dark themes, including retries. Controlled baseline/104 measurements match across all12 pairs. Fixed stable text/link origins; initial regression12failed, final focused78passed; local full gate514unit/26skip and599browser/135skip. Lighthouse99/100/100 Performance,100 Accessibility,0CLS. Review: docs/reviews/TICKET-210/README.md. Candidate CI41280253622 pending; final criterion remains unchecked.
-
-2026-11-01: Final implementation f6c22c0 passes local full verification and Linux CI41281345380 (514unit/26skip;615browser/135skip). Focused78passed; standard screenshots24passed. Final Lighthouse96/97/96,Accessibility100,CLS0. Initial trace-collection error and failed candidate CI41280253622 retained. Physical sharing/device checks remain mandatory in TICKET-201.
+- 2026-11-01 — in_progress → in_review — divine (codex)
