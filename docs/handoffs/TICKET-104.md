@@ -28,3 +28,15 @@ Human merged59/61/62/63; their ticket states were reconciled via t:move done. Th
 ## Tooling
 
 wt:new needs AGENT_OWNER=divine when harness.owner is unset. Do not create a second worktree after initial setup yields; session80285 completed successfully. Next's fontkit export may be default-wrapped: normalize module shape. Sharp is resolved through the existing pinned Next dependency; no new native dependency installed. Outside-checkout log redirect was blocked; use artifacts/TICKET-104 instead.
+
+## 2026-10-31 — draft published; verification blockers
+
+Implementation00ae18b pushed in draft PR64: https://github.com/UncleChenna/wedding-app/pull/64. Local full recheck99849 terminated:526unit/26skips,576browser passed/135skips/1mobile stepper timeout. All QR cases passed unchanged in the full recheck. Original logs retained. Hosted CI41252361212 failed two desktop envelope zero-CLS cases (Midnight & Champagne and Emerald Night) including retry; ci-failure.log contains Adaora shift entries and0.0001711703703703704. These are NOT green gates. Do not retry blindly, relax zero CLS or call this unrelated without a controlled comparison.
+
+Created TICKET-210 through t:new to diagnose base-versus104 causality and fix actual movement. Its filled definition is currently untracked because the validator requires missing local209. The unchanged209 definition exists in .worktrees/TICKET-025/tickets/TICKET-209-connect-guest-staff-and-admin-journeys-into-one.md. Explicit narrow permission to carry only that definition is pending; do not import209 implementation or edit its source file. This blocks committing the new definition/evidence, not the already-pushed icon implementation.
+
+Next: after approval carry unchanged209 definition, validate and commit210 plus this evidence, update PR64, record104 blocked via CLI, then claim210 in its own freshly based worktree. If permission is declined, wait for209 definition to merge; do not delete reserved IDs or bypass validation. Physical installation criterion also remains unchecked. No live verification or browser process remains; stop104 stack with backup.
+
+## 2026-11-01 — definition publication authorized
+
+The user answered the explicit unchanged209-definition-copy question with “merge the ticket and continue”. Inspection confirmed209 has no PR and is only an uncommitted definition in TICKET-025. As stated to the user, carry only that unchanged definition; no implementation or source checkout edits. SHA256 f824de87d90f8a083c4970f79e397c77e68308faf3365c2e99870b8095354d24. This resolves the publication exception, not the feature CI failures. TICKET-104 remains blocked; its isolated database was already stopped with backup preserved. PR65/66 now reproduce the same envelope shift class. Proceed with controlled TICKET-210 diagnosis in its own worktree.

@@ -2,7 +2,7 @@
 id: TICKET-104
 title: Generate maskable icons, Apple touch icons and splash screens
 epic: pwa
-status: in_progress
+status: blocked
 priority: high
 estimate: M
 labels: [pwa, design]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-10-31
 started: 2026-10-31
 completed: ""
-reason: ""
-resume_to: ""
+reason: "Draft PR64: hosted envelope CLS failures require TICKET-210 diagnosis; physical installation unverified. Publishing210 waits for permission to carry unchanged209 definition required by contiguous-ID validation"
+resume_to: in_progress
 ---
 
 # TICKET-104: Generate maskable icons, Apple touch icons and splash screens
@@ -67,3 +67,4 @@ Actual iOS/Android installation is unverified. The iOS home-screen criterion rem
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-10-31 — todo → claimed — divine (codex)
 - 2026-10-31 — todo → in_progress — divine (codex)
+- 2026-10-31 — in_progress → blocked — divine (codex) — Draft PR64: hosted envelope CLS failures require TICKET-210 diagnosis; physical installation unverified. Publishing210 waits for permission to carry unchanged209 definition required by contiguous-ID validation

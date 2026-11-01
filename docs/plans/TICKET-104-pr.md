@@ -32,3 +32,7 @@ docs/reviews/TICKET-104 contains all-theme contact sheets, four Maskable.app scr
 # Harness changes
 
 None. Run pnpm exec tsx scripts/pwa-icons.ts to regenerate.
+
+# Current blockers
+
+Implementation00ae18b is pushed. Local full rerun:526unit passed/26skipped;576browser passed/135skipped/1mobile stepper timeout. Hosted CI41252361212 failed two desktop envelope zero-CLS checks after retries; Midnight & Champagne and Emerald Night are affected. TICKET-210 will establish whether merged font/envelope work or104 metadata causes the shift, then fix it without weakening zero CLS. No full verification pass is claimed. Actual iOS/Android installation remains unverified.
