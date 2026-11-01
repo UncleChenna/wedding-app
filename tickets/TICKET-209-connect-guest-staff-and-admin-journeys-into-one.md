@@ -133,6 +133,8 @@ fails when a route becomes orphaned. The full journey map and build order are in
 
 ## Notes / decisions
 
+- 2026-11-01: All supplemental showcase sections inspected; full per-item UI review is recorded. No final approval: cold-font CLS fails and physical checks remain unverified. DraftPR68 awaits preview exception; functional work is preserved.
+
 - 2026-11-01: Private invitation Lighthouse99/100/100, accessibility100 throughout, CLS0 throughout; synthetic fixture cleaned. All six before/day-of RSVP component cases pass. Functional acceptance is verified; UI completion remains open for exact-zero cold-font shifts and remaining review gates.
 
 - 2026-11-01: Local services recovered; authenticated journey and full verification passed. Final admin refinement passes its unit/build and13 browser cases. RSVP/staff/admin screenshots inspected; public/auth review is ongoing. Lighthouse reveals home performance90 and nonzero home/guide CLS; these remain unresolved. PR68 stays draft. See handoff and REVIEW.md for precise evidence.
