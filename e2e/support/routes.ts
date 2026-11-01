@@ -10,6 +10,8 @@ export const PAGE_ROUTES = [
   "/invite",
   // Neutral token state runs without a database; valid states use personal-invitation.spec.ts.
   "/i/invalid",
+  // A malformed pass resolves to its "not found" state without keys or a database.
+  "/p/invalid",
   "/order",
   "/checkin",
   "/kitchen",
@@ -25,6 +27,7 @@ export const PAGE_ROUTES = [
   "/dev/rsvp",
   "/dev/order",
   "/dev/share",
+  "/dev/pass",
 ] as const;
 
 /** Any unknown path renders the themed not-found page. */

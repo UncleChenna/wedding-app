@@ -9,6 +9,7 @@ const pages = [
   ["/dev/rsvp", "RSVP preview"],
   ["/dev/order", "Table ordering preview"],
   ["/dev/share", "Invitation sharing preview"],
+  ["/dev/pass", "Gate pass preview"],
   ["/dev/theme", "Components and themes"],
 ] as const;
 export default function PreviewIndex() {

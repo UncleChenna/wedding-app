@@ -3,6 +3,14 @@ import { db } from "@/modules/shared/server/db/client";
 import { hasPublishedInvitation } from "@/modules/invitations/server/repository";
 
 export async function proxy(request: NextRequest) {
+  // A signed pass is a credential in the path: keep it out of caches, referrers and indexes.
+  if (request.nextUrl.pathname.startsWith("/p/")) {
+    const response = NextResponse.next();
+    response.headers.set("Cache-Control", "private, no-store");
+    response.headers.set("Referrer-Policy", "no-referrer");
+    response.headers.set("X-Robots-Tag", "noindex, nofollow");
+    return response;
+  }
   // Cached public theme data must never make private route responses browser-cacheable.
   if (!request.nextUrl.pathname.startsWith("/i/")) {
     const response = NextResponse.next();
@@ -23,5 +31,12 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/i/:token", "/admin/:path*", "/checkin/:path*", "/kitchen/:path*", "/order/:path*"],
+  matcher: [
+    "/i/:token",
+    "/p/:pass",
+    "/admin/:path*",
+    "/checkin/:path*",
+    "/kitchen/:path*",
+    "/order/:path*",
+  ],
 };
