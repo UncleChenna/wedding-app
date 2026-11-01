@@ -1265,9 +1265,10 @@
       "log": [
         "- 2026-11-01 — todo → claimed — divine (codex)",
         "- 2026-11-01 — todo → in_progress — divine (codex)",
-        "- 2026-11-01 — in_progress → blocked — divine (codex) — PR68 remains draft: exact-zero cold-font CLS fails; physical UI checks unverified. Awaiting requested preview-only exception while preserving TICKET-201 release gates."
+        "- 2026-11-01 — in_progress → blocked — divine (codex) — PR68 remains draft: exact-zero cold-font CLS fails; physical UI checks unverified. Awaiting requested preview-only exception while preserving TICKET-201 release gates.",
+        "- 2026-11-01 — blocked → in_progress — divine (codex) — User approved advancing navigation preview while retaining exact-zero CLS and physical-device release gates in TICKET-201"
       ],
-      "status": "blocked",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-209",
@@ -1275,8 +1276,8 @@
       "started": "2026-11-01",
       "completed": "",
       "updated": "2026-11-01",
-      "reason": "PR68 remains draft: exact-zero cold-font CLS fails; physical UI checks unverified. Awaiting requested preview-only exception while preserving TICKET-201 release gates.",
-      "resume_to": "in_progress"
+      "reason": "",
+      "resume_to": ""
     },
     "WED-169": {
       "log": [
