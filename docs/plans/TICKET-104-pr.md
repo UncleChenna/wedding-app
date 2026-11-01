@@ -19,7 +19,7 @@ Maskable safe-zone checks pass in pixel tests and inspected Maskable.app screens
 
 # Verification
 
-Integrated develop4463a2ed2d13c751e6b9e31858775a15c7bd097a (PR67 font fix) in2043800fecf5289f60e97e8c6b9345a993e0462e. Full local pnpm verify PASS:526unit passed/26skipped,617browser passed/135skipped; format, lint, types and production build also pass. Log: artifacts/TICKET-104/integrated-verify.log. Ticket validation/render pass after explicit QA ownership clarification. Hosted run41284490624 remains pending at this update; final-head CI is required before merge.
+Integrated develop4463a2ed2d13c751e6b9e31858775a15c7bd097a (PR67 font fix) in2043800fecf5289f60e97e8c6b9345a993e0462e. Full local pnpm verify PASS:526unit passed/26skipped,617browser passed/135skipped; format, lint, types and production build also pass. Log: artifacts/TICKET-104/integrated-verify.log. Ticket validation/render pass after explicit QA ownership clarification. Hosted integration run41284490624 passed all four CI jobs. The publishing workflow repeated the full gate successfully at7a72a69; its owner-resolution error was recovered through the CLI using that exact verified commit. Final-head CI is still required before merge.
 
 Earlier failures are preserved in docs/handoffs/TICKET-104.md and ignored logs: initial4mobile QR timeouts, recheck1mobile stepper timeout, hosted2dark-envelope CLS failures. TICKET-210 diagnosed and fixed real text movement with controlled font-delay regressions; no test assertions or thresholds were weakened. Fifteen focused unit cases and six production browser cases also passed during implementation.
 

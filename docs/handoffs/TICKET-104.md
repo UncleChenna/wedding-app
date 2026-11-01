@@ -63,3 +63,15 @@ Workflow learning: put durable ticket notes in Notes / decisions before Activity
 Proposed harness follow-up: reject or preserve freeform text after Activity log so metadata sync cannot silently drop evidence.
 
 Local integrated verification finished with exit0:526unit passed/26skipped and617browser passed/135skipped (4.7minutes). Format, lint, types and build passed. Updated PR and UI review distinguish preview approval from unchecked physical installation.
+
+## 2026-11-01 — ready for final-head CI
+
+PR64 is ready for review; live status in_review. Integration CI41284490624 completed successfully.
+Publishing command t:pr ran the full gate successfully again at7a72a69d58add284e40574bc6c5c1b74b4718ba2:526unit passed/26skipped and617browser passed/135skipped (4.9minutes), then pushed and updated the PR body.
+It stopped only at owner resolution, because no harness.owner was configured. Log artifacts/TICKET-104/integrated-pr-workflow.log preserves both passing tests and the subsequent administrative error.
+Recovered the remaining CLI move with --owner divine --agent codex and TICKETS_VERIFIED_SHA set to that exact verified, unchanged, pushed commit. No verification was bypassed or result invented.
+Status commit28c6c0b pushed; gh pr ready64 succeeded. Supply explicit owner/agent on future commands; do not rerun an entire successful gate to recover only its owner metadata.
+
+Next: wait for all four CI jobs on the latest PR head, confirm develop still4463a2ed2d13c751e6b9e31858775a15c7bd097a and no conflicts, then merge using the owner's standing verified-merge approval and an exact-head match. Do not use bypass/admin flags. Close through t:move done, preserving evidence. If develop changes, inspect integration and reverify as appropriate.
+Then resume109 and110 individually against fresh develop; they remain blocked and untouched by this session.
+Physical installation is still NOT VERIFIED;201 and114 retain it. Stop only104's isolated stack with backup preserved while waiting. Keep the worktree and ignored logs.
