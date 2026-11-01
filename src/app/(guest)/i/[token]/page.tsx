@@ -5,6 +5,8 @@ import { getEventSettings } from "@/modules/shared/server/settings";
 import { db } from "@/modules/shared/server/db/client";
 import { findGuestInvitation } from "@/modules/invitations/server/repository";
 import { PersonalInvitation } from "@/modules/invitations/components/personal-invitation";
+import { clientEnv } from "@/modules/shared/lib/env/client";
+import { invitationPreviewMetadata } from "@/modules/invitations/lib/share-metadata";
 
 // Personal replies must render as usable HTML even when JavaScript is disabled.
 // This private route intentionally waits for authorization and data rather than streaming a JS-revealed shell.
@@ -14,7 +16,7 @@ export const metadata: Metadata = {
   title: "Your invitation",
   description: "Celebrate with Uchenna and Adaora.",
   robots: { index: false, follow: false },
-  openGraph: { title: "Your invitation", description: "Celebrate with Uchenna and Adaora." },
+  ...invitationPreviewMetadata(clientEnv.NEXT_PUBLIC_SITE_URL),
 };
 
 async function Invitation({ params }: { params: Promise<{ token: string }> }) {

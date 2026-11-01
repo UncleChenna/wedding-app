@@ -1,0 +1,23 @@
+[
+  {
+    "run": 1,
+    "route": "/",
+    "performance": 0.99,
+    "accessibility": 1,
+    "cls": 0.00007339025002649255
+  },
+  {
+    "run": 2,
+    "route": "/",
+    "performance": 1,
+    "accessibility": 1,
+    "cls": 0.00007339025002649255
+  },
+  {
+    "run": 3,
+    "route": "/",
+    "performance": 1,
+    "accessibility": 1,
+    "cls": 0.00007339025002649255
+  }
+]
