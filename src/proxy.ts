@@ -1,8 +1,22 @@
+import { allowDevPreview } from "@/modules/shared/lib/preview-access";
 import { NextResponse, type NextRequest } from "next/server";
 import { db } from "@/modules/shared/server/db/client";
 import { hasPublishedInvitation } from "@/modules/invitations/server/repository";
 
 export async function proxy(request: NextRequest) {
+  if (request.nextUrl.pathname === "/dev" || request.nextUrl.pathname.startsWith("/dev/")) {
+    const allowed = allowDevPreview(
+      process.env.NODE_ENV,
+      process.env.ENABLE_LOCAL_PREVIEWS,
+      request.nextUrl.hostname,
+    );
+    const response = allowed
+      ? NextResponse.next()
+      : NextResponse.rewrite(new URL("/preview-unavailable", request.url), { status: 404 });
+    response.headers.set("Cache-Control", "private, no-store");
+    response.headers.set("X-Robots-Tag", "noindex, nofollow");
+    return response;
+  }
   // Cached public theme data must never make private route responses browser-cacheable.
   if (!request.nextUrl.pathname.startsWith("/i/")) {
     const response = NextResponse.next();
@@ -23,5 +37,12 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/i/:token", "/admin/:path*", "/checkin/:path*", "/kitchen/:path*", "/order/:path*"],
+  matcher: [
+    "/dev/:path*",
+    "/i/:token",
+    "/admin/:path*",
+    "/checkin/:path*",
+    "/kitchen/:path*",
+    "/order/:path*",
+  ],
 };

@@ -95,7 +95,7 @@ fails when a route becomes orphaned. The full journey map and build order are in
 - [ ] `/admin` is a hub listing every admin area; a signed-in admin sees Sign out but not Sign in, and sharing is reachable without `/dev`.
 - [ ] No production page is a dead end: each has a primary next step or a link back to its hub.
 - [ ] The orphan-route Playwright spec passes, and fails when one registered route is unlinked in a test fixture.
-- [ ] `/dev` returns 404 in a production build.
+- [x] `/dev` returns 404 in a production build.
 - [ ] The UI checklist passes on every changed route in all four themes at 375, 768 and 1280px, with screenshots in `docs/reviews/TICKET-209/`.
 - [ ] `pnpm verify` passes.
 
@@ -132,6 +132,8 @@ fails when a route becomes orphaned. The full journey map and build order are in
 - `e2e/journeys.spec.ts`
 
 ## Notes / decisions
+
+- 2026-11-01: Production preview guard verified against separate default and explicitly enabled local servers;4 browser smoke cases pass. Default404 criterion checked. Orphan crawl, authenticated sharing and final UI/full verification remain outstanding.
 
 - 2026-11-01: Staff/bar navigation, admin hub and authorized sharing page implemented; route map and template rule added.58 focused tests, quick verification, production build and staff/anonymous-access browser checks pass. Authenticated sharing, production preview guard, orphan crawl and final UI/full verification remain outstanding; all acceptance criteria stay unchecked.
 

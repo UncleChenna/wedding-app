@@ -21,7 +21,7 @@ export function expectedRouteStatus(path: string): 200 | 404 {
 
 /** Protected pages stream their redirect after the initial document loads. */
 export async function waitForPublicDestination(page: Page, path: string): Promise<void> {
-  if (path === "/admin" || path === "/admin/mfa") {
+  if (path === "/admin" || path === "/admin/mfa" || path === "/admin/sharing") {
     await expect(page).toHaveURL(/\/admin\/sign-in$/);
     await expect(page.getByLabel("Email address")).toBeVisible();
   }

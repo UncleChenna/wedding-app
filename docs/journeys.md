@@ -37,7 +37,7 @@ Day-of navigation uses the configured venue's calendar date. With the owner's ti
 | `/admin/sign-in`         | Admin gate                                  | Email code → account status → admin/TOTP                      | 029,030                     |
 | `/admin/mfa`             | Signed-in account requiring second factor   | Enrol/challenge → control room; sign out                      | 030                         |
 | `/admin/sign-out`        | Admin account controls                      | Sign out → sign-in/home                                       | 029                         |
-| `/offline`               | Worker fallback                             | Retry or return home; no invented cached pass                 | 106; actual offline pass107 |
+| `/offline`               | Worker fallback                             | Retry the failed page; no invented cached pass                | 106; actual offline pass107 |
 | `/dev`                   | Development preview index                   | Every preview listed below; home                              | 209                         |
 | `/dev/theme`             | Preview index                               | Component/theme inspection; preview index                     | 013–016                     |
 | `/dev/invitation`        | Preview index                               | Hero/photo review; preview index / letter                     | 038 → personal IV037        |
@@ -46,7 +46,7 @@ Day-of navigation uses the configured venue's calendar date. With the owner's ti
 | `/dev/order`             | Preview index                               | Ordering prototype review                                     | 070–075 → `/order`          |
 | `/dev/share`             | Preview index                               | Synthetic share controls                                      | 050/052 → `/admin/sharing`  |
 
-The production-default preview guard and positive/negative orphan-route browser test are still in progress within209. Preview URLs must not become production navigation destinations. Full UI review is outstanding; this map does not certify release readiness.
+Production preview routes return404 by default. The positive/negative orphan-route browser test is still in progress within209. Preview URLs must not become production navigation destinations. Full UI review is outstanding; this map does not certify release readiness.
 
 ## Admin areas still to be connected
 
@@ -65,3 +65,7 @@ The control room labels unimplemented areas “Coming soon”; it does not link 
 ## Adding a screen
 
 Register its route and audience, connect it from the appropriate hub or authorized entry, provide a next step/back link, and update this map with its feature owner. Include the route in browser traversal and all-theme accessibility coverage. A placeholder must state its current limitation and a useful human fallback. Do not treat a preview as the completed feature.
+
+## Local production preview verification
+
+Ordinary `pnpm start` does not expose `/dev` pages. For deliberate local visual review only, start with `ENABLE_LOCAL_PREVIEWS=1 pnpm start`; the request hostname must also be localhost,127.0.0.1 or[::1]. Do not configure this flag on deployments. Playwright opts in only its loopback server through `webServer.env`; a separate smoke test starts the same production build with the flag empty and checks every registered preview returns404. Query parameters and RSC headers do not opt in. Preview responses are no-store and noindex.
