@@ -84,3 +84,15 @@ After refinements: admin unit passed, review-build.log passed, review-recapture.
 First production Lighthouse mobile measurements (artifacts/TICKET-209/performance.log): home90/accessibility100/CLS0.0001739702613579808; guide95/100/CLS0.01565972421950601; order96/100/CLS0; offline99/100/CLS0. Home performance and home/guide strict CLS fail. Lighthouse attributes shifts to font loading (home venue p and guide section); do not count rounded displayed CLS0 as exact zero. No font/layout fix has been applied for these findings. Preserve reports.
 
 Next: inspect remaining public/auth/showcase screenshots, investigate local page font-shift findings without weakening zero-CLS checks or broadly changing font infrastructure, measure private invitation performance, finish final UI review/verification and update PR68. Device requirements remain not verified. Ticket209 stays in_progress; PR stays draft.
+
+## Production entry-page review checkpoint — 2026-11-01
+
+Home containers now stretch consistently, and invitation guidance uses an intentional two-line heading and shorter resend wording. Production build and quick verification passed (three related unit cases). The exact-zero cold-font regression test remains failing: baseline 14/16 failures; after local layout changes 12/16 failures. A focused follow-up passed light375 home/guide but failed dark412 home (CLS0.0002747458573055256) and guide (0.00008349233638978784), with unchanged reported source rectangles. No threshold was relaxed and no test was skipped.
+
+Latest single-run production Lighthouse measurements: home98/100 with CLS0; guide99/100 with CLS0.0000998462969631127. The guide still FAILS exact-zero CLS. Six original and updated reports are preserved in performance/; these are individual measurements, not three-run performance certification.
+
+All84 production public/auth screenshots (seven routes, four themes,375/768/1280) have now been inspected, replacing development-overlay captures. No clipping or overlapping controls found. Supplemental development showcase captures remain unreviewed. Actual authenticated MFA testing also passed (one opt-in local TOTP case,2.5min); all60 enrolment/setup/invalid-code/challenge/admin captures in mfa/ were inspected, including mobile bottom slices. QR/setup credentials in screenshots are public examples substituted by the existing capture helper; real authentication was tested separately.
+
+Standard pnpm verify passed on this layout revision: format, lint, types,584 unit cases (26 skipped), production build and731 browser smoke cases (153 skipped,8.3min). It does not select the new cold-font test because the standard browser stage selects @smoke. This pass does not certify that failing regression or skipped cases. Private invitation performance and physical-device checks remain unverified. PR68 remains draft; final UI approval is outstanding.
+
+Next: full verification session5349 has exited successfully (layout-full-verify.log). Retain the cold-font failure, investigate fallback baseline movement without weakening assertions, finish outstanding UI evidence and update PR68. Verification exited; no task app server remains running.

@@ -10,7 +10,7 @@ Reviewed on 1 November 2026. Base: develop `0f30f2fc3045506944e5252adb396c40856f
 
 ## Findings and limits
 
-1. Public/home/auth screenshot review and guest Lighthouse measurements remain outstanding. This is not a completed UI approval.
+1. Production public/auth review is complete; private invitation performance and supplemental showcase inspection remain outstanding. This is not a completed UI approval.
 2. Physical iOS/Android WhatsApp behavior and real sharing previews remain not verified. Existing release gates remain mandatory.
 3. The attending pass section reserves space for platform installation controls even when unsupported. The whitespace is noticeable but leaves the content readable and preserves the existing layout-stability behavior. Real pass content remains TICKET-044.
 4. Ordinary staff smoke tests formerly rewrote tracked images from both browser projects. Capture is now opt-in using `CAPTURE_JOURNEY_REVIEW=1`; all behavioral, accessibility and layout assertions still run normally.
@@ -37,3 +37,13 @@ Lighthouse 13.6.0, mobile, production server on the assigned worktree port. One 
 Lighthouse identifies font-loading shifts in the home venue paragraph and the guidance section. Rounded displayed CLS must not be treated as exact zero. Private invitation performance remains unmeasured for this ticket.
 
 The additional public/auth/showcase capture completed96 cases. Files are in `public/`; inspection is incomplete. Physical-device testing is still not verified.
+
+## Production entry-page review checkpoint — 2026-11-01
+
+Home containers now stretch consistently, and invitation guidance uses an intentional two-line heading and shorter resend wording. Production build and quick verification passed (three related unit cases). The exact-zero cold-font regression test remains failing: baseline 14/16 failures; after local layout changes 12/16 failures. A focused follow-up passed light375 home/guide but failed dark412 home (CLS0.0002747458573055256) and guide (0.00008349233638978784), with unchanged reported source rectangles. No threshold was relaxed and no test was skipped.
+
+Latest single-run production Lighthouse measurements: home98/100 with CLS0; guide99/100 with CLS0.0000998462969631127. The guide still FAILS exact-zero CLS. Six original and updated reports are preserved in performance/; these are individual measurements, not three-run performance certification.
+
+All84 production public/auth screenshots (seven routes, four themes,375/768/1280) have now been inspected, replacing development-overlay captures. No clipping or overlapping controls found. Supplemental development showcase captures remain unreviewed. Actual authenticated MFA testing also passed (one opt-in local TOTP case,2.5min); all60 enrolment/setup/invalid-code/challenge/admin captures in mfa/ were inspected, including mobile bottom slices. QR/setup credentials in screenshots are public examples substituted by the existing capture helper; real authentication was tested separately.
+
+Standard pnpm verify passed on this layout revision: format, lint, types,584 unit cases (26 skipped), production build and731 browser smoke cases (153 skipped,8.3min). It does not select the new cold-font test because the standard browser stage selects @smoke. This pass does not certify that failing regression or skipped cases. Private invitation performance and physical-device checks remain unverified. PR68 remains draft; final UI approval is outstanding.

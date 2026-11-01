@@ -5,7 +5,7 @@ import { invitationSiteCopy } from "../lib/copy";
 export function WeddingHome({ settings }: { settings: PublicEventDetails }) {
   const summary = eventSummary(settings);
   return (
-    <main className="mx-auto flex min-h-dvh w-full max-w-5xl flex-col items-center justify-center px-6 py-16 text-center">
+    <main className="mx-auto flex min-h-dvh w-full max-w-5xl flex-col items-stretch justify-center px-6 py-16 text-center">
       <p className="mb-12 text-base tracking-widest text-primary uppercase">The celebration</p>
       <h1 className="font-display text-6xl leading-tight tracking-tight wrap-anywhere md:text-8xl">
         {settings.coupleNames[0]} <span className="block text-primary">&amp;</span>{" "}
@@ -19,13 +19,13 @@ export function WeddingHome({ settings }: { settings: PublicEventDetails }) {
       <p className="mt-2 text-lg leading-relaxed">
         {ceremonyLabel(settings.ceremonyTime, settings.timeZone)}
       </p>
-      <p className="mt-8 max-w-prose text-base leading-relaxed">
+      <p className="mt-8 w-full text-base leading-relaxed">
         We can&apos;t wait to celebrate with you.
       </p>
       <Link
         prefetch={false}
         href={appRoutes.invite.path}
-        className="mt-10 inline-flex min-h-11 items-center text-lg text-primary underline underline-offset-4"
+        className="mt-10 inline-flex min-h-11 items-center justify-center text-lg text-primary underline underline-offset-4"
       >
         Your invitation
       </Link>
@@ -33,7 +33,7 @@ export function WeddingHome({ settings }: { settings: PublicEventDetails }) {
         <Link
           prefetch={false}
           href={appRoutes.dev.path}
-          className="mt-8 inline-flex min-h-11 items-center text-primary underline underline-offset-4"
+          className="mt-8 inline-flex min-h-11 items-center justify-center text-primary underline underline-offset-4"
         >
           Browse page previews
         </Link>

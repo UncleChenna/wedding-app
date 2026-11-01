@@ -8,7 +8,7 @@ export function InvitationGuide({ settings }: { settings: PublicEventDetails }) 
     <main className="mx-auto flex min-h-dvh max-w-2xl flex-col justify-center px-6 py-16">
       <p className="mb-8 text-base tracking-widest text-primary uppercase">{summary.title}</p>
       <h1 className="font-display text-5xl tracking-tight md:text-6xl">
-        An invitation just for you
+        An invitation <span className="block">just for you</span>
       </h1>
       <p className="mt-8 text-lg leading-relaxed">
         Your personal invitation will arrive as a link from us. Keep it close — it will be your way
@@ -20,8 +20,7 @@ export function InvitationGuide({ settings }: { settings: PublicEventDetails }) 
           Need your link?
         </h2>
         <p className="mt-6 text-lg leading-relaxed">
-          Check your messages for your personal invitation. If you can’t find it, reply to the
-          person who invited you and ask them to send it again.
+          Can’t find your invitation? Ask the person who invited you to send your link again.
         </p>
         <p className="mt-6 text-base leading-relaxed">
           Online link requests aren’t available yet. Please contact{" "}
@@ -31,7 +30,7 @@ export function InvitationGuide({ settings }: { settings: PublicEventDetails }) 
       <Link
         prefetch={false}
         href={appRoutes.home.path}
-        className="mt-10 inline-flex min-h-11 items-center self-start text-primary underline underline-offset-4"
+        className="mt-10 inline-flex min-h-11 items-center justify-start text-primary underline underline-offset-4"
       >
         Back to our day
       </Link>

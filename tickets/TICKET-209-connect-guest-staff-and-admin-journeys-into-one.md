@@ -153,6 +153,8 @@ _Agents append dated notes here while working._
   component except the invitation page is reachable only from `/dev` or not at all. The plan doc holds the
   journey map and the order in which other tickets plug into it.
 
+ - 2026-11-01: Production public84 and authenticated MFA60 screenshots inspected; MFA flow passes. Local entry-page layout changes improve Lighthouse to98/99, but strict cold-font CLS remains failing. Reports and regression test retained; PR68 stays draft. See REVIEW.md for exact results.
+
 ## Activity log
 
 - 2026-10-31 — new → todo — unclechenna
