@@ -2,7 +2,7 @@
 id: TICKET-109
 title: Prompt installation on Android and Chrome
 epic: pwa
-status: in_progress
+status: in_review
 priority: medium
 estimate: M
 labels: [pwa, frontend]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-103]
 blocks: [TICKET-113]
 branch: TICKET-109
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/65
 created: 2026-10-21
 updated: 2026-11-01
 started: 2026-10-31
@@ -65,3 +65,4 @@ See: [Design principles](../docs/prd.md#design-principles).
 - 2026-10-31 — todo → in_progress — divine (codex)
 - 2026-11-01 — in_progress → blocked — divine (codex) — Draft PR65: hosted CI fails envelope zero-CLS checks in Midnight and Emerald; invitation performance86/91/92 is below95 and native device checks remain unverified. Preserve failing evidence; fix shared font regression before review.
 - 2026-11-01 — blocked → in_progress — divine (codex) — Resume after merged font fix and icon assets; verify integration and retain physical-device release gates
+- 2026-11-01 — in_progress → in_review — divine (codex)
