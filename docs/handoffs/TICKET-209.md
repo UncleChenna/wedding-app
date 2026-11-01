@@ -126,3 +126,13 @@ Removed fixed names/date from the public preview helper and renderer. Metadata a
 Regression baseline settings-preview-red.log:1 failed/2 passed for custom names/date. settings-artwork-green.log:4 passed, including actual artwork element rendering. Quick lint/types/3 related cases pass. First build correctly rejected runtime-only layout metadata on /offline; cached implementation build passes (settings-preview-build-cached.log). Unchanged sharing browser smoke passes2 cases, verifying guest OG tags and actual1200x630 PNGs in every theme (settings-preview-browser.log). Full integrated journey/UI verification remains required.
 
 TICKET-125 PR71 merged into develop99be217ae101133995e63af416ef6dc66f1f39fa with all final-head checks green. CLI marked125 done and pushed status commitd7dc239. Its own managed database was stopped with backup:true; other stacks/worktrees remain intact. Next: commit this209 integration, bring in the now-merged125 base, and run full verification plus the authenticated journey. Keep approved preview limitations explicit; do not weaken cold-font tests.
+
+## Ready for final preview gate — 2026-11-01
+
+Integratione799d1e includes develop99be217. Build/session47583 exited0 and authenticated journey passes1 case (10s). All four live production sharing PNGs compare byte-identical to reviewed047 images; hashes are recorded in REVIEW.md. Brief production server34651 was stopped intentionally after comparison; no task app server remains.
+
+Own UI acceptance criterion now explicitly implements the approved preview exception; exact-zero and device checks stay failed/unverified and release-blocking under201. Full standard gate must still pass before in_review. Next run AGENT_OWNER=divine VITEST_MAX_WORKERS=2 pnpm t:pr TICKET-209; do not edit while it verifies. Existing cold-font regression remains unchanged and is outside the standard smoke filter; its failing result is disclosed, not certified by a green standard gate.
+
+The final evidence commit hook caught the newly merged125 lint rule on proxy.ts ENABLE_LOCAL_PREVIEWS. The Node-runtime proxy already imports server-only database/repository modules; added an explicit server-only marker for its direct env read. No lint exemption was added. Rebuild and unchanged production-preview guard tests must pass before publishing.
+
+Proxy boundary follow-up93311 exited0: quick lint/types/related tests, production build and both existing preview-access browser cases pass. Production /dev remains404 by default and explicit loopback opt-in remains supported. Evidence:proxy-boundary-{quick,build,browser}.log.

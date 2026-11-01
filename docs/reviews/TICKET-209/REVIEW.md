@@ -83,3 +83,11 @@ Review evidence remains on PR68. A preview-only exception is pending; no approva
 ## Preview exception approved — 2026-11-01
 
 The owner approved “Advance preview; retain exact-zero release gate.” Previous FAIL and NOT VERIFIED results above remain accurate; this authorizes a labelled navigation preview after remaining integration checks, not production UI approval. TICKET-201 retains mandatory exact-zero CLS, performance and physical-device checks before guest release. Develop integration now requires fresh metadata/sharing and navigation verification; prior screenshots cover unchanged components but do not certify new metadata behavior.
+
+## Integrated preview review — 2026-11-01
+
+Base develop99be217ae101133995e63af416ef6dc66f1f39fa; integration commit e799d1e. Rebuilt authenticated journey passes (integrated-journey.log,1 case,10s), including authorization, actual-link crawl and offline fallback. Sharing browser smoke passes2 cases with unchanged assertions. Metadata/artwork tests pass4 cases, including custom saved names/date and exclusion of extra private fields.
+
+All four production PNG responses for current default settings are byte-identical to previously reviewed docs/reviews/TICKET-047/{theme}.png. SHA256: ivory43dffdcad7f6a99e37cc34e24007ef9324f46e9718b13cfc84d65a117754209e; midnightf876aadba735a0c8eb35c1c1cdc97e5c3356716918c2c1fc486a2bce06cde70b; emeraldfbc28a78be61d9ef0822156b495884145dfa6651dd182b454d511619609b46e1; blush43eb4d5fcd3bc7c9738d5a7e4398c2d3aa787cd5b3ff6f4813bff4ba672b89a5. The settings integration does not change their reviewed layout.
+
+Preview review: APPROVE subject to the final full verification/CI gates and the owner's explicit exception. Production UI review remains CHANGES REQUESTED for the existing exact-zero font-shift and unverified physical-device requirements; TICKET-201 remains release-blocking. No failed assertion, screenshot or measurement is removed.

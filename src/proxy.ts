@@ -1,3 +1,5 @@
+import "server-only";
+
 import { allowDevPreview } from "@/modules/shared/lib/preview-access";
 import { NextResponse, type NextRequest } from "next/server";
 import { db } from "@/modules/shared/server/db/client";

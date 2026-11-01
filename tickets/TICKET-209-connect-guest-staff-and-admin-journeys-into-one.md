@@ -96,7 +96,7 @@ fails when a route becomes orphaned. The full journey map and build order are in
 - [x] No production page is a dead end: each has a primary next step or a link back to its hub.
 - [x] The orphan-route Playwright spec passes, and fails when one registered route is unlinked in a test fixture.
 - [x] `/dev` returns 404 in a production build.
-- [ ] The UI checklist passes on every changed route in all four themes at 375, 768 and 1280px, with screenshots in `docs/reviews/TICKET-209/`.
+- [x] The UI checklist records evidence on every changed route in all four themes at 375, 768 and 1280px, with screenshots in `docs/reviews/TICKET-209/`. Under the owner-approved preview exception, exact-zero CLS and physical-device requirements remain mandatory release gates in TICKET-201; failed/unverified results are not marked passing.
 - [x] `pnpm verify` passes.
 
 ## Test plan
@@ -132,6 +132,8 @@ fails when a route becomes orphaned. The full journey map and build order are in
 - `e2e/journeys.spec.ts`
 
 ## Notes / decisions
+
+- 2026-11-01: Owner approved “Advance preview; retain exact-zero release gate.” UI acceptance now explicitly records that preview exception without claiming production UI completion. Integrated develop99be217, resolved four conflicts, and preserved settings-driven pages plus token-free sharing images. New metadata/artwork regression tests and sharing smoke pass; rebuilt authenticated journey passes. All four default preview PNGs are byte-identical to reviewed TICKET-047 artifacts. Final normal PR gate remains pending.
 
 - 2026-11-01: All supplemental showcase sections inspected; full per-item UI review is recorded. No final approval: cold-font CLS fails and physical checks remain unverified. DraftPR68 awaits preview exception; functional work is preserved.
 

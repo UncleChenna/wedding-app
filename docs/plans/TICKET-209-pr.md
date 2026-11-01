@@ -16,11 +16,12 @@ Pages were isolated from one another. This change connects configured guest entr
 - Crawl actual rendered links from each entry point, including authenticated email/TOTP and real offline fallback; a negative fixture proves orphan detection.
 - Return404 for production /dev routes by default. Local browser tests opt in explicitly.
 - Integrate develop02c9923 sharing metadata and replace fixed public names/date with saved settings in social tags and image artwork. Preserve the token-free image URL and approved wording. Public layout metadata revalidates after30s and expires after300s; guest data is not cached.
+- Mark the Node proxy server-only so its existing local-preview environment read obeys the merged security rule; no exemption. Quick verification, production build and both production-preview guard tests pass.
 - Document role/route ownership in docs/journeys.md. Stabilize home containers and guidance heading wrapping.
 
 # Acceptance criteria and evidence
 
-Base develop:0f30f2fc3045506944e5252adb396c40856f7e0c.
+Base develop:99be217ae101133995e63af416ef6dc66f1f39fa (integration e799d1e).
 Functional criteria were verified before integration. The owner approved preview advancement while retaining exact-zero CLS and physical-device release gates; this is not production UI approval.
 
 # Verification
@@ -29,7 +30,7 @@ Functional criteria were verified before integration. The owner approved preview
 - Subsequent test-only expansion: all six before/day-of RSVP state cases and quick lint/types/related tests pass.
 - Authenticated journey and twelve staff matrix checks pass (13 cases); dedicated local MFA flow passes.
 - Three private invitation Lighthouse runs: Performance99/100/100, Accessibility100/100/100, CLS0/0/0. Only synthetic data was used and the temporary invitation was removed.
-- Post-merge focused evidence:4 metadata/artwork unit tests, quick lint/types, production build and2 unchanged all-theme sharing browser tests pass. Full integrated verification is pending.
+- Post-merge focused evidence:4 metadata/artwork unit tests, quick lint/types, production build and2 unchanged all-theme sharing browser tests pass. Rebuilt authenticated journey passes1 case (10s); actual all-theme PNGs are byte-identical to reviewed047 images. Final full standard verification is pending.
 - Latest single-run public scores: home98, guide99, order96, offline99; Accessibility100. Earlier lower scores are retained.
 
 # Screenshots and UI checklist
