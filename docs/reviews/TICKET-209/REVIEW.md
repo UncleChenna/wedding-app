@@ -79,3 +79,7 @@ Overall: CHANGES REQUESTED; no final UI approval. Functional criteria are verifi
 | Verification             | Standard full verification passed584 units/26 skipped and731 browser cases/153 skipped. Subsequent test-only expansion passes six cases and quick verification. Separate cold-font regression FAILS; it is not included by the standard @smoke filter.                                                                                                       |
 
 Review evidence remains on PR68. A preview-only exception is pending; no approval, production readiness or completion is inferred.
+
+## Preview exception approved — 2026-11-01
+
+The owner approved “Advance preview; retain exact-zero release gate.” Previous FAIL and NOT VERIFIED results above remain accurate; this authorizes a labelled navigation preview after remaining integration checks, not production UI approval. TICKET-201 retains mandatory exact-zero CLS, performance and physical-device checks before guest release. Develop integration now requires fresh metadata/sharing and navigation verification; prior screenshots cover unchanged components but do not certify new metadata behavior.

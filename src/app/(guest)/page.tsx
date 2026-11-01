@@ -1,3 +1,5 @@
+import { clientEnv } from "@/modules/shared/lib/env/client";
+import { invitationPreviewMetadata } from "@/modules/invitations/lib/share-metadata";
 import type { Metadata } from "next";
 import { connection } from "next/server";
 import { getEventSettings } from "@/modules/shared/server/settings";
@@ -8,7 +10,13 @@ export const instant = false;
 export async function generateMetadata(): Promise<Metadata> {
   await connection();
   const { title, description } = eventSummary(await getEventSettings());
-  return { title, description, openGraph: { title, description } };
+  const preview = invitationPreviewMetadata(clientEnv.NEXT_PUBLIC_SITE_URL);
+  return {
+    ...preview,
+    title,
+    description,
+    openGraph: { ...preview.openGraph, title, description },
+  };
 }
 export default async function HomePage() {
   await connection();

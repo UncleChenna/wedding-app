@@ -110,3 +110,11 @@ Latest quick verification passes lint, types and six related component tests (pe
 ## Consolidated review — 2026-11-01
 
 Finished all supplemental showcase inspection:356 slices reduce to128 byte-distinct sections, all inspected. No clipping/overlap found; development issue badges are explicitly distinguished from production evidence. REVIEW.md now records every UI checklist item; PR body rewritten around current results rather than accumulated checkpoints. Exact-zero cold-font and physical-device requirements remain unresolved. Preview exception question is unanswered. No task processes remain live. Preserve the draft and mark the ticket blocked pending the decision; continue ready backlog work instead of repeating the same measurements. Functional implementation and evidence remain pushed, not declared complete.
+
+## Approved preview resumption — 2026-11-01
+
+Owner explicitly approved: “Advance preview; retain exact-zero release gate.” Resumed through CLI commit ec3924f. This permits preview review after remaining checks, not a font/device pass. TICKET-201 already requires zero CLS, three-run performance coverage and physical WhatsApp verification and blocks guest releases. Preserve every failing cold-font assertion and raw measurement.
+
+Integrated develop02c992376250d39ffc1a96a7e80a5860f3641f45. Four conflicts: home, guide, private invitation metadata and deleted opengraph-image route. Retained settings-driven pages and merged the upstream token-free /invitation-preview image metadata; accepted obsolete image-route deletion. Quick gate passes lint/types and29 related unit cases (resume-merge-quick.log). No conflict markers remain. Full browser integration is not yet verified: upstream sharing assertions currently expect fixed metadata, while209 changes page metadata dynamically. Next reconcile public metadata/image content with saved settings, add regression coverage, rebuild and run sharing/crawl/full verification. Do not claim the previous build certifies this merge.
+
+TICKET-125 PR71 is ready for review; latest evidence commit8b58778 requires final-head CI before its authorized merge. It is no longer an active editing ticket. No other owner's checkout was modified.
