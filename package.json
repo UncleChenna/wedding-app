@@ -33,6 +33,7 @@
     "db:check-rls": "tsx scripts/db-check.ts rls",
     "db:counts": "tsx scripts/db-check.ts counts",
     "themes:schema": "tsx scripts/generate-theme-schema.ts",
+    "gate:keygen": "tsx scripts/gate-keygen.ts",
     "agent:loop": "bash scripts/agent-loop.sh",
     "prepare": "husky",
     "agents:link": "node scripts/agents-link.mjs",
