@@ -51,3 +51,11 @@ Database startup36840 completed successfully. Serial performance46216 completed:
 Updated review and PR describe preview approval under the owner's standing device/performance separation exception. Unowned todo201 now explicitly retains109's performance/native-device requirement and still blocks both releases. No ownership/status was manually edited.
 Production server32006 is running on24051; stop it before t:pr so the gate owns its server. Database remains ready for the publishing gate.
 Next: commit evidence, run t:pr with explicit --owner divine --agent codex, retain all failures if any, then require final-head CI before exact-head authorized merge. Physical checks remain unverified. No feature runtime or assertions changed after integration.
+
+## 2026-11-01 — review workflow completed
+
+t:pr session49901 TERMINAL PASS with explicit owner/agent; full gate passed again and evidence commit bfb16ef was pushed. Status commit d1d6148 moved109 to in_review and is pushed. Log artifacts/TICKET-109/integrated-pr-workflow.log contains the complete publishing run. No runtime or assertions changed between successful full gates.
+Production server32006 is stopped (exit130 after requested interrupt). Database stop55798 completed with backup=true for wedding-859a59d12fde. PR65 is ready for review. Publishing gate totals:534unit/26skipped,631browser/135skipped (2.9minutes). No local verification process remains.
+Next: confirm PR65 ready state, wait for all four CI jobs on the latest handoff head, confirm develop still3dae6a38946ddc3419363fb18ed688670d0d02c3 and no conflicts, then use the owner's standing verified-merge approval with an exact-head match. Never use admin bypass. Record done through CLI only after merge. Keep ignored logs and this worktree as evidence.
+Then resume110 against freshly fetched develop; do not conflate its unverified physical iOS behavior with automated browser guidance.
+Performance90/92/90 remains below95;201 blocks both releases and114 retains physical installation. Preview review does not certify release.
