@@ -75,3 +75,9 @@ Status commit28c6c0b pushed; gh pr ready64 succeeded. Supply explicit owner/agen
 Next: wait for all four CI jobs on the latest PR head, confirm develop still4463a2ed2d13c751e6b9e31858775a15c7bd097a and no conflicts, then merge using the owner's standing verified-merge approval and an exact-head match. Do not use bypass/admin flags. Close through t:move done, preserving evidence. If develop changes, inspect integration and reverify as appropriate.
 Then resume109 and110 individually against fresh develop; they remain blocked and untouched by this session.
 Physical installation is still NOT VERIFIED;201 and114 retain it. Stop only104's isolated stack with backup preserved while waiting. Keep the worktree and ignored logs.
+
+## 2026-11-01 — merged and closed
+
+Final-head CI41285600643 passed all four jobs for a6b7025f857bb2f70dd24d32bc8e0f8be2f1d82c. PR64 merged into develop as3dae6a38946ddc3419363fb18ed688670d0d02c3. The first merge request suffered a connection reset; confirmed PR still open before retrying the identical exact-head merge. CLI marked104 done and pushed completion commit a35c59e. No admin bypass or direct develop push used.
+
+The isolated database is stopped with backup=true. Keep this clean worktree as the evidence archive; no local processes remain. Next editing ticket109 can integrate fresh develop. Physical checks remain mandatory in201/114.
