@@ -2,7 +2,7 @@
 id: TICKET-169
 title: Approve offline freshness and the gate credential contract
 epic: checkin
-status: in_progress
+status: in_review
 priority: urgent
 estimate: S
 labels: [human, security, docs]
@@ -12,7 +12,7 @@ agent: claude
 blocked_by: []
 blocks: [TICKET-031, TICKET-056, TICKET-108, TICKET-161]
 branch: TICKET-169
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/69
 created: 2026-10-21
 updated: 2026-11-01
 started: 2026-11-01
@@ -81,3 +81,4 @@ Owner: unclechenna · Decision date: 2026-11-01 · All 12 rows approved as propo
 - 2026-10-21 — new → todo — divine
 - 2026-11-01 — todo → claimed — unclechenna (claude)
 - 2026-11-01 — todo → in_progress — unclechenna (claude)
+- 2026-11-01 — in_progress → in_review — unclechenna (claude)
