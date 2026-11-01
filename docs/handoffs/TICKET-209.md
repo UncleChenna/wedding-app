@@ -16,3 +16,7 @@ Database is running, migrated, not seeded. No app/build/test process is running.
 Start with failing shared route-registry tests and inspect installed Next documentation before framework edits. Follow docs/plans/2026-11-01-TICKET-209.md; all feature criteria remain unchecked. Keep the whole scope, including admin sharing, production dev-route guard and negative orphan-route test.
 Publish/update draft PR with actual progress; do not call t:pr or mark review until complete verification. Use explicit --owner divine --agent codex for CLI transitions.
 User standing authorization permits verified merges and labelled preview delivery with physical/performance QA retained; no bypass or false device claims.
+
+## Publication
+
+Draft PR68: https://github.com/UncleChenna/wedding-app/pull/68. Plan commit4bd9383 is pushed; formatting,210-ticket validation and ignored snapshot rendering passed. Runtime implementation and all feature criteria remain outstanding. Next action is the failing route-registry coverage tests, not another planning-only pass.
