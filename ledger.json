@@ -1220,9 +1220,10 @@
     "WED-110": {
       "log": [
         "- 2026-11-01 — todo → claimed — divine (codex)",
-        "- 2026-11-01 — todo → in_progress — divine (codex)"
+        "- 2026-11-01 — todo → in_progress — divine (codex)",
+        "- 2026-11-01 — in_progress → blocked — divine (codex) — Draft PR66: local full gate has six invitation focus failures (isolated rerun passes); CI41270521817 fails Emerald Night envelope zero-CLS; real iPhone/WhatsApp manual criterion remains unverified. Keep assertions and release gates intact."
       ],
-      "status": "in_progress",
+      "status": "blocked",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-110",
@@ -1230,8 +1231,8 @@
       "started": "2026-11-01",
       "completed": "",
       "updated": "2026-11-01",
-      "reason": "",
-      "resume_to": ""
+      "reason": "Draft PR66: local full gate has six invitation focus failures (isolated rerun passes); CI41270521817 fails Emerald Night envelope zero-CLS; real iPhone/WhatsApp manual criterion remains unverified. Keep assertions and release gates intact.",
+      "resume_to": "in_progress"
     }
   }
 }
