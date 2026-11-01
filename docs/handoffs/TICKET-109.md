@@ -18,10 +18,10 @@ Physical native installation and WhatsApp not verified. TICKET-114 and201 remain
 
 ## Live process / next
 
-Dedicated production server session92999 listens on24051 for review; stop it when finished. Supabase wedding-859a59d12fde remains available.
-CI run41254671961 for bac98df was still running at last check. Poll before deciding its result.
-Commit/push expanded tests and evidence, update PR body. Request permission to proceed to review with disclosed performance/device gates if needed by UI checklist; keep draft/in_progress until authorized. Do not treat CI passing as device or performance approval.
-No implementation source changed after the successful full gate; new smoke assertions passed separately. Final-head CI must cover them.
+Production server session92999 is stopped. Supabase wedding-859a59d12fde was stopped with backup=true; data was preserved.
+CI run41254671961 for bac98df failed; see the recorded envelope failures below.
+Expanded tests and evidence committed as aa8b198; blocked transition2c5ddd8 pushed. PR65 body updated. Ticket is blocked, draft retained. Investigate and repair CI before requesting review; do not treat a local pass as hosted verification.
+No implementation source changed after the successful full gate; new smoke assertions passed separately. Final-head CI must cover them. Next ready ticket is110; it has not been claimed in this handoff.
 
 ## Separate preserved work
 
