@@ -2,7 +2,7 @@
 id: TICKET-183
 title: Resolve signed pass URLs without exposing invitation editing
 epic: invitations
-status: in_progress
+status: in_review
 priority: urgent
 estimate: M
 labels: [backend, security]
@@ -12,7 +12,7 @@ agent: claude
 blocked_by: [TICKET-036, TICKET-040, TICKET-056]
 blocks: [TICKET-044, TICKET-176, TICKET-185]
 branch: TICKET-183
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/72
 created: 2026-10-21
 updated: 2026-11-01
 started: 2026-11-01
@@ -75,3 +75,4 @@ Backlog audit coverage: INV-2, INV-5, CHK-1. See [PRD](../docs/prd.md) and [audi
 - 2026-10-21 — new → todo — divine
 - 2026-11-01 — todo → claimed — unclechenna (claude)
 - 2026-11-01 — todo → in_progress — unclechenna (claude)
+- 2026-11-01 — in_progress → in_review — unclechenna (claude)
