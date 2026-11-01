@@ -46,3 +46,15 @@ The unchanged209-definition-copy exception was requested again because the same 
 ## Publication and cleanup
 
 Review evidence4b04498 and blocked transitiond74f34f are pushed to PR66; body updated. Screenshot matrix passed36 cases. Database wedding-7bf7dd2551f8 is stopped with backup=true, preserving data. No owned verification process remains. User replied to the209-definition exception request with “merge the ticket and continue”;209 has no PR, so the planned next action is carrying its unchanged definition into104 and proceeding with210. Do not merge failing feature PRs.
+
+## 2026-11-01 — resumed after merged installation and font fixes
+
+Owner divine; agent codex. Live103 prerequisite is done. Reviewed live board/next,110 definition/handoff/plan, source instructions and installed Next layout guide.
+109 merged as PR65 into develop0397748c5c9aa4707384a3ebce6ef7bf4d0907ba after all four final-head CI jobs passed. Its completion is recorded;104 and210 are also merged. Older permission/blocked instructions above are historical. User has standing approval for verified merges and preview delivery with explicit device/performance release gates.
+
+CLI resumed110 in_progress, commit598ec0d. Fetched develop and integrated it in pushed commit b1f212a.
+Three expected conflicts were limited to shared mount locations: staff layout, invitation pass section and theme showcase. Kept both InstallPrompt and IosInstallGuide imports and controls. No assertions, component internals or thresholds changed. Root icon metadata and210 text-origin fixes are retained.
+Database startup77146 completed; project wedding-7bf7dd2551f8, browser34711.
+RUN_IOS_REVIEW=1 caffeinate -is pnpm verify is live in exec13614; log artifacts/TICKET-110/integrated-verify.log. Poll this exact handle; do not restart on observation timeout. It refreshes twelve guide screenshots for final visual inspection; original screenshots remain in Git history.
+Next: inspect terminal result and all updated guide images plus combined staff/theme surfaces, record any failures without relabelling, and retain actual physical iPhone/WhatsApp proof as unverified. Apply the existing preview-delivery exception by explicitly retaining the requirement in201/114 before review; no manual check is currently certified.
+Keep old failed logs. After verification, update evidence and PR66, use t:pr with --owner divine --agent codex, require final-head CI and exact-head matching before any authorized merge.
