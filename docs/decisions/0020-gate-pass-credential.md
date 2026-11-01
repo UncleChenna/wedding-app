@@ -1,6 +1,6 @@
 # 0020 — Gate pass credential and offline trust
 
-- Status: Proposed · 2026-11-01 · TICKET-169 (awaiting owner approval of every row in the decision table)
+- Status: Accepted · 2026-11-01 · TICKET-169 (owner approved all 12 rows of the decision table)
 
 **Context.** The PRD requires every scanner to verify a guest's QR without the server (CHK-6). The QR must carry an
 Ed25519-signed token and scanners must hold only the public key ([Security](../prd.md#security)). Guests reopen
@@ -73,6 +73,6 @@ The schema already carries what the contract needs: `invitations.token_version` 
   must cover it.
 - Reversal: the payload carries `v`, so a later format can coexist with format 1 during a transition.
 
-**Validation.** Owner approval of each row in the decision table in the
-[TICKET-169 ticket](../../tickets/TICKET-169-approve-offline-freshness-and-the-gate-credentia.md) is pending. No
+**Validation.** On 2026-11-01 the owner approved each row in the decision table in the
+[TICKET-169 ticket](../../tickets/TICKET-169-approve-offline-freshness-and-the-gate-credentia.md). No
 code implements this yet. TICKET-056, TICKET-057, TICKET-065 to TICKET-068 and TICKET-136 carry the tests.

@@ -19,5 +19,8 @@
   3. Amend the PRD Journey 1 step 5 and the Security wording to say the QR is a read-only pass.
   4. Tick the acceptance criteria and run `pnpm t:pr TICKET-169`.
 
+  **Update, 2026-11-01:** the owner approved all 12 rows. The ADR is Accepted and the PRD has been amended. The
+  PR is ready for review. Next: TICKET-056 (sign passes) and TICKET-183 (the read-only `/p/` page).
+
   **Environment:** the worktree's local Supabase failed to start because Docker is full of other stacks. This
   ticket is docs only and doesn't need it.

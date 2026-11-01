@@ -26,4 +26,4 @@ Proposed: [0018 — Draft event settings and append-only RSVP history](0018-even
 
 Accepted: [0019 — Native RSVP rendering and token-safe form requests](0019-native-rsvp-rendering.md) (TICKET-040; physical-device release QA pending).
 
-Proposed: [0020 — Gate pass credential and offline trust](0020-gate-pass-credential.md) (TICKET-169; owner approval pending).
+Accepted: [0020 — Gate pass credential and offline trust](0020-gate-pass-credential.md) (TICKET-169; owner approved 2026-11-01).
