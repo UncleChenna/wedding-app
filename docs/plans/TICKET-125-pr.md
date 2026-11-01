@@ -14,7 +14,7 @@ Application lint previously accepted direct, computed and aliased private enviro
 - Add positive/negative tests against the actual ESLint configuration and environment parser.
 - Add docs/security.md covering database, gate signing, public verification keys, provider credentials, access ownership, routine/compromise rotation, offline scanner revocation limits and rollback. Link it from architecture.
 
-# Acceptance and evidence
+# Acceptance criteria and evidence
 
 - Client secret access: focused tests pass for direct/computed reads, aliases, imports, server-only misuse and secret public names. Existing Next server-only poisoning remains active for transitive client imports.
 - Rotation documentation: current credential inventory and procedures are recorded. WhatsApp Cloud API/service credentials are not consumed by this app; future integration must add its server schema and provider-specific operational verification.
