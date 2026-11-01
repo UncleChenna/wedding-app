@@ -1,6 +1,8 @@
 import { ESLint } from "eslint";
 import { expect, it } from "vitest";
-const eslint = new ESLint();
+import config from "../../eslint.config.mjs";
+// Import the actual project config during module loading, like ESLint CLI startup.
+const eslint = new ESLint({ overrideConfigFile: true, overrideConfig: config });
 async function violations(
   source: string,
   filePath = "src/modules/shared/components/secret-fixture.tsx",

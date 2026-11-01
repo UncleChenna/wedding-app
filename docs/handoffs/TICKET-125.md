@@ -34,3 +34,11 @@ Managed setup90624 exited0 when resumed from the updated worktree: source templa
 Both ticket criteria are supported by code/tests and docs/security.md; real operational rotations remain unperformed. User approved advancing TICKET-209 preview while retaining exact-zero release gate in TICKET-201. Return to209 after125's review/merge sequence; do not drop that approval or certify the font issue fixed.
 
 Next: t:pr125 normal verification/status gate, inspect final-head CI, merge only after required checks pass under standing authorization, close through CLI, then resume209. No UI changes in125. Current CI run41338444010 was live at last check; inspect current final head rather than relying on this number after new pushes.
+
+## PR-gate follow-up — 2026-11-01
+
+The normal PR gate reproduced the cold ESLint configuration timeout (1 failed,596 passed,26 skipped). Moving initialization to beforeAll also hit the unchanged10s hook limit. The test now statically imports the actual repository ESLint config and passes it to ESLint with config-file discovery disabled, so module loading performs configuration startup while all security assertions and timeouts remain unchanged. Typecheck passes. An initial sandboxed full-suite run failed local socket/subprocess tests; rerunning with required permissions logs to artifacts/TICKET-125/unit-config-import-elevated.log. Do not treat either failed run as passing.
+
+TICKET-209 approval is confirmed: advance preview after its remaining review checks, retain exact-zero CLS as a mandatory TICKET-201 release gate. This is not evidence that the cold-font regression is fixed.
+
+Elevated full unit run41660 exited0:597 passed,26 skipped. Static loading fixes the reproduced configuration-startup failure without relaxing assertions or timeouts. Next: commit/push the test correction and run t:pr125 normal full gate.

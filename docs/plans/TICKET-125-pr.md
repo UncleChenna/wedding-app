@@ -28,7 +28,7 @@ Base develop:02c992376250d39ffc1a96a7e80a5860f3641f45.
 - Extended baseline:3 additional gaps reproduced.
 - Focused final suite:25 cases pass.
 - Quick verification:lint,types and related unit tests pass.
-- Full verification:597 unit cases pass,26 skipped; production build passes;663 browser smoke cases pass,135 skipped. Skips are not certified. A concurrent hook run timed out during cold ESLint configuration loading; unchanged checks passed after the browser run completed.
+- Full verification:597 unit cases pass,26 skipped; production build passes;663 browser smoke cases pass,135 skipped. Skips are not certified. Cold ESLint configuration loading later timed out again during the PR gate. Tests now statically import the actual project config; the corrected full unit run passes597 cases with26 skips, and typechecking passes. Assertions and timeouts are unchanged. The initial sandboxed rerun failed socket/subprocess checks; the permitted rerun passes.
 
 Managed database setup initially failed because the old primary-checkout generator omitted admin-code.html. Resuming setup with TICKET-208's updated generator copied the template, started the isolated database and applied migrations successfully. No generated file is edited manually and no other stack is changed.
 
