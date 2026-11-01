@@ -17,6 +17,13 @@ export async function reviewAdminJourneys(page: Page, household: string) {
       for (const state of ["hub", "sharing", "dialog"]) {
         if (state !== "dialog")
           await page.goto(state === "hub" ? appRoutes.admin.path : appRoutes.adminSharing.path);
+        await expect(
+          page.getByRole("heading", {
+            level: 1,
+            name: state === "hub" ? "Wedding control room" : "Sharing",
+            exact: true,
+          }),
+        ).toBeVisible();
         await applyTheme(page, theme);
         if (state === "dialog") {
           await page

@@ -46,7 +46,7 @@ Day-of navigation uses the configured venue's calendar date. With the owner's ti
 | `/dev/order`             | Preview index                               | Ordering prototype review                                     | 070–075 → `/order`          |
 | `/dev/share`             | Preview index                               | Synthetic share controls                                      | 050/052 → `/admin/sharing`  |
 
-Production preview routes return404 by default. The negative orphan-route browser fixture passes; the full authenticated production crawl is implemented but not yet verified because local Auth/Postgres became unavailable during its run. Preview URLs must not become production navigation destinations. Full UI review is outstanding; this map does not certify release readiness.
+Production preview routes return404 by default. The negative orphan-route browser fixture and full authenticated production crawl pass. The live test covers email/TOTP sign-in, published invitation sharing, draft/revoked exclusion, rendered-link traversal and the actual offline fallback. Initial local Auth/Postgres failures recovered without changed timeouts or weakened assertions. Preview URLs must not become production navigation destinations. Full UI review is outstanding; this map does not certify release readiness.
 
 ## Admin areas still to be connected
 

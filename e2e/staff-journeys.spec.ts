@@ -12,7 +12,8 @@ for (const theme of listThemes())
       await page.setViewportSize({ width, height: 900 });
       await page.emulateMedia({ reducedMotion: "reduce" });
       const dir = `docs/reviews/TICKET-209/staff/${theme.id}/${width}`;
-      mkdirSync(dir, { recursive: true });
+      const capture = process.env.CAPTURE_JOURNEY_REVIEW === "1";
+      if (capture) mkdirSync(dir, { recursive: true });
       await page.goto(appRoutes.staff.path);
       for (const route of [appRoutes.staff, appRoutes.checkin, appRoutes.kitchen, appRoutes.bar]) {
         if (route.path !== appRoutes.staff.path)
@@ -43,7 +44,8 @@ for (const theme of listThemes())
           }),
         );
         expect(targets.every((box) => box.width >= 44 && box.height >= 44)).toBe(true);
-        await page.screenshot({ path: `${dir}/${route.path.slice(1)}.png`, fullPage: true });
+        if (capture)
+          await page.screenshot({ path: `${dir}/${route.path.slice(1)}.png`, fullPage: true });
         await page.getByRole("banner").getByRole("link", { name: "Staff home" }).focus();
         await page.keyboard.press("Enter");
         await expect(page).toHaveURL(/\/staff$/);

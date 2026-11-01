@@ -133,6 +133,8 @@ fails when a route becomes orphaned. The full journey map and build order are in
 
 ## Notes / decisions
 
+- 2026-11-01: Local services recovered; authenticated journey and full verification passed. Final admin refinement passes its unit/build and13 browser cases. RSVP/staff/admin screenshots inspected; public/auth review is ongoing. Lighthouse reveals home performance90 and nonzero home/guide CLS; these remain unresolved. PR68 stays draft. See handoff and REVIEW.md for precise evidence.
+
 - 2026-11-01: Added actual-link crawl and passing negative orphan fixture, plus explicit auth/offline exits. Build and static checks pass. Real authenticated journey remains unverified: pending local Auth followed by a confirmed isolated Postgres connection timeout on retry. No timeouts or assertions were weakened; see handoff for live diagnostic handle and recovery steps.
 
 - 2026-11-01: Production preview guard verified against separate default and explicitly enabled local servers;4 browser smoke cases pass. Default404 criterion checked. Orphan crawl, authenticated sharing and final UI/full verification remain outstanding.
