@@ -1,48 +1,59 @@
 # TICKET-210 review — 1 November 2026
 
-CHANGES REQUESTED: full verification, hosted CI and performance pending.
+**CHANGES REQUESTED:** Linux CI is pending and physical-device checks remain unverified. Local implementation checks pass.
 
-## Evidence
+## Cause and baseline
 
-Baseline develop c9edef6cb137a194f9c215fc5b61b08488a54aa0; baseline draft PR67 head5857b5750a48584392892bce2df7d3fc115b94f9 has no runtime/test changes. CI41279198910 remains running.
+The baseline is develop `c9edef6cb137a194f9c215fc5b61b08488a54aa0`. Draft PR #67 initially preserved its runtime and tests unchanged at `5857b5750a48584392892bce2df7d3fc115b94f9`.
 
-Held WOFF2 requests until fallback paint, measured text ranges, released fonts and recorded resource timing/layout-shift entries. Compared baseline (29070) and existing TICKET-104 build (20590) in four themes at375/768/1280. All twelve pairs have identical results; see [raw data](font-comparison.json).
+[Baseline CI](https://github.com/UncleChenna/wedding-app/actions/runs/41279198910) failed both dark-theme envelope tests, including retries: 573 passed, 135 skipped, 2 failed. It reported Adaora with CLS 0.0001711703703703704 and unchanged enclosing block bounds. The same regression therefore already exists in merged develop.
 
-Playfair Adaora moved horizontally1.484375px /1.953125px /2.546875px at the three widths while its block stayed stationary. Equal vertical font metrics do not imply equal string widths. This Mac did not emit name shift entries for those small movements; do not claim the Linux failure was reproduced locally. Both builds did emit preview-link shifts at768/1280: CLS0.00009266573431069959 /0.00003909335666232639. Linux baseline CI remains needed to confirm the exact earlier Adaora failure.
+A controlled comparison held WOFF2 requests until fallback paint, measured text ranges, released fonts, then recorded resource timing and layout-shift entries. Baseline and TICKET-104 production builds produced identical results for all 12 theme/width pairs. [Raw measurements](font-comparison.json) include both ports and all four themes at 375, 768 and 1280px.
 
-An initial diagnostic matcher was incorrectly escaped and did not delay fonts. That uncontrolled output is retained locally and excluded from the delayed-font evidence. Corrected matcher: **/*.woff2.
+On macOS, Playfair's Adaora text moved horizontally by 1.484375, 1.953125 and 2.546875px respectively. Equal vertical metrics do not guarantee equal string widths: centring therefore changes the text origin during a font swap. macOS did not report these small name movements as layout shifts; the Linux failure above is separate hosted evidence. Both local builds did report shifts from preview theme links at 768/1280px, with CLS 0.00009266573431069959 / 0.00003909335666232639.
 
-## Candidate
+The first diagnostic run had an incorrectly escaped route matcher and did not delay fonts. Its uncontrolled output is retained locally and excluded from delayed-font evidence. The corrected matcher is `**/*.woff2`.
 
-Names use a stable left text origin in a centred maximum18rem column; preview links reserve14rem each. Fonts, fluid sizes, wrapping, colours, copy and motion remain intact.
+## Fix
 
-Initial behavioral regression:12/12 failures before implementation. Candidate focused suite:62passed (both browser projects, replay/return/keyboard/reduced motion/delayed fonts). Final test additionally requires loading state, two painted frames, stable link origins and zero CLS; full verification running.
+Names now have a stable left text origin within a centred column no wider than 18rem. Preview theme links reserve 14rem each. Fonts, fluid sizes, wrapping, colours, copy and envelope motion are unchanged.
 
-Logs: artifacts/TICKET-210/font-regression-red.log, focused-green.log, verify.log.
+The initial behavioral regression failed all 12 cases before implementation. After the fix, the first focused suite passed 62 checks. The final test additionally requires actual font-loading state, two painted frames, stable name/link origins and exact zero CLS. Existing first-visit/replay/return/keyboard assertions now run at all three widths.
+
+## Verification
+
+- Full local gate: **PASS**, 514 unit tests / 26 skipped; 599 browser tests / 135 skipped.
+- Expanded final browser matrix: **PASS**, 78 checks across both browser projects.
+- Quick verification: **PASS** for lint and types; no uncommitted source files remained for related-unit selection. The full unit suite result above is the unit evidence.
+- Standard screenshot command: **PASS**, 24 route/theme/width cases for the invitation and theme showcase. The 12 affected invitation captures in [images](images/) were visually inspected.
+- Three serial production Lighthouse runs on `/dev/invitation/letter`: performance **99/100/100**, accessibility **100/100/100**, CLS **0/0/0**.
+- Candidate Linux CI: pending on implementation commit `fed18ea`.
+
+Local logs and raw Lighthouse reports are under `artifacts/TICKET-210/`: `font-regression-red.log`, `focused-green.log`, `final-focused.log`, `verify.log`, `verify-quick.log`, `screenshots.log`, `performance.log`, and `baseline-ci-failed.log`.
 
 ## UI checklist
 
-| Check                | Result                                                                        |
-| -------------------- | ----------------------------------------------------------------------------- |
-| Screenshots          | PASS: all12 images in images/ visually inspected, four themes at375/768/1280. |
-| Tokens               | PASS: spacing/alignment utilities only.                                       |
-| Restraint/typography | PASS: existing font roles and scale; left-aligned name column.                |
-| Mobile               | PASS: focused overflow/tap-target assertions and captures.                    |
-| Motion               | PASS: existing reduced-motion and600ms/replay checks.                         |
-| Keyboard             | PASS: existing reply/replay focus checks.                                     |
-| Contrast             | PASS: existing all-theme envelope axe checks.                                 |
-| Load                 | Final strengthened zero-CLS matrix pending full verification.                 |
-| Performance          | NOT VERIFIED for candidate yet.                                               |
-| Copy                 | PASS: Warm wording unchanged.                                                 |
-| Shared components    | PASS: existing components retained; none added.                               |
-| Sharing/devices      | NOT VERIFIED physically; mandatory release gates retained.                    |
-| QR/staff             | N/A: no changes.                                                              |
-| Verification         | Pending local full gate and final-head CI.                                    |
+| Check                    | Result and evidence                                                                                 |
+| ------------------------ | --------------------------------------------------------------------------------------------------- |
+| Screenshots              | PASS: 12 affected-route images inspected, all themes at 375/768/1280. Standard matrix: 24 passed.   |
+| Tokens                   | PASS: spacing/alignment utilities only; no hard-coded colours, fonts, radii or shadows.             |
+| Restraint and typography | PASS: existing display fonts and scale; a deliberate left-aligned name column.                      |
+| Mobile                   | PASS: overflow/tap-target assertions and reviewed captures.                                         |
+| Motion                   | PASS: existing reduced-motion, 600ms envelope and replay checks.                                    |
+| Keyboard                 | PASS: existing reply/replay focus checks at all three widths.                                       |
+| Contrast                 | PASS: all-theme envelope axe checks; colours unchanged.                                             |
+| Load and images          | PASS locally: final delayed-font matrix asserts exact zero CLS; no photo changes. Linux CI pending. |
+| Performance              | PASS locally: three serial mobile scores 99/100/100, accessibility 100 each.                        |
+| Copy                     | PASS: Warm wording unchanged.                                                                       |
+| Shared components        | PASS: existing components retained; no new client boundary or shared component.                     |
+| Sharing and devices      | NOT VERIFIED physically; existing release gates remain mandatory.                                   |
+| QR and staff feedback    | N/A: no QR or staff behavior changed.                                                               |
+| Verification             | Local full gate and expanded matrix pass; hosted final-head result pending.                         |
 
-No migration, dependency, service or data changes. Revert the layout/regression commit to roll back, restoring the measured instability.
+No migration, dependency, service or data changes. Rollback is a revert of the layout and regression commit; that restores the measured instability.
 
-## Confirmed baseline and local gate
+## Wider-heading regression — 1 November 2026
 
-Baseline CI41279198910 finished FAIL:573passed,135skipped,2failed (both dark-theme envelope tests and retries; exact Adaora CLS0.0001711703703703704). Log: artifacts/TICKET-210/baseline-ci-failed.log. This confirms merged develop already contains the same failure.
+Candidate fed18ea CI41280253622 finished FAIL:609 passed,135 skipped,6 failed. The original Adaora failure is gone. Expanded1280px coverage identifies the centred “Two stories.” line as another moving source (dark-theme envelope tests and delayed-font checks in all four themes). Log: artifacts/TICKET-210/candidate-ci-failed.log. The new origin assertion fails all four1280px cases locally before the headline fix (headline-red.log).
 
-Candidate full verification session8985 finished PASS:514unit/26skip;599browser/135skip. All strengthened delayed-font assertions pass. Subsequently expanded existing first/replay/keyboard test to375/768/1280; final focused session13655 running, artifacts/TICKET-210/final-focused.log. Runtime source unchanged since full gate. Final-head CI must cover expanded matrix. Baseline CI is now terminal, so publishing no longer cancels it.
+The headline now has a stable left origin in a centred maximum32rem column. The delayed-font test also measures both headline lines and emits actual shift sources on failure. Build88771 passes; focused97721 passes all78 checks (headline-focused.log). All12 refreshed invitation screenshots visually inspected. Full verification, updated performance and Linux CI for this second candidate remain pending; previous successful local full/performance results apply to fed18ea only. Physical-device release gate TICKET-201 remains mandatory.

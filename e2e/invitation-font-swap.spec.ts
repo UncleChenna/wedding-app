@@ -12,6 +12,20 @@ for (const theme of listThemes()) {
         new PerformanceObserver((list) => {
           for (const entry of list.getEntries()) {
             if ("hadRecentInput" in entry && !entry.hadRecentInput && "value" in entry) {
+              const shift = entry as PerformanceEntry & {
+                sources?: {
+                  node?: Node;
+                  previousRect: DOMRectReadOnly;
+                  currentRect: DOMRectReadOnly;
+                }[];
+              };
+              document.documentElement.dataset.fontSwapSources = JSON.stringify(
+                (shift.sources ?? []).map((source) => ({
+                  text: source.node?.textContent,
+                  previous: source.previousRect.toJSON(),
+                  current: source.currentRect.toJSON(),
+                })),
+              );
               cls += Number(entry.value);
               document.documentElement.dataset.fontSwapCls = String(cls);
             }
@@ -29,8 +43,10 @@ for (const theme of listThemes()) {
       await page.goto(`/dev/invitation/letter?theme=${theme.id}`, {
         waitUntil: "domcontentloaded",
       });
-      const names = page.locator('h1 span, nav[aria-label="Preview theme"] a');
-      await expect(names).toHaveCount(7);
+      const names = page.locator(
+        'h1 span, header > p.type-heading span, nav[aria-label="Preview theme"] a',
+      );
+      await expect(names).toHaveCount(9);
       const origins = () =>
         names.evaluateAll((elements) =>
           elements.map((element) => {
@@ -58,7 +74,10 @@ for (const theme of listThemes()) {
             ),
         );
         expect(await origins()).toEqual(before);
-        expect((await page.locator("html").getAttribute("data-font-swap-cls")) ?? "0").toBe("0");
+        expect(
+          (await page.locator("html").getAttribute("data-font-swap-cls")) ?? "0",
+          (await page.locator("html").getAttribute("data-font-swap-sources")) ?? "No shift sources",
+        ).toBe("0");
       } finally {
         releaseFonts();
       }

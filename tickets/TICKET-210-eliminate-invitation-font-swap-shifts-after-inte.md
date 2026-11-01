@@ -37,8 +37,8 @@ Raising CLS thresholds, hiding late text, disabling animations or tests, increas
 
 ## Acceptance criteria
 
-- [ ] Controlled baseline-versus-104 comparison identifies the cause with actual layout-shift entries and font timing.
-- [ ] A regression fails before the fix and passes afterward for both affected themes; preserve zero CLS and approved typography/reduced motion.
+- [x] Controlled baseline-versus-104 comparison identifies the cause with actual layout-shift entries and font timing.
+- [x] A regression fails before the fix and passes afterward for both affected themes; preserve zero CLS and approved typography/reduced motion.
 - [ ] All four themes pass envelope first/repeat visit, keyboard and delayed-font checks at375/768/1280.
 - [ ] Full verification and final-head CI pass; retain every failed run and any unresolved device/performance limits.
 
@@ -61,3 +61,5 @@ src/modules/theming/components/fonts.ts, src/modules/theming/font-fallbacks.css,
 - 2026-10-31 — new → todo — divine
 - 2026-11-01 — todo → claimed — divine (codex)
 - 2026-11-01 — todo → in_progress — divine (codex)
+
+2026-11-01: Baseline CI41279198910 reproduces the exact Adaora shift in both dark themes, including retries. Controlled baseline/104 measurements match across all12 pairs. Fixed stable text/link origins; initial regression12failed, final focused78passed; local full gate514unit/26skip and599browser/135skip. Lighthouse99/100/100 Performance,100 Accessibility,0CLS. Review: docs/reviews/TICKET-210/README.md. Candidate CI41280253622 pending; final criterion remains unchecked.

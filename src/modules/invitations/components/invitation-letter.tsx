@@ -62,7 +62,7 @@ export function InvitationLetter({
           <span className="my-2 block text-primary">{" & "}</span>
           <span className="block">{details.coupleNames[1]}</span>
         </h1>
-        <p className="mt-10 type-heading">
+        <p className="mx-auto mt-10 max-w-lg text-left type-heading">
           {invitationSiteCopy.headline.split(/(?<=\.) /).map((line, index) => (
             <span key={line} className="block">
               {index > 0 ? " " : ""}
