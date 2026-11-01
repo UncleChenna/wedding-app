@@ -2,20 +2,20 @@
 id: TICKET-056
 title: Sign gate pass tokens with Ed25519 and document key handling
 epic: checkin
-status: todo
+status: in_progress
 priority: urgent
 estimate: M
 labels: [security, backend]
 module: checkin
-owner: ""
-agent: ""
+owner: unclechenna
+agent: claude
 blocked_by: [TICKET-023, TICKET-169]
 blocks: [TICKET-043, TICKET-044, TICKET-057, TICKET-125, TICKET-130, TICKET-183]
-branch: ""
+branch: TICKET-056
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-01
+started: 2026-11-01
 completed: ""
 reason: ""
 resume_to: ""
@@ -63,3 +63,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-01 — todo → claimed — unclechenna (claude)
+- 2026-11-01 — todo → in_progress — unclechenna (claude)
