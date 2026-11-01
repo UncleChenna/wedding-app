@@ -2,20 +2,20 @@
 id: TICKET-169
 title: Approve offline freshness and the gate credential contract
 epic: checkin
-status: todo
+status: in_progress
 priority: urgent
 estimate: S
 labels: [human, security, docs]
 module: checkin
-owner: ""
-agent: ""
+owner: unclechenna
+agent: claude
 blocked_by: []
 blocks: [TICKET-031, TICKET-056, TICKET-108, TICKET-161]
-branch: ""
+branch: TICKET-169
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-01
+started: 2026-11-01
 completed: ""
 reason: ""
 resume_to: ""
@@ -57,3 +57,5 @@ Backlog audit coverage: CHK-6, INV-2, INV-7. See [PRD](../docs/prd.md) and [audi
 ## Activity log
 
 - 2026-10-21 — new → todo — divine
+- 2026-11-01 — todo → claimed — unclechenna (claude)
+- 2026-11-01 — todo → in_progress — unclechenna (claude)
