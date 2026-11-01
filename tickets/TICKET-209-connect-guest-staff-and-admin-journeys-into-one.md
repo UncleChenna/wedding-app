@@ -2,20 +2,20 @@
 id: TICKET-209
 title: Connect guest, staff and admin journeys into one app
 epic: foundations
-status: todo
+status: in_progress
 priority: urgent
 estimate: L
 labels: [frontend, test, docs]
 module: shared
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: []
 blocks: []
-branch: ""
+branch: TICKET-209
 pr: ""
 created: 2026-10-31
-updated: 2026-10-31
-started: ""
+updated: 2026-11-01
+started: 2026-11-01
 completed: ""
 reason: ""
 resume_to: ""
@@ -142,3 +142,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-31 — new → todo — unclechenna
+- 2026-11-01 — todo → claimed — divine (codex)
+- 2026-11-01 — todo → in_progress — divine (codex)
