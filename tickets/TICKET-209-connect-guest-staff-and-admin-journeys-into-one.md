@@ -2,7 +2,7 @@
 id: TICKET-209
 title: Connect guest, staff and admin journeys into one app
 epic: foundations
-status: blocked
+status: in_progress
 priority: urgent
 estimate: L
 labels: [frontend, test, docs]
@@ -17,8 +17,8 @@ created: 2026-10-31
 updated: 2026-11-01
 started: 2026-11-01
 completed: ""
-reason: "PR68 remains draft: exact-zero cold-font CLS fails; physical UI checks unverified. Awaiting requested preview-only exception while preserving TICKET-201 release gates."
-resume_to: in_progress
+reason: ""
+resume_to: ""
 ---
 
 # TICKET-209: Connect guest, staff and admin journeys into one app
@@ -165,3 +165,4 @@ _Agents append dated notes here while working._
 - 2026-11-01 — todo → claimed — divine (codex)
 - 2026-11-01 — todo → in_progress — divine (codex)
 - 2026-11-01 — in_progress → blocked — divine (codex) — PR68 remains draft: exact-zero cold-font CLS fails; physical UI checks unverified. Awaiting requested preview-only exception while preserving TICKET-201 release gates.
+- 2026-11-01 — blocked → in_progress — divine (codex) — User approved advancing navigation preview while retaining exact-zero CLS and physical-device release gates in TICKET-201
