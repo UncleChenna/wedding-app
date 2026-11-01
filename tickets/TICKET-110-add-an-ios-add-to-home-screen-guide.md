@@ -2,7 +2,7 @@
 id: TICKET-110
 title: Add an iOS Add to Home Screen guide
 epic: pwa
-status: in_progress
+status: in_review
 priority: medium
 estimate: S
 labels: [pwa, frontend]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-103]
 blocks: [TICKET-113]
 branch: TICKET-110
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/66
 created: 2026-10-21
 updated: 2026-11-01
 started: 2026-11-01
@@ -66,3 +66,4 @@ See: [Design principles](../docs/prd.md#design-principles).
 - 2026-11-01 — todo → in_progress — divine (codex)
 - 2026-11-01 — in_progress → blocked — divine (codex) — Draft PR66: local full gate has six invitation focus failures (isolated rerun passes); CI41270521817 fails Emerald Night envelope zero-CLS; real iPhone/WhatsApp manual criterion remains unverified. Keep assertions and release gates intact.
 - 2026-11-01 — blocked → in_progress — divine (codex) — Resume after verified font and Android-install merges; preserve both controls and validate combined UI
+- 2026-11-01 — in_progress → in_review — divine (codex)
