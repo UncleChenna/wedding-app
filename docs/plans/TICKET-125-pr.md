@@ -9,7 +9,7 @@ Application lint previously accepted direct, computed and aliased private enviro
 # Changes
 
 - Add an ESLint environment-boundary rule to the existing lint gate. Private reads require server-only poisoning; instrumentation is the explicit bootstrap exception. Client directives cannot inherit that exception.
-- Allow the three approved public settings, NODE_ENV and the shared logger's non-secret LOG_LEVEL access. Reject process/env aliases, process imports and unapproved public names.
+- Allow the three approved public settings, NODE_ENV and the shared logger's non-secret LOG_LEVEL access. Reject process/env aliases, static and dynamic process imports, erased type-only server markers and unapproved public names.
 - Reject unexpected NEXT_PUBLIC configuration at startup, reporting names without values.
 - Add positive/negative tests against the actual ESLint configuration and environment parser.
 - Add docs/security.md covering database, gate signing, public verification keys, provider credentials, access ownership, routine/compromise rotation, offline scanner revocation limits and rollback. Link it from architecture.
@@ -26,7 +26,7 @@ Base develop:02c992376250d39ffc1a96a7e80a5860f3641f45.
 
 - Initial baseline:14 negative cases failed;4 permitted reads passed.
 - Extended baseline:3 additional gaps reproduced.
-- Focused final suite:25 cases pass.
+- Focused final suite:28 cases pass. Three further review cases (global process alias, type-only server marker, dynamic process import) failed before correction and now pass.
 - Quick verification:lint,types and related unit tests pass.
 - Full verification:597 unit cases pass,26 skipped; production build passes;663 browser smoke cases pass,135 skipped. Skips are not certified. Cold ESLint configuration loading later timed out again during the PR gate. Tests now statically import the actual project config; the corrected full unit run passes597 cases with26 skips, and typechecking passes. Assertions and timeouts are unchanged. The initial sandboxed rerun failed socket/subprocess checks; the permitted rerun passes.
 

@@ -11,6 +11,9 @@ async function violations(
   return result?.messages.filter((m) => m.ruleId === "secrets/environment-boundary") ?? [];
 }
 it.each([
+  "const p = globalThis.process; export const value = p.env.DATABASE_URL;",
+  'import type {} from "server-only"; export const value = process.env.DATABASE_URL;',
+  'const p = await import("node:process"); export const value = p.env.DATABASE_URL;',
   "const root = globalThis; export const value = root.process.env.DATABASE_URL;",
   'const p = require("node:process"); export const value = p.env.DATABASE_URL;',
   "export const value = process.env.DATABASE_URL;",

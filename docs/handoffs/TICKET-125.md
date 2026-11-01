@@ -42,3 +42,7 @@ The normal PR gate reproduced the cold ESLint configuration timeout (1 failed,59
 TICKET-209 approval is confirmed: advance preview after its remaining review checks, retain exact-zero CLS as a mandatory TICKET-201 release gate. This is not evidence that the cold-font regression is fixed.
 
 Elevated full unit run41660 exited0:597 passed,26 skipped. Static loading fixes the reproduced configuration-startup failure without relaxing assertions or timeouts. Next: commit/push the test correction and run t:pr125 normal full gate.
+
+## Additional boundary review — 2026-11-01
+
+Review reproduced three bypasses: globalThis.process assigned to an alias, type-only server-only import, and dynamic node:process import. Regression baseline import-gaps-red.log:3 failed/20 passed. The rule now rejects those accesses and requires a runtime marker. Focused import-gaps-green.log:28 passed including env validation. The earlier PR gate34087 still tests commitb06b3e6; its results do not certify these subsequent changes. Re-run the full normal PR gate after committing this correction.

@@ -36,11 +36,17 @@ export const environmentBoundary = {
           (n) => n.type === "ExpressionStatement" && n.directive === "use client",
         );
         const poisoned = node.body.some(
-          (n) => n.type === "ImportDeclaration" && n.source.value === "server-only",
+          (n) =>
+            n.type === "ImportDeclaration" &&
+            n.importKind !== "type" &&
+            n.source.value === "server-only",
         );
         privateAccess = !client && (poisoned || path.endsWith("/src/instrumentation.ts"));
       },
       ImportDeclaration(node) {
+        if (!privateAccess && ["process", "node:process"].includes(node.source.value)) report(node);
+      },
+      ImportExpression(node) {
         if (!privateAccess && ["process", "node:process"].includes(node.source.value)) report(node);
       },
       Identifier(node) {
@@ -68,7 +74,15 @@ export const environmentBoundary = {
           report(node);
       },
       MemberExpression(node) {
-        if (!privateAccess && property(node) === "process" && !isProcess(node)) report(node);
+        if (!privateAccess && property(node) === "process") {
+          const parent = node.parent;
+          const directEnvironment =
+            isProcess(node) &&
+            parent.type === "MemberExpression" &&
+            parent.object === node &&
+            property(parent) === "env";
+          if (!directEnvironment) report(node);
+        }
         if (property(node) !== "env" || !isProcess(node.object)) return;
         const access = node.parent;
         const name =
