@@ -1,52 +1,50 @@
-# TICKET-210 handoff — 2026-11-01
+# TICKET-210 handoff — 1 November 2026
 
-Owner divine; agent codex; branch TICKET-210; status in_progress.
-Base c9edef6cb137a194f9c215fc5b61b08488a54aa0.
-Worktree .worktrees/TICKET-210; project wedding-154df1d979db; app29070/browser29071.
-Definitions40d2dcb and start3421372 pushed.
+Owner divine; agent codex; branch TICKET-210; ledger status **in_review**.
+PR: https://github.com/UncleChenna/wedding-app/pull/67
+Worktree: .worktrees/TICKET-210. Base: c9edef6cb137a194f9c215fc5b61b08488a54aa0.
+Project wedding-154df1d979db; app port29070; browser port29071.
 
-## Scope and authority
+## Current checkpoint
 
-User answered the explicit unchanged209-definition-copy request with “merge the ticket and continue”.209 has no PR and exists only as an uncommitted definition in025. The stated interpretation was to carry that unchanged definition so210 can proceed. SHA256 f824de87d90f8a083c4970f79e397c77e68308faf3365c2e99870b8095354d24 matches source/copies. No209 implementation or source-worktree edits were made.
-PR64 publication commitc48a57f includes209/210 definitions and blocked evidence. The same unchanged209 definition accompanies210 solely for numbering validation.
+The final implementation is f6c22c06c5808fb8371a34bd1871378f364447a5. Its local and Linux gates pass. Evidence commit5d35904 was verified again by the normal t:pr command, which pushed status commit61e1e74 and recorded PR67 in ticket metadata. All acceptance criteria are ticked. The PR was still draft immediately after t:pr; mark it ready after publishing this handoff, then require final-head checks before integration.
 
-## State
+Current source is unchanged from f6c22c0. Only the handoff is being finalised. No owned application/browser command remains running. The isolated database is still running.
 
-No runtime/test changes yet: git diff c9edef6 -- src e2e next.config.ts is empty. Open a baseline draft PR and let existing Linux CI run before pushing anything that would cancel it.
-Plan: docs/plans/2026-11-01-TICKET-210.md.
-PR body: docs/plans/TICKET-210-pr.md.
+## Authority
 
-## Evidence / next actions
+The user approved verified ticket PR merges and asked to continue the backlog. Use that standing approval only after the required checks pass; do not merge failed candidates or waive TICKET-201.
 
-PR64 CI41252361212, PR65 CI41254671961 and PR66 CI41270521817 report the same Adaora font-shift value0.0001711703703703704. Baseline causality remains unproven.
-Build baseline; compare against existing104 production build with controlled font delays. Inspect sources/resource timing; maintain zeroCLS, swap, visible text and all themes. Do not merely enable a retry or loosen tests.
-Use caffeinate -is for verification only: pmset proved maintenance sleep caused unrelated15-minute stalls on110.
-No baseline build/server started at this handoff checkpoint. Database isolated stack is running.
+The latest reply “merge the ticket and continue” answered the unchanged209-definition-copy request.209 had no PR or implementation to merge. Only its unchanged definition was copied from025 into104 and210, under the stated interpretation. SHA256 f824de87d90f8a083c4970f79e397c77e68308faf3365c2e99870b8095354d24 matched. No025 edits or209 implementation were copied.104 publicationc48a57f contains the prerequisite definitions.
 
-## 2026-11-01 investigation update
+## Diagnosis and history
 
-PR67 published at5857b5750a48584392892bce2df7d3fc115b94f9. Baseline CI41279198910 still running; do not cancel it by pushing before terminal. Build60049 passed. Baseline server4504 and comparison server96182 stopped (exit130).
+- Definitions40d2dcb and start3421372 were pushed before investigation.
+- Baseline5857b57 preserves develop runtime/tests. CI41279198910 failed both dark-theme envelope tests and retries:573 passed,135 skipped,2 failed. Exact Adaora CLS0.0001711703703703704; block bounds stayed unchanged.
+- Controlled font-delay comparison between baseline and existing104 production build found identical results across12 theme/width pairs.104 source/tests/config remain unchanged from00ae18b. Text origins move under centring even when block geometry is stable. Raw geometry, font timings and shift entries: docs/reviews/TICKET-210/font-comparison.json.
+- Initial diagnostic matcher was incorrectly escaped; uncontrolled output is retained locally and excluded. Corrected matcher **/*.woff2 holds fonts until fallback paint.
+- Initial name regression failed12/12 locally. fed18ea stabilised names and preview links; local full gate514unit/26skip and599browser/135skip passed.
+- Expanded CI41280253622 found another centred heading shift at1280px:609 passed,135 skipped,6 failed. Original name failure was resolved. The new headline-origin regression failed4/4 locally before the second fix.
+- f6c22c0 also stabilises the headline and records shift sources in failures. Names/headline retain stable left origins in centred18rem/32rem columns; preview links reserve14rem. Fonts, wrapping, copy, motion and data handling are unchanged.
 
-Both production builds have identical results across twelve theme/width pairs. Glyph origins move despite stationary blocks; actual macOS CLS sources are preview links atwide widths. Evidence: docs/reviews/TICKET-210. First diagnostic matcher was incorrect; uncontrolled output preserved and excluded.
+## Final verification
 
-Candidate: two invitation component class changes, new e2e/invitation-font-swap.spec.ts. Regression12failed beforefix; focused62passed afterward. Strengthened final test includes zeroCLS/link origins/loadingstate. Full verify session8985 running, artifacts/TICKET-210/verify.log. Twelve screenshots inspected. Do not duplicate verification.
+- Full local gate29473:514 unit passed/26 skipped;615 browser passed/135 skipped.
+- Linux CI41281345380:all jobs pass, same test counts.
+- Final focused97721:78 passed.
+- t:pr29165:full gate passed again (514/26;615/135), pushed evidence and transitioned to in_review.
+- Standard screenshots41522:24 passed. All12 affected invitation captures visually inspected and committed.
+- Final production Lighthouse valid runs:96/97/96 Performance,100/100/100 Accessibility,0/0/0 CLS. Initial NO_NAVSTART trace collection error retained separately. Earlier99/100/100 measurements belong to fed18ea and are historical.
+- Passing controlled trace38202:1 passed, saved at artifacts/TICKET-210/fixed-trace/invitation-font-swap--smok-19cd2--origins-emerald-night-1280-desktop/trace.zip.
+- Baseline and first-candidate failure reports downloaded successfully into artifacts/TICKET-210/baseline-ci-report and first-candidate-ci-report.
+- Review and compact performance evidence: docs/reviews/TICKET-210/README.md and performance.json. PR body: docs/plans/TICKET-210-pr.md.
 
-Next: collect local/baseline terminal results, run serial production Lighthouse, update review/PR evidence, commit/push candidate after baseline terminal, require final-head CI. Do not merge64/65/66 or incomplete67. Ticket remainsin_progress.
+Physical iOS/Android and WhatsApp checks are NOT verified. The existing TICKET-201 preview exception permits preview delivery while preserving the mandatory guest-release gate. No threshold, timeout, retry, hook or assertion was loosened.
 
-## Confirmed baseline and local gate
+## Next action
 
-Baseline CI41279198910 finished FAIL:573passed,135skipped,2failed (both dark-theme envelope tests and retries; exact Adaora CLS0.0001711703703703704). Log: artifacts/TICKET-210/baseline-ci-failed.log. This confirms merged develop already contains the same failure.
+Publish this handoff, mark PR67 ready, and verify all required checks on the exact final head. Merge only that verified head under the standing authorization, then close through the ticket CLI. Retain completion evidence and stop the owned database with backup preservation when finished; do not discard dirty or unmerged worktree metadata.
 
-Candidate full verification session8985 finished PASS:514unit/26skip;599browser/135skip. All strengthened delayed-font assertions pass. Subsequently expanded existing first/replay/keyboard test to375/768/1280; final focused session13655 running, artifacts/TICKET-210/final-focused.log. Runtime source unchanged since full gate. Final-head CI must cover expanded matrix. Baseline CI is now terminal, so publishing no longer cancels it.
+After210 integrates, resume104 first: explicitly update its base from fetched develop, preserve canonical209/210 definitions when resolving any add/add conflict, and rerun its own verification. Then revisit blocked109/110. Do not call their older failed runs passing.
 
-## Wider-heading regression — 1 November 2026
-
-Candidate fed18ea CI41280253622 finished FAIL:609 passed,135 skipped,6 failed. The original Adaora failure is gone. Expanded1280px coverage identifies the centred “Two stories.” line as another moving source (dark-theme envelope tests and delayed-font checks in all four themes). Log: artifacts/TICKET-210/candidate-ci-failed.log. The new origin assertion fails all four1280px cases locally before the headline fix (headline-red.log).
-
-The headline now has a stable left origin in a centred maximum32rem column. The delayed-font test also measures both headline lines and emits actual shift sources on failure. Build88771 passes; focused97721 passes all78 checks (headline-focused.log). All12 refreshed invitation screenshots visually inspected. Full verification, updated performance and Linux CI for this second candidate remain pending; previous successful local full/performance results apply to fed18ea only. Physical-device release gate TICKET-201 remains mandatory.
-
-## Final implementation verified — 2026-11-01
-
-Implementation f6c22c06c5808fb8371a34bd1871378f364447a5 passes local full gate (session29473:514unit/26skip,615browser/135skip) and hosted CI41281345380 with the same counts. Focused97721:78passed. Standard screenshot41522:24passed. All12 affected images inspected. Performance final valid runs:96/97/96 Performance,100 Accessibility,0CLS; initialNO_NAVSTART measurement error retained separately. Performance60500 ended0; owned server16127 stopped130. Watch52572 has observed successful CI; close its process handle if still open.
-
-All implementation criteria now supported. Complete the normal t:pr workflow after committing this final evidence, then recheck final-head CI before any integration. Standing user approval permits verified ticket merges; retain TICKET-201 as the physical-device/sharing guest-release gate. Do not call physical checks passed. PR67: https://github.com/UncleChenna/wedding-app/pull/67. No changes to other ticket implementations.
+Use process-scoped caffeinate -is for verification: maintenance sleep was independently confirmed to cause15-minute browser stalls in earlier work. Do not change global power settings or test timeouts.
