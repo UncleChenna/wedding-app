@@ -128,6 +128,12 @@ export function AdminAuthForm({ signOut = false }: { signOut?: boolean }) {
           </div>
         )}
       </form>
+      <Link
+        href={signOut && !finished ? appRoutes.admin.path : appRoutes.home.path}
+        className="mt-8 inline-flex min-h-11 items-center text-lg text-primary underline underline-offset-4"
+      >
+        {signOut && !finished ? "Back to control room" : "Back to our day"}
+      </Link>
     </main>
   );
 }

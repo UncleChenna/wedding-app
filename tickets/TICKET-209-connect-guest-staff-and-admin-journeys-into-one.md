@@ -133,6 +133,8 @@ fails when a route becomes orphaned. The full journey map and build order are in
 
 ## Notes / decisions
 
+- 2026-11-01: Added actual-link crawl and passing negative orphan fixture, plus explicit auth/offline exits. Build and static checks pass. Real authenticated journey remains unverified: pending local Auth followed by a confirmed isolated Postgres connection timeout on retry. No timeouts or assertions were weakened; see handoff for live diagnostic handle and recovery steps.
+
 - 2026-11-01: Production preview guard verified against separate default and explicitly enabled local servers;4 browser smoke cases pass. Default404 criterion checked. Orphan crawl, authenticated sharing and final UI/full verification remain outstanding.
 
 - 2026-11-01: Staff/bar navigation, admin hub and authorized sharing page implemented; route map and template rule added.58 focused tests, quick verification, production build and staff/anonymous-access browser checks pass. Authenticated sharing, production preview guard, orphan crawl and final UI/full verification remain outstanding; all acceptance criteria stay unchecked.

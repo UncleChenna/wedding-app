@@ -104,6 +104,12 @@ export function MfaForm({ factorId }: { factorId?: string }) {
       >
         Sign out
       </Link>
+      <Link
+        href={appRoutes.home.path}
+        className="mt-6 inline-flex min-h-11 items-center self-start text-lg text-primary underline underline-offset-4"
+      >
+        Back to our day
+      </Link>
     </main>
   );
 }

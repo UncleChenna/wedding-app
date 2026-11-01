@@ -37,7 +37,7 @@ Day-of navigation uses the configured venue's calendar date. With the owner's ti
 | `/admin/sign-in`         | Admin gate                                  | Email code → account status → admin/TOTP                      | 029,030                     |
 | `/admin/mfa`             | Signed-in account requiring second factor   | Enrol/challenge → control room; sign out                      | 030                         |
 | `/admin/sign-out`        | Admin account controls                      | Sign out → sign-in/home                                       | 029                         |
-| `/offline`               | Worker fallback                             | Retry the failed page; no invented cached pass                | 106; actual offline pass107 |
+| `/offline`               | Worker fallback                             | Retry the failed page or return home; no invented cached pass | 106; actual offline pass107 |
 | `/dev`                   | Development preview index                   | Every preview listed below; home                              | 209                         |
 | `/dev/theme`             | Preview index                               | Component/theme inspection; preview index                     | 013–016                     |
 | `/dev/invitation`        | Preview index                               | Hero/photo review; preview index / letter                     | 038 → personal IV037        |
@@ -46,7 +46,7 @@ Day-of navigation uses the configured venue's calendar date. With the owner's ti
 | `/dev/order`             | Preview index                               | Ordering prototype review                                     | 070–075 → `/order`          |
 | `/dev/share`             | Preview index                               | Synthetic share controls                                      | 050/052 → `/admin/sharing`  |
 
-Production preview routes return404 by default. The positive/negative orphan-route browser test is still in progress within209. Preview URLs must not become production navigation destinations. Full UI review is outstanding; this map does not certify release readiness.
+Production preview routes return404 by default. The negative orphan-route browser fixture passes; the full authenticated production crawl is implemented but not yet verified because local Auth/Postgres became unavailable during its run. Preview URLs must not become production navigation destinations. Full UI review is outstanding; this map does not certify release readiness.
 
 ## Admin areas still to be connected
 
