@@ -32,3 +32,13 @@ TICKET-109 and104 CI failed the same envelope zero-CLS checks; retain those gate
 ## Verified lesson / proposed harness improvement
 
 For overnight macOS verification, inspect pmset when timestamps show long stalls. If sleep is confirmed, wrap the verification command in caffeinate -is (temporary assertion scoped to that process), preserving timeouts and assertions. Propose adding this diagnostic to collaboration guidance in a separately tracked maintenance change; no shared harness edit made here.
+
+## Final review update
+
+PR66: https://github.com/UncleChenna/wedding-app/pull/66 ; implementation d7cec74 pushed.
+Full gate15028 TERMINAL FAIL:527 unit passed/26 skipped;597 browser passed/135 skipped/6 mobile invitation focus failures. All28 guide tests passed. Isolated unchanged invitation rerun99084 TERMINAL PASS26 cases. Do not relabel full run as passing.
+CI41270521817 TERMINAL FAIL: Emerald Night envelope CLS0.0001711703703703704, including retry;602 other browser checks passed,135 skipped. Same failure class as104/109; no baseline causality proof yet.
+Guide12 final screenshots inspected; review in docs/reviews/TICKET-110/README.md. Repository screenshot run11862 completed; inspect screenshots.log for its final count.
+No browser server remains after managed tests. Database wedding-7bf7dd2551f8 still needs a preserving stop after publication.
+Next: commit/push review evidence, mark blocked via CLI with actual failures/manual check, update PR body. Earlier live-session instructions above are superseded by these terminal results. No source changed after d7cec74.
+The unchanged209-definition-copy exception was requested again because the same regression now blocks three PRs; answer pending. Do not assume approval.

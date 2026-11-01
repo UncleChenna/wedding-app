@@ -19,12 +19,12 @@ iPhone and iPad visitors can open a short installation guide from staff pages or
 - Detection criterion:13 unit cases pass.
 - Automated browser cases:28 passed with Safari/WhatsApp UA fixtures, all themes and375/768/1280 widths, keyboard trapping, Escape, focus return, axe and tap-target checks.
 - Actual iPhone WhatsApp/manual installation is NOT VERIFIED. The manual criterion stays unchecked.
-- Full verification is running; this is an unfinished draft.
+- Full local verification failed six invitation focus checks; CI failed the Emerald Night envelope CLS check. This remains an unfinished draft.
 
 # Verification
 
 Initial missing-module regression failed before implementation. Quick verification initially found an unconditional matchMedia assumption; guarded the optional API and reran successfully (17 related tests).
-Production build passes. Two browser review runs were interrupted by macOS maintenance sleep: one trace has a913665ms evaluation and pmset records a matching915-second sleep. No timeout or assertion changed. A process-scoped caffeinate run then passed28 cases in8 seconds. Final full gate is in artifacts/TICKET-110/verify.log.
+Production build passes. Two browser review runs were interrupted by macOS maintenance sleep: one trace has a913665ms evaluation and pmset records a matching915-second sleep. No timeout or assertion changed. A process-scoped caffeinate run then passed28 cases in8 seconds. Final local gate:527 unit passed,26 skipped;597 browser passed,135 skipped,6 failed. All28 guide cases passed. Unchanged isolated invitation focus rerun:26 passed. CI41270521817:602 passed,135 skipped,1 envelope CLS failure. Logs are in artifacts/TICKET-110.
 
 # Risks and rollout
 
@@ -34,7 +34,7 @@ Integration lines overlap TICKET-109. Both branches started from develop c9edef6
 
 # Screenshots and UI checklist
 
-Screenshots are under docs/reviews/TICKET-110/THEME/WIDTH/guide.png. Mobile layouts inspected; larger-screen final review, full verification and performance measurement remain pending. Automated contrast, keyboard, reduced-motion, overflow and tap-target assertions pass. Actual WhatsApp sharing and native install checks remain unverified. No QR output or photograph changed. Staff scan/status behavior is unchanged.
+Screenshots are under docs/reviews/TICKET-110/THEME/WIDTH/guide.png. All12 final guide screenshots inspected at375/768/1280. See docs/reviews/TICKET-110/README.md for every checklist result. Full gates failed; guest performance and physical-device checks remain unverified. Automated contrast, keyboard, reduced-motion, overflow and tap-target assertions pass. Actual WhatsApp sharing and native install checks remain unverified. No QR output or photograph changed. Staff scan/status behavior is unchanged.
 
 # Review steps
 

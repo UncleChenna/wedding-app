@@ -40,7 +40,7 @@ See: [Design principles](../docs/prd.md#design-principles).
 
 ## Acceptance criteria
 
-- [ ] Guide shows on iOS Safari UA and not in standalone mode (unit).
+- [x] Guide shows on iOS Safari UA and not in standalone mode (unit).
 - [ ] In WhatsApp's browser it explains opening in Safari (manual).
 
 ## Test plan
@@ -55,7 +55,7 @@ See: [Design principles](../docs/prd.md#design-principles).
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-11-01: Detection criterion verified with13 unit cases;28 guide browser cases pass using UA fixtures. Actual iPhone/WhatsApp criterion remains unchecked. PR66 is draft; local full gate has invitation focus failures and hosted CI has an Emerald Night envelope CLS failure. Review: docs/reviews/TICKET-110/README.md.
 
 ## Activity log
 
