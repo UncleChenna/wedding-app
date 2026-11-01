@@ -41,9 +41,9 @@ See: [Security](../docs/prd.md#security) · [Gate check-in](../docs/prd.md#gate-
 
 ## Acceptance criteria
 
-- [ ] Signing and verifying round-trip; any tampered byte fails (unit, 1k fuzz cases).
-- [ ] The private key is only read server-side (`server-only` import; lint/test).
-- [ ] ADR merged with rotation steps.
+- [x] Signing and verifying round-trip; any tampered byte fails (unit, 1k fuzz cases).
+- [x] The private key is only read server-side (`server-only` import; lint/test).
+- [x] ADR merged with rotation steps.
 
 ## Test plan
 
@@ -59,6 +59,16 @@ See: [Security](../docs/prd.md#security) · [Gate check-in](../docs/prd.md#gate-
 ## Notes / decisions
 
 _Agents append dated notes here while working._
+
+- 2026-11-01:
+  - **Payload.** It follows the approved ADR 0020: `{v, kid, inv, ver, iat}`. The scope line above mentions party
+    size, but ADR 0020 row 7 keeps the allowance out of the pass and reads it from the scanner's guest list, so
+    the ADR wins.
+  - **Public key route.** It's `GET /api/gate-keys`. The `/p/<signed>` pass page is TICKET-183.
+  - **Verification.** It uses WebCrypto Ed25519, so it can run unchanged on scanners (TICKET-057). No dependency
+    was added.
+  - **Rotation.** Steps are in ADR 0021, which is part of this PR. The "ADR merged" criterion holds once the PR
+    merges.
 
 ## Activity log
 
