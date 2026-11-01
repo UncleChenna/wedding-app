@@ -28,7 +28,10 @@ Base develop:02c992376250d39ffc1a96a7e80a5860f3641f45.
 - Extended baseline:3 additional gaps reproduced.
 - Focused final suite:28 cases pass. Three further review cases (global process alias, type-only server marker, dynamic process import) failed before correction and now pass.
 - Quick verification:lint,types and related unit tests pass.
-- Full verification:597 unit cases pass,26 skipped; production build passes;663 browser smoke cases pass,135 skipped. Skips are not certified. Cold ESLint configuration loading later timed out again during the PR gate. Tests now statically import the actual project config; the corrected full unit run passes597 cases with26 skips, and typechecking passes. Assertions and timeouts are unchanged. The initial sandboxed rerun failed socket/subprocess checks; the permitted rerun passes.
+- Final full verification:600 unit cases pass,26 skipped; production build passes;663 browser smoke cases pass,135 skipped (15.1min). Skips are not certified.
+- The final local gate used the installed Vitest-supported VITEST_MAX_WORKERS=2 because the default-worker run hit three5s timeouts in existing Git-heavy harness tests under high machine load. All tests, assertions and timeouts remain unchanged.
+- Earlier cold ESLint configuration loading was corrected by statically importing the actual project config. The initial sandboxed rerun failed socket/subprocess checks; verification runs with required permissions.
+- Code verified:e146c0b4b9e7f004d4873ee505301187b4658c7e. Required CI passed on that commit; final-head checks remain mandatory after metadata/evidence updates.
 
 Managed database setup initially failed because the old primary-checkout generator omitted admin-code.html. Resuming setup with TICKET-208's updated generator copied the template, started the isolated database and applied migrations successfully. No generated file is edited manually and no other stack is changed.
 
@@ -44,4 +47,4 @@ N/A: no rendered UI, tokens, motion or QR output changes.
 
 # Remaining
 
-Run the normal ticket PR gate against the recovered managed setup and require final-head GitHub checks before merge. No real credential rotation has been performed.
+The normal ticket PR gate passed and moved the ticket to in_review. Require final-head GitHub checks before merge. No real credential rotation has been performed.

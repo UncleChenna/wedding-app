@@ -58,6 +58,8 @@ See: [Security](../docs/prd.md#security).
 
 - 2026-11-01: Environment-boundary lint and public configuration guard implemented;25 focused tests and quick verification pass. Full verification:597 unit cases/663 browser cases pass,26/135 skipped. Rotation inventory/procedures in docs/security.md; no real credentials changed. Managed setup recovered with updated TICKET-208 generator. PR71 awaits final review gate.
 
+- 2026-11-01: Final normal PR gate passes with VITEST_MAX_WORKERS=2:600 unit cases and663 browser cases pass,26/135 skipped. Three added boundary regression cases pass. PR71 moved to in_review through CLI; final-head CI required before merge.
+
 _Agents append dated notes here while working._
 
 ## Activity log
