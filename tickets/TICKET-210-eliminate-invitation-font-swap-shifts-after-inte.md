@@ -2,7 +2,7 @@
 id: TICKET-210
 title: Eliminate invitation font-swap shifts after integration
 epic: design-system
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [frontend, test]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/67
 created: 2026-10-31
 updated: 2026-11-01
 started: 2026-11-01
-completed: ""
+completed: 2026-11-01
 reason: ""
 resume_to: ""
 ---
@@ -62,3 +62,4 @@ src/modules/theming/components/fonts.ts, src/modules/theming/font-fallbacks.css,
 - 2026-11-01 — todo → claimed — divine (codex)
 - 2026-11-01 — todo → in_progress — divine (codex)
 - 2026-11-01 — in_progress → in_review — divine (codex)
+- 2026-11-01 — in_review → done — divine (codex)
