@@ -30,6 +30,7 @@ Why this matters, with a link to the PRD section, e.g. [Gate check-in](../docs/p
 ## Scope
 
 - What is in.
+- For route/UI work: identify the entry point, next step and return link; update the shared route registry and `docs/journeys.md`, and cover the route in journey/accessibility tests.
 
 ## Out of scope
 

@@ -133,6 +133,8 @@ fails when a route becomes orphaned. The full journey map and build order are in
 
 ## Notes / decisions
 
+- 2026-11-01: Staff/bar navigation, admin hub and authorized sharing page implemented; route map and template rule added.58 focused tests, quick verification, production build and staff/anonymous-access browser checks pass. Authenticated sharing, production preview guard, orphan crawl and final UI/full verification remain outstanding; all acceptance criteria stay unchecked.
+
 - 2026-11-01: Guest checkpoint implements settings-driven home/metadata, resend guidance and RSVP next steps.142 invitation unit tests, quick verification, production build and15 live/review browser cases pass (see handoff for exact build scope). Final UI review and remaining staff/admin/route-contract work are outstanding. Unknown venue time zone keeps automatic day-of navigation hidden rather than guessing.
 
 - 2026-11-01: Route registry checkpoint: four focused tests and quick verification pass; existing navigation and accessibility inventory use shared routes. Remaining journey implementation and full browser/UI verification are outstanding; PR68 stays draft.
