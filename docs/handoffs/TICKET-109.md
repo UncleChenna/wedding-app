@@ -30,3 +30,16 @@ TICKET-104 remains blocked, with its own unchanged209-definition-copy permission
 ## CI result — 2026-11-01
 
 Run41254671961 for bac98df failed the desktop envelope zero-CLS tests in Midnight & Champagne and Emerald Night, including retries. Both report0.0001711703703703704 from the Adaora name span. This matches the observed TICKET-104 failure; shared baseline causality is not yet proven. The zero target is retained. Local full verification passed; hosted CI did not. PR65 remains a draft and cannot proceed on these results. Raw failed-job output is in artifacts/TICKET-109/ci-failure.log.
+
+## 2026-11-01 — resumed after verified PR64 and67 merges
+
+Owner divine; agent codex; status in_progress through CLI (commit1bfbedc).
+Live prerequisite103 is done. Reviewed live board/next, ticket, plan, relevant PRD and installed Next layout/metadata guides.
+PR64 merged to develop3dae6a38946ddc3419363fb18ed688670d0d02c3 after all four final-head CI jobs passed;104 is done.
+Merged that freshly fetched develop into109 without conflicts as8f053f9 and pushed. Root layout retains both installationMetadata and InstallPromptRegistration; invitation retains210's stable name/headline origins and109's pass-install control.
+No prompt implementation or assertions were changed in this integration. The previous merge-permission restriction above is historical: the owner has standing approval for verified ticket merges.
+
+Current local full gate runs under caffeinate in exec session43085, logging artifacts/TICKET-109/integrated-verify.log. Database startup exec36840 is still pending at this note; project wedding-859a59d12fde, app24050/browser24051.
+Do not restart a job merely because observation expires. Poll those handles and inspect logs. Hosted CI on8f053f9 is also expected; inspect its actual state.
+Next: preserve full gate terminal result, remeasure production performance serially with unique output names (existing reports remain historical), and review integration before t:pr with explicit --owner divine --agent codex. Never overwrite earlier failed evidence.
+Physical installation/WhatsApp remains unverified in114/201. Existing preview delivery exception does not certify release readiness. Keep PR65 draft until automated checks and documented preview review are complete.
