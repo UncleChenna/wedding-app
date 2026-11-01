@@ -6,9 +6,10 @@ import { themes } from "@/modules/theming/themes";
 
 import { QR_QUIET_ZONE, qrMatrix, qrPathData, qrViewBoxSize, type QrMatrix } from "../lib/qr";
 
-// Realistic length for a signed gate pass URL (TICKET-056 defines the real format).
+// A real format-1 signed gate pass (ADR 0020/0021) at its worst-case length: the longest
+// key id in use, a ten-digit token version and a long domain. Signed by a discarded test key.
 const PASS =
-  "https://wedding.example/p/eyJ2IjoxLCJpbnYiOiJpbnZfOGs0bTJ4IiwicCI6Mn0.MEUCIQD3pQx7Zr9nW1vYH5kTq2LsA8cJdF0eRgUoBiNtPmXwVhIgK4sZ";
+  "https://uchenna-and-adaora.example.com/p/eyJ2IjoxLCJraWQiOiJrLTIwMjYtMTItMTktbWFpbiIsImludiI6IjZmMWMyYTRlLThiM2QtNGM1YS05ZTdmLTFhMmIzYzRkNWU2ZiIsInZlciI6MjE0NzQ4MzY0NywiaWF0IjoxNzk3NjkyNDAwfQ.KhgOQQC84ovGK7a2tqVdh2X3Ml4H0SAnXufmncr2ZmPBZm0w5XDu9vzV7mwI59wp4HRX8SkhQxz_h_Vku1LKAA";
 
 /** Rasterise like a phone screen would show it: quiet zone included, 4px per module. */
 function rasterise(matrix: QrMatrix, ink: string, paper: string, scale = 4) {
