@@ -40,8 +40,8 @@ See: [Design principles](../docs/prd.md#design-principles).
 
 ## Acceptance criteria
 
-- [ ] The button appears only when beforeinstallprompt fired (unit with a stub event).
-- [ ] Dismissal persists for 30 days.
+- [x] The button appears only when beforeinstallprompt fired (unit with a stub event).
+- [x] Dismissal persists for 30 days.
 
 ## Test plan
 
@@ -54,7 +54,7 @@ See: [Design principles](../docs/prd.md#design-principles).
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-11-01: Eight unit and14 browser cases pass; full local gate522 unit/575 browser passed. PR65 remains draft pending review of performance86/91/92 and unverified native-device/WhatsApp checks. See docs/reviews/TICKET-109/README.md. Criteria above cover stub-tested behavior, not native installation certification.
 
 ## Activity log
 

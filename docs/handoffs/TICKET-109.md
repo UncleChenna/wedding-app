@@ -1,33 +1,32 @@
-# TICKET-109 handoff — 2026-10-31
+# TICKET-109 handoff — 2026-11-01
 
-Owner: divine. Agent: codex. Branch: TICKET-109.
-Base: c9edef6cb137a194f9c215fc5b61b08488a54aa0.
-Worktree: .worktrees/TICKET-109. Supabase project wedding-859a59d12fde; app 24050, browser 24051.
+Owner divine; agent codex; branch TICKET-109.
+Base c9edef6cb137a194f9c215fc5b61b08488a54aa0.
+PR https://github.com/UncleChenna/wedding-app/pull/65 (draft).
+Implementation bac98df is pushed. No authorization to merge this PR under the latest four-PR exception.
 
-## State
+## Work
 
-Claimed and in_progress; start commit 8350fe7 pushed. Implementation is present but review is incomplete. No permission to merge this PR has been granted by the latest four-PR exception.
+Shared installation controller and client capture, staff/pass/theme-showcase integration, eight controller tests. Expanded browser tests now14 cases, tagged for CI smoke. Screenshot and review evidence are under docs/reviews/TICKET-109.
 
-## Changes
+## Actual results
 
-Controller in shared/lib/install-prompt.ts; root capture and shared UI in shared/components/install-prompt.tsx. Mounted in root layout, staff layout, conditional InvitationLetter pass section and theme showcase. Eight unit tests and six browser cases. Dated plan and draft PR description are in docs/plans.
+Full verification session90373 TERMINAL PASS:522 unit passed/26 skipped;575 browser passed/135 skipped (7.5m browser stage).
+Expanded install browser session33695 completed14 passing cases. Visible review36 combinations passed; screenshot command37510 completed36 passing cases. All60 visible-state images inspected via full staff sheets and control sheets.
+Lighthouse session5282 TERMINAL: performance86/91/92, accessibility100 each, CLS0 each. Below95: not a pass.
+Physical native installation and WhatsApp not verified. TICKET-114 and201 remain required release checks.
 
-## Verified
+## Live process / next
 
-Initial controller tests failed for missing implementation. All eight now pass. Quick gate and production build pass. Six Playwright cases pass on mobile/desktop. Database status reports the isolated 24041 database.
+Dedicated production server session92999 listens on24051 for review; stop it when finished. Supabase wedding-859a59d12fde remains available.
+CI run41254671961 for bac98df was still running at last check. Poll before deciding its result.
+Commit/push expanded tests and evidence, update PR body. Request permission to proceed to review with disclosed performance/device gates if needed by UI checklist; keep draft/in_progress until authorized. Do not treat CI passing as device or performance approval.
+No implementation source changed after the successful full gate; new smoke assertions passed separately. Final-head CI must cover them.
 
-## Running verification
+## Separate preserved work
 
-Full gate launched as exec session 90373; log artifacts/TICKET-109/verify.log. Poll the exact handle before starting another gate. No full pass is claimed yet.
+TICKET-104 remains blocked, with its own unchanged209-definition-copy permission pending. Do not change its worktree here.
 
-## Remaining
+## CI result — 2026-11-01
 
-Inspect full-gate result; fix actual failures without weakening assertions. Add all-theme screenshots at three widths, inspect every image, keyboard/reduced-motion and contrast/CLS checks, and required performance evidence. Real-device installation and WhatsApp remain unverified. Preserve TICKET-104's independent blocked work and pending permission to carry unchanged209 definition; do not alter it from this branch.
-
-## Sources and decisions
-
-Read installed Next server/client component guide. Browser event reference: https://developer.mozilla.org/en-US/docs/Web/API/Window/beforeinstallprompt_event . Browser eligibility is retained by a root listener; only pass/staff UI offers installation. A reserved control row avoids a late-event layout shift. Copy is provisional warm utility copy. No offline availability claim.
-
-## Next action
-
-Poll session 90373 and read verify.log. Then finish visual review, update this handoff and PR description with actual results, commit/push and open a draft PR while required checks remain outstanding.
+Run41254671961 for bac98df failed the desktop envelope zero-CLS tests in Midnight & Champagne and Emerald Night, including retries. Both report0.0001711703703703704 from the Adaora name span. This matches the observed TICKET-104 failure; shared baseline causality is not yet proven. The zero target is retained. Local full verification passed; hosted CI did not. PR65 remains a draft and cannot proceed on these results. Raw failed-job output is in artifacts/TICKET-109/ci-failure.log.
