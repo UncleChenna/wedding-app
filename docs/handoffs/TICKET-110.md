@@ -42,3 +42,7 @@ Guide12 final screenshots inspected; review in docs/reviews/TICKET-110/README.md
 No browser server remains after managed tests. Database wedding-7bf7dd2551f8 still needs a preserving stop after publication.
 Next: commit/push review evidence, mark blocked via CLI with actual failures/manual check, update PR body. Earlier live-session instructions above are superseded by these terminal results. No source changed after d7cec74.
 The unchanged209-definition-copy exception was requested again because the same regression now blocks three PRs; answer pending. Do not assume approval.
+
+## Publication and cleanup
+
+Review evidence4b04498 and blocked transitiond74f34f are pushed to PR66; body updated. Screenshot matrix passed36 cases. Database wedding-7bf7dd2551f8 is stopped with backup=true, preserving data. No owned verification process remains. User replied to the209-definition exception request with “merge the ticket and continue”;209 has no PR, so the planned next action is carrying its unchanged definition into104 and proceeding with210. Do not merge failing feature PRs.
