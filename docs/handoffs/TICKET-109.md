@@ -59,3 +59,7 @@ Production server32006 is stopped (exit130 after requested interrupt). Database 
 Next: confirm PR65 ready state, wait for all four CI jobs on the latest handoff head, confirm develop still3dae6a38946ddc3419363fb18ed688670d0d02c3 and no conflicts, then use the owner's standing verified-merge approval with an exact-head match. Never use admin bypass. Record done through CLI only after merge. Keep ignored logs and this worktree as evidence.
 Then resume110 against freshly fetched develop; do not conflate its unverified physical iOS behavior with automated browser guidance.
 Performance90/92/90 remains below95;201 blocks both releases and114 retains physical installation. Preview review does not certify release.
+
+## 2026-11-01 — merged and closed
+
+All four CI jobs in41294175354 passed at8d58c0855db8dcb7d66221532e2d5b2467f899be. PR65 merged into develop0397748c5c9aa4707384a3ebce6ef7bf4d0907ba using an exact-head match under standing user approval; no admin bypass. CLI marked109 done and pushed completion commit0b86ee3. Worktree retained for evidence; database stopped with backup preserved, no local processes. Next110 must preserve both install controls when integrating this base. Performance and physical device release gates remain mandatory.
