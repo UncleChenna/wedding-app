@@ -41,8 +41,8 @@ See: [Security](../docs/prd.md#security).
 
 ## Acceptance criteria
 
-- [ ] Build fails if a secret is referenced from client code (test/lint).
-- [ ] Rotation steps exist for every secret.
+- [x] Build fails if a secret is referenced from client code (test/lint).
+- [x] Rotation steps exist for every secret.
 
 ## Test plan
 
@@ -55,6 +55,8 @@ See: [Security](../docs/prd.md#security).
 - `docs/security.md`
 
 ## Notes / decisions
+
+- 2026-11-01: Environment-boundary lint and public configuration guard implemented;25 focused tests and quick verification pass. Full verification:597 unit cases/663 browser cases pass,26/135 skipped. Rotation inventory/procedures in docs/security.md; no real credentials changed. Managed setup recovered with updated TICKET-208 generator. PR71 awaits final review gate.
 
 _Agents append dated notes here while working._
 

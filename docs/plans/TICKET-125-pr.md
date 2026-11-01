@@ -18,7 +18,7 @@ Application lint previously accepted direct, computed and aliased private enviro
 
 - Client secret access: focused tests pass for direct/computed reads, aliases, imports, server-only misuse and secret public names. Existing Next server-only poisoning remains active for transitive client imports.
 - Rotation documentation: current credential inventory and procedures are recorded. WhatsApp Cloud API/service credentials are not consumed by this app; future integration must add its server schema and provider-specific operational verification.
-- Final acceptance remains unchecked until full verification finishes.
+- Both functional acceptance criteria are verified locally; required GitHub checks remain mandatory.
 
 # Verification
 
@@ -28,9 +28,9 @@ Base develop:02c992376250d39ffc1a96a7e80a5860f3641f45.
 - Extended baseline:3 additional gaps reproduced.
 - Focused final suite:25 cases pass.
 - Quick verification:lint,types and related unit tests pass.
-- Full verification:597 unit cases pass,26 skipped; production build passes; browser smoke remains running. Skips are not certified.
+- Full verification:597 unit cases pass,26 skipped; production build passes;663 browser smoke cases pass,135 skipped. Skips are not certified. A concurrent hook run timed out during cold ESLint configuration loading; unchanged checks passed after the browser run completed.
 
-Managed database setup initially failed because the old primary-checkout generator omitted admin-code.html. The updated generator already contains TICKET-208's fix; setup will be resumed using that version after browser verification exits. No generated file is edited manually and no other stack is changed.
+Managed database setup initially failed because the old primary-checkout generator omitted admin-code.html. Resuming setup with TICKET-208's updated generator copied the template, started the isolated database and applied migrations successfully. No generated file is edited manually and no other stack is changed.
 
 # Risks and rollout
 
@@ -44,4 +44,4 @@ N/A: no rendered UI, tokens, motion or QR output changes.
 
 # Remaining
 
-Finish full verification, resume managed setup, record final results, and move the draft through the normal ticket PR gate. No real credential rotation has been performed.
+Run the normal ticket PR gate against the recovered managed setup and require final-head GitHub checks before merge. No real credential rotation has been performed.

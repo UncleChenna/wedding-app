@@ -24,3 +24,13 @@ Evidence: initial secrets-red.log14 failed/4 passed; extended secrets-additional
 Setup diagnosis resolved: primary checkout's old worktree generator omitted templates. Current TICKET-125 already includes merged TICKET-208 copySupabaseTemplates. After verification exits, run AGENT_OWNER=divine pnpm wt:new TICKET-125 from THIS updated worktree; it resumes existing state and copies the missing supabase/templates/admin-code.html using the approved generator. Do not hand-edit .harness or repeat the old primary setup. No new harness ticket is needed. No live rotation or provider changes performed.
 
 PR:https://github.com/UncleChenna/wedding-app/pull/71 remains draft. Acceptance not yet checked pending final verification and review. Next: poll verification, resume managed setup, inspect all checks, update PR/ticket evidence and use t:pr. Real operational rotations and device QA are not certified.
+
+## Completed local verification — 2026-11-01
+
+Full verify38636 exited0:597 units passed/26 skipped; production build passed;663 browser smoke cases passed/135 skipped (8.8min). A concurrent commit-hook run timed out on the first ESLint fixture during cold configuration loading; after the full browser run exited, the unchanged commit gate passed. No timeout/assertion was changed. Implementation commit7db47b2 is pushed to PR71.
+
+Managed setup90624 exited0 when resumed from the updated worktree: source templates copied by TICKET-208 generator, isolated database started, existing migrations applied. No manual generated-file edits or unrelated stack changes. Setup failure was stale primary tooling, not a new regression. Use the updated worktree's generator for future setup.
+
+Both ticket criteria are supported by code/tests and docs/security.md; real operational rotations remain unperformed. User approved advancing TICKET-209 preview while retaining exact-zero release gate in TICKET-201. Return to209 after125's review/merge sequence; do not drop that approval or certify the font issue fixed.
+
+Next: t:pr125 normal verification/status gate, inspect final-head CI, merge only after required checks pass under standing authorization, close through CLI, then resume209. No UI changes in125. Current CI run41338444010 was live at last check; inspect current final head rather than relying on this number after new pushes.
