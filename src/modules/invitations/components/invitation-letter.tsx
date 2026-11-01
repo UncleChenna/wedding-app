@@ -1,3 +1,4 @@
+import { IosInstallGuide } from "@/modules/shared/components/ios-install-guide";
 import type { ReactNode } from "react";
 import { z } from "zod";
 import { Divider } from "@/modules/shared/components/ui/decorations";
@@ -98,6 +99,7 @@ export function InvitationLetter({
           className="mt-12 scroll-mt-6 focus-visible:outline-2 focus-visible:outline-ring"
         >
           {pass}
+          <IosInstallGuide />
         </section>
       )}
       <Divider className="my-12 md:my-16" />

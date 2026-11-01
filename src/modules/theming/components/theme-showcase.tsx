@@ -1,3 +1,4 @@
+import { IosInstallGuide } from "@/modules/shared/components/ios-install-guide";
 import {
   ActionBar,
   Button,
@@ -246,6 +247,7 @@ export function ThemeShowcase({ theme, active }: { theme: Theme; active: boolean
             </ActionBar>
           </div>
 
+          <IosInstallGuide />
           <MotionShowcase />
 
           <Card data-testid="form-controls">
