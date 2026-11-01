@@ -1,0 +1,3490 @@
+[
+  {
+    "port": 29070,
+    "theme": "ivory-gold",
+    "width": 375,
+    "before": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 118.5625,
+          "y": 570.1875,
+          "width": 137.859375,
+          "height": 48,
+          "top": 570.1875,
+          "right": 256.421875,
+          "bottom": 618.1875,
+          "left": 118.5625
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 172.40625,
+          "y": 622.1875,
+          "width": 30.1875,
+          "height": 48,
+          "top": 622.1875,
+          "right": 202.59375,
+          "bottom": 670.1875,
+          "left": 172.40625
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 130.421875,
+          "y": 674.1875,
+          "width": 114.15625,
+          "height": 48,
+          "top": 674.1875,
+          "right": 244.578125,
+          "bottom": 722.1875,
+          "left": 130.421875
+        }
+      }
+    ],
+    "after": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 118.40625,
+          "y": 570.1875,
+          "width": 138.1875,
+          "height": 48,
+          "top": 570.1875,
+          "right": 256.59375,
+          "bottom": 618.1875,
+          "left": 118.40625
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 173.5625,
+          "y": 622.1875,
+          "width": 27.875,
+          "height": 48,
+          "top": 622.1875,
+          "right": 201.4375,
+          "bottom": 670.1875,
+          "left": 173.5625
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 129.90625,
+          "y": 674.1875,
+          "width": 115.171875,
+          "height": 48,
+          "top": 674.1875,
+          "right": 245.078125,
+          "bottom": 722.1875,
+          "left": 129.90625
+        }
+      }
+    ],
+    "shifts": [],
+    "fonts": [
+      {
+        "name": "http://localhost:29070/_next/static/media/cormorant_italic_latin.p.2t_a1_-z7jep9.woff2",
+        "start": 57.3999999910593,
+        "end": 280.59999999403954
+      },
+      {
+        "name": "http://localhost:29070/_next/static/media/cormorant_latin.p.142lwln7a8ewm.woff2",
+        "start": 57.5,
+        "end": 280.70000000298023
+      },
+      {
+        "name": "http://localhost:29070/_next/static/media/inter_latin.p.1w7yplba6jnhb.woff2",
+        "start": 57.5,
+        "end": 280.8999999910593
+      }
+    ]
+  },
+  {
+    "port": 29070,
+    "theme": "ivory-gold",
+    "width": 768,
+    "before": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 293.40625,
+          "y": 522.1875,
+          "width": 181.171875,
+          "height": 64,
+          "top": 522.1875,
+          "right": 474.578125,
+          "bottom": 586.1875,
+          "left": 293.40625
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 364.171875,
+          "y": 588.015625,
+          "width": 39.65625,
+          "height": 64,
+          "top": 588.015625,
+          "right": 403.828125,
+          "bottom": 652.015625,
+          "left": 364.171875
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 308.984375,
+          "y": 653.84375,
+          "width": 150.03125,
+          "height": 64,
+          "top": 653.84375,
+          "right": 459.015625,
+          "bottom": 717.84375,
+          "left": 308.984375
+        }
+      }
+    ],
+    "after": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 293.1875,
+          "y": 522.1875,
+          "width": 181.609375,
+          "height": 64,
+          "top": 522.1875,
+          "right": 474.796875,
+          "bottom": 586.1875,
+          "left": 293.1875
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 365.671875,
+          "y": 588.015625,
+          "width": 36.640625,
+          "height": 64,
+          "top": 588.015625,
+          "right": 402.3125,
+          "bottom": 652.015625,
+          "left": 365.671875
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 308.3125,
+          "y": 653.84375,
+          "width": 151.375,
+          "height": 64,
+          "top": 653.84375,
+          "right": 459.6875,
+          "bottom": 717.84375,
+          "left": 308.3125
+        }
+      }
+    ],
+    "shifts": [
+      {
+        "value": 0.00009266573431069959,
+        "time": 243.5,
+        "sources": [
+          {
+            "text": "Emerald Night",
+            "previous": {
+              "x": 369.28125,
+              "y": 66,
+              "width": 109,
+              "height": 44,
+              "top": 66,
+              "right": 478.28125,
+              "bottom": 110,
+              "left": 369.28125
+            },
+            "current": {
+              "x": 365.375,
+              "y": 66,
+              "width": 107,
+              "height": 44,
+              "top": 66,
+              "right": 472.375,
+              "bottom": 110,
+              "left": 365.375
+            }
+          },
+          {
+            "text": "Blush & Sage",
+            "previous": {
+              "x": 501.828125,
+              "y": 66,
+              "width": 104,
+              "height": 44,
+              "top": 66,
+              "right": 605.828125,
+              "bottom": 110,
+              "left": 501.828125
+            },
+            "current": {
+              "x": 495.953125,
+              "y": 66,
+              "width": 100,
+              "height": 44,
+              "top": 66,
+              "right": 595.953125,
+              "bottom": 110,
+              "left": 495.953125
+            }
+          }
+        ]
+      }
+    ],
+    "fonts": [
+      {
+        "name": "http://localhost:29070/_next/static/media/cormorant_italic_latin.p.2t_a1_-z7jep9.woff2",
+        "start": 25.200000002980232,
+        "end": 239
+      },
+      {
+        "name": "http://localhost:29070/_next/static/media/inter_latin.p.1w7yplba6jnhb.woff2",
+        "start": 25.299999997019768,
+        "end": 239.20000000298023
+      },
+      {
+        "name": "http://localhost:29070/_next/static/media/cormorant_latin.p.142lwln7a8ewm.woff2",
+        "start": 25.299999997019768,
+        "end": 239.09999999403954
+      }
+    ]
+  },
+  {
+    "port": 29070,
+    "theme": "ivory-gold",
+    "width": 1280,
+    "before": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 521.171875,
+          "y": 521.1875,
+          "width": 237.640625,
+          "height": 84,
+          "top": 521.1875,
+          "right": 758.8125,
+          "bottom": 605.1875,
+          "left": 521.171875
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 613.984375,
+          "y": 605.03125,
+          "width": 52.015625,
+          "height": 84,
+          "top": 605.03125,
+          "right": 666,
+          "bottom": 689.03125,
+          "left": 613.984375
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 541.59375,
+          "y": 688.875,
+          "width": 196.796875,
+          "height": 84,
+          "top": 688.875,
+          "right": 738.390625,
+          "bottom": 772.875,
+          "left": 541.59375
+        }
+      }
+    ],
+    "after": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 520.875,
+          "y": 521.1875,
+          "width": 238.234375,
+          "height": 84,
+          "top": 521.1875,
+          "right": 759.109375,
+          "bottom": 605.1875,
+          "left": 520.875
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 615.96875,
+          "y": 605.03125,
+          "width": 48.0625,
+          "height": 84,
+          "top": 605.03125,
+          "right": 664.03125,
+          "bottom": 689.03125,
+          "left": 615.96875
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 540.71875,
+          "y": 688.875,
+          "width": 198.5625,
+          "height": 84,
+          "top": 688.875,
+          "right": 739.28125,
+          "bottom": 772.875,
+          "left": 540.71875
+        }
+      }
+    ],
+    "shifts": [
+      {
+        "value": 0.00003909335666232639,
+        "time": 252.5,
+        "sources": [
+          {
+            "text": "Emerald Night",
+            "previous": {
+              "x": 497.28125,
+              "y": 66,
+              "width": 109,
+              "height": 44,
+              "top": 66,
+              "right": 606.28125,
+              "bottom": 110,
+              "left": 497.28125
+            },
+            "current": {
+              "x": 493.375,
+              "y": 66,
+              "width": 107,
+              "height": 44,
+              "top": 66,
+              "right": 600.375,
+              "bottom": 110,
+              "left": 493.375
+            }
+          },
+          {
+            "text": "Blush & Sage",
+            "previous": {
+              "x": 629.828125,
+              "y": 66,
+              "width": 104,
+              "height": 44,
+              "top": 66,
+              "right": 733.828125,
+              "bottom": 110,
+              "left": 629.828125
+            },
+            "current": {
+              "x": 623.953125,
+              "y": 66,
+              "width": 100,
+              "height": 44,
+              "top": 66,
+              "right": 723.953125,
+              "bottom": 110,
+              "left": 623.953125
+            }
+          }
+        ]
+      }
+    ],
+    "fonts": [
+      {
+        "name": "http://localhost:29070/_next/static/media/cormorant_latin.p.142lwln7a8ewm.woff2",
+        "start": 34,
+        "end": 248.40000000596046
+      },
+      {
+        "name": "http://localhost:29070/_next/static/media/cormorant_italic_latin.p.2t_a1_-z7jep9.woff2",
+        "start": 34,
+        "end": 248.20000000298023
+      },
+      {
+        "name": "http://localhost:29070/_next/static/media/inter_latin.p.1w7yplba6jnhb.woff2",
+        "start": 34.1000000089407,
+        "end": 248.5
+      }
+    ]
+  },
+  {
+    "port": 29070,
+    "theme": "midnight-champagne",
+    "width": 375,
+    "before": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 108.421875,
+          "y": 567.1875,
+          "width": 158.140625,
+          "height": 53,
+          "top": 567.1875,
+          "right": 266.5625,
+          "bottom": 620.1875,
+          "left": 108.421875
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 170.1875,
+          "y": 619.1875,
+          "width": 34.625,
+          "height": 53,
+          "top": 619.1875,
+          "right": 204.8125,
+          "bottom": 672.1875,
+          "left": 170.1875
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 122.015625,
+          "y": 671.1875,
+          "width": 130.96875,
+          "height": 53,
+          "top": 671.1875,
+          "right": 252.984375,
+          "bottom": 724.1875,
+          "left": 122.015625
+        }
+      }
+    ],
+    "after": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 108.875,
+          "y": 567.1875,
+          "width": 157.25,
+          "height": 53,
+          "top": 567.1875,
+          "right": 266.125,
+          "bottom": 620.1875,
+          "left": 108.875
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 170.75,
+          "y": 619.1875,
+          "width": 33.484375,
+          "height": 53,
+          "top": 619.1875,
+          "right": 204.234375,
+          "bottom": 672.1875,
+          "left": 170.75
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 123.5,
+          "y": 671.1875,
+          "width": 128,
+          "height": 53,
+          "top": 671.1875,
+          "right": 251.5,
+          "bottom": 724.1875,
+          "left": 123.5
+        }
+      }
+    ],
+    "shifts": [],
+    "fonts": [
+      {
+        "name": "http://localhost:29070/_next/static/media/cormorant_italic_latin.p.2t_a1_-z7jep9.woff2",
+        "start": 24.900000005960464,
+        "end": 240.90000000596046
+      },
+      {
+        "name": "http://localhost:29070/_next/static/media/inter_latin.p.1w7yplba6jnhb.woff2",
+        "start": 24.900000005960464,
+        "end": 241.29999999701977
+      },
+      {
+        "name": "http://localhost:29070/_next/static/media/cormorant_latin.p.142lwln7a8ewm.woff2",
+        "start": 24.900000005960464,
+        "end": 241.40000000596046
+      },
+      {
+        "name": "http://localhost:29070/_next/static/media/jost_latin.20yracrfrld3x.woff2",
+        "start": 33.599999994039536,
+        "end": 240.90000000596046
+      },
+      {
+        "name": "http://localhost:29070/_next/static/media/playfair_latin.3o_tw-pwo9p8h.woff2",
+        "start": 34.5,
+        "end": 241.20000000298023
+      }
+    ]
+  },
+  {
+    "port": 29070,
+    "theme": "midnight-champagne",
+    "width": 768,
+    "before": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 280.0625,
+          "y": 519.1875,
+          "width": 207.859375,
+          "height": 70,
+          "top": 519.1875,
+          "right": 487.921875,
+          "bottom": 589.1875,
+          "left": 280.0625
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 361.25,
+          "y": 585.015625,
+          "width": 45.5,
+          "height": 70,
+          "top": 585.015625,
+          "right": 406.75,
+          "bottom": 655.015625,
+          "left": 361.25
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 297.921875,
+          "y": 650.84375,
+          "width": 172.140625,
+          "height": 70,
+          "top": 650.84375,
+          "right": 470.0625,
+          "bottom": 720.84375,
+          "left": 297.921875
+        }
+      }
+    ],
+    "after": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 280.671875,
+          "y": 519.1875,
+          "width": 206.65625,
+          "height": 70,
+          "top": 519.1875,
+          "right": 487.328125,
+          "bottom": 589.1875,
+          "left": 280.671875
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 361.984375,
+          "y": 585.015625,
+          "width": 44.015625,
+          "height": 70,
+          "top": 585.015625,
+          "right": 406,
+          "bottom": 655.015625,
+          "left": 361.984375
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 299.875,
+          "y": 650.84375,
+          "width": 168.234375,
+          "height": 70,
+          "top": 650.84375,
+          "right": 468.109375,
+          "bottom": 720.84375,
+          "left": 299.875
+        }
+      }
+    ],
+    "shifts": [
+      {
+        "value": 0.00009266573431069959,
+        "time": 264.79999999701977,
+        "sources": [
+          {
+            "text": "Emerald Night",
+            "previous": {
+              "x": 369.28125,
+              "y": 66,
+              "width": 109,
+              "height": 44,
+              "top": 66,
+              "right": 478.28125,
+              "bottom": 110,
+              "left": 369.28125
+            },
+            "current": {
+              "x": 365.375,
+              "y": 66,
+              "width": 107,
+              "height": 44,
+              "top": 66,
+              "right": 472.375,
+              "bottom": 110,
+              "left": 365.375
+            }
+          },
+          {
+            "text": "Blush & Sage",
+            "previous": {
+              "x": 501.828125,
+              "y": 66,
+              "width": 104,
+              "height": 44,
+              "top": 66,
+              "right": 605.828125,
+              "bottom": 110,
+              "left": 501.828125
+            },
+            "current": {
+              "x": 495.953125,
+              "y": 66,
+              "width": 100,
+              "height": 44,
+              "top": 66,
+              "right": 595.953125,
+              "bottom": 110,
+              "left": 495.953125
+            }
+          }
+        ]
+      }
+    ],
+    "fonts": [
+      {
+        "name": "http://localhost:29070/_next/static/media/cormorant_italic_latin.p.2t_a1_-z7jep9.woff2",
+        "start": 29.400000005960464,
+        "end": 246.40000000596046
+      },
+      {
+        "name": "http://localhost:29070/_next/static/media/inter_latin.p.1w7yplba6jnhb.woff2",
+        "start": 29.5,
+        "end": 246.5
+      },
+      {
+        "name": "http://localhost:29070/_next/static/media/cormorant_latin.p.142lwln7a8ewm.woff2",
+        "start": 29.5,
+        "end": 247.1000000089407
+      },
+      {
+        "name": "http://localhost:29070/_next/static/media/jost_latin.20yracrfrld3x.woff2",
+        "start": 38.6000000089407,
+        "end": 247.29999999701977
+      },
+      {
+        "name": "http://localhost:29070/_next/static/media/playfair_latin.3o_tw-pwo9p8h.woff2",
+        "start": 39.6000000089407,
+        "end": 247.29999999701977
+      }
+    ]
+  },
+  {
+    "port": 29070,
+    "theme": "midnight-champagne",
+    "width": 1280,
+    "before": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 503.671875,
+          "y": 517.1875,
+          "width": 272.65625,
+          "height": 92,
+          "top": 517.1875,
+          "right": 776.328125,
+          "bottom": 609.1875,
+          "left": 503.671875
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 610.15625,
+          "y": 601.03125,
+          "width": 59.6875,
+          "height": 92,
+          "top": 601.03125,
+          "right": 669.84375,
+          "bottom": 693.03125,
+          "left": 610.15625
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 527.109375,
+          "y": 684.875,
+          "width": 225.78125,
+          "height": 92,
+          "top": 684.875,
+          "right": 752.890625,
+          "bottom": 776.875,
+          "left": 527.109375
+        }
+      }
+    ],
+    "after": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 504.453125,
+          "y": 517.1875,
+          "width": 271.09375,
+          "height": 92,
+          "top": 517.1875,
+          "right": 775.546875,
+          "bottom": 609.1875,
+          "left": 504.453125
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 611.125,
+          "y": 601.03125,
+          "width": 57.734375,
+          "height": 92,
+          "top": 601.03125,
+          "right": 668.859375,
+          "bottom": 693.03125,
+          "left": 611.125
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 529.65625,
+          "y": 684.875,
+          "width": 220.6875,
+          "height": 92,
+          "top": 684.875,
+          "right": 750.34375,
+          "bottom": 776.875,
+          "left": 529.65625
+        }
+      }
+    ],
+    "shifts": [
+      {
+        "value": 0.00003909335666232639,
+        "time": 244.20000000298023,
+        "sources": [
+          {
+            "text": "Emerald Night",
+            "previous": {
+              "x": 497.28125,
+              "y": 66,
+              "width": 109,
+              "height": 44,
+              "top": 66,
+              "right": 606.28125,
+              "bottom": 110,
+              "left": 497.28125
+            },
+            "current": {
+              "x": 493.375,
+              "y": 66,
+              "width": 107,
+              "height": 44,
+              "top": 66,
+              "right": 600.375,
+              "bottom": 110,
+              "left": 493.375
+            }
+          },
+          {
+            "text": "Blush & Sage",
+            "previous": {
+              "x": 629.828125,
+              "y": 66,
+              "width": 104,
+              "height": 44,
+              "top": 66,
+              "right": 733.828125,
+              "bottom": 110,
+              "left": 629.828125
+            },
+            "current": {
+              "x": 623.953125,
+              "y": 66,
+              "width": 100,
+              "height": 44,
+              "top": 66,
+              "right": 723.953125,
+              "bottom": 110,
+              "left": 623.953125
+            }
+          }
+        ]
+      }
+    ],
+    "fonts": [
+      {
+        "name": "http://localhost:29070/_next/static/media/cormorant_latin.p.142lwln7a8ewm.woff2",
+        "start": 25.900000005960464,
+        "end": 239.80000001192093
+      },
+      {
+        "name": "http://localhost:29070/_next/static/media/cormorant_italic_latin.p.2t_a1_-z7jep9.woff2",
+        "start": 25.900000005960464,
+        "end": 239.6000000089407
+      },
+      {
+        "name": "http://localhost:29070/_next/static/media/inter_latin.p.1w7yplba6jnhb.woff2",
+        "start": 25.900000005960464,
+        "end": 240.40000000596046
+      },
+      {
+        "name": "http://localhost:29070/_next/static/media/jost_latin.20yracrfrld3x.woff2",
+        "start": 34.80000001192093,
+        "end": 239.90000000596046
+      },
+      {
+        "name": "http://localhost:29070/_next/static/media/playfair_latin.3o_tw-pwo9p8h.woff2",
+        "start": 35.80000001192093,
+        "end": 240.1000000089407
+      }
+    ]
+  },
+  {
+    "port": 29070,
+    "theme": "emerald-night",
+    "width": 375,
+    "before": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 108.421875,
+          "y": 567.1875,
+          "width": 158.140625,
+          "height": 53,
+          "top": 567.1875,
+          "right": 266.5625,
+          "bottom": 620.1875,
+          "left": 108.421875
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 170.1875,
+          "y": 619.1875,
+          "width": 34.625,
+          "height": 53,
+          "top": 619.1875,
+          "right": 204.8125,
+          "bottom": 672.1875,
+          "left": 170.1875
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 122.015625,
+          "y": 671.1875,
+          "width": 130.96875,
+          "height": 53,
+          "top": 671.1875,
+          "right": 252.984375,
+          "bottom": 724.1875,
+          "left": 122.015625
+        }
+      }
+    ],
+    "after": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 108.875,
+          "y": 567.1875,
+          "width": 157.25,
+          "height": 53,
+          "top": 567.1875,
+          "right": 266.125,
+          "bottom": 620.1875,
+          "left": 108.875
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 170.75,
+          "y": 619.1875,
+          "width": 33.484375,
+          "height": 53,
+          "top": 619.1875,
+          "right": 204.234375,
+          "bottom": 672.1875,
+          "left": 170.75
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 123.5,
+          "y": 671.1875,
+          "width": 128,
+          "height": 53,
+          "top": 671.1875,
+          "right": 251.5,
+          "bottom": 724.1875,
+          "left": 123.5
+        }
+      }
+    ],
+    "shifts": [],
+    "fonts": [
+      {
+        "name": "http://localhost:29070/_next/static/media/cormorant_italic_latin.p.2t_a1_-z7jep9.woff2",
+        "start": 24.299999997019768,
+        "end": 237.3999999910593
+      },
+      {
+        "name": "http://localhost:29070/_next/static/media/inter_latin.p.1w7yplba6jnhb.woff2",
+        "start": 24.299999997019768,
+        "end": 237.59999999403954
+      },
+      {
+        "name": "http://localhost:29070/_next/static/media/cormorant_latin.p.142lwln7a8ewm.woff2",
+        "start": 24.299999997019768,
+        "end": 237.79999999701977
+      },
+      {
+        "name": "http://localhost:29070/_next/static/media/playfair_latin.3o_tw-pwo9p8h.woff2",
+        "start": 34.5,
+        "end": 237.5
+      }
+    ]
+  },
+  {
+    "port": 29070,
+    "theme": "emerald-night",
+    "width": 768,
+    "before": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 280.0625,
+          "y": 519.1875,
+          "width": 207.859375,
+          "height": 70,
+          "top": 519.1875,
+          "right": 487.921875,
+          "bottom": 589.1875,
+          "left": 280.0625
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 361.25,
+          "y": 585.015625,
+          "width": 45.5,
+          "height": 70,
+          "top": 585.015625,
+          "right": 406.75,
+          "bottom": 655.015625,
+          "left": 361.25
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 297.921875,
+          "y": 650.84375,
+          "width": 172.140625,
+          "height": 70,
+          "top": 650.84375,
+          "right": 470.0625,
+          "bottom": 720.84375,
+          "left": 297.921875
+        }
+      }
+    ],
+    "after": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 280.671875,
+          "y": 519.1875,
+          "width": 206.65625,
+          "height": 70,
+          "top": 519.1875,
+          "right": 487.328125,
+          "bottom": 589.1875,
+          "left": 280.671875
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 361.984375,
+          "y": 585.015625,
+          "width": 44.015625,
+          "height": 70,
+          "top": 585.015625,
+          "right": 406,
+          "bottom": 655.015625,
+          "left": 361.984375
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 299.875,
+          "y": 650.84375,
+          "width": 168.234375,
+          "height": 70,
+          "top": 650.84375,
+          "right": 468.109375,
+          "bottom": 720.84375,
+          "left": 299.875
+        }
+      }
+    ],
+    "shifts": [
+      {
+        "value": 0.00009266573431069959,
+        "time": 244.20000000298023,
+        "sources": [
+          {
+            "text": "Emerald Night",
+            "previous": {
+              "x": 369.28125,
+              "y": 66,
+              "width": 109,
+              "height": 44,
+              "top": 66,
+              "right": 478.28125,
+              "bottom": 110,
+              "left": 369.28125
+            },
+            "current": {
+              "x": 365.375,
+              "y": 66,
+              "width": 107,
+              "height": 44,
+              "top": 66,
+              "right": 472.375,
+              "bottom": 110,
+              "left": 365.375
+            }
+          },
+          {
+            "text": "Blush & Sage",
+            "previous": {
+              "x": 501.828125,
+              "y": 66,
+              "width": 104,
+              "height": 44,
+              "top": 66,
+              "right": 605.828125,
+              "bottom": 110,
+              "left": 501.828125
+            },
+            "current": {
+              "x": 495.953125,
+              "y": 66,
+              "width": 100,
+              "height": 44,
+              "top": 66,
+              "right": 595.953125,
+              "bottom": 110,
+              "left": 495.953125
+            }
+          }
+        ]
+      }
+    ],
+    "fonts": [
+      {
+        "name": "http://localhost:29070/_next/static/media/cormorant_italic_latin.p.2t_a1_-z7jep9.woff2",
+        "start": 26.299999997019768,
+        "end": 240.29999999701977
+      },
+      {
+        "name": "http://localhost:29070/_next/static/media/cormorant_latin.p.142lwln7a8ewm.woff2",
+        "start": 26.299999997019768,
+        "end": 240.40000000596046
+      },
+      {
+        "name": "http://localhost:29070/_next/static/media/inter_latin.p.1w7yplba6jnhb.woff2",
+        "start": 26.299999997019768,
+        "end": 240.59999999403954
+      },
+      {
+        "name": "http://localhost:29070/_next/static/media/playfair_latin.3o_tw-pwo9p8h.woff2",
+        "start": 37,
+        "end": 240.70000000298023
+      }
+    ]
+  },
+  {
+    "port": 29070,
+    "theme": "emerald-night",
+    "width": 1280,
+    "before": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 503.671875,
+          "y": 517.1875,
+          "width": 272.65625,
+          "height": 92,
+          "top": 517.1875,
+          "right": 776.328125,
+          "bottom": 609.1875,
+          "left": 503.671875
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 610.15625,
+          "y": 601.03125,
+          "width": 59.6875,
+          "height": 92,
+          "top": 601.03125,
+          "right": 669.84375,
+          "bottom": 693.03125,
+          "left": 610.15625
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 527.109375,
+          "y": 684.875,
+          "width": 225.78125,
+          "height": 92,
+          "top": 684.875,
+          "right": 752.890625,
+          "bottom": 776.875,
+          "left": 527.109375
+        }
+      }
+    ],
+    "after": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 504.453125,
+          "y": 517.1875,
+          "width": 271.09375,
+          "height": 92,
+          "top": 517.1875,
+          "right": 775.546875,
+          "bottom": 609.1875,
+          "left": 504.453125
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 611.125,
+          "y": 601.03125,
+          "width": 57.734375,
+          "height": 92,
+          "top": 601.03125,
+          "right": 668.859375,
+          "bottom": 693.03125,
+          "left": 611.125
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 529.65625,
+          "y": 684.875,
+          "width": 220.6875,
+          "height": 92,
+          "top": 684.875,
+          "right": 750.34375,
+          "bottom": 776.875,
+          "left": 529.65625
+        }
+      }
+    ],
+    "shifts": [
+      {
+        "value": 0.00003909335666232639,
+        "time": 263.29999999701977,
+        "sources": [
+          {
+            "text": "Emerald Night",
+            "previous": {
+              "x": 497.28125,
+              "y": 66,
+              "width": 109,
+              "height": 44,
+              "top": 66,
+              "right": 606.28125,
+              "bottom": 110,
+              "left": 497.28125
+            },
+            "current": {
+              "x": 493.375,
+              "y": 66,
+              "width": 107,
+              "height": 44,
+              "top": 66,
+              "right": 600.375,
+              "bottom": 110,
+              "left": 493.375
+            }
+          },
+          {
+            "text": "Blush & Sage",
+            "previous": {
+              "x": 629.828125,
+              "y": 66,
+              "width": 104,
+              "height": 44,
+              "top": 66,
+              "right": 733.828125,
+              "bottom": 110,
+              "left": 629.828125
+            },
+            "current": {
+              "x": 623.953125,
+              "y": 66,
+              "width": 100,
+              "height": 44,
+              "top": 66,
+              "right": 723.953125,
+              "bottom": 110,
+              "left": 623.953125
+            }
+          }
+        ]
+      }
+    ],
+    "fonts": [
+      {
+        "name": "http://localhost:29070/_next/static/media/cormorant_italic_latin.p.2t_a1_-z7jep9.woff2",
+        "start": 27.799999997019768,
+        "end": 247.69999998807907
+      },
+      {
+        "name": "http://localhost:29070/_next/static/media/cormorant_latin.p.142lwln7a8ewm.woff2",
+        "start": 27.899999991059303,
+        "end": 247.8999999910593
+      },
+      {
+        "name": "http://localhost:29070/_next/static/media/inter_latin.p.1w7yplba6jnhb.woff2",
+        "start": 27.899999991059303,
+        "end": 248.19999998807907
+      },
+      {
+        "name": "http://localhost:29070/_next/static/media/playfair_latin.3o_tw-pwo9p8h.woff2",
+        "start": 40.8999999910593,
+        "end": 248.29999999701977
+      }
+    ]
+  },
+  {
+    "port": 29070,
+    "theme": "blush-sage",
+    "width": 375,
+    "before": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 118.5625,
+          "y": 570.1875,
+          "width": 137.859375,
+          "height": 48,
+          "top": 570.1875,
+          "right": 256.421875,
+          "bottom": 618.1875,
+          "left": 118.5625
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 172.40625,
+          "y": 622.1875,
+          "width": 30.1875,
+          "height": 48,
+          "top": 622.1875,
+          "right": 202.59375,
+          "bottom": 670.1875,
+          "left": 172.40625
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 130.421875,
+          "y": 674.1875,
+          "width": 114.15625,
+          "height": 48,
+          "top": 674.1875,
+          "right": 244.578125,
+          "bottom": 722.1875,
+          "left": 130.421875
+        }
+      }
+    ],
+    "after": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 118.40625,
+          "y": 570.1875,
+          "width": 138.1875,
+          "height": 48,
+          "top": 570.1875,
+          "right": 256.59375,
+          "bottom": 618.1875,
+          "left": 118.40625
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 173.5625,
+          "y": 622.1875,
+          "width": 27.875,
+          "height": 48,
+          "top": 622.1875,
+          "right": 201.4375,
+          "bottom": 670.1875,
+          "left": 173.5625
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 129.90625,
+          "y": 674.1875,
+          "width": 115.171875,
+          "height": 48,
+          "top": 674.1875,
+          "right": 245.078125,
+          "bottom": 722.1875,
+          "left": 129.90625
+        }
+      }
+    ],
+    "shifts": [],
+    "fonts": [
+      {
+        "name": "http://localhost:29070/_next/static/media/cormorant_italic_latin.p.2t_a1_-z7jep9.woff2",
+        "start": 24.399999991059303,
+        "end": 239.8999999910593
+      },
+      {
+        "name": "http://localhost:29070/_next/static/media/cormorant_latin.p.142lwln7a8ewm.woff2",
+        "start": 24.5,
+        "end": 240
+      },
+      {
+        "name": "http://localhost:29070/_next/static/media/inter_latin.p.1w7yplba6jnhb.woff2",
+        "start": 24.599999994039536,
+        "end": 240.3999999910593
+      },
+      {
+        "name": "http://localhost:29070/_next/static/media/jost_latin.20yracrfrld3x.woff2",
+        "start": 33.29999999701977,
+        "end": 240.29999999701977
+      }
+    ]
+  },
+  {
+    "port": 29070,
+    "theme": "blush-sage",
+    "width": 768,
+    "before": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 293.40625,
+          "y": 522.1875,
+          "width": 181.171875,
+          "height": 64,
+          "top": 522.1875,
+          "right": 474.578125,
+          "bottom": 586.1875,
+          "left": 293.40625
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 364.171875,
+          "y": 588.015625,
+          "width": 39.65625,
+          "height": 64,
+          "top": 588.015625,
+          "right": 403.828125,
+          "bottom": 652.015625,
+          "left": 364.171875
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 308.984375,
+          "y": 653.84375,
+          "width": 150.03125,
+          "height": 64,
+          "top": 653.84375,
+          "right": 459.015625,
+          "bottom": 717.84375,
+          "left": 308.984375
+        }
+      }
+    ],
+    "after": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 293.1875,
+          "y": 522.1875,
+          "width": 181.609375,
+          "height": 64,
+          "top": 522.1875,
+          "right": 474.796875,
+          "bottom": 586.1875,
+          "left": 293.1875
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 365.671875,
+          "y": 588.015625,
+          "width": 36.640625,
+          "height": 64,
+          "top": 588.015625,
+          "right": 402.3125,
+          "bottom": 652.015625,
+          "left": 365.671875
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 308.3125,
+          "y": 653.84375,
+          "width": 151.375,
+          "height": 64,
+          "top": 653.84375,
+          "right": 459.6875,
+          "bottom": 717.84375,
+          "left": 308.3125
+        }
+      }
+    ],
+    "shifts": [
+      {
+        "value": 0.00009266573431069959,
+        "time": 244.70000000298023,
+        "sources": [
+          {
+            "text": "Emerald Night",
+            "previous": {
+              "x": 369.28125,
+              "y": 66,
+              "width": 109,
+              "height": 44,
+              "top": 66,
+              "right": 478.28125,
+              "bottom": 110,
+              "left": 369.28125
+            },
+            "current": {
+              "x": 365.375,
+              "y": 66,
+              "width": 107,
+              "height": 44,
+              "top": 66,
+              "right": 472.375,
+              "bottom": 110,
+              "left": 365.375
+            }
+          },
+          {
+            "text": "Blush & Sage",
+            "previous": {
+              "x": 501.828125,
+              "y": 66,
+              "width": 104,
+              "height": 44,
+              "top": 66,
+              "right": 605.828125,
+              "bottom": 110,
+              "left": 501.828125
+            },
+            "current": {
+              "x": 495.953125,
+              "y": 66,
+              "width": 100,
+              "height": 44,
+              "top": 66,
+              "right": 595.953125,
+              "bottom": 110,
+              "left": 495.953125
+            }
+          }
+        ]
+      }
+    ],
+    "fonts": [
+      {
+        "name": "http://localhost:29070/_next/static/media/cormorant_italic_latin.p.2t_a1_-z7jep9.woff2",
+        "start": 26.100000008940697,
+        "end": 238.70000000298023
+      },
+      {
+        "name": "http://localhost:29070/_next/static/media/cormorant_latin.p.142lwln7a8ewm.woff2",
+        "start": 26.100000008940697,
+        "end": 238.90000000596046
+      },
+      {
+        "name": "http://localhost:29070/_next/static/media/inter_latin.p.1w7yplba6jnhb.woff2",
+        "start": 26.200000002980232,
+        "end": 239.20000000298023
+      },
+      {
+        "name": "http://localhost:29070/_next/static/media/jost_latin.20yracrfrld3x.woff2",
+        "start": 34.1000000089407,
+        "end": 239
+      }
+    ]
+  },
+  {
+    "port": 29070,
+    "theme": "blush-sage",
+    "width": 1280,
+    "before": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 521.171875,
+          "y": 521.1875,
+          "width": 237.640625,
+          "height": 84,
+          "top": 521.1875,
+          "right": 758.8125,
+          "bottom": 605.1875,
+          "left": 521.171875
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 613.984375,
+          "y": 605.03125,
+          "width": 52.015625,
+          "height": 84,
+          "top": 605.03125,
+          "right": 666,
+          "bottom": 689.03125,
+          "left": 613.984375
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 541.59375,
+          "y": 688.875,
+          "width": 196.796875,
+          "height": 84,
+          "top": 688.875,
+          "right": 738.390625,
+          "bottom": 772.875,
+          "left": 541.59375
+        }
+      }
+    ],
+    "after": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 520.875,
+          "y": 521.1875,
+          "width": 238.234375,
+          "height": 84,
+          "top": 521.1875,
+          "right": 759.109375,
+          "bottom": 605.1875,
+          "left": 520.875
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 615.96875,
+          "y": 605.03125,
+          "width": 48.0625,
+          "height": 84,
+          "top": 605.03125,
+          "right": 664.03125,
+          "bottom": 689.03125,
+          "left": 615.96875
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 540.71875,
+          "y": 688.875,
+          "width": 198.5625,
+          "height": 84,
+          "top": 688.875,
+          "right": 739.28125,
+          "bottom": 772.875,
+          "left": 540.71875
+        }
+      }
+    ],
+    "shifts": [
+      {
+        "value": 0.00003909335666232639,
+        "time": 243,
+        "sources": [
+          {
+            "text": "Emerald Night",
+            "previous": {
+              "x": 497.28125,
+              "y": 66,
+              "width": 109,
+              "height": 44,
+              "top": 66,
+              "right": 606.28125,
+              "bottom": 110,
+              "left": 497.28125
+            },
+            "current": {
+              "x": 493.375,
+              "y": 66,
+              "width": 107,
+              "height": 44,
+              "top": 66,
+              "right": 600.375,
+              "bottom": 110,
+              "left": 493.375
+            }
+          },
+          {
+            "text": "Blush & Sage",
+            "previous": {
+              "x": 629.828125,
+              "y": 66,
+              "width": 104,
+              "height": 44,
+              "top": 66,
+              "right": 733.828125,
+              "bottom": 110,
+              "left": 629.828125
+            },
+            "current": {
+              "x": 623.953125,
+              "y": 66,
+              "width": 100,
+              "height": 44,
+              "top": 66,
+              "right": 723.953125,
+              "bottom": 110,
+              "left": 623.953125
+            }
+          }
+        ]
+      }
+    ],
+    "fonts": [
+      {
+        "name": "http://localhost:29070/_next/static/media/cormorant_italic_latin.p.2t_a1_-z7jep9.woff2",
+        "start": 24.799999997019768,
+        "end": 237.79999999701977
+      },
+      {
+        "name": "http://localhost:29070/_next/static/media/cormorant_latin.p.142lwln7a8ewm.woff2",
+        "start": 24.899999991059303,
+        "end": 237.70000000298023
+      },
+      {
+        "name": "http://localhost:29070/_next/static/media/inter_latin.p.1w7yplba6jnhb.woff2",
+        "start": 24.899999991059303,
+        "end": 238
+      },
+      {
+        "name": "http://localhost:29070/_next/static/media/jost_latin.20yracrfrld3x.woff2",
+        "start": 32.599999994039536,
+        "end": 238.20000000298023
+      }
+    ]
+  },
+  {
+    "port": 20590,
+    "theme": "ivory-gold",
+    "width": 375,
+    "before": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 118.5625,
+          "y": 570.1875,
+          "width": 137.859375,
+          "height": 48,
+          "top": 570.1875,
+          "right": 256.421875,
+          "bottom": 618.1875,
+          "left": 118.5625
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 172.40625,
+          "y": 622.1875,
+          "width": 30.1875,
+          "height": 48,
+          "top": 622.1875,
+          "right": 202.59375,
+          "bottom": 670.1875,
+          "left": 172.40625
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 130.421875,
+          "y": 674.1875,
+          "width": 114.15625,
+          "height": 48,
+          "top": 674.1875,
+          "right": 244.578125,
+          "bottom": 722.1875,
+          "left": 130.421875
+        }
+      }
+    ],
+    "after": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 118.40625,
+          "y": 570.1875,
+          "width": 138.1875,
+          "height": 48,
+          "top": 570.1875,
+          "right": 256.59375,
+          "bottom": 618.1875,
+          "left": 118.40625
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 173.5625,
+          "y": 622.1875,
+          "width": 27.875,
+          "height": 48,
+          "top": 622.1875,
+          "right": 201.4375,
+          "bottom": 670.1875,
+          "left": 173.5625
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 129.90625,
+          "y": 674.1875,
+          "width": 115.171875,
+          "height": 48,
+          "top": 674.1875,
+          "right": 245.078125,
+          "bottom": 722.1875,
+          "left": 129.90625
+        }
+      }
+    ],
+    "shifts": [],
+    "fonts": [
+      {
+        "name": "http://localhost:20590/_next/static/media/cormorant_italic_latin.p.2t_a1_-z7jep9.woff2",
+        "start": 34,
+        "end": 249
+      },
+      {
+        "name": "http://localhost:20590/_next/static/media/cormorant_latin.p.142lwln7a8ewm.woff2",
+        "start": 34,
+        "end": 249.09999999403954
+      },
+      {
+        "name": "http://localhost:20590/_next/static/media/inter_latin.p.1w7yplba6jnhb.woff2",
+        "start": 34,
+        "end": 249.20000000298023
+      }
+    ]
+  },
+  {
+    "port": 20590,
+    "theme": "ivory-gold",
+    "width": 768,
+    "before": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 293.40625,
+          "y": 522.1875,
+          "width": 181.171875,
+          "height": 64,
+          "top": 522.1875,
+          "right": 474.578125,
+          "bottom": 586.1875,
+          "left": 293.40625
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 364.171875,
+          "y": 588.015625,
+          "width": 39.65625,
+          "height": 64,
+          "top": 588.015625,
+          "right": 403.828125,
+          "bottom": 652.015625,
+          "left": 364.171875
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 308.984375,
+          "y": 653.84375,
+          "width": 150.03125,
+          "height": 64,
+          "top": 653.84375,
+          "right": 459.015625,
+          "bottom": 717.84375,
+          "left": 308.984375
+        }
+      }
+    ],
+    "after": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 293.1875,
+          "y": 522.1875,
+          "width": 181.609375,
+          "height": 64,
+          "top": 522.1875,
+          "right": 474.796875,
+          "bottom": 586.1875,
+          "left": 293.1875
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 365.671875,
+          "y": 588.015625,
+          "width": 36.640625,
+          "height": 64,
+          "top": 588.015625,
+          "right": 402.3125,
+          "bottom": 652.015625,
+          "left": 365.671875
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 308.3125,
+          "y": 653.84375,
+          "width": 151.375,
+          "height": 64,
+          "top": 653.84375,
+          "right": 459.6875,
+          "bottom": 717.84375,
+          "left": 308.3125
+        }
+      }
+    ],
+    "shifts": [
+      {
+        "value": 0.00009266573431069959,
+        "time": 244.5,
+        "sources": [
+          {
+            "text": "Emerald Night",
+            "previous": {
+              "x": 369.28125,
+              "y": 66,
+              "width": 109,
+              "height": 44,
+              "top": 66,
+              "right": 478.28125,
+              "bottom": 110,
+              "left": 369.28125
+            },
+            "current": {
+              "x": 365.375,
+              "y": 66,
+              "width": 107,
+              "height": 44,
+              "top": 66,
+              "right": 472.375,
+              "bottom": 110,
+              "left": 365.375
+            }
+          },
+          {
+            "text": "Blush & Sage",
+            "previous": {
+              "x": 501.828125,
+              "y": 66,
+              "width": 104,
+              "height": 44,
+              "top": 66,
+              "right": 605.828125,
+              "bottom": 110,
+              "left": 501.828125
+            },
+            "current": {
+              "x": 495.953125,
+              "y": 66,
+              "width": 100,
+              "height": 44,
+              "top": 66,
+              "right": 595.953125,
+              "bottom": 110,
+              "left": 495.953125
+            }
+          }
+        ]
+      }
+    ],
+    "fonts": [
+      {
+        "name": "http://localhost:20590/_next/static/media/cormorant_italic_latin.p.2t_a1_-z7jep9.woff2",
+        "start": 24.700000002980232,
+        "end": 239.70000000298023
+      },
+      {
+        "name": "http://localhost:20590/_next/static/media/cormorant_latin.p.142lwln7a8ewm.woff2",
+        "start": 24.799999997019768,
+        "end": 239.79999999701977
+      },
+      {
+        "name": "http://localhost:20590/_next/static/media/inter_latin.p.1w7yplba6jnhb.woff2",
+        "start": 24.799999997019768,
+        "end": 240
+      }
+    ]
+  },
+  {
+    "port": 20590,
+    "theme": "ivory-gold",
+    "width": 1280,
+    "before": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 521.171875,
+          "y": 521.1875,
+          "width": 237.640625,
+          "height": 84,
+          "top": 521.1875,
+          "right": 758.8125,
+          "bottom": 605.1875,
+          "left": 521.171875
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 613.984375,
+          "y": 605.03125,
+          "width": 52.015625,
+          "height": 84,
+          "top": 605.03125,
+          "right": 666,
+          "bottom": 689.03125,
+          "left": 613.984375
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 541.59375,
+          "y": 688.875,
+          "width": 196.796875,
+          "height": 84,
+          "top": 688.875,
+          "right": 738.390625,
+          "bottom": 772.875,
+          "left": 541.59375
+        }
+      }
+    ],
+    "after": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 520.875,
+          "y": 521.1875,
+          "width": 238.234375,
+          "height": 84,
+          "top": 521.1875,
+          "right": 759.109375,
+          "bottom": 605.1875,
+          "left": 520.875
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 615.96875,
+          "y": 605.03125,
+          "width": 48.0625,
+          "height": 84,
+          "top": 605.03125,
+          "right": 664.03125,
+          "bottom": 689.03125,
+          "left": 615.96875
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 540.71875,
+          "y": 688.875,
+          "width": 198.5625,
+          "height": 84,
+          "top": 688.875,
+          "right": 739.28125,
+          "bottom": 772.875,
+          "left": 540.71875
+        }
+      }
+    ],
+    "shifts": [
+      {
+        "value": 0.00003909335666232639,
+        "time": 243.6000000089407,
+        "sources": [
+          {
+            "text": "Emerald Night",
+            "previous": {
+              "x": 497.28125,
+              "y": 66,
+              "width": 109,
+              "height": 44,
+              "top": 66,
+              "right": 606.28125,
+              "bottom": 110,
+              "left": 497.28125
+            },
+            "current": {
+              "x": 493.375,
+              "y": 66,
+              "width": 107,
+              "height": 44,
+              "top": 66,
+              "right": 600.375,
+              "bottom": 110,
+              "left": 493.375
+            }
+          },
+          {
+            "text": "Blush & Sage",
+            "previous": {
+              "x": 629.828125,
+              "y": 66,
+              "width": 104,
+              "height": 44,
+              "top": 66,
+              "right": 733.828125,
+              "bottom": 110,
+              "left": 629.828125
+            },
+            "current": {
+              "x": 623.953125,
+              "y": 66,
+              "width": 100,
+              "height": 44,
+              "top": 66,
+              "right": 723.953125,
+              "bottom": 110,
+              "left": 623.953125
+            }
+          }
+        ]
+      }
+    ],
+    "fonts": [
+      {
+        "name": "http://localhost:20590/_next/static/media/cormorant_italic_latin.p.2t_a1_-z7jep9.woff2",
+        "start": 24.600000008940697,
+        "end": 239
+      },
+      {
+        "name": "http://localhost:20590/_next/static/media/inter_latin.p.1w7yplba6jnhb.woff2",
+        "start": 24.600000008940697,
+        "end": 239.29999999701977
+      },
+      {
+        "name": "http://localhost:20590/_next/static/media/cormorant_latin.p.142lwln7a8ewm.woff2",
+        "start": 24.600000008940697,
+        "end": 239.20000000298023
+      }
+    ]
+  },
+  {
+    "port": 20590,
+    "theme": "midnight-champagne",
+    "width": 375,
+    "before": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 108.421875,
+          "y": 567.1875,
+          "width": 158.140625,
+          "height": 53,
+          "top": 567.1875,
+          "right": 266.5625,
+          "bottom": 620.1875,
+          "left": 108.421875
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 170.1875,
+          "y": 619.1875,
+          "width": 34.625,
+          "height": 53,
+          "top": 619.1875,
+          "right": 204.8125,
+          "bottom": 672.1875,
+          "left": 170.1875
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 122.015625,
+          "y": 671.1875,
+          "width": 130.96875,
+          "height": 53,
+          "top": 671.1875,
+          "right": 252.984375,
+          "bottom": 724.1875,
+          "left": 122.015625
+        }
+      }
+    ],
+    "after": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 108.875,
+          "y": 567.1875,
+          "width": 157.25,
+          "height": 53,
+          "top": 567.1875,
+          "right": 266.125,
+          "bottom": 620.1875,
+          "left": 108.875
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 170.75,
+          "y": 619.1875,
+          "width": 33.484375,
+          "height": 53,
+          "top": 619.1875,
+          "right": 204.234375,
+          "bottom": 672.1875,
+          "left": 170.75
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 123.5,
+          "y": 671.1875,
+          "width": 128,
+          "height": 53,
+          "top": 671.1875,
+          "right": 251.5,
+          "bottom": 724.1875,
+          "left": 123.5
+        }
+      }
+    ],
+    "shifts": [],
+    "fonts": [
+      {
+        "name": "http://localhost:20590/_next/static/media/cormorant_italic_latin.p.2t_a1_-z7jep9.woff2",
+        "start": 27,
+        "end": 241.40000000596046
+      },
+      {
+        "name": "http://localhost:20590/_next/static/media/cormorant_latin.p.142lwln7a8ewm.woff2",
+        "start": 27.200000002980232,
+        "end": 241.59999999403954
+      },
+      {
+        "name": "http://localhost:20590/_next/static/media/inter_latin.p.1w7yplba6jnhb.woff2",
+        "start": 27.200000002980232,
+        "end": 241.79999999701977
+      },
+      {
+        "name": "http://localhost:20590/_next/static/media/jost_latin.20yracrfrld3x.woff2",
+        "start": 36.79999999701977,
+        "end": 241.79999999701977
+      },
+      {
+        "name": "http://localhost:20590/_next/static/media/playfair_latin.3o_tw-pwo9p8h.woff2",
+        "start": 37.70000000298023,
+        "end": 241.90000000596046
+      }
+    ]
+  },
+  {
+    "port": 20590,
+    "theme": "midnight-champagne",
+    "width": 768,
+    "before": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 280.0625,
+          "y": 519.1875,
+          "width": 207.859375,
+          "height": 70,
+          "top": 519.1875,
+          "right": 487.921875,
+          "bottom": 589.1875,
+          "left": 280.0625
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 361.25,
+          "y": 585.015625,
+          "width": 45.5,
+          "height": 70,
+          "top": 585.015625,
+          "right": 406.75,
+          "bottom": 655.015625,
+          "left": 361.25
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 297.921875,
+          "y": 650.84375,
+          "width": 172.140625,
+          "height": 70,
+          "top": 650.84375,
+          "right": 470.0625,
+          "bottom": 720.84375,
+          "left": 297.921875
+        }
+      }
+    ],
+    "after": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 280.671875,
+          "y": 519.1875,
+          "width": 206.65625,
+          "height": 70,
+          "top": 519.1875,
+          "right": 487.328125,
+          "bottom": 589.1875,
+          "left": 280.671875
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 361.984375,
+          "y": 585.015625,
+          "width": 44.015625,
+          "height": 70,
+          "top": 585.015625,
+          "right": 406,
+          "bottom": 655.015625,
+          "left": 361.984375
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 299.875,
+          "y": 650.84375,
+          "width": 168.234375,
+          "height": 70,
+          "top": 650.84375,
+          "right": 468.109375,
+          "bottom": 720.84375,
+          "left": 299.875
+        }
+      }
+    ],
+    "shifts": [
+      {
+        "value": 0.00009266573431069959,
+        "time": 244,
+        "sources": [
+          {
+            "text": "Emerald Night",
+            "previous": {
+              "x": 369.28125,
+              "y": 66,
+              "width": 109,
+              "height": 44,
+              "top": 66,
+              "right": 478.28125,
+              "bottom": 110,
+              "left": 369.28125
+            },
+            "current": {
+              "x": 365.375,
+              "y": 66,
+              "width": 107,
+              "height": 44,
+              "top": 66,
+              "right": 472.375,
+              "bottom": 110,
+              "left": 365.375
+            }
+          },
+          {
+            "text": "Blush & Sage",
+            "previous": {
+              "x": 501.828125,
+              "y": 66,
+              "width": 104,
+              "height": 44,
+              "top": 66,
+              "right": 605.828125,
+              "bottom": 110,
+              "left": 501.828125
+            },
+            "current": {
+              "x": 495.953125,
+              "y": 66,
+              "width": 100,
+              "height": 44,
+              "top": 66,
+              "right": 595.953125,
+              "bottom": 110,
+              "left": 495.953125
+            }
+          }
+        ]
+      }
+    ],
+    "fonts": [
+      {
+        "name": "http://localhost:20590/_next/static/media/cormorant_italic_latin.p.2t_a1_-z7jep9.woff2",
+        "start": 24.80000001192093,
+        "end": 239.80000001192093
+      },
+      {
+        "name": "http://localhost:20590/_next/static/media/inter_latin.p.1w7yplba6jnhb.woff2",
+        "start": 24.900000005960464,
+        "end": 238.80000001192093
+      },
+      {
+        "name": "http://localhost:20590/_next/static/media/cormorant_latin.p.142lwln7a8ewm.woff2",
+        "start": 24.900000005960464,
+        "end": 239.6000000089407
+      },
+      {
+        "name": "http://localhost:20590/_next/static/media/jost_latin.20yracrfrld3x.woff2",
+        "start": 33.5,
+        "end": 239.20000000298023
+      },
+      {
+        "name": "http://localhost:20590/_next/static/media/playfair_latin.3o_tw-pwo9p8h.woff2",
+        "start": 34.30000001192093,
+        "end": 240
+      }
+    ]
+  },
+  {
+    "port": 20590,
+    "theme": "midnight-champagne",
+    "width": 1280,
+    "before": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 503.671875,
+          "y": 517.1875,
+          "width": 272.65625,
+          "height": 92,
+          "top": 517.1875,
+          "right": 776.328125,
+          "bottom": 609.1875,
+          "left": 503.671875
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 610.15625,
+          "y": 601.03125,
+          "width": 59.6875,
+          "height": 92,
+          "top": 601.03125,
+          "right": 669.84375,
+          "bottom": 693.03125,
+          "left": 610.15625
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 527.109375,
+          "y": 684.875,
+          "width": 225.78125,
+          "height": 92,
+          "top": 684.875,
+          "right": 752.890625,
+          "bottom": 776.875,
+          "left": 527.109375
+        }
+      }
+    ],
+    "after": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 504.453125,
+          "y": 517.1875,
+          "width": 271.09375,
+          "height": 92,
+          "top": 517.1875,
+          "right": 775.546875,
+          "bottom": 609.1875,
+          "left": 504.453125
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 611.125,
+          "y": 601.03125,
+          "width": 57.734375,
+          "height": 92,
+          "top": 601.03125,
+          "right": 668.859375,
+          "bottom": 693.03125,
+          "left": 611.125
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 529.65625,
+          "y": 684.875,
+          "width": 220.6875,
+          "height": 92,
+          "top": 684.875,
+          "right": 750.34375,
+          "bottom": 776.875,
+          "left": 529.65625
+        }
+      }
+    ],
+    "shifts": [
+      {
+        "value": 0.00003909335666232639,
+        "time": 258.59999999403954,
+        "sources": [
+          {
+            "text": "Emerald Night",
+            "previous": {
+              "x": 497.28125,
+              "y": 66,
+              "width": 109,
+              "height": 44,
+              "top": 66,
+              "right": 606.28125,
+              "bottom": 110,
+              "left": 497.28125
+            },
+            "current": {
+              "x": 493.375,
+              "y": 66,
+              "width": 107,
+              "height": 44,
+              "top": 66,
+              "right": 600.375,
+              "bottom": 110,
+              "left": 493.375
+            }
+          },
+          {
+            "text": "Blush & Sage",
+            "previous": {
+              "x": 629.828125,
+              "y": 66,
+              "width": 104,
+              "height": 44,
+              "top": 66,
+              "right": 733.828125,
+              "bottom": 110,
+              "left": 629.828125
+            },
+            "current": {
+              "x": 623.953125,
+              "y": 66,
+              "width": 100,
+              "height": 44,
+              "top": 66,
+              "right": 723.953125,
+              "bottom": 110,
+              "left": 623.953125
+            }
+          }
+        ]
+      }
+    ],
+    "fonts": [
+      {
+        "name": "http://localhost:20590/_next/static/media/cormorant_italic_latin.p.2t_a1_-z7jep9.woff2",
+        "start": 24.099999994039536,
+        "end": 240.3999999910593
+      },
+      {
+        "name": "http://localhost:20590/_next/static/media/cormorant_latin.p.142lwln7a8ewm.woff2",
+        "start": 24.19999998807907,
+        "end": 241.09999999403954
+      },
+      {
+        "name": "http://localhost:20590/_next/static/media/inter_latin.p.1w7yplba6jnhb.woff2",
+        "start": 24.299999997019768,
+        "end": 240.69999998807907
+      },
+      {
+        "name": "http://localhost:20590/_next/static/media/jost_latin.20yracrfrld3x.woff2",
+        "start": 33.79999999701977,
+        "end": 240.79999999701977
+      },
+      {
+        "name": "http://localhost:20590/_next/static/media/playfair_latin.3o_tw-pwo9p8h.woff2",
+        "start": 34.79999999701977,
+        "end": 240.8999999910593
+      }
+    ]
+  },
+  {
+    "port": 20590,
+    "theme": "emerald-night",
+    "width": 375,
+    "before": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 108.421875,
+          "y": 567.1875,
+          "width": 158.140625,
+          "height": 53,
+          "top": 567.1875,
+          "right": 266.5625,
+          "bottom": 620.1875,
+          "left": 108.421875
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 170.1875,
+          "y": 619.1875,
+          "width": 34.625,
+          "height": 53,
+          "top": 619.1875,
+          "right": 204.8125,
+          "bottom": 672.1875,
+          "left": 170.1875
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 122.015625,
+          "y": 671.1875,
+          "width": 130.96875,
+          "height": 53,
+          "top": 671.1875,
+          "right": 252.984375,
+          "bottom": 724.1875,
+          "left": 122.015625
+        }
+      }
+    ],
+    "after": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 108.875,
+          "y": 567.1875,
+          "width": 157.25,
+          "height": 53,
+          "top": 567.1875,
+          "right": 266.125,
+          "bottom": 620.1875,
+          "left": 108.875
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 170.75,
+          "y": 619.1875,
+          "width": 33.484375,
+          "height": 53,
+          "top": 619.1875,
+          "right": 204.234375,
+          "bottom": 672.1875,
+          "left": 170.75
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 123.5,
+          "y": 671.1875,
+          "width": 128,
+          "height": 53,
+          "top": 671.1875,
+          "right": 251.5,
+          "bottom": 724.1875,
+          "left": 123.5
+        }
+      }
+    ],
+    "shifts": [],
+    "fonts": [
+      {
+        "name": "http://localhost:20590/_next/static/media/cormorant_italic_latin.p.2t_a1_-z7jep9.woff2",
+        "start": 24.200000002980232,
+        "end": 237.5
+      },
+      {
+        "name": "http://localhost:20590/_next/static/media/cormorant_latin.p.142lwln7a8ewm.woff2",
+        "start": 24.299999997019768,
+        "end": 237.70000000298023
+      },
+      {
+        "name": "http://localhost:20590/_next/static/media/inter_latin.p.1w7yplba6jnhb.woff2",
+        "start": 24.299999997019768,
+        "end": 238
+      },
+      {
+        "name": "http://localhost:20590/_next/static/media/playfair_latin.3o_tw-pwo9p8h.woff2",
+        "start": 33.5,
+        "end": 237.90000000596046
+      }
+    ]
+  },
+  {
+    "port": 20590,
+    "theme": "emerald-night",
+    "width": 768,
+    "before": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 280.0625,
+          "y": 519.1875,
+          "width": 207.859375,
+          "height": 70,
+          "top": 519.1875,
+          "right": 487.921875,
+          "bottom": 589.1875,
+          "left": 280.0625
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 361.25,
+          "y": 585.015625,
+          "width": 45.5,
+          "height": 70,
+          "top": 585.015625,
+          "right": 406.75,
+          "bottom": 655.015625,
+          "left": 361.25
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 297.921875,
+          "y": 650.84375,
+          "width": 172.140625,
+          "height": 70,
+          "top": 650.84375,
+          "right": 470.0625,
+          "bottom": 720.84375,
+          "left": 297.921875
+        }
+      }
+    ],
+    "after": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 280.671875,
+          "y": 519.1875,
+          "width": 206.65625,
+          "height": 70,
+          "top": 519.1875,
+          "right": 487.328125,
+          "bottom": 589.1875,
+          "left": 280.671875
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 361.984375,
+          "y": 585.015625,
+          "width": 44.015625,
+          "height": 70,
+          "top": 585.015625,
+          "right": 406,
+          "bottom": 655.015625,
+          "left": 361.984375
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 299.875,
+          "y": 650.84375,
+          "width": 168.234375,
+          "height": 70,
+          "top": 650.84375,
+          "right": 468.109375,
+          "bottom": 720.84375,
+          "left": 299.875
+        }
+      }
+    ],
+    "shifts": [
+      {
+        "value": 0.00009266573431069959,
+        "time": 243.20000000298023,
+        "sources": [
+          {
+            "text": "Emerald Night",
+            "previous": {
+              "x": 369.28125,
+              "y": 66,
+              "width": 109,
+              "height": 44,
+              "top": 66,
+              "right": 478.28125,
+              "bottom": 110,
+              "left": 369.28125
+            },
+            "current": {
+              "x": 365.375,
+              "y": 66,
+              "width": 107,
+              "height": 44,
+              "top": 66,
+              "right": 472.375,
+              "bottom": 110,
+              "left": 365.375
+            }
+          },
+          {
+            "text": "Blush & Sage",
+            "previous": {
+              "x": 501.828125,
+              "y": 66,
+              "width": 104,
+              "height": 44,
+              "top": 66,
+              "right": 605.828125,
+              "bottom": 110,
+              "left": 501.828125
+            },
+            "current": {
+              "x": 495.953125,
+              "y": 66,
+              "width": 100,
+              "height": 44,
+              "top": 66,
+              "right": 595.953125,
+              "bottom": 110,
+              "left": 495.953125
+            }
+          }
+        ]
+      }
+    ],
+    "fonts": [
+      {
+        "name": "http://localhost:20590/_next/static/media/cormorant_italic_latin.p.2t_a1_-z7jep9.woff2",
+        "start": 24.5,
+        "end": 237.6000000089407
+      },
+      {
+        "name": "http://localhost:20590/_next/static/media/cormorant_latin.p.142lwln7a8ewm.woff2",
+        "start": 24.600000008940697,
+        "end": 237.70000000298023
+      },
+      {
+        "name": "http://localhost:20590/_next/static/media/inter_latin.p.1w7yplba6jnhb.woff2",
+        "start": 24.600000008940697,
+        "end": 237.80000001192093
+      },
+      {
+        "name": "http://localhost:20590/_next/static/media/playfair_latin.3o_tw-pwo9p8h.woff2",
+        "start": 34.400000005960464,
+        "end": 238.1000000089407
+      }
+    ]
+  },
+  {
+    "port": 20590,
+    "theme": "emerald-night",
+    "width": 1280,
+    "before": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 503.671875,
+          "y": 517.1875,
+          "width": 272.65625,
+          "height": 92,
+          "top": 517.1875,
+          "right": 776.328125,
+          "bottom": 609.1875,
+          "left": 503.671875
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 610.15625,
+          "y": 601.03125,
+          "width": 59.6875,
+          "height": 92,
+          "top": 601.03125,
+          "right": 669.84375,
+          "bottom": 693.03125,
+          "left": 610.15625
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 527.109375,
+          "y": 684.875,
+          "width": 225.78125,
+          "height": 92,
+          "top": 684.875,
+          "right": 752.890625,
+          "bottom": 776.875,
+          "left": 527.109375
+        }
+      }
+    ],
+    "after": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 504.453125,
+          "y": 517.1875,
+          "width": 271.09375,
+          "height": 92,
+          "top": 517.1875,
+          "right": 775.546875,
+          "bottom": 609.1875,
+          "left": 504.453125
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 611.125,
+          "y": 601.03125,
+          "width": 57.734375,
+          "height": 92,
+          "top": 601.03125,
+          "right": 668.859375,
+          "bottom": 693.03125,
+          "left": 611.125
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 529.65625,
+          "y": 684.875,
+          "width": 220.6875,
+          "height": 92,
+          "top": 684.875,
+          "right": 750.34375,
+          "bottom": 776.875,
+          "left": 529.65625
+        }
+      }
+    ],
+    "shifts": [
+      {
+        "value": 0.00003909335666232639,
+        "time": 243,
+        "sources": [
+          {
+            "text": "Emerald Night",
+            "previous": {
+              "x": 497.28125,
+              "y": 66,
+              "width": 109,
+              "height": 44,
+              "top": 66,
+              "right": 606.28125,
+              "bottom": 110,
+              "left": 497.28125
+            },
+            "current": {
+              "x": 493.375,
+              "y": 66,
+              "width": 107,
+              "height": 44,
+              "top": 66,
+              "right": 600.375,
+              "bottom": 110,
+              "left": 493.375
+            }
+          },
+          {
+            "text": "Blush & Sage",
+            "previous": {
+              "x": 629.828125,
+              "y": 66,
+              "width": 104,
+              "height": 44,
+              "top": 66,
+              "right": 733.828125,
+              "bottom": 110,
+              "left": 629.828125
+            },
+            "current": {
+              "x": 623.953125,
+              "y": 66,
+              "width": 100,
+              "height": 44,
+              "top": 66,
+              "right": 723.953125,
+              "bottom": 110,
+              "left": 623.953125
+            }
+          }
+        ]
+      }
+    ],
+    "fonts": [
+      {
+        "name": "http://localhost:20590/_next/static/media/cormorant_italic_latin.p.2t_a1_-z7jep9.woff2",
+        "start": 24.299999997019768,
+        "end": 237.29999999701977
+      },
+      {
+        "name": "http://localhost:20590/_next/static/media/cormorant_latin.p.142lwln7a8ewm.woff2",
+        "start": 24.399999991059303,
+        "end": 237.3999999910593
+      },
+      {
+        "name": "http://localhost:20590/_next/static/media/inter_latin.p.1w7yplba6jnhb.woff2",
+        "start": 24.399999991059303,
+        "end": 237.79999999701977
+      },
+      {
+        "name": "http://localhost:20590/_next/static/media/playfair_latin.3o_tw-pwo9p8h.woff2",
+        "start": 34.599999994039536,
+        "end": 237.8999999910593
+      }
+    ]
+  },
+  {
+    "port": 20590,
+    "theme": "blush-sage",
+    "width": 375,
+    "before": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 118.5625,
+          "y": 570.1875,
+          "width": 137.859375,
+          "height": 48,
+          "top": 570.1875,
+          "right": 256.421875,
+          "bottom": 618.1875,
+          "left": 118.5625
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 172.40625,
+          "y": 622.1875,
+          "width": 30.1875,
+          "height": 48,
+          "top": 622.1875,
+          "right": 202.59375,
+          "bottom": 670.1875,
+          "left": 172.40625
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 130.421875,
+          "y": 674.1875,
+          "width": 114.15625,
+          "height": 48,
+          "top": 674.1875,
+          "right": 244.578125,
+          "bottom": 722.1875,
+          "left": 130.421875
+        }
+      }
+    ],
+    "after": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 118.40625,
+          "y": 570.1875,
+          "width": 138.1875,
+          "height": 48,
+          "top": 570.1875,
+          "right": 256.59375,
+          "bottom": 618.1875,
+          "left": 118.40625
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 173.5625,
+          "y": 622.1875,
+          "width": 27.875,
+          "height": 48,
+          "top": 622.1875,
+          "right": 201.4375,
+          "bottom": 670.1875,
+          "left": 173.5625
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 129.90625,
+          "y": 674.1875,
+          "width": 115.171875,
+          "height": 48,
+          "top": 674.1875,
+          "right": 245.078125,
+          "bottom": 722.1875,
+          "left": 129.90625
+        }
+      }
+    ],
+    "shifts": [],
+    "fonts": [
+      {
+        "name": "http://localhost:20590/_next/static/media/cormorant_italic_latin.p.2t_a1_-z7jep9.woff2",
+        "start": 26.200000002980232,
+        "end": 239.59999999403954
+      },
+      {
+        "name": "http://localhost:20590/_next/static/media/cormorant_latin.p.142lwln7a8ewm.woff2",
+        "start": 26.299999997019768,
+        "end": 239.79999999701977
+      },
+      {
+        "name": "http://localhost:20590/_next/static/media/inter_latin.p.1w7yplba6jnhb.woff2",
+        "start": 26.299999997019768,
+        "end": 240.09999999403954
+      },
+      {
+        "name": "http://localhost:20590/_next/static/media/jost_latin.20yracrfrld3x.woff2",
+        "start": 35.5,
+        "end": 240.09999999403954
+      }
+    ]
+  },
+  {
+    "port": 20590,
+    "theme": "blush-sage",
+    "width": 768,
+    "before": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 293.40625,
+          "y": 522.1875,
+          "width": 181.171875,
+          "height": 64,
+          "top": 522.1875,
+          "right": 474.578125,
+          "bottom": 586.1875,
+          "left": 293.40625
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 364.171875,
+          "y": 588.015625,
+          "width": 39.65625,
+          "height": 64,
+          "top": 588.015625,
+          "right": 403.828125,
+          "bottom": 652.015625,
+          "left": 364.171875
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 308.984375,
+          "y": 653.84375,
+          "width": 150.03125,
+          "height": 64,
+          "top": 653.84375,
+          "right": 459.015625,
+          "bottom": 717.84375,
+          "left": 308.984375
+        }
+      }
+    ],
+    "after": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 293.1875,
+          "y": 522.1875,
+          "width": 181.609375,
+          "height": 64,
+          "top": 522.1875,
+          "right": 474.796875,
+          "bottom": 586.1875,
+          "left": 293.1875
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 365.671875,
+          "y": 588.015625,
+          "width": 36.640625,
+          "height": 64,
+          "top": 588.015625,
+          "right": 402.3125,
+          "bottom": 652.015625,
+          "left": 365.671875
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 308.3125,
+          "y": 653.84375,
+          "width": 151.375,
+          "height": 64,
+          "top": 653.84375,
+          "right": 459.6875,
+          "bottom": 717.84375,
+          "left": 308.3125
+        }
+      }
+    ],
+    "shifts": [
+      {
+        "value": 0.00009266573431069959,
+        "time": 246.6000000089407,
+        "sources": [
+          {
+            "text": "Emerald Night",
+            "previous": {
+              "x": 369.28125,
+              "y": 66,
+              "width": 109,
+              "height": 44,
+              "top": 66,
+              "right": 478.28125,
+              "bottom": 110,
+              "left": 369.28125
+            },
+            "current": {
+              "x": 365.375,
+              "y": 66,
+              "width": 107,
+              "height": 44,
+              "top": 66,
+              "right": 472.375,
+              "bottom": 110,
+              "left": 365.375
+            }
+          },
+          {
+            "text": "Blush & Sage",
+            "previous": {
+              "x": 501.828125,
+              "y": 66,
+              "width": 104,
+              "height": 44,
+              "top": 66,
+              "right": 605.828125,
+              "bottom": 110,
+              "left": 501.828125
+            },
+            "current": {
+              "x": 495.953125,
+              "y": 66,
+              "width": 100,
+              "height": 44,
+              "top": 66,
+              "right": 595.953125,
+              "bottom": 110,
+              "left": 495.953125
+            }
+          }
+        ]
+      }
+    ],
+    "fonts": [
+      {
+        "name": "http://localhost:20590/_next/static/media/cormorant_italic_latin.p.2t_a1_-z7jep9.woff2",
+        "start": 27.5,
+        "end": 242.70000000298023
+      },
+      {
+        "name": "http://localhost:20590/_next/static/media/inter_latin.p.1w7yplba6jnhb.woff2",
+        "start": 27.600000008940697,
+        "end": 243.1000000089407
+      },
+      {
+        "name": "http://localhost:20590/_next/static/media/cormorant_latin.p.142lwln7a8ewm.woff2",
+        "start": 27.600000008940697,
+        "end": 243.30000001192093
+      },
+      {
+        "name": "http://localhost:20590/_next/static/media/jost_latin.20yracrfrld3x.woff2",
+        "start": 37.5,
+        "end": 242.80000001192093
+      }
+    ]
+  },
+  {
+    "port": 20590,
+    "theme": "blush-sage",
+    "width": 1280,
+    "before": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 521.171875,
+          "y": 521.1875,
+          "width": 237.640625,
+          "height": 84,
+          "top": 521.1875,
+          "right": 758.8125,
+          "bottom": 605.1875,
+          "left": 521.171875
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 613.984375,
+          "y": 605.03125,
+          "width": 52.015625,
+          "height": 84,
+          "top": 605.03125,
+          "right": 666,
+          "bottom": 689.03125,
+          "left": 613.984375
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 541.59375,
+          "y": 688.875,
+          "width": 196.796875,
+          "height": 84,
+          "top": 688.875,
+          "right": 738.390625,
+          "bottom": 772.875,
+          "left": 541.59375
+        }
+      }
+    ],
+    "after": [
+      {
+        "text": "Uchenna",
+        "rect": {
+          "x": 520.875,
+          "y": 521.1875,
+          "width": 238.234375,
+          "height": 84,
+          "top": 521.1875,
+          "right": 759.109375,
+          "bottom": 605.1875,
+          "left": 520.875
+        }
+      },
+      {
+        "text": " & ",
+        "rect": {
+          "x": 615.96875,
+          "y": 605.03125,
+          "width": 48.0625,
+          "height": 84,
+          "top": 605.03125,
+          "right": 664.03125,
+          "bottom": 689.03125,
+          "left": 615.96875
+        }
+      },
+      {
+        "text": "Adaora",
+        "rect": {
+          "x": 540.71875,
+          "y": 688.875,
+          "width": 198.5625,
+          "height": 84,
+          "top": 688.875,
+          "right": 739.28125,
+          "bottom": 772.875,
+          "left": 540.71875
+        }
+      }
+    ],
+    "shifts": [
+      {
+        "value": 0.00003909335666232639,
+        "time": 243.5,
+        "sources": [
+          {
+            "text": "Emerald Night",
+            "previous": {
+              "x": 497.28125,
+              "y": 66,
+              "width": 109,
+              "height": 44,
+              "top": 66,
+              "right": 606.28125,
+              "bottom": 110,
+              "left": 497.28125
+            },
+            "current": {
+              "x": 493.375,
+              "y": 66,
+              "width": 107,
+              "height": 44,
+              "top": 66,
+              "right": 600.375,
+              "bottom": 110,
+              "left": 493.375
+            }
+          },
+          {
+            "text": "Blush & Sage",
+            "previous": {
+              "x": 629.828125,
+              "y": 66,
+              "width": 104,
+              "height": 44,
+              "top": 66,
+              "right": 733.828125,
+              "bottom": 110,
+              "left": 629.828125
+            },
+            "current": {
+              "x": 623.953125,
+              "y": 66,
+              "width": 100,
+              "height": 44,
+              "top": 66,
+              "right": 723.953125,
+              "bottom": 110,
+              "left": 623.953125
+            }
+          }
+        ]
+      }
+    ],
+    "fonts": [
+      {
+        "name": "http://localhost:20590/_next/static/media/cormorant_latin.p.142lwln7a8ewm.woff2",
+        "start": 25.5,
+        "end": 239.70000000298023
+      },
+      {
+        "name": "http://localhost:20590/_next/static/media/cormorant_italic_latin.p.2t_a1_-z7jep9.woff2",
+        "start": 25.5,
+        "end": 239.59999999403954
+      },
+      {
+        "name": "http://localhost:20590/_next/static/media/inter_latin.p.1w7yplba6jnhb.woff2",
+        "start": 25.599999994039536,
+        "end": 239.79999999701977
+      },
+      {
+        "name": "http://localhost:20590/_next/static/media/jost_latin.20yracrfrld3x.woff2",
+        "start": 35.3999999910593,
+        "end": 239.8999999910593
+      }
+    ]
+  }
+]
