@@ -40,7 +40,7 @@ export function InvitationLetterPreview({
               key={item.id}
               href={`/dev/invitation/letter?theme=${item.id}${sample ? "&details=sample" : ""}`}
               aria-current={theme?.id === item.id ? "page" : undefined}
-              className="inline-flex min-h-11 min-w-11 items-center text-primary underline underline-offset-4"
+              className="inline-flex min-h-11 w-56 max-w-full items-center text-primary underline underline-offset-4"
             >
               {item.name}
             </Link>

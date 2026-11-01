@@ -1,0 +1,48 @@
+{
+  "implementation": "f6c22c06c5808fb8371a34bd1871378f364447a5",
+  "failedMeasurement": "NO_NAVSTART: initial trace collection failed; preserved in headline-performance.log",
+  "runs": [
+    {
+      "url": "http://localhost:29070/dev/invitation/letter",
+      "fetchTime": "2026-11-01T06:43:20.329Z",
+      "lighthouseVersion": "13.6.0",
+      "performance": 0.96,
+      "accessibility": 1,
+      "metrics": {
+        "cumulative-layout-shift": 0,
+        "largest-contentful-paint": 738.082,
+        "first-contentful-paint": 738.082,
+        "total-blocking-time": 228,
+        "speed-index": 859.0728936851501
+      }
+    },
+    {
+      "url": "http://localhost:29070/dev/invitation/letter",
+      "fetchTime": "2026-11-01T06:43:32.189Z",
+      "lighthouseVersion": "13.6.0",
+      "performance": 0.97,
+      "accessibility": 1,
+      "metrics": {
+        "cumulative-layout-shift": 0,
+        "largest-contentful-paint": 622.033,
+        "first-contentful-paint": 622.033,
+        "total-blocking-time": 184,
+        "speed-index": 622.033
+      }
+    },
+    {
+      "url": "http://localhost:29070/dev/invitation/letter",
+      "fetchTime": "2026-11-01T06:43:44.329Z",
+      "lighthouseVersion": "13.6.0",
+      "performance": 0.96,
+      "accessibility": 1,
+      "metrics": {
+        "cumulative-layout-shift": 0,
+        "largest-contentful-paint": 676.27,
+        "first-contentful-paint": 676.27,
+        "total-blocking-time": 244,
+        "speed-index": 676.27
+      }
+    }
+  ]
+}

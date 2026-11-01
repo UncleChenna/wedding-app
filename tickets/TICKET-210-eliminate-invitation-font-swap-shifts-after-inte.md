@@ -2,20 +2,20 @@
 id: TICKET-210
 title: Eliminate invitation font-swap shifts after integration
 epic: design-system
-status: todo
+status: in_review
 priority: high
 estimate: M
 labels: [frontend, test]
 module: theming
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: []
 blocks: []
-branch: ""
-pr: ""
+branch: TICKET-210
+pr: https://github.com/UncleChenna/wedding-app/pull/67
 created: 2026-10-31
-updated: 2026-10-31
-started: ""
+updated: 2026-11-01
+started: 2026-11-01
 completed: ""
 reason: ""
 resume_to: ""
@@ -37,10 +37,10 @@ Raising CLS thresholds, hiding late text, disabling animations or tests, increas
 
 ## Acceptance criteria
 
-- [ ] Controlled baseline-versus-104 comparison identifies the cause with actual layout-shift entries and font timing.
-- [ ] A regression fails before the fix and passes afterward for both affected themes; preserve zero CLS and approved typography/reduced motion.
-- [ ] All four themes pass envelope first/repeat visit, keyboard and delayed-font checks at375/768/1280.
-- [ ] Full verification and final-head CI pass; retain every failed run and any unresolved device/performance limits.
+- [x] Controlled baseline-versus-104 comparison identifies the cause with actual layout-shift entries and font timing.
+- [x] A regression fails before the fix and passes afterward for both affected themes; preserve zero CLS and approved typography/reduced motion.
+- [x] All four themes pass envelope first/repeat visit, keyboard and delayed-font checks at375/768/1280.
+- [x] Full verification and final-head CI pass; retain every failed run and any unresolved device/performance limits.
 
 ## Test plan
 
@@ -59,3 +59,6 @@ src/modules/theming/components/fonts.ts, src/modules/theming/font-fallbacks.css,
 ## Activity log
 
 - 2026-10-31 — new → todo — divine
+- 2026-11-01 — todo → claimed — divine (codex)
+- 2026-11-01 — todo → in_progress — divine (codex)
+- 2026-11-01 — in_progress → in_review — divine (codex)
