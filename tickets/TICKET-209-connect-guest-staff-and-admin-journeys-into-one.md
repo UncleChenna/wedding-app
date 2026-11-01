@@ -39,7 +39,7 @@ The PRD defines three guest journeys and five roles ([Users and roles](../docs/p
 Each feature ticket builds its own screen. No ticket owns the routes between screens, so features land as
 islands. This ticket defines that route contract, wires every existing piece into it, and adds a test that
 fails when a route becomes orphaned. The full journey map and build order are in
-[the plan](../docs/plans/2026-10-31-TICKET-209.md).
+[the plan](../docs/plans/2026-11-01-TICKET-209.md).
 
 ## Scope
 
@@ -132,6 +132,8 @@ fails when a route becomes orphaned. The full journey map and build order are in
 - `e2e/journeys.spec.ts`
 
 ## Notes / decisions
+
+- 2026-11-01: Claimed and isolated from freshly merged develop0f30f2f; current implementation plan is2026-11-01-TICKET-209.md. The original referenced plan only exists uncommitted in025; that checkout remains untouched. No feature acceptance is certified by setup.
 
 _Agents append dated notes here while working._
 
