@@ -20,3 +20,11 @@ User standing authorization permits verified merges and labelled preview deliver
 ## Publication
 
 Draft PR68: https://github.com/UncleChenna/wedding-app/pull/68. Plan commit4bd9383 is pushed; formatting,210-ticket validation and ignored snapshot rendering passed. Runtime implementation and all feature criteria remain outstanding. Next action is the failing route-registry coverage tests, not another planning-only pass.
+
+## Route registry checkpoint — 2026-11-01
+
+Implemented typed shared route metadata for all 18 current pages, encoded invitation paths, and neutral accessibility route samples. Migrated existing navigation and admin redirects to that source; destinations and authorization semantics are preserved. The browser accessibility inventory now derives from the registry.
+
+Red test evidence: artifacts/TICKET-209/routes-red.log (missing module). Green: routes-green.log, four route inventory/access/encoding/sample tests pass. Initial quick check exposed the Node readdirSync string-or-buffer overload; explicit UTF-8 encoding resolves it without casts. Latest registry-quick.log passes lint, typecheck and five related unit tests. git diff --check passes. Full verification and browser/UI evidence have not run for this checkpoint.
+
+All feature criteria remain unchecked. Next: implement tested settings-driven home and RSVP state/date next steps, then staff/admin hubs, authorized sharing, default production preview guard, journey docs and orphan-route browser checks per the dated plan. No final review or merge requested for this incomplete implementation. Managed database remains running, migrated, not seeded.

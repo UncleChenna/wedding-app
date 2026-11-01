@@ -1,4 +1,5 @@
 "use client";
+import { appRoutes } from "@/modules/shared/lib/routes";
 import Link from "next/link";
 import { useActionState, useEffect, useRef } from "react";
 import { Button } from "@/modules/shared/components/ui/button";
@@ -53,7 +54,7 @@ export function MfaForm({ factorId }: { factorId?: string }) {
       </p>
       {finished ? (
         <Link
-          href="/admin"
+          href={appRoutes.admin.path}
           className="mt-8 inline-flex min-h-11 items-center text-lg text-primary underline underline-offset-4"
         >
           Continue to admin
@@ -98,7 +99,7 @@ export function MfaForm({ factorId }: { factorId?: string }) {
         </p>
       </details>
       <Link
-        href="/admin/sign-out"
+        href={appRoutes.adminSignOut.path}
         className="mt-6 inline-flex min-h-11 items-center self-start text-lg text-primary underline underline-offset-4"
       >
         Sign out

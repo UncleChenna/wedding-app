@@ -1,4 +1,5 @@
 "use client";
+import { appRoutes } from "@/modules/shared/lib/routes";
 
 import Link from "next/link";
 import { useState } from "react";
@@ -26,7 +27,7 @@ export function SharePreview({
             aria-label="Preview controls"
           >
             <Link
-              href="/dev"
+              href={appRoutes.dev.path}
               className="inline-flex min-h-11 items-center text-lg text-primary underline underline-offset-4"
             >
               All previews

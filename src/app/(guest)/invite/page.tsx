@@ -1,3 +1,4 @@
+import { appRoutes } from "@/modules/shared/lib/routes";
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -27,7 +28,7 @@ export default function InvitationGuidePage() {
       </p>
       <Link
         prefetch={false}
-        href="/"
+        href={appRoutes.home.path}
         className="mt-10 inline-flex min-h-11 items-center self-start text-primary underline underline-offset-4"
       >
         Back to our day

@@ -1,4 +1,5 @@
 "use client";
+import { appRoutes } from "@/modules/shared/lib/routes";
 import Link from "next/link";
 import { useActionState, useEffect, useRef } from "react";
 import { Button } from "@/modules/shared/components/ui/button";
@@ -69,14 +70,16 @@ export function AdminAuthForm({ signOut = false }: { signOut?: boolean }) {
           <div className="flex flex-col gap-4">
             <Link
               className="inline-flex min-h-11 items-center text-lg text-primary underline underline-offset-4"
-              href={state.status === "signed-in" ? "/admin" : "/admin/sign-in"}
+              href={
+                state.status === "signed-in" ? appRoutes.admin.path : appRoutes.adminSignIn.path
+              }
             >
               {state.status === "signed-in" ? "Continue to admin" : "Sign in again"}
             </Link>
             {state.status === "signed-in" && (
               <Link
                 className="inline-flex min-h-11 items-center text-lg text-primary underline underline-offset-4"
-                href="/admin/sign-out"
+                href={appRoutes.adminSignOut.path}
               >
                 Sign out
               </Link>
@@ -117,7 +120,7 @@ export function AdminAuthForm({ signOut = false }: { signOut?: boolean }) {
             {state.email && (
               <a
                 className="inline-flex min-h-11 items-center justify-center text-lg text-primary underline underline-offset-4"
-                href="/admin/sign-in"
+                href={appRoutes.adminSignIn.path}
               >
                 Use another email
               </a>

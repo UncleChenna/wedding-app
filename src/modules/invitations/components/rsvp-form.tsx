@@ -1,4 +1,6 @@
 "use client";
+
+import { invitationHref } from "@/modules/shared/lib/routes";
 import { useActionState, useEffect, useRef } from "react";
 import { Button } from "@/modules/shared/components/ui/button";
 import { invitationSiteCopy } from "../lib/copy";
@@ -23,7 +25,11 @@ export function RsvpForm({
           ? invitationSiteCopy.declined
           : "",
   };
-  const [state, action, pending] = useActionState(respondToInvitation, initial, `/i/${token}`);
+  const [state, action, pending] = useActionState(
+    respondToInvitation,
+    initial,
+    invitationHref(token),
+  );
   const status = useRef<HTMLParagraphElement>(null);
   const previous = useRef(state);
   useEffect(() => {

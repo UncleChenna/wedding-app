@@ -133,6 +133,8 @@ fails when a route becomes orphaned. The full journey map and build order are in
 
 ## Notes / decisions
 
+- 2026-11-01: Route registry checkpoint: four focused tests and quick verification pass; existing navigation and accessibility inventory use shared routes. Remaining journey implementation and full browser/UI verification are outstanding; PR68 stays draft.
+
 - 2026-11-01: Claimed and isolated from freshly merged develop0f30f2f; current implementation plan is2026-11-01-TICKET-209.md. The original referenced plan only exists uncommitted in025; that checkout remains untouched. No feature acceptance is certified by setup.
 
 _Agents append dated notes here while working._

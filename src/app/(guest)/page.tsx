@@ -1,3 +1,4 @@
+import { appRoutes } from "@/modules/shared/lib/routes";
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -26,7 +27,7 @@ export default function HomePage() {
       </p>
       <Link
         prefetch={false}
-        href="/invite"
+        href={appRoutes.invite.path}
         className="mt-10 inline-flex min-h-11 items-center text-lg text-primary underline underline-offset-4"
       >
         Your invitation
@@ -34,7 +35,7 @@ export default function HomePage() {
       {process.env.NODE_ENV === "development" && (
         <Link
           prefetch={false}
-          href="/dev"
+          href={appRoutes.dev.path}
           className="mt-8 inline-flex min-h-11 items-center text-primary underline underline-offset-4"
         >
           Browse page previews

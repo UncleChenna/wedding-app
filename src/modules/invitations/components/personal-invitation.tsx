@@ -1,3 +1,4 @@
+import { appRoutes } from "@/modules/shared/lib/routes";
 import Link from "next/link";
 import { RsvpForm } from "./rsvp-form";
 import { InvitationLetter, type InvitationEventDetails } from "./invitation-letter";
@@ -20,7 +21,7 @@ export function PersonalInvitation({
     <InvitationLetter details={details} greeting={greeting}>
       <RsvpForm token={token} attendance={invitation.attendance} open={repliesOpen} />
       <Link
-        href="/"
+        href={appRoutes.home.path}
         prefetch={false}
         className="mt-10 inline-flex min-h-11 min-w-11 items-center text-primary underline underline-offset-4"
       >

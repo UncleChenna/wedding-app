@@ -1,15 +1,16 @@
+import { appRoutes } from "@/modules/shared/lib/routes";
 import type { Metadata } from "next";
 import Link from "next/link";
 export const metadata: Metadata = { title: "Page previews", robots: { index: false } };
 const pages = [
-  ["/", "Wedding home"],
-  ["/invite", "Invitation guidance"],
-  ["/dev/invitation", "Invitation preview"],
-  ["/dev/invitation/letter", "Personal invitation layout"],
-  ["/dev/rsvp", "RSVP preview"],
-  ["/dev/order", "Table ordering preview"],
-  ["/dev/share", "Invitation sharing preview"],
-  ["/dev/theme", "Components and themes"],
+  [appRoutes.home.path, "Wedding home"],
+  [appRoutes.invite.path, "Invitation guidance"],
+  [appRoutes.devInvitation.path, "Invitation preview"],
+  [appRoutes.devLetter.path, "Personal invitation layout"],
+  [appRoutes.devRsvp.path, "RSVP preview"],
+  [appRoutes.devOrder.path, "Table ordering preview"],
+  [appRoutes.devShare.path, "Invitation sharing preview"],
+  [appRoutes.devTheme.path, "Components and themes"],
 ] as const;
 export default function PreviewIndex() {
   return (
