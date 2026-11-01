@@ -69,7 +69,12 @@ logs.
 - End-to-end runs of `gate-pass.spec.ts`, plus `a11y-routes` and `overflow` for `/p/invalid`: 20 passed; the 4
   skips are desktop runs of mobile-only overflow tests.
 - Visual: 24 screenshots, all inspected (`docs/reviews/TICKET-183/README.md`).
-- `pnpm verify` runs in `pnpm t:pr`; the result is recorded in the PR conversation.
+- **Local `pnpm verify` (through `pnpm t:pr`) failed on machine load, not on this change.**
+  - Format, lint, types, unit tests and build passed. 684 browser tests passed.
+  - 13 timed out in `order-preview`, `rsvp-preview` and `share-menu`. These suites don't touch the changed files;
+    individual tests ran 7–15 minutes, and the whole run took 46 minutes against about 10 normally.
+  - The load average was about 29, from other worktrees' verify runs and Docker stacks.
+  - CI runs the identical `pnpm verify` on a clean runner and is the gate for this PR.
 - **Not verified:**
   - The opt-in database integration test, not run because local Docker was unresponsive.
   - A live browser flow with a real signed valid pass.
