@@ -58,3 +58,14 @@ Database startup77146 completed; project wedding-7bf7dd2551f8, browser34711.
 RUN_IOS_REVIEW=1 caffeinate -is pnpm verify is live in exec13614; log artifacts/TICKET-110/integrated-verify.log. Poll this exact handle; do not restart on observation timeout. It refreshes twelve guide screenshots for final visual inspection; original screenshots remain in Git history.
 Next: inspect terminal result and all updated guide images plus combined staff/theme surfaces, record any failures without relabelling, and retain actual physical iPhone/WhatsApp proof as unverified. Apply the existing preview-delivery exception by explicitly retaining the requirement in201/114 before review; no manual check is currently certified.
 Keep old failed logs. After verification, update evidence and PR66, use t:pr with --owner divine --agent codex, require final-head CI and exact-head matching before any authorized merge.
+
+## 2026-11-01 — local integration and visual review passed
+
+Full gate13614 TERMINAL PASS:547unit/26skipped;659browser/135skipped (4.1minutes).
+All twelve regenerated guide images individually inspected. Combined review21173 completed36 route/theme/width combinations, zero axe violations,44px controls and keyboard order through both components. All60 new staff/control screenshots inspected in eight contact sheets. Synthetic events/UA prove coexistence only; no physical native-install claim.
+Measurements copied to docs/reviews/TICKET-110/combined-review-results.json. Standard screenshot refresh72999 is still running; poll its handle/log.
+Production server39162 on34711 remains running. Stop before t:pr so the gate owns its server.
+Live201 is todo/unowned; retained110's unchecked real iPhone/iPad/WhatsApp requirement there under standing preview-delivery approval, preserving both release gates and114.110 criterion now distinguishes proven fixture copy from that unverified physical check.
+Next: finish screenshot refresh, update PR body with actual final CI, commit evidence and use t:pr --owner divine --agent codex. Do not merge before final-head checks pass.
+
+Screenshot refresh72999 TERMINAL PASS:36 cases (16.6seconds). Updated current review/PR results preserve older failures as history. No runtime changes since integration.

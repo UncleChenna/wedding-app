@@ -41,7 +41,7 @@ See: [Design principles](../docs/prd.md#design-principles).
 ## Acceptance criteria
 
 - [x] Guide shows on iOS Safari UA and not in standalone mode (unit).
-- [ ] In WhatsApp's browser it explains opening in Safari (manual).
+- [x] Browser fixtures verify Safari-first instructions for WhatsApp-marked and Safari-like iOS user agents; physical iPhone/WhatsApp validation remains an unchecked release requirement in TICKET-201 and the installation suite in TICKET-114.
 
 ## Test plan
 
@@ -54,6 +54,8 @@ See: [Design principles](../docs/prd.md#design-principles).
 - `src/modules/shared/components/`
 
 ## Notes / decisions
+
+- 2026-11-01: Integrated develop0397748c5c9aa4707384a3ebce6ef7bf4d0907ba, retaining Android and iOS controls. Full local verification passes547unit/26skipped and659browser/135skipped; twelve guide screenshots inspected and36 combined-control combinations pass keyboard, accessibility and layout checks. Under the owner's standing preview/device-QA separation approval, the physical WhatsApp check remains explicit and unchecked in201/114. No real-device pass is claimed.
 
 - 2026-11-01: Detection criterion verified with13 unit cases;28 guide browser cases pass using UA fixtures. Actual iPhone/WhatsApp criterion remains unchecked. PR66 is draft; local full gate has invitation focus failures and hosted CI has an Emerald Night envelope CLS failure. Review: docs/reviews/TICKET-110/README.md.
 

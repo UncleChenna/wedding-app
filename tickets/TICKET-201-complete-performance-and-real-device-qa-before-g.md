@@ -42,6 +42,8 @@ Claiming untested checks pass, weakening thresholds, changing TICKET-015's pause
 
 ## Acceptance criteria
 
+- [ ] TICKET-110: on physical iPhone/iPad browsers, including WhatsApp, verify the guide explains opening in Safari, complete Share → Add to Home Screen with actual OS menus, and confirm the installed standalone app hides guidance. Record device/OS/WhatsApp/browser/build and screenshots, keyboard/safe-area behavior and any defects. Browser UA fixtures do not certify this. Retain TICKET-114's full installation suite; unresolved results block both guest releases.
+
 - [ ] TICKET-109: resolve and remeasure /dev/invitation mobile performance (integrated production runs90/92/90; accessibility100 and CLS0 each). Preserve docs/reviews/TICKET-109/integrated-performance-{1,2,3}.json and the95 release target. Verify real Android/Chrome install eligibility, explicit native prompt, dismissal and standalone launch, plus WhatsApp behavior; record build/device/browser versions and evidence. TICKET-114 retains the full PWA installation suite.
 
 - [ ] TICKET-104: install from the HTTPS release candidate on physical iOS and Android; capture the generated UA home-screen icon (not a page screenshot), maskable bounds and supported startup artwork. Record device/OS/browser, build, active theme, screenshots and actual results. Test every shipped preset; link and retest any defects. Reuse this evidence in TICKET-114's full PWA installation suite. This requirement blocks both guest releases even while preview delivery proceeds.
@@ -67,6 +69,8 @@ Claiming untested checks pass, weakening thresholds, changing TICKET-015's pause
 - docs/reviews/, affected feature components and e2e tests; keep code repairs scoped or split them.
 
 ## Notes / decisions
+
+- 2026-11-01: Retained110's physical iPhone/WhatsApp requirement here under the owner's existing preview delivery exception. The manual check remains unchecked; no release dependency or performance requirement is removed.
 
 - 2026-11-01: TICKET-109 preview delivery uses the owner's standing device/performance-QA separation approval. Below-target measurements and native installation remain unverified release requirements; neither release dependency changes.
 
