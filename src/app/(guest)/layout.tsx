@@ -1,9 +1,15 @@
+import { cacheLife } from "next/cache";
+import { getEventSettings } from "@/modules/shared/server/settings";
 import { getStoredActiveThemes } from "@/modules/theming/server/active-themes";
 import { ThemePattern } from "@/modules/theming/components/theme-pattern";
 import { clientEnv } from "@/modules/shared/lib/env/client";
 import { invitationPreviewMetadata } from "@/modules/invitations/lib/share-metadata";
 
-export const metadata = invitationPreviewMetadata(clientEnv.NEXT_PUBLIC_SITE_URL);
+export async function generateMetadata() {
+  "use cache";
+  cacheLife({ stale: 300, revalidate: 30, expire: 300 });
+  return invitationPreviewMetadata(clientEnv.NEXT_PUBLIC_SITE_URL, await getEventSettings());
+}
 
 /** Layout for guest-facing pages (invitation, RSVP, table ordering). */
 export default async function GuestLayout({ children }: LayoutProps<"/">) {

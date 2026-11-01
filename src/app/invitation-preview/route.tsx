@@ -1,3 +1,4 @@
+import { getEventSettings } from "@/modules/shared/server/settings";
 import { z } from "zod";
 import { getTheme, listThemes } from "@/modules/theming";
 import { getStoredActiveThemes } from "@/modules/theming/server/active-themes";
@@ -14,5 +15,5 @@ export async function GET(request: Request) {
     if (!parsed.success) return new Response("Unknown theme", { status: 400 });
   }
   const theme = requestedTheme ? getTheme(requestedTheme) : (await getStoredActiveThemes()).light;
-  return renderInvitationPreview(theme);
+  return renderInvitationPreview(theme, await getEventSettings());
 }

@@ -9,13 +9,13 @@ import { eventSummary } from "@/modules/invitations/lib/event-summary";
 export const instant = false;
 export async function generateMetadata(): Promise<Metadata> {
   await connection();
-  const { title, description } = eventSummary(await getEventSettings());
-  const preview = invitationPreviewMetadata(clientEnv.NEXT_PUBLIC_SITE_URL);
+  const settings = await getEventSettings();
+  const { title, description } = eventSummary(settings);
+  const preview = invitationPreviewMetadata(clientEnv.NEXT_PUBLIC_SITE_URL, settings);
   return {
     ...preview,
     title,
     description,
-    openGraph: { ...preview.openGraph, title, description },
   };
 }
 export default async function HomePage() {

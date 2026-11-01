@@ -22,3 +22,27 @@ describe("public invitation previews", () => {
     expect(result.openGraph).not.toHaveProperty("url");
   });
 });
+
+it("uses saved public event details for both social cards without serializing extra fields", () => {
+  const saved = {
+    coupleNames: ["Nneka", "Chidi"] as const,
+    eventDate: "2027-01-02",
+    guestName: "Private Guest",
+    token: "private-token",
+  };
+  const result = invitationPreviewMetadata("https://wedding.example/i/private-token", saved);
+  for (const card of [result.openGraph, result.twitter]) {
+    expect(card).toMatchObject({
+      title: "Nneka & Chidi · 2 January 2027",
+      description: "Two stories. One ending: forever.",
+    });
+  }
+  expect(result.openGraph).toMatchObject({
+    images: [
+      {
+        alt: "Nneka and Chidi's wedding invitation, with an illustrative wedding-couple photograph.",
+      },
+    ],
+  });
+  expect(JSON.stringify(result)).not.toMatch(/Uchenna|Adaora|Private Guest|private-token/);
+});
