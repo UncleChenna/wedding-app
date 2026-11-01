@@ -14,3 +14,13 @@ Managed wt:new terminal failure99607 occurred after dependency install and skill
 Existing code:shared/server/env.ts imports server-only; runtime-agnostic shared/lib/env/schema.ts only validates DATABASE_URL plus public client settings. checkin/server/signing.ts owns separate key validation with Ed25519/retired public-key rules. ESLint currently has no secrets client-boundary rule. Need inventory all env reads and inspect ADR0021 before choosing enforcement.
 
 Next: read remaining current rules/learnings/security PRD, inventory source env names (never values), write failing enforcement tests and implement within ticket scope. Complete sanitized local config diagnosis before full verification. No acceptance criteria checked and no tests yet run for125.
+
+## Enforcement implementation — 2026-11-01
+
+Added scripts/eslint/environment-boundary.mjs and enabled it in existing source lint. Private env reads require server-only poisoning; explicit instrumentation bootstrap is allowed. Approved public variables/NODE_ENV and shared logger LOG_LEVEL remain usable. Aliased process/env, direct/computed secret reads, process imports and public secret names have negative coverage. parseClientEnv rejects any unapproved NEXT_PUBLIC name without printing values. docs/security.md inventories current credentials and future integration prerequisites, with rotation guidance and operational limits; architecture links it.
+
+Evidence: initial secrets-red.log14 failed/4 passed; extended secrets-additional-red.log3 failed/22 passed; secrets-additional-green.log25 pass. quick.log passes lint/types/related tests. Full verification live session38636, log artifacts/TICKET-125/verify.log:597 unit cases pass/26 skipped, build passed, browser smoke ongoing. Poll exact handle; do not restart because output is redirected.
+
+Setup diagnosis resolved: primary checkout's old worktree generator omitted templates. Current TICKET-125 already includes merged TICKET-208 copySupabaseTemplates. After verification exits, run AGENT_OWNER=divine pnpm wt:new TICKET-125 from THIS updated worktree; it resumes existing state and copies the missing supabase/templates/admin-code.html using the approved generator. Do not hand-edit .harness or repeat the old primary setup. No new harness ticket is needed. No live rotation or provider changes performed.
+
+PR:https://github.com/UncleChenna/wedding-app/pull/71 remains draft. Acceptance not yet checked pending final verification and review. Next: poll verification, resume managed setup, inspect all checks, update PR/ticket evidence and use t:pr. Real operational rotations and device QA are not certified.

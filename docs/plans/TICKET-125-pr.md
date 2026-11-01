@@ -1,27 +1,47 @@
 # Ticket
 
-TICKET-125
+TICKET-125 — Document and enforce secrets handling and key rotation.
 
 # Summary
 
-Draft for server-side secrets enforcement and rotation documentation. Existing server-only environment access does not yet establish the ticket's complete client-exposure checks.
+Application lint previously accepted direct, computed and aliased private environment access in browser-capable modules. Startup validation also silently ignored new NEXT_PUBLIC names. This change rejects those paths and documents rotation procedures without changing live credentials.
 
-# Planned changes
+# Changes
 
-Inventory secret variables, add negative/positive enforcement tests, implement scoped validation/lint boundaries, and document routine and compromise rotation for each secret.
+- Add an ESLint environment-boundary rule to the existing lint gate. Private reads require server-only poisoning; instrumentation is the explicit bootstrap exception. Client directives cannot inherit that exception.
+- Allow the three approved public settings, NODE_ENV and the shared logger's non-secret LOG_LEVEL access. Reject process/env aliases, process imports and unapproved public names.
+- Reject unexpected NEXT_PUBLIC configuration at startup, reporting names without values.
+- Add positive/negative tests against the actual ESLint configuration and environment parser.
+- Add docs/security.md covering database, gate signing, public verification keys, provider credentials, access ownership, routine/compromise rotation, offline scanner revocation limits and rollback. Link it from architecture.
 
-# Acceptance and verification
+# Acceptance and evidence
 
-Both acceptance criteria remain incomplete. No implementation tests have run yet. The branch is isolated from develop02c992376250d39ffc1a96a7e80a5860f3641f45. Dependency installation succeeded; local Supabase startup currently fails before containers start with configuration-related output. Static work can proceed.
+- Client secret access: focused tests pass for direct/computed reads, aliases, imports, server-only misuse and secret public names. Existing Next server-only poisoning remains active for transitive client imports.
+- Rotation documentation: current credential inventory and procedures are recorded. WhatsApp Cloud API/service credentials are not consumed by this app; future integration must add its server schema and provider-specific operational verification.
+- Final acceptance remains unchecked until full verification finishes.
+
+# Verification
+
+Base develop:02c992376250d39ffc1a96a7e80a5860f3641f45.
+
+- Initial baseline:14 negative cases failed;4 permitted reads passed.
+- Extended baseline:3 additional gaps reproduced.
+- Focused final suite:25 cases pass.
+- Quick verification:lint,types and related unit tests pass.
+- Full verification:597 unit cases pass,26 skipped; production build passes; browser smoke remains running. Skips are not certified.
+
+Managed database setup initially failed because the old primary-checkout generator omitted admin-code.html. The updated generator already contains TICKET-208's fix; setup will be resumed using that version after browser verification exits. No generated file is edited manually and no other stack is changed.
 
 # Risks and rollout
 
-No live credentials will be rotated and no secret values will be committed or printed. No migration, new service, RLS or CI change is planned. Preserve public publishable/verification keys and existing signing key overlap. Final rollback guidance will reflect actual implementation.
+No dependency, CI, migration, RLS or real secret changes. Adding a legitimate public variable now requires updating the schema, lint allowlist, example and tests together. These controls prevent common accidental exposure; they do not scan literal secrets or prove server responses never serialize private values. Real provider rotations, deployment grants and offline scanner refresh require authorized operational rehearsal.
 
-# Screenshots
+Rollback: revert this ticket's source/config/docs; no database conversion is needed. Never restore a compromised credential as a code rollback.
 
-N/A: security enforcement and documentation, no UI change.
+# Screenshots and UI checklist
 
-# Remaining work
+N/A: no rendered UI, tokens, motion or QR output changes.
 
-Implementation, negative tests, rotation documentation, full verification and final review evidence. See docs/plans/2026-11-01-TICKET-125.md and docs/handoffs/TICKET-125.md.
+# Remaining
+
+Finish full verification, resume managed setup, record final results, and move the draft through the normal ticket PR gate. No real credential rotation has been performed.
