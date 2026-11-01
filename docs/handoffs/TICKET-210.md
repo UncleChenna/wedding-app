@@ -1,11 +1,11 @@
 # TICKET-210 handoff — 1 November 2026
 
-Owner divine; agent codex; branch TICKET-210; ledger status **in_review**.
+Owner divine; agent codex; branch TICKET-210; ledger status **done**.
 PR: https://github.com/UncleChenna/wedding-app/pull/67
 Worktree: .worktrees/TICKET-210. Base: c9edef6cb137a194f9c215fc5b61b08488a54aa0.
 Project wedding-154df1d979db; app port29070; browser port29071.
 
-## Current checkpoint
+## Review checkpoint (before completion)
 
 The final implementation is f6c22c06c5808fb8371a34bd1871378f364447a5. Its local and Linux gates pass. Evidence commit5d35904 was verified again by the normal t:pr command, which pushed status commit61e1e74 and recorded PR67 in ticket metadata. All acceptance criteria are ticked. The PR was still draft immediately after t:pr; mark it ready after publishing this handoff, then require final-head checks before integration.
 
@@ -41,10 +41,20 @@ The latest reply “merge the ticket and continue” answered the unchanged209-d
 
 Physical iOS/Android and WhatsApp checks are NOT verified. The existing TICKET-201 preview exception permits preview delivery while preserving the mandatory guest-release gate. No threshold, timeout, retry, hook or assertion was loosened.
 
-## Next action
+## Planned integration steps (completed below)
 
 Publish this handoff, mark PR67 ready, and verify all required checks on the exact final head. Merge only that verified head under the standing authorization, then close through the ticket CLI. Retain completion evidence and stop the owned database with backup preservation when finished; do not discard dirty or unmerged worktree metadata.
 
 After210 integrates, resume104 first: explicitly update its base from fetched develop, preserve canonical209/210 definitions when resolving any add/add conflict, and rerun its own verification. Then revisit blocked109/110. Do not call their older failed runs passing.
 
 Use process-scoped caffeinate -is for verification: maintenance sleep was independently confirmed to cause15-minute browser stalls in earlier work. Do not change global power settings or test timeouts.
+
+## Completion — 1 November 2026, 07:12 UTC
+
+Final head2793cc94621103a6c0f110c94cecb237beb22848 passed all four CI jobs in run41283052701. GitHub reported no configured required-check metadata; every reported CI job was checked explicitly. The optional review workflow was skipped by existing configuration. Develop remainedc9edef6cb137a194f9c215fc5b61b08488a54aa0 until integration.
+
+PR67 was squash-merged into develop as4463a2ed2d13c751e6b9e31858775a15c7bd097a using an exact-head match. The ticket CLI confirmed the merged PR and marked210 done; completion commitea2d92a was pushed. GitHub had automatically deleted the source branch on merge; the CLI recreated it to preserve the completion record.
+
+The isolated database wedding-154df1d979db is stopped with backup:true. All owned application/browser/verification processes and the temporary caffeinate monitor are stopped. Keep this clean worktree as the archive of the failed and passing traces and post-merge completion metadata; do not discard it merely to tidy the worktree list.
+
+Next active work: update and reverify104 against4463a2e, preserving its outstanding physical-installation criterion and the release gates.109/110 also retain their failed historical evidence until individually reverified. No physical-device check was certified by210.
