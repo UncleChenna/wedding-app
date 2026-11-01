@@ -51,5 +51,16 @@ export function parseServerEnv(source: Record<string, string | undefined>): Serv
 }
 
 export function parseClientEnv(source: Record<string, string | undefined>): ClientEnv {
+  const approved = new Set(Object.keys(clientEnvSchema.shape));
+  const unexpected = Object.keys(source).filter(
+    (key) => key.startsWith("NEXT_PUBLIC_") && !approved.has(key),
+  );
+  if (unexpected.length) {
+    throw new EnvError(
+      "Unapproved public environment variable names: " +
+        unexpected.join(", ") +
+        ". Public values are bundled for browsers; keep secrets server-only.",
+    );
+  }
   return parseOrThrow(clientEnvSchema, source, "client");
 }

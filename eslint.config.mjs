@@ -2,6 +2,7 @@ import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
 import prettier from "eslint-config-prettier/flat";
+import { environmentBoundary } from "./scripts/eslint/environment-boundary.mjs";
 
 // Colours must come from theme tokens (CSS custom properties), never literals.
 const COLOUR_LITERAL = "/(#[0-9a-fA-F]{3,8}\\b|\\b(rgba?|hsla?|oklch|oklab)\\()/";
@@ -22,8 +23,10 @@ export default defineConfig([
   },
   {
     files: ["src/**/*.{ts,tsx}"],
+    plugins: { secrets: { rules: { "environment-boundary": environmentBoundary } } },
     ignores: ["src/**/__tests__/**"],
     rules: {
+      "secrets/environment-boundary": "error",
       "no-restricted-syntax": [
         "error",
         {
