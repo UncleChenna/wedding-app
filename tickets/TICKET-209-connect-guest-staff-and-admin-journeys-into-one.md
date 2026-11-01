@@ -87,17 +87,17 @@ fails when a route becomes orphaned. The full journey map and build order are in
 
 ## Acceptance criteria
 
-- [ ] `docs/journeys.md` lists every role, entry point, route, next step and owning ticket; `AGENTS.md` and `docs/architecture.md` link to it.
-- [ ] `src/modules/shared/lib/routes.ts` is the single route source; a unit test fails if a non-dev `page.tsx` under `src/app` is missing from it.
-- [ ] `/` and its metadata render couple names, date and known venue details from event settings; a grep finds no hard-coded couple names in `src/app`.
-- [ ] `/i/[token]` shows the correct next step for yes, no and unanswered, before and on the event date; a component test covers every state.
-- [ ] `/staff` links to `/checkin`, `/kitchen` and `/bar`, every staff page links back, and staff text is at least 18px with station titles at least 32px.
-- [ ] `/admin` is a hub listing every admin area; a signed-in admin sees Sign out but not Sign in, and sharing is reachable without `/dev`.
-- [ ] No production page is a dead end: each has a primary next step or a link back to its hub.
-- [ ] The orphan-route Playwright spec passes, and fails when one registered route is unlinked in a test fixture.
+- [x] `docs/journeys.md` lists every role, entry point, route, next step and owning ticket; `AGENTS.md` and `docs/architecture.md` link to it.
+- [x] `src/modules/shared/lib/routes.ts` is the single route source; a unit test fails if a non-dev `page.tsx` under `src/app` is missing from it.
+- [x] `/` and its metadata render couple names, date and known venue details from event settings; a grep finds no hard-coded couple names in `src/app`.
+- [x] `/i/[token]` shows the correct next step for yes, no and unanswered, before and on the event date; a component test covers every state.
+- [x] `/staff` links to `/checkin`, `/kitchen` and `/bar`, every staff page links back, and staff text is at least 18px with station titles at least 32px.
+- [x] `/admin` is a hub listing every admin area; a signed-in admin sees Sign out but not Sign in, and sharing is reachable without `/dev`.
+- [x] No production page is a dead end: each has a primary next step or a link back to its hub.
+- [x] The orphan-route Playwright spec passes, and fails when one registered route is unlinked in a test fixture.
 - [x] `/dev` returns 404 in a production build.
 - [ ] The UI checklist passes on every changed route in all four themes at 375, 768 and 1280px, with screenshots in `docs/reviews/TICKET-209/`.
-- [ ] `pnpm verify` passes.
+- [x] `pnpm verify` passes.
 
 ## Test plan
 
@@ -132,6 +132,8 @@ fails when a route becomes orphaned. The full journey map and build order are in
 - `e2e/journeys.spec.ts`
 
 ## Notes / decisions
+
+- 2026-11-01: Private invitation Lighthouse99/100/100, accessibility100 throughout, CLS0 throughout; synthetic fixture cleaned. All six before/day-of RSVP component cases pass. Functional acceptance is verified; UI completion remains open for exact-zero cold-font shifts and remaining review gates.
 
 - 2026-11-01: Local services recovered; authenticated journey and full verification passed. Final admin refinement passes its unit/build and13 browser cases. RSVP/staff/admin screenshots inspected; public/auth review is ongoing. Lighthouse reveals home performance90 and nonzero home/guide CLS; these remain unresolved. PR68 stays draft. See handoff and REVIEW.md for precise evidence.
 

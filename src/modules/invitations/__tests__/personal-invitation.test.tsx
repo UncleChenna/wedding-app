@@ -33,19 +33,26 @@ it.each([
     expect(screen.queryByRole("link", { name: "Order to your table" })).toBeNull();
   },
 );
-it("offers ordering on the venue's wedding day", () => {
-  render(
-    <PersonalInvitation
-      invitation={{ attendance: "yes", primaryNames: ["Guest"], householdName: null }}
-      token="test"
-      repliesOpen
-      details={{ ...defaultEventSettings, timeZone: "Africa/Lagos" }}
-      now={new Date("2026-12-18T23:00:00Z")}
-    />,
-  );
-  expect(screen.getByRole("link", { name: "Order to your table" })).toHaveAttribute(
-    "href",
-    "/order",
-  );
-  expect(screen.getByText(/Your pass will be available here/)).toBeVisible();
-});
+it.each(["yes", "no", null] as const)(
+  "offers ordering on the venue's wedding day for %s",
+  (attendance) => {
+    render(
+      <PersonalInvitation
+        invitation={{ attendance, primaryNames: ["Guest"], householdName: null }}
+        token="test"
+        repliesOpen
+        details={{ ...defaultEventSettings, timeZone: "Africa/Lagos" }}
+        now={new Date("2026-12-18T23:00:00Z")}
+      />,
+    );
+    expect(screen.getByRole("link", { name: "Order to your table" })).toHaveAttribute(
+      "href",
+      "/order",
+    );
+    if (attendance === "yes")
+      expect(screen.getByText(/Your pass will be available here/)).toBeVisible();
+    if (attendance === "no")
+      expect(screen.getByRole("heading", { name: "We’ll miss you" })).toBeVisible();
+    expect(screen.getByRole("form", { name: "Your reply" })).toBeVisible();
+  },
+);
