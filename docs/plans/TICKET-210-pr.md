@@ -1,38 +1,27 @@
-# Ticket
+# TICKET-210: Stabilise invitation text during font loading
 
-TICKET-210 — Eliminate invitation font-swap shifts after integration
+Centred name text moved horizontally when fallback glyphs were replaced by the chosen display font, despite unchanged block bounds. Preview theme links also moved because their positions depended on changing text widths.
 
-# Summary
+## Changes
 
-This initial draft deliberately preserves the merged develop implementation to establish whether its envelope/font combination already produces the layout shift reported by PRs64,65 and66. No fix is claimed.
+- Keep the names in a centred maximum18rem column with a stable left text origin; retain fonts, fluid sizing, wrapping, wording and envelope motion.
+- Reserve14rem for each preview theme link so loading a font cannot reposition adjacent links.
+- Add delayed-font regressions across all four themes and375/768/1280: require loading state, stable name/link origins and exact zero CLS.
+- Expand existing first-visit, replay, return and keyboard assertions to all three widths.
+- Include the unchanged TICKET-209 definition solely for contiguous-ID validation, under the approved exception. No209 implementation is included.
 
-# Changes
+## Evidence
 
-- Published the regression ticket and its acceptance criteria.
-- Carried only the unchanged209 definition required by contiguous-ID validation, under the user's exception; no209 implementation is included.
-- Recorded the baseline comparison plan and handoff.
-- No changes to src, e2e, dependencies, Next configuration or CI configuration at this checkpoint.
+Baseline develop c9edef6cb137a194f9c215fc5b61b08488a54aa0 and the existing TICKET-104 build produce identical results across twelve controlled theme/width pairs. Raw geometry, resource timing and shift entries are in docs/reviews/TICKET-210/font-comparison.json.
 
-# Acceptance criteria and evidence
+Unchanged-baseline head5857b5750a48584392892bce2df7d3fc115b94f9 failed CI41279198910 with exactly the same Adaora CLS0.0001711703703703704 in both dark themes, including retries:573passed,135skipped,2failed. This establishes that the regression already exists in develop.
 
-All criteria remain incomplete. Existing Linux CI on this exact baseline is the first controlled observation. Earlier runs report Adaora as the source and CLS0.0001711703703703704 in dark Playfair themes.
+The initial new regression failed12/12 before implementation. Candidate focused suite passed62 checks. Full local verification passed514 unit tests (26skipped) and599 browser tests (135skipped), including the strengthened loading-state/zero-CLS checks. The final expanded replay/keyboard width matrix is being checked separately; final-head Linux CI and Lighthouse remain pending.
 
-# Verification
+## Review
 
-Ticket validation passes with210 definitions. Pre-commit quick verification passes. Local and hosted baseline results are pending. The zero-CLS assertions remain unchanged.
+Read docs/reviews/TICKET-210/README.md and its twelve all-theme/width screenshots. Visit /dev/invitation/letter?theme=ivory-gold, then the other themes. Throttle fonts, replay the envelope, navigate to the reply section using the keyboard and check reduced motion.
 
-# Risks and rollout
+This is still a draft: performance, final-head CI and physical-device requirements are not certified. Existing release gates remain mandatory. No test threshold, timeout, retry, hook or assertion was weakened.
 
-Investigation only; do not merge this draft. No migration or deploy change. The original feature PRs remain blocked. No device or performance limitation is waived.
-
-# Screenshots and UI checklist
-
-No UI implementation change yet; screenshots and delayed-font evidence will follow diagnosis. No completion or UI approval is claimed.
-
-# Next steps
-
-Compare develop c9edef6cb137a194f9c215fc5b61b08488a54aa0 against PR104 under controlled font timing; prove causality, add a failing regression and repair the actual cause.
-
-# Harness changes
-
-None.
+No schema, dependency, account or data changes. Revert the layout/test commit to roll back; this restores the original font-origin instability.
