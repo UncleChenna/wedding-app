@@ -2,20 +2,20 @@
 id: TICKET-110
 title: Add an iOS Add to Home Screen guide
 epic: pwa
-status: todo
+status: in_progress
 priority: medium
 estimate: S
 labels: [pwa, frontend]
 module: shared
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-103]
 blocks: [TICKET-113]
-branch: ""
+branch: TICKET-110
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-01
+started: 2026-11-01
 completed: ""
 reason: ""
 resume_to: ""
@@ -60,3 +60,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-01 — todo → claimed — divine (codex)
+- 2026-11-01 — todo → in_progress — divine (codex)
