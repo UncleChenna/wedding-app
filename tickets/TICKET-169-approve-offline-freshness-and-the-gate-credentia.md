@@ -53,6 +53,26 @@ Backlog audit coverage: CHK-6, INV-2, INV-7. See [PRD](../docs/prd.md) and [audi
 ## Notes / decisions
 
 - 2026-10-21 — Added by HARNESS-002. All criteria describe future work; no completion or human approval is implied.
+- 2026-11-01 — Proposal drafted in [ADR 0020](../docs/decisions/0020-gate-pass-credential.md). Nothing is approved yet. The owner approves or changes each row below, then the ADR moves to Accepted and the PRD journey wording is amended.
+
+### Decision table (owner approval pending)
+
+| #   | Case                                       | Proposed result                                                                                      | Owner decision |
+| --- | ------------------------------------------ | ---------------------------------------------------------------------------------------------------- | -------------- |
+| 1   | What the QR encodes                        | Read-only `/p/<signed-pass>`. `/i/<token>` stays the only RSVP editor and is never put in a QR.      | pending        |
+| 2   | Fresh snapshot, valid pass, seats left     | Green: name, party size, table. Staff admit a count.                                                 | pending        |
+| 3   | Stale snapshot (no refresh for 30 min)     | Scanning continues. An amber banner shows "Guest list last updated N min ago". Green results add the age line. | pending        |
+| 4   | Snapshot refresh interval                  | Every 5 minutes while online, and immediately after a revocation, reissue or admission.              | pending        |
+| 5   | Revoked after the device's last refresh    | Shows green on that device until it refreshes. This is an accepted, trained limitation.               | pending        |
+| 6   | Reissued pass (old `token_version`)        | Red, "Replaced pass". Staff ask for the new pass.                                                    | pending        |
+| 7   | Party size changed after the pass was sent | The pass stays valid. The allowance comes from the snapshot, and no reissue is needed.               | pending        |
+| 8   | Valid signature, not in the snapshot       | Amber, "Not on this device's list yet". Staff admit after a name check, and the entry is flagged on sync. | pending        |
+| 9   | Device and session expiry                  | 06:00 the day after the event (venue time zone). The snapshot is wiped, and unsynced events are kept until uploaded. | pending        |
+| 10  | Lost or stolen device                      | Admin revokes the device. No key rotation is needed (it holds the public key only). The snapshot holds no phone numbers, emails or dietary notes. | pending        |
+| 11  | Clock skew                                 | Reject passes issued more than 10 minutes in the future. Store device time and server receive time separately. | pending        |
+| 12  | Two offline scanners admit the same seats  | The server accepts both admissions, flags a double entry for the admin scan log, and staff escalate rather than challenge. | pending        |
+
+Owner: \_\_\_\_ · Decision date: \_\_\_\_
 
 ## Activity log
 
