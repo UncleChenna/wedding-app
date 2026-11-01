@@ -1208,13 +1208,14 @@
         "- 2026-10-31 — todo → claimed — divine (codex)",
         "- 2026-10-31 — todo → in_progress — divine (codex)",
         "- 2026-11-01 — in_progress → blocked — divine (codex) — Draft PR65: hosted CI fails envelope zero-CLS checks in Midnight and Emerald; invitation performance86/91/92 is below95 and native device checks remain unverified. Preserve failing evidence; fix shared font regression before review.",
-        "- 2026-11-01 — blocked → in_progress — divine (codex) — Resume after merged font fix and icon assets; verify integration and retain physical-device release gates"
+        "- 2026-11-01 — blocked → in_progress — divine (codex) — Resume after merged font fix and icon assets; verify integration and retain physical-device release gates",
+        "- 2026-11-01 — in_progress → in_review — divine (codex)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-109",
-      "pr": "",
+      "pr": "https://github.com/UncleChenna/wedding-app/pull/65",
       "started": "2026-10-31",
       "completed": "",
       "updated": "2026-11-01",
