@@ -1,3 +1,4 @@
+import { InstallPrompt } from "@/modules/shared/components/install-prompt";
 import { IosInstallGuide } from "@/modules/shared/components/ios-install-guide";
 import {
   ActionBar,
@@ -247,6 +248,7 @@ export function ThemeShowcase({ theme, active }: { theme: Theme; active: boolean
             </ActionBar>
           </div>
 
+          <InstallPrompt />
           <IosInstallGuide />
           <MotionShowcase />
 

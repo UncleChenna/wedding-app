@@ -14,7 +14,13 @@ describe("wedding manifest", () => {
       display: "standalone",
       lang: "en",
     });
-    expect(manifest.icons).toBeUndefined();
+    expect(manifest.icons).toHaveLength(4);
+    expect(manifest.icons).toContainEqual({
+      src: "/icons/ivory-gold/maskable-512.png",
+      sizes: "512x512",
+      type: "image/png",
+      purpose: "maskable",
+    });
   });
   it("changes theme colours without changing app identity or launch target", () => {
     const first = buildWeddingManifest(["Uchenna", "Adaora"], getTheme("ivory-gold"));
