@@ -46,3 +46,5 @@ Elevated full unit run41660 exited0:597 passed,26 skipped. Static loading fixes 
 ## Additional boundary review — 2026-11-01
 
 Review reproduced three bypasses: globalThis.process assigned to an alias, type-only server-only import, and dynamic node:process import. Regression baseline import-gaps-red.log:3 failed/20 passed. The rule now rejects those accesses and requires a runtime marker. Focused import-gaps-green.log:28 passed including env validation. The earlier PR gate34087 still tests commitb06b3e6; its results do not certify these subsequent changes. Re-run the full normal PR gate after committing this correction.
+
+The stale PR gate34087 was deliberately stopped (exit143) after the corrected rule was prepared: the CLI captures HEAD after verification, so permitting it to finish could associate old evidence with new code. No failure was suppressed or counted as success. Correction91404f2 passed normal commit hooks. Run the entire gate afresh on the corrected commit; do not edit while it runs. Proposed separate harness follow-up: capture HEAD and a clean worktree before verify, then refuse review if either changes before publication.
