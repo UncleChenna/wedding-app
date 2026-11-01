@@ -2,7 +2,7 @@
 id: TICKET-110
 title: Add an iOS Add to Home Screen guide
 epic: pwa
-status: blocked
+status: in_progress
 priority: medium
 estimate: S
 labels: [pwa, frontend]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-11-01
 started: 2026-11-01
 completed: ""
-reason: "Draft PR66: local full gate has six invitation focus failures (isolated rerun passes); CI41270521817 fails Emerald Night envelope zero-CLS; real iPhone/WhatsApp manual criterion remains unverified. Keep assertions and release gates intact."
-resume_to: in_progress
+reason: ""
+resume_to: ""
 ---
 
 # TICKET-110: Add an iOS Add to Home Screen guide
@@ -63,3 +63,4 @@ See: [Design principles](../docs/prd.md#design-principles).
 - 2026-11-01 — todo → claimed — divine (codex)
 - 2026-11-01 — todo → in_progress — divine (codex)
 - 2026-11-01 — in_progress → blocked — divine (codex) — Draft PR66: local full gate has six invitation focus failures (isolated rerun passes); CI41270521817 fails Emerald Night envelope zero-CLS; real iPhone/WhatsApp manual criterion remains unverified. Keep assertions and release gates intact.
+- 2026-11-01 — blocked → in_progress — divine (codex) — Resume after verified font and Android-install merges; preserve both controls and validate combined UI
