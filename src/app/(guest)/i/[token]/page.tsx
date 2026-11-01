@@ -1,3 +1,4 @@
+import { eventSummary } from "@/modules/invitations/lib/event-summary";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { connection } from "next/server";
@@ -10,12 +11,16 @@ import { PersonalInvitation } from "@/modules/invitations/components/personal-in
 // This private route intentionally waits for authorization and data rather than streaming a JS-revealed shell.
 export const instant = false;
 
-export const metadata: Metadata = {
-  title: "Your invitation",
-  description: "Celebrate with Uchenna and Adaora.",
-  robots: { index: false, follow: false },
-  openGraph: { title: "Your invitation", description: "Celebrate with Uchenna and Adaora." },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  await connection();
+  const { description } = eventSummary(await getEventSettings());
+  return {
+    title: "Your invitation",
+    description,
+    robots: { index: false, follow: false },
+    openGraph: { title: "Your invitation", description },
+  };
+}
 
 async function Invitation({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params;

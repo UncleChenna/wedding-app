@@ -5,6 +5,7 @@ import { z } from "zod";
 import { Divider } from "@/modules/shared/components/ui/decorations";
 import type { EventSettings } from "@/modules/shared/lib/event-settings";
 import { invitationSiteCopy } from "../lib/copy";
+import { eventDateLabel, ceremonyLabel } from "../lib/event-summary";
 import { Envelope } from "./envelope";
 
 export type InvitationEventDetails = Readonly<
@@ -14,24 +15,6 @@ export type InvitationEventDetails = Readonly<
 const safeMap = z.url({ protocol: /^https$/ });
 const linkStyle =
   "inline-flex min-h-11 min-w-11 items-center py-2 text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring";
-
-/** A date-only event never shifts to yesterday in a visitor's time zone. */
-function eventDateLabel(value: string) {
-  return new Intl.DateTimeFormat("en-GB", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-    timeZone: "UTC",
-  }).format(new Date(value + "T12:00:00Z"));
-}
-
-function ceremonyLabel(value: string | null, timeZone: string | null) {
-  if (!value) return "Time to follow";
-  const hour = Number(value.slice(0, 2));
-  const time = `${hour % 12 || 12}:${value.slice(3, 5)} ${hour < 12 ? "am" : "pm"}`;
-  return timeZone ? `${time} · ${timeZone}` : `${time} · time zone to follow`;
-}
 
 /** Pass navigation is rendered only alongside actual pass content supplied by its owner. */
 export function InvitationLetter({

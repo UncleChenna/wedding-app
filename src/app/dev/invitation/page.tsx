@@ -1,3 +1,5 @@
+import { defaultEventSettings } from "@/modules/shared/lib/event-settings";
+import { eventDateLabel } from "@/modules/invitations/lib/event-summary";
 import { appRoutes } from "@/modules/shared/lib/routes";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -36,8 +38,8 @@ async function ThemedInvitation({ searchParams }: { searchParams: Promise<{ them
       </nav>
       <InvitationView
         details={{
-          names: ["Uchenna", "Adaora"],
-          date: "Saturday, 19 December 2026",
+          names: defaultEventSettings.coupleNames,
+          date: eventDateLabel(defaultEventSettings.eventDate),
           time: "Time to follow",
           venue: "Sample Garden",
           address: "London — sample location",
