@@ -2,7 +2,7 @@
 id: TICKET-125
 title: Document and enforce secrets handling and key rotation
 epic: security
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [security, docs]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/71
 created: 2026-10-21
 updated: 2026-11-01
 started: 2026-11-01
-completed: ""
+completed: 2026-11-01
 reason: ""
 resume_to: ""
 ---
@@ -68,3 +68,4 @@ _Agents append dated notes here while working._
 - 2026-11-01 — todo → claimed — divine (codex)
 - 2026-11-01 — todo → in_progress — divine (codex)
 - 2026-11-01 — in_progress → in_review — divine (codex)
+- 2026-11-01 — in_review → done — divine (codex)
