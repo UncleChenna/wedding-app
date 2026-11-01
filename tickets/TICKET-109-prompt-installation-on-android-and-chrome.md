@@ -2,7 +2,7 @@
 id: TICKET-109
 title: Prompt installation on Android and Chrome
 epic: pwa
-status: in_progress
+status: blocked
 priority: medium
 estimate: M
 labels: [pwa, frontend]
@@ -14,11 +14,11 @@ blocks: [TICKET-113]
 branch: TICKET-109
 pr: ""
 created: 2026-10-21
-updated: 2026-10-31
+updated: 2026-11-01
 started: 2026-10-31
 completed: ""
-reason: ""
-resume_to: ""
+reason: "Draft PR65: hosted CI fails envelope zero-CLS checks in Midnight and Emerald; invitation performance86/91/92 is below95 and native device checks remain unverified. Preserve failing evidence; fix shared font regression before review."
+resume_to: in_progress
 ---
 
 # TICKET-109: Prompt installation on Android and Chrome
@@ -61,3 +61,4 @@ See: [Design principles](../docs/prd.md#design-principles).
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-10-31 — todo → claimed — divine (codex)
 - 2026-10-31 — todo → in_progress — divine (codex)
+- 2026-11-01 — in_progress → blocked — divine (codex) — Draft PR65: hosted CI fails envelope zero-CLS checks in Midnight and Emerald; invitation performance86/91/92 is below95 and native device checks remain unverified. Preserve failing evidence; fix shared font regression before review.
