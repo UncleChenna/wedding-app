@@ -1187,18 +1187,19 @@
       "log": [
         "- 2026-10-31 — todo → claimed — divine (codex)",
         "- 2026-10-31 — todo → in_progress — divine (codex)",
-        "- 2026-10-31 — in_progress → blocked — divine (codex) — Draft PR64: hosted envelope CLS failures require TICKET-210 diagnosis; physical installation unverified. Publishing210 waits for permission to carry unchanged209 definition required by contiguous-ID validation"
+        "- 2026-10-31 — in_progress → blocked — divine (codex) — Draft PR64: hosted envelope CLS failures require TICKET-210 diagnosis; physical installation unverified. Publishing210 waits for permission to carry unchanged209 definition required by contiguous-ID validation",
+        "- 2026-11-01 — blocked → in_progress — divine (codex) — Resume icon integration verification after TICKET-210 merged in PR67; physical install proof remains unverified"
       ],
-      "status": "blocked",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-104",
       "pr": "",
       "started": "2026-10-31",
       "completed": "",
-      "updated": "2026-10-31",
-      "reason": "Draft PR64: hosted envelope CLS failures require TICKET-210 diagnosis; physical installation unverified. Publishing210 waits for permission to carry unchanged209 definition required by contiguous-ID validation",
-      "resume_to": "in_progress"
+      "updated": "2026-11-01",
+      "reason": "",
+      "resume_to": ""
     },
     "WED-109": {
       "log": [
