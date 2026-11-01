@@ -2,20 +2,20 @@
 id: TICKET-125
 title: Document and enforce secrets handling and key rotation
 epic: security
-status: todo
+status: in_progress
 priority: urgent
 estimate: M
 labels: [security, docs]
 module: shared
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-029, TICKET-056]
 blocks: [TICKET-148]
-branch: ""
+branch: TICKET-125
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-01
+started: 2026-11-01
 completed: ""
 reason: ""
 resume_to: ""
@@ -61,3 +61,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-01 — todo → claimed — divine (codex)
+- 2026-11-01 — todo → in_progress — divine (codex)
