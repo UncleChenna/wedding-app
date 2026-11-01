@@ -1279,14 +1279,15 @@
     },
     "WED-169": {
       "log": [
-        "- 2026-11-01 — todo → claimed — unclechenna (claude)"
+        "- 2026-11-01 — todo → claimed — unclechenna (claude)",
+        "- 2026-11-01 — todo → in_progress — unclechenna (claude)"
       ],
-      "status": "todo",
+      "status": "in_progress",
       "owner": "unclechenna",
       "agent": "claude",
       "branch": "TICKET-169",
       "pr": "",
-      "started": "",
+      "started": "2026-11-01",
       "completed": "",
       "updated": "2026-11-01",
       "reason": "",
