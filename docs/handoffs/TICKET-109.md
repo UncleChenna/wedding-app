@@ -43,3 +43,11 @@ Current local full gate runs under caffeinate in exec session43085, logging arti
 Do not restart a job merely because observation expires. Poll those handles and inspect logs. Hosted CI on8f053f9 is also expected; inspect its actual state.
 Next: preserve full gate terminal result, remeasure production performance serially with unique output names (existing reports remain historical), and review integration before t:pr with explicit --owner divine --agent codex. Never overwrite earlier failed evidence.
 Physical installation/WhatsApp remains unverified in114/201. Existing preview delivery exception does not certify release readiness. Keep PR65 draft until automated checks and documented preview review are complete.
+
+## 2026-11-01 — integration verified, preview review prepared
+
+Local full gate43085 TERMINAL PASS:534unit/26skips;631browser/135skips. Hosted run41289827331 all four jobs PASS at2c3de64.
+Database startup36840 completed successfully. Serial performance46216 completed:90/92/90 Performance,100 Accessibility each,CLS0 each; below95 remains FAIL, not waved away. Copied raw reports to docs/reviews/TICKET-109/integrated-performance-{1,2,3}.json; earlier reports preserved.
+Updated review and PR describe preview approval under the owner's standing device/performance separation exception. Unowned todo201 now explicitly retains109's performance/native-device requirement and still blocks both releases. No ownership/status was manually edited.
+Production server32006 is running on24051; stop it before t:pr so the gate owns its server. Database remains ready for the publishing gate.
+Next: commit evidence, run t:pr with explicit --owner divine --agent codex, retain all failures if any, then require final-head CI before exact-head authorized merge. Physical checks remain unverified. No feature runtime or assertions changed after integration.

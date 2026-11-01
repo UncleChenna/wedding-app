@@ -42,6 +42,8 @@ Claiming untested checks pass, weakening thresholds, changing TICKET-015's pause
 
 ## Acceptance criteria
 
+- [ ] TICKET-109: resolve and remeasure /dev/invitation mobile performance (integrated production runs90/92/90; accessibility100 and CLS0 each). Preserve docs/reviews/TICKET-109/integrated-performance-{1,2,3}.json and the95 release target. Verify real Android/Chrome install eligibility, explicit native prompt, dismissal and standalone launch, plus WhatsApp behavior; record build/device/browser versions and evidence. TICKET-114 retains the full PWA installation suite.
+
 - [ ] TICKET-104: install from the HTTPS release candidate on physical iOS and Android; capture the generated UA home-screen icon (not a page screenshot), maskable bounds and supported startup artwork. Record device/OS/browser, build, active theme, screenshots and actual results. Test every shipped preset; link and retest any defects. Reuse this evidence in TICKET-114's full PWA installation suite. This requirement blocks both guest releases even while preview delivery proceeds.
 
 - [ ] TICKET-037: resolve and remeasure personal-invitation performance variability (serial baseline94/98/95, median95), preserving all results and the at-least95 release target. See docs/reviews/TICKET-037/performance-idle.json.
@@ -65,6 +67,8 @@ Claiming untested checks pass, weakening thresholds, changing TICKET-015's pause
 - docs/reviews/, affected feature components and e2e tests; keep code repairs scoped or split them.
 
 ## Notes / decisions
+
+- 2026-11-01: TICKET-109 preview delivery uses the owner's standing device/performance-QA separation approval. Below-target measurements and native installation remain unverified release requirements; neither release dependency changes.
 
 - 2026-11-01: TICKET-104's unverified installed-icon requirement is retained here under the owner's preview/device-QA separation approval. Automated icon metadata and safe-zone checks do not certify physical installation. Neither release dependency is removed.
 

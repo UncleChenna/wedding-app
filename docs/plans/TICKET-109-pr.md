@@ -18,7 +18,7 @@ Eligible browsers can offer installation from staff pages and the invitation's a
 - Eligibility and interaction gating: eight controller unit tests pass.
 - Thirty-day dismissal: expiry boundary, native dismissal, persistence and unavailable storage are covered.
 - Fourteen production browser cases pass across mobile and desktop, including reload persistence and installation elsewhere.
-- Local full verification and visible-state review pass. Invitation performance is86/91/92 (target95), accessibility100 and CLS0. Required device review is unverified. This remains a draft.
+- Integrated local and hosted verification pass. Latest invitation performance is90/92/90 (target95), accessibility100 and CLS0. Preview delivery proceeds under the owner's existing exception; performance and physical native-device/WhatsApp checks remain explicit release requirements in TICKET-201/114.
 
 # Verification
 
@@ -27,11 +27,11 @@ Eligible browsers can offer installation from staff pages and the invitation's a
 - verify:quick passes (lint, typecheck and related unit tests).
 - Production build passes.
 - Playwright e2e/install-prompt.spec.ts:14 passed; included in CI smoke.
-- Full pnpm verify passed:522 unit and575 browser tests;26/135 skipped. Final-head CI is still required.
+- Integrated full pnpm verify passed:534unit and631browser tests;26/135 skipped. CI41289827331 passes all four jobs at2c3de64 against develop3dae6a38946ddc3419363fb18ed688670d0d02c3. Final metadata-head CI is required before merge.
 
 # Risks and rollout
 
-The browser API is limited to supporting browsers; iOS guidance remains TICKET-110. Unit/browser stubs prove application behavior, not actual installation eligibility. Icons/installability, offline pass and scanner are separate tickets. Current staff routes remain placeholders; the guest control mounts only when real pass content is supplied. No database migrations or new dependencies. Revert this ticket's changes to remove the prompt.
+The browser API is limited to supporting browsers; iOS guidance remains TICKET-110. Unit/browser stubs prove application behavior, not actual installation eligibility. Themed icons are merged in TICKET-104; actual installability, offline pass and scanner remain separate requirements. Current staff routes remain placeholders; the guest control mounts only when real pass content is supplied. No database migrations or new dependencies. Revert this ticket's changes to remove the prompt.
 
 # Screenshots and UI checklist
 
@@ -48,3 +48,9 @@ None.
 ## CI result — 2026-11-01
 
 Run41254671961 for bac98df failed the desktop envelope zero-CLS tests in Midnight & Champagne and Emerald Night, including retries. Both report0.0001711703703703704 from the Adaora name span. This matches the observed TICKET-104 failure; shared baseline causality is not yet proven. The zero target is retained. Local full verification passed; hosted CI did not. PR65 remains a draft and cannot proceed on these results. Raw failed-job output is in artifacts/TICKET-109/ci-failure.log.
+
+## Current integration result
+
+The shared font regression was fixed and merged through TICKET-210; PR64's icons are also integrated. The earlier failed CI entry above is preserved as history, not the current result.
+New raw Lighthouse evidence is docs/reviews/TICKET-109/integrated-performance-{1,2,3}.json:90/92/90 Performance,100 Accessibility and CLS0.
+This PR does not certify physical installation or guest-release performance. Both release gates remain explicit in TICKET-201, with the PWA device suite in114.

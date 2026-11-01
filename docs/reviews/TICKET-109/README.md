@@ -3,7 +3,7 @@
 Base: develop c9edef6cb137a194f9c215fc5b61b08488a54aa0. Implementation: bac98df.
 PR: https://github.com/UncleChenna/wedding-app/pull/65
 
-## Result: CHANGES REQUESTED for release
+## Result: APPROVE for preview delivery; release checks remain outstanding
 
 Installation control behavior passes automated verification. This is not a real-device installation certification. Invitation performance is below the 95 target; device checks remain unverified.
 
@@ -40,3 +40,13 @@ Resolve performance to95+, run actual native installation on Android/Chrome and 
 ## CI result — 2026-11-01
 
 Run41254671961 for bac98df failed the desktop envelope zero-CLS tests in Midnight & Champagne and Emerald Night, including retries. Both report0.0001711703703703704 from the Adaora name span. This matches the observed TICKET-104 failure; shared baseline causality is not yet proven. The zero target is retained. Local full verification passed; hosted CI did not. PR65 remains a draft and cannot proceed on these results. Raw failed-job output is in artifacts/TICKET-109/ci-failure.log.
+
+## 2026-11-01 — integrated verification
+
+Integrated develop3dae6a38946ddc3419363fb18ed688670d0d02c3 in8f053f9; documentation head2c3de64.
+Full local pnpm verify PASS:534unit passed/26skipped;631browser passed/135skipped. Hosted CI41289827331 passes all four jobs. The formerly failing font/envelope tests now pass without weakened assertions.
+
+Three serial production Lighthouse measurements on /dev/invitation: Performance90/92/90 (median90), Accessibility100 each, CLS0 each. Raw integrated-performance-{1,2,3}.json reports are retained alongside earlier measurements. Performance is FAIL against95; this is not a release sign-off. No claim is made that the prompt caused or did not cause the deficit.
+
+The owner approved preview delivery with remaining device/performance QA tracked separately. TICKET-201 now explicitly retains these measurements and real Android/native-prompt/WhatsApp checks, blocking both releases;114 retains full PWA installation. Physical device checks are NOT VERIFIED. The preview approval relies on that exception, not a passing performance score.
+Icon metadata and prompt registration both survived integration. Existing reviewed control artwork and styles are unchanged; merged210 owns the reviewed font-origin correction.
