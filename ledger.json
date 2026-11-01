@@ -1229,15 +1229,16 @@
         "- 2026-11-01 — todo → in_progress — divine (codex)",
         "- 2026-11-01 — in_progress → blocked — divine (codex) — Draft PR66: local full gate has six invitation focus failures (isolated rerun passes); CI41270521817 fails Emerald Night envelope zero-CLS; real iPhone/WhatsApp manual criterion remains unverified. Keep assertions and release gates intact.",
         "- 2026-11-01 — blocked → in_progress — divine (codex) — Resume after verified font and Android-install merges; preserve both controls and validate combined UI",
-        "- 2026-11-01 — in_progress → in_review — divine (codex)"
+        "- 2026-11-01 — in_progress → in_review — divine (codex)",
+        "- 2026-11-01 — in_review → done — divine (codex)"
       ],
-      "status": "in_review",
+      "status": "done",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-110",
       "pr": "https://github.com/UncleChenna/wedding-app/pull/66",
       "started": "2026-11-01",
-      "completed": "",
+      "completed": "2026-11-01",
       "updated": "2026-11-01",
       "reason": "",
       "resume_to": ""
