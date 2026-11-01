@@ -1,4 +1,5 @@
 import { InstallPrompt } from "@/modules/shared/components/install-prompt";
+import { IosInstallGuide } from "@/modules/shared/components/ios-install-guide";
 import type { ReactNode } from "react";
 import { z } from "zod";
 import { Divider } from "@/modules/shared/components/ui/decorations";
@@ -100,6 +101,7 @@ export function InvitationLetter({
         >
           {pass}
           <InstallPrompt />
+          <IosInstallGuide />
         </section>
       )}
       <Divider className="my-12 md:my-16" />

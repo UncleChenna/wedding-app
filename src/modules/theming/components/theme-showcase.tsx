@@ -1,4 +1,5 @@
 import { InstallPrompt } from "@/modules/shared/components/install-prompt";
+import { IosInstallGuide } from "@/modules/shared/components/ios-install-guide";
 import {
   ActionBar,
   Button,
@@ -248,6 +249,7 @@ export function ThemeShowcase({ theme, active }: { theme: Theme; active: boolean
           </div>
 
           <InstallPrompt />
+          <IosInstallGuide />
           <MotionShowcase />
 
           <Card data-testid="form-controls">
