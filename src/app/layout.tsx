@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { installationMetadata } from "@/modules/shared/lib/pwa-assets";
 
 import { InstallPromptRegistration } from "@/modules/shared/components/install-prompt";
 import { ServiceWorkerRegistration } from "@/modules/shared/components/service-worker-registration";
@@ -9,10 +10,14 @@ import { ThemeStyles } from "@/modules/theming/components/theme-styles";
 
 import "./globals.css";
 
-export const metadata: Metadata = {
-  title: { default: "Our Wedding", template: "%s · Our Wedding" },
-  description: "Celebrate with us.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const themes = await getStoredActiveThemes();
+  return {
+    title: { default: "Our Wedding", template: "%s · Our Wedding" },
+    description: "Celebrate with us.",
+    ...installationMetadata(themes.light.id),
+  };
+}
 
 export async function generateViewport(): Promise<Viewport> {
   const themes = await getStoredActiveThemes();

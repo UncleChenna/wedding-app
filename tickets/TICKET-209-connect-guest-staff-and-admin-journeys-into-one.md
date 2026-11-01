@@ -1,0 +1,144 @@
+---
+id: TICKET-209
+title: Connect guest, staff and admin journeys into one app
+epic: foundations
+status: todo
+priority: urgent
+estimate: L
+labels: [frontend, test, docs]
+module: shared
+owner: ""
+agent: ""
+blocked_by: []
+blocks: []
+branch: ""
+pr: ""
+created: 2026-10-31
+updated: 2026-10-31
+started: ""
+completed: ""
+reason: ""
+resume_to: ""
+---
+
+# TICKET-209: Connect guest, staff and admin journeys into one app
+
+## Context
+
+The PRD defines three guest journeys and five roles ([Users and roles](../docs/prd.md#users-and-roles),
+[User journeys](../docs/prd.md#user-journeys)). Individual pieces now exist, but nothing chains them:
+
+- The home page hard-codes the couple, date and copy instead of reading saved event settings.
+- `/invite` is a dead end that only says "a link will arrive".
+- `/i/[token]` renders envelope → letter → RSVP, but has no next step after replying (pass, day-of ordering).
+- `ShareMenu`, `QrCode`, `OrderPreview`, `RsvpPreview` and `InvitationView` are reachable only from `/dev`.
+- `/checkin`, `/kitchen`, `/order` and `/admin` are "Coming soon" placeholders with no links between them.
+  There is no staff landing page and no `/bar` route, although TICKET-077 expects one.
+- Admin is a placeholder that shows Sign in and Sign out links to an already signed-in admin.
+
+Each feature ticket builds its own screen. No ticket owns the routes between screens, so features land as
+islands. This ticket defines that route contract, wires every existing piece into it, and adds a test that
+fails when a route becomes orphaned. The full journey map and build order are in
+[the plan](../docs/plans/2026-10-31-TICKET-209.md).
+
+## Scope
+
+- **Journey map.** Add `docs/journeys.md`: every role, its entry point (WhatsApp link, table-card QR, staff
+  device link, admin URL), the route chain, the next step on each screen, and the ticket that builds each link.
+  Link it from `AGENTS.md` and `docs/architecture.md`.
+- **Route registry.** Add one typed source, `src/modules/shared/lib/routes.ts`, for app routes and their
+  audience (guest, staff, admin, dev). Navigation links use it instead of string literals.
+- **Guest home.** `/` reads couple names, date, venue and time from event settings. Couple names and dates are
+  no longer hard-coded in page code or metadata. `/invite` explains how to get the link and offers the
+  contact or "request your link" step (a placeholder until TICKET-048).
+- **Invitation chain.** After an RSVP, `/i/[token]` shows a clear next step for the guest's answer:
+  - Yes: a "Your pass" section with a reserved slot, until TICKET-044 fills it.
+  - No: a warm closing message.
+  - Not yet answered: the form.
+
+  On or after the event date it also points to "Order to your table" (`/order`). The page links back to the
+  home page throughout.
+- **Staff hub.** Add `/staff`, a calm, arm's-length landing page that links to Gate check-in, Kitchen board and
+  Bar board. Add a `/bar` placeholder that matches `/kitchen`. Give the staff layout a shared header with
+  "Staff home" and the station name. PIN protection stays out of scope (TICKET-031 and TICKET-032).
+- **Admin hub.** Replace the admin placeholder with a control-room index listing each area: Guests, Sharing,
+  Seating, Menu, Staff, Settings, Live dashboard. Each item links to its route or is labelled "Coming soon"
+  with its ticket ID in `docs/journeys.md`.
+  - Show only Sign out when signed in.
+  - Promote `ShareMenu` from `/dev/share` to an admin "Sharing" page that lists invitations with share actions.
+    If TICKET-089's guest list has not landed, use the existing invitation repository with a minimal list.
+- **Placeholders.** Every "Coming soon" screen names its next step and has a way back to its hub. No screen is
+  a dead end.
+- **Dev previews.** `/dev` stays unreachable in production builds. Each preview is listed in
+  `docs/journeys.md` with the ticket that will promote it to a real route.
+- **Orphan-route test.** Add a Playwright spec that crawls from each entry point (`/`, a seeded `/i/[token]`,
+  `/order`, `/staff`, `/admin` after sign-in). It fails if a registered non-dev route can't be reached, or if
+  a page has no link back to its hub.
+
+## Out of scope
+
+- The admin shell's full sidebar and responsive navigation component (TICKET-088). This ticket provides the hub
+  page and the link registry that TICKET-088 builds on.
+- QR pass contents and signing (TICKET-044, TICKET-056, TICKET-183).
+- Real ordering, boards and scanner behaviour (TICKET-070 to TICKET-079, TICKET-059 onward).
+- Staff PIN sign-in and route protection (TICKET-031, TICKET-032).
+- Guest list filters and editing (TICKET-089, TICKET-090).
+- Multi-event or multi-tenant routing (not ticketed yet).
+
+## Acceptance criteria
+
+- [ ] `docs/journeys.md` lists every role, entry point, route, next step and owning ticket; `AGENTS.md` and `docs/architecture.md` link to it.
+- [ ] `src/modules/shared/lib/routes.ts` is the single route source; a unit test fails if a non-dev `page.tsx` under `src/app` is missing from it.
+- [ ] `/` and its metadata render couple names, date and known venue details from event settings; a grep finds no hard-coded couple names in `src/app`.
+- [ ] `/i/[token]` shows the correct next step for yes, no and unanswered, before and on the event date; a component test covers every state.
+- [ ] `/staff` links to `/checkin`, `/kitchen` and `/bar`, every staff page links back, and staff text is at least 18px with station titles at least 32px.
+- [ ] `/admin` is a hub listing every admin area; a signed-in admin sees Sign out but not Sign in, and sharing is reachable without `/dev`.
+- [ ] No production page is a dead end: each has a primary next step or a link back to its hub.
+- [ ] The orphan-route Playwright spec passes, and fails when one registered route is unlinked in a test fixture.
+- [ ] `/dev` returns 404 in a production build.
+- [ ] The UI checklist passes on every changed route in all four themes at 375, 768 and 1280px, with screenshots in `docs/reviews/TICKET-209/`.
+- [ ] `pnpm verify` passes.
+
+## Test plan
+
+- **Unit:**
+  - The route registry matches the `src/app` page files.
+  - The invitation next-step function returns the right step for each RSVP state and date.
+  - The home page reads its values from event settings.
+- **Component:**
+  - `PersonalInvitation` renders the correct next step for yes, no, unanswered, before the event and on the
+    day.
+  - The admin hub renders the correct links when signed in.
+- **End-to-end:**
+  - The orphan-route crawl.
+  - Guest: home → invitation → RSVP yes → pass slot → back.
+  - Staff: `/staff` → each station → back.
+  - Admin: sign in → hub → Sharing → share action.
+  - Axe checks on every new page.
+  - `/dev` returns 404 on the production build.
+- **Manual:**
+  - Tap through every journey on a phone at 375px in light and dark mode.
+  - Check that WhatsApp's in-app browser can follow the invitation link back to the home page.
+
+## Files likely touched
+
+- `docs/journeys.md`, `docs/architecture.md`, `AGENTS.md`
+- `src/modules/shared/lib/routes.ts` and its tests
+- `src/app/(guest)/page.tsx`, `src/app/(guest)/invite/page.tsx`
+- `src/modules/invitations/components/personal-invitation.tsx` and a new `invitation-next-step` lib
+- `src/app/(staff)/layout.tsx`, `src/app/(staff)/staff/page.tsx`, `src/app/(staff)/bar/page.tsx`
+- `src/modules/admin/components/admin-dashboard.tsx`, a new admin Sharing route
+- `src/modules/shared/components/page-placeholder.tsx`
+- `e2e/journeys.spec.ts`
+
+## Notes / decisions
+
+_Agents append dated notes here while working._
+
+- 2026-10-31: Created after a code review of `develop` at `c9edef6`. The review found that every built
+  component except the invitation page is reachable only from `/dev` or not at all. The plan doc holds the
+  journey map and the order in which other tickets plug into it.
+
+## Activity log
+
+- 2026-10-31 — new → todo — unclechenna
