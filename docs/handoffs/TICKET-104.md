@@ -40,3 +40,26 @@ Next: after approval carry unchanged209 definition, validate and commit210 plus 
 ## 2026-11-01 — definition publication authorized
 
 The user answered the explicit unchanged209-definition-copy question with “merge the ticket and continue”. Inspection confirmed209 has no PR and is only an uncommitted definition in TICKET-025. As stated to the user, carry only that unchanged definition; no implementation or source checkout edits. SHA256 f824de87d90f8a083c4970f79e397c77e68308faf3365c2e99870b8095354d24. This resolves the publication exception, not the feature CI failures. TICKET-104 remains blocked; its isolated database was already stopped with backup preserved. PR65/66 now reproduce the same envelope shift class. Proceed with controlled TICKET-210 diagnosis in its own worktree.
+
+## 2026-11-01 — resumed after the merged font fix
+
+Owner divine; agent codex; branch TICKET-104. PR64 remains draft.
+TICKET-210 merged as PR67 into develop at 4463a2ed2d13c751e6b9e31858775a15c7bd097a.
+Integrated that exact base in commit 2043800fecf5289f60e97e8c6b9345a993e0462e and confirmed it is pushed.
+The sole add/add conflict was the original210 definition; retained the completed definition from develop.
+No icon runtime implementation changed during this integration.
+
+The owner's standing approval permits verified ticket PR merges and preview delivery with physical QA tracked separately.
+The older paragraphs prohibiting merges or awaiting the209 definition permission are historical, superseded by that approval.
+TICKET-201 was checked live: todo, unowned, blocking both154 and176. Its new unchecked104 criterion explicitly retains physical iOS/Android installed-icon and startup proof across shipped presets.
+TICKET-114 remains the full PWA device suite; no release dependency was removed, and no real-device pass is claimed.
+104's criterion now distinguishes its proven Apple metadata/resources from that outstanding device result.
+
+Full local verification is running with caffeinate; log artifacts/TICKET-104/integrated-verify.log.
+Do not infer a passing final result from intermediate output. Hosted integration run41284490624 is also pending.
+Prior failed logs remain intact. Next: record terminal results, update review/PR evidence, commit, run t:pr, and require final-head CI before any merge.
+
+Workflow learning: put durable ticket notes in Notes / decisions before Activity log; CLI regeneration owns the activity footer.
+Proposed harness follow-up: reject or preserve freeform text after Activity log so metadata sync cannot silently drop evidence.
+
+Local integrated verification finished with exit0:526unit passed/26skipped and617browser passed/135skipped (4.7minutes). Format, lint, types and build passed. Updated PR and UI review distinguish preview approval from unchecked physical installation.

@@ -15,15 +15,17 @@ The app previously advertised no installation icons. It now serves generated UA 
 
 # Acceptance criteria and evidence
 
-Maskable safe-zone checks pass in pixel tests and inspected Maskable.app screenshots for every theme. Reproducibility and output sizes pass. Actual iOS home-screen icon and Android installation remain unverified; manual criterion stays unchecked.
+Maskable safe-zone checks pass in pixel tests and inspected Maskable.app screenshots for every theme. Reproducibility and output sizes pass. Apple touch metadata and public asset URLs pass browser checks. Physical iOS/Android installed icons and startup behavior remain unverified in an explicit unchecked TICKET-201 criterion, blocking both guest releases; TICKET-114 retains the full PWA device suite. This follows the owner's approved separation of preview delivery and device QA.
 
 # Verification
 
-Fifteen focused unit cases and six production browser cases pass. First full gate:526unit passed/26skipped;573browser passed/135skipped/4mobile QR timeouts. Unchanged focused QR rerun:8passed. Full-gate recheck remains outstanding; see docs/handoffs/TICKET-104.md. Base c9edef6cb137a194f9c215fc5b61b08488a54aa0.
+Integrated develop4463a2ed2d13c751e6b9e31858775a15c7bd097a (PR67 font fix) in2043800fecf5289f60e97e8c6b9345a993e0462e. Full local pnpm verify PASS:526unit passed/26skipped,617browser passed/135skipped; format, lint, types and production build also pass. Log: artifacts/TICKET-104/integrated-verify.log. Ticket validation/render pass after explicit QA ownership clarification. Hosted run41284490624 remains pending at this update; final-head CI is required before merge.
+
+Earlier failures are preserved in docs/handoffs/TICKET-104.md and ignored logs: initial4mobile QR timeouts, recheck1mobile stepper timeout, hosted2dark-envelope CLS failures. TICKET-210 diagnosed and fixed real text movement with controlled font-delay regressions; no test assertions or thresholds were weakened. Fifteen focused unit cases and six production browser cases also passed during implementation.
 
 # Risks and rollout
 
-Draft until physical-device criterion is resolved. TICKET-114 remains mandatory. Startup matrix covers six common CSS screen/DPR combinations in both orientations, not every device. UA and preset artwork are generated at build/development time: changing names, tokens or bundled fonts requires regeneration; unknown theme IDs fall back to Ivory & Gold. OS refresh timing is outside app control. No migration/dependency change. Revert this ticket to remove metadata/assets; no user data changes.
+Preview delivery only under the owner's standing approval; physical installation is not certified. TICKET-201 blocks both releases and TICKET-114 remains mandatory for full PWA installation. Startup matrix covers six common CSS screen/DPR combinations in both orientations, not every device. UA and preset artwork are generated at build/development time: changing names, tokens or bundled fonts requires regeneration; unknown theme IDs fall back to Ivory & Gold. OS refresh timing is outside app control. No migration/dependency change. Revert this ticket to remove metadata/assets; no user data changes.
 
 # Screenshots and UI checklist
 
@@ -33,6 +35,11 @@ docs/reviews/TICKET-104 contains all-theme contact sheets, four Maskable.app scr
 
 None. Run pnpm exec tsx scripts/pwa-icons.ts to regenerate.
 
-# Current blockers
+# Review steps
 
-Implementation00ae18b is pushed. Local full rerun:526unit passed/26skipped;576browser passed/135skipped/1mobile stepper timeout. Hosted CI41252361212 failed two desktop envelope zero-CLS checks after retries; Midnight & Champagne and Emerald Night are affected. TICKET-210 will establish whether merged font/envelope work or104 metadata causes the shift, then fix it without weakening zero CLS. No full verification pass is claimed. Actual iOS/Android installation remains unverified.
+1. Run pnpm exec tsx scripts/pwa-icons.ts; confirm generated files remain byte-identical.
+2. Build and serve; inspect /manifest.webmanifest and root Apple touch/startup link metadata. Follow their URLs and check the selected light-theme artwork.
+3. Inspect the four asset contact sheets and Maskable.app evidence in docs/reviews/TICKET-104.
+4. Complete physical installation using the unchecked TICKET-201/TICKET-114 checks before releasing to guests. Browser emulation is not physical proof.
+
+No database migration, environment change or new dependency is required.

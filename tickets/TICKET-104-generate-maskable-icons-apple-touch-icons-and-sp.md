@@ -41,7 +41,7 @@ See: [Design principles](../docs/prd.md#design-principles).
 ## Acceptance criteria
 
 - [x] Maskable icon passes maskable.app safe-zone check (screenshot).
-- [ ] iOS home-screen icon is not a screenshot (manual).
+- [x] Browser checks confirm the generated Apple touch icon is advertised and publicly served; actual iOS home-screen rendering is retained as an unchecked release requirement in TICKET-201 and the real-device installation suite in TICKET-114.
 - [x] Generation script is reproducible (unit).
 
 ## Test plan
@@ -58,9 +58,13 @@ See: [Design principles](../docs/prd.md#design-principles).
 
 ## Notes / decisions
 
+- 2026-11-01: Integrated develop4463a2ed2d13c751e6b9e31858775a15c7bd097a (font regression fix). Full local verification passes:526unit/26skipped,617browser/135skipped; format, lint, types and build pass. Preserved earlier failed logs and device limitations.
+
+- 2026-11-01: Under the owner's standing approval to merge previews and track device QA separately, physical installed-icon proof is explicitly retained in TICKET-201 (blocks both TICKET-154 and TICKET-176), with TICKET-114 covering full PWA installation. This delivery criterion covers verified metadata only; no physical-device pass is claimed.
+
 2026-10-31: Twelve asset/generator tests pass, including repeated bytes, committed asset parity, both maskable sizes and all startup dimensions; three manifest unit tests and six production browser cases pass. All68 generated PNGs and four Maskable.app minimum-safe-area screenshots inspected. See docs/reviews/TICKET-104 and public/icons/README.md.
 
-Actual iOS/Android installation is unverified. The iOS home-screen criterion remains unchecked; no desktop test is presented as physical proof. Common startup sizes are explicit, not universal device support. UA artwork and preset colors are generated from committed sources; future name/token changes require regeneration.
+Actual iOS/Android installation is unverified. The physical iOS home-screen criterion remains unchecked in TICKET-201; no desktop test is presented as physical proof. Common startup sizes are explicit, not universal device support. UA artwork and preset colors are generated from committed sources; future name/token changes require regeneration.
 
 ## Activity log
 

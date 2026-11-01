@@ -26,6 +26,13 @@ Twelve generator/asset tests and three manifest tests cover repeat bytes, commit
 | Staff feedback       | N/A: no staff controls or feedback changed.                                                                                                                      |
 | Verification         | Full gate result in handoff; never assume success before terminal log.                                                                                           |
 
-Review disposition: CHANGES REQUESTED for required physical installation evidence. The manual iOS criterion remains unchecked. TICKET-114 still owns staging-HTTPS device installation; no waiver or completed-install claim here.
+Review disposition: APPROVE for preview delivery under the owner's existing device-QA separation approval. Physical installation remains NOT VERIFIED and explicitly unchecked in TICKET-201, which blocks both guest releases, with full PWA installation retained in TICKET-114. This is not production/device sign-off.
 
 Sources: [maskable safe zone](https://www.w3.org/TR/appmanifest/), [Apple icon/startup metadata](https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html).
+
+## 2026-11-01 integrated verification
+
+Base4463a2ed2d13c751e6b9e31858775a15c7bd097a; integrated head2043800fecf5289f60e97e8c6b9345a993e0462e.
+Full pnpm verify PASS:526unit passed/26skipped;617browser passed/135skipped, including the formerly failing envelope scenarios and delayed-font regression. Production build, format, lint and types pass.
+Evidence: artifacts/TICKET-104/integrated-verify.log. Icon implementation and artwork are unchanged from the inspected assets.
+Earlier failed runs remain recorded in the handoff; the shared TICKET-210 fix is now merged. Hosted final-head verification must pass before merge.
