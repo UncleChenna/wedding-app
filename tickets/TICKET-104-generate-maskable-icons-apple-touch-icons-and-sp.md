@@ -2,7 +2,7 @@
 id: TICKET-104
 title: Generate maskable icons, Apple touch icons and splash screens
 epic: pwa
-status: in_progress
+status: in_review
 priority: high
 estimate: M
 labels: [pwa, design]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-103]
 blocks: [TICKET-113]
 branch: TICKET-104
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/64
 created: 2026-10-21
 updated: 2026-11-01
 started: 2026-10-31
@@ -73,3 +73,4 @@ Actual iOS/Android installation is unverified. The physical iOS home-screen crit
 - 2026-10-31 — todo → in_progress — divine (codex)
 - 2026-10-31 — in_progress → blocked — divine (codex) — Draft PR64: hosted envelope CLS failures require TICKET-210 diagnosis; physical installation unverified. Publishing210 waits for permission to carry unchanged209 definition required by contiguous-ID validation
 - 2026-11-01 — blocked → in_progress — divine (codex) — Resume icon integration verification after TICKET-210 merged in PR67; physical install proof remains unverified
+- 2026-11-01 — in_progress → in_review — divine (codex)
