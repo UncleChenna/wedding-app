@@ -2,20 +2,20 @@
 id: TICKET-210
 title: Eliminate invitation font-swap shifts after integration
 epic: design-system
-status: todo
+status: in_progress
 priority: high
 estimate: M
 labels: [frontend, test]
 module: theming
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: []
 blocks: []
-branch: ""
+branch: TICKET-210
 pr: ""
 created: 2026-10-31
-updated: 2026-10-31
-started: ""
+updated: 2026-11-01
+started: 2026-11-01
 completed: ""
 reason: ""
 resume_to: ""
@@ -59,3 +59,5 @@ src/modules/theming/components/fonts.ts, src/modules/theming/font-fallbacks.css,
 ## Activity log
 
 - 2026-10-31 — new → todo — divine
+- 2026-11-01 — todo → claimed — divine (codex)
+- 2026-11-01 — todo → in_progress — divine (codex)
