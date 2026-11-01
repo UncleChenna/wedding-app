@@ -2,20 +2,20 @@
 id: TICKET-104
 title: Generate maskable icons, Apple touch icons and splash screens
 epic: pwa
-status: todo
+status: in_review
 priority: high
 estimate: M
 labels: [pwa, design]
 module: shared
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-103]
 blocks: [TICKET-113]
-branch: ""
-pr: ""
+branch: TICKET-104
+pr: https://github.com/UncleChenna/wedding-app/pull/64
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-01
+started: 2026-10-31
 completed: ""
 reason: ""
 resume_to: ""
@@ -40,9 +40,9 @@ See: [Design principles](../docs/prd.md#design-principles).
 
 ## Acceptance criteria
 
-- [ ] Maskable icon passes maskable.app safe-zone check (screenshot).
-- [ ] iOS home-screen icon is not a screenshot (manual).
-- [ ] Generation script is reproducible (unit).
+- [x] Maskable icon passes maskable.app safe-zone check (screenshot).
+- [x] Browser checks confirm the generated Apple touch icon is advertised and publicly served; actual iOS home-screen rendering is retained as an unchecked release requirement in TICKET-201 and the real-device installation suite in TICKET-114.
+- [x] Generation script is reproducible (unit).
 
 ## Test plan
 
@@ -58,8 +58,19 @@ See: [Design principles](../docs/prd.md#design-principles).
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-11-01: Integrated develop4463a2ed2d13c751e6b9e31858775a15c7bd097a (font regression fix). Full local verification passes:526unit/26skipped,617browser/135skipped; format, lint, types and build pass. Preserved earlier failed logs and device limitations.
+
+- 2026-11-01: Under the owner's standing approval to merge previews and track device QA separately, physical installed-icon proof is explicitly retained in TICKET-201 (blocks both TICKET-154 and TICKET-176), with TICKET-114 covering full PWA installation. This delivery criterion covers verified metadata only; no physical-device pass is claimed.
+
+2026-10-31: Twelve asset/generator tests pass, including repeated bytes, committed asset parity, both maskable sizes and all startup dimensions; three manifest unit tests and six production browser cases pass. All68 generated PNGs and four Maskable.app minimum-safe-area screenshots inspected. See docs/reviews/TICKET-104 and public/icons/README.md.
+
+Actual iOS/Android installation is unverified. The physical iOS home-screen criterion remains unchecked in TICKET-201; no desktop test is presented as physical proof. Common startup sizes are explicit, not universal device support. UA artwork and preset colors are generated from committed sources; future name/token changes require regeneration.
 
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-31 — todo → claimed — divine (codex)
+- 2026-10-31 — todo → in_progress — divine (codex)
+- 2026-10-31 — in_progress → blocked — divine (codex) — Draft PR64: hosted envelope CLS failures require TICKET-210 diagnosis; physical installation unverified. Publishing210 waits for permission to carry unchanged209 definition required by contiguous-ID validation
+- 2026-11-01 — blocked → in_progress — divine (codex) — Resume icon integration verification after TICKET-210 merged in PR67; physical install proof remains unverified
+- 2026-11-01 — in_progress → in_review — divine (codex)
