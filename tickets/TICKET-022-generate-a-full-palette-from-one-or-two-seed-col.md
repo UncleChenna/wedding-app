@@ -40,8 +40,8 @@ See: [How theming works](../docs/prd.md#how-theming-works) (THM-7).
 
 ## Acceptance criteria
 
-- [ ] For 20 random seeds, generated themes pass the contrast gate.
-- [ ] Status tokens are never altered by the generator.
+- [x] For 20 random seeds, generated themes pass the contrast gate.
+- [x] Status tokens are never altered by the generator.
 
 ## Test plan
 
@@ -54,7 +54,7 @@ See: [How theming works](../docs/prd.md#how-theming-works) (THM-7).
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-11-02: Pure generator implemented;66 new tests and145 theme tests pass. Quick gate passes. Full verification is running; no editor activation or device certification claimed. See docs/handoffs/TICKET-022.md.
 
 ## Activity log
 
