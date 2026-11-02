@@ -2,7 +2,7 @@
 id: TICKET-209
 title: Connect guest, staff and admin journeys into one app
 epic: foundations
-status: in_progress
+status: in_review
 priority: urgent
 estimate: L
 labels: [frontend, test, docs]
@@ -12,9 +12,9 @@ agent: codex
 blocked_by: []
 blocks: []
 branch: TICKET-209
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/68
 created: 2026-10-31
-updated: 2026-11-01
+updated: 2026-11-02
 started: 2026-11-01
 completed: ""
 reason: ""
@@ -168,3 +168,4 @@ _Agents append dated notes here while working._
 - 2026-11-01 — todo → in_progress — divine (codex)
 - 2026-11-01 — in_progress → blocked — divine (codex) — PR68 remains draft: exact-zero cold-font CLS fails; physical UI checks unverified. Awaiting requested preview-only exception while preserving TICKET-201 release gates.
 - 2026-11-01 — blocked → in_progress — divine (codex) — User approved advancing navigation preview while retaining exact-zero CLS and physical-device release gates in TICKET-201
+- 2026-11-02 — in_progress → in_review — divine (codex)
