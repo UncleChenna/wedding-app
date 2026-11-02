@@ -10,6 +10,6 @@ Validation: initial missing-module test failed as expected; latest focused suite
 
 Physical WhatsApp/device scanning remains unverified in release-blocking TICKET-201 under the established preview exception. No dependencies, migration, RLS, lockfile or protected generated-file changes. TICKET-184 remains mandatory for expiry/logout/retention.
 
-Next: commit/push the verified implementation and run t:pr, then retain in_review for human review. Do not merge: the narrow authorization for PRs 48/68/74/75 is exhausted; all are already merged. PR76 awaits human review; draft PR77/TICKET-046 remains blocked on explicit generated-lockfile authorization, with its isolated stack stopped and backup retained. Never alter its dirty lockfile from this ticket.
+Published: https://github.com/UncleChenna/wedding-app/pull/78 targets develop. Implementation 9c8eb3b; CLI in_review transition 1a5d46d. The mandatory t:pr gate also passed (783 unit tests, 769 browser tests). Next: monitor required CI and retain in_review for human review; continue the next ready ticket without merging PR78. Do not merge: the narrow authorization for PRs 48/68/74/75 is exhausted; all are already merged. PR76 awaits human review; draft PR77/TICKET-046 remains blocked on explicit generated-lockfile authorization, with its isolated stack stopped and backup retained. Never alter its dirty lockfile from this ticket.
 
 Persistent caffeinate session 52403 prevents sleep; stop when ending the implementation session. Primary checkout and other owners' work are preserved.
