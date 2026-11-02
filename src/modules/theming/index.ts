@@ -10,3 +10,5 @@ export {
   resolveActiveThemes,
 } from "./lib/registry";
 export type { ActiveThemes, ColorScheme, Theme } from "./lib/schema";
+export { generateTheme } from "./lib/generate-theme";
+export type { GeneratedThemeResult } from "./lib/generate-theme";

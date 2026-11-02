@@ -181,3 +181,22 @@ Registered fonts use metric-adjusted local fallbacks: Times New Roman/Liberation
 The font registry uses next/font/local with licensed, pinned WOFF2 assets in src/modules/theming/fonts. Provenance, hashes and conversion instructions live beside the assets. Builds do not download Google Fonts. Existing family variables, fallback metrics, swap and selective preload settings remain unchanged.
 
 Use FONT_COLD_BUILD=1 pnpm build to disable Next filesystem compiler caching for a verification run. Normal builds retain caching. Run this three times when updating fonts, then run the regular full gate; cold builds are additional evidence, not a substitute for normal CI.
+
+## Generate a draft palette from seed colours
+
+TICKET-022 exports `generateTheme(input)` from the theming module. Supply a six-digit
+hex `seed`, an optional `secondarySeed`, `colorScheme` (light by default), and optional
+kebab-case `id` and `name`. It returns `{ ok: true, theme }` or an expected
+`{ ok: false, error }` for invalid input. Repeated inputs produce identical independent objects.
+
+The generator starts from the approved Ivory & Gold or Midnight & Champagne defaults.
+It preserves scheme surfaces, every status token, QR ink/paper, fonts, radii and shadows.
+Primary/secondary/accent colours, body and muted text, borders, focus and decorative fills
+are derived from the seeds. Text colours move towards black or white until the existing
+AA gate passes; decorative fills retain the second seed exactly (or the first when omitted).
+A seed therefore need not remain exact as a text/link colour. All output passes `loadTheme`.
+Preset-specific texture paths are omitted so the new identity cannot refer to another theme's assets.
+
+This is a pure draft API, not a registered preset or an editor. TICKET-098 owns editor
+integration; generated palettes still need component/device review before activation.
+The generator does not store a theme or change either active scheme.
