@@ -23,3 +23,7 @@ Signed-pass count integration, Lighthouse, final UI evidence, full gate result, 
 Running wt:new from the stale primary checkout omitted Supabase's admin-code.html template. Retrying wt:new from this freshly fetched branch used the already-merged208 fix and completed setup. No generated file was manually patched.
 
 Full verify session99779 exited0:789 unit/database tests pass,41 skipped;769 browser smoke tests pass,165 skipped. Final no-JavaScript focused browser rerun session18907 exited0 (18.4s); disabled editing and working attendance fallback verified. Source remains in progress; performance and signed-pass integration still pending.
+
+## Published checkpoint
+
+Implementation commit532dfd3 is pushed. Draft PR: https://github.com/UncleChenna/wedding-app/pull/76. Ticket stays in_progress; do not mark it complete or merge the draft. Remaining: signed-pass count refresh, three production Lighthouse runs and final UI/CI review. The four-PR merge exception does not authorize this PR. Working tree is otherwise clean.

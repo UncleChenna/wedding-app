@@ -58,7 +58,7 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-4) · [On 
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-11-02: Named-guest editor implemented in draft PR76. Full local verification passed789 unit/database and769 browser tests; all-theme flow and no-JavaScript attendance checks pass. Signed-pass count and performance review remain outstanding.
 
 ## Activity log
 
