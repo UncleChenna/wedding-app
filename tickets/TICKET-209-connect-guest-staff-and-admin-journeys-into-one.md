@@ -133,6 +133,8 @@ fails when a route becomes orphaned. The full journey map and build order are in
 
 ## Notes / decisions
 
+- 2026-11-02: Final integrated verification passes on741dd83:671 unit and769 browser tests, plus all required source CI checks. CLI advanced to in_review. Preview-only exception retains exact-zero cold-font and device release gates in201. Manifest discovery regression fixed by caching public metadata; stricter HEAD assertion and20 repeated cases pass.
+
 - 2026-11-01: Owner approved “Advance preview; retain exact-zero release gate.” UI acceptance now explicitly records that preview exception without claiming production UI completion. Integrated develop99be217, resolved four conflicts, and preserved settings-driven pages plus token-free sharing images. New metadata/artwork regression tests and sharing smoke pass; rebuilt authenticated journey passes. All four default preview PNGs are byte-identical to reviewed TICKET-047 artifacts. Final normal PR gate remains pending.
 
 - 2026-11-01: All supplemental showcase sections inspected; full per-item UI review is recorded. No final approval: cold-font CLS fails and physical checks remain unverified. DraftPR68 awaits preview exception; functional work is preserved.

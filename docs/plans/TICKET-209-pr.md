@@ -1,7 +1,7 @@
 # Ticket
 
 TICKET-209 — Connect guest, staff and admin journeys into one app.
-**Draft: preview exception approved; post-merge integration verification remains outstanding.**
+**Ready for review as an approved preview; exact-zero CLS and device release gates remain open.**
 
 # Summary
 
@@ -30,13 +30,13 @@ Functional criteria were verified before integration. The owner approved preview
 
 # Verification
 
-- Integrated full run:671 unit cases passed,27 skipped;768 browser cases passed,165 skipped,1 manifest-discovery failure. Traced to streamed metadata placing the manifest in BODY. Public metadata now uses the bounded cache, and the stronger HEAD/CDP test passes20 repeated cases after rebuild. Final full rerun pending.
+- Integrated full run:671 unit cases passed,27 skipped;768 browser cases passed,165 skipped,1 manifest-discovery failure. Traced to streamed metadata placing the manifest in BODY. Public metadata now uses the bounded cache, and the stronger HEAD/CDP test passes20 repeated cases after rebuild. Final full rerun passes on741dd83:671 unit cases,769 browser cases;27 unit and165 browser skips are not certified.
 
 - Full standard pnpm verify:584 unit cases passed,26 skipped;731 browser smoke cases passed,153 skipped. Skips are not certified.
 - Subsequent test-only expansion: all six before/day-of RSVP state cases and quick lint/types/related tests pass.
 - Authenticated journey and twelve staff matrix checks pass (13 cases); dedicated local MFA flow passes.
 - Three private invitation Lighthouse runs: Performance99/100/100, Accessibility100/100/100, CLS0/0/0. Only synthetic data was used and the temporary invitation was removed.
-- Post-merge focused evidence:4 metadata/artwork unit tests, quick lint/types, production build and2 unchanged all-theme sharing browser tests pass. Rebuilt authenticated journey passes1 case (10s); actual all-theme PNGs are byte-identical to reviewed047 images. After the public-outage correction, the restored authenticated journey passes1 case (5.8s). Two earlier runs were interrupted by recorded macOS maintenance sleep; process-scoped AC sleep prevention resolves that interruption. Final full standard verification is pending.
+- Post-merge focused evidence:4 metadata/artwork unit tests, quick lint/types, production build and2 unchanged all-theme sharing browser tests pass. Rebuilt authenticated journey passes1 case (10s); actual all-theme PNGs are byte-identical to reviewed047 images. After the public-outage correction, the restored authenticated journey passes1 case (5.8s). Two earlier runs were interrupted by recorded macOS maintenance sleep; process-scoped AC sleep prevention resolves that interruption. Final full standard verification passes on741dd83 (manifest-fixed-pr-gate.log).
 - Latest single-run public scores: home98, guide99, order96, offline99; Accessibility100. Earlier lower scores are retained.
 
 # Screenshots and UI checklist
@@ -46,7 +46,7 @@ Inspected60 RSVP,48 staff,36 admin,84 production public/auth and60 MFA captures,
 
 **Unresolved:** the separately executed exact-zero cold-font regression fails12/16 cases after local layout improvements. Centered text and adjacent text fragments move horizontally as fallback glyph widths change. Latest guide Lighthouse CLS is0.0000998462969631127, not zero. This regression is outside the standard @smoke selection and is not covered by its green result. No assertions or thresholds were relaxed.
 
-Physical iOS/Android WhatsApp, keyboard/safe-area and authenticator scanning remain unverified. TICKET-201's release gates remain mandatory. The owner approved “Advance preview; retain exact-zero release gate.” The PR remains draft until remaining integration checks pass.
+Physical iOS/Android WhatsApp, keyboard/safe-area and authenticator scanning remain unverified. TICKET-201's release gates remain mandatory. The owner approved “Advance preview; retain exact-zero release gate.” Remaining integration checks passed; the preview is ready for human review.
 
 # Risks and rollout
 
