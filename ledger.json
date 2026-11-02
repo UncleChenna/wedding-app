@@ -1468,13 +1468,14 @@
     "WED-045": {
       "log": [
         "- 2026-11-02 — todo → claimed — divine (codex)",
-        "- 2026-11-02 — todo → in_progress — divine (codex)"
+        "- 2026-11-02 — todo → in_progress — divine (codex)",
+        "- 2026-11-02 — in_progress → in_review — divine (codex)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-045",
-      "pr": "",
+      "pr": "https://github.com/UncleChenna/wedding-app/pull/79",
       "started": "2026-11-02",
       "completed": "",
       "updated": "2026-11-02",
