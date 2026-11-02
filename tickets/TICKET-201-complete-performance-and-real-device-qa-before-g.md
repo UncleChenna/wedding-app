@@ -60,6 +60,8 @@ Claiming untested checks pass, weakening thresholds, changing TICKET-015's pause
 - [ ] Shared links display the correct 1200x630 preview without invitation secrets or guest details.
 - [ ] Each affected UI review is updated with actual evidence; unresolved checks prevent guest release, while labelled preview work may continue.
 
+- [ ] TICKET-045: Download works on iOS Safari and Android Chrome (manual, recorded). Also test WhatsApp in-app save/open-image/hold-to-save and file sharing, cancellation, dark/light appearance, long and non-Latin names, and physical camera decoding of the saved PNG. Record device/OS/browser/WhatsApp/build and results. Missing local-font glyphs must never leak names to remote services; verify fallback advice. Unverified or failed results continue to block both guest releases.
+
 ## Test plan
 
 - End-to-end: production-build Lighthouse, keyboard/axe and 375/768/1280 screenshot matrix in both themes.

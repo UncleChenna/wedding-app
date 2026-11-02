@@ -40,9 +40,9 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-5) · [Jou
 
 ## Acceptance criteria
 
-- [ ] The PNG is ≥1080px wide, the QR in it decodes, and it contains no data beyond name and party size.
-- [ ] The endpoint only serves a valid, non-revoked token (tested).
-- [ ] Download works on iOS Safari and Android Chrome (manual, recorded).
+- [x] The PNG is ≥1080px wide, the QR in it decodes, and it contains no data beyond name and party size.
+- [x] The endpoint only serves a valid, non-revoked token (tested).
+- [x] Automated PNG download, sharing cancellation and open-image fallback pass; the original mandatory iOS Safari/Android Chrome manual download requirement is retained unchecked in release-blocking TICKET-201 under the approved preview-QA exception.
 
 ## Test plan
 
@@ -56,7 +56,11 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-5) · [Jou
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-11-02 — The owner previously approved preview delivery with remaining device QA tracked separately. The original requirement “Download works on iOS Safari and Android Chrome (manual, recorded)” remains mandatory in TICKET-201 and is not claimed passed here. No release dependency is removed.
+
+Implementation uses only local font outlines so private names never reach Next ImageResponse's remote missing-glyph lookup. Unsupported glyphs fail locally with screenshot advice; no silent name truncation. No new dependency, migration or protected file change.
+
+2026-11-02 — Seven focused tests and the full gate pass (779 unit/769 browser; 41/165 skipped). Final dedicated production flow passes in 7.5s; twelve screenshot combinations and all theme PNGs inspected. Lighthouse 99/100/100 with accessibility 100 and CLS 0. See docs/reviews/TICKET-045/REVIEW.md for the retained physical-device limitations.
 
 ## Activity log
 

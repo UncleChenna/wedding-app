@@ -1,7 +1,16 @@
+import { SavePassImage } from "./save-pass-image";
 import { QrCode } from "@/modules/shared/components/ui/qr-code";
 import type { PassView } from "@/modules/checkin/lib/pass-eligibility";
 
-export function QrPass({ url, pass }: { url: string; pass: PassView }) {
+export function QrPass({
+  url,
+  pass,
+  imageHref,
+}: {
+  url: string;
+  pass: PassView;
+  imageHref?: string;
+}) {
   const name = pass.names.join(" & ") || pass.householdName || "Our dear guest";
   return (
     <div className="mx-auto max-w-md">
@@ -32,6 +41,7 @@ export function QrPass({ url, pass }: { url: string; pass: PassView }) {
       >
         Open your pass
       </a>
+      {imageHref && <SavePassImage href={imageHref} />}
     </div>
   );
 }
