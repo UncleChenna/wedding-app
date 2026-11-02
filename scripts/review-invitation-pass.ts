@@ -1,6 +1,7 @@
 import { generateKeyPairSync } from "node:crypto";
 import { spawnSync } from "node:child_process";
 // Isolated review only. Keys exist only in this process and its local test server.
+const missingKeys = process.argv.includes("--missing-keys");
 const pair = generateKeyPairSync("ed25519");
 const result = spawnSync(
   "pnpm",
@@ -19,10 +20,11 @@ const result = spawnSync(
       ...process.env,
       RUN_PASS_BROWSER_TESTS: "1",
       RUN_RSVP_BROWSER_TESTS: "1",
-      GATE_SIGNING_KEY_ID: "review-044",
-      GATE_SIGNING_PRIVATE_KEY: pair.privateKey
-        .export({ format: "der", type: "pkcs8" })
-        .toString("base64url"),
+      RUN_PASS_MISSING_KEYS: missingKeys ? "1" : "0",
+      GATE_SIGNING_KEY_ID: missingKeys ? "" : "review-044",
+      GATE_SIGNING_PRIVATE_KEY: missingKeys
+        ? ""
+        : pair.privateKey.export({ format: "der", type: "pkcs8" }).toString("base64url"),
     },
   },
 );

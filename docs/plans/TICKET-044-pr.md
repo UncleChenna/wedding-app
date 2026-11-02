@@ -4,7 +4,7 @@ TICKET-044 — Show the guest's QR pass after they RSVP yes.
 
 # Summary
 
-Accepted guests now see their signed QR pass inside the personal invitation and can reopen it without envelope animation. Reply changes immediately add or remove the pass. Draft: final UI/performance/device review is still incomplete.
+Accepted guests now see their signed QR pass inside the personal invitation and can reopen it without envelope animation. Reply changes immediately add or remove the pass. Preview delivery under the approved device-QA exception; physical release checks remain open.
 
 # Changes
 
@@ -16,11 +16,11 @@ Accepted guests now see their signed QR pass inside the personal invitation and 
 
 # Acceptance criteria and evidence
 
-Functional requirements are covered by unit and live browser tests: signed URL decode, quiet zone/contrast, accepted-only display, first/return visits and every theme. UI completion is not claimed: full-page screenshot inspection, focused keyboard checks, Lighthouse/CLS and real-device scans remain outstanding.
+Functional requirements are covered by unit and live browser tests: signed URL decode, quiet zone/contrast, accepted-only display, first/return visits and every theme. All24 screenshots inspected; keyboard/long-name tests pass. Lighthouse Performance99/100/100, Accessibility100 and CLS0 in all three runs. Physical device/scanning checks remain unverified and explicitly block release through TICKET-201.
 
 # Verification
 
-Full pnpm verify passes:656 unit tests and697 browser smoke tests;27 unit and147 browser skips are not certified. Additional isolated live suite:4 pass, covering the signed pass/theme/width/motion matrix, no-JavaScript RSVP, tampering and revocation. The rendered SVG unit test decodes a realistic long signed URL in all four theme colours. Earlier failing tests and results are recorded in the handoff/review.
+Full pnpm verify passes:656 unit tests and697 browser smoke tests;27 unit and147 browser skips are not certified. Additional isolated live suite:4 pass, covering the signed pass/theme/width/motion matrix, no-JavaScript RSVP, tampering and revocation. Missing-key mode passes4 tests (the separately passed signed-key scenario is skipped in that mode). The rendered SVG unit test decodes a realistic long signed URL in all four theme colours. Earlier failing tests and results are recorded in the handoff/review.
 
 # Risks and rollout
 
@@ -28,11 +28,11 @@ Requires deployment signing keys already defined by TICKET-056; none are added b
 
 # Screenshots
 
-24 synthetic captures in docs/reviews/TICKET-044/: pass section/full invitation ×four themes ×375/768/1280. All12 pass sections inspected; full-page inspection pending.
+24 synthetic captures in docs/reviews/TICKET-044/: pass section/full invitation ×four themes ×375/768/1280. All12 pass sections inspected; all full-page screenshots and long-page slices also inspected.
 
 # UI checklist
 
-See docs/reviews/TICKET-044/REVIEW.md for every item. Accessibility matrix, contrast, copy, responsiveness and reduced-motion journey pass. Performance, exact-zero CLS, focused keyboard review and physical iOS/Android WhatsApp/scanning are not yet verified. This PR remains draft.
+See docs/reviews/TICKET-044/REVIEW.md for every item. Accessibility matrix, contrast, copy, responsiveness and reduced-motion journey pass. Measured performance/CLS and keyboard checks pass as detailed above. Physical iOS/Android WhatsApp/scanning remains unverified; this is preview approval only.
 
 # Harness changes, if any
 

@@ -41,12 +41,12 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-5) · [Jou
 
 ## Acceptance criteria
 
-- [ ] The QR decodes to the signed pass URL (unit test decodes the SVG).
-- [ ] Quiet zone ≥4 modules and contrast ≥4.5:1 in every theme (test).
-- [ ] The pass shows only after RSVP yes; declined or pending IVs see the RSVP form.
-- [ ] Returning guests reopening their personal invitation can go directly to their issued pass without replaying the envelope reveal. Wire the invitation layout pass slot to the real authorized signed-pass content and test first and return visits, including reduced motion.
+- [x] The QR decodes to the signed pass URL (unit test decodes the SVG).
+- [x] Quiet zone ≥4 modules and contrast ≥4.5:1 in every theme (test).
+- [x] The pass shows only after RSVP yes; declined or pending IVs see the RSVP form.
+- [x] Returning guests reopening their personal invitation can go directly to their issued pass without replaying the envelope reveal. Wire the invitation layout pass slot to the real authorized signed-pass content and test first and return visits, including reduced motion.
 
-- [ ] Test a realistic signed-pass payload in every theme, using four-module quiet zone and adequate module size; the prototype QR density is not production evidence.
+- [x] Test a realistic signed-pass payload in every theme, using four-module quiet zone and adequate module size; the prototype QR density is not production evidence.
 
 ## Test plan
 
@@ -63,6 +63,8 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-5) · [Jou
 - `src/modules/invitations/server/qr.ts`
 
 ## Notes / decisions
+
+- 2026-11-02: Functional criteria verified with actual rendered SVG decoding, all-theme contrast/quiet-zone tests, and live accepted/declined/return/reduced-motion flows. Three production Lighthouse runs99/100/100, accessibility100 and CLS0 each. Full gate656 units/697 browser tests passes; additional normal and missing-key live modes pass. All24 screenshots inspected. Physical QR scans and WhatsApp/device QA remain unchecked release-blocking requirements in TICKET-201 under the standing preview-only exception; this is not production readiness.
 
 2026-10-31: Owner approved retaining the returning-pass integration requirement here rather than TICKET-037. TICKET-037 supplies only the layout slot/anchor; this ticket must prove real signed-pass access and return visits. No implementation or completion is claimed by this scope clarification.
 

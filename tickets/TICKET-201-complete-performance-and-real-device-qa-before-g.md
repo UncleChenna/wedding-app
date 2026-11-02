@@ -42,6 +42,8 @@ Claiming untested checks pass, weakening thresholds, changing TICKET-015's pause
 
 ## Acceptance criteria
 
+- [ ] TICKET-044: on physical iOS and Android, scan the issued signed QR from both screens and printed copies in normal light, low light and glare. Record device/OS/camera/browser/build, realistic payload length and actual results. Verify WhatsApp first/return visits, keyboard/safe areas, and that the scanned read-only pass cannot edit an RSVP. This remains mandatory before either guest release; automated decoding and desktop emulation do not certify it.
+
 - [ ] TICKET-110: on physical iPhone/iPad browsers, including WhatsApp, verify the guide explains opening in Safari, complete Share → Add to Home Screen with actual OS menus, and confirm the installed standalone app hides guidance. Record device/OS/WhatsApp/browser/build and screenshots, keyboard/safe-area behavior and any defects. Browser UA fixtures do not certify this. Retain TICKET-114's full installation suite; unresolved results block both guest releases.
 
 - [ ] TICKET-109: resolve and remeasure /dev/invitation mobile performance (integrated production runs90/92/90; accessibility100 and CLS0 each). Preserve docs/reviews/TICKET-109/integrated-performance-{1,2,3}.json and the95 release target. Verify real Android/Chrome install eligibility, explicit native prompt, dismissal and standalone launch, plus WhatsApp behavior; record build/device/browser versions and evidence. TICKET-114 retains the full PWA installation suite.
