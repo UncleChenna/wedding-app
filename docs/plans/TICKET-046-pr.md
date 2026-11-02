@@ -16,19 +16,19 @@ Accepted guests can download an A5 invitation containing current wedding details
 # Acceptance criteria and evidence
 
 - A5 PDFs, embedded fonts/theme metadata: focused tests pass across four themes.
-- Signed QR decoding:8/8 normal and long-name samples decode after native300dpi rasterization. Native PDFKit opens the files. Actual Preview/Chrome viewer UI remains unverified.
+- Signed QR decoding:8/8 normal and long-name samples decode after native300dpi rasterization. Native PDFKit opens the files. Chromium native viewer rendering is visually verified; Preview application UI remains unverified.
 - Generation under2s: all samples pass, including a1.10s cold render during concurrent browser load.
 - Browser download, rejected eligibility, keyboard focus,44px targets, axe accessibility and all12theme/viewport screenshots pass. Screenshots inspected.
 
 # Verification
 
-Ten focused tests pass; production build and quick verification pass before final pagination refinement. Independent all-theme browser download test passes7.8s. Final renderer refinement has passing unit/raster checks; final production rebuild remains outstanding.
+Ten focused tests pass; production build and quick verification pass and the final production rebuild passes. Independent all-theme browser download test passes7.8s. Final renderer refinement has passing unit/raster checks; final production rebuild and download test pass.
 
 Full verify currently fails three hook tests because pnpm-lock.yaml awaits human exact-path authorization.778units pass/42skip. Broad browser smoke is running and has recorded one existing stepper30s timeout; isolated diagnostic rerun remains outstanding. No test or hook weakened.
 
 # Risks and rollout
 
-Draft only. Implementation currently uncommitted while lockfile authorization is pending; do not treat this as a reviewed release. No database migration. Dependency installation and server font packaging are required. Revert ticket changes to remove PDF endpoint/links. Long names can produce multiple A5 pages; QR remains unsplit. Physical print scans, WhatsApp devices, exact cold CLS and current-route Lighthouse remain unverified, with existing release gates retained.
+Draft only. Source and evidence are committed, but generated pnpm-lock.yaml is deliberately NOT committed pending exact-path human approval. Frozen installs/CI cannot pass until that file is approved and committed. Do not merge this draft. No database migration. Dependency installation and server font packaging are required. Revert ticket changes to remove PDF endpoint/links. Long names can produce multiple A5 pages; QR remains unsplit. Physical print scans, WhatsApp devices, exact cold CLS and current-route Lighthouse remain unverified, with existing release gates retained.
 
 # Screenshots
 

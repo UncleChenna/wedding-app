@@ -25,3 +25,9 @@ Three final Lighthouse runs: Performance99/99/100, Accessibility100each, CLS0eac
 Independent broad smoke:768pass/165skip/1mobile stepper30s timeout (9.2m). Unchanged failing test rerun alone passes8.7s (11.1s including startup). This is not a full green gate. No timeout/assertion changed. Final full verify still requires lockfile authorization and a clean rerun.
 
 Awaiting the pending user's exact-path pnpm-lock.yaml authorization; no permission record fabricated. Source/evidence are uncommitted because the protected-file guard prevents publication. No046PR exists. Only initial status commit is pushed. Next: record approval only upon actual answer, run full verify, commit/push and open detailed PR. Human review/merge remains required.
+
+## Published draft checkpoint
+
+Source/evidence committed5e8f2d6 and pushed; draft PR https://github.com/UncleChenna/wedding-app/pull/77 targets develop. Only pnpm-lock.yaml remains uncommitted and deliberately excluded pending the exact-path approval. The draft explicitly states frozen install/CI cannot pass without it. Ticket blocked status pushed in cee62d8; no merge permitted. This supersedes the earlier local-only checkpoint.
+
+Final verify:quick passes lint/types/related tests. Review PR body committed with latest evidence. The CLI only associates PR metadata during verified in_review transition; keep the draft URL here until t:pr can complete after approval. Next: receive actual approval, record only pnpm-lock.yaml authorization, resume046 through CLI, commit generated lockfile, run full verification and update PR77. Required Preview GUI and physical-device checks remain honestly unverified.

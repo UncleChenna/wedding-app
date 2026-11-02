@@ -56,7 +56,7 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-5) · [Tec
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-11-02: Draft PR https://github.com/UncleChenna/wedding-app/pull/77 contains PDF implementation and review evidence. Generated pnpm-lock.yaml is excluded pending exact-path human authorization; frozen CI cannot pass until approved and committed. Ten focused tests, final build, all-theme download/privacy checks and 300dpi QR decoding pass. Full gate remains incomplete (protected-file guard; one smoke timeout passes isolated rerun). See docs/handoffs/TICKET-046.md. No acceptance criterion marked complete prematurely.
 
 ## Activity log
 
