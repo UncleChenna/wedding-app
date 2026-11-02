@@ -1,6 +1,6 @@
 # Problem and result
 
-TICKET-022 supplies PRD THM-7: turn one or two wedding colours into a complete, AA-validated draft theme. The pure generator supports light/dark schemes and expected validation errors. Editor integration remains TICKET-098.
+TICKET-022 implements PRD THM-7: turn one or two wedding colours into a complete, AA-validated draft theme. The pure generator supports light/dark schemes and expected validation errors. Editor integration remains TICKET-098.
 
 # Changes
 
@@ -9,10 +9,21 @@ TICKET-022 supplies PRD THM-7: turn one or two wedding colours into a complete, 
 - Export the typed result API and document usage, determinism and activation limitations.
 - Add 66 contract tests over 28 seeds and both schemes, invalid inputs, independent outputs and second-seed behavior.
 
-# Acceptance evidence
+# Acceptance and verification
 
-Both ticket criteria pass: 20 deterministic pseudorandom seeds plus 8 extremes satisfy the unchanged contrast gate in both schemes; every status token equals its approved scheme baseline. Existing theme suite: 145 passed. Quick gate: lint/types / 98 related tests passed. Full verification: format/lint/types / 722 units passed (27 skipped), production build passed; initial browser discovery exposed missing JSON import attributes, now corrected. Quick gate and browser discovery pass after correction; full rerun is pending. This draft is not ready to merge.
+Both criteria pass: 20 deterministic pseudorandom seeds plus 8 extremes satisfy the unchanged contrast gate in both schemes; every status token equals its approved scheme baseline.
 
-# Review and limitations
+- Theme suite: 145 passed.
+- Quick gate: lint/types/98 related tests passed.
+- Full verify at 6c751f42ff1ae1b43252090131d46600adaa2bbd: format/lint/types, 722 unit tests passed (27 conditional skips), production build passed, 697 browser tests passed (147 existing conditional/project skips).
+- Initial browser discovery caught missing JSON import attributes. Fixed them and reran the full gate successfully; no checks were weakened.
 
-Run pnpm test src/modules/theming and inspect generateTheme's result for seed #D6BE8D and optional secondarySeed #432B22. Input is six-digit hex; invalid input returns an expected error. A seed can change brightness for links/buttons; the decorative fill remains exact. No live page or preset changes, so UI screenshots/device certification are not claimed. TICKET-098 must review generated palettes visually before activation. No dependency or migration changes; rollback is reverting this API commit, with no stored-data changes.
+# Review, UI scope and limitations
+
+Run pnpm test src/modules/theming. Call generateTheme with seed #D6BE8D and optional secondarySeed #432B22. Input is six-digit hex; invalid input returns an expected error. A seed can change brightness for links/buttons; the decorative fill remains exact. Generated objects pass the existing schema, contrast, status-hue and QR-polarity validators.
+
+No live page or preset changes. Screenshots, layout, motion, keyboard, guest copy, images/CLS, Lighthouse, WhatsApp, physical QR and staff feedback are N/A for this pure library; they are not claimed as verified. TICKET-098 must review generated palettes visually before activation. This API does not persist or activate themes.
+
+# Rollout and rollback
+
+No dependencies, migrations or data writes. Revert this library/export/documentation change to roll back. Existing active themes are unaffected.

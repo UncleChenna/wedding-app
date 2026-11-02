@@ -2,7 +2,8 @@
 
 2026-11-02 · divine · codex · branch TICKET-022.
 Base develop: 2f066ebbb175c4b8d42b0ab6f54545134f52f592.
-Managed stack wedding-a5c5efe207a3; app28750, browser28751, database28741.
+PR: https://github.com/UncleChenna/wedding-app/pull/75 (draft until PR gate completes).
+Managed stack wedding-a5c5efe207a3; app 28750, browser 28751, database 28741.
 
 ## Implementation
 
@@ -10,10 +11,18 @@ Pure generateTheme validates one/two hex seeds and identity/scheme, returns expe
 
 ## Verification
 
-The initial regression suite failed because the generator module did not exist. All 66 new tests now pass: 28 seeds (20 deterministic pseudorandom plus 8 extremes) in both schemes, status equality, AA, QR polarity, deterministic independent objects, second-seed behavior and invalid-input handling. All 145 theming tests pass. Quick gate passes lint/types / 98 related tests. Full gate has passed format, lint, types and 722 unit tests (27 skipped); production build passed, then browser discovery failed on missing ESM JSON import attributes. Added the required attributes; quick verification passes again and Playwright lists 422 mobile smoke cases. Full verification must be rerun.
+Initial regression failed on the missing generator module. All 66 new tests pass: 28 seeds (20 deterministic pseudorandom plus 8 extremes) in both schemes, status equality, AA, QR polarity, deterministic independent objects, second-seed behavior and invalid input. All 145 theming tests pass; quick gate passes lint/types/98 related tests.
 
-No visible UI or active theme changes: screenshot, device, motion and Lighthouse checks are not evidence for this pure API. Generated palettes require visual review when integrated; existing release gates remain mandatory.
+Full verify at source 6c751f42ff1ae1b43252090131d46600adaa2bbd passed format, lint, types, 722 unit tests (27 conditional skips), production build and 697 browser tests (147 existing conditional/project-specific skips). Terminal session57270 exited0. An earlier browser discovery failure exposed missing JSON import attributes; corrected them and reran the complete gate without weakening tests.
 
-## Setup and next action
+## UI checklist scope
 
-Initial wt:new ended with a Supabase startup failure while containers were becoming healthy. Retried via the managed wt:new command after confirming termination; retry is still running. Do not restart a live setup. Both setup attempts ended with startup failure. Docker has about 6 GB RAM. Stopped only completed TICKET-044 stack via db:stop (backup:true), then resumed setup: session2247. The previous full gate session95834 ended; do not poll it again. Resume those handles, inspect terminal results, finish verification, update evidence and PR body, then pnpm t:pr TICKET-022. Latest repository rules leave merge to the human.
+PASS: generated token schema, all AA token pairs, fixed status hues, QR polarity and input validation. No rendered UI or active theme changes: screenshots, typography/layout, mobile targets, motion, keyboard, images/CLS, Lighthouse, guest copy, shared components, WhatsApp devices, physical QR scanning and staff feedback are N/A for this pure library. They remain required when TICKET-098 integrates generated drafts; no physical-device certification is claimed.
+
+## Environment recovery
+
+Two managed startup attempts ended with failure while Docker had about 6 GB for several stacks. Stopped only completed TICKET-044's review stack using db:stop (backup:true), then resumed wt:new. Setup session2247 completed successfully and applied existing migrations. No secret read, reset or other owner's stack change.
+
+## Next
+
+Run pnpm t:pr TICKET-022 to perform the mandatory PR gate and record review metadata, then mark PR75 ready and check its final-head CI. Keep the ticket in review until human merge; current rules prohibit agent merges. No unmet functional criteria; physical release requirements elsewhere remain intact.

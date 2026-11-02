@@ -54,7 +54,7 @@ See: [How theming works](../docs/prd.md#how-theming-works) (THM-7).
 
 ## Notes / decisions
 
-2026-11-02: Pure generator implemented;66 new tests and145 theme tests pass. Quick gate passes. Full verification is running; no editor activation or device certification claimed. See docs/handoffs/TICKET-022.md.
+2026-11-02: Pure generator implemented; 66 new tests and 145 theme tests pass. Quick and full verification pass: 722 units and 697 browser tests. PR https://github.com/UncleChenna/wedding-app/pull/75; no editor activation or device certification claimed. See docs/handoffs/TICKET-022.md.
 
 ## Activity log
 
