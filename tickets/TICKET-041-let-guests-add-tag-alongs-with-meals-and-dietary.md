@@ -2,20 +2,20 @@
 id: TICKET-041
 title: Let guests add tag-alongs with meals and dietary notes
 epic: invitations
-status: todo
+status: in_progress
 priority: urgent
 estimate: L
 labels: [frontend, backend]
 module: invitations
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-040, TICKET-171]
 blocks: [TICKET-042, TICKET-117, TICKET-131, TICKET-138, TICKET-158]
-branch: ""
+branch: TICKET-041
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-02
+started: 2026-11-02
 completed: ""
 reason: ""
 resume_to: ""
@@ -63,3 +63,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-02 — todo → claimed — divine (codex)
+- 2026-11-02 — todo → in_progress — divine (codex)
