@@ -25,7 +25,7 @@ Guests can now save a themed PNG of their accepted invitation's entry pass. The 
 # Verification
 
 Base develop: be0d656343ad3d31af0f904c3a8763c6f94dc598.
-Seven focused tests pass. Full local gate passes 779 unit tests (41 skipped), production build and 769 browser checks (165 skipped), with format/lint/types/ticket validation green. After the final fallback-copy correction, production build and the expanded dedicated browser test pass again in 7.5s; t:pr will independently run the final full gate.
+Seven focused tests pass. Full local gate passes 779 unit tests (41 skipped), production build and 769 browser checks (165 skipped), with format/lint/types/ticket validation green. After the final fallback-copy correction, production build and the expanded dedicated browser test pass again in 7.5s; the final mandatory t:pr full gate also passed.
 
 Three serial Lighthouse mobile runs on the affected personal invitation: performance 99/100/100, accessibility 100 each, CLS zero each. These precede a post-download-only wording correction; initial-load layout is unchanged. Local reports: artifacts/TICKET-045/lighthouse-personal-{1,2,3}.json.
 All twelve theme/viewport screenshots and all four generated theme PNGs inspected. Detailed checklist: docs/reviews/TICKET-045/REVIEW.md.

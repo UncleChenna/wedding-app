@@ -10,8 +10,8 @@ Tests: initial missing-module red test recorded; seven focused tests pass, inclu
 
 The owner's standing preview exception is recorded explicitly: original manual iOS Safari/Android Chrome download requirement is retained unchecked in release-blocking TICKET-201, with WhatsApp/file sharing/physical PNG scans and non-Latin-name checks. No device pass is claimed. TICKET-201 is unowned; only this requirement was added, at the end of acceptance criteria to reduce overlap with PR78's addition.
 
-Next: commit/push verified implementation and evidence, run mandatory t:pr, monitor final-head CI and retain in_review for human review. Do not merge without a new explicit exception. PDF PR77 still awaits exact lockfile authorization; do not touch its files.
+Published PR: https://github.com/UncleChenna/wedding-app/pull/79 targets develop. Implementation e30ce76; CLI in_review transition 18f2c26. The final t:pr gate passed again (779 unit/769 browser, 41/165 skipped). Next: monitor final-head CI and retain in_review for human review; next eligible implementation is TICKET-070. Do not merge without a new explicit exception. PDF PR77 still awaits exact lockfile authorization; do not touch its files.
 
 Lessons: locate filenames with rg --files before reading; avoid dumping minified bundled files (use bounded excerpts). This turn's first no-remote test incorrectly counted Next's local data-URL WASM load; it now permits data: while failing/recording every other requested URL. No network safeguard or feature assertion was removed.
 
-Persistent caffeinate session 69875 prevents machine sleep during verification; stop when ending. Other checkouts preserved.
+Stop the owned isolated stack with backup after verification and end caffeinate session 69875 before yielding. Other checkouts preserved.
