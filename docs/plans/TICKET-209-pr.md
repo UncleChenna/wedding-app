@@ -30,6 +30,8 @@ Functional criteria were verified before integration. The owner approved preview
 
 # Verification
 
+- Integrated full run:671 unit cases passed,27 skipped;768 browser cases passed,165 skipped,1 manifest-discovery failure. Traced to streamed metadata placing the manifest in BODY. Public metadata now uses the bounded cache, and the stronger HEAD/CDP test passes20 repeated cases after rebuild. Final full rerun pending.
+
 - Full standard pnpm verify:584 unit cases passed,26 skipped;731 browser smoke cases passed,153 skipped. Skips are not certified.
 - Subsequent test-only expansion: all six before/day-of RSVP state cases and quick lint/types/related tests pass.
 - Authenticated journey and twelve staff matrix checks pass (13 cases); dedicated local MFA flow passes.

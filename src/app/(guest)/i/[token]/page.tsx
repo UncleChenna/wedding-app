@@ -1,3 +1,4 @@
+import { cacheLife } from "next/cache";
 import { getPublicEventDetails } from "@/modules/invitations/server/public-event-details";
 import { clientEnv } from "@/modules/shared/lib/env/client";
 import { invitationPreviewMetadata } from "@/modules/invitations/lib/share-metadata";
@@ -15,7 +16,8 @@ import { PersonalInvitation } from "@/modules/invitations/components/personal-in
 export const instant = false;
 
 export async function generateMetadata(): Promise<Metadata> {
-  await connection();
+  "use cache";
+  cacheLife({ stale: 300, revalidate: 30, expire: 300 });
   const settings = await getPublicEventDetails();
   const { description } = eventSummary(settings);
   const preview = invitationPreviewMetadata(clientEnv.NEXT_PUBLIC_SITE_URL, settings);

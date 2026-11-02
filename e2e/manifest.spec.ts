@@ -34,7 +34,7 @@ test("@smoke browser discovers and parses the manifest without syntax errors", a
   context,
 }) => {
   await page.goto("/");
-  await expect(page.locator('link[rel="manifest"]')).toHaveAttribute(
+  await expect(page.locator('head link[rel="manifest"]')).toHaveAttribute(
     "href",
     "/manifest.webmanifest",
   );
