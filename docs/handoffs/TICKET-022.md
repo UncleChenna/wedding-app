@@ -2,7 +2,7 @@
 
 2026-11-02 · divine · codex · branch TICKET-022.
 Base develop: 2f066ebbb175c4b8d42b0ab6f54545134f52f592.
-PR: https://github.com/UncleChenna/wedding-app/pull/75 (draft until PR gate completes).
+PR: https://github.com/UncleChenna/wedding-app/pull/75 (ready for human review).
 Managed stack wedding-a5c5efe207a3; app 28750, browser 28751, database 28741.
 
 ## Implementation
@@ -25,4 +25,4 @@ Two managed startup attempts ended with failure while Docker had about 6 GB for 
 
 ## Next
 
-Run pnpm t:pr TICKET-022 to perform the mandatory PR gate and record review metadata, then mark PR75 ready and check its final-head CI. Keep the ticket in review until human merge; current rules prohibit agent merges. No unmet functional criteria; physical release requirements elsewhere remain intact.
+The mandatory pnpm t:pr gate passed at source38305c606ab22c9350bd8bbac3ebff3ea41eef7f: 722 units and697 browser tests, with27 and147 conditional/project skips respectively. Session41230 exited0; the CLI linked PR75, moved the ticket to in_review and pushed status commitd6f8156. Check final-head CI after this evidence commit; PR75 is ready for human review. Keep the ticket in review until human merge; current rules prohibit agent merges. No unmet functional criteria; physical release requirements elsewhere remain intact.
