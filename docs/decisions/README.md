@@ -29,3 +29,5 @@ Accepted: [0019 — Native RSVP rendering and token-safe form requests](0019-nat
 Accepted: [0020 — Gate pass credential and offline trust](0020-gate-pass-credential.md) (TICKET-169; owner approved 2026-11-01).
 
 Proposed: [0021 — Gate pass signing keys and rotation](0021-gate-signing-keys.md) (TICKET-056).
+
+Proposed: [0022 — Member RSVP authority and controlled bootstrap upgrade](0022-member-rsvp-and-legacy-upgrade.md) (TICKET-211; revised owner mandate, human review pending).
