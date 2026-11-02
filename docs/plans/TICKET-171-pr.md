@@ -24,8 +24,8 @@ All three functional criteria are implemented: schema constraints and mixed-stat
 - Migrate twice: 9 applied migrations each time, identical row counts.
 - Seed twice: identical counts, including 18 submissions, 28 station children and 35 lines.
 - RLS enabled on all 13 public tables; Drizzle snapshot check passes.
-- Quick gate passed lint/types; full gate has passed 673 unit tests (27 conditional skips) and production build. Full browser verification passed: 697 tests, with 147 existing conditional/project skips. The PR transition gate and final-head CI remain.
-- A separate local drift-generation command was rejected because it could create a migration outside approved paths. Existing CI schema-drift/migrate/seed checks remain mandatory. The 14 opt-in database tests ran locally; no CI execution of those tests is claimed.
+- Quick gate passed lint/types; full gate has passed 673 unit tests (27 conditional skips) and production build. Full browser verification passed: 697 tests, with 147 existing conditional/project skips. The PR-transition gate also passed with the same counts; final-head CI remains.
+- A separate local drift-generation command was rejected because it could create a migration outside approved paths. CI run41427304515 passed migrations twice, seeds twice and schema drift on implementation head1396d20; final-head checks remain mandatory. The 14 opt-in database tests ran locally; no CI execution of those tests is claimed.
 
 # Risks and rollout
 

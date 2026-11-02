@@ -41,3 +41,9 @@ User approved both exact-path requests. Recorded authorization; integration15e5d
 ## Full verification result
 
 Full verification session60863 exited0: format, lint, types,673 unit tests (27 conditional skips), production build and697 browser tests (147 existing conditional/project skips) passed. Implementation commit07bc329 contains the tested migrations and database tests; later commits change review evidence only. Proceed with RUN_ORDERING_DB_TESTS=1 VITEST_MAX_WORKERS=2 AGENT_OWNER=divine pnpm t:pr TICKET-171, then final-head CI and human review. Never edit applied migrations.
+
+## Review transition complete
+
+2026-11-02: pnpm t:pr passed at source1396d2084de25a4e9a6586d22e57b371d5f344b1 with673 unit tests and697 browser tests (27/147 existing conditional/project skips). Session19150 exited0. The CLI linked PR48, moved TICKET-171 to in_review and pushed status commit16f18a1. PR48 is ready for human review.
+
+CI run41427304515 on the implementation head passed migrations twice, seeds twice and the exact schema-drift step. Its general verification job was still running at the last poll; final evidence/status commits also require final-head CI. The previously rejected local drift command is no longer a missing evidence item because established CI executed the check successfully. Next: verify CI for the latest pushed HEAD; leave merge to the human under current AGENTS.md. After confirmed merge, close through the CLI.

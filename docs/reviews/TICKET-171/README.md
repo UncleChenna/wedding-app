@@ -52,4 +52,4 @@ Before application, rollback means reverting unapplied source. After application
 
 ## Remaining verification
 
-Full verification passed. The mandatory PR-transition gate and final-head CI remain. Automatic approval review refused a separate local drift-generation command because it could create an unapproved extra migration path; no workaround was used. The existing CI migrations/seed/schema-drift job remains mandatory. No workflow was changed, and local opt-in database tests are not represented as CI executions.
+Full verification passed. The mandatory PR-transition gate passed with the same counts. Final-head CI remains. Automatic approval review refused a separate local drift-generation command because it could create an unapproved extra migration path; no workaround was used. CI run41427304515 passed migrations twice, seeds twice and schema drift on implementation head1396d20. Final-head CI remains mandatory. No workflow was changed, and local opt-in database tests are not represented as CI executions.
