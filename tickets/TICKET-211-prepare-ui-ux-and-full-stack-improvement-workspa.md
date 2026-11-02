@@ -2,7 +2,7 @@
 id: TICKET-211
 title: Build the approved household RSVP and migration foundation
 epic: foundations
-status: in_progress
+status: blocked
 priority: medium
 estimate: L
 labels: [backend, db, test, docs]
@@ -17,8 +17,8 @@ created: 2026-11-02
 updated: 2026-11-02
 started: 2026-11-02
 completed: ""
-reason: ""
-resume_to: ""
+reason: "Human must create .harness/approved-writes.json for the seven generated migration files; full gate has three protected-file hook failures. Local implementation preserved; no production operation authorized."
+resume_to: in_progress
 ---
 
 # TICKET-211: Build the approved household RSVP and migration foundation
@@ -43,10 +43,10 @@ The owner supplied a revised end-to-end product mandate on 2026-11-02. It supers
 
 ## Acceptance criteria
 
-- [ ] Every section of the supplied mandate maps to current evidence, status and launch work.
-- [ ] Populated bootstrap and current-schema upgrades preserve representative individual/family/group records, contacts, check-ins and RSVP meaning without rewriting committed migration files.
-- [ ] Per-member responses enforce invitation scope, one current response, revision conflicts, replay-safe idempotency, deadlines and atomic history.
-- [ ] Fresh migrations and repeat migrations pass; all public tables retain RLS and no broad browser policies.
+- [x] Every section of the supplied mandate maps to current evidence, status and launch work.
+- [x] Populated bootstrap and current-schema upgrades preserve representative individual/family/group records, contacts, check-ins and RSVP meaning without rewriting committed migration files.
+- [x] Per-member responses enforce invitation scope, one current response, revision conflicts, replay-safe idempotency, deadlines and atomic history.
+- [x] Fresh migrations and repeat migrations pass; all public tables retain RLS and no broad browser policies.
 - [ ] Relevant checks and the full project gate pass, with external/device/provider limitations recorded separately.
 - [ ] Rollout/recovery notes and a reviewable branch/PR state are available without launching publicly.
 
@@ -66,8 +66,11 @@ The owner supplied a revised end-to-end product mandate on 2026-11-02. It supers
 
 - 2026-11-02 — Owner expanded the prepared workspace into an implementation mandate. Begin with phase A; track remaining requirements without misrepresenting schema or prototypes as working journeys. Preserve the untracked audit and portrait.
 
+- 2026-11-02 — First implementation slice and local regression evidence prepared. Required full gate:665 unit cases pass,42 skipped,3 protected-file hook failures pending human exact-path approval. Implementation is uncommitted; branch scaffold only is pushed. No production changes or readiness claim. See handoff for next steps.
+
 ## Activity log
 
 - 2026-11-02 — new → todo — ihemegodsfavour8-lang (codex)
 - 2026-11-02 — todo → claimed — ihemegodsfavour8-lang (codex)
 - 2026-11-02 — todo → in_progress — ihemegodsfavour8-lang (codex)
+- 2026-11-02 — in_progress → blocked — ihemegodsfavour8-lang (codex) — Human must create .harness/approved-writes.json for the seven generated migration files; full gate has three protected-file hook failures. Local implementation preserved; no production operation authorized.
