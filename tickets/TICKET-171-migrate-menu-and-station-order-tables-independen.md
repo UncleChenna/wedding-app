@@ -2,20 +2,20 @@
 id: TICKET-171
 title: Migrate menu and station order tables independently
 epic: data-auth
-status: todo
+status: in_review
 priority: urgent
 estimate: M
 labels: [db, backend]
 module: shared
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-023]
 blocks: [TICKET-026, TICKET-027, TICKET-041, TICKET-070, TICKET-084, TICKET-095]
-branch: ""
-pr: ""
+branch: TICKET-171
+pr: https://github.com/UncleChenna/wedding-app/pull/48
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-02
+started: 2026-10-27
 completed: ""
 reason: ""
 resume_to: ""
@@ -37,9 +37,9 @@ Backlog audit coverage: ORD-1–9. See [PRD](../docs/prd.md) and [audit](AUDIT.m
 
 ## Acceptance criteria
 
-- [ ] Migrate categories, menu items, stations, orders and line items with foreign keys, indexes, quantity/cap constraints and live availability fields.
-- [ ] Represent one guest submission across kitchen/bar child orders with a stable group and idempotency key; table-level limits count submissions consistently.
-- [ ] Seed deterministic mixed-station orders and test migration against an empty database and the existing bootstrap schema without dropping live data.
+- [x] Migrate categories, menu items, stations, orders and line items with foreign keys, indexes, quantity/cap constraints and live availability fields.
+- [x] Represent one guest submission across kitchen/bar child orders with a stable group and idempotency key; table-level limits count submissions consistently.
+- [x] Seed deterministic mixed-station orders and test migration against an empty database and the existing bootstrap schema without dropping live data.
 
 ## Test plan
 
@@ -54,6 +54,15 @@ Backlog audit coverage: ORD-1–9. See [PRD](../docs/prd.md) and [audit](AUDIT.m
 
 - 2026-10-21 — Added by HARNESS-002. All criteria describe future work; no completion or human approval is implied.
 
+2026-11-02: User approved exact paths and isolated testing. Three generated migrations applied locally;14 database cases pass, repeat migration/seed counts match and all13 tables retain RLS. Full gate browser phase and CI remain pending; no production application. Evidence docs/reviews/TICKET-171/README.md.
+
 ## Activity log
 
 - 2026-10-21 — new → todo — divine
+- 2026-10-27 — todo → claimed — divine (codex)
+- 2026-10-27 — todo → in_progress — divine (codex)
+- 2026-10-27 — in_progress → blocked — divine (codex) — Draft PR #48: source and staged migration proposal pushed; awaiting exact-path authorization for 0002 ordering-expand, 0003 ordering-backfill, 0004 ordering-contract and generated metadata. Existing approval covers TICKET-023 only.
+- 2026-11-02 — blocked → in_progress — divine (codex) — Refresh source integration and migration proposal against current develop; protected migration generation remains pending approval
+- 2026-11-02 — in_progress → blocked — divine (codex) — Source integration with develop 2f066eb is resolved and quick-tested; awaiting exact-path authorization for unchanged inherited protected files and proposed 0006–0008 migration generation. Updated proposal in docs/reviews/TICKET-171/migration-approval.md; no new migration applied.
+- 2026-11-02 — blocked → in_progress — divine (codex) — User approved inherited protected files and isolated 0006–0008 migration generation/testing
+- 2026-11-02 — in_progress → in_review — divine (codex)

@@ -33,8 +33,8 @@ async function main() {
     // be cleared; the trigger is off only inside this transaction, so a failure restores it.
     await tx.execute(sql`alter table rsvp_changes disable trigger rsvp_history_append_only`);
     await tx.execute(sql`
-      truncate table rsvp_changes, event_settings, order_items, orders, menu_items, check_ins,
-        rsvps, guests, tables, invitations, staff, themes restart identity cascade
+      truncate table rsvp_changes, event_settings, order_items, station_orders, orders, menu_items,
+        check_ins, rsvps, guests, tables, invitations, staff, themes restart identity cascade
     `);
     await tx.execute(sql`alter table rsvp_changes enable trigger rsvp_history_append_only`);
     await tx.insert(schema.eventSettings).values(data.eventSettings);
@@ -47,6 +47,7 @@ async function main() {
     await tx.insert(schema.checkIns).values(data.checkIns);
     await tx.insert(schema.menuItems).values(data.menuItems);
     await tx.insert(schema.orders).values(data.orders);
+    await tx.insert(schema.stationOrders).values(data.stationOrders);
     await tx.insert(schema.orderItems).values(data.orderItems);
   });
 
