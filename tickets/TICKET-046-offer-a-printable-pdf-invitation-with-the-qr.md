@@ -2,20 +2,20 @@
 id: TICKET-046
 title: Offer a printable PDF invitation with the QR
 epic: invitations
-status: todo
+status: in_progress
 priority: urgent
 estimate: L
 labels: [frontend, backend]
 module: invitations
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-011, TICKET-044]
 blocks: [TICKET-131, TICKET-158, TICKET-176]
-branch: ""
+branch: TICKET-046
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-02
+started: 2026-11-02
 completed: ""
 reason: ""
 resume_to: ""
@@ -61,3 +61,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-02 — todo → claimed — divine (codex)
+- 2026-11-02 — todo → in_progress — divine (codex)
