@@ -2,20 +2,20 @@
 id: TICKET-107
 title: Keep the guest's own QR pass available offline once opened
 epic: pwa
-status: todo
+status: in_progress
 priority: urgent
 estimate: M
 labels: [pwa, frontend]
 module: invitations
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-044, TICKET-105]
 blocks: [TICKET-113, TICKET-138, TICKET-176, TICKET-184]
-branch: ""
+branch: TICKET-107
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-02
+started: 2026-11-02
 completed: ""
 reason: ""
 resume_to: ""
@@ -64,3 +64,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-02 — todo → claimed — divine (codex)
+- 2026-11-02 — todo → in_progress — divine (codex)
