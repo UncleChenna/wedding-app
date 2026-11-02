@@ -59,3 +59,7 @@ The resolved integration inherits these exact files byte-identical to develop2f0
 - drizzle/meta/_journal.json
 
 Authorization to carry these existing files is separate from permission to generate the proposed0006–0008 sequence. No new migration has been generated or applied; no populated-database safety claim is made. Record any explicit approval in .worktrees/TICKET-171/.harness/approved-writes.json, never fabricate it.
+
+## Approval and execution record — 2026-11-02
+
+The user explicitly approved both requests: unchanged inherited files and generation/isolated testing of0006–0008, including recording authorization. Integration15e5d26 is pushed. Generated migrations and tests are committed in07bc329; they were applied only to projectwedding-ebb5922a7e90. All14 database cases, repeated migration/seeding and RLS checks pass. See README.md for actual evidence and remaining browser/CI gates. The earlier pending-approval wording above is historical, not a current blocker.

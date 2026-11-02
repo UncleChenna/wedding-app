@@ -37,9 +37,9 @@ Backlog audit coverage: ORD-1–9. See [PRD](../docs/prd.md) and [audit](AUDIT.m
 
 ## Acceptance criteria
 
-- [ ] Migrate categories, menu items, stations, orders and line items with foreign keys, indexes, quantity/cap constraints and live availability fields.
-- [ ] Represent one guest submission across kitchen/bar child orders with a stable group and idempotency key; table-level limits count submissions consistently.
-- [ ] Seed deterministic mixed-station orders and test migration against an empty database and the existing bootstrap schema without dropping live data.
+- [x] Migrate categories, menu items, stations, orders and line items with foreign keys, indexes, quantity/cap constraints and live availability fields.
+- [x] Represent one guest submission across kitchen/bar child orders with a stable group and idempotency key; table-level limits count submissions consistently.
+- [x] Seed deterministic mixed-station orders and test migration against an empty database and the existing bootstrap schema without dropping live data.
 
 ## Test plan
 
@@ -53,6 +53,8 @@ Backlog audit coverage: ORD-1–9. See [PRD](../docs/prd.md) and [audit](AUDIT.m
 ## Notes / decisions
 
 - 2026-10-21 — Added by HARNESS-002. All criteria describe future work; no completion or human approval is implied.
+
+2026-11-02: User approved exact paths and isolated testing. Three generated migrations applied locally;14 database cases pass, repeat migration/seed counts match and all13 tables retain RLS. Full gate browser phase and CI remain pending; no production application. Evidence docs/reviews/TICKET-171/README.md.
 
 ## Activity log
 
