@@ -48,7 +48,11 @@ async function Invitation({ params }: { params: Promise<{ token: string }> }) {
       details={settings}
       token={token}
       repliesOpen={settings.timeZone !== null}
-      pass={issued?.state === "ready" ? <QrPass url={issued.url} pass={issued.pass} /> : undefined}
+      pass={
+        issued?.state === "ready" ? (
+          <QrPass url={issued.url} pass={issued.pass} saveOffline />
+        ) : undefined
+      }
       passNotice={issued?.state === "unavailable" ? <PassUnavailable /> : undefined}
     />
   );

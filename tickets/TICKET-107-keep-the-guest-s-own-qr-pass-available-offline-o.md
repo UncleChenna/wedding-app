@@ -40,10 +40,10 @@ See: [Journey 1: receiving the IV and RSVP](../docs/prd.md#journey-1-receiving-t
 
 ## Acceptance criteria
 
-- [ ] After one online visit, /i/<token> shows the QR offline (e2e).
-- [ ] Visiting another token does not expose the first guest's pass (test).
+- [x] After one online visit, /i/<token> shows the QR offline (e2e).
+- [x] Visiting another token does not expose the first guest's pass (test).
 
-- [ ] Show that the saved pass is an offline copy with its last refresh time, isolate it by capability, and remove a known-revoked copy on reconnect.
+- [x] Show that the saved pass is an offline copy with its last refresh time, isolate it by capability, and remove a known-revoked copy on reconnect.
 
 ## Test plan
 
@@ -59,7 +59,7 @@ See: [Journey 1: receiving the IV and RSVP](../docs/prd.md#journey-1-receiving-t
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-11-02 — Minimal own-pass cache and save hint implemented. Production offline test proves signed QR validity, A/B isolation, timestamps, reconnect revocation/decline and eviction. Full verification passes: 783 unit tests and 769 browser checks; 41/165 skipped. Lighthouse 99/100/100, accessibility 100 and CLS 0. Physical device checks remain release-blocking in TICKET-201 under the approved preview exception; expiry/logout/retention remain TICKET-184. See docs/reviews/TICKET-107/REVIEW.md and the handoff.
 
 ## Activity log
 

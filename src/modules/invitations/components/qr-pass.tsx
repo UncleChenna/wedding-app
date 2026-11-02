@@ -1,7 +1,16 @@
+import { OfflinePassSave } from "./offline-pass-save";
 import { QrCode } from "@/modules/shared/components/ui/qr-code";
 import type { PassView } from "@/modules/checkin/lib/pass-eligibility";
 
-export function QrPass({ url, pass }: { url: string; pass: PassView }) {
+export function QrPass({
+  url,
+  pass,
+  saveOffline = false,
+}: {
+  url: string;
+  pass: PassView;
+  saveOffline?: boolean;
+}) {
   const name = pass.names.join(" & ") || pass.householdName || "Our dear guest";
   return (
     <div className="mx-auto max-w-md">
@@ -32,6 +41,7 @@ export function QrPass({ url, pass }: { url: string; pass: PassView }) {
       >
         Open your pass
       </a>
+      {saveOffline ? <OfflinePassSave /> : null}
     </div>
   );
 }

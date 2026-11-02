@@ -1,4 +1,5 @@
 import "server-only";
+import { ownPassWorkerSource } from "@/modules/invitations/lib/offline-worker";
 
 import {
   cachePolicy,
@@ -54,6 +55,8 @@ async function precacheAsset(cache, path) {
   }
 }
 
+${ownPassWorkerSource()}
+
 self.addEventListener("install", (event) => {
   // The offline page itself is required; its build assets are best-effort.
   // (Scanner shell: TICKET-108.)
@@ -81,7 +84,8 @@ self.addEventListener("activate", (event) => {
             (name) =>
               name.startsWith(SW_CACHE_PREFIX) &&
               name !== SW_STATIC_CACHE &&
-              name !== SW_OFFLINE_CACHE,
+              name !== SW_OFFLINE_CACHE &&
+              name !== OWN_PASS_CACHE,
           )
           .map((name) => caches.delete(name)),
       );
@@ -92,6 +96,10 @@ self.addEventListener("activate", (event) => {
 
 self.addEventListener("fetch", (event) => {
   const request = event.request;
+  if (request.method === "GET" && request.mode === "navigate" && ownPassPath(request.url) && !request.headers.has("rsc") && !request.headers.has("next-router-prefetch")) {
+    event.respondWith(ownPassNavigation(request));
+    return;
+  }
   const policy = cachePolicy({
     method: request.method,
     url: request.url,
