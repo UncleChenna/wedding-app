@@ -1,0 +1,25 @@
+# TICKET-044 UI review — in progress
+
+Base develop c4208e39d8df9914c0ad57f525d4f0658fdeaab7. Outcome: CHANGES REQUESTED until remaining review evidence is collected. PR73 remains draft.
+
+| Check                | Result and evidence                                                                                                                                                                                                              |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Screenshots          | 24 captures: four themes ×375/768/1280, pass section and full invitation. All12 pass sections inspected: readable copy, uninterrupted QR ground, clear next action, no clipping. Full invitation inspection remains pending.     |
+| Tokens               | PASS: QR uses existing ink/paper tokens; frame uses rounded-lg, surface and border tokens. No new token or colour literal.                                                                                                       |
+| Restraint/typography | PASS for inspected pass sections: one QR frame, display heading, body text and concise approved copy.                                                                                                                            |
+| Mobile               | PASS automated no-horizontal-overflow checks at375/768/1280 in each theme; QR modules at least3 CSSpx in the live fixture. Physical keyboard/safe-area behavior not verified.                                                    |
+| Motion               | PASS live journey under reduce/no-preference; returning accepted guest envelope remains closed to animation and pass anchor is available.                                                                                        |
+| Keyboard             | Not yet separately verified for new pass navigation; remaining focused check.                                                                                                                                                    |
+| Contrast             | PASS rendered SVG decoding and at least4.5:1 token contrast in every theme; live page axe checks pass in all24 theme/width/motion combinations.                                                                                  |
+| Load/images          | Exact-zero CLS not yet measured for this ticket. No new photographs; SVG retains aspect ratio.                                                                                                                                   |
+| Performance          | Not yet measured on the accepted invitation.                                                                                                                                                                                     |
+| Copy                 | PASS approved Warm QR copy, guest name, admits count and unknown-table wording.                                                                                                                                                  |
+| Shared components    | PASS existing QrCode reused; feature-specific pass is not a new base primitive.                                                                                                                                                  |
+| Sharing/devices      | Not verified on real iOS/Android WhatsApp. No personal metadata added.                                                                                                                                                           |
+| QR                   | Rendered realistic signed SVG decodes in four themes; four-module quiet zone tested. Live signed URL opens authorized read-only pass, no editing credential. Physical screen/printed scans in glare/low light remain unverified. |
+| Staff feedback       | N/A: guest pass only; no scanner behavior changed.                                                                                                                                                                               |
+| Verification         | PASS full gate:656 units,697 browser smoke;27 unit/147 browser skips not certified. Four additional isolated live tests pass, including no-JavaScript RSVP, tamper and revocation.                                               |
+
+Logs: artifacts/TICKET-044/wired-full.log and wired-final-browser.log. Earlier missing-module/rendering/action tests failed before implementation; an initially mistaken malformed-token fixture was corrected because legacy UUID-shaped strings are syntactically allowed credentials (database matching still uses the credential column, never the ID). New issuance version-snapshot test rejects concurrent credential rotation.
+
+Screenshots contain synthetic Ada Example and a discarded-key pass for a fixture deleted after testing. No real guest data, live secret or personal invitation link is embedded in these images.

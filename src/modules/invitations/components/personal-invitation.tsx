@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { RsvpForm } from "./rsvp-form";
 import { InvitationLetter, type InvitationEventDetails } from "./invitation-letter";
@@ -8,16 +9,25 @@ export function PersonalInvitation({
   token,
   repliesOpen,
   details,
+  pass,
+  passNotice,
 }: {
   invitation: GuestInvitation;
   token: string;
   repliesOpen: boolean;
   details: InvitationEventDetails;
+  pass?: ReactNode;
+  passNotice?: ReactNode;
 }) {
   const greeting =
     invitation.primaryNames.join(" & ") || invitation.householdName || "Our dear guest";
   return (
-    <InvitationLetter details={details} greeting={greeting}>
+    <InvitationLetter
+      details={details}
+      greeting={greeting}
+      pass={invitation.attendance === "yes" ? pass : undefined}
+    >
+      {invitation.attendance === "yes" && passNotice}
       <RsvpForm token={token} attendance={invitation.attendance} open={repliesOpen} />
       <Link
         href="/"

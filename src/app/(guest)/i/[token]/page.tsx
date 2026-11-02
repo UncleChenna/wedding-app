@@ -1,3 +1,6 @@
+import { findInvitationPassIdentity } from "@/modules/invitations/server/pass-identity";
+import { issueGatePassFrom } from "@/modules/checkin/server/issue-pass";
+import { QrPass, PassUnavailable } from "@/modules/invitations/components/qr-pass";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { connection } from "next/server";
@@ -23,6 +26,11 @@ async function Invitation({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params;
   const invitation = await findGuestInvitation(db, token);
   if (!invitation) notFound();
+  const identity =
+    invitation.attendance === "yes" ? await findInvitationPassIdentity(db, token) : null;
+  const issued = identity
+    ? await issueGatePassFrom(db, identity, clientEnv.NEXT_PUBLIC_SITE_URL)
+    : null;
   const settings = await getEventSettings();
   return (
     <PersonalInvitation
@@ -30,6 +38,8 @@ async function Invitation({ params }: { params: Promise<{ token: string }> }) {
       details={settings}
       token={token}
       repliesOpen={settings.timeZone !== null}
+      pass={issued?.state === "ready" ? <QrPass url={issued.url} pass={issued.pass} /> : undefined}
+      passNotice={issued?.state === "unavailable" ? <PassUnavailable /> : undefined}
     />
   );
 }
