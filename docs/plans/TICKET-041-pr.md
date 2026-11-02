@@ -21,13 +21,13 @@ Guests who RSVP yes can add, edit and remove tag-alongs, choose meals and save d
 
 Full pnpm verify passes:789 unit/database tests,41 skipped;769 browser smoke tests,165 skipped. Skipped checks are not certified. Focused browser flow passes; final no-JavaScript expansion passes (18.4s).
 
-## Remaining before ready review
+## Remaining release checks
 
-- Signed-pass count refresh after guest changes.
-- Production Lighthouse measurements and final evidence.
+- Signed-pass count refresh passes for both the invitation and original read-only pass; dietary notes remain private.
+- Production Lighthouse:98/100/100 performance,100 accessibility each,0 measured CLS each.
 - Physical iOS/Android WhatsApp and strict-zero cold-font release gates remain mandatory in TICKET-201.
 
-This is a draft. It is not release approval and must not merge yet.
+Preview review retains the existing TICKET-201 device and cold-font release gates. This does not certify production readiness. Final PR gate and CI must pass before human merge.
 
 ## Risk, migration and rollback
 
@@ -35,4 +35,4 @@ No migration, schema, RLS, dependency or CI changes. Venue timezone must be conf
 
 ## Review steps
 
-Use this ticket's isolated synthetic database. Open an invitation, choose Count me in, add two named guests with meals and notes, save, remove one, save and reload. Verify the count is two, then try a tampered over-limit submission. Review all-theme screenshots and the outstanding checks before approval.
+Use this ticket's isolated synthetic database. Open an invitation, choose Count me in, add two named guests with meals and notes, save, remove one, save and reload. Verify the count is two, then try a tampered over-limit submission. Review all-theme screenshots and the retained release gates before approval.

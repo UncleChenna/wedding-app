@@ -57,6 +57,28 @@ test.describe("named RSVP party", () => {
     await page.getByRole("button", { name: "Count me in", exact: true }).click();
     const section = page.locator('section[aria-labelledby="party-heading"]');
     await expect(section).toBeVisible();
+    let originalPass = "";
+    if (process.env.RUN_PARTY_SIGNED_PASS === "1") {
+      await expect(page.locator("#pass")).toContainText("1 guest");
+      originalPass =
+        (await page
+          .getByRole("link", { name: "Open your pass", exact: true })
+          .getAttribute("href")) ?? "";
+      expect(originalPass).not.toContain(token);
+    }
+    async function expectPassSize(size: number) {
+      if (process.env.RUN_PARTY_SIGNED_PASS !== "1") return;
+      await expect(page.locator("#pass")).toContainText(size + " guests");
+      const passPage = await page.context().newPage();
+      try {
+        await passPage.goto(new URL(originalPass).pathname);
+        await expect(passPage.locator("dd").filter({ hasText: size + " guests" })).toBeVisible();
+        await expect(passPage.getByText("No nuts", { exact: true })).toHaveCount(0);
+        await expect(passPage.getByText("Vegetarian", { exact: true })).toHaveCount(0);
+      } finally {
+        await passPage.close();
+      }
+    }
     await section.getByLabel("Meal choice").selectOption(mealId);
     await section.getByLabel("Dietary notes (optional)").fill("No nuts");
     for (const name of ["Uche Example", "Obi Example"]) {
@@ -71,6 +93,7 @@ test.describe("named RSVP party", () => {
     await expect(section.getByRole("status")).toContainText("Your guest details are saved");
     await page.reload();
     await expect(section.getByLabel("Full name")).toHaveCount(3);
+    await expectPassSize(3);
     await section.getByRole("button", { name: "Remove guest: Obi Example" }).click();
     await section.getByRole("button", { name: "Save guest details" }).click();
     await expect(section.getByRole("status")).toContainText("Your guest details are saved");
@@ -79,6 +102,7 @@ test.describe("named RSVP party", () => {
     await expect(section.getByLabel("Dietary notes (optional)").first()).toHaveValue("No nuts");
     const [saved] = await db`select count_attending from rsvps where invitation_id=${invitationId}`;
     expect(saved?.count_attending).toBe(2);
+    await expectPassSize(2);
     for (const reducedMotion of ["reduce", "no-preference"] as const) {
       await page.emulateMedia({ reducedMotion });
       for (const theme of themes)
@@ -97,7 +121,7 @@ test.describe("named RSVP party", () => {
             expect(box?.height).toBeGreaterThanOrEqual(44);
             expect(box?.width).toBeGreaterThanOrEqual(44);
           }
-          if (reducedMotion === "reduce") {
+          if (reducedMotion === "reduce" && process.env.RUN_PARTY_SIGNED_PASS !== "1") {
             const directory = "docs/reviews/TICKET-041/" + theme.id;
             mkdirSync(directory, { recursive: true });
             await section.screenshot({ path: directory + "/" + width + "-party.png" });

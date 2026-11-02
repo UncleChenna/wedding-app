@@ -27,3 +27,9 @@ Full verify session99779 exited0:789 unit/database tests pass,41 skipped;769 bro
 ## Published checkpoint
 
 Implementation commit532dfd3 is pushed. Draft PR: https://github.com/UncleChenna/wedding-app/pull/76. Ticket stays in_progress; do not mark it complete or merge the draft. Remaining: signed-pass count refresh, three production Lighthouse runs and final UI/CI review. The four-PR merge exception does not authorize this PR. Working tree is otherwise clean.
+
+## Final review evidence — 2026-11-02
+
+Ephemeral-key signed pass review passes (scripts/review-party.ts,11.2s). Original issued pass reflects3 guests then2 after removal; dietary notes never appear there. Local-origin fixture correction retains all assertions. Three serial production Lighthouse runs pass: Performance98/100/100, Accessibility100 each, measured CLS0 each. Raw ignored reports and performance.log are in artifacts/TICKET-041. Measurement fixtures were cleaned up. No product source changed after full verify; only tests, review helper and evidence added.
+
+Next: commit/push review evidence, run RUN_PARTY_DB_TESTS=1 AGENT_OWNER=divine VITEST_MAX_WORKERS=2 caffeinate -is pnpm t:pr TICKET-041, then check final-head CI and move draft to ready. Keep the physical-device/cold-font release gates in201; do not merge76 under the earlier four-PR exception.
