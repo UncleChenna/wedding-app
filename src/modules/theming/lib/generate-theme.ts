@@ -1,6 +1,6 @@
 import { z } from "zod";
-import ivoryGold from "../themes/ivory-gold.json";
-import midnightChampagne from "../themes/midnight-champagne.json";
+import ivoryGold from "../themes/ivory-gold.json" with { type: "json" };
+import midnightChampagne from "../themes/midnight-champagne.json" with { type: "json" };
 import { contrastRatio, hexToRgb } from "./contrast";
 import { loadTheme } from "./load-theme";
 import type { Theme } from "./schema";
