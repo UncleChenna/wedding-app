@@ -900,18 +900,19 @@
       "log": [
         "- 2026-10-27 — todo → claimed — divine (codex)",
         "- 2026-10-27 — todo → in_progress — divine (codex)",
-        "- 2026-10-27 — in_progress → blocked — divine (codex) — Draft PR #48: source and staged migration proposal pushed; awaiting exact-path authorization for 0002 ordering-expand, 0003 ordering-backfill, 0004 ordering-contract and generated metadata. Existing approval covers TICKET-023 only."
+        "- 2026-10-27 — in_progress → blocked — divine (codex) — Draft PR #48: source and staged migration proposal pushed; awaiting exact-path authorization for 0002 ordering-expand, 0003 ordering-backfill, 0004 ordering-contract and generated metadata. Existing approval covers TICKET-023 only.",
+        "- 2026-11-02 — blocked → in_progress — divine (codex) — Refresh source integration and migration proposal against current develop; protected migration generation remains pending approval"
       ],
-      "status": "blocked",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-171",
       "pr": "",
       "started": "2026-10-27",
       "completed": "",
-      "updated": "2026-10-27",
-      "reason": "Draft PR #48: source and staged migration proposal pushed; awaiting exact-path authorization for 0002 ordering-expand, 0003 ordering-backfill, 0004 ordering-contract and generated metadata. Existing approval covers TICKET-023 only.",
-      "resume_to": "in_progress"
+      "updated": "2026-11-02",
+      "reason": "",
+      "resume_to": ""
     },
     "WED-205": {
       "log": [
