@@ -6,6 +6,10 @@ const isDev = process.env.NODE_ENV !== "production";
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
+  experimental: {
+    // Verification-only cold runs; normal builds retain the framework default.
+    turbopackFileSystemCacheForBuild: process.env.FONT_COLD_BUILD !== "1",
+  },
   partialPrefetching: true,
   reactStrictMode: true,
   poweredByHeader: false,
@@ -27,6 +31,13 @@ const nextConfig: NextConfig = {
           isDev,
           supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
         }),
+      },
+      {
+        source: "/admin/:path*",
+        headers: [
+          { key: "Referrer-Policy", value: "no-referrer" },
+          { key: "X-Robots-Tag", value: "noindex, nofollow" },
+        ],
       },
     ];
   },

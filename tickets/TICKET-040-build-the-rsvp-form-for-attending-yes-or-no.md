@@ -2,20 +2,20 @@
 id: TICKET-040
 title: Build the RSVP form for attending yes or no
 epic: invitations
-status: todo
+status: in_review
 priority: urgent
 estimate: M
 labels: [frontend, backend]
 module: invitations
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-018, TICKET-023, TICKET-036, TICKET-025, TICKET-035]
 blocks: [TICKET-041, TICKET-044, TICKET-126, TICKET-178, TICKET-183]
-branch: ""
-pr: ""
+branch: TICKET-040
+pr: https://github.com/UncleChenna/wedding-app/pull/55
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-10-31
+started: 2026-10-28
 completed: ""
 reason: ""
 resume_to: ""
@@ -41,9 +41,9 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-4) · [Jou
 
 ## Acceptance criteria
 
-- [ ] Submitting yes/no updates the invitation status and shows the PRD confirmation copy.
-- [ ] Invalid or revoked tokens cannot submit (server-side check, tested).
-- [ ] Form works with JavaScript disabled (e2e).
+- [x] Submitting yes/no updates the invitation status and shows the PRD confirmation copy.
+- [x] Invalid or revoked tokens cannot submit (server-side check, tested).
+- [x] Form works with JavaScript disabled (e2e).
 
 ## Test plan
 
@@ -58,8 +58,15 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-4) · [Jou
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-10-31: Approved compiler-cache recovery completed. Five database tests, six real browser tests and twelve all-theme review cases pass after the final POST cleanup. Sixty screenshots inspected; three Lighthouse runs score100 Performance/Accessibility with CLS0. Final full browser report records passed; refresh the full gate through t:pr before review. Physical device checks remain unverified in TICKET-201. Verified develop base c22d9d94105817f10c63b7dae239fd2d4f6686e6.
+
+2026-10-30: Draft PR55 (https://github.com/UncleChenna/wedding-app/pull/55), implementation ec8855e pushed. Five isolated DB checks and six browser checks passed before final POST-routing cleanup; latest quick gate passes. Full build/browser/UI verification remains pending exact-path compiler-cache recovery approval. See docs/handoffs/TICKET-040.md; no completion claimed.
 
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-28 — todo → claimed — divine (codex)
+- 2026-10-28 — todo → in_progress — divine (codex)
+- 2026-10-30 — in_progress → blocked — divine (codex) — Draft PR55 https://github.com/UncleChenna/wedding-app/pull/55; awaiting exact-path compiler-cache recovery approval, then final build/browser/UI verification
+- 2026-10-31 — blocked → in_progress — divine (codex)
+- 2026-10-31 — in_progress → in_review — divine (codex)

@@ -29,7 +29,11 @@
     "warning": "#E8B04B",
     "warning-foreground": "#241700",
     "warning-subtle": "#33260A",
-    "warning-subtle-foreground": "#F2C877"
+    "warning-subtle-foreground": "#F2C877",
+    "decorative": "#D9B97A",
+    "decorative-foreground": "#1A1408",
+    "qr-ink": "#0F1420",
+    "qr-paper": "#F4EFE6"
   },
   "fonts": {
     "display": "playfair",

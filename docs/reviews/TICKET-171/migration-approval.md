@@ -1,7 +1,7 @@
-# TICKET-171 migration proposal — 2026-10-27
+# TICKET-171 migration proposal — 2026-11-02
 
 Draft PR: https://github.com/UncleChenna/wedding-app/pull/48
-Source commit: f0515b8. Base: 3752e0591e225a0dd4421c84c225917dca270e29.
+Original source commit: f0515b8. Prepared merge base: 2f066ebbb175c4b8d42b0ab6f54545134f52f592. Merge is locally resolved but not committed pending inherited protected-file authorization.
 
 ## Requested scope
 
@@ -9,12 +9,12 @@ Generate and test three unapplied migrations only in this ticket's isolated loca
 
 Exact protected outputs:
 
-- drizzle/0002_ordering-expand.sql
-- drizzle/meta/0002_snapshot.json
-- drizzle/0003_ordering-backfill.sql
-- drizzle/meta/0003_snapshot.json
-- drizzle/0004_ordering-contract.sql
-- drizzle/meta/0004_snapshot.json
+- drizzle/0006_ordering-expand.sql
+- drizzle/meta/0006_snapshot.json
+- drizzle/0007_ordering-backfill.sql
+- drizzle/meta/0007_snapshot.json
+- drizzle/0008_ordering-contract.sql
+- drizzle/meta/0008_snapshot.json
 - drizzle/meta/_journal.json
 
 Record explicit approval in ignored .harness/approved-writes.json only after the user authorizes it. Generate all SQL/snapshot scaffolding with Drizzle. The new custom backfill SQL may be filled before application; never edit applied SQL or snapshots manually. If generator output paths differ, stop and obtain approval for the actual paths.
@@ -38,6 +38,24 @@ Record explicit approval in ignored .harness/approved-writes.json only after the
 
 ## Current evidence and coordination
 
-Eight seed unit tests pass and quick verification passes. No generated migration or database-preservation proof exists yet. This is a proposal, not verified SQL. TICKET-025 and TICKET-172 have independent pending migration proposals against the same journal; serialize integration and regenerate later tickets against the updated base. An approval for TICKET-023 does not cover these files.
+Nine seed unit tests pass; refreshed quick verification passes lint, types and425 related tests (19 conditional skips). No generated migration or database-preservation proof exists yet. This is a proposal, not verified SQL. TICKET-025 and subsequent event-setting migrations are now merged; journal indices0–5 are already occupied. TICKET-172 remains pending; serialize it after this ticket and regenerate against the then-current journal. An approval for TICKET-023 does not cover these files.
 
 Rollback before release is reverting unapplied branch changes. After application, use a separately reviewed forward repair; do not drop the new child rows or overwrite restored guest data.
+
+## Unchanged develop files awaiting commit authorization
+
+The resolved integration inherits these exact files byte-identical to develop2f066eb (verified with git diff; no differences):
+
+- pnpm-lock.yaml
+- src/modules/theming/themes/theme.schema.json
+- drizzle/0002_event-settings-rsvp-history.sql
+- drizzle/0003_rsvp-history-append-only.sql
+- drizzle/0004_furry_wolfpack.sql
+- drizzle/0005_blue_ravenous.sql
+- drizzle/meta/0002_snapshot.json
+- drizzle/meta/0003_snapshot.json
+- drizzle/meta/0004_snapshot.json
+- drizzle/meta/0005_snapshot.json
+- drizzle/meta/_journal.json
+
+Authorization to carry these existing files is separate from permission to generate the proposed0006–0008 sequence. No new migration has been generated or applied; no populated-database safety claim is made. Record any explicit approval in .worktrees/TICKET-171/.harness/approved-writes.json, never fabricate it.

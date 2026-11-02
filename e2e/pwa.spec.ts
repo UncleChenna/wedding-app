@@ -1,3 +1,4 @@
+import { waitForPublicDestination } from "./support/routes";
 import { expect, test, type Page } from "@playwright/test";
 
 /**
@@ -36,6 +37,13 @@ test.describe("service worker @smoke", () => {
     expect(await response.text()).toContain("cachePolicy");
   });
 
+  test("private routes remain no-store even with cached theme data", async ({ request }) => {
+    for (const path of ["/admin", "/admin/sign-in", "/checkin", "/kitchen", "/order"]) {
+      const response = await request.get(path);
+      expect(response.headers()["cache-control"], path).toContain("no-store");
+    }
+  });
+
   test("registers at root scope and controls pages", async ({ page }) => {
     await controlledPage(page);
     const scope = await page.evaluate(async () => (await navigator.serviceWorker.ready).scope);
@@ -48,6 +56,7 @@ test.describe("service worker @smoke", () => {
     await controlledPage(page);
     for (const path of ["/admin", "/i/not-a-real-token", "/order", "/checkin", "/dev/theme"]) {
       await page.goto(path);
+      await waitForPublicDestination(page, path);
     }
     await page.evaluate(() => fetch("/api/does-not-exist").catch(() => undefined));
     const urls = await cachedUrls(page);
@@ -94,6 +103,7 @@ test.describe("service worker @smoke", () => {
   }) => {
     await controlledPage(page);
     await page.goto("/admin");
+    await waitForPublicDestination(page, "/admin");
     const [asset] = (await cachedUrls(page)).filter((url) => url.endsWith(".js"));
     expect(asset).toBeTruthy();
 

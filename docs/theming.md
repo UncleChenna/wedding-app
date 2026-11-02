@@ -1,16 +1,47 @@
 # Theming
 
-Themes are JSON files. The server turns the active theme into CSS variables on `<html>`; Tailwind classes read those variables. Every theme must pass WCAG AA contrast or the tests and build fail.
+Themes are JSON files. The site has two active themes, one for each device colour scheme. The server turns both into one stylesheet of CSS variables: the light theme on `:root`, the dark theme inside `@media (prefers-color-scheme: dark)`. Tailwind classes read those variables. Every theme must pass WCAG AA contrast or the tests and build fail.
 
-## Switch the active theme (10 seconds)
+## Light and dark (follows the guest's device)
 
-Edit one line in `src/modules/theming/config.ts`:
+Each guest sees the theme that matches their phone or computer's appearance setting, from the first paint, with no flash and no JavaScript. If they switch the setting while the page is open, it restyles live. The browser bar colour (`theme-color`) follows too.
+
+| Device setting | Theme                |
+| -------------- | -------------------- |
+| Light          | Ivory & Gold         |
+| Dark           | Midnight & Champagne |
+
+## Presets
+
+| Theme                | Scheme | Fonts (display + body)     | Mood                               |
+| -------------------- | ------ | -------------------------- | ---------------------------------- |
+| Ivory & Gold         | light  | Cormorant Garamond + Inter | Printed stationery (default light) |
+| Midnight & Champagne | dark   | Playfair Display + Jost    | Evening glamour (default dark)     |
+| Emerald Night        | dark   | Playfair Display + Inter   | Rich evening celebration           |
+| Blush & Sage         | light  | Cormorant Garamond + Jost  | Relaxed garden wedding             |
+
+Emerald Night and Blush & Sage come from the invitation design spike. Either can take its scheme's slot below.
+
+## Switch a theme (10 seconds)
+
+Live pages read `event_settings.active_theme_id` (light) and `active_dark_theme_id` (dark). Registry validation rejects unknown IDs and themes in the wrong scheme. The server renders both palettes, texture and browser-bar colours before hydration; device media queries choose the palette without JavaScript.
+
+An authorized admin boundary must call the internal `activateThemeSelection({ light, dark })` service. It validates the pair, writes both settings atomically while preserving event details, then expires the `active-theme-pair` cache tag. It is not a public Server Action or authorization boundary; admin UI integration is TICKET-098/181. A subsequent server request gets the new selection; an already-open page requires refresh. Direct SQL changes bypass invalidation: reads revalidate after 30 seconds and expire after 5 minutes. Cache propagation across application instances requires shared cache infrastructure; the default handler is process-local.
+
+Missing, invalid or unavailable settings select the safe defaults and emit a sanitized warning. Reads wait at most 2 seconds; cached valid settings can remain until refresh during an outage. Defaults are also cached on this schedule. The fallback is visual only and never substitutes for authorization or guest data.
+
+For static previews and outage defaults, edit `src/modules/theming/config.ts`:
 
 ```ts
-export const ACTIVE_THEME_ID = "midnight-champagne";
+export const ACTIVE_THEME_IDS = {
+  light: "ivory-gold",
+  dark: "midnight-champagne",
+} as const;
 ```
 
-Every page restyles. No component changes.
+Each slot takes a theme with that `colorScheme`; putting a dark theme in the light slot fails at startup with a message naming it. Every page restyles. No component changes.
+
+Where there is no viewer to ask (the link-preview image, seed data), the `DEFAULT_COLOR_SCHEME` theme (light) is used. Never write theme variables inline on `<html>`: an inline style beats the media query and pins one theme. Scoping a theme to an element below `<html>` with `themeStyle(theme)` is fine (previews do this).
 
 ## Add a new theme (under 5 minutes)
 
@@ -46,6 +77,15 @@ Every page restyles. No component changes.
 | `warning` / `warning-foreground`     | Already used / waiting                         | fg on warning (4.5); warning on surface (3.0, indicator)   |
 | `<status>-subtle`                    | Tinted status panel (success, warning, danger) | —                                                          |
 | `<status>-subtle-foreground`         | Text on the tinted panel or on cards           | on `<status>-subtle` and on surface (4.5)                  |
+| `decorative`                         | Ornamental fill (labels, panels); never text   | —                                                          |
+| `decorative-foreground`              | Text on the decorative fill                    | decorative (4.5)                                           |
+| `qr-ink` / `qr-paper`                | QR modules / QR background and quiet zone      | ink on paper (4.5), and ink darker than paper              |
+
+### Decorative fill and QR codes
+
+`decorative` is for fills such as the champagne table label; text on it uses `decorative-foreground`. It is deliberately not checked against the page, because it must never be used as text: in Ivory & Gold, champagne `#D6BE8D` on the page is under 2:1.
+
+QR codes are **always dark on light**, even in dark themes, because many phone cameras cannot read an inverted code. `loadTheme` rejects a theme whose `qr-ink` is lighter than its `qr-paper` or under 4.5:1 against it. Render codes with the shared `<QrCode value label />` (`src/modules/shared/components/ui/qr-code.tsx`): it draws the modules in `qr-ink` on `qr-paper` with a four-module quiet zone, and nothing may be laid over it. Import it from its own file; it is kept out of the `ui` barrel so client bundles never include the encoder. `/dev/theme` shows one per theme, and an e2e test decodes the rendered pixels.
 
 ### Fixed status meanings
 
@@ -96,7 +136,7 @@ A theme may add a subtle texture behind **guest pages only**, never staff or adm
 - **Strength:** opacity from 0.02 to 0.12. Start at 0.04–0.06; the texture should be felt, not seen. The cap protects text contrast; check the UI checklist screenshots after changing it.
 - **Size:** tile size from 64px to 512px. Larger tiles repeat less visibly; 200–300px suits paper grain.
 - **Placement:** one fixed layer behind the page content (`<ThemePattern>` in the guest layout), `aria-hidden`, never intercepting taps. For a single invitation-style panel use the shared `<Paper>` component, which applies the same texture inside its bounds; do not hand-roll textures elsewhere.
-- Leave `pattern` out for a plain background. Ivory & Gold ships a faint paper grain; Midnight & Champagne is plain.
+- Leave `pattern` out for a plain background. Ivory & Gold ships a faint paper grain; Midnight & Champagne is plain, so the grain shows only in light mode.
 
 ## Dividers, monogram and paper
 
@@ -133,3 +173,11 @@ Motion timings are a shared accessibility contract in `src/app/globals.css`, ide
 Use `FadeIn` or `Rise` from shared UI to animate server-rendered content with CSS only. Default pace is `enter`; `pace="signature"` reserves the 600ms timing for special moments. TICKET-039 implements the actual envelope reveal. Wrappers do not wait to mount children, hide content with JavaScript, or block actions. Do not wrap a sticky/fixed overlay in a transformed entrance.
 
 Reduced motion disables these entrance animations and the demo's control transition entirely, leaving content immediately visible. `/dev/theme` has a keyboard-accessible replay demo in each theme. Its replay control uses the 180ms opacity transition; existing unrelated component motion is outside this ticket.
+
+Registered fonts use metric-adjusted local fallbacks: Times New Roman/Liberation Serif for display faces and Arial/Liberation Sans for body faces. The Liberation aliases cover Linux hosts without Microsoft fonts. Overrides in font-fallbacks.css match calculateSizeAdjustValues from the installed Next font-utils module; review them when updating fonts. Both normal and delayed-font admin loads retain a zero-CLS regression, and the browser verifies all four fallback faces load.
+
+## Reproducible font builds
+
+The font registry uses next/font/local with licensed, pinned WOFF2 assets in src/modules/theming/fonts. Provenance, hashes and conversion instructions live beside the assets. Builds do not download Google Fonts. Existing family variables, fallback metrics, swap and selective preload settings remain unchanged.
+
+Use FONT_COLD_BUILD=1 pnpm build to disable Next filesystem compiler caching for a verification run. Normal builds retain caching. Run this three times when updating fonts, then run the regular full gate; cold builds are additional evidence, not a substitute for normal CI.

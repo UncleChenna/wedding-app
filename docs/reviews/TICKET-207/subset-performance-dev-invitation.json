@@ -1,0 +1,23 @@
+[
+  {
+    "run": 1,
+    "route": "/dev/invitation",
+    "performance": 0.87,
+    "accessibility": 1,
+    "cls": 0
+  },
+  {
+    "run": 2,
+    "route": "/dev/invitation",
+    "performance": 0.91,
+    "accessibility": 1,
+    "cls": 0
+  },
+  {
+    "run": 3,
+    "route": "/dev/invitation",
+    "performance": 0.89,
+    "accessibility": 1,
+    "cls": 0
+  }
+]

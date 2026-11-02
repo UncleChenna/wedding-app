@@ -13,17 +13,14 @@ import * as schema from "../src/modules/shared/server/db/schema";
 import { parseServerEnv } from "../src/modules/shared/lib/env/schema";
 import { createLogger } from "../src/modules/shared/lib/logger";
 import { buildSeedData } from "./seed-data";
+import { assertDatabaseTarget } from "./database-target";
 
 const log = createLogger({ script: "seed" }, { format: "pretty" });
 
 if (existsSync(".env.local")) process.loadEnvFile(".env.local");
 const env = parseServerEnv(process.env);
 
-const host = new URL(env.DATABASE_URL).hostname;
-if (!["127.0.0.1", "localhost", "::1"].includes(host)) {
-  log.error("refusing to seed a non-local database", { host });
-  process.exit(1);
-}
+assertDatabaseTarget(env.DATABASE_URL, { localOnly: true });
 
 const client = postgres(env.DATABASE_URL, { max: 1, onnotice: () => {} });
 const db = drizzle(client, { schema });
@@ -32,10 +29,15 @@ async function main() {
   const data = buildSeedData();
 
   await db.transaction(async (tx) => {
+    // RSVP history is append-only (drizzle/0003). This local-only reset is the one place it may
+    // be cleared; the trigger is off only inside this transaction, so a failure restores it.
+    await tx.execute(sql`alter table rsvp_changes disable trigger rsvp_history_append_only`);
     await tx.execute(sql`
-      truncate table order_items, station_orders, orders, menu_items, check_ins, rsvps, guests,
-        tables, invitations, staff, themes restart identity cascade
+      truncate table rsvp_changes, event_settings, order_items, station_orders, orders, menu_items,
+        check_ins, rsvps, guests, tables, invitations, staff, themes restart identity cascade
     `);
+    await tx.execute(sql`alter table rsvp_changes enable trigger rsvp_history_append_only`);
+    await tx.insert(schema.eventSettings).values(data.eventSettings);
     await tx.insert(schema.themes).values(data.themes);
     await tx.insert(schema.staff).values(data.staff);
     await tx.insert(schema.tables).values(data.tables);

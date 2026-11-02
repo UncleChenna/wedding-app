@@ -4,10 +4,6 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Your invitation",
   description: "A personal invitation to celebrate Uchenna and Adaora.",
-  openGraph: {
-    title: "Your invitation",
-    description: "A personal invitation to celebrate Uchenna and Adaora.",
-  },
 };
 
 export default function InvitationGuidePage() {

@@ -25,3 +25,11 @@ The initial t:move start commit raced with writing red tests and was rejected by
 No production work or destructive reset authorized. Other owner's TICKET-204 is untouched. TICKET-172 is blocked in PR47; TICKET-025 in PR44. Prior TICKET-023 approval covers neither.
 
 Draft PR: https://github.com/UncleChenna/wedding-app/pull/48. Source f0515b8 is pushed. See docs/reviews/TICKET-171/migration-approval.md for the concrete staged proposal and exact protected paths. Await explicit authorization before generating migrations.
+
+## 2026-11-02 — source integration refresh
+
+Resumed through CLI for approval preparation. Merged develop2f066ebbb175c4b8d42b0ab6f54545134f52f592 with --no-commit; resolved the sole conflict in scripts/seed.ts by retaining event_settings, rsvp_changes, its transactional append-only-trigger handling, and station_orders. Quick verification passes lint/types/425 related tests (19 conditional skips); all9 seed tests pass. No seed/database mutation executed. Existing protected files match develop byte-for-byte. New proposed migration indices are0006–0008, documented with exact paths in docs/reviews/TICKET-171/migration-approval.md.
+
+Merge commit and generated migrations require explicit exact-path authorization before proceeding. Do not apply the obsolete0002–0004 proposal or fabricate approval. Next: obtain authorization, finish this reviewed integration commit, push PR48 update, then generate/test the staged migrations and all preservation/constraint cases. Existing inherited migrations have not been edited.
+
+The CLI returned TICKET-171 to blocked with the updated exact approval reason. The resolved merge remains staged and uncommitted; no bypass of protected-file authorization. PR48 description publishes the refreshed proposal while clearly distinguishing it from the older published source diff. User questions separately request inherited-file authorization and new isolated migration generation/testing. Await actual responses.

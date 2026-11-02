@@ -1,5 +1,9 @@
 # Progress log
 
+## 2026-10-26 — TICKET-006 — Recovery still blocked
+
+Retried managed setup after another local stack recovered. The rehearsal setup exited 1; service health and control database checks remain unhealthy. No lifecycle completion is claimed. See [handoff](handoffs/TICKET-006.md).
+
 ## 2026-10-26 — TICKET-023 — Invitation schema prepared
 
 Generated the invitation/guest/RSVP migration and verified eight real database constraint cases, repeated migration counts and RLS. The user approved the exact generated paths; final integrated verification is pending. See [handoff](handoffs/TICKET-023.md).

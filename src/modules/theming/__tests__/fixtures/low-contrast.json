@@ -28,7 +28,11 @@
     "warning": "#946000",
     "warning-foreground": "#FFFFFF",
     "warning-subtle": "#FCEFC7",
-    "warning-subtle-foreground": "#6B4500"
+    "warning-subtle-foreground": "#6B4500",
+    "decorative": "#D6BE8D",
+    "decorative-foreground": "#432B22",
+    "qr-ink": "#432B22",
+    "qr-paper": "#FFF9EF"
   },
   "fonts": { "display": "cormorant", "body": "inter" },
   "radii": { "sm": "0.25rem", "md": "0.5rem", "lg": "1rem" },

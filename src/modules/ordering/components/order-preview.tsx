@@ -2,7 +2,14 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { Button, Input, QuantityStepper, Select, Textarea } from "@/modules/shared/components/ui";
+import {
+  ActionBar,
+  Button,
+  Input,
+  QuantityStepper,
+  Select,
+  Textarea,
+} from "@/modules/shared/components/ui";
 import { themeStyle, type Theme } from "@/modules/theming";
 import {
   orderPreviewSchema,
@@ -20,14 +27,9 @@ const titles: Record<Step, string> = {
   received: "On its way. Sit back, we've got this.",
   served: "Enjoy every bite.",
 };
-export function OrderPreview({
-  themes,
-  initialTheme,
-}: {
-  themes: readonly Theme[];
-  initialTheme: Theme;
-}) {
-  const [themeId, setThemeId] = useState(initialTheme.id);
+export function OrderPreview({ themes }: { themes: readonly Theme[] }) {
+  // "" follows the device light/dark setting, like the real site; a theme id pins the preview.
+  const [themeId, setThemeId] = useState("");
   const [step, setStep] = useState<Step>("table");
   const [tableInput, setTableInput] = useState("");
   const [table, setTable] = useState<number | null>(null);
@@ -37,7 +39,7 @@ export function OrderPreview({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const heading = useRef<HTMLHeadingElement>(null);
   const form = useRef<HTMLFormElement>(null);
-  const theme = themes.find((theme) => theme.id === themeId) ?? initialTheme;
+  const theme = themes.find((theme) => theme.id === themeId);
   const selected = SAMPLE_MENU.filter((item) => (quantities[item.id] ?? 0) > 0);
   useEffect(() => {
     heading.current?.focus();
@@ -78,7 +80,7 @@ export function OrderPreview({
   }
   return (
     <div
-      style={themeStyle(theme)}
+      style={theme && themeStyle(theme)}
       className="min-h-dvh bg-background font-sans text-foreground [&_label]:text-base [&_p]:text-base"
     >
       <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-between gap-6 px-6 py-6 md:px-12">
@@ -95,6 +97,7 @@ export function OrderPreview({
             value={themeId}
             onChange={(event) => setThemeId(event.target.value)}
           >
+            <option value="">Match my device</option>
             {themes.map((theme) => (
               <option key={theme.id} value={theme.id}>
                 {theme.name}
@@ -213,25 +216,27 @@ export function OrderPreview({
                   error={errors.note}
                   rows={3}
                 />
-                <p className="leading-relaxed">
-                  {selected.length === 0
-                    ? "Your selection is empty. Choose something from the menu to continue."
-                    : `${selected.length} menu ${selected.length === 1 ? "item" : "items"} selected. Review before previewing the order.`}
-                </p>
                 <p className="leading-relaxed">Sample limit: up to 10 of each item.</p>
                 {errors.quantities && (
                   <p role="alert" className="text-danger">
                     {errors.quantities}
                   </p>
                 )}
-                <div className="flex flex-wrap gap-4">
+                {/* The menu is long on a phone; keep the next step in thumb reach. */}
+                <ActionBar
+                  status={
+                    selected.length === 0
+                      ? "Your selection is empty. Choose something from the menu to continue."
+                      : `${selected.length} menu ${selected.length === 1 ? "item" : "items"} selected. Review before previewing the order.`
+                  }
+                >
                   <Button type="submit" disabled={selected.length === 0}>
                     Review order
                   </Button>
                   <Button variant="ghost" onClick={() => go("table")}>
                     Change table
                   </Button>
-                </div>
+                </ActionBar>
               </>
             )}
             {step === "review" && (

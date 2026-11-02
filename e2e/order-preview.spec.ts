@@ -104,3 +104,25 @@ for (const theme of listThemes())
       expect(mutations).toEqual([]);
     });
   }
+
+test("the menu keeps Review order in thumb reach on a phone @smoke", async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto("/dev/order");
+  await page.getByLabel("Table number").fill("12");
+  await page.getByRole("button", { name: "Browse menu" }).click();
+  const review = page.getByRole("button", { name: "Review order" });
+  // At the top of the long menu, the action already sits on screen near the bottom edge.
+  await page.evaluate(() => scrollTo(0, 0));
+  const box = await review.boundingBox();
+  expect(box).not.toBeNull();
+  expect((box?.y ?? 0) + (box?.height ?? 0)).toBeLessThanOrEqual(812);
+  expect(box?.y ?? 0).toBeGreaterThan(812 / 2);
+  // A focused field is scrolled clear of the bar, not hidden under it.
+  const note = page.getByLabel("A note for the kitchen or bar");
+  await note.focus();
+  const [field, bar] = await Promise.all([
+    note.boundingBox(),
+    page.locator('[data-action-bar="sticky"]').boundingBox(),
+  ]);
+  expect((field?.y ?? 0) + (field?.height ?? 0)).toBeLessThanOrEqual(bar?.y ?? 0);
+});

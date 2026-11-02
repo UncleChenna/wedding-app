@@ -1,0 +1,25 @@
+# TICKET-183 UI review
+
+Captured with `SCREENSHOT_ROUTES=/dev/pass,/p/invalid pnpm screenshots`: 24 cases, all passed. They cover four
+themes at 375, 768 and 1280px. `*-pass.png` is the valid pass (sample data via `/dev/pass`). `*-invalid.png` is
+the "could not find this pass" state. The red "1 Issue" badge in development captures is the Next.js development
+overlay. It reports the existing "theme selection unavailable" warning when no local database is running. The
+unchanged `/invite` page shows the same badge, and it doesn't appear in production builds.
+
+| Check                    | Result       | Evidence                                                                                                                                                                                                                  |
+| ------------------------ | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Screenshots              | PASS         | 24 captures in this folder, all inspected.                                                                                                                                                                                |
+| Tokens                   | PASS         | No colour, font, radius or shadow literals in the changed files. The QR uses `qr-ink` and `qr-paper`. Text uses `text-primary` and the type utilities.                                                                    |
+| Restraint and typography | PASS         | One idea per screen. The display serif via `type-heading` is used for names and headings. Small-caps labels use `type-label`. Body text is 16–18px, with prose at `max-w-prose`.                                          |
+| Mobile                   | PASS         | `overflow.spec.ts` on `/p/invalid`: no sideways scroll, and tap targets of at least 44px in light and dark mode. The only control is the 44px "Back to our day" link. Safe-area bottom padding is set on the valid state. |
+| Motion                   | N/A          | No animation added.                                                                                                                                                                                                       |
+| Keyboard                 | PASS         | A single link with a visible focus outline. No dialogs or fields.                                                                                                                                                         |
+| Contrast                 | PASS         | Axe finds no WCAG A/AA violations on `/p/invalid` in all four themes. QR polarity and contrast are enforced by the theme schema and the decode test.                                                                      |
+| Load and images          | PASS         | No raster images. The QR is a fixed-aspect inline SVG, so no layout shift comes from it.                                                                                                                                  |
+| Performance              | NOT VERIFIED | Lighthouse wasn't run. This is a server-rendered page with no client components.                                                                                                                                          |
+| Copy                     | PASS         | Warm, one sentence per state, and no technical errors. The wording is provisional, listed in `gatePassCopy`.                                                                                                              |
+| Shared components        | PASS         | Reuses `QrCode` and the shared type utilities. No new reusable pattern.                                                                                                                                                   |
+| Sharing and devices      | NOT VERIFIED | The generic Open Graph title and description are tested. WhatsApp's in-app browser and physical devices weren't tested (TICKET-201).                                                                                      |
+| QR codes                 | PARTIAL      | The worst-case pass URL (version 12, 65 modules) decodes with jsQR in every theme with a four-module quiet zone. Scanning with real iOS and Android cameras isn't verified (TICKET-057, TICKET-201).                      |
+| Staff feedback           | N/A          | Guest page, not a staff screen.                                                                                                                                                                                           |
+| Verification             | See PR       | `pnpm verify` runs in `pnpm t:pr`.                                                                                                                                                                                        |

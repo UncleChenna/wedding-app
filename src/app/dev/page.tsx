@@ -5,9 +5,11 @@ const pages = [
   ["/", "Wedding home"],
   ["/invite", "Invitation guidance"],
   ["/dev/invitation", "Invitation preview"],
+  ["/dev/invitation/letter", "Personal invitation layout"],
   ["/dev/rsvp", "RSVP preview"],
   ["/dev/order", "Table ordering preview"],
   ["/dev/share", "Invitation sharing preview"],
+  ["/dev/pass", "Gate pass preview"],
   ["/dev/theme", "Components and themes"],
 ] as const;
 export default function PreviewIndex() {

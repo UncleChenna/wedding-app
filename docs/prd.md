@@ -48,8 +48,9 @@ A guest touches the site three times: when the IV arrives, at the gate, and at t
 3. The link opens a digital IV: names, date, venue, dress code, map, and an RSVP form.
 4. Guest confirms attendance, adds their tag-alongs by name and picks meals. They can come back and change this
    until the wedding day.
-5. On confirming, the page shows their QR code with Save to Photos and a downloadable PDF. The same
-   link always shows their QR, so on the day they can reopen it from the WhatsApp chat.
+5. On confirming, the page shows their gate pass QR with Save to Photos and a downloadable PDF. The same
+   personal link always shows their pass, so on the day they can reopen it from the WhatsApp chat. The QR
+   encodes a separate read-only pass link, never the personal RSVP link ([ADR 0020](decisions/0020-gate-pass-credential.md)).
 
 ### Journey 2: Check-in at the gate
 
@@ -142,7 +143,8 @@ The gate is the riskiest moment: it must be fast, work on bad venue Wi-Fi, and r
   the guest's name and "already used" with the time of first entry. Optionally show a guest photo uploaded at RSVP.
 - **Signed QR payloads.** The venue signal can't be relied on, so the QR carries an Ed25519-signed token that every
   scanner verifies without the server. Scanners hold only the public key, so a lost device can't mint IVs.
-  Check-ins reconcile on reconnect.
+  Check-ins reconcile on reconnect. The pass is read-only and can't edit an RSVP. Offline freshness, expiry,
+  lost devices and double entries follow [ADR 0020](decisions/0020-gate-pass-credential.md).
 - **Staff access.** Scanner and order boards need a PIN; PINs expire after the event. Admin uses 2FA.
 - **Rate limits** on IV lookups, order creation and PIN attempts.
 

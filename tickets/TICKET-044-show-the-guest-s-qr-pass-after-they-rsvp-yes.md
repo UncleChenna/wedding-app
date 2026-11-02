@@ -2,20 +2,20 @@
 id: TICKET-044
 title: Show the guest's QR pass after they RSVP yes
 epic: invitations
-status: todo
+status: in_progress
 priority: urgent
 estimate: M
 labels: [frontend, backend]
 module: invitations
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-040, TICKET-056, TICKET-170, TICKET-183]
 blocks: [TICKET-045, TICKET-046, TICKET-107, TICKET-116, TICKET-117, TICKET-131, TICKET-135, TICKET-138, TICKET-154, TICKET-158]
-branch: ""
+branch: TICKET-044
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-02
+started: 2026-11-02
 completed: ""
 reason: ""
 resume_to: ""
@@ -44,6 +44,7 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-5) · [Jou
 - [ ] The QR decodes to the signed pass URL (unit test decodes the SVG).
 - [ ] Quiet zone ≥4 modules and contrast ≥4.5:1 in every theme (test).
 - [ ] The pass shows only after RSVP yes; declined or pending IVs see the RSVP form.
+- [ ] Returning guests reopening their personal invitation can go directly to their issued pass without replaying the envelope reveal. Wire the invitation layout pass slot to the real authorized signed-pass content and test first and return visits, including reduced motion.
 
 - [ ] Test a realistic signed-pass payload in every theme, using four-module quiet zone and adequate module size; the prototype QR density is not production evidence.
 
@@ -63,8 +64,10 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-5) · [Jou
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-10-31: Owner approved retaining the returning-pass integration requirement here rather than TICKET-037. TICKET-037 supplies only the layout slot/anchor; this ticket must prove real signed-pass access and return visits. No implementation or completion is claimed by this scope clarification.
 
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-02 — todo → claimed — divine (codex)
+- 2026-11-02 — todo → in_progress — divine (codex)

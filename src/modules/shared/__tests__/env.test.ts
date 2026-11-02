@@ -11,6 +11,7 @@ describe("env schema", () => {
       DATABASE_URL: "postgresql://u:p@localhost:5432/db",
       NODE_ENV: "development",
       LOG_LEVEL: "info",
+      ADMIN_EMAIL_ALLOWLIST: "",
     });
   });
 
@@ -37,4 +38,19 @@ describe("env schema", () => {
     ].filter((key) => key !== "NODE_ENV");
     for (const key of keys) expect(example).toMatch(new RegExp(`^${key}=`, "m"));
   });
+});
+
+it("rejects unapproved public env names without disclosing their values", () => {
+  const source = {
+    NEXT_PUBLIC_SITE_URL: "https://example.test",
+    NEXT_PUBLIC_SUPABASE_URL: "https://supabase.example.test",
+    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: "public-test-key",
+    NEXT_PUBLIC_DATABASE_URL: "sensitive-fixture-value",
+  };
+  expect(() => parseClientEnv(source)).toThrow(/NEXT_PUBLIC_DATABASE_URL/);
+  try {
+    parseClientEnv(source);
+  } catch (error) {
+    expect(String(error)).not.toContain("sensitive-fixture-value");
+  }
 });

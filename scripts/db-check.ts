@@ -12,9 +12,11 @@ import postgres from "postgres";
 
 import { parseServerEnv } from "../src/modules/shared/lib/env/schema";
 import { formatCounts, tablesMissingRls } from "./db-check-lib";
+import { assertDatabaseTarget } from "./database-target";
 
 if (existsSync(".env.local")) process.loadEnvFile(".env.local");
 const env = parseServerEnv(process.env);
+assertDatabaseTarget(env.DATABASE_URL);
 const client = postgres(env.DATABASE_URL, { max: 1, onnotice: () => {} });
 
 async function rls(): Promise<number> {

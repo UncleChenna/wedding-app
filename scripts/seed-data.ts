@@ -1,11 +1,13 @@
 import { Faker, en } from "@faker-js/faker";
 
+import { defaultEventSettings } from "../src/modules/shared/lib/event-settings";
 import type * as schema from "../src/modules/shared/server/db/schema";
-import { listThemes, ACTIVE_THEME_ID } from "../src/modules/theming";
+import { ACTIVE_THEME_IDS, listThemes } from "../src/modules/theming";
 
 type Insert<T extends { $inferInsert: unknown }> = T["$inferInsert"];
 
 export interface SeedData {
+  eventSettings: Insert<typeof schema.eventSettings>;
   themes: Insert<typeof schema.themes>[];
   staff: Insert<typeof schema.staff>[];
   tables: Insert<typeof schema.tables>[];
@@ -114,7 +116,8 @@ export function buildSeedData(seed = 20261021): SeedData {
     id: theme.id,
     name: theme.name,
     tokens: theme,
-    isActive: theme.id === ACTIVE_THEME_ID,
+    // One theme per device colour scheme is active (src/modules/theming/config.ts).
+    isActive: ACTIVE_THEME_IDS[theme.colorScheme] === theme.id,
   }));
 
   const staff: SeedData["staff"] = (
@@ -324,6 +327,7 @@ export function buildSeedData(seed = 20261021): SeedData {
   }
 
   return {
+    eventSettings: { ...defaultEventSettings, coupleNames: [...defaultEventSettings.coupleNames] },
     themes,
     staff,
     tables,

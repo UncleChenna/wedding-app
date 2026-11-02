@@ -2,20 +2,20 @@
 id: TICKET-125
 title: Document and enforce secrets handling and key rotation
 epic: security
-status: todo
+status: in_review
 priority: urgent
 estimate: M
 labels: [security, docs]
 module: shared
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-029, TICKET-056]
 blocks: [TICKET-148]
-branch: ""
-pr: ""
+branch: TICKET-125
+pr: https://github.com/UncleChenna/wedding-app/pull/71
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-01
+started: 2026-11-01
 completed: ""
 reason: ""
 resume_to: ""
@@ -41,8 +41,8 @@ See: [Security](../docs/prd.md#security).
 
 ## Acceptance criteria
 
-- [ ] Build fails if a secret is referenced from client code (test/lint).
-- [ ] Rotation steps exist for every secret.
+- [x] Build fails if a secret is referenced from client code (test/lint).
+- [x] Rotation steps exist for every secret.
 
 ## Test plan
 
@@ -56,8 +56,15 @@ See: [Security](../docs/prd.md#security).
 
 ## Notes / decisions
 
+- 2026-11-01: Environment-boundary lint and public configuration guard implemented;25 focused tests and quick verification pass. Full verification:597 unit cases/663 browser cases pass,26/135 skipped. Rotation inventory/procedures in docs/security.md; no real credentials changed. Managed setup recovered with updated TICKET-208 generator. PR71 awaits final review gate.
+
+- 2026-11-01: Final normal PR gate passes with VITEST_MAX_WORKERS=2:600 unit cases and663 browser cases pass,26/135 skipped. Three added boundary regression cases pass. PR71 moved to in_review through CLI; final-head CI required before merge.
+
 _Agents append dated notes here while working._
 
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-01 — todo → claimed — divine (codex)
+- 2026-11-01 — todo → in_progress — divine (codex)
+- 2026-11-01 — in_progress → in_review — divine (codex)

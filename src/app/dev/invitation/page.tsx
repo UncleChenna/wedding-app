@@ -9,18 +9,20 @@ export const metadata: Metadata = { title: "Invitation preview", robots: { index
 async function ThemedInvitation({ searchParams }: { searchParams: Promise<{ theme?: string }> }) {
   const { theme: selected } = await searchParams;
   const themes = listThemes();
-  const theme = themes.find((item) => item.id === selected) ?? themes[0];
+  // No ?theme follows the device light/dark setting, like the real site.
+  const theme = themes.find((item) => item.id === selected);
+  const links = [{ id: "", name: "Match my device" }, ...themes];
   return (
     <div style={theme && themeStyle(theme)} className="min-h-dvh bg-background text-foreground">
       <nav
         aria-label="Preview theme"
         className="mx-auto flex max-w-7xl flex-wrap gap-6 px-6 pt-6 md:px-12"
       >
-        {themes.map((item) => (
+        {links.map((item) => (
           <Link
             key={item.id}
-            href={`/dev/invitation?theme=${item.id}`}
-            aria-current={theme?.id === item.id ? "page" : undefined}
+            href={item.id ? `/dev/invitation?theme=${item.id}` : "/dev/invitation"}
+            aria-current={(theme?.id ?? "") === item.id ? "page" : undefined}
             className="inline-flex min-h-11 items-center text-primary underline underline-offset-4"
           >
             {item.name}

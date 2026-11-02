@@ -2,20 +2,20 @@
 id: TICKET-013
 title: Ship third and fourth preset themes
 epic: design-system
-status: todo
+status: in_review
 priority: urgent
 estimate: M
 labels: [design, frontend]
 module: theming
-owner: ""
-agent: ""
+owner: unclechenna
+agent: claude
 blocked_by: [TICKET-010, TICKET-011, TICKET-170]
 blocks: [TICKET-014, TICKET-021, TICKET-135]
-branch: ""
-pr: ""
+branch: TICKET-013
+pr: https://github.com/UncleChenna/wedding-app/pull/51
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-10-27
+started: 2026-10-27
 completed: ""
 reason: ""
 resume_to: ""
@@ -40,11 +40,11 @@ See: [How theming works](../docs/prd.md#how-theming-works) (THM-5).
 
 ## Acceptance criteria
 
-- [ ] Four themes are registered and listed on /dev/theme.
-- [ ] Screenshots of /dev/theme at 375/768/1280 in all four themes are attached.
-- [ ] `pnpm verify` passes.
+- [x] Four themes are registered and listed on /dev/theme.
+- [x] Screenshots of /dev/theme at 375/768/1280 in all four themes are attached.
+- [x] `pnpm verify` passes.
 
-- [ ] Use the spike pairings: Cormorant Garamond + Inter for Ivory & Gold, Playfair Display + Inter for Emerald Night, and Cormorant Garamond + Jost for Blush & Sage. Preserve fixed semantic success/warning/error hues.
+- [x] Use the spike pairings: Cormorant Garamond + Inter for Ivory & Gold, Playfair Display + Inter for Emerald Night, and Cormorant Garamond + Jost for Blush & Sage. Preserve fixed semantic success/warning/error hues.
 
 ## Test plan
 
@@ -61,6 +61,12 @@ See: [How theming works](../docs/prd.md#how-theming-works) (THM-5).
 
 _Agents append dated notes here while working._
 
+- 2026-10-27 — Added Emerald Night (dark, Playfair Display + Inter) and Blush & Sage (light, Cormorant Garamond + Jost) from the spike's `spikes/invitation/themes/*.json`. The spike defined seven colours; the rest (surfaces, secondary, input, ring, status sets, decorative, QR) were derived and pass the contrast, status-hue and QR gates on the first run. QR is spike ink `#18251F` on white in both. Radii follow the spike's 4px. Patterns left out (optional); the spike SVGs are not yet in the mask format.
+- 2026-10-27 — The active pair is unchanged (Ivory & Gold light, Midnight & Champagne dark), so guests see no change. Screenshots of `/`, `/dev/theme`, `/invite`, `/order`, `/checkin` at 375/768/1280 in all four themes were inspected; axe, typography, decoration, QR and smoke specs pass in every theme.
+
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-27 — todo → claimed — unclechenna (claude)
+- 2026-10-27 — todo → in_progress — unclechenna (claude)
+- 2026-10-27 — in_progress → in_review — unclechenna (claude)

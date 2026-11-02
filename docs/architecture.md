@@ -42,18 +42,19 @@ flowchart LR
 
 ## Layers
 
-| Layer           | Location                                           | Rules                                                                                                            |
-| --------------- | -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| Routes          | `src/app/**`                                       | Routing, layouts, metadata. Call module components/actions. No logic or queries.                                 |
-| Feature modules | `src/modules/{invitations,checkin,ordering,admin}` | `components/` (UI), `server/` (queries + Server Actions, `server-only`), `lib/` (pure logic + Zod), `__tests__/` |
-| Theming         | `src/modules/theming`                              | Theme JSON → validated (Zod + WCAG AA) → CSS variables. `config.ts` holds the active theme.                      |
-| Shared          | `src/modules/shared`                               | Base UI (`components/ui`), DB (`server/db`), env (`lib/env`, `server/env`), logger, security headers.            |
+| Layer           | Location                                           | Rules                                                                                                                                  |
+| --------------- | -------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Routes          | `src/app/**`                                       | Routing, layouts, metadata. Call module components/actions. No logic or queries.                                                       |
+| Feature modules | `src/modules/{invitations,checkin,ordering,admin}` | `components/` (UI), `server/` (queries + Server Actions, `server-only`), `lib/` (pure logic + Zod), `__tests__/`                       |
+| Theming         | `src/modules/theming`                              | Theme JSON → validated (Zod + WCAG AA) → CSS variables. Event settings select the light/dark pair; `config.ts` supplies safe defaults. |
+| Shared          | `src/modules/shared`                               | Base UI (`components/ui`), DB (`server/db`), env (`lib/env`, `server/env`), logger, security headers.                                  |
 
 Dependency direction: `app → feature modules → theming/shared`. Never the reverse.
 
 ## Rendering and theming
 
-- The root layout reads the active theme and renders its CSS variables as an inline `style` on `<html>`. Pages are statically prerendered with the theme baked in, so there is no flash of the wrong theme and no client JS for theming.
+- The root layout renders the light and dark themes as one server-side `<style>`: light on `:root`, dark inside `@media (prefers-color-scheme: dark)`. Each guest sees the theme matching their device setting. The cached database pair is rendered into the server HTML, so there is no flash of the wrong theme and no client JS for theming. Nothing writes theme variables inline on `<html>`; an inline style would beat the media query.
+- Theme activation persists a validated pair and expires its cache tag. Private response headers remain no-store even though the public palette is cached; see [theming](theming.md) for outage and multi-instance limits.
 - Tailwind 4 maps utilities to those variables (`src/app/globals.css`). The default palette is removed, so only token classes exist.
 - Any element can render in another theme by applying `themeStyle(theme)` to it (used by `/dev/theme`).
 
@@ -69,6 +70,7 @@ Dependency direction: `app → feature modules → theming/shared`. Never the re
 - **Env**: Zod schemas in `shared/lib/env/schema.ts`; validated at server start in `src/instrumentation.ts`.
 - **Errors**: `app/error.tsx` (route), `app/global-error.tsx` (root layout), `app/not-found.tsx` (404). Expected errors are return values.
 - **Logging**: `createLogger({ module })` — JSON lines in production, readable in dev, sensitive keys redacted. Server Actions call `runLoggedAction` for request IDs and safe lifecycle logs; see [observability](observability.md).
+- **Secrets**: [handling and rotation](security.md); server-only environment access and an approved public-variable allowlist are checked by lint and startup validation.
 - **Security headers**: `shared/lib/security-headers.ts`, applied in `next.config.ts` (CSP, HSTS, frame-ancestors none, camera allowed on self only). See ADR 0006.
 
 ## Testing

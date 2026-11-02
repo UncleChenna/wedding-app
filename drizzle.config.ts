@@ -2,10 +2,13 @@ import { existsSync } from "node:fs";
 
 import { defineConfig } from "drizzle-kit";
 
+import { assertDatabaseTarget } from "./scripts/database-target";
+
 import { parseServerEnv } from "./src/modules/shared/lib/env/schema";
 
 if (existsSync(".env.local")) process.loadEnvFile(".env.local");
 const env = parseServerEnv(process.env);
+assertDatabaseTarget(env.DATABASE_URL);
 
 export default defineConfig({
   dialect: "postgresql",
