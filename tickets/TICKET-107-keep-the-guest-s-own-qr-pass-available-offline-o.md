@@ -2,7 +2,7 @@
 id: TICKET-107
 title: Keep the guest's own QR pass available offline once opened
 epic: pwa
-status: in_progress
+status: in_review
 priority: urgent
 estimate: M
 labels: [pwa, frontend]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-044, TICKET-105]
 blocks: [TICKET-113, TICKET-138, TICKET-176, TICKET-184]
 branch: TICKET-107
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/78
 created: 2026-10-21
 updated: 2026-11-02
 started: 2026-11-02
@@ -66,3 +66,4 @@ See: [Journey 1: receiving the IV and RSVP](../docs/prd.md#journey-1-receiving-t
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-02 — todo → claimed — divine (codex)
 - 2026-11-02 — todo → in_progress — divine (codex)
+- 2026-11-02 — in_progress → in_review — divine (codex)
