@@ -1,4 +1,4 @@
-# TICKET-041: Save named guests, meals and dietary notes
+# Summary
 
 Guests who RSVP yes can add, edit and remove tag-alongs, choose meals and save dietary notes. Attendance counts are derived from the saved list. The server rejects additions beyond the invitation's current limit and checks ownership of every existing guest row.
 
@@ -10,14 +10,14 @@ Guests who RSVP yes can add, edit and remove tag-alongs, choose meals and save d
 - Retain unavailable saved meal choices; only currently available meals can be newly selected. An unpublished menu can follow later.
 - Disable the editor without JavaScript and provide a contact fallback; attendance yes/no keeps progressive enhancement.
 
-## Acceptance evidence
+## Acceptance criteria and evidence
 
 - Limit enforcement:11 pure validation tests plus isolated database rejection and browser-tampered submission.
 - Persistence:6 isolated database cases cover add-two/remove-one/reload, names, meals, dietary notes, counts, draft/revoked/declined states and foreign guest identity.
 - Browser flow checks every theme at375/768/1280, both reduced-motion modes, axe, target sizes, keyboard focus and overflow.
 - Screenshots and per-item UI review: docs/reviews/TICKET-041/REVIEW.md.
 
-## Validation
+## Verification
 
 Full pnpm verify passes:789 unit/database tests,41 skipped;769 browser smoke tests,165 skipped. Skipped checks are not certified. Focused browser flow passes; final no-JavaScript expansion passes (18.4s).
 
@@ -29,7 +29,7 @@ Full pnpm verify passes:789 unit/database tests,41 skipped;769 browser smoke tes
 
 Preview review retains the existing TICKET-201 device and cold-font release gates. This does not certify production readiness. Final PR gate and CI must pass before human merge.
 
-## Risk, migration and rollback
+## Risks and rollout
 
 No migration, schema, RLS, dependency or CI changes. Venue timezone must be configured before editing. TICKET-042 still owns the wedding-day edit lock; TICKET-100 owns the admin change view. Reverting the code leaves existing guest and RSVP data intact.
 
