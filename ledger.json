@@ -1434,9 +1434,10 @@
     "WED-046": {
       "log": [
         "- 2026-11-02 — todo → claimed — divine (codex)",
-        "- 2026-11-02 — todo → in_progress — divine (codex)"
+        "- 2026-11-02 — todo → in_progress — divine (codex)",
+        "- 2026-11-02 — in_progress → blocked — divine (codex) — Awaiting human exact-path authorization for generated pnpm-lock.yaml and permission to record it; implementation and review evidence preserved locally, full gate must be rerun after authorization."
       ],
-      "status": "in_progress",
+      "status": "blocked",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-046",
@@ -1444,8 +1445,8 @@
       "started": "2026-11-02",
       "completed": "",
       "updated": "2026-11-02",
-      "reason": "",
-      "resume_to": ""
+      "reason": "Awaiting human exact-path authorization for generated pnpm-lock.yaml and permission to record it; implementation and review evidence preserved locally, full gate must be rerun after authorization.",
+      "resume_to": "in_progress"
     }
   }
 }
