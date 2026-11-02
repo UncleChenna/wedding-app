@@ -2,7 +2,7 @@
 id: TICKET-046
 title: Offer a printable PDF invitation with the QR
 epic: invitations
-status: in_progress
+status: blocked
 priority: urgent
 estimate: L
 labels: [frontend, backend]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-11-02
 started: 2026-11-02
 completed: ""
-reason: ""
-resume_to: ""
+reason: "Awaiting human exact-path authorization for generated pnpm-lock.yaml and permission to record it; implementation and review evidence preserved locally, full gate must be rerun after authorization."
+resume_to: in_progress
 ---
 
 # TICKET-046: Offer a printable PDF invitation with the QR
@@ -63,3 +63,4 @@ _Agents append dated notes here while working._
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-02 — todo → claimed — divine (codex)
 - 2026-11-02 — todo → in_progress — divine (codex)
+- 2026-11-02 — in_progress → blocked — divine (codex) — Awaiting human exact-path authorization for generated pnpm-lock.yaml and permission to record it; implementation and review evidence preserved locally, full gate must be rerun after authorization.
