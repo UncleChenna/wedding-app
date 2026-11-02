@@ -1416,14 +1416,15 @@
     },
     "WED-041": {
       "log": [
-        "- 2026-11-02 — todo → claimed — divine (codex)"
+        "- 2026-11-02 — todo → claimed — divine (codex)",
+        "- 2026-11-02 — todo → in_progress — divine (codex)"
       ],
-      "status": "todo",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-041",
       "pr": "",
-      "started": "",
+      "started": "2026-11-02",
       "completed": "",
       "updated": "2026-11-02",
       "reason": "",
