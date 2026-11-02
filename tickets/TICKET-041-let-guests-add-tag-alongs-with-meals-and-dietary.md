@@ -2,7 +2,7 @@
 id: TICKET-041
 title: Let guests add tag-alongs with meals and dietary notes
 epic: invitations
-status: in_progress
+status: in_review
 priority: urgent
 estimate: L
 labels: [frontend, backend]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-040, TICKET-171]
 blocks: [TICKET-042, TICKET-117, TICKET-131, TICKET-138, TICKET-158]
 branch: TICKET-041
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/76
 created: 2026-10-21
 updated: 2026-11-02
 started: 2026-11-02
@@ -65,3 +65,4 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-4) · [On 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-02 — todo → claimed — divine (codex)
 - 2026-11-02 — todo → in_progress — divine (codex)
+- 2026-11-02 — in_progress → in_review — divine (codex)
