@@ -49,6 +49,7 @@ test.describe("issued invitation pass", () => {
     browser,
     baseURL,
   }) => {
+    test.skip(process.env.RUN_PASS_MISSING_KEYS === "1", "Separate missing-key review");
     for (const reducedMotion of ["reduce", "no-preference"] as const) {
       const guest = await fixture();
       const context = await browser.newContext({
@@ -78,6 +79,11 @@ test.describe("issued invitation pass", () => {
         await expect(page.locator("[data-envelope]")).toHaveAttribute("data-opening", "false");
         await page.getByRole("link", { name: "Your pass", exact: true }).click();
         await expect(page.locator("#pass")).toBeInViewport();
+        await page.getByRole("link", { name: "Your pass", exact: true }).focus();
+        await page.keyboard.press("Enter");
+        await expect(page.locator("#pass")).toBeFocused();
+        await page.keyboard.press("Tab");
+        await expect(page.getByRole("link", { name: "Open your pass", exact: true })).toBeFocused();
         for (const theme of themes)
           for (const width of [375, 768, 1280]) {
             await page.setViewportSize({ width, height: 900 });
@@ -105,6 +111,14 @@ test.describe("issued invitation pass", () => {
               });
             }
           }
+        const longName = "Adaora " + "Longfamilyname".repeat(10);
+        await db`update guests set name=${longName} where invitation_id=${guest.id}`;
+        await page.setViewportSize({ width: 375, height: 812 });
+        await page.reload();
+        await expect(page.locator("#pass h2")).toHaveText(longName);
+        expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+          true,
+        );
         await page.getByRole("button", { name: "I'll be there in spirit", exact: true }).click();
         await expect(page.getByRole("img", { name: /Entry pass QR/ })).toHaveCount(0);
         const declined = await page.request.get(pass);
@@ -115,5 +129,31 @@ test.describe("issued invitation pass", () => {
         await context.close();
       }
     }
+  });
+
+  test("missing signing keys preserve the saved reply without a fake QR", async ({ page }) => {
+    test.skip(process.env.RUN_PASS_MISSING_KEYS !== "1", "Run the missing-key review mode");
+    const guest = await fixture();
+    await page.goto("/i/" + guest.token);
+    await page.getByRole("button", { name: "Count me in", exact: true }).click();
+    await expect(
+      page.getByText(
+        "Your reply is saved. Your pass is not ready just yet. Please check back soon.",
+      ),
+    ).toBeVisible();
+    await expect(page.getByRole("img", { name: /Entry pass QR/ })).toHaveCount(0);
+    await expect(page.getByRole("link", { name: "Your pass", exact: true })).toHaveCount(0);
+    for (const theme of themes) {
+      await applyTheme(page, theme);
+      expect(await scanA11y(page)).toEqual([]);
+    }
+    await page.reload();
+    await expect(page.getByRole("status", { name: "Your reply" })).toContainText("You're in.");
+    await page.getByRole("button", { name: "I'll be there in spirit", exact: true }).click();
+    await expect(
+      page.getByText(
+        "Your reply is saved. Your pass is not ready just yet. Please check back soon.",
+      ),
+    ).toHaveCount(0);
   });
 });

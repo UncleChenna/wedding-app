@@ -1,39 +1,42 @@
 # Ticket
 
-TICKET-044 — Show the guest's QR pass after they RSVP yes.
+TICKET-044 — follow-up review evidence for the signed guest pass.
 
 # Summary
 
-Accepted guests now see their signed QR pass inside the personal invitation and can reopen it without envelope animation. Reply changes immediately add or remove the pass. Draft: final UI/performance/device review is still incomplete.
+The human merged the pass implementation in PR #73 at develop2f066ebbb175c4b8d42b0ab6f54545134f52f592 while final review was underway. This follow-up preserves the completed tests, screenshots, performance evidence and physical-device release gate. It changes no product implementation.
 
 # Changes
 
-- Resolve the private invitation credential to an eligible identity and version snapshot; recheck current RSVP/seats and reject concurrent rotation before signing.
-- Render a themed server SVG with approved Warm copy, guest name, party size, table and read-only pass link. Never encode the editing credential or personal details in the signed payload.
-- Preserve RSVP editing, pass anchor and reduced-motion return behavior. Missing signing keys show a safe message.
-- Refresh the authorized page after successful yes/no submissions.
-- Add real SVG decode/contrast tests and isolated browser review with ephemeral keys and cleaned synthetic fixtures.
+- Add keyboard anchor/focus and long-name overflow checks to the isolated signed-pass journey.
+- Add a separate missing-signing-key review mode: saved replies remain intact, safe copy appears, and no fake QR or pass link is offered.
+- Preserve all24 inspected screenshots and three raw production mobile Lighthouse reports.
+- Record functional acceptance and explicitly retain physical QR/WhatsApp tests in TICKET-201, which blocks both guest releases.
 
 # Acceptance criteria and evidence
 
-Functional requirements are covered by unit and live browser tests: signed URL decode, quiet zone/contrast, accepted-only display, first/return visits and every theme. UI completion is not claimed: full-page screenshot inspection, focused keyboard checks, Lighthouse/CLS and real-device scans remain outstanding.
+Rendered signed SVG decoding, four-module quiet zone and at least4.5:1 contrast pass in every theme. Live tests prove accepted-only display, immediate yes/no updates, return access without envelope replay, reduced motion, keyboard navigation and revocation. All24 screenshots were inspected, including long-page slices and visible focus. Preview approval uses the owner's existing device-QA exception; no physical result is claimed.
 
 # Verification
 
-Full pnpm verify passes:656 unit tests and697 browser smoke tests;27 unit and147 browser skips are not certified. Additional isolated live suite:4 pass, covering the signed pass/theme/width/motion matrix, no-JavaScript RSVP, tampering and revocation. The rendered SVG unit test decodes a realistic long signed URL in all four theme colours. Earlier failing tests and results are recorded in the handoff/review.
+Final pnpm t:pr gate on4b4ef6a passed formatting, lint, types, build,656 unit tests and697 browser smoke tests.27 unit and147 browser skips are not certified. The CLI moved the ticket to in_review and linked this PR.
+
+Normal isolated live suite:4 passed, including signed-pass matrix, no-JavaScript RSVP, tampering and revocation. Missing-key mode:4 passed,1 mode-specific skip; the skipped signed-key scenario passed separately.
+
+Production mobile Lighthouse: Performance99/100/100, Accessibility100/100/100, CLS0/0/0. Measurement used an accepted synthetic invitation with a real QR and ephemeral signing key. Its fixture and own server were cleaned afterward.
 
 # Risks and rollout
 
-Requires deployment signing keys already defined by TICKET-056; none are added by this PR. No dependency, migration or RLS changes. Private page reads remain request-time. Do not expose the internal identity service as an unauthenticated action. TICKET-209 overlaps invitation composition and remains unmerged; integrate sequentially. Revert this ticket to roll back; no data conversion.
+No product code, dependency, migration or RLS change in this follow-up. Physical iOS/Android scans from screens and printouts under normal light, low light and glare, plus WhatsApp navigation/safe areas, remain mandatory release gates in TICKET-201. Lighthouse results do not certify every device or font-loading condition. Revert this follow-up to undo evidence/test additions; do not remove release requirements without replacement.
 
 # Screenshots
 
-24 synthetic captures in docs/reviews/TICKET-044/: pass section/full invitation ×four themes ×375/768/1280. All12 pass sections inspected; full-page inspection pending.
+docs/reviews/TICKET-044/: pass section and full invitation in four themes at375/768/1280. All24 inspected. Only synthetic guests and expired test fixtures appear.
 
 # UI checklist
 
-See docs/reviews/TICKET-044/REVIEW.md for every item. Accessibility matrix, contrast, copy, responsiveness and reduced-motion journey pass. Performance, exact-zero CLS, focused keyboard review and physical iOS/Android WhatsApp/scanning are not yet verified. This PR remains draft.
+Detailed results: docs/reviews/TICKET-044/REVIEW.md. Automated accessibility, responsiveness, contrast, copy, reduced motion, keyboard, measured performance and measured CLS pass. Physical device checks remain not verified. Approved for preview only, not guest release.
 
 # Harness changes, if any
 
-No shared harness changes. A ticket-specific review script uses ephemeral in-memory signing keys and isolated synthetic data.
+Ticket-specific review script adds a missing-key mode. Shared harness unchanged.
