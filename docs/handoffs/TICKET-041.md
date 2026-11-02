@@ -33,3 +33,7 @@ Implementation commit532dfd3 is pushed. Draft PR: https://github.com/UncleChenna
 Ephemeral-key signed pass review passes (scripts/review-party.ts,11.2s). Original issued pass reflects3 guests then2 after removal; dietary notes never appear there. Local-origin fixture correction retains all assertions. Three serial production Lighthouse runs pass: Performance98/100/100, Accessibility100 each, measured CLS0 each. Raw ignored reports and performance.log are in artifacts/TICKET-041. Measurement fixtures were cleaned up. No product source changed after full verify; only tests, review helper and evidence added.
 
 Next: commit/push review evidence, run RUN_PARTY_DB_TESTS=1 AGENT_OWNER=divine VITEST_MAX_WORKERS=2 caffeinate -is pnpm t:pr TICKET-041, then check final-head CI and move draft to ready. Keep the physical-device/cold-font release gates in201; do not merge76 under the earlier four-PR exception.
+
+## Ready for review — 2026-11-02
+
+Final t:pr gate session70206 exited0 on c5ba8e9:789 unit/database cases passed (41 skipped),769 browser cases passed (165 skipped). CLI moved the ticket to in_review and pushed6b92b29. PR76 is ready for review with the current detailed body. No product code changed after verification. Final-head GitHub CI remains to be checked. TICKET-201 physical-device and cold-font release gates are retained; no merge76 authorization exists. Next ready ticket is046 (printable themed PDF).
