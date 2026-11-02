@@ -2,7 +2,7 @@
 id: TICKET-171
 title: Migrate menu and station order tables independently
 epic: data-auth
-status: in_progress
+status: in_review
 priority: urgent
 estimate: M
 labels: [db, backend]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-023]
 blocks: [TICKET-026, TICKET-027, TICKET-041, TICKET-070, TICKET-084, TICKET-095]
 branch: TICKET-171
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/48
 created: 2026-10-21
 updated: 2026-11-02
 started: 2026-10-27
@@ -65,3 +65,4 @@ Backlog audit coverage: ORD-1–9. See [PRD](../docs/prd.md) and [audit](AUDIT.m
 - 2026-11-02 — blocked → in_progress — divine (codex) — Refresh source integration and migration proposal against current develop; protected migration generation remains pending approval
 - 2026-11-02 — in_progress → blocked — divine (codex) — Source integration with develop 2f066eb is resolved and quick-tested; awaiting exact-path authorization for unchanged inherited protected files and proposed 0006–0008 migration generation. Updated proposal in docs/reviews/TICKET-171/migration-approval.md; no new migration applied.
 - 2026-11-02 — blocked → in_progress — divine (codex) — User approved inherited protected files and isolated 0006–0008 migration generation/testing
+- 2026-11-02 — in_progress → in_review — divine (codex)
