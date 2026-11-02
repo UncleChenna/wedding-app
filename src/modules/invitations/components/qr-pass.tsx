@@ -1,7 +1,7 @@
 import { QrCode } from "@/modules/shared/components/ui/qr-code";
 import type { PassView } from "@/modules/checkin/lib/pass-eligibility";
 
-export function QrPass({ url, pass }: { url: string; pass: PassView }) {
+export function QrPass({ url, pass, pdfUrl }: { url: string; pass: PassView; pdfUrl?: string }) {
   const name = pass.names.join(" & ") || pass.householdName || "Our dear guest";
   return (
     <div className="mx-auto max-w-md">
@@ -32,6 +32,24 @@ export function QrPass({ url, pass }: { url: string; pass: PassView }) {
       >
         Open your pass
       </a>
+      {pdfUrl ? (
+        <div>
+          <a
+            href={pdfUrl + "?scheme=light"}
+            referrerPolicy="no-referrer"
+            className="inline-flex min-h-11 min-w-11 items-center py-2 text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring dark:hidden"
+          >
+            Download invitation PDF
+          </a>
+          <a
+            href={pdfUrl + "?scheme=dark"}
+            referrerPolicy="no-referrer"
+            className="hidden min-h-11 min-w-11 items-center py-2 text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring dark:inline-flex"
+          >
+            Download invitation PDF
+          </a>
+        </div>
+      ) : null}
     </div>
   );
 }

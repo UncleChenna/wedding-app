@@ -6,6 +6,9 @@ const isDev = process.env.NODE_ENV !== "production";
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
+  outputFileTracingIncludes: {
+    "/i/*/invitation.pdf": ["./src/modules/invitations/fonts/*.ttf"],
+  },
   experimental: {
     // Verification-only cold runs; normal builds retain the framework default.
     turbopackFileSystemCacheForBuild: process.env.FONT_COLD_BUILD !== "1",
