@@ -20,8 +20,12 @@ type Dependencies = {
 /** Internal service: caller must resolve the personal invitation credential first.
  * Never expose this as an unauthenticated action accepting a database ID.
  */
-export function issueGatePassFrom(db: Pick<Db, "select">, invitationId: string, siteUrl: string) {
-  return issueGatePass(invitationId, {
+export function issueGatePassFrom(
+  db: Pick<Db, "select">,
+  identity: { id: string; tokenVersion: number },
+  siteUrl: string,
+) {
+  return issueGatePass(identity, {
     keys: loadGateSigningKeys(),
     load: (id) => findStoredPass(db, id),
     siteUrl,
@@ -33,15 +37,17 @@ export async function issueGatePass(
   identity: unknown,
   deps: Dependencies,
 ): Promise<IssuedGatePass> {
-  const parsed = z.uuid().safeParse(identity);
+  const parsed = z
+    .object({ id: z.uuid(), tokenVersion: z.number().int().positive() })
+    .safeParse(identity);
   if (!parsed.success) return { state: "absent" };
-  const stored = await deps.load(parsed.data);
-  if (!stored) return { state: "absent" };
+  const stored = await deps.load(parsed.data.id);
+  if (!stored || stored.tokenVersion !== parsed.data.tokenVersion) return { state: "absent" };
   const resolution = passEligibility(
     {
       v: GATE_PASS_VERSION,
       kid: "eligibility",
-      inv: parsed.data,
+      inv: parsed.data.id,
       ver: stored.tokenVersion,
       iat: Math.floor(deps.now / 1000),
     },
@@ -50,7 +56,7 @@ export async function issueGatePass(
   if (resolution.state !== "valid") return { state: "absent" };
   if (!deps.keys.ok) return { state: "unavailable" };
   const token = signGatePass(
-    { invitationId: parsed.data, tokenVersion: stored.tokenVersion },
+    { invitationId: parsed.data.id, tokenVersion: stored.tokenVersion },
     deps.keys.value,
     deps.now,
   );

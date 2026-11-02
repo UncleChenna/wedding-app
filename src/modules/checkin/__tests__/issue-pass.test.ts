@@ -35,7 +35,9 @@ describe("authorized pass issuance", () => {
   it.each(["draft", "sent", "rsvp_no", "revoked"] as const)(
     "never issues for %s",
     async (status) => {
-      expect(await issueGatePass(id, dependencies({ ...stored, status }))).toEqual({
+      expect(
+        await issueGatePass({ id, tokenVersion: 3 }, dependencies({ ...stored, status })),
+      ).toEqual({
         state: "absent",
       });
     },
@@ -43,16 +45,21 @@ describe("authorized pass issuance", () => {
   it.each([null, { ...stored, attending: false }, { ...stored, countAttending: 0 }])(
     "requires attendance and seats",
     async (value) => {
-      expect(await issueGatePass(id, dependencies(value))).toEqual({ state: "absent" });
+      expect(await issueGatePass({ id, tokenVersion: 3 }, dependencies(value))).toEqual({
+        state: "absent",
+      });
     },
   );
   it("returns unavailable when signing is not configured", async () => {
     expect(
-      await issueGatePass(id, { ...dependencies(), keys: { ok: false, error: "missing" } }),
+      await issueGatePass(
+        { id, tokenVersion: 3 },
+        { ...dependencies(), keys: { ok: false, error: "missing" } },
+      ),
     ).toEqual({ state: "unavailable" });
   });
   it("signs current version without guest details", async () => {
-    const result = await issueGatePass(id, dependencies());
+    const result = await issueGatePass({ id, tokenVersion: 3 }, dependencies());
     expect(result.state).toBe("ready");
     if (result.state !== "ready" || !keys.ok) throw new Error("Expected an issued pass");
     const url = new URL(result.url);
@@ -74,4 +81,8 @@ describe("authorized pass issuance", () => {
     expect(JSON.stringify(verified.payload)).not.toContain("Ada");
     expect(JSON.stringify(verified.payload)).not.toContain("Test household");
   });
+});
+
+it("rejects a credential snapshot after a concurrent token rotation", async () => {
+  expect(await issueGatePass({ id, tokenVersion: 2 }, dependencies())).toEqual({ state: "absent" });
 });

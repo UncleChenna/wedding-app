@@ -4,32 +4,36 @@ TICKET-044 — Show the guest's QR pass after they RSVP yes.
 
 # Summary
 
-Draft implementation checkpoint. Accepted RSVP guests still lack a signed pass inside their invitation. This branch starts the server issuance service; it is not yet wired to a page.
+Accepted guests now see their signed QR pass inside the personal invitation and can reopen it without envelope animation. Reply changes immediately add or remove the pass. Draft: final UI/performance/device review is still incomplete.
 
 # Changes
 
-Recheck current invitation status, attendance and seats before issuing through the existing signer. Reject malformed identities and ineligible records, handle missing keys safely, sign the current token version and return a read-only pass URL plus display data. The internal service requires a caller-authorized identity; it is not exposed as a public action.
+- Resolve the private invitation credential to an eligible identity and version snapshot; recheck current RSVP/seats and reject concurrent rotation before signing.
+- Render a themed server SVG with approved Warm copy, guest name, party size, table and read-only pass link. Never encode the editing credential or personal details in the signed payload.
+- Preserve RSVP editing, pass anchor and reduced-motion return behavior. Missing signing keys show a safe message.
+- Refresh the authorized page after successful yes/no submissions.
+- Add real SVG decode/contrast tests and isolated browser review with ephemeral keys and cleaned synthetic fixtures.
 
 # Acceptance criteria and evidence
 
-All product acceptance criteria remain incomplete. Still required: authorized invitation lookup and route wiring, real QR display and SVG decode/contrast evidence, first/return visit behavior, reduced motion, UI matrix and device scanning.
+Functional requirements are covered by unit and live browser tests: signed URL decode, quiet zone/contrast, accepted-only display, first/return visits and every theme. UI completion is not claimed: full-page screenshot inspection, focused keyboard checks, Lighthouse/CLS and real-device scans remain outstanding.
 
 # Verification
 
-Missing-module test failed before implementation.34 focused tests pass across issuance, resolver and signing-boundary suites. verify:quick passes lint, types and related tests. Full verification has not run for this checkpoint.
+Full pnpm verify passes:656 unit tests and697 browser smoke tests;27 unit and147 browser skips are not certified. Additional isolated live suite:4 pass, covering the signed pass/theme/width/motion matrix, no-JavaScript RSVP, tampering and revocation. The rendered SVG unit test decodes a realistic long signed URL in all four theme colours. Earlier failing tests and results are recorded in the handoff/review.
 
 # Risks and rollout
 
-Do not expose the identity-based service without invitation credential authorization. No migration, RLS or dependency changes. No deployed behavior changes yet; revert the ticket to roll back. Physical scanning and WhatsApp checks remain unverified. TICKET-209 overlaps the eventual invitation integration and remains unmerged.
+Requires deployment signing keys already defined by TICKET-056; none are added by this PR. No dependency, migration or RLS changes. Private page reads remain request-time. Do not expose the internal identity service as an unauthenticated action. TICKET-209 overlaps invitation composition and remains unmerged; integrate sequentially. Revert this ticket to roll back; no data conversion.
 
 # Screenshots
 
-Not applicable to this server-only checkpoint; required before the eventual UI is reviewed.
+24 synthetic captures in docs/reviews/TICKET-044/: pass section/full invitation ×four themes ×375/768/1280. All12 pass sections inspected; full-page inspection pending.
 
 # UI checklist
 
-Not yet verified. No UI implementation is included in this checkpoint. All final all-theme, accessibility, motion, performance and physical-device requirements remain open.
+See docs/reviews/TICKET-044/REVIEW.md for every item. Accessibility matrix, contrast, copy, responsiveness and reduced-motion journey pass. Performance, exact-zero CLS, focused keyboard review and physical iOS/Android WhatsApp/scanning are not yet verified. This PR remains draft.
 
 # Harness changes, if any
 
-None. The handoff records an observed shell-guard quoted-data parsing issue for a future focused fix.
+No shared harness changes. A ticket-specific review script uses ephemeral in-memory signing keys and isolated synthetic data.
