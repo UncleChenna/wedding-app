@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { appRoutes } from "@/modules/shared/lib/routes";
 import Link from "next/link";
 import { invitationNextStep } from "../lib/invitation-next-step";
@@ -11,12 +12,16 @@ export function PersonalInvitation({
   repliesOpen,
   details,
   now = new Date(),
+  pass,
+  passNotice,
 }: {
   invitation: GuestInvitation;
   token: string;
   repliesOpen: boolean;
   details: InvitationEventDetails;
   now?: Date;
+  pass?: ReactNode;
+  passNotice?: ReactNode;
 }) {
   const next = invitationNextStep(invitation.attendance, details.eventDate, details.timeZone, now);
   const greeting =
@@ -25,16 +30,7 @@ export function PersonalInvitation({
     <InvitationLetter
       details={details}
       greeting={greeting}
-      pass={
-        next.step === "pass" ? (
-          <div className="mx-auto max-w-prose text-center">
-            <h2 className="type-heading">Your pass</h2>
-            <p className="mt-6 text-lg leading-relaxed">
-              Your pass will be available here before the celebration. We can’t wait to see you.
-            </p>
-          </div>
-        ) : undefined
-      }
+      pass={invitation.attendance === "yes" ? pass : undefined}
     >
       {next.step === "closing" && (
         <section className="mb-12" aria-labelledby="reply-closing">
@@ -46,6 +42,7 @@ export function PersonalInvitation({
           </p>
         </section>
       )}
+      {invitation.attendance === "yes" && passNotice}
       <RsvpForm token={token} attendance={invitation.attendance} open={repliesOpen} />
       {next.showOrdering && (
         <p className="mt-12">

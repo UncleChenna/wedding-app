@@ -25,7 +25,7 @@ Pages were isolated from one another. This change connects configured guest entr
 
 # Acceptance criteria and evidence
 
-Base develop: c4208e39d8df9914c0ad57f525d4f0658fdeaab7 (TICKET-183 integration).
+Base develop: 2f066ebbb175c4b8d42b0ab6f54545134f52f592 (TICKET-044 signed-pass integration).
 Functional criteria were verified before integration. The owner approved preview advancement while retaining exact-zero CLS and physical-device release gates; this is not production UI approval.
 
 # Verification
@@ -50,8 +50,16 @@ Physical iOS/Android WhatsApp, keyboard/safe-area and authenticator scanning rem
 
 # Risks and rollout
 
-Real QR passes/signing, staff PIN protection, scanning/orders and remaining admin areas belong to their existing tickets. This is navigation integration, not certification of those features. No migration, RLS, dependency or CI changes. Roll back by reverting this ticket; no data conversion is needed.
+Real QR-pass issuance from merged TICKET-044 is preserved and integration-tested here. Staff PIN protection, scanning/orders and remaining admin areas belong to their existing tickets. This is navigation integration, not certification of those features. No migration, RLS, dependency or CI changes. Roll back by reverting this ticket; no data conversion is needed.
 
 # Review steps
 
 Use isolated synthetic settings/invitations. Visit / and /invite; exercise yes/no/edit replies and home return. Navigate /staff to each station and back. Sign in to /admin, open Sharing, verify draft/revoked exclusions and dialog focus return. Confirm ordinary production /dev routes return404. Preserve failed font tests and release gates.
+
+## QR-pass conflict repair — 2026-11-02
+
+Integrated develop 2f066ebbb175c4b8d42b0ab6f54545134f52f592. Preserved cached public metadata, route navigation, RSVP editing and the real signed-pass flow. Both formerly conflicting test suites remain, split by their mock boundary; three additional notice-state tests cover accepted, declined and unanswered invitations.
+
+Quick lint/types and 43 related tests pass; production build passes. Isolated pass review passes four browser cases covering signed pass, reload, privacy, revoke, yes/no and no-JavaScript submission, across four themes and three widths with reduced motion. All 24 pass/invitation screenshots and long-page slices were inspected: no clipping or overflow. Evidence: docs/reviews/TICKET-209/pass-integration/. Authenticated journey first stopped at its allowlist precondition because the command omitted ADMIN_EMAIL_ALLOWLIST; with the synthetic journeys-mobile@example.test allowlist, unchanged assertions pass (1 case, 5.1s). No product permissions or tests were relaxed.
+
+Full PR verification remains pending. Exact-zero cold-font and physical-device checks remain unresolved in release-blocking TICKET-201 under the approved preview exception. Owner divine; branch TICKET-209. Next: commit/push this resolved integration, run t:pr, and inspect final CI. Human merge required.

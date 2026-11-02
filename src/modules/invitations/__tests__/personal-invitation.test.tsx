@@ -22,6 +22,12 @@ it.each([
         invitation={{ attendance, primaryNames: ["Guest"], householdName: null }}
         token="test"
         repliesOpen
+        pass={
+          <section>
+            <h2>Your pass</h2>
+            <p>Real signed pass</p>
+          </section>
+        }
         details={defaultEventSettings}
         now={new Date("2026-12-18T12:00:00Z")}
       />,
@@ -41,6 +47,12 @@ it.each(["yes", "no", null] as const)(
         invitation={{ attendance, primaryNames: ["Guest"], householdName: null }}
         token="test"
         repliesOpen
+        pass={
+          <section>
+            <h2>Your pass</h2>
+            <p>Real signed pass</p>
+          </section>
+        }
         details={{ ...defaultEventSettings, timeZone: "Africa/Lagos" }}
         now={new Date("2026-12-18T23:00:00Z")}
       />,
@@ -49,8 +61,7 @@ it.each(["yes", "no", null] as const)(
       "href",
       "/order",
     );
-    if (attendance === "yes")
-      expect(screen.getByText(/Your pass will be available here/)).toBeVisible();
+    if (attendance === "yes") expect(screen.getByText(/Real signed pass/)).toBeVisible();
     if (attendance === "no")
       expect(screen.getByRole("heading", { name: "We’ll miss you" })).toBeVisible();
     expect(screen.getByRole("form", { name: "Your reply" })).toBeVisible();

@@ -1,6 +1,7 @@
 "use server";
 import "server-only";
 import { revalidatePath } from "next/cache";
+import { invitationTokenSchema } from "../lib/token";
 import { invitationHref } from "@/modules/shared/lib/routes";
 import { unstable_rethrow } from "next/navigation";
 import { db } from "@/modules/shared/server/db/client";
@@ -19,8 +20,9 @@ export async function respondToInvitation(
       { token, attendance: form.get("attendance") },
       (token, attending) => saveRsvp(db, token, attending),
     );
-    if ((result.status === "yes" || result.status === "no") && typeof token === "string") {
-      revalidatePath(invitationHref(token));
+    const validatedToken = invitationTokenSchema.safeParse(token);
+    if ((result.status === "yes" || result.status === "no") && validatedToken.success) {
+      revalidatePath(invitationHref(validatedToken.data));
     }
     return result;
   } catch (error) {

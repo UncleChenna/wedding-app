@@ -107,3 +107,11 @@ Full integrated gate: 671 unit cases passed,27 skipped; browser suite 768 passed
 ## Preview ready for review — 2026-11-02
 
 Full pnpm t:pr gate on source741dd83877788a99d5b63250db2459a7bd66b2e1 exited0: format, lint, types, build,671 unit tests and769 browser tests passed.27 unit and165 browser skips remain unverified. CI on that source also passed all required jobs. CLI moved209 to in_review and pushed status commitbb3979f. PR68 is ready for review as an explicitly approved preview. No source edits followed verification. Exact-zero cold-font regression and physical-device release gates remain open under201; no test thresholds were weakened. Base develop remains c4208e39d8df9914c0ad57f525d4f0658fdeaab7. Next action: human review/merge per the latest shared instructions, then CLI close;044 is the next ready functional ticket.
+
+## QR-pass conflict repair — 2026-11-02
+
+Integrated develop 2f066ebbb175c4b8d42b0ab6f54545134f52f592. Preserved cached public metadata, route navigation, RSVP editing and the real signed-pass flow. Both formerly conflicting test suites remain, split by their mock boundary; three additional notice-state tests cover accepted, declined and unanswered invitations.
+
+Quick lint/types and 43 related tests pass; production build passes. Isolated pass review passes four browser cases covering signed pass, reload, privacy, revoke, yes/no and no-JavaScript submission, across four themes and three widths with reduced motion. All 24 pass/invitation screenshots and long-page slices were inspected: no clipping or overflow. Evidence: docs/reviews/TICKET-209/pass-integration/. Authenticated journey first stopped at its allowlist precondition because the command omitted ADMIN_EMAIL_ALLOWLIST; with the synthetic journeys-mobile@example.test allowlist, unchanged assertions pass (1 case, 5.1s). No product permissions or tests were relaxed.
+
+Full PR verification remains pending. Exact-zero cold-font and physical-device checks remain unresolved in release-blocking TICKET-201 under the approved preview exception. Owner divine; branch TICKET-209. Next: commit/push this resolved integration, run t:pr, and inspect final CI. Human merge required.
