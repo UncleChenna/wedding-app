@@ -9,7 +9,9 @@ Pages were isolated from one another. This change connects configured guest entr
 
 # Changes
 
-- Register all21 pages; encode invitation paths and test the registry against filesystem routes.
+- Integrate signed-pass routes and preview navigation; preserve credential privacy and restore the generic token-free social image. Route/pass unit tests (12), pass/preview browser checks (5), authenticated crawl (1) and preview captures (12) pass. All 12 updated preview-index images were inspected across four themes and three widths.
+
+- Register all 23 pages; encode invitation paths and test the registry against filesystem routes.
 - Read event settings for home and metadata; provide human resend guidance. Preserve reply editing and show the appropriate pass/closing/form state. Day-of ordering uses the venue time zone; TBD suppresses automatic day-of links.
 - Add staff home, bar placeholder and station return links.
 - Provide an authorized admin hub and Sharing list. Draft/revoked invitations cannot be shared. Sharing opens a client or copies a link; it does not send messages or change sent status.
@@ -23,7 +25,7 @@ Pages were isolated from one another. This change connects configured guest entr
 
 # Acceptance criteria and evidence
 
-Base develop:99be217ae101133995e63af416ef6dc66f1f39fa (integration e799d1e).
+Base develop: c4208e39d8df9914c0ad57f525d4f0658fdeaab7 (TICKET-183 integration).
 Functional criteria were verified before integration. The owner approved preview advancement while retaining exact-zero CLS and physical-device release gates; this is not production UI approval.
 
 # Verification

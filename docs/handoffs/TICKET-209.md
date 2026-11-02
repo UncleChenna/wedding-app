@@ -152,3 +152,11 @@ Restore71741 exited0. Unchanged journey97791 failed after15.4min and idle-only c
 Inspected only journeys-mobile@example.test fixtures. Removed its exact newly created factora3d5c14a-8c16-4a54-a29c-daec94691bf4 and three invitations named Journey household8271ca1985 sent/draft/revoked left by this run. No other data was removed. With process-scoped caffeinate -is (idle and AC system sleep prevention), unchanged journey assertions pass:38497 exited0,1 case,5.8s (restored-awake-journey-cleanup.log). System preferences were not changed; assertions end with the process. Quick lint/types and related tests previously passed for the public fallback.
 
 Next commit/push the public-build correction and cleanup, then run AGENT_OWNER=divine VITEST_MAX_WORKERS=2 caffeinate -is pnpm t:pr TICKET-209 against an unchanged commit. Physical-device and exact-zero release gates remain unresolved and disclosed.
+
+## Signed-pass integration — 2026-11-02
+
+Integrated develop c4208e39d8df9914c0ad57f525d4f0658fdeaab7 (TICKET-183). Resolved route inventory, preview index and proxy conflicts while retaining pass privacy and production preview restrictions. Registered both new routes, added the gate-pass preview link and corrected stale preview copy. The pass retains generic social metadata with the public token-free image.
+
+Evidence: pass-registry-red.log fails before registration; pass-registry-green.log passes 12 cases. pass-metadata-red.log fails the missing image assertion; pass-metadata-green.log passes 5 browser cases after correction. pass-integrated-journey.log passes the authenticated crawl (1 case, 5.9s). Quick verification and production builds pass. pass-index-final-captures.log passes 12 cases. All 12 final preview-index screenshots were visually inspected at 375/768/1280 across four themes: no clipping, overflow or stale footer; evidence saved in docs/reviews/TICKET-209/preview-index/.
+
+Full verification on the integrated commit remains pending. The neutral invalid-pass crawl does not certify live valid-pass workflows. Exact-zero cold-font and physical-device release gates remain unresolved under TICKET-201, with the approved preview-only exception retained. Next: commit/push the integration and run the unchanged full PR gate with process-scoped caffeinate -is and VITEST_MAX_WORKERS=2.

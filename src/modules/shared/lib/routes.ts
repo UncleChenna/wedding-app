@@ -1,5 +1,5 @@
 export type RouteAudience = "guest" | "staff" | "admin" | "dev";
-export type RouteAccess = "public" | "invitation" | "session" | "admin" | "preview";
+export type RouteAccess = "public" | "invitation" | "pass" | "session" | "admin" | "preview";
 
 export interface AppRoute {
   readonly path: `/${string}`;
@@ -18,6 +18,7 @@ export const appRoutes = {
     audience: "guest",
     access: "invitation",
   },
+  pass: { path: "/p/[pass]", label: "Your gate pass", audience: "guest", access: "pass" },
   order: { path: "/order", label: "Order to your table", audience: "guest", access: "public" },
   staff: { path: "/staff", label: "Staff home", audience: "staff", access: "public" },
   bar: { path: "/bar", label: "Bar board", audience: "staff", access: "public" },
@@ -50,6 +51,7 @@ export const appRoutes = {
   },
   devRsvp: { path: "/dev/rsvp", label: "RSVP preview", audience: "dev", access: "preview" },
   devOrder: { path: "/dev/order", label: "Ordering preview", audience: "dev", access: "preview" },
+  devPass: { path: "/dev/pass", label: "Gate pass preview", audience: "dev", access: "preview" },
   devShare: { path: "/dev/share", label: "Sharing preview", audience: "dev", access: "preview" },
 } as const satisfies Record<string, AppRoute>;
 
@@ -60,7 +62,14 @@ export function invitationHref(token: string): string {
   return appRoutes.invitation.path.replace("[token]", encodeURIComponent(token));
 }
 
-/** Public error-state fixture; never place a real invitation token in the route inventory. */
-export const pageRouteSamples = routeList.map((route) =>
-  route.path === appRoutes.invitation.path ? invitationHref("invalid") : route.path,
-);
+/** Read-only pass paths never expose an invitation editing credential. */
+export function passHref(pass: string): string {
+  return appRoutes.pass.path.replace("[pass]", encodeURIComponent(pass));
+}
+
+/** Public error-state fixtures; never put real credentials into the route inventory. */
+export const pageRouteSamples = routeList.map((route) => {
+  if (route.path === appRoutes.invitation.path) return invitationHref("invalid");
+  if (route.path === appRoutes.pass.path) return passHref("invalid");
+  return route.path;
+});

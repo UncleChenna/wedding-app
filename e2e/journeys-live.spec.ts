@@ -4,7 +4,7 @@ import { createServerClient } from "@supabase/ssr";
 import { expect, test } from "@playwright/test";
 import postgres from "postgres";
 import { assertDatabaseTarget } from "../scripts/database-target";
-import { appRoutes, invitationHref, routeList } from "../src/modules/shared/lib/routes";
+import { appRoutes, invitationHref, passHref, routeList } from "../src/modules/shared/lib/routes";
 import { localAdminLogin } from "./support/local-admin-login";
 import { reviewAdminJourneys } from "./support/journey-review";
 import { totp } from "./support/totp";
@@ -96,6 +96,7 @@ test("all production journeys connect, including authenticated sharing", async (
     const backs = new Map([
       [appRoutes.invite.path, appRoutes.home.path],
       [appRoutes.invitation.path, appRoutes.home.path],
+      [appRoutes.pass.path, appRoutes.home.path],
       [appRoutes.order.path, appRoutes.home.path],
       [appRoutes.checkin.path, appRoutes.staff.path],
       [appRoutes.kitchen.path, appRoutes.staff.path],
@@ -108,12 +109,16 @@ test("all production journeys connect, including authenticated sharing", async (
       [
         appRoutes.home.path,
         invitationHref(token),
+        passHref("invalid"),
         appRoutes.order.path,
         appRoutes.staff.path,
         appRoutes.admin.path,
       ],
       registered,
-      new Map([[invitationHref(token), appRoutes.invitation.path]]),
+      new Map([
+        [invitationHref(token), appRoutes.invitation.path],
+        [passHref("invalid"), appRoutes.pass.path],
+      ]),
       backs,
     );
     for (const path of found) visited.add(path);

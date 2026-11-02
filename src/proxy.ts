@@ -6,6 +6,14 @@ import { db } from "@/modules/shared/server/db/client";
 import { hasPublishedInvitation } from "@/modules/invitations/server/repository";
 
 export async function proxy(request: NextRequest) {
+  // Signed pass credentials must never enter caches, referrers or search indexes.
+  if (request.nextUrl.pathname.startsWith("/p/")) {
+    const response = NextResponse.next();
+    response.headers.set("Cache-Control", "private, no-store");
+    response.headers.set("Referrer-Policy", "no-referrer");
+    response.headers.set("X-Robots-Tag", "noindex, nofollow");
+    return response;
+  }
   if (request.nextUrl.pathname === "/dev" || request.nextUrl.pathname.startsWith("/dev/")) {
     const allowed = allowDevPreview(
       process.env.NODE_ENV,
@@ -42,6 +50,7 @@ export const config = {
   matcher: [
     "/dev/:path*",
     "/i/:token",
+    "/p/:pass",
     "/admin/:path*",
     "/checkin/:path*",
     "/kitchen/:path*",

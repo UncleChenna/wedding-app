@@ -91,3 +91,11 @@ Base develop99be217ae101133995e63af416ef6dc66f1f39fa; integration commit e799d1e
 All four production PNG responses for current default settings are byte-identical to previously reviewed docs/reviews/TICKET-047/{theme}.png. SHA256: ivory43dffdcad7f6a99e37cc34e24007ef9324f46e9718b13cfc84d65a117754209e; midnightf876aadba735a0c8eb35c1c1cdc97e5c3356716918c2c1fc486a2bce06cde70b; emeraldfbc28a78be61d9ef0822156b495884145dfa6651dd182b454d511619609b46e1; blush43eb4d5fcd3bc7c9738d5a7e4398c2d3aa787cd5b3ff6f4813bff4ba672b89a5. The settings integration does not change their reviewed layout.
 
 Preview review: APPROVE subject to the final full verification/CI gates and the owner's explicit exception. Production UI review remains CHANGES REQUESTED for the existing exact-zero font-shift and unverified physical-device requirements; TICKET-201 remains release-blocking. No failed assertion, screenshot or measurement is removed.
+
+## Signed-pass integration — 2026-11-02
+
+Integrated develop c4208e39d8df9914c0ad57f525d4f0658fdeaab7 (TICKET-183). Resolved route inventory, preview index and proxy conflicts while retaining pass privacy and production preview restrictions. Registered both new routes, added the gate-pass preview link and corrected stale preview copy. The pass retains generic social metadata with the public token-free image.
+
+Evidence: pass-registry-red.log fails before registration; pass-registry-green.log passes 12 cases. pass-metadata-red.log fails the missing image assertion; pass-metadata-green.log passes 5 browser cases after correction. pass-integrated-journey.log passes the authenticated crawl (1 case, 5.9s). Quick verification and production builds pass. pass-index-final-captures.log passes 12 cases. All 12 final preview-index screenshots were visually inspected at 375/768/1280 across four themes: no clipping, overflow or stale footer; evidence saved in docs/reviews/TICKET-209/preview-index/.
+
+Full verification on the integrated commit remains pending. The neutral invalid-pass crawl does not certify live valid-pass workflows. Exact-zero cold-font and physical-device release gates remain unresolved under TICKET-201, with the approved preview-only exception retained. Next: commit/push the integration and run the unchanged full PR gate with process-scoped caffeinate -is and VITEST_MAX_WORKERS=2.

@@ -10,6 +10,7 @@ const pages = [
   [appRoutes.devRsvp.path, "RSVP preview"],
   [appRoutes.devOrder.path, "Table ordering preview"],
   [appRoutes.devShare.path, "Invitation sharing preview"],
+  [appRoutes.devPass.path, "Gate pass preview"],
   [appRoutes.devTheme.path, "Components and themes"],
 ] as const;
 export default function PreviewIndex() {
@@ -40,11 +41,11 @@ export default function PreviewIndex() {
       <h2 className="font-display text-3xl">Coming next</h2>
       <ol className="mt-6 list-inside list-decimal space-y-4 text-base leading-relaxed">
         <li>Gate check-in and kitchen screens</li>
-        <li>Admin pages</li>
+        <li>Guest management and seating</li>
       </ol>
       <p className="mt-8 text-base leading-relaxed">
-        These screens are not ready yet. Personal invitation links, saved RSVPs and staff access
-        will follow their integration tickets.
+        Personal invitations and saved replies are available through your invitation link. Gate
+        scanning, table orders and staff sign-in are still being built.
       </p>
     </main>
   );
