@@ -27,6 +27,7 @@ test("all production journeys connect, including authenticated sharing", async (
   const db = postgres(process.env.DATABASE_URL ?? "", { max: 1 });
   const ids: string[] = [];
   let factorId = "";
+  let authCookies: { name: string; value: string }[] = [];
   const suffix = randomBytes(5).toString("hex");
   const token = randomBytes(32).toString("base64url");
   const name = "Journey household " + suffix;
@@ -43,6 +44,7 @@ test("all production journeys connect, including authenticated sharing", async (
       ids.push(row.id);
     }
     await localAdminLogin(page, request, `journeys-${info.project.name}@example.test`);
+    authCookies = await context.cookies();
     recordCurrent();
     await expect(page.getByRole("link", { name: "Back to our day" })).toBeVisible();
     await page.getByRole("link", { name: "Continue to admin" }).click();
@@ -56,6 +58,7 @@ test("all production journeys connect, including authenticated sharing", async (
     await page.getByLabel("Authenticator code").fill(totp(secret));
     await page.getByRole("button", { name: "Verify code" }).click();
     await expect(page).toHaveURL(/\/admin$/);
+    authCookies = await context.cookies();
     recordCurrent();
     await expect(page.getByRole("link", { name: "Sign in", exact: true })).toHaveCount(0);
     await page.getByRole("link", { name: "Sharing", exact: true }).click();
@@ -143,23 +146,23 @@ test("all production journeys connect, including authenticated sharing", async (
       contentType: "application/json",
     });
   } finally {
-    await context.setOffline(false);
-    if (factorId) {
-      const auth = createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
-        process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? "",
-        {
-          cookies: {
-            getAll: async () =>
-              (await context.cookies()).map(({ name, value }) => ({ name, value })),
-            setAll: () => {},
-          },
-        },
-      );
-      const result = await auth.auth.mfa.unenroll({ factorId });
-      expect(result.error, "Remove only this synthetic account's factor").toBeNull();
+    // Cleanup uses captured cookies, so a closed browser cannot prevent fixture cleanup.
+    try {
+      if (factorId) {
+        const auth = createServerClient(
+          process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
+          process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? "",
+          { cookies: { getAll: () => authCookies, setAll: () => {} } },
+        );
+        const result = await auth.auth.mfa.unenroll({ factorId });
+        expect(result.error, "Remove only this synthetic account's factor").toBeNull();
+      }
+    } finally {
+      try {
+        if (ids.length) await db`delete from invitations where id in ${db(ids)}`;
+      } finally {
+        await db.end();
+      }
     }
-    if (ids.length) await db`delete from invitations where id in ${db(ids)}`;
-    await db.end();
   }
 });

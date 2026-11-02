@@ -136,3 +136,19 @@ Own UI acceptance criterion now explicitly implements the approved preview excep
 The final evidence commit hook caught the newly merged125 lint rule on proxy.ts ENABLE_LOCAL_PREVIEWS. The Node-runtime proxy already imports server-only database/repository modules; added an explicit server-only marker for its direct env read. No lint exemption was added. Rebuild and unchanged production-preview guard tests must pass before publishing.
 
 Proxy boundary follow-up93311 exited0: quick lint/types/related tests, production build and both existing preview-access browser cases pass. Production /dev remains404 by default and explicit loopback opt-in remains supported. Evidence:proxy-boundary-{quick,build,browser}.log.
+
+## Database-free build regression — 2026-11-01
+
+CI41351840816 failed because cached guest metadata opened the database during build, unlike the earlier static metadata. The local gate5908 also exited1 with four harness timeouts and a transient child-spawn ENOENT; tsx is present. No failing run is counted as passing.
+
+Added a bounded public-only settings projection and safe approved-default fallback for public pages/metadata/artwork. Private invitation data and RSVP retain strict getEventSettings; original tests prove outages/corrupt settings still reject there. New missing-helper red test then17 passing public/strict-settings cases. Stopped only projectwedding-669955f89d84 with backup:true, and reproduced a genuinely database-free production build:20660 exited0. Unchanged all-theme sharing browser smoke49735 passes2 cases with the database stopped. No timeouts or assertions changed.
+
+Managed restore71741 is running; poll it before further DB tests. Next verify the restored authenticated journey, commit/push the fix, and rerun the full PR gate. The prior UI preview exception and exact-zero/device release gates are unchanged.
+
+## Restored verification and sleep diagnosis — 2026-11-02
+
+Restore71741 exited0. Unchanged journey97791 failed after15.4min and idle-only caffeinate retry73184 failed after16.2min. pmset records Maintenance Sleep from23:16:02 for923s and23:42:35 for964s, explaining the excessive elapsed times. No timeout increase is justified. The second timeout also exposed cleanup stopping when context.setOffline ran on a closed context. Cleanup now uses captured auth cookies and nested finally blocks so invitation/database cleanup still runs; all behavioral/auth assertions remain.
+
+Inspected only journeys-mobile@example.test fixtures. Removed its exact newly created factora3d5c14a-8c16-4a54-a29c-daec94691bf4 and three invitations named Journey household8271ca1985 sent/draft/revoked left by this run. No other data was removed. With process-scoped caffeinate -is (idle and AC system sleep prevention), unchanged journey assertions pass:38497 exited0,1 case,5.8s (restored-awake-journey-cleanup.log). System preferences were not changed; assertions end with the process. Quick lint/types and related tests previously passed for the public fallback.
+
+Next commit/push the public-build correction and cleanup, then run AGENT_OWNER=divine VITEST_MAX_WORKERS=2 caffeinate -is pnpm t:pr TICKET-209 against an unchanged commit. Physical-device and exact-zero release gates remain unresolved and disclosed.

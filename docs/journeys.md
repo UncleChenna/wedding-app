@@ -69,3 +69,7 @@ Register its route and audience, connect it from the appropriate hub or authoriz
 ## Local production preview verification
 
 Ordinary `pnpm start` does not expose `/dev` pages. For deliberate local visual review only, start with `ENABLE_LOCAL_PREVIEWS=1 pnpm start`; the request hostname must also be localhost,127.0.0.1 or[::1]. Do not configure this flag on deployments. Playwright opts in only its loopback server through `webServer.env`; a separate smoke test starts the same production build with the flag empty and checks every registered preview returns404. Query parameters and RSC headers do not opt in. Preview responses are no-store and noindex.
+
+## Public event details during an outage
+
+Public entry pages, social metadata and invitation-preview artwork read only the public projection of saved event settings. A failed or slow lookup (two-second bound) uses the approved draft names/date and unknown venue/time defaults, with a structured warning that contains no database error details. This allows database-free builds and public guidance during an outage. Guest layout metadata revalidates after30s and expires after300s; image responses retain their existing60s cache policy. Private invitation lookup, RSVP and administrative settings keep their strict readers and do not use this fallback.
