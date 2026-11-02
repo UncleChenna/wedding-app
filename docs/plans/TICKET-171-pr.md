@@ -8,24 +8,24 @@ Orders need separate kitchen/bar progress while one guest submission counts once
 
 # Changes
 
-- Generate0006 expansion,0007 reviewed custom backfill and0008 final constraints; retain all old columns and the positive-quantity check.
+- Generate 0006 expansion, 0007 reviewed custom backfill and 0008 final constraints; retain all old columns and the positive-quantity check.
 - Preserve parent IDs/status/notes/timestamps and quantities. Create one child per represented station; legacy ready maps to preparing only on the child.
-- Require explicit classification for ambiguous legacy drinks; reject duplicate legacy lines and quantities above100 without dropping or clipping data.
-- Add14 real-Postgres constraint/preservation tests and deterministic mixed-station seeds.
-- Integrate develop2f066eb, retaining its RSVP-history seed handling and database isolation guard.
+- Require explicit classification for ambiguous legacy drinks; reject duplicate legacy lines and quantities above 100 without dropping or clipping data.
+- Add 14 real-Postgres constraint/preservation tests and deterministic mixed-station seeds.
+- Integrate develop 2f066eb, retaining its RSVP-history seed handling and database isolation guard.
 
 # Acceptance criteria and evidence
 
-All three functional criteria are implemented: schema constraints and mixed-station grouping pass8 database tests; empty and populated bootstrap migration preservation/rejections pass6 tests; seed runs are repeatable. Evidence: docs/reviews/TICKET-171/README.md.
+All three functional criteria are implemented: schema constraints and mixed-station grouping pass 8 database tests; empty and populated bootstrap migration preservation/rejections pass 6 tests; seed runs are repeatable. Evidence: docs/reviews/TICKET-171/README.md.
 
 # Verification
 
-- Initial8 database tests failed before schema changes; all14 now pass against the approved isolated database.
-- Migrate twice:9 applied migrations each time, identical row counts.
-- Seed twice: identical counts, including18 submissions,28 station children and35 lines.
-- RLS enabled on all13 public tables; Drizzle snapshot check passes.
-- Quick gate passed lint/types; full gate has passed673 unit tests (27 conditional skips) and production build. Browser verification remains running, so this PR remains draft.
-- A separate local drift-generation command was rejected because it could create a migration outside approved paths. Existing CI schema-drift/migrate/seed checks remain mandatory. The14 opt-in database tests ran locally; no CI execution of those tests is claimed.
+- Initial 8 database tests failed before schema changes; all 14 now pass against the approved isolated database.
+- Migrate twice: 9 applied migrations each time, identical row counts.
+- Seed twice: identical counts, including 18 submissions, 28 station children and 35 lines.
+- RLS enabled on all 13 public tables; Drizzle snapshot check passes.
+- Quick gate passed lint/types; full gate has passed 673 unit tests (27 conditional skips) and production build. Full browser verification passed: 697 tests, with 147 existing conditional/project skips. The PR transition gate and final-head CI remain.
+- A separate local drift-generation command was rejected because it could create a migration outside approved paths. Existing CI schema-drift/migrate/seed checks remain mandatory. The 14 opt-in database tests ran locally; no CI execution of those tests is claimed.
 
 # Risks and rollout
 
@@ -39,4 +39,4 @@ N/A: database schema, migrations, seeds and tests; no UI output changes.
 
 # UI checklist
 
-N/A for layout, screenshots, typography, controls, keyboard, motion, images, guest copy, performance, device sharing, physical QR or staff feedback: no rendered component or active theme changes. Existing release QA gates remain mandatory. Full application regression gate is still running.
+N/A for layout, screenshots, typography, controls, keyboard, motion, images, guest copy, performance, device sharing, physical QR or staff feedback: no rendered component or active theme changes. Existing release QA gates remain mandatory. Full application regression gate passes: 673 units and 697 browser tests.

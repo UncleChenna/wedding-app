@@ -1,29 +1,29 @@
 # TICKET-171 migration verification
 
 2026-11-02. Base develop: 2f066ebbb175c4b8d42b0ab6f54545134f52f592.
-Integration commit: 15e5d26. Isolated project wedding-ebb5922a7e90, database port26821.
+Integration commit: 15e5d26. Isolated project wedding-ebb5922a7e90, database port 26821.
 PR: https://github.com/UncleChenna/wedding-app/pull/48.
 
 ## Authorization and generated sequence
 
 The user approved carrying unchanged develop protected files, recording exact paths, and generating/testing0006–0008 only in this isolated database. Approval is recorded in ignored .harness/approved-writes.json. Production application is not authorized.
 
-Drizzle generated0006 expansion,0007 custom backfill scaffold and0008 contract, with snapshots/journal. Filled0007 before applying it. An initial unapplied expansion unnecessarily removed the old positive-quantity check. Used Drizzle's drop command to remove only those three unapplied artifacts, then regenerated with that check retained. No applied migration was edited.
+Drizzle generated 0006 expansion, 0007 custom backfill scaffold and 0008 contract, with snapshots/journal. Filled0007 before applying it. An initial unapplied expansion unnecessarily removed the old positive-quantity check. Used Drizzle's drop command to remove only those three unapplied artifacts, then regenerated with that check retained. No applied migration was edited.
 
 The expansion retains the legacy category column, adds nullable new classification/link fields, station children and idempotency UUIDs. Backfill maps only unambiguous legacy food to meal; drinks require explicit mapping. It preserves notes/IDs/timestamps/quantities/parent status, creates one child per represented station, maps child ready to preparing while preserving parent ready, and sets historical line caps to greatest(5, quantity). Contract enforces nullability, uniqueness, composite submission/child links and caps. No table/column drop, row delete or truncation appears in these migrations.
 
 ## Evidence
 
-- Before changes: all8 new constraint tests failed on missing category_v2.
-- After migration:8 constraint tests and6 rollback-only bootstrap preservation/rejection tests pass.
-- Preservation covers mixed kitchen/bar submissions, empty cancelled orders, original row values, ready status, historical quantity8, correct station links and distinct client request UUIDs.
-- Failure cases preserve original rows and create no children for unresolved drink classification, duplicate order/menu lines and quantity101.
-- Expansion still rejects quantity0 before backfill/contract.
+- Before changes: all 8 new constraint tests failed on missing category_v2.
+- After migration: 8 constraint tests and 6 rollback-only bootstrap preservation/rejection tests pass.
+- Preservation covers mixed kitchen/bar submissions, empty cancelled orders, original row values, ready status, historical quantity 8, correct station links and distinct client request UUIDs.
+- Failure cases preserve original rows and create no children for unresolved drink classification, duplicate order/menu lines and quantity 101.
+- Expansion still rejects quantity 0 before backfill/contract.
 - The temporary-schema test initially hit PostgreSQL prepared-result type caching across fresh enum OIDs; disabled prepared statements for that DDL test connection only. All assertions remain.
-- Empty isolated database migrated6→9 entries. Second migration retained9 entries and zero rows across every public table.
-- Seed twice produced identical counts (table below); RLS passes for all13 public tables.
+- Empty isolated database migrated 6→9 entries. Second migration retained 9 entries and zero rows across every public table.
+- Seed twice produced identical counts (table below); RLS passes for all 13 public tables.
 - Drizzle snapshot check passes.
-- Full verification currently passes format/lint/types,673 unit tests (27 conditional skips) and production build; browser run remains active. Do not treat this as full completion yet.
+- Full verification currently passes format/lint/types, 673 unit tests (27 conditional skips) and production build; 697 browser tests passed (147 existing conditional/project skips). Full verification session60863 exited0.
 
 | Table              | First seed | Second seed |
 | ------------------ | ---------: | ----------: |
@@ -52,4 +52,4 @@ Before application, rollback means reverting unapplied source. After application
 
 ## Remaining verification
 
-Browser/full PR gate and final-head CI remain. Automatic approval review refused a separate local drift-generation command because it could create an unapproved extra migration path; no workaround was used. The existing CI migrations/seed/schema-drift job remains mandatory. No workflow was changed, and local opt-in database tests are not represented as CI executions.
+Full verification passed. The mandatory PR-transition gate and final-head CI remain. Automatic approval review refused a separate local drift-generation command because it could create an unapproved extra migration path; no workaround was used. The existing CI migrations/seed/schema-drift job remains mandatory. No workflow was changed, and local opt-in database tests are not represented as CI executions.
