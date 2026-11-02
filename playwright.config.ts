@@ -40,6 +40,8 @@ export default defineConfig({
     },
   ],
   webServer: {
+    // Opt in only this loopback test server; deployments and ordinary pnpm start stay closed.
+    env: { ENABLE_LOCAL_PREVIEWS: "1" },
     command: useDevServer ? `pnpm dev --port ${PORT}` : `pnpm start --port ${PORT}`,
     url: baseURL,
     reuseExistingServer: !process.env.CI,

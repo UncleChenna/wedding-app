@@ -40,7 +40,7 @@ export function buildShareLinks(input: unknown): ShareLinksResult {
     if (!result.ok) return { ok: false, message: result.error.message };
     recipient = result.phone.slice(1);
   }
-  const text = (message + "\n\n" + url).toWellFormed();
+  const text = (message.includes(url) ? message : message + "\n\n" + url).toWellFormed();
   return {
     ok: true,
     links: {

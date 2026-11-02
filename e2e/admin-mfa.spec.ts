@@ -10,7 +10,7 @@ test("anonymous admin visits require sign-in @smoke", async ({ page, request }) 
   expect(raw.headers()["referrer-policy"]).toBe("no-referrer");
   expect(raw.headers()["x-robots-tag"]).toContain("noindex");
   expect(raw.headers()["cache-control"]).toContain("no-store");
-  for (const path of ["/admin", "/admin/mfa"]) {
+  for (const path of ["/admin", "/admin/mfa", "/admin/sharing"]) {
     await page.goto(path);
     await expect(page).toHaveURL(/\/admin\/sign-in$/);
     await expect(page.getByLabel("Email address")).toBeVisible();

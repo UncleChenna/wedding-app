@@ -9,7 +9,7 @@ export default function OrderPage() {
     <PagePlaceholder
       eyebrow="Table service"
       title="Order to your table"
-      description="Enter your table number and order food and drinks. Coming soon."
+      description="Table ordering is coming soon. For now, ask a member of the team for food or drinks."
     />
   );
 }

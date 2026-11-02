@@ -43,7 +43,7 @@ test.describe("accessibility gate @smoke", () => {
       const pattern = new RegExp(`^${page.replace(/\[[^\]]+\]/g, "[^/]+")}$`);
       return !PAGE_ROUTES.some((route) => pattern.test(route));
     });
-    expect(missing, "add these pages to e2e/support/routes.ts").toEqual([]);
+    expect(missing, "add these pages to src/modules/shared/lib/routes.ts").toEqual([]);
   });
 
   test("an injected violation fails the scan", async ({ page }) => {

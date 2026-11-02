@@ -1,41 +1,24 @@
+import { clientEnv } from "@/modules/shared/lib/env/client";
+import { invitationPreviewMetadata } from "@/modules/invitations/lib/share-metadata";
 import type { Metadata } from "next";
-import Link from "next/link";
+import { connection } from "next/server";
+import { getPublicEventDetails } from "@/modules/invitations/server/public-event-details";
+import { WeddingHome } from "@/modules/invitations/components/wedding-home";
+import { eventSummary } from "@/modules/invitations/lib/event-summary";
 
-export const metadata: Metadata = {
-  title: "Uchenna & Adaora",
-  description: "Celebrate with us on Saturday, 19 December 2026.",
-};
-
-export default function HomePage() {
-  return (
-    <main className="mx-auto flex min-h-dvh w-full max-w-5xl flex-col items-center justify-center px-6 py-16 text-center">
-      <p className="mb-12 text-base tracking-widest text-primary uppercase">The celebration</p>
-      <h1 className="font-display text-6xl leading-tight tracking-tight md:text-8xl">
-        Uchenna <span className="block text-primary">&amp;</span> Adaora
-      </h1>
-      <p className="mt-10 font-display text-3xl md:text-4xl">Two stories. One ending: forever.</p>
-      <p className="mt-8 text-lg leading-relaxed">Saturday, 19 December 2026</p>
-      <p className="mt-4 max-w-prose text-base leading-relaxed">
-        We can&apos;t wait to celebrate with you.
-        <br />
-        Venue and time details will follow.
-      </p>
-      <Link
-        prefetch={false}
-        href="/invite"
-        className="mt-10 inline-flex min-h-11 items-center text-lg text-primary underline underline-offset-4"
-      >
-        Your invitation
-      </Link>
-      {process.env.NODE_ENV === "development" && (
-        <Link
-          prefetch={false}
-          href="/dev"
-          className="mt-8 inline-flex min-h-11 items-center text-primary underline underline-offset-4"
-        >
-          Browse page previews
-        </Link>
-      )}
-    </main>
-  );
+export const instant = false;
+export async function generateMetadata(): Promise<Metadata> {
+  await connection();
+  const settings = await getPublicEventDetails();
+  const { title, description } = eventSummary(settings);
+  const preview = invitationPreviewMetadata(clientEnv.NEXT_PUBLIC_SITE_URL, settings);
+  return {
+    ...preview,
+    title,
+    description,
+  };
+}
+export default async function HomePage() {
+  await connection();
+  return <WeddingHome settings={await getPublicEventDetails()} />;
 }

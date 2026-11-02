@@ -2,20 +2,20 @@
 id: TICKET-209
 title: Connect guest, staff and admin journeys into one app
 epic: foundations
-status: todo
+status: in_progress
 priority: urgent
 estimate: L
 labels: [frontend, test, docs]
 module: shared
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: []
 blocks: []
-branch: ""
+branch: TICKET-209
 pr: ""
 created: 2026-10-31
-updated: 2026-10-31
-started: ""
+updated: 2026-11-01
+started: 2026-11-01
 completed: ""
 reason: ""
 resume_to: ""
@@ -39,7 +39,7 @@ The PRD defines three guest journeys and five roles ([Users and roles](../docs/p
 Each feature ticket builds its own screen. No ticket owns the routes between screens, so features land as
 islands. This ticket defines that route contract, wires every existing piece into it, and adds a test that
 fails when a route becomes orphaned. The full journey map and build order are in
-[the plan](../docs/plans/2026-10-31-TICKET-209.md).
+[the plan](../docs/plans/2026-11-01-TICKET-209.md).
 
 ## Scope
 
@@ -87,17 +87,17 @@ fails when a route becomes orphaned. The full journey map and build order are in
 
 ## Acceptance criteria
 
-- [ ] `docs/journeys.md` lists every role, entry point, route, next step and owning ticket; `AGENTS.md` and `docs/architecture.md` link to it.
-- [ ] `src/modules/shared/lib/routes.ts` is the single route source; a unit test fails if a non-dev `page.tsx` under `src/app` is missing from it.
-- [ ] `/` and its metadata render couple names, date and known venue details from event settings; a grep finds no hard-coded couple names in `src/app`.
-- [ ] `/i/[token]` shows the correct next step for yes, no and unanswered, before and on the event date; a component test covers every state.
-- [ ] `/staff` links to `/checkin`, `/kitchen` and `/bar`, every staff page links back, and staff text is at least 18px with station titles at least 32px.
-- [ ] `/admin` is a hub listing every admin area; a signed-in admin sees Sign out but not Sign in, and sharing is reachable without `/dev`.
-- [ ] No production page is a dead end: each has a primary next step or a link back to its hub.
-- [ ] The orphan-route Playwright spec passes, and fails when one registered route is unlinked in a test fixture.
-- [ ] `/dev` returns 404 in a production build.
-- [ ] The UI checklist passes on every changed route in all four themes at 375, 768 and 1280px, with screenshots in `docs/reviews/TICKET-209/`.
-- [ ] `pnpm verify` passes.
+- [x] `docs/journeys.md` lists every role, entry point, route, next step and owning ticket; `AGENTS.md` and `docs/architecture.md` link to it.
+- [x] `src/modules/shared/lib/routes.ts` is the single route source; a unit test fails if a non-dev `page.tsx` under `src/app` is missing from it.
+- [x] `/` and its metadata render couple names, date and known venue details from event settings; a grep finds no hard-coded couple names in `src/app`.
+- [x] `/i/[token]` shows the correct next step for yes, no and unanswered, before and on the event date; a component test covers every state.
+- [x] `/staff` links to `/checkin`, `/kitchen` and `/bar`, every staff page links back, and staff text is at least 18px with station titles at least 32px.
+- [x] `/admin` is a hub listing every admin area; a signed-in admin sees Sign out but not Sign in, and sharing is reachable without `/dev`.
+- [x] No production page is a dead end: each has a primary next step or a link back to its hub.
+- [x] The orphan-route Playwright spec passes, and fails when one registered route is unlinked in a test fixture.
+- [x] `/dev` returns 404 in a production build.
+- [x] The UI checklist records evidence on every changed route in all four themes at 375, 768 and 1280px, with screenshots in `docs/reviews/TICKET-209/`. Under the owner-approved preview exception, exact-zero CLS and physical-device requirements remain mandatory release gates in TICKET-201; failed/unverified results are not marked passing.
+- [x] `pnpm verify` passes.
 
 ## Test plan
 
@@ -133,12 +133,38 @@ fails when a route becomes orphaned. The full journey map and build order are in
 
 ## Notes / decisions
 
+- 2026-11-01: Owner approved “Advance preview; retain exact-zero release gate.” UI acceptance now explicitly records that preview exception without claiming production UI completion. Integrated develop99be217, resolved four conflicts, and preserved settings-driven pages plus token-free sharing images. New metadata/artwork regression tests and sharing smoke pass; rebuilt authenticated journey passes. All four default preview PNGs are byte-identical to reviewed TICKET-047 artifacts. Final normal PR gate remains pending.
+
+- 2026-11-01: All supplemental showcase sections inspected; full per-item UI review is recorded. No final approval: cold-font CLS fails and physical checks remain unverified. DraftPR68 awaits preview exception; functional work is preserved.
+
+- 2026-11-01: Private invitation Lighthouse99/100/100, accessibility100 throughout, CLS0 throughout; synthetic fixture cleaned. All six before/day-of RSVP component cases pass. Functional acceptance is verified; UI completion remains open for exact-zero cold-font shifts and remaining review gates.
+
+- 2026-11-01: Local services recovered; authenticated journey and full verification passed. Final admin refinement passes its unit/build and13 browser cases. RSVP/staff/admin screenshots inspected; public/auth review is ongoing. Lighthouse reveals home performance90 and nonzero home/guide CLS; these remain unresolved. PR68 stays draft. See handoff and REVIEW.md for precise evidence.
+
+- 2026-11-01: Added actual-link crawl and passing negative orphan fixture, plus explicit auth/offline exits. Build and static checks pass. Real authenticated journey remains unverified: pending local Auth followed by a confirmed isolated Postgres connection timeout on retry. No timeouts or assertions were weakened; see handoff for live diagnostic handle and recovery steps.
+
+- 2026-11-01: Production preview guard verified against separate default and explicitly enabled local servers;4 browser smoke cases pass. Default404 criterion checked. Orphan crawl, authenticated sharing and final UI/full verification remain outstanding.
+
+- 2026-11-01: Staff/bar navigation, admin hub and authorized sharing page implemented; route map and template rule added.58 focused tests, quick verification, production build and staff/anonymous-access browser checks pass. Authenticated sharing, production preview guard, orphan crawl and final UI/full verification remain outstanding; all acceptance criteria stay unchecked.
+
+- 2026-11-01: Guest checkpoint implements settings-driven home/metadata, resend guidance and RSVP next steps.142 invitation unit tests, quick verification, production build and15 live/review browser cases pass (see handoff for exact build scope). Final UI review and remaining staff/admin/route-contract work are outstanding. Unknown venue time zone keeps automatic day-of navigation hidden rather than guessing.
+
+- 2026-11-01: Route registry checkpoint: four focused tests and quick verification pass; existing navigation and accessibility inventory use shared routes. Remaining journey implementation and full browser/UI verification are outstanding; PR68 stays draft.
+
+- 2026-11-01: Claimed and isolated from freshly merged develop0f30f2f; current implementation plan is2026-11-01-TICKET-209.md. The original referenced plan only exists uncommitted in025; that checkout remains untouched. No feature acceptance is certified by setup.
+
 _Agents append dated notes here while working._
 
 - 2026-10-31: Created after a code review of `develop` at `c9edef6`. The review found that every built
   component except the invitation page is reachable only from `/dev` or not at all. The plan doc holds the
   journey map and the order in which other tickets plug into it.
 
+ - 2026-11-01: Production public84 and authenticated MFA60 screenshots inspected; MFA flow passes. Local entry-page layout changes improve Lighthouse to98/99, but strict cold-font CLS remains failing. Reports and regression test retained; PR68 stays draft. See REVIEW.md for exact results.
+
 ## Activity log
 
 - 2026-10-31 — new → todo — unclechenna
+- 2026-11-01 — todo → claimed — divine (codex)
+- 2026-11-01 — todo → in_progress — divine (codex)
+- 2026-11-01 — in_progress → blocked — divine (codex) — PR68 remains draft: exact-zero cold-font CLS fails; physical UI checks unverified. Awaiting requested preview-only exception while preserving TICKET-201 release gates.
+- 2026-11-01 — blocked → in_progress — divine (codex) — User approved advancing navigation preview while retaining exact-zero CLS and physical-device release gates in TICKET-201

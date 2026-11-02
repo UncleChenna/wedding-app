@@ -11,6 +11,13 @@ const input = {
 };
 
 describe("buildShareLinks", () => {
+  it("does not duplicate a link already included by the approved template", () => {
+    const message = `Your invitation is waiting here: ${input.url}. Keep this link safe.`;
+    const result = buildShareLinks({ ...input, message });
+    if (!result.ok) throw new Error("Valid fixture rejected");
+    expect(result.links.text).toBe(message);
+    expect(new URL(result.links.whatsapp).searchParams.get("text")).toBe(message);
+  });
   it("encodes WhatsApp text and normalises the recipient", () => {
     const result = buildShareLinks(input);
     expect(result.ok).toBe(true);

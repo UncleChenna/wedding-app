@@ -40,6 +40,8 @@ flowchart LR
   RT --- PG
 ```
 
+See [application journeys](journeys.md) for the route contract, role entry points and the tickets that complete each workflow.
+
 ## Layers
 
 | Layer           | Location                                           | Rules                                                                                                                                  |
