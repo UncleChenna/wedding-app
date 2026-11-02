@@ -1,3 +1,4 @@
+import { appRoutes } from "@/modules/shared/lib/routes";
 import Link from "next/link";
 
 import { QrCode } from "@/modules/shared/components/ui/qr-code";
@@ -44,7 +45,11 @@ export function GatePass({ resolution, passUrl }: { resolution: PassResolution; 
         <p className="type-label text-primary">Your gate pass</p>
         <h1 className="mt-6 type-heading text-balance">{copy.title}</h1>
         <p className="mt-6 max-w-prose text-lg leading-relaxed">{copy.body}</p>
-        <Link href="/" prefetch={false} className={`mt-10 self-start ${linkStyle}`}>
+        <Link
+          href={appRoutes.home.path}
+          prefetch={false}
+          className={`mt-10 self-start ${linkStyle}`}
+        >
           Back to our day
         </Link>
       </main>
@@ -76,7 +81,7 @@ export function GatePass({ resolution, passUrl }: { resolution: PassResolution; 
       <p className="mt-6 max-w-prose text-base leading-relaxed">
         Show this at the gate. Each seat on the pass can be used once.
       </p>
-      <Link href="/" prefetch={false} className={`mt-8 ${linkStyle}`}>
+      <Link href={appRoutes.home.path} prefetch={false} className={`mt-8 ${linkStyle}`}>
         Back to our day
       </Link>
     </main>

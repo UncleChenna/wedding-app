@@ -3,9 +3,14 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import type { Theme } from "@/modules/theming";
-import { invitationPreviewDescription } from "../lib/share-metadata";
+import {
+  invitationPreviewDescription,
+  invitationPreviewCopy,
+  type PreviewEventDetails,
+} from "../lib/share-metadata";
 
-export async function renderInvitationPreview(theme: Theme) {
+export async function renderInvitationPreview(theme: Theme, event: PreviewEventDetails) {
+  const copy = invitationPreviewCopy(event);
   const [photo, display, body] = await Promise.all([
     readFile(join(process.cwd(), "public/share/couple-placeholder.jpg")),
     readFile(join(process.cwd(), `public/share/fonts/${theme.fonts.display}.ttf`)),
@@ -59,13 +64,11 @@ export async function renderInvitationPreview(theme: Theme) {
             marginTop: 28,
           }}
         >
-          <span>Uchenna</span>
+          <span>{event.coupleNames[0]}</span>
           <span style={{ fontSize: 42, color: theme.colors.primary, margin: "6px 0" }}>&amp;</span>
-          <span>Adaora</span>
+          <span>{event.coupleNames[1]}</span>
         </div>
-        <div style={{ fontFamily: theme.fonts.body, fontSize: 23, marginTop: 32 }}>
-          19 December 2026
-        </div>
+        <div style={{ fontFamily: theme.fonts.body, fontSize: 23, marginTop: 32 }}>{copy.date}</div>
         <div style={{ fontFamily: theme.fonts.display, fontSize: 29, marginTop: 28 }}>
           {invitationPreviewDescription}
         </div>

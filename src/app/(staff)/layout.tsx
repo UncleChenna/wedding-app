@@ -1,3 +1,4 @@
+import { StaffHeader } from "@/modules/shared/components/staff-header";
 import { InstallPrompt } from "@/modules/shared/components/install-prompt";
 import { IosInstallGuide } from "@/modules/shared/components/ios-install-guide";
 
@@ -5,6 +6,7 @@ import { IosInstallGuide } from "@/modules/shared/components/ios-install-guide";
 export default function StaffLayout({ children }: LayoutProps<"/">) {
   return (
     <div className="flex min-h-dvh flex-col bg-surface-muted">
+      <StaffHeader />
       {children}
       <InstallPrompt />
       <IosInstallGuide />

@@ -1,13 +1,29 @@
+import "server-only";
+
+import { allowDevPreview } from "@/modules/shared/lib/preview-access";
 import { NextResponse, type NextRequest } from "next/server";
 import { db } from "@/modules/shared/server/db/client";
 import { hasPublishedInvitation } from "@/modules/invitations/server/repository";
 
 export async function proxy(request: NextRequest) {
-  // A signed pass is a credential in the path: keep it out of caches, referrers and indexes.
+  // Signed pass credentials must never enter caches, referrers or search indexes.
   if (request.nextUrl.pathname.startsWith("/p/")) {
     const response = NextResponse.next();
     response.headers.set("Cache-Control", "private, no-store");
     response.headers.set("Referrer-Policy", "no-referrer");
+    response.headers.set("X-Robots-Tag", "noindex, nofollow");
+    return response;
+  }
+  if (request.nextUrl.pathname === "/dev" || request.nextUrl.pathname.startsWith("/dev/")) {
+    const allowed = allowDevPreview(
+      process.env.NODE_ENV,
+      process.env.ENABLE_LOCAL_PREVIEWS,
+      request.nextUrl.hostname,
+    );
+    const response = allowed
+      ? NextResponse.next()
+      : NextResponse.rewrite(new URL("/preview-unavailable", request.url), { status: 404 });
+    response.headers.set("Cache-Control", "private, no-store");
     response.headers.set("X-Robots-Tag", "noindex, nofollow");
     return response;
   }
@@ -32,6 +48,7 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
+    "/dev/:path*",
     "/i/:token",
     "/p/:pass",
     "/admin/:path*",

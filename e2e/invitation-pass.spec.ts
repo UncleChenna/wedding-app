@@ -100,7 +100,11 @@ test.describe("issued invitation pass", () => {
             );
             expect(moduleSize).toBeGreaterThanOrEqual(3);
             if (reducedMotion === "reduce") {
-              const directory = "docs/reviews/TICKET-044/" + theme.id;
+              const reviewTicket =
+                process.env.PASS_REVIEW_TICKET === "TICKET-209"
+                  ? "TICKET-209/pass-integration"
+                  : "TICKET-044";
+              const directory = "docs/reviews/" + reviewTicket + "/" + theme.id;
               mkdirSync(directory, { recursive: true });
               await page
                 .locator("#pass")

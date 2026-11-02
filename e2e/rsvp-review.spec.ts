@@ -82,12 +82,20 @@ test.describe("saved RSVP visual review", () => {
         await page.keyboard.press("Enter");
         const status = page.getByRole("status", { name: "Your reply" });
         await expect(status).toHaveText(invitationSiteCopy.confirmed);
+        await expect(page.getByRole("heading", { name: "Your pass", exact: true })).toBeVisible();
+        await expect(
+          page.getByText("Your pass will be available here", { exact: false }),
+        ).toBeVisible();
         await expect(status).toBeFocused();
         await capture(page, `${dir}/yes.png`);
         await page
           .getByRole("button", { name: invitationSiteCopy.attendance.no, exact: true })
           .click();
         await expect(status).toHaveText(invitationSiteCopy.declined);
+        await expect(
+          page.getByRole("heading", { name: "We’ll miss you", exact: true }),
+        ).toBeVisible();
+        await expect(page.getByRole("heading", { name: "Your pass", exact: true })).toHaveCount(0);
         await capture(page, `${dir}/no.png`);
         await page.locator('input[name="token"]').evaluate((el) => {
           (el as HTMLInputElement).value = "invalid";

@@ -1,3 +1,6 @@
+import { defaultEventSettings } from "@/modules/shared/lib/event-settings";
+import { eventDateLabel } from "@/modules/invitations/lib/event-summary";
+import { appRoutes } from "@/modules/shared/lib/routes";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -21,7 +24,11 @@ async function ThemedInvitation({ searchParams }: { searchParams: Promise<{ them
         {links.map((item) => (
           <Link
             key={item.id}
-            href={item.id ? `/dev/invitation?theme=${item.id}` : "/dev/invitation"}
+            href={
+              item.id
+                ? `${appRoutes.devInvitation.path}?theme=${item.id}`
+                : appRoutes.devInvitation.path
+            }
             aria-current={(theme?.id ?? "") === item.id ? "page" : undefined}
             className="inline-flex min-h-11 items-center text-primary underline underline-offset-4"
           >
@@ -31,8 +38,8 @@ async function ThemedInvitation({ searchParams }: { searchParams: Promise<{ them
       </nav>
       <InvitationView
         details={{
-          names: ["Uchenna", "Adaora"],
-          date: "Saturday, 19 December 2026",
+          names: defaultEventSettings.coupleNames,
+          date: eventDateLabel(defaultEventSettings.eventDate),
           time: "Time to follow",
           venue: "Sample Garden",
           address: "London — sample location",

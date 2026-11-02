@@ -2,6 +2,7 @@
 import "server-only";
 import { revalidatePath } from "next/cache";
 import { invitationTokenSchema } from "../lib/token";
+import { invitationHref } from "@/modules/shared/lib/routes";
 import { unstable_rethrow } from "next/navigation";
 import { db } from "@/modules/shared/server/db/client";
 import { createLogger } from "@/modules/shared/lib/logger";
@@ -14,13 +15,14 @@ export async function respondToInvitation(
   form: FormData,
 ): Promise<RsvpState> {
   try {
+    const token = form.get("token");
     const result = await submitRsvp(
-      { token: form.get("token"), attendance: form.get("attendance") },
+      { token, attendance: form.get("attendance") },
       (token, attending) => saveRsvp(db, token, attending),
     );
-    const token = invitationTokenSchema.safeParse(form.get("token"));
-    if ((result.status === "yes" || result.status === "no") && token.success) {
-      revalidatePath(`/i/${encodeURIComponent(token.data)}`);
+    const validatedToken = invitationTokenSchema.safeParse(token);
+    if ((result.status === "yes" || result.status === "no") && validatedToken.success) {
+      revalidatePath(invitationHref(validatedToken.data));
     }
     return result;
   } catch (error) {

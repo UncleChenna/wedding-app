@@ -1,3 +1,4 @@
+import { invitationPreviewMetadata } from "@/modules/invitations/lib/share-metadata";
 import type { Metadata } from "next";
 import { connection } from "next/server";
 
@@ -11,11 +12,22 @@ import { db } from "@/modules/shared/server/db/client";
 export const instant = false;
 
 // Generic and identical for every pass: previews must never reveal guest names (ADR 0020).
+const preview = invitationPreviewMetadata(clientEnv.NEXT_PUBLIC_SITE_URL);
 export const metadata: Metadata = {
+  ...preview,
   title: "Your gate pass",
   description: "Your pass for the celebration.",
   robots: { index: false, follow: false },
-  openGraph: { title: "Your gate pass", description: "Your pass for the celebration." },
+  openGraph: {
+    ...preview.openGraph,
+    title: "Your gate pass",
+    description: "Your pass for the celebration.",
+  },
+  twitter: {
+    ...preview.twitter,
+    title: "Your gate pass",
+    description: "Your pass for the celebration.",
+  },
 };
 
 async function Pass({ params }: { params: Promise<{ pass: string }> }) {

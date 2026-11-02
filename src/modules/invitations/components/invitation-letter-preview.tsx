@@ -1,3 +1,4 @@
+import { appRoutes } from "@/modules/shared/lib/routes";
 import Link from "next/link";
 import { defaultEventSettings } from "@/modules/shared/lib/event-settings";
 import { listThemes, themeStyle } from "@/modules/theming";
@@ -38,7 +39,7 @@ export function InvitationLetterPreview({
           {themes.map((item) => (
             <Link
               key={item.id}
-              href={`/dev/invitation/letter?theme=${item.id}${sample ? "&details=sample" : ""}`}
+              href={`${appRoutes.devLetter.path}?theme=${item.id}${sample ? "&details=sample" : ""}`}
               aria-current={theme?.id === item.id ? "page" : undefined}
               className="inline-flex min-h-11 w-56 max-w-full items-center text-primary underline underline-offset-4"
             >
@@ -54,14 +55,14 @@ export function InvitationLetterPreview({
             Your personal invitation lets you save your reply. This preview does not send an RSVP.
           </p>
           <Link
-            href="/dev/rsvp"
+            href={appRoutes.devRsvp.path}
             className="mt-6 inline-flex min-h-11 min-w-11 items-center text-primary underline underline-offset-4"
           >
             Try RSVP preview
           </Link>
         </section>
         <Link
-          href="/dev"
+          href={appRoutes.dev.path}
           className="mt-8 inline-flex min-h-11 min-w-11 items-center text-primary underline underline-offset-4"
         >
           Back to previews

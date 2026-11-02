@@ -1,4 +1,5 @@
 import "server-only";
+import { appRoutes } from "@/modules/shared/lib/routes";
 import { cache } from "react";
 import { connection } from "next/server";
 import { redirect, unstable_rethrow } from "next/navigation";
@@ -21,7 +22,8 @@ export const currentAdminAccess = cache(async (): Promise<AdminAccess> => {
 
 export async function requireAdminPageAccess() {
   const access = await currentAdminAccess();
-  if (access.status === "signed-out" || access.status === "denied") redirect("/admin/sign-in");
-  if (access.status !== "ready") redirect("/admin/mfa");
+  if (access.status === "signed-out" || access.status === "denied")
+    redirect(appRoutes.adminSignIn.path);
+  if (access.status !== "ready") redirect(appRoutes.adminMfa.path);
   return access;
 }

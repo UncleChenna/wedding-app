@@ -29,6 +29,10 @@ test.describe("gate pass page @smoke", () => {
       "content",
       "Your gate pass",
     );
+    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
+      "content",
+      /\/invitation-preview$/,
+    );
     const metadata = await page
       .locator("head meta, head link[rel=canonical]")
       .evaluateAll((nodes) => nodes.map((node) => node.outerHTML).join("\n"));

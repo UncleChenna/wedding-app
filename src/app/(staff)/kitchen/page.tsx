@@ -1,9 +1,10 @@
+import { appRoutes } from "@/modules/shared/lib/routes";
 import type { Metadata } from "next";
 
 import { PagePlaceholder } from "@/modules/shared/components/page-placeholder";
 
 export const metadata: Metadata = {
-  title: "Kitchen & bar",
+  title: "Kitchen board",
   robots: { index: false },
 };
 
@@ -11,8 +12,9 @@ export default function KitchenPage() {
   return (
     <PagePlaceholder
       eyebrow="Staff"
-      title="Kitchen & bar board"
-      description="Live incoming orders for each station. Coming soon."
+      title="Kitchen board"
+      description="The food board is coming soon. For now, check orders with your station lead."
+      backTo={appRoutes.staff}
     />
   );
 }

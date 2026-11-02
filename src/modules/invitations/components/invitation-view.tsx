@@ -1,3 +1,4 @@
+import { appRoutes } from "@/modules/shared/lib/routes";
 import Image from "next/image";
 import Link from "next/link";
 import celebration from "../assets/celebration.webp";
@@ -87,7 +88,7 @@ export function InvitationView({ details }: { details: InvitationDetails }) {
         </p>
         <div>
           <Link
-            href="/dev/rsvp"
+            href={appRoutes.devRsvp.path}
             className="mt-6 inline-flex min-h-11 items-center text-primary underline underline-offset-4"
           >
             Try RSVP preview
@@ -95,7 +96,7 @@ export function InvitationView({ details }: { details: InvitationDetails }) {
         </div>
         <Link
           className="mt-6 inline-flex min-h-11 items-center text-primary underline underline-offset-4"
-          href="/dev"
+          href={appRoutes.dev.path}
         >
           Back to previews
         </Link>

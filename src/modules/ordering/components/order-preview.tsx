@@ -1,4 +1,5 @@
 "use client";
+import { appRoutes } from "@/modules/shared/lib/routes";
 
 import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
@@ -85,7 +86,7 @@ export function OrderPreview({ themes }: { themes: readonly Theme[] }) {
     >
       <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-between gap-6 px-6 py-6 md:px-12">
         <Link
-          href="/dev"
+          href={appRoutes.dev.path}
           className="inline-flex min-h-11 items-center text-primary underline underline-offset-4"
         >
           Back to previews
