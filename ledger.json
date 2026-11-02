@@ -1374,14 +1374,15 @@
     },
     "WED-211": {
       "log": [
-        "- 2026-11-02 — todo → claimed — ihemegodsfavour8-lang (codex)"
+        "- 2026-11-02 — todo → claimed — ihemegodsfavour8-lang (codex)",
+        "- 2026-11-02 — todo → in_progress — ihemegodsfavour8-lang (codex)"
       ],
-      "status": "todo",
+      "status": "in_progress",
       "owner": "ihemegodsfavour8-lang",
       "agent": "codex",
       "branch": "TICKET-211",
       "pr": "",
-      "started": "",
+      "started": "2026-11-02",
       "completed": "",
       "updated": "2026-11-02",
       "reason": "",
