@@ -2,7 +2,7 @@
 id: TICKET-022
 title: Generate a full palette from one or two seed colours
 epic: design-system
-status: in_progress
+status: in_review
 priority: low
 estimate: M
 labels: [design, frontend]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-010]
 blocks: []
 branch: TICKET-022
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/75
 created: 2026-10-21
 updated: 2026-11-02
 started: 2026-11-02
@@ -62,3 +62,4 @@ See: [How theming works](../docs/prd.md#how-theming-works) (THM-7).
 - 2026-11-02 — backlog → todo — divine
 - 2026-11-02 — todo → claimed — divine (codex)
 - 2026-11-02 — todo → in_progress — divine (codex)
+- 2026-11-02 — in_progress → in_review — divine (codex)
