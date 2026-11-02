@@ -1378,9 +1378,10 @@
     "WED-211": {
       "log": [
         "- 2026-11-02 — todo → claimed — ihemegodsfavour8-lang (codex)",
-        "- 2026-11-02 — todo → in_progress — ihemegodsfavour8-lang (codex)"
+        "- 2026-11-02 — todo → in_progress — ihemegodsfavour8-lang (codex)",
+        "- 2026-11-02 — in_progress → blocked — ihemegodsfavour8-lang (codex) — Human must create .harness/approved-writes.json for the seven generated migration files; full gate has three protected-file hook failures. Local implementation preserved; no production operation authorized."
       ],
-      "status": "in_progress",
+      "status": "blocked",
       "owner": "ihemegodsfavour8-lang",
       "agent": "codex",
       "branch": "TICKET-211",
@@ -1388,8 +1389,8 @@
       "started": "2026-11-02",
       "completed": "",
       "updated": "2026-11-02",
-      "reason": "",
-      "resume_to": ""
+      "reason": "Human must create .harness/approved-writes.json for the seven generated migration files; full gate has three protected-file hook failures. Local implementation preserved; no production operation authorized.",
+      "resume_to": "in_progress"
     },
     "WED-022": {
       "log": [
