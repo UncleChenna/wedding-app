@@ -23,3 +23,9 @@ Base develop: 51dcfe0944f3fc893abcfc9412e80057bdd03e03. Resolved the two conflic
 Full gate and exact-head CI must pass before the user-authorized PR #79 merge. No dependency or migration changes. The test regenerated 24 TICKET-107 screenshots in this checkout; their pre-test backups were verified byte-identical to the merged index. New captures are preserved under TICKET-045. Cleanup was rejected by automatic approval review as cross-ticket; user approval is pending, so those files remain unstaged. No earlier edits were present.
 
 Next: complete full verification and CI, then merge #79 with an exact-head check; integrate #80 afterward. PR #77 passed its centered-PDF full gate (769 browser checks) and is ready for review, but has no merge exception.
+
+### Verification and cleanup completed
+
+2026-11-03: user approved restoring the 24 test-generated TICKET-107 screenshots. Before restoring, all original backups were verified byte-identical to HEAD, and all regenerated images matched the preserved TICKET-045/integration-offline copies. Cleanup is complete; no cross-ticket working-tree changes remain. Full verification passes: 801 unit tests / 47 skips, production build, 769 browser checks / 165 skips (7.9m). Source integration is ac806d5186b132bbc55171f9721c22e2ae76a1c2, pushed. CI run 41619146241 is still running; do not merge until all required checks pass on the final review head.
+
+Next: run t:pr to record in_review and refresh the PR description, wait for final-head CI, then perform the explicitly approved merge of PR #79 and CLI completion. Update PR #80 only afterward. No merge approval exists for PDF PR #77.

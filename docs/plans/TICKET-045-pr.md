@@ -60,4 +60,4 @@ No hooks, skills, CI rules or tests weakened. Added an isolated review runner an
 
 Base develop: 51dcfe0944f3fc893abcfc9412e80057bdd03e03. Resolved the two conflicts by retaining readParty, imageHref and saveOffline together. Quick checks and production build pass. Combined real-database browser run: 3 passed in 26.3s (party editing, offline reload/eviction/revocation, signed PNG download and fallback). All 36 integration screenshots inspected across four themes and 375/768/1280; the 24 offline captures live in integration-offline/. Production Lighthouse: 99/100/100 performance, 100 accessibility and CLS 0 in all three runs. Physical devices remain an explicit TICKET-201 release gate under the existing approval.
 
-Physical-device release gates remain mandatory; integration full gate and CI results are pending.
+Physical-device release gates remain mandatory; integration full gate passes: 801 unit tests (47 skipped), production build, 769 browser checks (165 skipped). Final-head CI is required before the approved merge.
