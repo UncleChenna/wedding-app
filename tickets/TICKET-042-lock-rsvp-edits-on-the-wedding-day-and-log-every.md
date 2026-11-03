@@ -2,7 +2,7 @@
 id: TICKET-042
 title: Lock RSVP edits on the wedding day and log every change
 epic: invitations
-status: in_progress
+status: in_review
 priority: urgent
 estimate: M
 labels: [backend, frontend]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-025, TICKET-041, TICKET-034]
 blocks: [TICKET-100, TICKET-131, TICKET-176]
 branch: TICKET-042
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/81
 created: 2026-10-21
 updated: 2026-11-03
 started: 2026-11-03
@@ -72,3 +72,4 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-6) · [On 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-03 — todo → claimed — divine (codex)
 - 2026-11-03 — todo → in_progress — divine (codex)
+- 2026-11-03 — in_progress → in_review — divine (codex)
