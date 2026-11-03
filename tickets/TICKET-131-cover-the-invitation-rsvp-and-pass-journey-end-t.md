@@ -52,6 +52,8 @@ See: [Journey 1: receiving the IV and RSVP](../docs/prd.md#journey-1-receiving-t
 
 ## Notes / decisions
 
+- 2026-11-03 — Complete real guest journey passes both local browser projects; full verify passes. CI criterion remains open pending approval of the concrete dedicated database/browser job in docs/reviews/TICKET-131/ci-proposal.md.
+
 _Agents append dated notes here while working._
 
 ## Activity log
