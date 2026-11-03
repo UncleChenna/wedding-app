@@ -2,7 +2,7 @@
 id: TICKET-045
 title: Let guests save their pass as an image
 epic: invitations
-status: in_progress
+status: in_review
 priority: urgent
 estimate: M
 labels: [frontend, backend]
@@ -71,3 +71,4 @@ Implementation uses only local font outlines so private names never reach Next I
 - 2026-11-02 — todo → in_progress — divine (codex)
 - 2026-11-02 — in_progress → in_review — divine (codex)
 - 2026-11-03 — in_review → in_progress — divine (codex) — Integrate approved PR with merged RSVP party and offline pass features
+- 2026-11-03 — in_progress → in_review — divine (codex)
