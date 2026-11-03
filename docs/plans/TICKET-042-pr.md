@@ -23,7 +23,7 @@ Boundary fake-clock tests cover one millisecond before/at/after midnight, DST da
 
 Initial base develop fbe67fccf783fac676024e5ceeb9b8bc95092709. Twelve cutoff tests and 32 focused tests pass; production build passes. Dedicated locked browser passes (9.8s); existing RSVP/party flows: 4 passed (20.5s). Lighthouse 98/99/98, accessibility 100, CLS 0; initial locked layout unchanged by the final stale-action refresh fix. Detailed evidence: docs/reviews/TICKET-042/REVIEW.md.
 
-Integrated develop f5e5db58446363c6a0b4998dea3dbdfa603a43c1 without conflicts. Full pnpm verify passed on 1c91a7f: ticket validation, formatting, lint, types, 834 unit tests (54 skipped), production build, and 769 browser tests (165 skipped; 9.6 minutes). Opt-in database/browser suites were run separately as described above. Final PR-workflow verification and CI remain required before review readiness.
+Integrated develop f5e5db58446363c6a0b4998dea3dbdfa603a43c1 without conflicts. Full pnpm verify passed on 1c91a7f: ticket validation, formatting, lint, types, 834 unit tests (54 skipped), production build, and 769 browser tests (165 skipped; 9.6 minutes). Opt-in database/browser suites were run separately as described above. PR-workflow verification passed as recorded below; final CI and human review remain required.
 
 # Risks and rollout
 
@@ -41,4 +41,6 @@ PASS browser screenshots, tokens, restraint, mobile overflow, reduced motion, ke
 
 Only test-fixture cleanup adapts to mandatory append-only history; no hooks, assertions or checks are weakened.
 
-2026-11-03 follow-up: the first t:pr verification rerun had four desktop accessibility timeouts (765 passed, 165 skipped), despite the preceding complete green run. All four unchanged cases passed with one worker in 6.4 seconds. Original traces are preserved under artifacts/TICKET-042/pr-workflow-failures. This suggests transient contention but does not certify the full gate. No assertion, timeout, retry setting or hook was changed. A new complete t:pr run is required before review status.
+2026-11-03 follow-up: the first t:pr verification rerun had four desktop accessibility timeouts (765 passed, 165 skipped), despite the preceding complete green run. All four unchanged cases passed with one worker in 6.4 seconds. Original traces are preserved under artifacts/TICKET-042/pr-workflow-failures. This suggests transient contention but does not certify the full gate. No assertion, timeout, retry setting or hook was changed. The subsequent complete t:pr result is recorded below.
+
+Final local gate: the unchanged complete t:pr rerun passed on ab93009: 834 unit tests (54 skipped), production build and 769 browser tests (165 skipped; 7.7 minutes). All four prior timeout cases passed within this full run. The CLI published the ticket as in_review in PR #81. Final GitHub checks and human review remain required; no merge is authorized.
