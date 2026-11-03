@@ -41,9 +41,9 @@ See: [Table ordering](../docs/prd.md#table-ordering) (ORD-1, ORD-8) · [Journey 
 
 ## Acceptance criteria
 
-- [ ] Unknown table numbers show a friendly error; known ones proceed (e2e).
-- [ ] The table number persists across reloads in the same browser.
-- [ ] No sign-in or IV token is required.
+- [x] Unknown table numbers show a friendly error; known ones proceed (e2e).
+- [x] The table number persists across reloads in the same browser.
+- [x] No sign-in or IV token is required.
 
 ## Test plan
 
@@ -58,7 +58,7 @@ See: [Table ordering](../docs/prd.md#table-ordering) (ORD-1, ORD-8) · [Journey 
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-11-03 — Implemented anonymous database-backed table selection at `/order`, session persistence and changing tables. Sixteen focused tests and two real-database production browser flows pass, including no-JavaScript submission. Menu remains TICKET-071; no orders are sent here. See `docs/reviews/TICKET-070/REVIEW.md` for full evidence and remaining release-blocking device QA in TICKET-201. The user’s standing preview exception permits review without certifying physical-device readiness.
 
 ## Activity log
 
