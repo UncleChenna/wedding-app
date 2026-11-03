@@ -2,7 +2,7 @@
 id: TICKET-046
 title: Offer a printable PDF invitation with the QR
 epic: invitations
-status: in_review
+status: done
 priority: urgent
 estimate: L
 labels: [frontend, backend]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/77
 created: 2026-10-21
 updated: 2026-11-03
 started: 2026-11-02
-completed: ""
+completed: 2026-11-03
 reason: ""
 resume_to: ""
 ---
@@ -56,6 +56,8 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-5) · [Tec
 
 ## Notes / decisions
 
+- 2026-11-03 — PR #77 merged with explicit user authorization after required CI passed on ace8ac6; merge commit d372c02. CLI completion confirmed. TICKET-201 retains device and printed-scan release gates.
+
 2026-11-02: Draft PR https://github.com/UncleChenna/wedding-app/pull/77 contains PDF implementation and review evidence. Generated pnpm-lock.yaml is excluded pending exact-path human authorization; frozen CI cannot pass until approved and committed. Ten focused tests, final build, all-theme download/privacy checks and 300dpi QR decoding pass. Full gate remains incomplete (protected-file guard; one smoke timeout passes isolated rerun). See docs/handoffs/TICKET-046.md. No acceptance criterion marked complete prematurely.
 
 ## Activity log
@@ -67,3 +69,4 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-5) · [Tec
 - 2026-11-03 — blocked → in_progress — divine (codex) — User approved generated pnpm-lock.yaml and exact-path authorization record
 - 2026-11-03 — in_progress → in_review — divine (codex)
 - 2026-11-03 — in_review → in_progress — divine (codex) — Resolve develop integration conflicts while preserving PDF, image and offline pass saving
+- 2026-11-03 — in_review → done — divine (codex)

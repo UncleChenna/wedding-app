@@ -51,3 +51,9 @@ Full t:pr verification and renewed CI remain required. Physical-device/printed-s
 ## Final integrated gate — 2026-11-03
 
 The complete t:pr workflow passed on 169b538: 826 unit tests (48 skipped), production build and 769 browser tests (165 skipped; 13.0 minutes). CLI status is in_review, published by c8cd5ed to PR77. The integrated branch is mergeable against develop f5e5db5. Final GitHub CI and human review remain required; no merge exception has been granted for PR77. All prior device/print release gates remain. The owned local stack is being stopped with backup after verification.
+
+## Approved merge and closure — 2026-11-03
+
+Owner divine; agent codex; branch TICKET-046. The user explicitly authorized PR77's verified merge. All four required CI checks passed on ace8ac6b2238f6f1523e04e30bdbff651f71b3e5; mergeability and head were rechecked before merging with the head-match guard. PR77 merged into develop at d372c02a95a152eacc52c3e78373a06651af9d65 on 2026-11-03T16:03:49Z. The ticket CLI recorded done; live t:show confirms completion dated 2026-11-03.
+
+The centered PDF, image download and offline pass integration evidence above remains valid. Physical-device and printed-scan release checks remain mandatory in TICKET-201; this merge does not certify release. The local stack is stopped with backup. No ready ticket is currently available from t:next. Next: retain release gates and await the outstanding approvals/prerequisites for other tickets.
