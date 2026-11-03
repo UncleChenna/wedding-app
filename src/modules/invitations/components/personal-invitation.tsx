@@ -1,3 +1,5 @@
+import { PartyForm } from "./party-form";
+import type { PartyDetails } from "../lib/party";
 import type { ReactNode } from "react";
 import { appRoutes } from "@/modules/shared/lib/routes";
 import Link from "next/link";
@@ -14,6 +16,7 @@ export function PersonalInvitation({
   now = new Date(),
   pass,
   passNotice,
+  party,
 }: {
   invitation: GuestInvitation;
   token: string;
@@ -22,6 +25,7 @@ export function PersonalInvitation({
   now?: Date;
   pass?: ReactNode;
   passNotice?: ReactNode;
+  party?: PartyDetails;
 }) {
   const next = invitationNextStep(invitation.attendance, details.eventDate, details.timeZone, now);
   const greeting =
@@ -44,6 +48,9 @@ export function PersonalInvitation({
       )}
       {invitation.attendance === "yes" && passNotice}
       <RsvpForm token={token} attendance={invitation.attendance} open={repliesOpen} />
+      {invitation.attendance === "yes" && repliesOpen && party && (
+        <PartyForm token={token} details={party} />
+      )}
       {next.showOrdering && (
         <p className="mt-12">
           <Link

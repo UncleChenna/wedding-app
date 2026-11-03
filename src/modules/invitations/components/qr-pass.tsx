@@ -1,4 +1,5 @@
 import { SavePassImage } from "./save-pass-image";
+import { OfflinePassSave } from "./offline-pass-save";
 import { QrCode } from "@/modules/shared/components/ui/qr-code";
 import type { PassView } from "@/modules/checkin/lib/pass-eligibility";
 
@@ -6,10 +7,12 @@ export function QrPass({
   url,
   pass,
   imageHref,
+  saveOffline = false,
 }: {
   url: string;
   pass: PassView;
   imageHref?: string;
+  saveOffline?: boolean;
 }) {
   const name = pass.names.join(" & ") || pass.householdName || "Our dear guest";
   return (
@@ -42,6 +45,7 @@ export function QrPass({
         Open your pass
       </a>
       {imageHref && <SavePassImage href={imageHref} />}
+      {saveOffline ? <OfflinePassSave /> : null}
     </div>
   );
 }

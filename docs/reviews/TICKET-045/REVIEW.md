@@ -31,3 +31,9 @@ Only locally supported font glyphs are exported. Unsupported names produce a fri
 Preview review does not certify guest release. Downloaded files cannot be remotely erased; scanners still validate current admission rights. Browser download behavior cannot prove that a guest saved into Photos.
 
 Preview review: APPROVE under the standing device-QA exception. Physical manual results remain NOT VERIFIED in TICKET-201; neither release gate is removed. Final screenshot correction replaced inaccurate “below” guidance with the actual Open image label.
+
+## 2026-11-03 integration with RSVP party and offline pass
+
+Base develop: 51dcfe0944f3fc893abcfc9412e80057bdd03e03. Resolved the two conflicts by retaining readParty, imageHref and saveOffline together. Quick checks and production build pass. Combined real-database browser run: 3 passed in 26.3s (party editing, offline reload/eviction/revocation, signed PNG download and fallback). All 36 integration screenshots inspected across four themes and 375/768/1280; the 24 offline captures live in integration-offline/. Production Lighthouse: 99/100/100 performance, 100 accessibility and CLS 0 in all three runs. Physical devices remain an explicit TICKET-201 release gate under the existing approval.
+
+Full gate and exact-head CI must pass before the user-authorized PR #79 merge. No dependency or migration changes. The test regenerated 24 TICKET-107 screenshots in this checkout; their pre-test backups were verified byte-identical to the merged index. New captures are preserved under TICKET-045. Cleanup was rejected by automatic approval review as cross-ticket; user approval is pending, so those files remain unstaged. No earlier edits were present.

@@ -62,6 +62,8 @@ Implementation uses only local font outlines so private names never reach Next I
 
 2026-11-02 — Seven focused tests and the full gate pass (779 unit/769 browser; 41/165 skipped). Final dedicated production flow passes in 7.5s; twelve screenshot combinations and all theme PNGs inspected. Lighthouse 99/100/100 with accessibility 100 and CLS 0. See docs/reviews/TICKET-045/REVIEW.md for the retained physical-device limitations.
 
+2026-11-03 — Integrated develop 51dcfe0 preserving party details, image saving and offline saving. Three combined browser flows pass; refreshed screenshots inspected. Lighthouse99/100/100, accessibility100, CLS0. Full gate/CI remain required before the approved merge.
+
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md

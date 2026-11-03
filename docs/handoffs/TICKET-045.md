@@ -15,3 +15,11 @@ Published PR: https://github.com/UncleChenna/wedding-app/pull/79 targets develop
 Lessons: locate filenames with rg --files before reading; avoid dumping minified bundled files (use bounded excerpts). This turn's first no-remote test incorrectly counted Next's local data-URL WASM load; it now permits data: while failing/recording every other requested URL. No network safeguard or feature assertion was removed.
 
 Stop the owned isolated stack with backup after verification and end caffeinate session 69875 before yielding. Other checkouts preserved.
+
+## 2026-11-03 integration with RSVP party and offline pass
+
+Base develop: 51dcfe0944f3fc893abcfc9412e80057bdd03e03. Resolved the two conflicts by retaining readParty, imageHref and saveOffline together. Quick checks and production build pass. Combined real-database browser run: 3 passed in 26.3s (party editing, offline reload/eviction/revocation, signed PNG download and fallback). All 36 integration screenshots inspected across four themes and 375/768/1280; the 24 offline captures live in integration-offline/. Production Lighthouse: 99/100/100 performance, 100 accessibility and CLS 0 in all three runs. Physical devices remain an explicit TICKET-201 release gate under the existing approval.
+
+Full gate and exact-head CI must pass before the user-authorized PR #79 merge. No dependency or migration changes. The test regenerated 24 TICKET-107 screenshots in this checkout; their pre-test backups were verified byte-identical to the merged index. New captures are preserved under TICKET-045. Cleanup was rejected by automatic approval review as cross-ticket; user approval is pending, so those files remain unstaged. No earlier edits were present.
+
+Next: complete full verification and CI, then merge #79 with an exact-head check; integrate #80 afterward. PR #77 passed its centered-PDF full gate (769 browser checks) and is ready for review, but has no merge exception.
