@@ -1,0 +1,2 @@
+ALTER TABLE "event_settings" ADD COLUMN "active_dark_theme_id" text DEFAULT 'midnight-champagne' NOT NULL;--> statement-breakpoint
+ALTER TABLE "event_settings" ADD CONSTRAINT "event_settings_dark_theme_not_blank" CHECK (length(trim("event_settings"."active_dark_theme_id")) between 1 and 100);

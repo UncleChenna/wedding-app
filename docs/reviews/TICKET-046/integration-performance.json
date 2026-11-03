@@ -1,0 +1,25 @@
+{
+  "base": "f5e5db58446363c6a0b4998dea3dbdfa603a43c1",
+  "implementation": "c5e4f41",
+  "route": "/i/[synthetic-review-token]",
+  "runs": [
+    {
+      "run": 1,
+      "performance": 97,
+      "accessibility": 100,
+      "cls": 0
+    },
+    {
+      "run": 2,
+      "performance": 98,
+      "accessibility": 100,
+      "cls": 0
+    },
+    {
+      "run": 3,
+      "performance": 98,
+      "accessibility": 100,
+      "cls": 0
+    }
+  ]
+}

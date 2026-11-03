@@ -1,0 +1,63 @@
+{
+  "revision": "6c1dbe27dcf7d817d4b62cec033ba77fa8e2a5ec",
+  "compressor": "wawoff2 2.0.1",
+  "inter_transform": "fonttools 4.60.1 varLib.instancer opsz=14; all glyphs and weight axis retained",
+  "fonts": [
+    {
+      "name": "cormorant",
+      "source_url": "https://raw.githubusercontent.com/google/fonts/6c1dbe27dcf7d817d4b62cec033ba77fa8e2a5ec/ofl/cormorantgaramond/CormorantGaramond%5Bwght%5D.ttf",
+      "source_sha256": "b20b7d9626dd956b2c5e558692ad328b1f19e3275e2782db4fa07670d83f35e0",
+      "woff2_sha256": "1477688bded85a50142027e63b791235111c13e2c8eadfcb60769b273ec6d050",
+      "bytes": 209428,
+      "primary_file": "cormorant-latin.woff2",
+      "primary_sha256": "173b1f3449514245b23cb6ff69a41b8c37f62e8f2a1121e9fc5cc64cdece2b63",
+      "primary_bytes": 37396,
+      "primary_layout_features": "calt,ccmp,dnom,frac,kern,liga,lnum,mark,mkmk,numr,pnum,tnum"
+    },
+    {
+      "name": "cormorant-italic",
+      "source_url": "https://raw.githubusercontent.com/google/fonts/6c1dbe27dcf7d817d4b62cec033ba77fa8e2a5ec/ofl/cormorantgaramond/CormorantGaramond-Italic%5Bwght%5D.ttf",
+      "source_sha256": "0f48ea6abb2084537854f7174c470991a463b13036309e3b50a81511611c530d",
+      "woff2_sha256": "a089d20d630be3109f6cc6949f043b942624764ca60672588707b420c036af1f",
+      "bytes": 143880,
+      "primary_file": "cormorant-italic-latin.woff2",
+      "primary_sha256": "a63910fce8349d6cfa66f0292e8e8265ba6340d5aa7b29f7851e7e0850c2b4d1",
+      "primary_bytes": 39408,
+      "primary_layout_features": "calt,ccmp,dnom,frac,kern,liga,lnum,mark,mkmk,numr,pnum,tnum"
+    },
+    {
+      "name": "inter",
+      "source_url": "https://raw.githubusercontent.com/google/fonts/6c1dbe27dcf7d817d4b62cec033ba77fa8e2a5ec/ofl/inter/Inter%5Bopsz%2Cwght%5D.ttf",
+      "source_sha256": "29160a80ff49ddcab2c97711247e08b1fab27a484a329ce8b813d820dc559031",
+      "woff2_sha256": "19f69ff6f767ca29866c23cec64417b5fbb008633114ae64091f318d7d683a09",
+      "bytes": 236076,
+      "primary_file": "inter-latin.woff2",
+      "primary_sha256": "256be69dc7fa36c9d756c39e07c182ae0c0bc2100591c95aff634922a59fb8c5",
+      "primary_bytes": 49524,
+      "primary_layout_features": "calt,ccmp,dnom,frac,kern,mark,mkmk,numr,pnum,tnum"
+    },
+    {
+      "name": "jost",
+      "source_url": "https://raw.githubusercontent.com/google/fonts/6c1dbe27dcf7d817d4b62cec033ba77fa8e2a5ec/ofl/jost/Jost%5Bwght%5D.ttf",
+      "source_sha256": "6343b70971000b04c5d401c96ae08ce371086135e999d5e1e1413039c0213076",
+      "woff2_sha256": "870145b6a67b1b0972ddafb56ecb8c4b366328d0c7111dc5c364ca7053129df8",
+      "bytes": 50620,
+      "primary_file": "jost-latin.woff2",
+      "primary_sha256": "66e71d40fd6df61c7c3f00a4a2790528ab3b11c11bfa228ef48c6d0fde9c2d42",
+      "primary_bytes": 26336,
+      "primary_layout_features": "kern,tnum"
+    },
+    {
+      "name": "playfair",
+      "source_url": "https://raw.githubusercontent.com/google/fonts/6c1dbe27dcf7d817d4b62cec033ba77fa8e2a5ec/ofl/playfairdisplay/PlayfairDisplay%5Bwght%5D.ttf",
+      "source_sha256": "c40f2293766a503bc70cce9e512ef844a4ccb7cbcde792fe2ea31d191917d8d6",
+      "woff2_sha256": "1906c2e1b48558440ddcccd03e30f1927223823a627adcec71bdae96d95070d8",
+      "bytes": 106696,
+      "primary_file": "playfair-latin.woff2",
+      "primary_sha256": "f4ae954cf5a72a618a6f9e32aa681914a398fca752672316a77557fc854f00a3",
+      "primary_bytes": 34924,
+      "primary_layout_features": "calt,ccmp,dnom,frac,kern,liga,lnum,mark,mkmk,numr"
+    }
+  ],
+  "primary_subset": "Fonttools 4.60.1: U+0000-00FF,U+2000-206F,U+20A0-20CF; OpenType feature sets match the retained Google-font baseline. Complete fonts remain available for complementary code points."
+}

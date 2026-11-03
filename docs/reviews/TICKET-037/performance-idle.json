@@ -1,0 +1,32 @@
+[
+  {
+    "run": 1,
+    "lighthouse": "13.6.0",
+    "performance": 0.94,
+    "accessibility": 1,
+    "totalBlockingTime": 294,
+    "speedIndex": 1751.8051319951953,
+    "cls": 0,
+    "lcp": 983.2059999999999
+  },
+  {
+    "run": 2,
+    "lighthouse": "13.6.0",
+    "performance": 0.98,
+    "accessibility": 1,
+    "totalBlockingTime": 170,
+    "speedIndex": 967.386,
+    "cls": 0,
+    "lcp": 967.386
+  },
+  {
+    "run": 3,
+    "lighthouse": "13.6.0",
+    "performance": 0.95,
+    "accessibility": 1,
+    "totalBlockingTime": 262,
+    "speedIndex": 938.846,
+    "cls": 0,
+    "lcp": 938.846
+  }
+]

@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { appRoutes } from "../lib/routes";
 import { RetryButton } from "./retry-button";
 import { Divider } from "./ui";
 
@@ -23,6 +25,12 @@ export function OfflineNotice() {
       <div className="mt-10 flex justify-center">
         <RetryButton />
       </div>
+      <Link
+        href={appRoutes.home.path}
+        className="mt-6 inline-flex min-h-11 items-center justify-center text-primary underline underline-offset-4"
+      >
+        Back to our day
+      </Link>
     </main>
   );
 }

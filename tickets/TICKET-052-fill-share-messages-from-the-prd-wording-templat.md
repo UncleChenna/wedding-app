@@ -2,20 +2,20 @@
 id: TICKET-052
 title: Fill share messages from the PRD wording templates
 epic: sharing
-status: todo
+status: in_review
 priority: urgent
-estimate: S
+estimate: M
 labels: [backend, docs]
 module: invitations
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-050, TICKET-035, TICKET-025]
 blocks: [TICKET-053, TICKET-054, TICKET-158, TICKET-176]
-branch: ""
-pr: ""
+branch: TICKET-052
+pr: https://github.com/UncleChenna/wedding-app/pull/58
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-10-31
+started: 2026-10-31
 completed: ""
 reason: ""
 resume_to: ""
@@ -41,8 +41,8 @@ See: [Invitation wording](../docs/prd.md#invitation-wording).
 
 ## Acceptance criteria
 
-- [ ] Placeholders are filled and no `{` remains in output (unit, every template).
-- [ ] Changing the voice setting changes the generated message.
+- [x] Placeholders are filled and no `{` remains in output (unit, every template).
+- [x] Changing the voice setting changes the generated message.
 
 ## Test plan
 
@@ -55,8 +55,11 @@ See: [Invitation wording](../docs/prd.md#invitation-wording).
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-10-31: Persisted voice selection required an additive settings migration, so estimate updated to M. Renderer, validated internal persistence helper and seed/default behavior implemented. Owner approved the generated SQL/snapshot/journal and exact-path authorization record after isolated database checks. Full verification and review are pending.
 
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-10-31 — todo → claimed — divine (codex)
+- 2026-10-31 — todo → in_progress — divine (codex)
+- 2026-10-31 — in_progress → in_review — divine (codex)

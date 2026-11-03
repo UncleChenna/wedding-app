@@ -69,7 +69,8 @@ test.describe("base components @smoke", () => {
       const staff = page.getByTestId(`theme-${theme.id}`).getByTestId("staff-status");
       for (const label of ["Valid", "Already used", "Not RSVP'd", "Invalid", "Revoked"]) {
         // exact: "Valid" must not also match "Invalid".
-        const panel = staff.getByRole("region", { name: label, exact: true });
+        // first(): a second "Valid" panel shows long-name wrapping (theme-review.spec.ts).
+        const panel = staff.getByRole("region", { name: label, exact: true }).first();
         await expect(panel).toBeVisible();
         await expect(panel.getByRole("img", { name: `${label} icon`, exact: true })).toBeVisible();
         for (const [testId, minimum] of [

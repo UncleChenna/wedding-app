@@ -1,3 +1,6 @@
+import { defaultEventSettings } from "@/modules/shared/lib/event-settings";
+import { eventDateLabel } from "@/modules/invitations/lib/event-summary";
+import { appRoutes } from "@/modules/shared/lib/routes";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -9,18 +12,24 @@ export const metadata: Metadata = { title: "Invitation preview", robots: { index
 async function ThemedInvitation({ searchParams }: { searchParams: Promise<{ theme?: string }> }) {
   const { theme: selected } = await searchParams;
   const themes = listThemes();
-  const theme = themes.find((item) => item.id === selected) ?? themes[0];
+  // No ?theme follows the device light/dark setting, like the real site.
+  const theme = themes.find((item) => item.id === selected);
+  const links = [{ id: "", name: "Match my device" }, ...themes];
   return (
     <div style={theme && themeStyle(theme)} className="min-h-dvh bg-background text-foreground">
       <nav
         aria-label="Preview theme"
         className="mx-auto flex max-w-7xl flex-wrap gap-6 px-6 pt-6 md:px-12"
       >
-        {themes.map((item) => (
+        {links.map((item) => (
           <Link
             key={item.id}
-            href={`/dev/invitation?theme=${item.id}`}
-            aria-current={theme?.id === item.id ? "page" : undefined}
+            href={
+              item.id
+                ? `${appRoutes.devInvitation.path}?theme=${item.id}`
+                : appRoutes.devInvitation.path
+            }
+            aria-current={(theme?.id ?? "") === item.id ? "page" : undefined}
             className="inline-flex min-h-11 items-center text-primary underline underline-offset-4"
           >
             {item.name}
@@ -29,8 +38,8 @@ async function ThemedInvitation({ searchParams }: { searchParams: Promise<{ them
       </nav>
       <InvitationView
         details={{
-          names: ["Uchenna", "Adaora"],
-          date: "Saturday, 19 December 2026",
+          names: defaultEventSettings.coupleNames,
+          date: eventDateLabel(defaultEventSettings.eventDate),
           time: "Time to follow",
           venue: "Sample Garden",
           address: "London — sample location",

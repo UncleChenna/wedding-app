@@ -3,7 +3,10 @@ import { randomBytes } from "node:crypto";
 import { sql } from "drizzle-orm";
 import {
   boolean,
+  date,
+  time,
   check,
+  foreignKey,
   index,
   integer,
   jsonb,
@@ -42,7 +45,14 @@ export const invitationStatus = pgEnum("invitation_status", [
   "rsvp_no",
   "revoked",
 ]);
-export const menuCategory = pgEnum("menu_category", ["food", "drink"]);
+export const legacyMenuCategory = pgEnum("menu_category", ["food", "drink"]);
+export const menuCategory = pgEnum("menu_category_v2", ["meal", "soft_drink", "alcohol"]);
+export const stationOrderStatus = pgEnum("station_order_status", [
+  "received",
+  "preparing",
+  "served",
+  "cancelled",
+]);
 export const station = pgEnum("station", ["kitchen", "bar"]);
 export const orderStatus = pgEnum("order_status", [
   "received",
@@ -245,26 +255,34 @@ export const checkIns = pgTable(
 
 // ─── Table ordering ───────────────────────────────────────────────────────
 
-export const menuItems = pgTable("menu_items", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  name: text("name").notNull(),
-  description: text("description"),
-  category: menuCategory("category").notNull(),
-  station: station("station").notNull(),
-  isAvailable: boolean("is_available").notNull().default(true),
-  sortOrder: integer("sort_order").notNull().default(0),
-  dietaryTags: text("dietary_tags")
-    .array()
-    .notNull()
-    .default(sql`'{}'::text[]`),
-  createdAt: createdAt(),
-  updatedAt: updatedAt(),
-}).enableRLS();
+export const menuItems = pgTable(
+  "menu_items",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    name: text("name").notNull(),
+    description: text("description"),
+    /** Archived classification retained for pre-migration records. */
+    legacyCategory: legacyMenuCategory("category"),
+    category: menuCategory("category_v2").notNull(),
+    maxPerOrder: integer("max_per_order").notNull().default(5),
+    station: station("station").notNull(),
+    isAvailable: boolean("is_available").notNull().default(true),
+    sortOrder: integer("sort_order").notNull().default(0),
+    dietaryTags: text("dietary_tags")
+      .array()
+      .notNull()
+      .default(sql`'{}'::text[]`),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  (t) => [check("menu_items_quantity_cap", sql`${t.maxPerOrder} between 1 and 100`)],
+).enableRLS();
 
 export const orders = pgTable(
   "orders",
   {
     id: uuid("id").primaryKey().defaultRandom(),
+    clientRequestId: uuid("client_request_id").notNull().defaultRandom().unique(),
     tableId: uuid("table_id")
       .notNull()
       .references(() => tables.id, { onDelete: "restrict" }),
@@ -277,6 +295,26 @@ export const orders = pgTable(
   (t) => [index("orders_status_created_at_idx").on(t.status, t.createdAt)],
 ).enableRLS();
 
+/** One kitchen/bar projection per guest submission; table limits count orders, not these rows. */
+export const stationOrders = pgTable(
+  "station_orders",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    orderId: uuid("order_id")
+      .notNull()
+      .references(() => orders.id, { onDelete: "cascade" }),
+    station: station("station").notNull(),
+    status: stationOrderStatus("status").notNull().default("received"),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  (t) => [
+    uniqueIndex("station_orders_order_station_key").on(t.orderId, t.station),
+    uniqueIndex("station_orders_order_id_id_key").on(t.orderId, t.id),
+    index("station_orders_queue_idx").on(t.station, t.status, t.createdAt),
+  ],
+).enableRLS();
+
 export const orderItems = pgTable(
   "order_items",
   {
@@ -284,6 +322,8 @@ export const orderItems = pgTable(
     orderId: uuid("order_id")
       .notNull()
       .references(() => orders.id, { onDelete: "cascade" }),
+    stationOrderId: uuid("station_order_id").notNull(),
+    quantityLimit: integer("quantity_limit").notNull().default(5),
     menuItemId: uuid("menu_item_id")
       .notNull()
       .references(() => menuItems.id, { onDelete: "restrict" }),
@@ -293,6 +333,100 @@ export const orderItems = pgTable(
   },
   (t) => [
     index("order_items_order_id_idx").on(t.orderId),
+    uniqueIndex("order_items_order_menu_key").on(t.orderId, t.menuItemId),
+    foreignKey({
+      columns: [t.orderId, t.stationOrderId],
+      foreignColumns: [stationOrders.orderId, stationOrders.id],
+      name: "order_items_station_submission_fk",
+    }).onDelete("cascade"),
+    check(
+      "order_items_quantity_cap",
+      sql`${t.quantityLimit} between 1 and 100 and ${t.quantity} <= ${t.quantityLimit}`,
+    ),
     check("order_items_quantity_positive", sql`${t.quantity} > 0`),
+  ],
+).enableRLS();
+
+// Event configuration stays a draft until the venue time zone and other details are supplied.
+export const eventSettings = pgTable(
+  "event_settings",
+  {
+    id: integer("id").primaryKey().default(1),
+    invitationVoice: text("invitation_voice").notNull().default("warm"),
+    coupleNames: text("couple_names").array().notNull().default(["Uchenna", "Adaora"]),
+    eventDate: date("event_date", { mode: "string" }).notNull().default("2026-12-19"),
+    ceremonyTime: time("ceremony_time"),
+    timeZone: text("time_zone"),
+    venue: text("venue"),
+    mapUrl: text("map_url"),
+    dressCode: text("dress_code"),
+    rsvpLockAt: timestamp("rsvp_lock_at", { withTimezone: true }),
+    orderingOpen: boolean("ordering_open").notNull().default(false),
+    activeThemeId: text("active_theme_id").notNull().default("ivory-gold"),
+    activeDarkThemeId: text("active_dark_theme_id").notNull().default("midnight-champagne"),
+    defaultMaxTagAlongs: integer("default_max_tag_alongs").notNull().default(1),
+    retentionDays: integer("retention_days").notNull().default(90),
+    maxOpenOrdersPerTable: integer("max_open_orders_per_table").notNull().default(3),
+    orderCooldownSeconds: integer("order_cooldown_seconds").notNull().default(30),
+    maxItemQuantity: integer("max_item_quantity").notNull().default(10),
+    updatedAt: updatedAt(),
+  },
+  (t) => [
+    check("event_settings_singleton", sql`${t.id} = 1`),
+    check(
+      "event_settings_invitation_voice",
+      sql`${t.invitationVoice} in ('warm', 'playful', 'formal')`,
+    ),
+    check(
+      "event_settings_couple_names",
+      sql`cardinality(${t.coupleNames}) = 2 and array_position(${t.coupleNames}, null) is null and array_ndims(${t.coupleNames}) = 1 and length(trim(${t.coupleNames}[1])) between 1 and 200 and length(trim(${t.coupleNames}[2])) between 1 and 200`,
+    ),
+    check("event_settings_tag_alongs", sql`${t.defaultMaxTagAlongs} between 0 and 10`),
+    check("event_settings_retention", sql`${t.retentionDays} between 1 and 3650`),
+    check(
+      "event_settings_order_limits",
+      sql`${t.maxOpenOrdersPerTable} between 1 and 100 and ${t.orderCooldownSeconds} between 0 and 86400 and ${t.maxItemQuantity} between 1 and 100`,
+    ),
+    check(
+      "event_settings_cutoff_timezone",
+      sql`${t.rsvpLockAt} is null or ${t.timeZone} is not null`,
+    ),
+    check(
+      "event_settings_timezone_not_blank",
+      sql`${t.timeZone} is null or length(trim(${t.timeZone})) > 0`,
+    ),
+    check(
+      "event_settings_theme_not_blank",
+      sql`length(trim(${t.activeThemeId})) between 1 and 100`,
+    ),
+    check(
+      "event_settings_dark_theme_not_blank",
+      sql`length(trim(${t.activeDarkThemeId})) between 1 and 100`,
+    ),
+    check("event_settings_map_https", sql`${t.mapUrl} is null or ${t.mapUrl} like 'https://%'`),
+  ],
+).enableRLS();
+
+/** Append-only enforcement and runtime privilege revocations live in the custom migration. */
+export const rsvpChanges = pgTable(
+  "rsvp_changes",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    invitationId: uuid("invitation_id")
+      .notNull()
+      .references(() => invitations.id, { onDelete: "restrict" }),
+    before: jsonb("before").$type<Record<string, unknown>>(),
+    after: jsonb("after").$type<Record<string, unknown>>().notNull(),
+    actor: text("actor").notNull(),
+    changedAt: timestamp("changed_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("rsvp_changes_invitation_changed_idx").on(t.invitationId, t.changedAt),
+    check(
+      "rsvp_changes_before_object",
+      sql`${t.before} is null or jsonb_typeof(${t.before}) = 'object'`,
+    ),
+    check("rsvp_changes_after_object", sql`jsonb_typeof(${t.after}) = 'object'`),
+    check("rsvp_changes_actor_not_blank", sql`length(trim(${t.actor})) between 1 and 200`),
   ],
 ).enableRLS();

@@ -15,6 +15,62 @@
       "when": 1793046541507,
       "tag": "0001_invitation-rsvp-model",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1793110119195,
+      "tag": "0002_event-settings-rsvp-history",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1793110119531,
+      "tag": "0003_rsvp-history-append-only",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1793344493110,
+      "tag": "0004_furry_wolfpack",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1793458186224,
+      "tag": "0005_blue_ravenous",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1793612824899,
+      "tag": "0006_ordering-expand",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1793612825322,
+      "tag": "0007_ordering-backfill",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1793612872094,
+      "tag": "0008_ordering-contract",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1793743395197,
+      "tag": "0009_staff-device-identities",
+      "breakpoints": true
     }
   ]
 }

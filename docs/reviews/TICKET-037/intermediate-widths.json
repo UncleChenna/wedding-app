@@ -1,0 +1,82 @@
+[
+  {
+    "theme": "ivory-gold",
+    "width": 410,
+    "fits": true
+  },
+  {
+    "theme": "ivory-gold",
+    "width": 640,
+    "fits": true
+  },
+  {
+    "theme": "ivory-gold",
+    "width": 900,
+    "fits": true
+  },
+  {
+    "theme": "ivory-gold",
+    "width": 1024,
+    "fits": true
+  },
+  {
+    "theme": "midnight-champagne",
+    "width": 410,
+    "fits": true
+  },
+  {
+    "theme": "midnight-champagne",
+    "width": 640,
+    "fits": true
+  },
+  {
+    "theme": "midnight-champagne",
+    "width": 900,
+    "fits": true
+  },
+  {
+    "theme": "midnight-champagne",
+    "width": 1024,
+    "fits": true
+  },
+  {
+    "theme": "emerald-night",
+    "width": 410,
+    "fits": true
+  },
+  {
+    "theme": "emerald-night",
+    "width": 640,
+    "fits": true
+  },
+  {
+    "theme": "emerald-night",
+    "width": 900,
+    "fits": true
+  },
+  {
+    "theme": "emerald-night",
+    "width": 1024,
+    "fits": true
+  },
+  {
+    "theme": "blush-sage",
+    "width": 410,
+    "fits": true
+  },
+  {
+    "theme": "blush-sage",
+    "width": 640,
+    "fits": true
+  },
+  {
+    "theme": "blush-sage",
+    "width": 900,
+    "fits": true
+  },
+  {
+    "theme": "blush-sage",
+    "width": 1024,
+    "fits": true
+  }
+]

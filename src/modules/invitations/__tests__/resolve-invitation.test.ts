@@ -16,6 +16,7 @@ describe("personal invitation resolution", () => {
   it("returns only the guest-facing fields for a valid invitation", async () => {
     const find = vi.fn().mockResolvedValue(stored);
     expect(await resolveInvitation(token, find)).toEqual({
+      attendance: null,
       householdName: "Ada's family",
       primaryNames: ["Ada"],
     });

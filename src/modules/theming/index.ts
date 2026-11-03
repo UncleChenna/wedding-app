@@ -1,6 +1,14 @@
-export { ACTIVE_THEME_ID } from "./config";
+export { ACTIVE_THEME_IDS, DEFAULT_COLOR_SCHEME } from "./config";
 export { checkThemeContrast, contrastRatio } from "./lib/contrast";
-export { themeStyle, themeToCssText, themeToCssVars } from "./lib/css-vars";
+export { activeThemesToCssText, themeStyle, themeToCssText, themeToCssVars } from "./lib/css-vars";
 export { loadTheme, ThemeValidationError } from "./lib/load-theme";
-export { getActiveTheme, getTheme, listThemes } from "./lib/registry";
-export type { Theme } from "./lib/schema";
+export {
+  getActiveTheme,
+  getActiveThemes,
+  getTheme,
+  listThemes,
+  resolveActiveThemes,
+} from "./lib/registry";
+export type { ActiveThemes, ColorScheme, Theme } from "./lib/schema";
+export { generateTheme } from "./lib/generate-theme";
+export type { GeneratedThemeResult } from "./lib/generate-theme";

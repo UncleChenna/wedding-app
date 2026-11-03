@@ -1,0 +1,18 @@
+{
+  "manifest": {
+    "id": "/",
+    "name": "Uchenna & Adaora — Our wedding",
+    "short_name": "U & A",
+    "description": "Our wedding celebration.",
+    "lang": "en",
+    "start_url": "/",
+    "scope": "/",
+    "display": "standalone",
+    "theme_color": "#7A5C24",
+    "background_color": "#FBF8F3"
+  },
+  "parseErrors": [],
+  "installability": {
+    "installabilityErrors": []
+  }
+}

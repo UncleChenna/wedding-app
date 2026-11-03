@@ -15,6 +15,12 @@ export async function createSupabaseServerClient() {
     clientEnv.NEXT_PUBLIC_SUPABASE_URL,
     clientEnv.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
     {
+      cookieOptions: {
+        httpOnly: true,
+        sameSite: "lax",
+        secure: new URL(clientEnv.NEXT_PUBLIC_SITE_URL).protocol === "https:",
+        path: "/",
+      },
       cookies: {
         getAll: () => cookieStore.getAll(),
         setAll: (toSet) => {

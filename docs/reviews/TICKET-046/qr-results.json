@@ -1,0 +1,50 @@
+[
+  {
+    "name": "ivory-gold",
+    "qr": "PASS",
+    "dpi": 300,
+    "pages": 1
+  },
+  {
+    "name": "ivory-gold-long",
+    "qr": "PASS",
+    "dpi": 300,
+    "pages": 2
+  },
+  {
+    "name": "midnight-champagne",
+    "qr": "PASS",
+    "dpi": 300,
+    "pages": 1
+  },
+  {
+    "name": "midnight-champagne-long",
+    "qr": "PASS",
+    "dpi": 300,
+    "pages": 2
+  },
+  {
+    "name": "emerald-night",
+    "qr": "PASS",
+    "dpi": 300,
+    "pages": 1
+  },
+  {
+    "name": "emerald-night-long",
+    "qr": "PASS",
+    "dpi": 300,
+    "pages": 2
+  },
+  {
+    "name": "blush-sage",
+    "qr": "PASS",
+    "dpi": 300,
+    "pages": 1
+  },
+  {
+    "name": "blush-sage-long",
+    "qr": "PASS",
+    "dpi": 300,
+    "pages": 2
+  }
+]

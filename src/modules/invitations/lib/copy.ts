@@ -1,5 +1,7 @@
-/** Approved PRD wording. Placeholder rendering belongs to TICKET-052. */
-export const invitationVoice = "warm" as const;
+import { defaultInvitationVoice } from "@/modules/shared/lib/invitation-voice";
+
+/** Approved PRD wording; messages.ts fills placeholders without editing the copy. */
+export const invitationVoice = defaultInvitationVoice;
 
 /** Other PRD voices remain available for the later settings-driven renderer. */
 export const invitationMessages = {

@@ -1,0 +1,2 @@
+ALTER TABLE "event_settings" ADD COLUMN "invitation_voice" text DEFAULT 'warm' NOT NULL;--> statement-breakpoint
+ALTER TABLE "event_settings" ADD CONSTRAINT "event_settings_invitation_voice" CHECK ("event_settings"."invitation_voice" in ('warm', 'playful', 'formal'));

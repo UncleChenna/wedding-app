@@ -1,0 +1,73 @@
+# TICKET-037 handoff
+
+## 2026-10-31 — divine / codex
+
+Branch/worktree TICKET-037; base7191d981231d9fb71f101d308abc05fa4ec79501. Claimed and moved in_progress through CLI, pushed06fbe57. No product code changed yet. Plan in docs/plans/2026-10-31-TICKET-037.md. All criteria remain unticked.
+
+Managed setup initially failed because the old primary-checkout generator omitted supabase/templates/admin-code.html. The merged generator already copies templates; running AGENT_OWNER=divine pnpm wt:new TICKET-037 from this current worktree completed setup and migration without manual generated-file edits. Stack wedding-919f78c6afdf running; app25590, browser25591, database25581. No server started and no seed yet. TICKET-012 stack stopped with backup=true; other stacks untouched.
+
+Next: read installed Next docs and036/040 handoffs, resolve the pass-navigation prerequisite described in the plan, then write failing UI tests and implement the invitation detail layout. Use approved names/date and explicit TBD event fields. No dead pass or map URLs. Verify screenshots, accessibility, keyboard, reduced motion, performance and full gate. Physical-device QA remains unverified. Do not report this draft as a delivered frontend change.
+
+TICKET-012 PR56 is in_review at239e1b6; full local467unit/485browser pass; final GitHub CI41199576369 pending. PR55 merged7191d981;201 still blocks both releases. Latest user explicitly approved PR55 merging after CI. Follow current user merge authorization and repository rules for subsequent PRs; never merge failing checks.
+
+Draft PR: https://github.com/UncleChenna/wedding-app/pull/57. Planning checkpoint716f06b pushed; no product implementation yet. CLI has no draft-PR metadata command; t:pr records the link on the verified in_review transition.
+
+## 2026-10-31 — invitation layout implemented
+
+Pushede709df2 adds InvitationLetter, event-settings projection into the personal route, safe configured maps, date-only formatting independent of visitor timezone, a reply anchor, optional actual-pass content section, and /dev/invitation/letter linked from/dev. No new client boundary. Pending details stay TBD. Original photo preview is unchanged.
+
+Four component tests first failed on absent implementation, then passed. Production build and quick gate pass. Thirteen preview browser cases pass; all12 theme/width captures inspected. Six real RSVP checks pass (yes/no persistence with/without JS, tampering/revocation). Two new isolated database/no-JS tests verify configured details and80-character couple/guest names at375; e2e/invitation-details-live.spec.ts is the ticket-owned test.
+
+Automatic approval review rejected changes to existing RSVP tests as cross-ticket scope. User then explicitly approved ONLY e2e/rsvp-review.spec.ts keyboard navigation and alternate screenshot folder. Apply that narrow change after the running full gate completes; no permission needed again. Existing e2e/rsvp-live.spec.ts remains untouched. New independent test was used for additional coverage.
+
+Full gate running in session68844; artifacts/TICKET-037/full-verification.log. Do not restart merely because observation times out. Next: approved visual-test adjustment, run RUN_RSVP_REVIEW=1 with RSVP_REVIEW_DIR=docs/reviews/TICKET-037/live, inspect all actual states, measure production Lighthouse/CLS and finish checklist. Scope discrepancy with actual pass044 remains unresolved; no pass criterion ticked and no fake link added. Keep037 in_progress/draft57.
+
+TICKET-012 final CI41199576369 passed and PR56 merged as5bd56a82d37942a1a046fc1b1c93c22f2a6829bc; CLI done, bookkeeping65df63e pushed.037 still based on7191d981 and needs final integration/CI assessment.012 stack stopped with backup preserved.037 stack running with synthetic RSVP browser fixture only. No real guest data. Avoid /dev/null redirection: hook treats it as an outside-checkout write; logs belong under artifacts/TICKET-037.
+
+## 2026-10-31 — review results and next correction
+
+Full gate finished:459 unit tests/21 opt-in skips;505 browser passes/129 skips, but TWO failures because the new preview route was missing from the central accessibility route registry. Added /dev/invitation/letter to e2e/support/routes.ts; rerun still needed. No assertion weakened.
+
+Applied the explicitly approved e2e/rsvp-review.spec.ts update. All12 live visual cases passed, yielding60 captures under docs/reviews/TICKET-037/live; those60 still need manual inspection. Preview12 already inspected. Three production Lighthouse real-invitation runs scored99/100/100 Performance,100 Accessibility; CLS0.008045178049238436/0/0. First-load shift FAILS strict zero and must be investigated/retested after integrating the now-merged012 font fallback repair. Temporary server25592 stopped.
+
+Proposed retaining real returning-pass integration in044 and layout/anchor in037. Automatic approval review rejected edits to both ticket definitions as cross-ticket scope; exact split approval is pending. Neither ticket definition changed. Do not treat silence as approval. Other work can continue.
+
+Next: checkpoint/push, integrate verified origin/develop5bd56a82d37942a1a046fc1b1c93c22f2a6829bc (012), remeasure cold-load CLS and rerun full gate after route-registry correction, inspect live captures, then resolve pending scope decision and final review/CI. TICKET-037 remains draft and incomplete.
+
+## 2026-10-31 — owner approvals applied and layout stability corrected
+
+Owner explicitly approved the TICKET-037/044 requirement split and the three unchanged migration paths plus their local authorization record. Both ticket definitions now retain the requirement in the correct scope. Migration files were integrated unchanged from develop5bd56a82 in pushed415f0ba; no new migration authored. No authorization remains pending for these actions.
+
+The merged font fallback alone still produced CLS0.008045/0.006245/0.008045. Deliberate headline sentence lines reduced it to0.0001367; left-aligning letter greeting/subline produced CLS0 in all three measured cold loads. Final Lighthouse Performance90/95/98 and Accessibility100/100/100: performance is not yet a blanket pass. Preserve all metric files. No test threshold or assertion weakened.
+
+Four component tests, quick verification and25 targeted browser cases pass. Refreshed12 previews and60 live-state screenshots are all visually inspected via full-page contact sheets; original PNGs retained. Full gate running in session31226, log artifacts/TICKET-037/final-verification.log. Temporary performance server25592 stopped. Managed synthetic database remains running; other stacks untouched.
+
+Next: collect full gate result, investigate the variable performance result without selecting only favourable runs, check intermediate widths and retain physical device/map limitations. Update PR57 with final evidence and push scoped changes. Latest supplied AGENTS.md requires human merging; do not merge automatically. This ticket remains incomplete until outstanding checks are resolved.
+
+## 2026-10-31 — verification complete, draft checkpoint pushed
+
+Pushed9222728 to PR57: approved037/044 split, layout correction, all refreshed screenshots and metric evidence. Full verification completed successfully:471 unit tests passed/22 skipped, production build passed,525 browser tests passed/135 skipped. All16 intermediate-width checks passed. Ticket validation:207 valid. Temporary performance server is stopped; browser verification server exited normally. Current UI review still requests changes for variable Performance90/95/98 and unverified physical device/native-map checks. All three measured cold loads have CLS0. No blanket UI approval or ticket completion is claimed.
+
+Next action: investigate Lighthouse total-blocking-time/speed-index variability on an otherwise idle production build, keeping every result; retain physical QA in201. Draft PR57 body has actual evidence and limitations. Do not repeat the already applied scope/migration approvals. Current user-supplied AGENTS.md requires human PR merging. Work remains claimed/in_progress, not done.
+
+## 2026-10-31 — controlled performance follow-up
+
+Fresh serial mobile Lighthouse runs, with no overlapping local builds/tests, scored94/98/95 Performance (median95),100 Accessibility andCLS0 throughout. All measurements preserved in performance-idle.json. Worst-run main thread work is dominated by the existing234844-byte Next.js/React runtime chunk (~401ms script evaluation); no safe local layout optimization was identified. No runtime functionality or test threshold was weakened. Temporary server25592 stopped after measurement.
+
+Owner approved physical WhatsApp/native-map checks moving to release-blocking201; its explicit criterion and note are updated. A separate question asks whether the remaining performance variability may also be tracked in201 while037 proceeds to review. That answer is pending; no performance exception inferred. CI run41204185008 remains live, with migration/seed, ticket validation and PR-text checks passed. Poll that run rather than restarting it. All previous local verification results remain valid: only evidence/QA ticket docs changed.
+
+## 2026-10-31 — review exceptions approved
+
+Owner separately approved performance variability remaining in release-blocking201, preserving95 and all measurements. Both device and performance requirements are now explicit201 criteria.037 criteria distinguish verified functional behavior from these approved exceptions; no actual device/performance pass is claimed. PR body rewritten with current evidence and proper required headings. Next: commit, run mandatory t:pr TICKET-037 --owner divine --agent codex, mark existing draft ready after CLI succeeds, then retain in_review for human merge under current AGENTS.md. No permission remains pending.
+
+## 2026-10-31 — required review workflow retry
+
+Mandatory t:pr full verification on be7bcbd ended with471 unit passes,524 browser passes/135 skips and one mobile stepper-focus timeout (30s budget; reported43s including teardown). Earlier full run on the same application code passed525 browser checks. Isolated unchanged stepper tests then passed both mobile and desktop in22.2s total using one worker. No assertions, timing limits or source files were changed. Logs: artifacts/TICKET-037/review-transition.log and stepper-isolated.log. The status transition did not happen; ticket remains in_progress and PR57 draft. Keep this failed run disclosed.
+
+Next: retry pnpm t:pr TICKET-037 --owner divine --agent codex, logging to artifacts/TICKET-037/review-transition-retry.log. Poll the same live process until terminal; do not restart due to observation timeout. If the aggregate stepper test repeatedly times out under normal suite parallelism, track a separate harness ticket to isolate its12 theme/width cases without weakening assertions. Both037 release QA exceptions are already explicitly approved and recorded in201; no further permission is needed for them.
+
+## 2026-10-31 — mandatory workflow passed; in review
+
+The existing retry completed successfully:471 unit passes/22 skips, production build,525 browser passes/135 skips in6.7minutes. The same mobile stepper test passed in15.2s inside the full parallel suite. No assertions, timeouts or worker configuration changed. CLI moved037 to in_review and pushedbaa48985eca87020a555fc652c7173cc74ebaf50, recording PR57. Source remained unchanged throughout the failure/isolated-pass/full-pass sequence. Local CPU observation showed load average25 across10 logical CPUs; this supports resource contention as an inference, not proof of the failure's cause.
+
+Next: final evidence commit/push, mark PR57 ready, verify every applicable CI job on that final head, then merge under the user's active backlog instruction authorizing verified ticket PR merges. This current explicit instruction is the exception to the repository's human-only default; no direct develop/main push or automatic merge setting. Keep performance/device checks in201 as release gates. After confirmed merge, mark037 done through CLI and continue the next ready ticket. No permission remains pending.

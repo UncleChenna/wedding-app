@@ -1,4 +1,5 @@
 "use client";
+import { appRoutes } from "@/modules/shared/lib/routes";
 
 import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
@@ -50,14 +51,9 @@ function MealChoice({
   );
 }
 
-export function RsvpPreview({
-  themes,
-  initialTheme,
-}: {
-  themes: readonly Theme[];
-  initialTheme: Theme;
-}) {
-  const [themeId, setThemeId] = useState(initialTheme.id);
+export function RsvpPreview({ themes }: { themes: readonly Theme[] }) {
+  // "" follows the device light/dark setting, like the real site; a theme id pins the preview.
+  const [themeId, setThemeId] = useState("");
   const [step, setStep] = useState<Step>("attendance");
   const [attendance, setAttendance] = useState("");
   const [party, setParty] = useState<PartyDraft>(sampleParty);
@@ -66,7 +62,7 @@ export function RsvpPreview({
   const form = useRef<HTMLFormElement>(null);
   const nextId = useRef(1);
   const previousCount = useRef(0);
-  const theme = themes.find((theme) => theme.id === themeId) ?? initialTheme;
+  const theme = themes.find((theme) => theme.id === themeId);
   const attending = attendance === "yes";
   const title =
     step === "confirmation"
@@ -139,12 +135,12 @@ export function RsvpPreview({
 
   return (
     <div
-      style={themeStyle(theme)}
+      style={theme && themeStyle(theme)}
       className="min-h-dvh bg-background font-sans text-foreground [&_label]:text-base [&_legend]:text-base [&_p]:text-base"
     >
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-6 px-6 py-6 md:px-12">
         <Link
-          href="/dev"
+          href={appRoutes.dev.path}
           className="inline-flex min-h-11 items-center text-primary underline underline-offset-4"
         >
           Back to previews
@@ -156,6 +152,7 @@ export function RsvpPreview({
             value={themeId}
             onChange={(event) => setThemeId(event.target.value)}
           >
+            <option value="">Match my device</option>
             {themes.map((theme) => (
               <option key={theme.id} value={theme.id}>
                 {theme.name}

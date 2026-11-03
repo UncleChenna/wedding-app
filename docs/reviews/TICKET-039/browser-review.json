@@ -1,0 +1,582 @@
+{
+  "results": [
+    {
+      "theme": "ivory-gold",
+      "width": 375,
+      "cls": 0,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "Ivory & Gold",
+          "width": 92.421875,
+          "height": 44
+        },
+        {
+          "name": "Midnight & Champagne",
+          "width": 176.953125,
+          "height": 44
+        },
+        {
+          "name": "Emerald Night",
+          "width": 106.578125,
+          "height": 44
+        },
+        {
+          "name": "Blush & Sage",
+          "width": 99.40625,
+          "height": 44
+        },
+        {
+          "name": "Replay opening",
+          "width": 224,
+          "height": 44
+        },
+        {
+          "name": "Kindly reply",
+          "width": 89.40625,
+          "height": 44
+        },
+        {
+          "name": "Try RSVP preview",
+          "width": 135.078125,
+          "height": 44
+        },
+        {
+          "name": "Back to previews",
+          "width": 129.0625,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "theme": "ivory-gold",
+      "width": 768,
+      "cls": 0,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "Ivory & Gold",
+          "width": 92.421875,
+          "height": 44
+        },
+        {
+          "name": "Midnight & Champagne",
+          "width": 176.953125,
+          "height": 44
+        },
+        {
+          "name": "Emerald Night",
+          "width": 106.578125,
+          "height": 44
+        },
+        {
+          "name": "Blush & Sage",
+          "width": 99.40625,
+          "height": 44
+        },
+        {
+          "name": "Replay opening",
+          "width": 224,
+          "height": 44
+        },
+        {
+          "name": "Kindly reply",
+          "width": 89.40625,
+          "height": 44
+        },
+        {
+          "name": "Try RSVP preview",
+          "width": 135.078125,
+          "height": 44
+        },
+        {
+          "name": "Back to previews",
+          "width": 129.0625,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "theme": "ivory-gold",
+      "width": 1280,
+      "cls": 0,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "Ivory & Gold",
+          "width": 92.421875,
+          "height": 44
+        },
+        {
+          "name": "Midnight & Champagne",
+          "width": 176.953125,
+          "height": 44
+        },
+        {
+          "name": "Emerald Night",
+          "width": 106.578125,
+          "height": 44
+        },
+        {
+          "name": "Blush & Sage",
+          "width": 99.40625,
+          "height": 44
+        },
+        {
+          "name": "Replay opening",
+          "width": 224,
+          "height": 44
+        },
+        {
+          "name": "Kindly reply",
+          "width": 89.40625,
+          "height": 44
+        },
+        {
+          "name": "Try RSVP preview",
+          "width": 135.078125,
+          "height": 44
+        },
+        {
+          "name": "Back to previews",
+          "width": 129.0625,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "theme": "midnight-champagne",
+      "width": 375,
+      "cls": 0,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "Ivory & Gold",
+          "width": 92.421875,
+          "height": 44
+        },
+        {
+          "name": "Midnight & Champagne",
+          "width": 176.953125,
+          "height": 44
+        },
+        {
+          "name": "Emerald Night",
+          "width": 106.578125,
+          "height": 44
+        },
+        {
+          "name": "Blush & Sage",
+          "width": 99.40625,
+          "height": 44
+        },
+        {
+          "name": "Replay opening",
+          "width": 224,
+          "height": 44
+        },
+        {
+          "name": "Kindly reply",
+          "width": 89.40625,
+          "height": 44
+        },
+        {
+          "name": "Try RSVP preview",
+          "width": 135.078125,
+          "height": 44
+        },
+        {
+          "name": "Back to previews",
+          "width": 129.0625,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "theme": "midnight-champagne",
+      "width": 768,
+      "cls": 0,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "Ivory & Gold",
+          "width": 92.421875,
+          "height": 44
+        },
+        {
+          "name": "Midnight & Champagne",
+          "width": 176.953125,
+          "height": 44
+        },
+        {
+          "name": "Emerald Night",
+          "width": 106.578125,
+          "height": 44
+        },
+        {
+          "name": "Blush & Sage",
+          "width": 99.40625,
+          "height": 44
+        },
+        {
+          "name": "Replay opening",
+          "width": 224,
+          "height": 44
+        },
+        {
+          "name": "Kindly reply",
+          "width": 89.40625,
+          "height": 44
+        },
+        {
+          "name": "Try RSVP preview",
+          "width": 135.078125,
+          "height": 44
+        },
+        {
+          "name": "Back to previews",
+          "width": 129.0625,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "theme": "midnight-champagne",
+      "width": 1280,
+      "cls": 0,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "Ivory & Gold",
+          "width": 92.421875,
+          "height": 44
+        },
+        {
+          "name": "Midnight & Champagne",
+          "width": 176.953125,
+          "height": 44
+        },
+        {
+          "name": "Emerald Night",
+          "width": 106.578125,
+          "height": 44
+        },
+        {
+          "name": "Blush & Sage",
+          "width": 99.40625,
+          "height": 44
+        },
+        {
+          "name": "Replay opening",
+          "width": 224,
+          "height": 44
+        },
+        {
+          "name": "Kindly reply",
+          "width": 89.40625,
+          "height": 44
+        },
+        {
+          "name": "Try RSVP preview",
+          "width": 135.078125,
+          "height": 44
+        },
+        {
+          "name": "Back to previews",
+          "width": 129.0625,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "theme": "emerald-night",
+      "width": 375,
+      "cls": 0,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "Ivory & Gold",
+          "width": 92.421875,
+          "height": 44
+        },
+        {
+          "name": "Midnight & Champagne",
+          "width": 176.953125,
+          "height": 44
+        },
+        {
+          "name": "Emerald Night",
+          "width": 106.578125,
+          "height": 44
+        },
+        {
+          "name": "Blush & Sage",
+          "width": 99.40625,
+          "height": 44
+        },
+        {
+          "name": "Replay opening",
+          "width": 224,
+          "height": 44
+        },
+        {
+          "name": "Kindly reply",
+          "width": 89.40625,
+          "height": 44
+        },
+        {
+          "name": "Try RSVP preview",
+          "width": 135.078125,
+          "height": 44
+        },
+        {
+          "name": "Back to previews",
+          "width": 129.0625,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "theme": "emerald-night",
+      "width": 768,
+      "cls": 0,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "Ivory & Gold",
+          "width": 92.421875,
+          "height": 44
+        },
+        {
+          "name": "Midnight & Champagne",
+          "width": 176.953125,
+          "height": 44
+        },
+        {
+          "name": "Emerald Night",
+          "width": 106.578125,
+          "height": 44
+        },
+        {
+          "name": "Blush & Sage",
+          "width": 99.40625,
+          "height": 44
+        },
+        {
+          "name": "Replay opening",
+          "width": 224,
+          "height": 44
+        },
+        {
+          "name": "Kindly reply",
+          "width": 89.40625,
+          "height": 44
+        },
+        {
+          "name": "Try RSVP preview",
+          "width": 135.078125,
+          "height": 44
+        },
+        {
+          "name": "Back to previews",
+          "width": 129.0625,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "theme": "emerald-night",
+      "width": 1280,
+      "cls": 0,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "Ivory & Gold",
+          "width": 92.421875,
+          "height": 44
+        },
+        {
+          "name": "Midnight & Champagne",
+          "width": 176.953125,
+          "height": 44
+        },
+        {
+          "name": "Emerald Night",
+          "width": 106.578125,
+          "height": 44
+        },
+        {
+          "name": "Blush & Sage",
+          "width": 99.40625,
+          "height": 44
+        },
+        {
+          "name": "Replay opening",
+          "width": 224,
+          "height": 44
+        },
+        {
+          "name": "Kindly reply",
+          "width": 89.40625,
+          "height": 44
+        },
+        {
+          "name": "Try RSVP preview",
+          "width": 135.078125,
+          "height": 44
+        },
+        {
+          "name": "Back to previews",
+          "width": 129.0625,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "theme": "blush-sage",
+      "width": 375,
+      "cls": 0,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "Ivory & Gold",
+          "width": 92.421875,
+          "height": 44
+        },
+        {
+          "name": "Midnight & Champagne",
+          "width": 176.953125,
+          "height": 44
+        },
+        {
+          "name": "Emerald Night",
+          "width": 106.578125,
+          "height": 44
+        },
+        {
+          "name": "Blush & Sage",
+          "width": 99.40625,
+          "height": 44
+        },
+        {
+          "name": "Replay opening",
+          "width": 224,
+          "height": 44
+        },
+        {
+          "name": "Kindly reply",
+          "width": 89.40625,
+          "height": 44
+        },
+        {
+          "name": "Try RSVP preview",
+          "width": 135.078125,
+          "height": 44
+        },
+        {
+          "name": "Back to previews",
+          "width": 129.0625,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "theme": "blush-sage",
+      "width": 768,
+      "cls": 0,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "Ivory & Gold",
+          "width": 92.421875,
+          "height": 44
+        },
+        {
+          "name": "Midnight & Champagne",
+          "width": 176.953125,
+          "height": 44
+        },
+        {
+          "name": "Emerald Night",
+          "width": 106.578125,
+          "height": 44
+        },
+        {
+          "name": "Blush & Sage",
+          "width": 99.40625,
+          "height": 44
+        },
+        {
+          "name": "Replay opening",
+          "width": 224,
+          "height": 44
+        },
+        {
+          "name": "Kindly reply",
+          "width": 89.40625,
+          "height": 44
+        },
+        {
+          "name": "Try RSVP preview",
+          "width": 135.078125,
+          "height": 44
+        },
+        {
+          "name": "Back to previews",
+          "width": 129.0625,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "theme": "blush-sage",
+      "width": 1280,
+      "cls": 0,
+      "overflow": false,
+      "targets": [
+        {
+          "name": "Ivory & Gold",
+          "width": 92.421875,
+          "height": 44
+        },
+        {
+          "name": "Midnight & Champagne",
+          "width": 176.953125,
+          "height": 44
+        },
+        {
+          "name": "Emerald Night",
+          "width": 106.578125,
+          "height": 44
+        },
+        {
+          "name": "Blush & Sage",
+          "width": 99.40625,
+          "height": 44
+        },
+        {
+          "name": "Replay opening",
+          "width": 224,
+          "height": 44
+        },
+        {
+          "name": "Kindly reply",
+          "width": 89.40625,
+          "height": 44
+        },
+        {
+          "name": "Try RSVP preview",
+          "width": 135.078125,
+          "height": 44
+        },
+        {
+          "name": "Back to previews",
+          "width": 129.0625,
+          "height": 44
+        }
+      ]
+    }
+  ],
+  "storageDenied": "pass",
+  "liveReducedMotion": "pass"
+}

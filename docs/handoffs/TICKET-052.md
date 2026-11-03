@@ -1,0 +1,25 @@
+# TICKET-052 handoff
+
+2026-10-31 · divine · codex · branch TICKET-052. Base5bd56a82d37942a1a046fc1b1c93c22f2a6829bc; managed stack wedding-e96ff868824f, database35181, app35190, browser35191. Claimed and in_progress through CLI; start6eeda0b pushed.
+
+Implemented pure approved-template rendering, validated plain-text inputs/literal placeholder substitution, shared voice schema/default, server-only current-settings rendering and internal validated voice persistence. No public mutation endpoint, delivery, sent-status change or UI. Admin setting control stays101. Source docs: docs/invitation-messages.md and dated plan.
+
+Tests initially failed for absent renderer/default; database tests then failed on absent column. Corrected a new test's erroneous assumption that the approved email body contains GuestName; exact email copy is now asserted.37 focused tests passed,4 transactional DB tests passed, quick verification passed lint/types/46 related unit tests with18 opt-in skips. An additional seed/default test passed. Pure default-voice test and typed test-case cleanup added afterward; rerun required.
+
+Generated0005_blue_ravenous.sql adds nonnull voice with Warm default and three-choice constraint. Applied twice on this isolated database; all row/migration counts identical after second application. Existing synthetic settings row retained its venue and received Warm; exact fixture removed. RLS remains enabled on all12 public tables. Seed run twice produced identical counts (248 guests,110 invitations); current database now contains deterministic synthetic seed data. The optional DB tests now isolate the singleton inside rolled-back transactions; all4 passed again against the seeded database and before/after counts matched. No production migration or reset performed.
+
+Owner explicitly approved0005 SQL,0005 snapshot and journal plus recording exact paths in .harness/approved-writes.json. Recorded until2026-11-02T00:00Z. No migration approval remains pending. Permission review previously timed out before a large command started; smaller guarded steps succeeded without disabling protections.
+
+TICKET-037 merged after exact-head CI as e381c810bc19404d7ded59a6155fc8977c1f474d; CLI done and bookkeepingf0c0903 pushed. Its performance/device exceptions remain release-blocking201. Next: checkpoint052, integrate origin/develop including037 without losing current source/migration, run full verify, review exact copy and API behavior, open detailed PR and follow user-authorized verified merge workflow. No task completion claimed yet.
+
+Verified tool lesson: /dev/null redirection is rejected as an outside-checkout write. Use explicit ignored artifacts/TICKET-052 logs or no redirection. Proposed harness documentation follow-up: add this tested command example to the shared ticket-workflow skill in its own maintenance ticket; do not broaden this feature commit.
+
+Final focused checks before checkpoint:18 template/default/seed tests passed;4 transactional database tests passed on the seeded stack without count changes. The original37-test suite and quick gate results remain recorded above. Remaining work is develop integration, full verification and PR review; generated migration authorization is already recorded.
+
+Checkpoint13d60af committed the implementation and approved migration. Integrated verified develop e381c810bc19404d7ded59a6155fc8977c1f474d without conflicts as2c5048f. Both functional acceptance criteria are proved by focused/unit and real database checks; full gate remains pending. Next: push/open draft PR, run mandatory t:pr with explicit owner/agent, inspect final-head CI and retain no delivery/authorization/UI claims beyond this backend scope.
+
+## 2026-10-31 — full verification passed; PR58 in review
+
+Mandatory t:pr completed on the integrated implementation:489 unit passes/26 optional skips, production build,525 browser passes/135 skips in5.8minutes. CLI moved052 to in_review and pushedbb7fd3e, recording https://github.com/UncleChenna/wedding-app/pull/58. No assertion or timeout was weakened. Local source tree is clean before this evidence update.
+
+Next: commit/push this final result, update PR58 body and mark ready, then inspect every applicable CI job on that exact final head before merge under the user's verified-merge authorization. Record done only after confirmed merge. Mandatory generated-migration approval was already received and recorded; do not ask again. Database contains only deterministic synthetic data. No production migration or invitation delivery occurred. TICKET-039 is the next ready UI ticket; read the spike FINDINGS.md from its separate worktree (the file exists there but is absent from that branch's committed tree).

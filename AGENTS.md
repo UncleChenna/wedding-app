@@ -20,6 +20,8 @@ offline QR check-in, free table ordering, kitchen/bar boards, and admin.
 Next.js 16 App Router, React 19, TypeScript strict, Tailwind 4, Supabase,
 Drizzle, Zod, Vitest, Playwright, pnpm 12, Node 24. Product: [PRD](docs/prd.md).
 
+See [application journeys](docs/journeys.md) for entry points, route connections and feature owners.
+
 ## Module map
 
 - `src/app/`: routes/layouts/metadata only; guest, staff and admin route groups.

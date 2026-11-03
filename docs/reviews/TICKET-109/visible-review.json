@@ -1,0 +1,470 @@
+[
+  {
+    "theme": "ivory-gold",
+    "width": 375,
+    "route": "/checkin",
+    "violations": [],
+    "focus": "solid",
+    "box": {
+      "x": 57.46875,
+      "y": 822,
+      "width": 133.15625,
+      "height": 44
+    }
+  },
+  {
+    "theme": "ivory-gold",
+    "width": 375,
+    "route": "/kitchen",
+    "violations": [],
+    "focus": "solid",
+    "box": {
+      "x": 57.46875,
+      "y": 822,
+      "width": 133.15625,
+      "height": 44
+    }
+  },
+  {
+    "theme": "ivory-gold",
+    "width": 375,
+    "route": "/dev/theme",
+    "violations": [],
+    "focus": "solid",
+    "box": {
+      "x": 57.46875,
+      "y": 815.59375,
+      "width": 133.15625,
+      "height": 44
+    }
+  },
+  {
+    "theme": "ivory-gold",
+    "width": 768,
+    "route": "/checkin",
+    "violations": [],
+    "focus": "solid",
+    "box": {
+      "x": 253.96875,
+      "y": 822,
+      "width": 133.15625,
+      "height": 44
+    }
+  },
+  {
+    "theme": "ivory-gold",
+    "width": 768,
+    "route": "/kitchen",
+    "violations": [],
+    "focus": "solid",
+    "box": {
+      "x": 253.96875,
+      "y": 822,
+      "width": 133.15625,
+      "height": 44
+    }
+  },
+  {
+    "theme": "ivory-gold",
+    "width": 768,
+    "route": "/dev/theme",
+    "violations": [],
+    "focus": "solid",
+    "box": {
+      "x": 253.96875,
+      "y": 703.84375,
+      "width": 133.15625,
+      "height": 44
+    }
+  },
+  {
+    "theme": "ivory-gold",
+    "width": 1280,
+    "route": "/checkin",
+    "violations": [],
+    "focus": "solid",
+    "box": {
+      "x": 509.96875,
+      "y": 822,
+      "width": 133.15625,
+      "height": 44
+    }
+  },
+  {
+    "theme": "ivory-gold",
+    "width": 1280,
+    "route": "/kitchen",
+    "violations": [],
+    "focus": "solid",
+    "box": {
+      "x": 509.96875,
+      "y": 822,
+      "width": 133.15625,
+      "height": 44
+    }
+  },
+  {
+    "theme": "ivory-gold",
+    "width": 1280,
+    "route": "/dev/theme",
+    "violations": [],
+    "focus": "solid",
+    "box": {
+      "x": 509.96875,
+      "y": 703.78125,
+      "width": 133.15625,
+      "height": 44
+    }
+  },
+  {
+    "theme": "midnight-champagne",
+    "width": 375,
+    "route": "/checkin",
+    "violations": [],
+    "focus": "solid",
+    "box": {
+      "x": 63.484375,
+      "y": 822,
+      "width": 125.84375,
+      "height": 44
+    }
+  },
+  {
+    "theme": "midnight-champagne",
+    "width": 375,
+    "route": "/kitchen",
+    "violations": [],
+    "focus": "solid",
+    "box": {
+      "x": 63.484375,
+      "y": 822,
+      "width": 125.84375,
+      "height": 44
+    }
+  },
+  {
+    "theme": "midnight-champagne",
+    "width": 375,
+    "route": "/dev/theme",
+    "violations": [],
+    "focus": "solid",
+    "box": {
+      "x": 63.484375,
+      "y": 428.1875,
+      "width": 125.84375,
+      "height": 44
+    }
+  },
+  {
+    "theme": "midnight-champagne",
+    "width": 768,
+    "route": "/checkin",
+    "violations": [],
+    "focus": "solid",
+    "box": {
+      "x": 259.984375,
+      "y": 822,
+      "width": 125.84375,
+      "height": 44
+    }
+  },
+  {
+    "theme": "midnight-champagne",
+    "width": 768,
+    "route": "/kitchen",
+    "violations": [],
+    "focus": "solid",
+    "box": {
+      "x": 259.984375,
+      "y": 822,
+      "width": 125.84375,
+      "height": 44
+    }
+  },
+  {
+    "theme": "midnight-champagne",
+    "width": 768,
+    "route": "/dev/theme",
+    "violations": [],
+    "focus": "solid",
+    "box": {
+      "x": 259.984375,
+      "y": 427.890625,
+      "width": 125.84375,
+      "height": 44
+    }
+  },
+  {
+    "theme": "midnight-champagne",
+    "width": 1280,
+    "route": "/checkin",
+    "violations": [],
+    "focus": "solid",
+    "box": {
+      "x": 515.984375,
+      "y": 822,
+      "width": 125.84375,
+      "height": 44
+    }
+  },
+  {
+    "theme": "midnight-champagne",
+    "width": 1280,
+    "route": "/kitchen",
+    "violations": [],
+    "focus": "solid",
+    "box": {
+      "x": 515.984375,
+      "y": 822,
+      "width": 125.84375,
+      "height": 44
+    }
+  },
+  {
+    "theme": "midnight-champagne",
+    "width": 1280,
+    "route": "/dev/theme",
+    "violations": [],
+    "focus": "solid",
+    "box": {
+      "x": 515.984375,
+      "y": 427.5625,
+      "width": 125.84375,
+      "height": 44
+    }
+  },
+  {
+    "theme": "emerald-night",
+    "width": 375,
+    "route": "/checkin",
+    "violations": [],
+    "focus": "solid",
+    "box": {
+      "x": 57.46875,
+      "y": 822,
+      "width": 133.15625,
+      "height": 44
+    }
+  },
+  {
+    "theme": "emerald-night",
+    "width": 375,
+    "route": "/kitchen",
+    "violations": [],
+    "focus": "solid",
+    "box": {
+      "x": 57.46875,
+      "y": 822,
+      "width": 133.15625,
+      "height": 44
+    }
+  },
+  {
+    "theme": "emerald-night",
+    "width": 375,
+    "route": "/dev/theme",
+    "violations": [],
+    "focus": "solid",
+    "box": {
+      "x": 57.46875,
+      "y": 427.78125,
+      "width": 133.15625,
+      "height": 44
+    }
+  },
+  {
+    "theme": "emerald-night",
+    "width": 768,
+    "route": "/checkin",
+    "violations": [],
+    "focus": "solid",
+    "box": {
+      "x": 253.96875,
+      "y": 822,
+      "width": 133.15625,
+      "height": 44
+    }
+  },
+  {
+    "theme": "emerald-night",
+    "width": 768,
+    "route": "/kitchen",
+    "violations": [],
+    "focus": "solid",
+    "box": {
+      "x": 253.96875,
+      "y": 822,
+      "width": 133.15625,
+      "height": 44
+    }
+  },
+  {
+    "theme": "emerald-night",
+    "width": 768,
+    "route": "/dev/theme",
+    "violations": [],
+    "focus": "solid",
+    "box": {
+      "x": 253.96875,
+      "y": 427.9375,
+      "width": 133.15625,
+      "height": 44
+    }
+  },
+  {
+    "theme": "emerald-night",
+    "width": 1280,
+    "route": "/checkin",
+    "violations": [],
+    "focus": "solid",
+    "box": {
+      "x": 509.96875,
+      "y": 822,
+      "width": 133.15625,
+      "height": 44
+    }
+  },
+  {
+    "theme": "emerald-night",
+    "width": 1280,
+    "route": "/kitchen",
+    "violations": [],
+    "focus": "solid",
+    "box": {
+      "x": 509.96875,
+      "y": 822,
+      "width": 133.15625,
+      "height": 44
+    }
+  },
+  {
+    "theme": "emerald-night",
+    "width": 1280,
+    "route": "/dev/theme",
+    "violations": [],
+    "focus": "solid",
+    "box": {
+      "x": 509.96875,
+      "y": 428.34375,
+      "width": 133.15625,
+      "height": 44
+    }
+  },
+  {
+    "theme": "blush-sage",
+    "width": 375,
+    "route": "/checkin",
+    "violations": [],
+    "focus": "solid",
+    "box": {
+      "x": 63.484375,
+      "y": 822,
+      "width": 125.84375,
+      "height": 44
+    }
+  },
+  {
+    "theme": "blush-sage",
+    "width": 375,
+    "route": "/kitchen",
+    "violations": [],
+    "focus": "solid",
+    "box": {
+      "x": 63.484375,
+      "y": 822,
+      "width": 125.84375,
+      "height": 44
+    }
+  },
+  {
+    "theme": "blush-sage",
+    "width": 375,
+    "route": "/dev/theme",
+    "violations": [],
+    "focus": "solid",
+    "box": {
+      "x": 63.484375,
+      "y": 428.375,
+      "width": 125.84375,
+      "height": 44
+    }
+  },
+  {
+    "theme": "blush-sage",
+    "width": 768,
+    "route": "/checkin",
+    "violations": [],
+    "focus": "solid",
+    "box": {
+      "x": 259.984375,
+      "y": 822,
+      "width": 125.84375,
+      "height": 44
+    }
+  },
+  {
+    "theme": "blush-sage",
+    "width": 768,
+    "route": "/kitchen",
+    "violations": [],
+    "focus": "solid",
+    "box": {
+      "x": 259.984375,
+      "y": 822,
+      "width": 125.84375,
+      "height": 44
+    }
+  },
+  {
+    "theme": "blush-sage",
+    "width": 768,
+    "route": "/dev/theme",
+    "violations": [],
+    "focus": "solid",
+    "box": {
+      "x": 259.984375,
+      "y": 427.78125,
+      "width": 125.84375,
+      "height": 44
+    }
+  },
+  {
+    "theme": "blush-sage",
+    "width": 1280,
+    "route": "/checkin",
+    "violations": [],
+    "focus": "solid",
+    "box": {
+      "x": 515.984375,
+      "y": 822,
+      "width": 125.84375,
+      "height": 44
+    }
+  },
+  {
+    "theme": "blush-sage",
+    "width": 1280,
+    "route": "/kitchen",
+    "violations": [],
+    "focus": "solid",
+    "box": {
+      "x": 515.984375,
+      "y": 822,
+      "width": 125.84375,
+      "height": 44
+    }
+  },
+  {
+    "theme": "blush-sage",
+    "width": 1280,
+    "route": "/dev/theme",
+    "violations": [],
+    "focus": "solid",
+    "box": {
+      "x": 515.984375,
+      "y": 428.125,
+      "width": 125.84375,
+      "height": 44
+    }
+  }
+]

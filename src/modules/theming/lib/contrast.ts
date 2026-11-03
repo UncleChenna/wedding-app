@@ -33,7 +33,17 @@ export const CONTRAST_PAIRS: ReadonlyArray<readonly [ColorToken, ColorToken, num
   ["input", "surface", AA_NON_TEXT, "input borders (non-text)"],
   ["ring", "background", AA_NON_TEXT, "focus ring on page (non-text)"],
   ["ring", "surface", AA_NON_TEXT, "focus ring on cards (non-text)"],
+  ["decorative-foreground", "decorative", AA_TEXT, "text on decorative fill"],
+  ["qr-ink", "qr-paper", AA_TEXT, "QR code modules on QR paper"],
 ];
+
+/** Scanners expect dark modules on a light ground; an inverted QR fails on many phones. */
+export function checkQrPolarity(theme: Pick<Theme, "colors">): string | null {
+  const { "qr-ink": ink, "qr-paper": paper } = theme.colors;
+  return relativeLuminance(ink) < relativeLuminance(paper)
+    ? null
+    : `qr-ink ${ink} must be darker than qr-paper ${paper} (QR codes are dark on light)`;
+}
 
 export function hexToRgb(hex: string): [number, number, number] {
   const match = /^#?([0-9a-f]{6})$/i.exec(hex);

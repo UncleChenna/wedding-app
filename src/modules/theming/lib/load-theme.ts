@@ -1,4 +1,4 @@
-import { checkThemeContrast, formatContrastFailures } from "./contrast";
+import { checkQrPolarity, checkThemeContrast, formatContrastFailures } from "./contrast";
 import { themeSchema, type Theme } from "./schema";
 import { checkStatusHues, formatStatusHueFailures } from "./status";
 
@@ -23,6 +23,10 @@ export function loadTheme(raw: unknown): Theme {
   const failures = checkThemeContrast(parsed.data);
   if (failures.length > 0) {
     throw new ThemeValidationError(formatContrastFailures(parsed.data.id, failures));
+  }
+  const qrFailure = checkQrPolarity(parsed.data);
+  if (qrFailure) {
+    throw new ThemeValidationError(`Theme "${parsed.data.id}" has an unscannable QR: ${qrFailure}`);
   }
   const hueFailures = checkStatusHues(parsed.data);
   if (hueFailures.length > 0) {
