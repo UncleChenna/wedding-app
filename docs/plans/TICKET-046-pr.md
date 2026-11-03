@@ -26,7 +26,7 @@ Accepted guests can download a themed A5 invitation with current event details a
 - Fifteen focused tests and production build pass after integration. The extended PDF browser regression passes in 12.3 seconds, including actual image download and offline reload in addition to all prior PDF privacy and rejection assertions.
 - All 12 refreshed screenshots inspected. Existing eight signed PDF samples still decode at 300 dpi; renderer/font/QR generation is unchanged, so those samples were not regenerated.
 - Integrated production Lighthouse: Performance 97/98/98, Accessibility 100 each, CLS 0 each. See docs/reviews/TICKET-046/integration-performance.json.
-- Earlier pre-integration full verification passed. The renewed full t:pr gate and CI remain pending before review status is restored.
+- Integrated full t:pr gate passed on 169b538: 826 unit tests (48 skipped), production build and 769 browser tests (165 skipped; 13.0 minutes). The CLI restored in_review and published c8cd5ed. Final GitHub CI and human review remain required.
 
 # Risks and rollout
 
