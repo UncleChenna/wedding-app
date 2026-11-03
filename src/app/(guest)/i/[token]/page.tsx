@@ -54,7 +54,12 @@ async function Invitation({ params }: { params: Promise<{ token: string }> }) {
       }
       pass={
         issued?.state === "ready" ? (
-          <QrPass url={issued.url} pass={issued.pass} saveOffline />
+          <QrPass
+            url={issued.url}
+            pass={issued.pass}
+            imageHref={`/i/${token}/pass.png`}
+            saveOffline
+          />
         ) : undefined
       }
       passNotice={issued?.state === "unavailable" ? <PassUnavailable /> : undefined}

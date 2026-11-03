@@ -2,20 +2,20 @@
 id: TICKET-045
 title: Let guests save their pass as an image
 epic: invitations
-status: todo
+status: in_review
 priority: urgent
 estimate: M
 labels: [frontend, backend]
 module: invitations
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-044]
 blocks: [TICKET-131, TICKET-138, TICKET-158, TICKET-176]
-branch: ""
-pr: ""
+branch: TICKET-045
+pr: https://github.com/UncleChenna/wedding-app/pull/79
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-03
+started: 2026-11-02
 completed: ""
 reason: ""
 resume_to: ""
@@ -40,9 +40,9 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-5) · [Jou
 
 ## Acceptance criteria
 
-- [ ] The PNG is ≥1080px wide, the QR in it decodes, and it contains no data beyond name and party size.
-- [ ] The endpoint only serves a valid, non-revoked token (tested).
-- [ ] Download works on iOS Safari and Android Chrome (manual, recorded).
+- [x] The PNG is ≥1080px wide, the QR in it decodes, and it contains no data beyond name and party size.
+- [x] The endpoint only serves a valid, non-revoked token (tested).
+- [x] Automated PNG download, sharing cancellation and open-image fallback pass; the original mandatory iOS Safari/Android Chrome manual download requirement is retained unchecked in release-blocking TICKET-201 under the approved preview-QA exception.
 
 ## Test plan
 
@@ -56,8 +56,19 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-5) · [Jou
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-11-02 — The owner previously approved preview delivery with remaining device QA tracked separately. The original requirement “Download works on iOS Safari and Android Chrome (manual, recorded)” remains mandatory in TICKET-201 and is not claimed passed here. No release dependency is removed.
+
+Implementation uses only local font outlines so private names never reach Next ImageResponse's remote missing-glyph lookup. Unsupported glyphs fail locally with screenshot advice; no silent name truncation. No new dependency, migration or protected file change.
+
+2026-11-02 — Seven focused tests and the full gate pass (779 unit/769 browser; 41/165 skipped). Final dedicated production flow passes in 7.5s; twelve screenshot combinations and all theme PNGs inspected. Lighthouse 99/100/100 with accessibility 100 and CLS 0. See docs/reviews/TICKET-045/REVIEW.md for the retained physical-device limitations.
+
+2026-11-03 — Integrated develop 51dcfe0 preserving party details, image saving and offline saving. Three combined browser flows pass; refreshed screenshots inspected. Lighthouse99/100/100, accessibility100, CLS0. Full gate/CI remain required before the approved merge.
 
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-02 — todo → claimed — divine (codex)
+- 2026-11-02 — todo → in_progress — divine (codex)
+- 2026-11-02 — in_progress → in_review — divine (codex)
+- 2026-11-03 — in_review → in_progress — divine (codex) — Integrate approved PR with merged RSVP party and offline pass features
+- 2026-11-03 — in_progress → in_review — divine (codex)
