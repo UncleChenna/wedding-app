@@ -19,7 +19,7 @@ Local production journey passes both projects (2 tests,3.9s); dev run passes2tes
 
 # Verification
 
-A later full review rerun exposed7existing keyboard failures: tests pressed Tab on a streamed loading shell before links existed. Added an explicit visible heading assertion before the existing checks; all26affected tests now pass in1.2minutes under the same database-outage conditions. No assertions/timeouts/retries removed or weakened. Final full rerun pending.
+A later full review rerun exposed7existing keyboard failures: tests pressed Tab on a streamed loading shell before links existed. Added an explicit visible heading assertion before the existing checks; all26affected tests now pass in1.2minutes under the same database-outage conditions. No assertions/timeouts/retries removed or weakened. Corrected full t:pr rerun passed on b3dd899; ticket is in_review. Final GitHub checks and human merge remain required.
 
 Quick gate, production build and full pnpm verify pass. Full gate:852unit55skip;769browser165skip4.9minutes. Dedicated journey ran separately; no silent CI coverage claim. Logs: artifacts/TICKET-131/{first-browser,production-browser,quick,build,full-verify}.log. Dev server emitted existing cached metadata URL serialization warnings; production run passed.
 

@@ -23,3 +23,7 @@ The t:pr rerun failed seven existing invitation-pages focus assertions (762pass1
 Added an explicit visible level-one heading assertion after each route navigation, before theme/accessibility/focus checks. All previous assertions remain. This makes the test wait for the intended page instead of testing an empty loading shell. Verification is ongoing; initial full-gate success does not supersede this later failure. Failure traces/logs remain under artifacts/TICKET-131/failed-review and focus-isolated.log. The isolated DB was stopped; restart failed while Docker stayed healthy, making fallback loading delays reproducible. No other stack was altered.
 
 Readiness correction verified: all26 invitation-page checks pass on mobile and desktop in1.2minutes with the database still unavailable. No previous assertions, timeouts or retries changed. Next rerun full t:pr on the corrected test.
+
+## Corrected full gate passed — 2026-11-03
+
+Full t:pr passed on b3dd899 after the streaming-readiness assertion; CLI moved ticket to in_review in fb5d1b6 and updated PR83. Prior failed traces remain disclosed. The test-only correction preserves every previous assertion; all26focused checks passed under the same database-outage conditions. Final GitHub CI on the published head and human merge remain required. No PR83 merge exception exists.
