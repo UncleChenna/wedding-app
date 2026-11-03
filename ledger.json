@@ -1436,18 +1436,19 @@
       "log": [
         "- 2026-11-02 — todo → claimed — divine (codex)",
         "- 2026-11-02 — todo → in_progress — divine (codex)",
-        "- 2026-11-02 — in_progress → blocked — divine (codex) — Awaiting human exact-path authorization for generated pnpm-lock.yaml and permission to record it; implementation and review evidence preserved locally, full gate must be rerun after authorization."
+        "- 2026-11-02 — in_progress → blocked — divine (codex) — Awaiting human exact-path authorization for generated pnpm-lock.yaml and permission to record it; implementation and review evidence preserved locally, full gate must be rerun after authorization.",
+        "- 2026-11-03 — blocked → in_progress — divine (codex) — User approved generated pnpm-lock.yaml and exact-path authorization record"
       ],
-      "status": "blocked",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-046",
       "pr": "",
       "started": "2026-11-02",
       "completed": "",
-      "updated": "2026-11-02",
-      "reason": "Awaiting human exact-path authorization for generated pnpm-lock.yaml and permission to record it; implementation and review evidence preserved locally, full gate must be rerun after authorization.",
-      "resume_to": "in_progress"
+      "updated": "2026-11-03",
+      "reason": "",
+      "resume_to": ""
     },
     "WED-107": {
       "log": [
