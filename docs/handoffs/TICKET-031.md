@@ -30,12 +30,49 @@ and returns no PIN hashes. Three isolated database tests pass, including real
 sign-in and live revocation. All 21 credential/session/cutoff unit tests pass;
 the latest quick gate passes. The first typecheck caught generic inference
 including undefined; an explicit result type fixed it without weakening strictness.
-Cookie/action wiring and UI remain to implement. Installed Next cookies docs were
-read; async reads need Suspense and cookie writes must be actions/handlers.
+Cookie/action wiring and the gate/kitchen/bar sign-in pages are now implemented,
+with a non-authenticating preview on `/dev/theme`. The signing secret is documented
+in `.env.example` but no deployment secret is configured. Installed Next cookies,
+connection and server-action docs were read. Request-time connection is awaited
+outside the error catch so prerender control flow is not swallowed.
 
-Next: connect the attempt/session primitives to live credential/role/revocation
-checks and staff entry screens.
+The development browser journey initially failed because a global PWA status
+region made an unscoped locator ambiguous. Scoping to the sign-in form fixed the
+test without changing assertions. Both development browser projects then passed.
+Both production projects passed too (12.6s), including both role directions.
+That build still logged caught prerender control flow; the request-time boundary
+has since been corrected and the full gate is rebuilding it. The full gate's
+unit stage passed 876 tests (65 skipped); browser/UI review is still pending.
+Full gate log: `artifacts/TICKET-031/full-verify.log`.
+
+Next: finish the running full gate, inspect all-theme screenshots, verify the
+corrected production browser journey, record every UI checklist result and update
+the draft PR. Do not mark the ticket complete before those checks pass.
 Read installed Next docs before route/action changes. Prepare a concrete migration
 proposal and obtain exact-path authorization for generated output. No production
 database application has been performed. Administrative
 staff creation stays in TICKET-096. This ticket is not complete.
+
+## Final review continuation
+
+The initial full gate finished with 876 unit passes, 65 skips, and a successful
+build, followed by 766 browser passes, 165 skips and nine failures. The fixes are
+scoped input typography, removal of the idle status role, and serial scheduling
+of fixture-changing tests. The unchanged focused checks now pass (20 passes,
+two opt-in skips). Never run database fixtures alongside the browser gate.
+
+Additional review rejected duplicate PINs across roles, with a failing isolated
+regression followed by three database passes. PIN tests now have 14 cases. The
+corrected production journey passes both projects (14.3s). Twelve delayed-font
+checks report exact zero CLS after making the staff header columns fixed and
+start-aligning its label. The harmless theme preview passes without setting cookies.
+Standard screenshot capture passed all 48 cases. The changed-form preview and
+staff route contact sheets have been inspected at all three widths in four themes.
+The development capture includes diagnostics from the shared screenshot harness;
+production route captures will be used for the final review images.
+
+A fresh full gate is running serially, logged in
+`artifacts/TICKET-031/final-verify.log`. Next: finish that gate, publish the UI and
+its evidence, and advance PR84 only after all mandatory checks are satisfied.
+Migration approval is already recorded and committed; no additional approval is
+needed for those exact files. No production database changes were made.

@@ -23,6 +23,7 @@ describe.runIf(process.env.RUN_STAFF_DB_TESTS === "1")("staff authentication", (
       await import("../../src/modules/shared/server/staff-auth");
     const { signStaffSession } = await import("../../src/modules/shared/server/staff-session");
     const id = randomUUID();
+    const duplicateId = randomUUID();
     const device = randomBytes(32).toString("hex");
     const key = randomBytes(32);
     const hash = await hashStaffPin("012345");
@@ -47,6 +48,10 @@ describe.runIf(process.env.RUN_STAFF_DB_TESTS === "1")("staff authentication", (
       const token = signStaffSession(identity, device, expiresAt, key);
       expect(await authenticateStaff(token, device, "gate", key)).toEqual(identity);
       expect(await authenticateStaff(token, device, "kitchen", key)).toBeNull();
+      await db`insert into staff(id,name,role,pin_hash,pin_issued_at,pin_expires_at)
+        values (${duplicateId},'Synthetic duplicate','kitchen',${hash},now() - interval '1 minute','2099-12-21T00:00:00Z')`;
+      expect(await signInStaff("012345", "gate", device)).toEqual({ status: "wrong" });
+      await db`delete from staff where id = ${duplicateId}`;
       await db`update registered_devices set revoked_at = now() where id = ${device}`;
       expect(await authenticateStaff(token, device, "gate", key)).toBeNull();
       await db`update registered_devices set revoked_at = null where id = ${device}`;
@@ -60,6 +65,7 @@ describe.runIf(process.env.RUN_STAFF_DB_TESTS === "1")("staff authentication", (
       await db`delete from registered_devices where id = ${device}`;
       await db`delete from staff_pin_attempts where device_id = ${device}`;
       await db`delete from staff where id = ${id}`;
+      await db`delete from staff where id = ${duplicateId}`;
       await db`delete from event_settings where id = 1 and venue = ${id}`;
     }
   });

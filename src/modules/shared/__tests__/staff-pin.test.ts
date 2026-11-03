@@ -12,7 +12,7 @@ describe("staff PIN credentials", () => {
     expect(await verifyStaffPin("012346", first)).toBe(false);
   });
 
-  it.each(["12345", "1234567", "12345a", " 123456", "１２３４５６", ""])(
+  it.each(["12345", "1234567", "12345a", " 123456", "１２３４５６", "012345\n", "012345\r", ""])(
     "rejects malformed PIN %j without normalization",
     async (pin) => {
       await expect(hashStaffPin(pin)).rejects.toThrow("six digits");

@@ -45,13 +45,7 @@ export async function signInStaff(
     const candidates = await tx
       .select()
       .from(schema.staff)
-      .where(
-        and(
-          eq(schema.staff.role, role),
-          isNotNull(schema.staff.pinHash),
-          isNull(schema.staff.revokedAt),
-        ),
-      );
+      .where(and(isNotNull(schema.staff.pinHash), isNull(schema.staff.revokedAt)));
     let matched: (typeof candidates)[number] | undefined;
     // Do not return early: matching staff position must not determine response time.
     let matches = 0;
@@ -62,7 +56,7 @@ export async function signInStaff(
       }
     }
     // Ambiguous credentials must be reset by an administrator, never select an identity arbitrarily.
-    if (!matched || matches !== 1) return { status: "wrong" };
+    if (!matched || matches !== 1 || matched.role !== role) return { status: "wrong" };
     const [current] = await tx
       .select()
       .from(schema.staff)
