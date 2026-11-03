@@ -13,3 +13,7 @@ Physical WhatsApp/device scanning remains unverified in release-blocking TICKET-
 Published: https://github.com/UncleChenna/wedding-app/pull/78 targets develop. Implementation 9c8eb3b; CLI in_review transition 1a5d46d. The mandatory t:pr gate also passed (783 unit tests, 769 browser tests). Next: monitor required CI and retain in_review for human review; continue the next ready ticket without merging PR78. Do not merge: the narrow authorization for PRs 48/68/74/75 is exhausted; all are already merged. PR76 awaits human review; draft PR77/TICKET-046 remains blocked on explicit generated-lockfile authorization, with its isolated stack stopped and backup retained. Never alter its dirty lockfile from this ticket.
 
 Persistent caffeinate session 52403 prevents sleep; stop when ending the implementation session. Primary checkout and other owners' work are preserved.
+
+## 2026-11-03 — approved sequential integration
+
+User explicitly approved merging PRs76/78/79/80 with renewed integration checks. PR76 merged as22b94bf0530d40c7a6ae7703fff25bd76a49e3c2. Integrating that base into PR78 produced one conflict in the personal invitation route: preserve both readParty-backed RSVP editing and QrPass saveOffline. No requirement dropped. Ticket resumed through CLI for this repair; full gate and both live feature flows will be rerun before merge. Release-blocking201 remains mandatory.

@@ -2,20 +2,20 @@
 id: TICKET-041
 title: Let guests add tag-alongs with meals and dietary notes
 epic: invitations
-status: todo
+status: in_review
 priority: urgent
 estimate: L
 labels: [frontend, backend]
 module: invitations
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-040, TICKET-171]
 blocks: [TICKET-042, TICKET-117, TICKET-131, TICKET-138, TICKET-158]
-branch: ""
-pr: ""
+branch: TICKET-041
+pr: https://github.com/UncleChenna/wedding-app/pull/76
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-02
+started: 2026-11-02
 completed: ""
 reason: ""
 resume_to: ""
@@ -41,9 +41,9 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-4) · [On 
 
 ## Acceptance criteria
 
-- [ ] The server rejects more tag-alongs than max_tag_alongs (unit + e2e).
-- [ ] Each person stores name, meal choice and dietary notes; names are required.
-- [ ] Removing a tag-along updates count_attending.
+- [x] The server rejects more tag-alongs than max_tag_alongs (unit + e2e).
+- [x] Each person stores name, meal choice and dietary notes; names are required.
+- [x] Removing a tag-along updates count_attending.
 
 ## Test plan
 
@@ -58,8 +58,11 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-4) · [On 
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-11-02: Named-guest editor implemented in draft PR76. Full local verification passed789 unit/database and769 browser tests; all-theme flow and no-JavaScript attendance checks pass. Signed-pass count refresh passes; Lighthouse Performance98/100/100, Accessibility100 each, measured CLS0 each. Physical-device and cold-font release gates remain in TICKET-201.
 
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-02 — todo → claimed — divine (codex)
+- 2026-11-02 — todo → in_progress — divine (codex)
+- 2026-11-02 — in_progress → in_review — divine (codex)
