@@ -9,6 +9,9 @@ import {
 } from "../lib/table-selection";
 import { resolveTableSelection } from "../server/table-selection";
 import { findTable } from "../server/table-repository";
+import { loadMenu } from "../server/menu";
+import { listMenuItems } from "../server/menu-repository";
+import { OrderMenu } from "./order-menu";
 import { TableForm } from "./table-form";
 
 async function OrderSelection({ searchParams }: { searchParams: TableSearch }) {
@@ -19,25 +22,25 @@ async function OrderSelection({ searchParams }: { searchParams: TableSearch }) {
   const selected = saved ? await resolveTableSelection(saved, findTable) : null;
   if (!change && selected?.status === "selected")
     return (
-      <section aria-labelledby="selected-table">
-        <h2
-          id="selected-table"
-          tabIndex={-1}
-          className="type-heading focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
-        >
-          Table {selected.table.number}
-        </h2>
-        <p className="mt-6 text-lg leading-relaxed">Your table is set for this visit.</p>
-        <p className="mt-6 text-base leading-relaxed text-muted-foreground">
-          The menu isn&apos;t open here yet. Please ask the team for food or drinks.
-        </p>
-        <Link
-          href="/order?change=1"
-          className="mt-8 inline-flex min-h-11 items-center py-2 text-base text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
-        >
-          Change table
-        </Link>
-      </section>
+      <>
+        <section aria-labelledby="selected-table">
+          <h2
+            id="selected-table"
+            tabIndex={-1}
+            className="type-heading focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+          >
+            Table {selected.table.number}
+          </h2>
+          <p className="mt-6 text-lg leading-relaxed">Your table is set for this visit.</p>
+          <Link
+            href="/order?change=1"
+            className="mt-8 inline-flex min-h-11 items-center py-2 text-base text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+          >
+            Change table
+          </Link>
+        </section>
+        <OrderMenu menu={await loadMenu(listMenuItems)} />
+      </>
     );
   const value =
     error.success && typeof query.table === "string"
