@@ -2,7 +2,7 @@
 id: TICKET-045
 title: Let guests save their pass as an image
 epic: invitations
-status: in_review
+status: in_progress
 priority: urgent
 estimate: M
 labels: [frontend, backend]
@@ -14,7 +14,7 @@ blocks: [TICKET-131, TICKET-138, TICKET-158, TICKET-176]
 branch: TICKET-045
 pr: https://github.com/UncleChenna/wedding-app/pull/79
 created: 2026-10-21
-updated: 2026-11-02
+updated: 2026-11-03
 started: 2026-11-02
 completed: ""
 reason: ""
@@ -68,3 +68,4 @@ Implementation uses only local font outlines so private names never reach Next I
 - 2026-11-02 — todo → claimed — divine (codex)
 - 2026-11-02 — todo → in_progress — divine (codex)
 - 2026-11-02 — in_progress → in_review — divine (codex)
+- 2026-11-03 — in_review → in_progress — divine (codex) — Integrate approved PR with merged RSVP party and offline pass features
