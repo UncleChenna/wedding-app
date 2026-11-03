@@ -42,8 +42,15 @@ test.describe("printable invitation", () => {
       }
     }
   });
-  test("downloads a private PDF and keeps the link usable in every theme", async ({ page }) => {
+  test("downloads a private PDF and keeps the link usable in every theme", async ({
+    page,
+    context,
+  }) => {
     await page.goto("/i/" + token);
+    await expect(page.getByRole("button", { name: "Save image", exact: true })).toBeVisible();
+    await expect(page.getByRole("status").filter({ hasText: "Saved for offline" })).toBeVisible({
+      timeout: 20000,
+    });
     for (const theme of themes) {
       await page.emulateMedia({ colorScheme: theme.colorScheme, reducedMotion: "reduce" });
       await applyTheme(page, theme);
@@ -78,6 +85,18 @@ test.describe("printable invitation", () => {
       const pdf = (await response.body()).toString("latin1");
       expect(pdf).toContain(scheme === "light" ? "ivory-gold" : "midnight-champagne");
       expect(pdf).not.toContain(token);
+    }
+    const imageDownload = page.waitForEvent("download");
+    await page.getByRole("button", { name: "Save image", exact: true }).click();
+    expect((await imageDownload).suggestedFilename()).toBe("entry-pass.png");
+    await context.setOffline(true);
+    try {
+      await page.reload();
+      await expect(page.getByRole("heading", { name: "Ada Example" })).toBeVisible();
+      await expect(page.getByText("This is your offline copy.", { exact: false })).toBeVisible();
+      await expect(page.getByRole("img")).toBeVisible();
+    } finally {
+      await context.setOffline(false);
     }
     await db`update invitations set status='rsvp_no' where id=${id}`;
     expect((await page.request.get("/i/" + token + "/invitation.pdf")).status()).toBe(404);

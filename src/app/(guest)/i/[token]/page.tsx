@@ -1,3 +1,4 @@
+import { readParty } from "@/modules/invitations/server/party";
 import { cacheLife } from "next/cache";
 import { getPublicEventDetails } from "@/modules/invitations/server/public-event-details";
 import { clientEnv } from "@/modules/shared/lib/env/client";
@@ -48,12 +49,17 @@ async function Invitation({ params }: { params: Promise<{ token: string }> }) {
       details={settings}
       token={token}
       repliesOpen={settings.timeZone !== null}
+      party={
+        invitation.attendance === "yes" ? ((await readParty(db, token)) ?? undefined) : undefined
+      }
       pass={
         issued?.state === "ready" ? (
           <QrPass
             url={issued.url}
             pass={issued.pass}
             pdfUrl={`/i/${encodeURIComponent(token)}/invitation.pdf`}
+            imageHref={`/i/${token}/pass.png`}
+            saveOffline
           />
         ) : undefined
       }

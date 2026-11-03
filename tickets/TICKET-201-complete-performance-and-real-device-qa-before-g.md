@@ -42,6 +42,8 @@ Claiming untested checks pass, weakening thresholds, changing TICKET-015's pause
 
 ## Acceptance criteria
 
+- [ ] TICKET-107: on physical iOS and Android, including WhatsApp and installed standalone mode, open an accepted invitation once, confirm the saved hint, disable connectivity and reopen the original link. Decode the saved QR, verify guest-link isolation, last-refresh warning, reconnect revocation/decline cleanup and storage-eviction behavior. Record device/OS/app/build versions and results. TICKET-184 expiry/logout checks remain mandatory; desktop emulation does not certify these requirements. Both releases remain blocked by unresolved results.
+
 - [ ] TICKET-044: on physical iOS and Android, scan the issued signed QR from both screens and printed copies in normal light, low light and glare. Record device/OS/camera/browser/build, realistic payload length and actual results. Verify WhatsApp first/return visits, keyboard/safe areas, and that the scanned read-only pass cannot edit an RSVP. This remains mandatory before either guest release; automated decoding and desktop emulation do not certify it.
 
 - [ ] TICKET-110: on physical iPhone/iPad browsers, including WhatsApp, verify the guide explains opening in Safari, complete Share → Add to Home Screen with actual OS menus, and confirm the installed standalone app hides guidance. Record device/OS/WhatsApp/browser/build and screenshots, keyboard/safe-area behavior and any defects. Browser UA fixtures do not certify this. Retain TICKET-114's full installation suite; unresolved results block both guest releases.
@@ -59,6 +61,8 @@ Claiming untested checks pass, weakening thresholds, changing TICKET-015's pause
 - [ ] Actual iOS and Android WhatsApp navigation, forms, keyboards and primary actions pass; device/app versions and dates are recorded.
 - [ ] Shared links display the correct 1200x630 preview without invitation secrets or guest details.
 - [ ] Each affected UI review is updated with actual evidence; unresolved checks prevent guest release, while labelled preview work may continue.
+
+- [ ] TICKET-045: Download works on iOS Safari and Android Chrome (manual, recorded). Also test WhatsApp in-app save/open-image/hold-to-save and file sharing, cancellation, dark/light appearance, long and non-Latin names, and physical camera decoding of the saved PNG. Record device/OS/browser/WhatsApp/build and results. Missing local-font glyphs must never leak names to remote services; verify fallback advice. Unverified or failed results continue to block both guest releases.
 
 ## Test plan
 

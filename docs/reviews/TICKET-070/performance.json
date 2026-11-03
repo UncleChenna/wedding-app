@@ -1,0 +1,25 @@
+{
+  "route": "/order",
+  "date": "2026-11-03",
+  "base": "be0d656343ad3d31af0f904c3a8763c6f94dc598",
+  "runs": [
+    {
+      "run": 1,
+      "performance": 100,
+      "accessibility": 100,
+      "cls": 0
+    },
+    {
+      "run": 2,
+      "performance": 100,
+      "accessibility": 100,
+      "cls": 0
+    },
+    {
+      "run": 3,
+      "performance": 100,
+      "accessibility": 100,
+      "cls": 0
+    }
+  ]
+}

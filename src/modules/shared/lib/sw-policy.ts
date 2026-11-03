@@ -1,5 +1,7 @@
 /**
- * Service-worker caching policy (ADR 0014, docs/pwa.md). An explicit allowlist:
+ * Default service-worker policy (ADR 0014, docs/pwa.md). Authorized own-pass
+ * snapshots/navigation are handled separately by invitations/lib/offline-worker.
+ * This default policy is an explicit allowlist:
  * only content-hashed, immutable Next.js build assets are cached. Pages, invitation
  * and pass URLs, admin, APIs, RSC/prefetch requests and mutations always go to the
  * network so no personal or authenticated response is ever stored.
