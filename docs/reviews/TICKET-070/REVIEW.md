@@ -41,3 +41,7 @@ The canonical dev screenshot command reported existing cached metadata URL seria
 A session cookie is a browser convenience, not table authorization. Future order creation must revalidate the table and menu. Browsers with session restoration may retain session cookies across restarts; this is not a security credential. A deleted table prompts reselection. Invalid URL error codes are ignored; accepted codes map to fixed copy only.
 
 Release readiness is not approved: physical device/WhatsApp checks stay open in TICKET-201. Functional review can proceed under the user's standing preview exception with all automated gates and performance measurements passing.
+
+## Verdict
+
+CHANGES REQUESTED for production release: physical iOS/Android and WhatsApp checks remain unverified and mandatory in TICKET-201. Automated feature checks pass; the preview is submitted for review under the user's standing exception. PR: https://github.com/UncleChenna/wedding-app/pull/80.

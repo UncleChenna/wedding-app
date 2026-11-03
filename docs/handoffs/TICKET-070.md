@@ -2,7 +2,7 @@
 
 2026-11-03; owner divine; agent codex; branch `TICKET-070`; worktree `.worktrees/TICKET-070`.
 
-Base develop: `be0d656343ad3d31af0f904c3a8763c6f94dc598`. Implementation commit: `7d5a249`, pushed. PR publication pending final evidence commit and `pnpm t:pr TICKET-070`.
+Base develop: `be0d656343ad3d31af0f904c3a8763c6f94dc598`. Implementation commit: `7d5a249`, pushed. PR: https://github.com/UncleChenna/wedding-app/pull/80, open and mergeable; CLI moved the ticket to `in_review`. Evidence commit `4a1b007`; review-status commit `5de0add`.
 
 ## Result
 
@@ -26,6 +26,6 @@ The cookie is convenience only; future order creation must validate table/menu s
 
 ## Remaining work and exact next action
 
-Commit the final evidence and run `AGENT_OWNER=divine VITEST_MAX_WORKERS=2 pnpm t:pr TICKET-070`. Recheck CI, leave in_review for human merge. The latest user merge exception covered only PRs48/68/74/75 (already merged), not this ticket. Physical iOS/Android keyboard/safe-area/WhatsApp checks remain NOT VERIFIED in release-blocking TICKET-201 under the standing preview exception. Do not certify release readiness.
+`AGENT_OWNER=divine VITEST_MAX_WORKERS=2 pnpm t:pr TICKET-070` passed its repeated full gate, pushed, opened PR80 and moved to in_review. Recheck GitHub CI on the final head; checks were starting at publication. Leave in_review for human merge. The latest user merge exception covered only PRs48/68/74/75 (already merged), not this ticket. Physical iOS/Android keyboard/safe-area/WhatsApp checks remain NOT VERIFIED in release-blocking TICKET-201 under the standing preview exception. Do not certify release readiness.
 
-The isolated stack is `wedding-b5d3dc8957e0`; app30950, browser30951. Stop only this owned stack with backup preservation after verification. Do not alter TICKET-046's pending lockfile or other worktrees. Process-scoped caffeinate prevents sleep during verification; no persistent power settings changed.
+The isolated stack is `wedding-b5d3dc8957e0`; app30950, browser30951. Verification is complete; stop only this owned stack with backup preservation. Do not alter TICKET-046's pending lockfile or other worktrees. Process-scoped caffeinate prevents sleep during verification; no persistent power settings changed.
