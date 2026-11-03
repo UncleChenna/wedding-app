@@ -2,7 +2,7 @@
 id: TICKET-031
 title: Add staff PIN sign-in with hashed, expiring PINs
 epic: data-auth
-status: in_progress
+status: blocked
 priority: urgent
 estimate: M
 labels: [security, backend]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-11-03
 started: 2026-11-03
 completed: ""
-reason: ""
-resume_to: ""
+reason: "Automated verification passes; awaiting physical staff-device review evidence or user-approved deferral before advancing draft PR84."
+resume_to: in_progress
 ---
 
 # TICKET-031: Add staff PIN sign-in with hashed, expiring PINs
@@ -65,3 +65,4 @@ See: [Users and roles](../docs/prd.md#users-and-roles) · [Security](../docs/prd
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-03 — todo → claimed — divine (codex)
 - 2026-11-03 — todo → in_progress — divine (codex)
+- 2026-11-03 — in_progress → blocked — divine (codex) — Automated verification passes; awaiting physical staff-device review evidence or user-approved deferral before advancing draft PR84.
