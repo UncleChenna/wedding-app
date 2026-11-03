@@ -57,6 +57,7 @@ async function Invitation({ params }: { params: Promise<{ token: string }> }) {
           <QrPass
             url={issued.url}
             pass={issued.pass}
+            pdfUrl={`/i/${encodeURIComponent(token)}/invitation.pdf`}
             imageHref={`/i/${token}/pass.png`}
             saveOffline
           />

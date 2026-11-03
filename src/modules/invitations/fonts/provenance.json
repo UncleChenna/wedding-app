@@ -1,0 +1,42 @@
+{
+  "generator": "fonttools 4.60.1 varLib.instancer",
+  "fonts": [
+    {
+      "name": "cormorant",
+      "source_url": "https://raw.githubusercontent.com/google/fonts/6c1dbe27dcf7d817d4b62cec033ba77fa8e2a5ec/ofl/cormorantgaramond/CormorantGaramond%5Bwght%5D.ttf",
+      "source_sha256": "b20b7d9626dd956b2c5e558692ad328b1f19e3275e2782db4fa07670d83f35e0",
+      "axes": {
+        "wght": 400
+      },
+      "sha256": "f843ba4146ba1d1a6b32ad25811eaf5d985638d4eab0f7ac54a3f627dc1ab2cd"
+    },
+    {
+      "name": "inter",
+      "source_url": "https://raw.githubusercontent.com/google/fonts/6c1dbe27dcf7d817d4b62cec033ba77fa8e2a5ec/ofl/inter/Inter%5Bopsz%2Cwght%5D.ttf",
+      "source_sha256": "29160a80ff49ddcab2c97711247e08b1fab27a484a329ce8b813d820dc559031",
+      "axes": {
+        "opsz": 14,
+        "wght": 400
+      },
+      "sha256": "edaee9fbfce133487fa99c25b9a5fa3e3fc9d0973ba13a1dc3d6c7bac5e13908"
+    },
+    {
+      "name": "jost",
+      "source_url": "https://raw.githubusercontent.com/google/fonts/6c1dbe27dcf7d817d4b62cec033ba77fa8e2a5ec/ofl/jost/Jost%5Bwght%5D.ttf",
+      "source_sha256": "6343b70971000b04c5d401c96ae08ce371086135e999d5e1e1413039c0213076",
+      "axes": {
+        "wght": 400
+      },
+      "sha256": "733fbc0def5e83ad773f7565446ea32d9586ac6b55ef4fd879c72c6b2d1e3338"
+    },
+    {
+      "name": "playfair",
+      "source_url": "https://raw.githubusercontent.com/google/fonts/6c1dbe27dcf7d817d4b62cec033ba77fa8e2a5ec/ofl/playfairdisplay/PlayfairDisplay%5Bwght%5D.ttf",
+      "source_sha256": "c40f2293766a503bc70cce9e512ef844a4ccb7cbcde792fe2ea31d191917d8d6",
+      "axes": {
+        "wght": 400
+      },
+      "sha256": "68f648bc37bf64f2f5a77365eb29fdee0f35ee33eb8c443522ba26eec125cac1"
+    }
+  ]
+}

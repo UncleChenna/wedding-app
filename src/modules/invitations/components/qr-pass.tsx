@@ -7,11 +7,13 @@ export function QrPass({
   url,
   pass,
   imageHref,
+  pdfUrl,
   saveOffline = false,
 }: {
   url: string;
   pass: PassView;
   imageHref?: string;
+  pdfUrl?: string;
   saveOffline?: boolean;
 }) {
   const name = pass.names.join(" & ") || pass.householdName || "Our dear guest";
@@ -44,6 +46,24 @@ export function QrPass({
       >
         Open your pass
       </a>
+      {pdfUrl ? (
+        <div>
+          <a
+            href={pdfUrl + "?scheme=light"}
+            referrerPolicy="no-referrer"
+            className="inline-flex min-h-11 min-w-11 items-center py-2 text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring dark:hidden"
+          >
+            Download invitation PDF
+          </a>
+          <a
+            href={pdfUrl + "?scheme=dark"}
+            referrerPolicy="no-referrer"
+            className="hidden min-h-11 min-w-11 items-center py-2 text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring dark:inline-flex"
+          >
+            Download invitation PDF
+          </a>
+        </div>
+      ) : null}
       {imageHref && <SavePassImage href={imageHref} />}
       {saveOffline ? <OfflinePassSave /> : null}
     </div>

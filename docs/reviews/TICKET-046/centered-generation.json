@@ -1,0 +1,42 @@
+[
+  {
+    "name": "ivory-gold",
+    "milliseconds": 142.614959,
+    "bytes": 30597
+  },
+  {
+    "name": "ivory-gold-long",
+    "milliseconds": 34.785833000000025,
+    "bytes": 31693
+  },
+  {
+    "name": "midnight-champagne",
+    "milliseconds": 32.97791599999994,
+    "bytes": 28972
+  },
+  {
+    "name": "midnight-champagne-long",
+    "milliseconds": 15.549125000000004,
+    "bytes": 30055
+  },
+  {
+    "name": "emerald-night",
+    "milliseconds": 15.95408400000008,
+    "bytes": 30498
+  },
+  {
+    "name": "emerald-night-long",
+    "milliseconds": 18.50141599999995,
+    "bytes": 31571
+  },
+  {
+    "name": "blush-sage",
+    "milliseconds": 11.214000000000055,
+    "bytes": 29080
+  },
+  {
+    "name": "blush-sage-long",
+    "milliseconds": 12.726583000000005,
+    "bytes": 30184
+  }
+]
