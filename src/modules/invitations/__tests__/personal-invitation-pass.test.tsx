@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { render, screen } from "@testing-library/react";
 import { expect, it, vi } from "vitest";
+vi.mock("../server/party-actions", () => ({ updateParty: vi.fn() }));
 import { defaultEventSettings } from "@/modules/shared/lib/event-settings";
 import { PersonalInvitation } from "../components/personal-invitation";
 vi.mock("../server/rsvp-actions", () => ({ respondToInvitation: vi.fn() }));
