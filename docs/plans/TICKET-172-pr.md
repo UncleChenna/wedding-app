@@ -1,24 +1,37 @@
-# TICKET-172: staff identities and device registrations
+# Ticket
 
-Prepare staff credential lifecycle fields and stable registered-device identities for staff sign-in and admin provisioning. **Draft: one real database test fails; do not merge.**
+Ticket: TICKET-172
 
-## Changes
+# Summary
 
-Integrated develop 0e6247c630c4d8962eb01b3c8bc2ef0817268e47, retaining ordering and staff/device seed contracts. Generated approved 0009 through Drizzle: nullable staff email, unprovisioned PIN fields, credential version/revocation and device registry with RLS and no browser policies. No usable default PINs.
+Staff authentication and admin provisioning need persistent credential lifecycle fields and stable device identities. This change adds unprovisioned staff PIN fields, revocation/version tracking, nullable staff email and a registered-device table while retaining existing staff and scan data.
 
-## Verification and acceptance evidence
+# Changes
 
-- Eleven seed tests pass.
-- Quick gate passes lint, types and 670 related tests; 49 conditional tests skipped.
-- Five real database constraint tests fail before migration as expected. After migration, six of seven tests pass; this is not a green database gate.
-- Empty/bootstrap preservation tests pass, retaining staff email/Auth links, invitation and historical scan values.
-- Two migration runs retain identical row counts and ten applied migration records. RLS passes all 14 public tables.
-- Valid encoded PIN test fails because PostgreSQL rejects regex repetition `{64,256}`. Proposed correction uses byte pairs `([0-9a-f]{2}){32,128}`. Applied 0009 stays unchanged; generated 0010 requires pending exact-path approval.
+- Generate migration 0009 and corrective 0010 through Drizzle under explicit user authorization. Preserve applied 0009; 0010 corrects a PostgreSQL regex repetition bound discovered by real database testing.
+- Enforce complete encoded credentials, expiry after issuance, positive credential versions and no admin PINs. Device IDs, names, roles and registering-staff references are constrained. RLS is enabled without browser access policies.
+- Seed four unprovisioned staff and three deterministic devices; preserve current ordering fixtures.
+- Add empty/bootstrap migration preservation tests. Integrated develop 0e6247c630c4d8962eb01b3c8bc2ef0817268e47.
 
-## Remaining work
+# Acceptance criteria and evidence
 
-Generate authorized corrective 0010, rerun real database constraints, repeat migration/seed counts, run invitation regressions and full pnpm verify. Acceptance criteria remain incomplete. No UI changes; device and performance release gates remain in their existing tickets.
+All ticket criteria verified: seven staff/device database tests cover constraints, empty/bootstrap preservation, unchanged Auth links/emails/invitations/scans and RLS; eleven seed unit tests cover deterministic data with no raw/default PINs.
 
-## Review and risks
+# Verification
 
-See docs/reviews/TICKET-172/migration-approval.md and docs/handoffs/TICKET-172.md. Isolated local application only; no production authorization. Hash-envelope constraints do not implement authentication: TICKET-031 owns safe hashing and role/session enforcement; TICKET-096 owns admin provisioning. TICKET-024 owns legacy scan backfill. Roll back application code while retaining additive schema; no destructive down migration.
+- All 61 opt-in database tests pass, run individually with synthetic fixture cleanup between suites. Combined-suite attempts exposed pre-existing fixture coupling (singleton settings and seeded menu choices); failed logs retained and no assertions changed.
+- Two migration runs have identical counts and eleven applied migrations. Two seed runs match exactly. A clean disposable database rebuild applies the full migration chain and reproduces those seed counts.
+- RLS passes all fourteen public tables. Corrected quick gate passes lint/types/related tests.
+- Full pnpm t:pr verification pending; this remains draft until that gate passes. Evidence: artifacts/TICKET-172/, docs/handoffs/TICKET-172.md, docs/reviews/TICKET-172/migration-approval.md.
+
+# Risks and rollout
+
+Only isolated local testing is authorized; no production migration has been performed. Deploy 0009 and 0010 together. Existing staff remain unprovisioned; format checks do not implement authentication. TICKET-031 owns hashing, sessions and authorization; TICKET-096 owns admin account/role provisioning; TICKET-024 owns legacy scan/device backfill. Roll back application code while retaining additive schema; no destructive down migration.
+
+# Screenshots / UI checklist
+
+N/A: no UI output changes. Existing device/performance release gates remain mandatory.
+
+# Harness changes
+
+None. Database test isolation limitation is disclosed above.

@@ -68,3 +68,7 @@ Authorize recording these exact paths in `.worktrees/TICKET-172/.harness/approve
 0009 was authorized, generated and applied to this ticket's isolated database. The real-Postgres valid-hash test exposed an invalid repetition bound in the constraint: `{64,256}`. Proposed schema replacement: `([0-9a-f]{2}){32,128}`. This represents 32–128 digest bytes and fits PostgreSQL repetition bounds. No applied SQL will be edited.
 
 Requested exact outputs: `drizzle/0010_staff-pin-envelope-fix.sql`, `drizzle/meta/0010_snapshot.json`, `drizzle/meta/_journal.json`, generated through Drizzle after correcting `src/modules/shared/server/db/schema.ts`. Record approved paths in `.worktrees/TICKET-172/.harness/approved-writes.json`. Isolated testing and commit only. Automatic approval review rejected execution pending this explicit extension; no correction has been executed yet.
+
+## Corrective approval received
+
+User approved the schema correction, exact 0010 outputs and authorization record. 0010 was generated through Drizzle and applied only to the isolated ticket database. Seven staff/device database tests pass; original 0009 stays unchanged. Reapplication keeps eleven migration records and identical counts. RLS passes all fourteen public tables.

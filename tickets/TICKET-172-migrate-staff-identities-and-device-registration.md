@@ -37,9 +37,9 @@ Backlog audit coverage: CHK-5, ADM-4. See [PRD](../docs/prd.md) and [audit](AUDI
 
 ## Acceptance criteria
 
-- [ ] Migrate staff roles, hashed PIN credentials, expiry and revocation, and registered devices with stable identifiers.
-- [ ] Store no raw PIN in staff rows, scan logs or seeds; devices and staff can be referenced by check-in events.
-- [ ] Migration and seed work on empty and existing bootstrap databases; role/expiry constraints reject invalid rows.
+- [x] Migrate staff roles, hashed PIN credentials, expiry and revocation, and registered devices with stable identifiers.
+- [x] Store no raw PIN in staff rows, scan logs or seeds; devices and staff can be referenced by check-in events.
+- [x] Migration and seed work on empty and existing bootstrap databases; role/expiry constraints reject invalid rows.
 
 ## Test plan
 
@@ -51,6 +51,8 @@ Backlog audit coverage: CHK-5, ADM-4. See [PRD](../docs/prd.md) and [audit](AUDI
 - src/modules/shared/server/db/; drizzle/; scripts/seed.ts
 
 ## Notes / decisions
+
+- 2026-11-03 — Authorized generated 0009 plus corrective 0010 preserve existing bootstrap data; all 61 database tests pass with per-suite synthetic fixture isolation. Repeated migrations and seeds match counts; clean database rebuild matches seeded counts; all 14 public tables retain RLS. Full review gate pending.
 
 - 2026-10-21 — Added by HARNESS-002. All criteria describe future work; no completion or human approval is implied.
 

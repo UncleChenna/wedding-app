@@ -40,6 +40,7 @@ describe.runIf(process.env.RUN_STAFF_DB_TESTS === "1")("staff migration preserva
   it("migrates an empty bootstrap without provisioning credentials or devices", async () => {
     await sandbox(async (tx, schema) => {
       await apply(tx, schema, migration);
+      await apply(tx, schema, "drizzle/0010_staff-pin-envelope-fix.sql");
       expect(await tx`select id from staff`).toHaveLength(0);
       expect(await tx`select id from registered_devices`).toHaveLength(0);
       const [rls] =
@@ -60,6 +61,7 @@ describe.runIf(process.env.RUN_STAFF_DB_TESTS === "1")("staff migration preserva
       const invitationsBefore = await tx`select to_jsonb(i) as row from invitations i`;
       const scansBefore = await tx`select to_jsonb(c) as row from check_ins c`;
       await apply(tx, schema, migration);
+      await apply(tx, schema, "drizzle/0010_staff-pin-envelope-fix.sql");
       expect(
         await tx`select to_jsonb(s)-'pin_hash'-'pin_issued_at'-'pin_expires_at'-'credential_version'-'revoked_at' as row from staff s`,
       ).toEqual(staffBefore);

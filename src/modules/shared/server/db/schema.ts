@@ -103,7 +103,7 @@ export const staff = pgTable(
       or
       (${t.pinHash} is not null and ${t.pinIssuedAt} is not null and ${t.pinExpiresAt} is not null
        and ${t.pinExpiresAt} > ${t.pinIssuedAt} and ${t.role} <> 'admin'
-       and ${t.pinHash} ~ '^scrypt[$][1-9][0-9]{0,6}[$][1-9][0-9]{0,3}[$][1-9][0-9]{0,3}[$][0-9a-f]{32,128}[$][0-9a-f]{64,256}$')
+       and ${t.pinHash} ~ '^scrypt[$][1-9][0-9]{0,6}[$][1-9][0-9]{0,3}[$][1-9][0-9]{0,3}[$][0-9a-f]{32,128}[$]([0-9a-f]{2}){32,128}$')
     `,
     ),
   ],

@@ -33,3 +33,13 @@ Generated and applied 0009 through Drizzle. Eleven seed tests pass. Five constra
 Proposed correction in schema.ts replaces digest [0-9a-f]{64,256} with ([0-9a-f]{2}){32,128}. Preserve applied 0009; generate 0010_staff-pin-envelope-fix.sql and 0010_snapshot.json, updating journal through Drizzle. Automatic approval review rejected the attempted correction/authorization because previous approval explicitly covered 0009 only; command did not execute. Pending user approval covers the schema correction, exact 0010 outputs, journal and authorization record. Full verify and seed repeatability remain outstanding. Do not claim migration completion.
 
 User audit reports PR81 and PR82 merged; reconcile TICKET042 via CLI after this task. Historical TICKET186/187 closure still needs ancestry verification. Real-device/performance release gates remain.
+
+## Corrective authorization and results — 2026-11-03
+
+User explicitly approved corrective schema edit and exact 0010 SQL/snapshot/journal paths and authorization record. Recorded authorization, generated 0010 through Drizzle and applied locally; applied 0009 remains unchanged. All seven staff/device PostgreSQL tests now pass. Two corrective migration runs have identical row counts and eleven migration records. All 14 public tables retain RLS. Two seed runs produce identical counts (110 invitations, 248 guests, 4 unprovisioned staff, 3 devices, 18 orders, 28 station orders).
+
+Broad opt-in database run exposed fixture preconditions, not a staff migration defect: seeded menu/settings affect RSVP/settings expectations; suites also leave singleton settings between files. Run suites individually with synthetic fixture cleanup between files; retain failed combined logs. No assertions changed. Full verification remains outstanding. TICKET042 was closed through CLI after PR81 merge. TICKET186/187 closure was refused by CLI because historical PR commits are not in verified develop history; do not bypass.
+
+## Database gate complete — 2026-11-03
+
+All 61 opt-in PostgreSQL tests pass when run individually with synthetic-fixture cleanup between suites. Combined-suite failures are preserved in artifacts/TICKET-172/database-regressions*.log; tests/assertions were not weakened. Clean db:reset of this ticket's disposable synthetic database successfully applied all eleven migrations and seeded the exact same counts as both earlier seed runs; all 14 tables pass RLS. Corrected quick gate passes. Full t:pr gate remains next.
