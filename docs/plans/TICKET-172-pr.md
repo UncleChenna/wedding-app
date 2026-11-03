@@ -20,7 +20,7 @@ Quick lint/types/related-test gate passes. Opt-in DB tests are not counted as pa
 
 # Risks and rollout
 
-[Exact migration approval proposal](https://github.com/UncleChenna/wedding-app/blob/TICKET-172/docs/reviews/TICKET-172/migration-approval.md). No production deployment/data deletion authorized. Hash format validation is not hashing/authentication; TICKET-031 handles strength, comparison, expiry and sessions. TICKET-024 owns legacy scan/device backfill and FK conversion. TICKET-025's pending migration numbering must be reconciled by regeneration, not manually editing snapshots. Rollback app code while keeping additive schema; destructive down migration requires separate authorization.
+[Exact migration approval proposal](https://github.com/UncleChenna/wedding-app/blob/TICKET-172/docs/reviews/TICKET-172/migration-approval.md). No production deployment/data deletion authorized. Hash format validation is not hashing/authentication; TICKET-031 handles strength, comparison, expiry and sessions. TICKET-024 owns legacy scan/device backfill and FK conversion. The 2026-11-03 proposal supersedes obsolete 0002 paths: develop now ends at 0008. It lists proposed 0009 outputs and 17 unchanged protected files to carry from develop. A read-only merge preview has two seed-file conflicts to resolve after authorization; no source integration or migration has occurred. Rollback app code while keeping additive schema; destructive down migration requires separate authorization.
 
 # Screenshots / UI checklist
 
