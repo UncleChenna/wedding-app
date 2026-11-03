@@ -1,0 +1,50 @@
+[
+  {
+    "name": "ivory-gold",
+    "page": 1,
+    "qrInkCenterOffsetPixels": 0.5,
+    "dpi": 300
+  },
+  {
+    "name": "ivory-gold-long",
+    "page": 2,
+    "qrInkCenterOffsetPixels": 0.5,
+    "dpi": 300
+  },
+  {
+    "name": "midnight-champagne",
+    "page": 1,
+    "qrInkCenterOffsetPixels": 0.5,
+    "dpi": 300
+  },
+  {
+    "name": "midnight-champagne-long",
+    "page": 2,
+    "qrInkCenterOffsetPixels": 0.5,
+    "dpi": 300
+  },
+  {
+    "name": "emerald-night",
+    "page": 1,
+    "qrInkCenterOffsetPixels": 0.5,
+    "dpi": 300
+  },
+  {
+    "name": "emerald-night-long",
+    "page": 2,
+    "qrInkCenterOffsetPixels": 0.5,
+    "dpi": 300
+  },
+  {
+    "name": "blush-sage",
+    "page": 1,
+    "qrInkCenterOffsetPixels": 0.5,
+    "dpi": 300
+  },
+  {
+    "name": "blush-sage-long",
+    "page": 2,
+    "qrInkCenterOffsetPixels": 0.5,
+    "dpi": 300
+  }
+]

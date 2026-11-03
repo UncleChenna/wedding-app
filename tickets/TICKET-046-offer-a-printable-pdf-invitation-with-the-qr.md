@@ -40,9 +40,9 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-5) · [Tec
 
 ## Acceptance criteria
 
-- [ ] The PDF opens in Preview and Chrome; its QR decodes from a 300dpi print scan or rasterisation test.
-- [ ] Colours and fonts follow the active theme (asserted on generated metadata).
-- [ ] Generation takes <2s for one invitation.
+- [x] The PDF opens in Preview and Chrome; its QR decodes from a 300dpi print scan or rasterisation test.
+- [x] Colours and fonts follow the active theme (asserted on generated metadata).
+- [x] Generation takes <2s for one invitation.
 
 ## Test plan
 

@@ -83,11 +83,16 @@ export async function renderInvitationPdf({ details, theme, pass, passUrl }: Inv
           </Text>
           <View wrap={false}>
             <Text style={{ marginTop: 8 }}>{invitationSiteCopy.qrPass}</Text>
-            <Svg width={144} height={144} viewBox={`0 0 ${side} ${side}`} style={{ marginTop: 12 }}>
+            <Svg
+              width={144}
+              height={144}
+              viewBox={`0 0 ${side} ${side}`}
+              style={{ marginTop: 12, alignSelf: "center" }}
+            >
               <Rect x={0} y={0} width={side} height={side} fill={theme.colors["qr-paper"]} />
               <Path d={qrPathData(matrix)} fill={theme.colors["qr-ink"]} />
             </Svg>
-            <Text style={{ marginTop: 8 }}>
+            <Text style={{ marginTop: 8, textAlign: "center" }}>
               Admits {pass.partySize} {pass.partySize === 1 ? "guest" : "guests"} · Table{" "}
               {pass.tableNumber ?? "to follow"}
             </Text>

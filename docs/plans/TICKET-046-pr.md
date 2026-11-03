@@ -4,40 +4,44 @@ Ticket: TICKET-046
 
 # Summary
 
-Accepted guests can download an A5 invitation containing current wedding details and their signed, read-only entry QR. The invitation's private editing credential is excluded from the PDF.
+Accepted guests can download a themed A5 invitation with current event details and their signed read-only entry QR. The private invitation editing credential never enters the PDF. The QR and its caption are centered across the page, as requested during Preview review.
 
 # Changes
 
-- Add a private authorized PDF route; reject invalid, declined and revoked invitations. Use no-store headers, a fixed download filename and generic errors.
-- Render current theme colours and embedded static instances of the four existing font families. Package font files in the server trace; retain licenses and pinned provenance.
-- Add keyboard-accessible light/dark download links to the existing pass component, selected through CSS without new client JavaScript.
-- Add unit/browser tests, repeatable PDF raster review and font-generation tools.
+- Private authorized PDF endpoint with no-store responses, fixed download filename and friendly errors; declined, revoked and invalid invitations cannot download.
+- Embedded static instances of the four approved font families, theme colours and vector QR with four-module quiet zone. Long names paginate while the QR/caption stays together.
+- Keyboard-accessible light/dark PDF links in the existing pass component.
+- Ticket-approved react-pdf dependency and generated lockfile, explicitly authorized by the user on 2026-11-03. No database migration or RLS changes.
+- Unit/browser tests and native 300 dpi sample/raster/decoding helpers; screenshots and review evidence.
 
 # Acceptance criteria and evidence
 
-- A5 PDFs, embedded fonts/theme metadata: focused tests pass across four themes.
-- Signed QR decoding:8/8 normal and long-name samples decode after native300dpi rasterization. Native PDFKit opens the files. Chromium native viewer rendering is visually verified; Preview application UI remains unverified.
-- Generation under2s: all samples pass, including a1.10s cold render during concurrent browser load.
-- Browser download, rejected eligibility, keyboard focus,44px targets, axe accessibility and all12theme/viewport screenshots pass. Screenshots inspected.
+- Native opening: user confirmed macOS Preview displays the sample correctly on 2026-11-03; Chromium native PDF viewer visually verified. PDFKit opens all 8samples. All 8signed QR samples decode after 300 dpi rasterization.
+- Themes/fonts: focused assertions inspect theme/font metadata and embedded fonts across all 4themes. All 12normal/long PDF pages visually reviewed; centered QR ink is within 0.5 raster pixels of page center in all 8signed samples.
+- Speed: every centered sample generates below 2 seconds; measurements in the review artifacts.
 
 # Verification
 
-Ten focused tests pass; production build and quick verification pass and the final production rebuild passes. Independent all-theme browser download test passes7.8s. Final renderer refinement has passing unit/raster checks; final production rebuild and download test pass.
-
-Full verify currently fails three hook tests because pnpm-lock.yaml awaits human exact-path authorization.778units pass/42skip. Broad browser smoke is running and has recorded one existing stepper30s timeout; isolated diagnostic rerun remains outstanding. No test or hook weakened.
+- Frozen lockfile installation passes with the approved generated lockfile.
+- Full `pnpm verify` after authorization passes 781unit tests (42 optional skips), build and 769browser checks (165 optional skips).
+- After the requested centering refinement:10 focused PDF tests, `verify:quick`, production build and real download/privacy/browser matrix pass (7.4 seconds). The publication CLI repeats full verification before moving this PR to review.
+- Previous current-route Lighthouse:99/99/100 Performance,100 Accessibility each,CLS0each; page DOM was not changed by PDF centering.
+- Base develop be0d656343ad3d31af0f904c3a8763c6f94dc598. Integrate later invitation changes sequentially and verify the combined result before merge.
 
 # Risks and rollout
 
-Draft only. Source and evidence are committed, but generated pnpm-lock.yaml is deliberately NOT committed pending exact-path human approval. Frozen installs/CI cannot pass until that file is approved and committed. Do not merge this draft. No database migration. Dependency installation and server font packaging are required. Revert ticket changes to remove PDF endpoint/links. Long names can produce multiple A5 pages; QR remains unsplit. Physical print scans, WhatsApp devices, exact cold CLS and current-route Lighthouse remain unverified, with existing release gates retained.
+Install the approved locked dependencies; deployment tracing includes all four PDF fonts. No migration. Revert this ticket to remove PDF downloads. Very long names create multiple A5 pages, with the code/caption kept intact.
+
+Physical WhatsApp/iOS/Android and printed scans remain NOT VERIFIED in release-blocking TICKET-201 under the user's standing preview exception. The user confirmed Preview manually after macOS denied automation access; no permission bypass was attempted. No production UI readiness claim. This PR is not included in the separate authorization to merge #76/78/79/80.
 
 # Screenshots
 
-See docs/reviews/TICKET-046/{ivory-gold,midnight-champagne,emerald-night,blush-sage}/{375,768,1280}.png and REVIEW.md for per-check results. Synthetic PDF examples and raster results are local under artifacts/TICKET-046.
+[Detailed review](https://github.com/UncleChenna/wedding-app/blob/TICKET-046/docs/reviews/TICKET-046/REVIEW.md). Each theme directory includes375/768/1280download controls and centered `pdf.png`, `pdf-long-1.png`, `pdf-long-2.png`. Local PDFs: artifacts/TICKET-046/<theme>.pdf.
 
 # UI checklist
 
-See docs/reviews/TICKET-046/REVIEW.md. Review remains CHANGES REQUESTED pending incomplete verification. No production UI completion claimed.
+Every item is recorded in the detailed review. Automated layout, typography, contrast, keyboard, copy, QR decoding and performance pass. Physical sharing/devices/print checks remain unverified and release-blocking. Staff feedback is not applicable.
 
-## Latest review evidence
+# Harness changes, if any
 
-Final rebuild and download test pass. Chromium native viewer inspected successfully; Preview GUI remains unverified. Lighthouse99/99/100 performance,100accessibility each,CLS0each. All long PDF pages inspected. Broad smoke768pass/165skip/1stepper timeout; unchanged isolated stepper passes8.7s. Final full-gate rerun remains mandatory after pending lockfile authorization.
+No hooks, rules, tests or guardrails weakened. The ignored exact-path approval records the user's actual authorization; it is not committed.
