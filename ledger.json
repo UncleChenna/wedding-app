@@ -1437,13 +1437,14 @@
         "- 2026-11-02 — todo → claimed — divine (codex)",
         "- 2026-11-02 — todo → in_progress — divine (codex)",
         "- 2026-11-02 — in_progress → blocked — divine (codex) — Awaiting human exact-path authorization for generated pnpm-lock.yaml and permission to record it; implementation and review evidence preserved locally, full gate must be rerun after authorization.",
-        "- 2026-11-03 — blocked → in_progress — divine (codex) — User approved generated pnpm-lock.yaml and exact-path authorization record"
+        "- 2026-11-03 — blocked → in_progress — divine (codex) — User approved generated pnpm-lock.yaml and exact-path authorization record",
+        "- 2026-11-03 — in_progress → in_review — divine (codex)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-046",
-      "pr": "",
+      "pr": "https://github.com/UncleChenna/wedding-app/pull/77",
       "started": "2026-11-02",
       "completed": "",
       "updated": "2026-11-03",
