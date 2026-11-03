@@ -2,7 +2,7 @@
 id: TICKET-046
 title: Offer a printable PDF invitation with the QR
 epic: invitations
-status: in_progress
+status: in_review
 priority: urgent
 estimate: L
 labels: [frontend, backend]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-011, TICKET-044]
 blocks: [TICKET-131, TICKET-158, TICKET-176]
 branch: TICKET-046
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/77
 created: 2026-10-21
 updated: 2026-11-03
 started: 2026-11-02
@@ -65,3 +65,4 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-5) · [Tec
 - 2026-11-02 — todo → in_progress — divine (codex)
 - 2026-11-02 — in_progress → blocked — divine (codex) — Awaiting human exact-path authorization for generated pnpm-lock.yaml and permission to record it; implementation and review evidence preserved locally, full gate must be rerun after authorization.
 - 2026-11-03 — blocked → in_progress — divine (codex) — User approved generated pnpm-lock.yaml and exact-path authorization record
+- 2026-11-03 — in_progress → in_review — divine (codex)
