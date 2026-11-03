@@ -1,4 +1,7 @@
 import "server-only";
+import { rsvpWindow } from "../lib/rsvp-window";
+import { invitationSiteCopy } from "../lib/copy";
+import { readRsvpSnapshot, recordRsvpChange } from "./rsvp-history";
 import { and, asc, eq, inArray } from "drizzle-orm";
 import type { Db } from "@/modules/shared/server/db/client";
 import { guests, invitations, menuItems, rsvps } from "@/modules/shared/server/db/schema";
@@ -49,6 +52,7 @@ export async function saveParty(
   database: Pick<Db, "transaction">,
   token: unknown,
   input: unknown,
+  clock: () => Date = () => new Date(),
 ): Promise<PartyState> {
   const parsed = invitationTokenSchema.safeParse(token);
   if (!parsed.success)
@@ -77,7 +81,10 @@ export async function saveParty(
         message: "Please let us know you’re coming before saving your guests.",
       };
     const settings = await getEventSettings(tx);
-    if (!settings.timeZone)
+    const now = clock();
+    const window = rsvpWindow(settings, now);
+    if (window === "locked") return { status: "locked", message: invitationSiteCopy.editsLocked };
+    if (window === "not-open")
       return { status: "error", message: "Replies aren’t open just yet. Please check back soon." };
     const details = await readParty(tx, parsed.data);
     if (!details)
@@ -87,6 +94,7 @@ export async function saveParty(
       };
     const result = validateParty(input, details.people, invitation.maxTagAlongs, details.meals);
     if (!result.ok) return { status: "error", message: result.message };
+    const before = await readRsvpSnapshot(tx, invitation.id);
     const keep = new Set(result.people.map((person) => person.id));
     const removed = details.people
       .filter((person) => !person.isPrimary && !keep.has(person.id))
@@ -101,7 +109,6 @@ export async function saveParty(
             inArray(guests.id, removed),
           ),
         );
-    const now = new Date();
     for (const person of result.people) {
       const values = {
         name: person.name,
@@ -135,6 +142,7 @@ export async function saveParty(
         },
       });
     await tx.update(invitations).set({ updatedAt: now }).where(eq(invitations.id, invitation.id));
+    await recordRsvpChange(tx, invitation.id, before, now);
     return {
       status: "saved",
       message: "Your guest details are saved. We’re looking forward to seeing you.",

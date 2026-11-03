@@ -65,7 +65,7 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-6) · [On 
 
 - 2026-10-26: Owner approved event-local midnight on 2026-12-19; exact UTC rsvp_lock_at remains unset until venue time zone is configured. See docs/prd.md#approved-event-defaults.
 
-_Agents append dated notes here while working._
+2026-11-03 — Implemented locked mutations, atomic history and locked-page/pass behavior. Boundary/database/browser regressions pass; all-theme screenshots reviewed. Full verification and latest-develop integration remain pending. No production time zone inferred.
 
 ## Activity log
 

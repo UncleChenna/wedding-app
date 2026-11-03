@@ -1,3 +1,4 @@
+import { retireInvitationFixtures } from "./support/invitation-fixtures";
 import { randomBytes } from "node:crypto";
 import { mkdirSync, readFileSync } from "node:fs";
 import AxeBuilder from "@axe-core/playwright";
@@ -28,7 +29,7 @@ test.describe("saved RSVP visual review", () => {
   test.afterAll(async () => {
     if (db) {
       await db`update event_settings set time_zone='Etc/UTC' where id=1 and venue='RSVP browser test only'`;
-      if (ids.length) await db`delete from invitations where id in ${db(ids)}`;
+      await retireInvitationFixtures(db, ids);
       await db.end();
     }
   });

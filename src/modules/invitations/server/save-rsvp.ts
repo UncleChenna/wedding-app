@@ -1,4 +1,6 @@
 import "server-only";
+import { rsvpWindow } from "../lib/rsvp-window";
+import { readRsvpSnapshot, recordRsvpChange } from "./rsvp-history";
 import { and, count, eq, inArray } from "drizzle-orm";
 import type { Db } from "@/modules/shared/server/db/client";
 import { guests, invitations, rsvps } from "@/modules/shared/server/db/schema";
@@ -11,6 +13,7 @@ export async function saveRsvp(
   database: Pick<Db, "transaction">,
   token: string,
   attending: boolean,
+  clock: () => Date = () => new Date(),
 ): Promise<SaveRsvpResult> {
   const parsed = invitationTokenSchema.safeParse(token);
   if (!parsed.success) return "unavailable";
@@ -27,14 +30,15 @@ export async function saveRsvp(
       .for("update");
     if (!invitation) return "unavailable";
     const settings = await getEventSettings(tx);
-    // Approved venue details are still TBD. Never substitute a development time zone.
-    if (!settings.timeZone) return "not-open";
+    const now = clock();
+    const window = rsvpWindow(settings, now);
+    if (window !== "open") return window;
+    const before = await readRsvpSnapshot(tx, invitation.id);
     const [party] = await tx
       .select({ count: count() })
       .from(guests)
       .where(eq(guests.invitationId, invitation.id));
     const countAttending = attending ? Math.max(1, party?.count ?? 0) : 0;
-    const now = new Date();
     await tx
       .insert(rsvps)
       .values({ invitationId: invitation.id, attending, countAttending, respondedAt: now })
@@ -46,6 +50,7 @@ export async function saveRsvp(
       .update(invitations)
       .set({ status: attending ? "rsvp_yes" : "rsvp_no", updatedAt: now })
       .where(eq(invitations.id, invitation.id));
+    await recordRsvpChange(tx, invitation.id, before, now);
     return "saved";
   });
 }

@@ -1,3 +1,4 @@
+import { retireInvitationFixtures } from "./support/invitation-fixtures";
 import { randomBytes } from "node:crypto";
 import { readFileSync } from "node:fs";
 import postgres, { type Sql } from "postgres";
@@ -27,7 +28,7 @@ test.describe("personal RSVP", () => {
   });
   test.afterAll(async () => {
     if (db) {
-      if (ids.length) await db`delete from invitations where id in ${db(ids)}`;
+      await retireInvitationFixtures(db, ids);
       await db.end();
     }
   });

@@ -4,7 +4,7 @@ import { invitationTokenSchema } from "../lib/token";
 import { invitationSiteCopy } from "../lib/copy";
 import type { RsvpState } from "../lib/rsvp-state";
 
-export type SaveRsvpResult = "saved" | "unavailable" | "not-open";
+export type SaveRsvpResult = "saved" | "unavailable" | "not-open" | "locked";
 const inputSchema = z
   .object({ token: invitationTokenSchema, attendance: z.enum(["yes", "no"]) })
   .strict();
@@ -22,6 +22,7 @@ export async function submitRsvp(
       status: "error",
       message: "This invitation is no longer available. Please contact the couple.",
     };
+  if (result === "locked") return { status: "locked", message: invitationSiteCopy.editsLocked };
   if (result === "not-open")
     return { status: "error", message: "Replies aren’t open just yet. Please check back soon." };
   return {

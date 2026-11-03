@@ -1,3 +1,5 @@
+import { rsvpWindow } from "@/modules/invitations/lib/rsvp-window";
+import { invitationSiteCopy } from "@/modules/invitations/lib/copy";
 import { readParty } from "@/modules/invitations/server/party";
 import { cacheLife } from "next/cache";
 import { getPublicEventDetails } from "@/modules/invitations/server/public-event-details";
@@ -43,14 +45,18 @@ async function Invitation({ params }: { params: Promise<{ token: string }> }) {
     ? await issueGatePassFrom(db, identity, clientEnv.NEXT_PUBLIC_SITE_URL)
     : null;
   const settings = await getEventSettings();
+  const window = rsvpWindow(settings);
   return (
     <PersonalInvitation
       invitation={invitation}
       details={settings}
       token={token}
-      repliesOpen={settings.timeZone !== null}
+      repliesOpen={window === "open"}
+      replyClosedMessage={window === "locked" ? invitationSiteCopy.editsLocked : undefined}
       party={
-        invitation.attendance === "yes" ? ((await readParty(db, token)) ?? undefined) : undefined
+        invitation.attendance === "yes" && window === "open"
+          ? ((await readParty(db, token)) ?? undefined)
+          : undefined
       }
       pass={
         issued?.state === "ready" ? (

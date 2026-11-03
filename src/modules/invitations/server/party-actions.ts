@@ -23,7 +23,8 @@ export async function updateParty(_previous: PartyState, form: FormData): Promis
       return { status: "error", message: "Please reload your invitation and try again." };
     }
     const result = await saveParty(db, token.data, people);
-    if (result.status === "saved") revalidatePath(invitationHref(token.data));
+    if (result.status === "saved" || result.status === "locked")
+      revalidatePath(invitationHref(token.data));
     return result;
   } catch (error) {
     unstable_rethrow(error);

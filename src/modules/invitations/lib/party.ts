@@ -17,7 +17,7 @@ export interface PartyDetails {
   maxTagAlongs: number;
 }
 export interface PartyState {
-  status: "idle" | "saved" | "error";
+  status: "idle" | "saved" | "locked" | "error";
   message: string;
 }
 

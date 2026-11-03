@@ -1,0 +1,42 @@
+# Ticket
+
+Ticket: TICKET-042
+
+# Summary
+
+Guests can no longer change attendance or companions after the RSVP cutoff or venue-local wedding-day midnight. Late submissions close stale controls immediately. Accepted guests keep their entry pass. Successful changes now record before/after history atomically.
+
+# Changes
+
+- Fail closed for missing/invalid time-zone/date configuration; never substitute the developer time zone.
+- Check time after acquiring the invitation row lock in both mutation paths.
+- Store attendance and guest snapshots in existing append-only rsvp_changes, excluding contact fields and capability secrets.
+- Preserve token_version for party-size changes, following ADR0020.
+- Show approved locked wording and Your reply navigation; remove forms while retaining accepted passes.
+- Retire audited synthetic browser fixtures by revoking them, preserving audit records. All existing assertions remain.
+
+# Acceptance criteria and evidence
+
+Boundary fake-clock tests cover one millisecond before/at/after midnight, DST dates and invalid settings. Seven isolated DB tests cover both mutation paths, history contents/timestamps, concurrency, a lock wait across cutoff, rollback and unchanged pass version. A production browser test confirms a stale submission is rejected without changing attendance, controls disappear immediately, and the signed pass remains with JavaScript disabled. Existing attendance and companion flows also pass.
+
+# Verification
+
+Initial base develop fbe67fccf783fac676024e5ceeb9b8bc95092709. Twelve cutoff tests and32focusedtests pass; production build passes. Dedicated locked browser passes9.8s; existing RSVP/party flows4passed20.5s. Lighthouse98/99/98,accessibility100,CLS0; initial locked layout unchanged by the final stale-action refresh fix. Detailed evidence: docs/reviews/TICKET-042/REVIEW.md.
+
+Remaining before ready review: integrate current develop, complete full pnpm verify and final CI, then record CLI review status. This is a draft until those gates pass.
+
+# Risks and rollout
+
+No migration, dependency, RLS or infrastructure change. The existing venue time zone remains TBD; production replies stay closed until configured. History includes RSVP/party details and remains subject to the existing admin-access/retention requirements. Existing immutable history is never deleted by tests. Reverting this code stops future history writes and removes enforcement; preserve already-written records. Physical-device QA remains mandatory in release-blocking TICKET-201 under the approved preview exception.
+
+# Screenshots
+
+Twelve full-page captures: docs/reviews/TICKET-042/<theme>/<375|768|1280>-locked.png. All four themes inspected. Dates/names are synthetic review fixtures.
+
+# UI checklist
+
+PASS browser screenshots, tokens, restraint, mobile overflow, reduced motion, keyboard, contrast, copy, shared components and initial-load metrics. No photographs, new font or staff UI. Physical-device/WhatsApp/native QR checks are not verified and remain release gates. Full verification pending; no launch certification.
+
+# Harness changes, if any
+
+Only test-fixture cleanup adapts to mandatory append-only history; no hooks, assertions or checks are weakened.
