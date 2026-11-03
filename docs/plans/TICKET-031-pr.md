@@ -7,7 +7,7 @@ Ticket: TICKET-031
 Gate, kitchen and bar entry pages now require a six-digit staff PIN. Incorrect,
 expired and locked-out attempts get distinct friendly messages; successful sessions
 are bound to the browser device and cannot open a different role's station.
-This PR remains a draft until final verification and UI review are complete.
+Automated verification is complete. This PR remains a draft while the physical-device review disposition is resolved.
 
 # Changes
 
@@ -37,7 +37,9 @@ This PR remains a draft until final verification and UI review are complete.
 - Focused UI/regression review: 20 passes, two opt-in skips.
 - Delayed-font exact-zero CLS: 12 passes. Preview behavior: one pass.
 - Standard screenshots: 48 cases pass across four routes, four themes and three widths.
-- Final full `pnpm verify` is running. The initial run had nine browser failures;
+- Final full `pnpm verify` passes: 878 unit passes (65 skips), 775 browser passes
+  (165 skips; 8.3 minutes), formatting, lint, types and production build.
+  The initial run had nine browser failures;
   corrected typography, idle status semantics and isolated fixture scheduling now pass focused checks.
   See `docs/reviews/TICKET-031/ui-review.md` for retained evidence and limitations.
 
@@ -64,7 +66,7 @@ captures are retained locally under `artifacts/screenshots/`.
 # UI checklist
 
 The item-by-item PASS/N/A/unverified report is `docs/reviews/TICKET-031/ui-review.md`.
-Final full verification is pending; physical staff device checks are not certified.
+Final full verification passes; physical staff device checks are not certified.
 Guest WhatsApp/OG, guest Lighthouse and QR scan checks are not applicable because
 this change affects staff authentication and its developer preview only.
 

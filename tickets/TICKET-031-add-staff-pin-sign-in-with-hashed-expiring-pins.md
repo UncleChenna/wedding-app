@@ -58,7 +58,7 @@ See: [Users and roles](../docs/prd.md#users-and-roles) · [Security](../docs/prd
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-11-03: Approved migration and authorization record committed; only the isolated local database was changed. Draft PR84 contains staff PIN entry, lockout, expiry and role isolation. Full verification passes (878 unit / 775 browser; opt-in skips documented); three isolated database tests and both production staff journeys pass. Physical-device review disposition remains pending, so this ticket is not complete. Session identity is staff ID and role, plus required expiry/issue-time/credential-version security metadata; no PIN/hash/name/email enters the session.
 
 ## Activity log
 

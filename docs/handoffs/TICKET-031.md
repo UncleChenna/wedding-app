@@ -76,3 +76,18 @@ A fresh full gate is running serially, logged in
 its evidence, and advance PR84 only after all mandatory checks are satisfied.
 Migration approval is already recorded and committed; no additional approval is
 needed for those exact files. No production database changes were made.
+
+## Final gate result
+
+Full verification exited 0: 878 unit passes / 65 opt-in skips, build success,
+775 browser passes / 165 opt-in skips (8.3 minutes). Production source commit
+393595a is pushed. Final route review images now come from the passing production
+run; all three contact sheets and all twelve shared-form crops were inspected.
+The initial failure log remains as history.
+
+PR84 remains a draft. Physical staff-device/on-screen-keyboard evidence remains
+unverified, with a user question pending about proceeding to review while retaining
+release checks. Next: resolve that review disposition, complete the ticket notes
+and run `pnpm t:pr TICKET-031`; confirm the final-head CI before requesting merge.
+Do not claim production application or physical-device verification. PR83 merge
+also still awaits its separately requested user exception.
