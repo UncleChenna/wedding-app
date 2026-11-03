@@ -2,20 +2,20 @@
 id: TICKET-172
 title: Migrate staff identities and device registrations
 epic: data-auth
-status: todo
+status: in_review
 priority: urgent
 estimate: M
 labels: [db, security]
 module: shared
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-023]
 blocks: [TICKET-024, TICKET-026, TICKET-027, TICKET-031]
-branch: ""
-pr: ""
+branch: TICKET-172
+pr: https://github.com/UncleChenna/wedding-app/pull/47
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-03
+started: 2026-10-27
 completed: ""
 reason: ""
 resume_to: ""
@@ -37,9 +37,9 @@ Backlog audit coverage: CHK-5, ADM-4. See [PRD](../docs/prd.md) and [audit](AUDI
 
 ## Acceptance criteria
 
-- [ ] Migrate staff roles, hashed PIN credentials, expiry and revocation, and registered devices with stable identifiers.
-- [ ] Store no raw PIN in staff rows, scan logs or seeds; devices and staff can be referenced by check-in events.
-- [ ] Migration and seed work on empty and existing bootstrap databases; role/expiry constraints reject invalid rows.
+- [x] Migrate staff roles, hashed PIN credentials, expiry and revocation, and registered devices with stable identifiers.
+- [x] Store no raw PIN in staff rows, scan logs or seeds; devices and staff can be referenced by check-in events.
+- [x] Migration and seed work on empty and existing bootstrap databases; role/expiry constraints reject invalid rows.
 
 ## Test plan
 
@@ -52,8 +52,17 @@ Backlog audit coverage: CHK-5, ADM-4. See [PRD](../docs/prd.md) and [audit](AUDI
 
 ## Notes / decisions
 
+- 2026-11-03 — Authorized generated 0009 plus corrective 0010 preserve existing bootstrap data; all 61 database tests pass with per-suite synthetic fixture isolation. Repeated migrations and seeds match counts; clean database rebuild matches seeded counts; all 14 public tables retain RLS. Full review gate pending.
+
 - 2026-10-21 — Added by HARNESS-002. All criteria describe future work; no completion or human approval is implied.
 
 ## Activity log
 
 - 2026-10-21 — new → todo — divine
+- 2026-10-27 — todo → claimed — divine (codex)
+- 2026-10-27 — todo → in_progress — divine (codex)
+- 2026-10-27 — in_progress → blocked — divine (codex) — Awaiting exact-path authorization for generated migration 0002_staff-device-identities SQL, snapshot and journal; source proposal in PR47.
+- 2026-11-03 — blocked → in_progress — divine (codex) — User approved migration generation, isolated testing, commit and authorization record including unchanged develop files
+- 2026-11-03 — in_progress → blocked — divine (codex) — Generated 0009 exposes PostgreSQL invalid regex repetition bound; automatic approval review requires exact-path authorization for corrective 0010 migration, schema edit and authorization record. Six of seven real DB tests pass; full gate incomplete.
+- 2026-11-03 — blocked → in_progress — divine (codex) — User explicitly approved corrective 0010 migration and authorization
+- 2026-11-03 — in_progress → in_review — divine (codex)

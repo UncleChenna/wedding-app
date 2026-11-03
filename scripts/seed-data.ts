@@ -10,6 +10,7 @@ export interface SeedData {
   eventSettings: Insert<typeof schema.eventSettings>;
   themes: Insert<typeof schema.themes>[];
   staff: Insert<typeof schema.staff>[];
+  registeredDevices: Insert<typeof schema.registeredDevices>[];
   tables: Insert<typeof schema.tables>[];
   invitations: Insert<typeof schema.invitations>[];
   guests: Insert<typeof schema.guests>[];
@@ -132,7 +133,18 @@ export function buildSeedData(seed = 20261021): SeedData {
     name,
     role,
     email: `${role}@example.test`,
+    pinHash: null,
+    pinIssuedAt: null,
+    pinExpiresAt: null,
+    credentialVersion: 1,
+    revokedAt: null,
   }));
+
+  const registeredDevices: SeedData["registeredDevices"] = [
+    { id: "gate-phone-1", name: "Gate phone 1", role: "gate", registeredAt: now },
+    { id: "kitchen-tablet-1", name: "Kitchen tablet", role: "kitchen", registeredAt: now },
+    { id: "bar-tablet-1", name: "Bar tablet", role: "bar", registeredAt: now },
+  ];
 
   const tables: SeedData["tables"] = Array.from({ length: 28 }, (_, i) => ({
     id: faker.string.uuid(),
@@ -330,6 +342,7 @@ export function buildSeedData(seed = 20261021): SeedData {
     eventSettings: { ...defaultEventSettings, coupleNames: [...defaultEventSettings.coupleNames] },
     themes,
     staff,
+    registeredDevices,
     tables,
     invitations,
     guests,

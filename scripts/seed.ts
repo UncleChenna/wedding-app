@@ -34,12 +34,13 @@ async function main() {
     await tx.execute(sql`alter table rsvp_changes disable trigger rsvp_history_append_only`);
     await tx.execute(sql`
       truncate table rsvp_changes, event_settings, order_items, station_orders, orders, menu_items,
-        check_ins, rsvps, guests, tables, invitations, staff, themes restart identity cascade
+        check_ins, rsvps, guests, tables, invitations, registered_devices, staff, themes restart identity cascade
     `);
     await tx.execute(sql`alter table rsvp_changes enable trigger rsvp_history_append_only`);
     await tx.insert(schema.eventSettings).values(data.eventSettings);
     await tx.insert(schema.themes).values(data.themes);
     await tx.insert(schema.staff).values(data.staff);
+    await tx.insert(schema.registeredDevices).values(data.registeredDevices);
     await tx.insert(schema.tables).values(data.tables);
     await tx.insert(schema.invitations).values(data.invitations);
     await tx.insert(schema.guests).values(data.guests);

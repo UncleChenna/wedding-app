@@ -57,6 +57,30 @@ describe("buildSeedData", () => {
   });
 });
 
+describe("staff/device seed contract", () => {
+  it("never provisions a usable or raw default PIN", () => {
+    for (const identity of buildSeedData().staff) {
+      expect(identity.pinHash).toBeNull();
+      expect(identity.pinIssuedAt).toBeNull();
+      expect(identity.pinExpiresAt).toBeNull();
+      expect(identity.credentialVersion).toBe(1);
+      expect(identity).not.toHaveProperty("pin");
+      expect(identity).not.toHaveProperty("rawPin");
+    }
+  });
+
+  it("registers deterministic named devices for every seeded scan", () => {
+    const data = buildSeedData();
+    const ids = new Set(data.registeredDevices.map((device) => device.id));
+    expect(ids.size).toBe(data.registeredDevices.length);
+    expect(data.registeredDevices.map((device) => device.role)).toEqual(["gate", "kitchen", "bar"]);
+    for (const device of data.registeredDevices)
+      expect(device.name.trim().length).toBeGreaterThan(0);
+    for (const scan of data.checkIns) expect(ids.has(scan.deviceId ?? "")).toBe(true);
+    expect(buildSeedData().registeredDevices).toEqual(data.registeredDevices);
+  });
+});
+
 describe("station order seed contract", () => {
   const data = buildSeedData();
 
