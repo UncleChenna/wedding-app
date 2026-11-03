@@ -9,6 +9,7 @@ import {
   SW_OFFLINE_URL,
   SW_STATIC_CACHE,
 } from "../lib/sw-policy";
+import { OWN_PASS_CACHE } from "@/modules/invitations/lib/offline-worker";
 import { serviceWorkerSource } from "../server/service-worker";
 
 const ORIGIN = "https://wedding.example";
@@ -170,7 +171,7 @@ function fetchEvent(
 describe("served worker script", () => {
   it("is valid JavaScript that registers install, activate and fetch handlers", () => {
     const { listeners } = loadWorker();
-    expect([...listeners.keys()].sort()).toEqual(["activate", "fetch", "install"]);
+    expect([...listeners.keys()].sort()).toEqual(["activate", "fetch", "install", "message"]);
   });
 
   it("answers immutable assets from cache-first and leaves every page and API to the network", async () => {
@@ -231,6 +232,7 @@ describe("served worker script", () => {
     store.set(`${SW_CACHE_PREFIX}offline-v0`, new Map());
     store.set(SW_STATIC_CACHE, new Map());
     store.set("someone-elses-cache", new Map());
+    store.set(OWN_PASS_CACHE, new Map());
 
     await install();
     expect(self.skipWaiting).not.toHaveBeenCalled();
@@ -241,7 +243,7 @@ describe("served worker script", () => {
     expect(caches.delete).toHaveBeenCalledWith(`${SW_CACHE_PREFIX}static-v0`);
     expect(caches.delete).toHaveBeenCalledWith(`${SW_CACHE_PREFIX}offline-v0`);
     expect([...store.keys()].sort()).toEqual(
-      [SW_STATIC_CACHE, SW_OFFLINE_CACHE, "someone-elses-cache"].sort(),
+      [SW_STATIC_CACHE, SW_OFFLINE_CACHE, OWN_PASS_CACHE, "someone-elses-cache"].sort(),
     );
   });
 

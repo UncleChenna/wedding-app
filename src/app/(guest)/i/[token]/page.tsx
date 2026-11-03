@@ -52,7 +52,11 @@ async function Invitation({ params }: { params: Promise<{ token: string }> }) {
       party={
         invitation.attendance === "yes" ? ((await readParty(db, token)) ?? undefined) : undefined
       }
-      pass={issued?.state === "ready" ? <QrPass url={issued.url} pass={issued.pass} /> : undefined}
+      pass={
+        issued?.state === "ready" ? (
+          <QrPass url={issued.url} pass={issued.pass} saveOffline />
+        ) : undefined
+      }
       passNotice={issued?.state === "unavailable" ? <PassUnavailable /> : undefined}
     />
   );
