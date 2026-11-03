@@ -2,20 +2,20 @@
 id: TICKET-071
 title: Show the menu by category with live sold-out state
 epic: ordering
-status: todo
+status: in_progress
 priority: high
 estimate: M
 labels: [frontend, backend]
 module: ordering
-owner: ""
-agent: ""
+owner: unclechenna
+agent: claude
 blocked_by: [TICKET-070]
 blocks: [TICKET-072]
-branch: ""
+branch: TICKET-071
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-03
+started: 2026-11-03
 completed: ""
 reason: ""
 resume_to: ""
@@ -65,3 +65,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-03 — todo → claimed — unclechenna (claude)
+- 2026-11-03 — todo → in_progress — unclechenna (claude)
