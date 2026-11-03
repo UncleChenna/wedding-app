@@ -2,7 +2,7 @@
 id: TICKET-070
 title: Start the order page by typing and validating a table number
 epic: ordering
-status: in_progress
+status: in_review
 priority: high
 estimate: M
 labels: [frontend, backend]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-018, TICKET-171]
 blocks: [TICKET-071]
 branch: TICKET-070
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/80
 created: 2026-10-21
 updated: 2026-11-03
 started: 2026-11-03
@@ -65,3 +65,4 @@ See: [Table ordering](../docs/prd.md#table-ordering) (ORD-1, ORD-8) · [Journey 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-03 — todo → claimed — divine (codex)
 - 2026-11-03 — todo → in_progress — divine (codex)
+- 2026-11-03 — in_progress → in_review — divine (codex)
