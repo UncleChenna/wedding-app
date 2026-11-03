@@ -40,3 +40,5 @@ PASS browser screenshots, tokens, restraint, mobile overflow, reduced motion, ke
 # Harness changes, if any
 
 Only test-fixture cleanup adapts to mandatory append-only history; no hooks, assertions or checks are weakened.
+
+2026-11-03 follow-up: the first t:pr verification rerun had four desktop accessibility timeouts (765 passed, 165 skipped), despite the preceding complete green run. All four unchanged cases passed with one worker in 6.4 seconds. Original traces are preserved under artifacts/TICKET-042/pr-workflow-failures. This suggests transient contention but does not certify the full gate. No assertion, timeout, retry setting or hook was changed. A new complete t:pr run is required before review status.
