@@ -887,15 +887,16 @@
         "- 2026-11-03 — blocked → in_progress — divine (codex) — User approved migration generation, isolated testing, commit and authorization record including unchanged develop files",
         "- 2026-11-03 — in_progress → blocked — divine (codex) — Generated 0009 exposes PostgreSQL invalid regex repetition bound; automatic approval review requires exact-path authorization for corrective 0010 migration, schema edit and authorization record. Six of seven real DB tests pass; full gate incomplete.",
         "- 2026-11-03 — blocked → in_progress — divine (codex) — User explicitly approved corrective 0010 migration and authorization",
-        "- 2026-11-03 — in_progress → in_review — divine (codex)"
+        "- 2026-11-03 — in_progress → in_review — divine (codex)",
+        "- 2026-11-03 — in_review → done — divine (codex)"
       ],
-      "status": "in_review",
+      "status": "done",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-172",
       "pr": "https://github.com/UncleChenna/wedding-app/pull/47",
       "started": "2026-10-27",
-      "completed": "",
+      "completed": "2026-11-03",
       "updated": "2026-11-03",
       "reason": "",
       "resume_to": ""
