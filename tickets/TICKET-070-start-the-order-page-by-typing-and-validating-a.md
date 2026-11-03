@@ -2,20 +2,20 @@
 id: TICKET-070
 title: Start the order page by typing and validating a table number
 epic: ordering
-status: todo
+status: in_progress
 priority: high
 estimate: M
 labels: [frontend, backend]
 module: ordering
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-018, TICKET-171]
 blocks: [TICKET-071]
-branch: ""
+branch: TICKET-070
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-03
+started: 2026-11-03
 completed: ""
 reason: ""
 resume_to: ""
@@ -63,3 +63,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-03 — todo → claimed — divine (codex)
+- 2026-11-03 — todo → in_progress — divine (codex)
