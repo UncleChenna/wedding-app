@@ -2,7 +2,7 @@
 id: TICKET-131
 title: Cover the invitation, RSVP and pass journey end to end
 epic: testing
-status: blocked
+status: in_progress
 priority: urgent
 estimate: M
 labels: [test]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-11-03
 started: 2026-11-03
 completed: ""
-reason: "Local full verification and mobile/desktop journey pass; awaiting explicit approval for concrete dedicated CI job in PR83, required for CI acceptance."
-resume_to: in_progress
+reason: ""
+resume_to: ""
 ---
 
 # TICKET-131: Cover the invitation, RSVP and pass journey end to end
@@ -62,3 +62,4 @@ _Agents append dated notes here while working._
 - 2026-11-03 — todo → claimed — divine (codex)
 - 2026-11-03 — todo → in_progress — divine (codex)
 - 2026-11-03 — in_progress → blocked — divine (codex) — Local full verification and mobile/desktop journey pass; awaiting explicit approval for concrete dedicated CI job in PR83, required for CI acceptance.
+- 2026-11-03 — blocked → in_progress — divine (codex) — User approved the proposed dedicated guest journey CI job
