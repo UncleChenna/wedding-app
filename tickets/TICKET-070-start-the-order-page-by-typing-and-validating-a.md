@@ -2,20 +2,20 @@
 id: TICKET-070
 title: Start the order page by typing and validating a table number
 epic: ordering
-status: todo
+status: in_review
 priority: high
 estimate: M
 labels: [frontend, backend]
 module: ordering
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-018, TICKET-171]
 blocks: [TICKET-071]
-branch: ""
-pr: ""
+branch: TICKET-070
+pr: https://github.com/UncleChenna/wedding-app/pull/80
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-03
+started: 2026-11-03
 completed: ""
 reason: ""
 resume_to: ""
@@ -41,9 +41,9 @@ See: [Table ordering](../docs/prd.md#table-ordering) (ORD-1, ORD-8) · [Journey 
 
 ## Acceptance criteria
 
-- [ ] Unknown table numbers show a friendly error; known ones proceed (e2e).
-- [ ] The table number persists across reloads in the same browser.
-- [ ] No sign-in or IV token is required.
+- [x] Unknown table numbers show a friendly error; known ones proceed (e2e).
+- [x] The table number persists across reloads in the same browser.
+- [x] No sign-in or IV token is required.
 
 ## Test plan
 
@@ -58,8 +58,11 @@ See: [Table ordering](../docs/prd.md#table-ordering) (ORD-1, ORD-8) · [Journey 
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-11-03 — Implemented anonymous database-backed table selection at `/order`, session persistence and changing tables. Sixteen focused tests and two real-database production browser flows pass, including no-JavaScript submission. Menu remains TICKET-071; no orders are sent here. See `docs/reviews/TICKET-070/REVIEW.md` for full evidence and remaining release-blocking device QA in TICKET-201. The user’s standing preview exception permits review without certifying physical-device readiness.
 
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-03 — todo → claimed — divine (codex)
+- 2026-11-03 — todo → in_progress — divine (codex)
+- 2026-11-03 — in_progress → in_review — divine (codex)
