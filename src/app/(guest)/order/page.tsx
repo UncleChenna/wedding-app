@@ -1,15 +1,12 @@
 import type { Metadata } from "next";
+import type { TableSearch } from "@/modules/ordering/lib/table-selection";
+import { connection } from "next/server";
+import { OrderEntry } from "@/modules/ordering/components/order-entry";
 
-import { PagePlaceholder } from "@/modules/shared/components/page-placeholder";
-
-export const metadata: Metadata = { title: "Order" };
-
-export default function OrderPage() {
-  return (
-    <PagePlaceholder
-      eyebrow="Table service"
-      title="Order to your table"
-      description="Table ordering is coming soon. For now, ask a member of the team for food or drinks."
-    />
-  );
+export const metadata: Metadata = { title: "Order to your table" };
+// Render the session-dependent form as usable HTML without JavaScript.
+export const instant = false;
+export default async function OrderPage({ searchParams }: { searchParams: TableSearch }) {
+  await connection();
+  return <OrderEntry searchParams={searchParams} />;
 }
