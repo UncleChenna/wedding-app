@@ -10,7 +10,7 @@ Accepted guests can download a themed A5 invitation with current event details a
 
 - Private authorized PDF endpoint with no-store responses, fixed download filename and friendly errors; declined, revoked and invalid invitations cannot download.
 - Embedded static instances of the four approved font families, theme colours and vector QR with four-module quiet zone. Long names paginate while the QR/caption stays together.
-- Keyboard-accessible light/dark PDF links in the existing pass component.
+- Keyboard-accessible light/dark PDF links alongside image downloading and offline saving in the existing pass component.
 - Ticket-approved react-pdf dependency and generated lockfile, explicitly authorized by the user on 2026-11-03. No database migration or RLS changes.
 - Unit/browser tests and native 300 dpi sample/raster/decoding helpers; screenshots and review evidence.
 
@@ -22,11 +22,11 @@ Accepted guests can download a themed A5 invitation with current event details a
 
 # Verification
 
-- Frozen lockfile installation passes with the approved generated lockfile.
-- Full `pnpm verify` after authorization passes 781unit tests (42 optional skips), build and 769browser checks (165 optional skips).
-- After the requested centering refinement:10 focused PDF tests, `verify:quick`, production build and real download/privacy/browser matrix pass (7.4 seconds). The publication CLI repeats full verification before moving this PR to review.
-- Previous current-route Lighthouse:99/99/100 Performance,100 Accessibility each,CLS0each; page DOM was not changed by PDF centering.
-- Base develop be0d656343ad3d31af0f904c3a8763c6f94dc598. Integrate later invitation changes sequentially and verify the combined result before merge.
+- Integrated develop f5e5db58446363c6a0b4998dea3dbdfa603a43c1 in c5e4f41; PDF, image, offline saving and party details are retained together.
+- Fifteen focused tests and production build pass after integration. The extended PDF browser regression passes in 12.3 seconds, including actual image download and offline reload in addition to all prior PDF privacy and rejection assertions.
+- All 12 refreshed screenshots inspected. Existing eight signed PDF samples still decode at 300 dpi; renderer/font/QR generation is unchanged, so those samples were not regenerated.
+- Integrated production Lighthouse: Performance 97/98/98, Accessibility 100 each, CLS 0 each. See docs/reviews/TICKET-046/integration-performance.json.
+- Earlier pre-integration full verification passed. The renewed full t:pr gate and CI remain pending before review status is restored.
 
 # Risks and rollout
 

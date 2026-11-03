@@ -48,3 +48,11 @@ CHANGES REQUESTED pending remaining verification and approval. Raw local evidenc
 Final build passes; final browser download/privacy matrix passes12.1s. Chromium native PDF viewer rendering visually verified (chromium-pdf.png); Preview GUI not verified. All long PDF pages inspected;8/8 final PDFs decode at 300 dpi. Latest timings47–1096ms while browser smoke loaded the machine. Lighthouse99/99/100 performance,100accessibility each,CLS0each. This does not certify the separate release-blocking cold-font/device issues.
 
 Broad smoke records768pass/165skip/1stepper timeout; isolated unchanged stepper passes8.7s. Full gate remains incomplete pending authorization and rerun. No tests or hooks weakened.
+
+## Develop integration — 2026-11-03
+
+Integrated develop f5e5db58446363c6a0b4998dea3dbdfa603a43c1 in c5e4f41, resolving personal-route and QR-pass conflicts. Party details, PDF downloading, image downloading and offline saving all remain available. No PDF renderer, migration, dependency or lockfile changes were needed. The requested centered PDF layout is unchanged.
+
+Fifteen focused tests and production build pass. Extended real-browser regression passes in 12.3 seconds, covering all existing PDF privacy/theme/download checks plus image downloading and offline reload from the same invitation. All 12 updated pass screenshots were inspected across four themes and three widths. Existing 8 signed PDF raster samples decode again at 300 dpi; those samples were not regenerated because renderer/font/QR generation is unchanged. Integrated production Lighthouse scores: 97/98/98 performance, 100 accessibility and CLS 0 each; see integration-performance.json.
+
+Full t:pr verification and renewed CI remain required. Physical-device/printed-scan release gates remain in TICKET-201. PR77 is mergeable, but no merge exception has been granted. Stack wedding-e435bc566586 was stopped with backup while idle, then restarted for isolated verification. TICKET-042 is in_review at PR81; final CI is pending. Another agent is actively working on TICKET-071; do not edit that worktree.
