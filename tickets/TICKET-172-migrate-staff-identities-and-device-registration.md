@@ -2,7 +2,7 @@
 id: TICKET-172
 title: Migrate staff identities and device registrations
 epic: data-auth
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [db, security]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/47
 created: 2026-10-21
 updated: 2026-11-03
 started: 2026-10-27
-completed: ""
+completed: 2026-11-03
 reason: ""
 resume_to: ""
 ---
@@ -66,3 +66,4 @@ Backlog audit coverage: CHK-5, ADM-4. See [PRD](../docs/prd.md) and [audit](AUDI
 - 2026-11-03 — in_progress → blocked — divine (codex) — Generated 0009 exposes PostgreSQL invalid regex repetition bound; automatic approval review requires exact-path authorization for corrective 0010 migration, schema edit and authorization record. Six of seven real DB tests pass; full gate incomplete.
 - 2026-11-03 — blocked → in_progress — divine (codex) — User explicitly approved corrective 0010 migration and authorization
 - 2026-11-03 — in_progress → in_review — divine (codex)
+- 2026-11-03 — in_review → done — divine (codex)

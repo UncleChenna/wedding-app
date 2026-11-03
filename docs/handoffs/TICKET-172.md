@@ -47,3 +47,7 @@ All 61 opt-in PostgreSQL tests pass when run individually with synthetic-fixture
 ## Final local verification — 2026-11-03
 
 Full t:pr succeeded on bd1d364: formatting/lint/types, 854 unit tests (62 conditional skips), production build, 769 browser tests (165 skips; 4.4 minutes). All 61 enabled DB tests separately pass. Ticket CLI moved to in_review and pushed PR47 metadata. No outstanding implementation defect known; GitHub CI and human merge remain required. The explicit migration permissions do not authorize production deployment or PR merge. Next: review CI for final documentation commit, then human review/merge; preserve TICKET201 release gates.
+
+## Approved merge — 2026-11-03
+
+All four required GitHub CI checks passed on 8e96d2c5128c5e9df30f956fa18d4cb05d090331 (run41729834449). User explicitly authorized PR47 merge; head/checks/mergeability were rechecked and merge used the head-match guard. GitHub confirms merge df8a970bc88b2c7b6664f26190a6c49abd8d3e1e at22:37:53Z. CLI completion requested after confirmation. Isolated stack stopped with backup; no production application. Next: consuming staff authentication and admin provisioning tickets may proceed according to live dependencies; TICKET131's approved CI job is running separately.
