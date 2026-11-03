@@ -4,18 +4,18 @@ Ticket: TICKET-131
 
 # Summary
 
-Add one real guest journey regression spanning invitation, RSVP, companion details, pass downloads, returning edits and wedding-day lock. Draft pending authorization to add the CI job required by the ticket.
+Add one real guest journey regression spanning invitation, RSVP, companion details, pass downloads, returning edits and wedding-day lock. The user-approved dedicated CI job now runs the journey against PostgreSQL; this remains draft pending actual CI results.
 
 # Changes
 
 - e2e/guest.spec.ts exercises actual server writes and checks persisted reply/history, real signed read-only pass, image/PDF downloads and stale-form lock rejection on mobile and desktop.
 - scripts/test-guest-journey.ts creates ephemeral signing keys and runs both projects with one worker.
 - Guard fixture setup against non-test settings; retire only test-created invitation IDs without deleting immutable history.
-- Prepared exact CI job in docs/reviews/TICKET-131/ci-proposal.md; workflow is unchanged pending approval.
+- Applied the exact approved job from docs/reviews/TICKET-131/ci-proposal.md to .github/workflows/ci.yml.
 
 # Acceptance criteria and evidence
 
-Local production journey passes both projects (2 tests,3.9s); dev run passes2tests13.5s. CI acceptance remains incomplete until the proposed dedicated PostgreSQL-backed job is approved and passes.
+Local production journey passes both projects (2 tests,3.9s); dev run passes2tests13.5s. CI acceptance remains incomplete until the dedicated PostgreSQL-backed job passes.
 
 # Verification
 
@@ -31,4 +31,4 @@ N/A: test automation only; no changed UI.
 
 # Harness changes
 
-A dedicated CI job is proposed but not applied. Await explicit CI approval.
+The user explicitly approved the dedicated CI job on 2026-11-03. It is applied; existing jobs and permissions are unchanged.
