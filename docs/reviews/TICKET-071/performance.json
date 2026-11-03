@@ -1,0 +1,19 @@
+{
+  "route": "/order (confirmed table, menu view; Cookie wedding-table=1, seeded data)",
+  "date": "2026-11-03",
+  "tool": "lighthouse@12.6.1, mobile, production build",
+  "machineLoad": "load average 18-25 during runs from other worktrees' stacks",
+  "runs": [
+    { "run": 1, "error": "NO_NAVSTART trace failure" },
+    { "run": 2, "performance": 97, "accessibility": 100, "cls": 0 },
+    { "run": 3, "performance": 94, "accessibility": 100, "cls": 0 },
+    { "run": 4, "performance": 88, "accessibility": 100, "cls": 0, "lcpMs": 3708, "tbtMs": 133 },
+    { "run": 5, "performance": 89, "accessibility": 100, "cls": 0, "lcpMs": 3614, "tbtMs": 94 }
+  ],
+  "baseline": {
+    "route": "/order (table form, no cookie; unchanged by this ticket)",
+    "performance": 89,
+    "lcpMs": 3685,
+    "note": "Same h1 LCP element as the menu view. TICKET-070 measured this page at 100 on a quieter machine."
+  }
+}

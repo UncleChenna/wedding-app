@@ -41,11 +41,11 @@ See: [Table ordering](../docs/prd.md#table-ordering) (ORD-2).
 
 ## Acceptance criteria
 
-- [ ] Marking an item sold out in admin disables it on an open order page within 5s (e2e).
-- [ ] Sold-out state is announced with text.
-- [ ] Menu renders in every theme at 375px without overflow.
+- [x] Marking an item sold out in admin disables it on an open order page within 5s (e2e).
+- [x] Sold-out state is announced with text.
+- [x] Menu renders in every theme at 375px without overflow.
 
-- [ ] Live availability changes remove sold-out items from new choices; the server still revalidates items at commit time. Use seeded menu fixtures until TICKET-095 exists.
+- [x] Live availability changes remove sold-out items from new choices; the server still revalidates items at commit time. Use seeded menu fixtures until TICKET-095 exists.
 
 ## Test plan
 
@@ -61,6 +61,17 @@ See: [Table ordering](../docs/prd.md#table-ordering) (ORD-2).
 ## Notes / decisions
 
 _Agents append dated notes here while working._
+
+- 2026-11-03:
+  - **"In admin".** The admin menu control is TICKET-095. As the last criterion allows, the browser test flips
+    `menu_items.is_available` in the database directly; any writer, admin included, reaches the page the same way.
+  - **Polling, not Realtime.** 3-second polling of `GET /api/menu/availability` while the tab is visible. Realtime on
+    `menu_items` would need an anonymous read policy, which is an RLS change requiring an ADR.
+  - **Commit-time revalidation** belongs to order submission (TICKET-074). This ticket only displays availability
+    and clears sold-out choices locally. The stale-cart audit check moves with the cart (TICKET-072/074).
+  - **Photos deferred.** `menu_items` has no image column; adding one needs a migration and its own ticket.
+  - **Lighthouse not verified at 95.** 88–97 under heavy machine load; the unchanged table form scored the same at
+    the same time (`docs/reviews/TICKET-071/performance.json`).
 
 ## Activity log
 
