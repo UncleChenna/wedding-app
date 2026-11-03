@@ -22,7 +22,7 @@ All ticket criteria verified: seven staff/device database tests cover constraint
 - All 61 opt-in database tests pass, run individually with synthetic fixture cleanup between suites. Combined-suite attempts exposed pre-existing fixture coupling (singleton settings and seeded menu choices); failed logs retained and no assertions changed.
 - Two migration runs have identical counts and eleven applied migrations. Two seed runs match exactly. A clean disposable database rebuild applies the full migration chain and reproduces those seed counts.
 - RLS passes all fourteen public tables. Corrected quick gate passes lint/types/related tests.
-- Full pnpm t:pr verification pending; this remains draft until that gate passes. Evidence: artifacts/TICKET-172/, docs/handoffs/TICKET-172.md, docs/reviews/TICKET-172/migration-approval.md.
+- Full pnpm t:pr verification passed: format, lint, types, 854 unit tests (62 conditional skips), production build and 769 browser tests (165 conditional skips; 4.4 minutes). All 61 database tests were separately enabled and passed. Ticket is in_review; GitHub CI and human review remain required. Evidence: artifacts/TICKET-172/, docs/handoffs/TICKET-172.md, docs/reviews/TICKET-172/migration-approval.md.
 
 # Risks and rollout
 

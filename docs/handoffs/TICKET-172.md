@@ -43,3 +43,7 @@ Broad opt-in database run exposed fixture preconditions, not a staff migration d
 ## Database gate complete — 2026-11-03
 
 All 61 opt-in PostgreSQL tests pass when run individually with synthetic-fixture cleanup between suites. Combined-suite failures are preserved in artifacts/TICKET-172/database-regressions*.log; tests/assertions were not weakened. Clean db:reset of this ticket's disposable synthetic database successfully applied all eleven migrations and seeded the exact same counts as both earlier seed runs; all 14 tables pass RLS. Corrected quick gate passes. Full t:pr gate remains next.
+
+## Final local verification — 2026-11-03
+
+Full t:pr succeeded on bd1d364: formatting/lint/types, 854 unit tests (62 conditional skips), production build, 769 browser tests (165 skips; 4.4 minutes). All 61 enabled DB tests separately pass. Ticket CLI moved to in_review and pushed PR47 metadata. No outstanding implementation defect known; GitHub CI and human merge remain required. The explicit migration permissions do not authorize production deployment or PR merge. Next: review CI for final documentation commit, then human review/merge; preserve TICKET201 release gates.

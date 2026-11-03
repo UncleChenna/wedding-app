@@ -1,6 +1,6 @@
 # TICKET-172 migration proposal — updated 2026-11-03
 
-Status: source prepared; generated migration not authorized, generated or applied.
+Current status: 0009 and corrective 0010 explicitly authorized, generated through Drizzle and verified on the isolated database. All 61 database tests and full local verification pass. Historical proposal/approval checkpoints below are retained for traceability. No production deployment authorized.
 
 ## Exact protected outputs
 
