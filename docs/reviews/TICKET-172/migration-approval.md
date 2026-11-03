@@ -1,13 +1,13 @@
-# TICKET-172 migration proposal — 2026-10-27
+# TICKET-172 migration proposal — updated 2026-11-03
 
 Status: source prepared; generated migration not authorized, generated or applied.
 
 ## Exact protected outputs
 
-After approval, run pnpm db:generate --name staff-device-identities against this branch's journal (currently idx1):
+After approval, run pnpm db:generate --name staff-device-identities after integrating develop f5e5db58446363c6a0b4998dea3dbdfa603a43c1 (journal idx8):
 
-- drizzle/0002_staff-device-identities.sql
-- drizzle/meta/0002_snapshot.json
+- drizzle/0009_staff-device-identities.sql
+- drizzle/meta/0009_snapshot.json
 - drizzle/meta/_journal.json
 
 Record authorization only if explicitly approved, in .worktrees/TICKET-172/.harness/approved-writes.json with a future expiry. Approval is for local generation/testing/commit, not production deployment or data deletion. Use generators for all three files.
@@ -35,6 +35,30 @@ Inspect generated SQL for additions/nullability only; reject drops or destructiv
 
 ## Coordination / rollback
 
-TICKET-025 also awaits migration approval against idx1. Merge one migration branch at a time; the later branch must be regenerated from current develop with revised exact-path authorization. Do not manually merge journal/snapshot JSON or reuse stale approval.
+Develop now includes migrations through 0008_ordering-contract. The old 0002 proposal is superseded and must not be used. Merge one migration branch at a time; if numbering advances again, revise the exact-path proposal before generation. Do not manually merge journal/snapshot JSON or reuse stale approval.
 
 Rollback application code while retaining additive fields/table; old code ignores them. No automatic destructive down migration. RLS remains enabled throughout. Do not reset a populated guest DB or another worktree.
+
+## Unchanged develop files requiring carry-forward authorization
+
+The read-only merge preview against f5e5db58446363c6a0b4998dea3dbdfa603a43c1 produces byte-identical copies of these 17 protected files from develop. No generated migration was created or applied. The current branch has not been merged yet; scripts/seed.ts and scripts/**tests**/seed-data.test.ts need integration resolutions that retain both ordering seeds and the proposed unprovisioned staff/devices.
+
+- `drizzle/0002_event-settings-rsvp-history.sql`
+- `drizzle/0003_rsvp-history-append-only.sql`
+- `drizzle/0004_furry_wolfpack.sql`
+- `drizzle/0005_blue_ravenous.sql`
+- `drizzle/0006_ordering-expand.sql`
+- `drizzle/0007_ordering-backfill.sql`
+- `drizzle/0008_ordering-contract.sql`
+- `drizzle/meta/0002_snapshot.json`
+- `drizzle/meta/0003_snapshot.json`
+- `drizzle/meta/0004_snapshot.json`
+- `drizzle/meta/0005_snapshot.json`
+- `drizzle/meta/0006_snapshot.json`
+- `drizzle/meta/0007_snapshot.json`
+- `drizzle/meta/0008_snapshot.json`
+- `drizzle/meta/_journal.json`
+- `pnpm-lock.yaml`
+- `src/modules/theming/themes/theme.schema.json`
+
+Authorize recording these exact paths in `.worktrees/TICKET-172/.harness/approved-writes.json` solely to commit unchanged develop files after integration. The separate proposed 0009 outputs above need authorization for generation, isolated testing and commit. No production application, reset of populated data, new browser policy or credential provisioning is requested.

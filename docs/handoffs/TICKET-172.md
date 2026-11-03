@@ -19,3 +19,7 @@ Obtain explicit approval for drizzle/0002_staff-device-identities.sql, drizzle/m
 TICKET-025 has conflicting pending idx1 migration numbering: whichever lands second needs regeneration and fresh exact-path approval. No assumption of production authorization. No PIN login implemented (TICKET-031), no check-in conversion (TICKET-024), no UI work. The boilerplate audit wording in the old ticket is interpreted as referring to the prior audit task, not prohibiting this explicitly requested implementation.
 
 TICKET-050 is done: PR46 merged 3752e05 after exact-head CI40430768846 passed all jobs. Its isolated stack was stopped with backup retained. Preserve unclechenna's TICKET-204 work.
+
+## 2026-11-03 proposal refresh
+
+Read-only preview against develop f5e5db58446363c6a0b4998dea3dbdfa603a43c1 has two seed-file conflicts; schema merges cleanly. No source integration, migration generation or database mutation performed. Updated migration-approval.md supersedes old 0002 paths with 0009 outputs and lists 17 unchanged protected develop files, verified byte-identical in the preview. Await explicit authorization to record exact paths and generate/test/commit locally. The original database red tests remain historical, not verification against current develop. After approval, integrate the seed changes, regenerate from idx8, and prove preservation and constraints before review. TICKET-015 remains paused.
