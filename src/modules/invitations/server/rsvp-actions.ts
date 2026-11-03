@@ -21,7 +21,10 @@ export async function respondToInvitation(
       (token, attending) => saveRsvp(db, token, attending),
     );
     const validatedToken = invitationTokenSchema.safeParse(token);
-    if ((result.status === "yes" || result.status === "no") && validatedToken.success) {
+    if (
+      (result.status === "yes" || result.status === "no" || result.status === "locked") &&
+      validatedToken.success
+    ) {
       revalidatePath(invitationHref(validatedToken.data));
     }
     return result;

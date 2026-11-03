@@ -1,3 +1,4 @@
+import { retireInvitationFixtures } from "./support/invitation-fixtures";
 import { randomBytes } from "node:crypto";
 import { mkdirSync, readFileSync } from "node:fs";
 import postgres, { type Sql } from "postgres";
@@ -29,7 +30,7 @@ test.describe("named RSVP party", () => {
   test.afterAll(async () => {
     if (db) {
       try {
-        if (invitationId) await db`delete from invitations where id=${invitationId}`;
+        if (invitationId) await retireInvitationFixtures(db, [invitationId]);
         if (mealId) await db`delete from menu_items where id=${mealId}`;
       } finally {
         await db.end();

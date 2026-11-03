@@ -86,7 +86,7 @@ export function PartyForm({ token, details }: { token: string; details: PartyDet
         {people.map((person, index) => (
           <fieldset
             key={person.id || "new-" + index}
-            disabled={!enhanced || pending}
+            disabled={!enhanced || pending || state.status === "locked"}
             className="min-w-0 space-y-6"
           >
             <legend className="mb-6 text-lg font-medium">
@@ -144,7 +144,9 @@ export function PartyForm({ token, details }: { token: string; details: PartyDet
         <Button
           type="button"
           variant="secondary"
-          disabled={!enhanced || pending || tagAlongs >= details.maxTagAlongs}
+          disabled={
+            !enhanced || pending || state.status === "locked" || tagAlongs >= details.maxTagAlongs
+          }
           onClick={() => {
             focusName.current = people.length;
             setPeople((rows) => [
@@ -172,7 +174,7 @@ export function PartyForm({ token, details }: { token: string; details: PartyDet
           type="submit"
           size="lg"
           fullWidth
-          disabled={!enhanced || pending}
+          disabled={!enhanced || pending || state.status === "locked"}
           aria-busy={pending}
         >
           {pending ? "Saving details…" : "Save guest details"}

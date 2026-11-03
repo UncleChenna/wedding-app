@@ -36,6 +36,12 @@ describe("RSVP input and outcomes", () => {
       message: "Replies aren’t open just yet. Please check back soon.",
     });
   });
+  it("returns approved locked copy without confirming a late reply", async () => {
+    expect(await submitRsvp({ token, attendance: "yes" }, async () => "locked")).toEqual({
+      status: "locked",
+      message: invitationSiteCopy.editsLocked,
+    });
+  });
   it("propagates outages to the action's safe error boundary", async () => {
     await expect(
       submitRsvp({ token, attendance: "yes" }, async () => {

@@ -33,3 +33,12 @@ it("does not revalidate an invalid path or write invalid input", async () => {
   expect(mocks.save).not.toHaveBeenCalled();
   expect(mocks.revalidate).not.toHaveBeenCalled();
 });
+
+it("refreshes a stale invitation immediately when the cutoff rejects an edit", async () => {
+  mocks.save.mockResolvedValue("locked");
+  const form = new FormData();
+  form.set("token", token);
+  form.set("attendance", "yes");
+  expect((await respondToInvitation({ status: "idle", message: "" }, form)).status).toBe("locked");
+  expect(mocks.revalidate).toHaveBeenCalledExactlyOnceWith("/i/" + token);
+});

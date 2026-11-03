@@ -11,10 +11,12 @@ export function RsvpForm({
   token,
   attendance,
   open,
+  closedMessage = "Replies aren’t open just yet. Please check back soon.",
 }: {
   token: string;
   attendance: "yes" | "no" | null;
   open: boolean;
+  closedMessage?: string;
 }) {
   const initial: RsvpState = {
     status: attendance ?? "idle",
@@ -30,6 +32,7 @@ export function RsvpForm({
     initial,
     invitationHref(token),
   );
+  const canEdit = open && state.status !== "locked";
   const status = useRef<HTMLParagraphElement>(null);
   const previous = useRef(state);
   useEffect(() => {
@@ -39,7 +42,7 @@ export function RsvpForm({
   return (
     <section aria-labelledby="rsvp-heading" className="mt-12 border-t border-border pt-8">
       <h2 id="rsvp-heading" className="type-heading">
-        Will you join us?
+        {canEdit ? "Will you join us?" : "Your reply"}
       </h2>
       <p
         ref={status}
@@ -50,7 +53,7 @@ export function RsvpForm({
       >
         {state.message}
       </p>
-      {open ? (
+      {canEdit ? (
         <form
           action={action}
           className="mt-6 grid gap-4 pb-[env(safe-area-inset-bottom)] sm:grid-cols-2"
@@ -85,11 +88,9 @@ export function RsvpForm({
             </p>
           )}
         </form>
-      ) : (
-        <p className="mt-6 text-base leading-relaxed text-muted-foreground">
-          Replies aren’t open just yet. Please check back soon.
-        </p>
-      )}
+      ) : state.status !== "locked" ? (
+        <p className="mt-6 text-base leading-relaxed text-muted-foreground">{closedMessage}</p>
+      ) : null}
     </section>
   );
 }

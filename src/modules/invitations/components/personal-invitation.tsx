@@ -12,6 +12,7 @@ export function PersonalInvitation({
   invitation,
   token,
   repliesOpen,
+  replyClosedMessage,
   details,
   now = new Date(),
   pass,
@@ -21,6 +22,7 @@ export function PersonalInvitation({
   invitation: GuestInvitation;
   token: string;
   repliesOpen: boolean;
+  replyClosedMessage?: string;
   details: InvitationEventDetails;
   now?: Date;
   pass?: ReactNode;
@@ -34,6 +36,7 @@ export function PersonalInvitation({
     <InvitationLetter
       details={details}
       greeting={greeting}
+      replyLabel={repliesOpen ? "Kindly reply" : "Your reply"}
       pass={invitation.attendance === "yes" ? pass : undefined}
     >
       {next.step === "closing" && (
@@ -47,7 +50,12 @@ export function PersonalInvitation({
         </section>
       )}
       {invitation.attendance === "yes" && passNotice}
-      <RsvpForm token={token} attendance={invitation.attendance} open={repliesOpen} />
+      <RsvpForm
+        token={token}
+        attendance={invitation.attendance}
+        open={repliesOpen}
+        closedMessage={replyClosedMessage}
+      />
       {invitation.attendance === "yes" && repliesOpen && party && (
         <PartyForm token={token} details={party} />
       )}

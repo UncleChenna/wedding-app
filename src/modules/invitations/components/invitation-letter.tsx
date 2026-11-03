@@ -22,11 +22,13 @@ export function InvitationLetter({
   greeting,
   children,
   pass,
+  replyLabel = "Kindly reply",
 }: {
   details: InvitationEventDetails;
   greeting: string;
   children: ReactNode;
   pass?: ReactNode;
+  replyLabel?: string;
 }) {
   const map = safeMap.safeParse(details.mapUrl);
   return (
@@ -71,7 +73,7 @@ export function InvitationLetter({
             </a>
           )}
           <a href="#reply" className={linkStyle}>
-            Kindly reply
+            {replyLabel}
           </a>
         </nav>
       </header>
