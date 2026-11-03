@@ -1556,9 +1556,10 @@
       "log": [
         "- 2026-11-03 — todo → claimed — divine (codex)",
         "- 2026-11-03 — todo → in_progress — divine (codex)",
-        "- 2026-11-03 — in_progress → blocked — divine (codex) — Local full verification and mobile/desktop journey pass; awaiting explicit approval for concrete dedicated CI job in PR83, required for CI acceptance."
+        "- 2026-11-03 — in_progress → blocked — divine (codex) — Local full verification and mobile/desktop journey pass; awaiting explicit approval for concrete dedicated CI job in PR83, required for CI acceptance.",
+        "- 2026-11-03 — blocked → in_progress — divine (codex) — User approved the proposed dedicated guest journey CI job"
       ],
-      "status": "blocked",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-131",
@@ -1566,8 +1567,8 @@
       "started": "2026-11-03",
       "completed": "",
       "updated": "2026-11-03",
-      "reason": "Local full verification and mobile/desktop journey pass; awaiting explicit approval for concrete dedicated CI job in PR83, required for CI acceptance.",
-      "resume_to": "in_progress"
+      "reason": "",
+      "resume_to": ""
     }
   }
 }
