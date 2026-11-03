@@ -884,9 +884,10 @@
         "- 2026-10-27 — todo → claimed — divine (codex)",
         "- 2026-10-27 — todo → in_progress — divine (codex)",
         "- 2026-10-27 — in_progress → blocked — divine (codex) — Awaiting exact-path authorization for generated migration 0002_staff-device-identities SQL, snapshot and journal; source proposal in PR47.",
-        "- 2026-11-03 — blocked → in_progress — divine (codex) — User approved migration generation, isolated testing, commit and authorization record including unchanged develop files"
+        "- 2026-11-03 — blocked → in_progress — divine (codex) — User approved migration generation, isolated testing, commit and authorization record including unchanged develop files",
+        "- 2026-11-03 — in_progress → blocked — divine (codex) — Generated 0009 exposes PostgreSQL invalid regex repetition bound; automatic approval review requires exact-path authorization for corrective 0010 migration, schema edit and authorization record. Six of seven real DB tests pass; full gate incomplete."
       ],
-      "status": "in_progress",
+      "status": "blocked",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-172",
@@ -894,8 +895,8 @@
       "started": "2026-10-27",
       "completed": "",
       "updated": "2026-11-03",
-      "reason": "",
-      "resume_to": ""
+      "reason": "Generated 0009 exposes PostgreSQL invalid regex repetition bound; automatic approval review requires exact-path authorization for corrective 0010 migration, schema edit and authorization record. Six of seven real DB tests pass; full gate incomplete.",
+      "resume_to": "in_progress"
     },
     "WED-171": {
       "log": [
