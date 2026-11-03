@@ -2,20 +2,20 @@
 id: TICKET-031
 title: Add staff PIN sign-in with hashed, expiring PINs
 epic: data-auth
-status: todo
+status: in_progress
 priority: urgent
 estimate: M
 labels: [security, backend]
 module: shared
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-172, TICKET-025, TICKET-169]
 blocks: [TICKET-027, TICKET-032, TICKET-033, TICKET-059, TICKET-064, TICKET-076, TICKET-096, TICKET-173, TICKET-185]
-branch: ""
+branch: TICKET-031
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-03
+started: 2026-11-03
 completed: ""
 reason: ""
 resume_to: ""
@@ -63,3 +63,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-03 — todo → claimed — divine (codex)
+- 2026-11-03 — todo → in_progress — divine (codex)
