@@ -45,4 +45,4 @@ guest-journey:
 
 Uses existing workflow local-development environment values and pinned action versions already in the repository. Generates ephemeral signing keys only in child process environment; no new account, repository secret, production database or deployment. One Playwright worker keeps singleton event settings isolated between the mobile and desktop runs. Fixtures use a test venue guard and retire only IDs created by this test, preserving immutable RSVP history.
 
-Costs: one additional hosted CI job per existing CI trigger. Rollback: remove this job; do not claim TICKET-131 acceptance without passing both projects. Requires the explicit CI-change approval in AGENTS.md before applying.
+Costs: one additional hosted CI job per existing CI trigger. Rollback: remove this job; do not claim TICKET-131 acceptance without passing both projects. Explicit user approval received on 2026-11-03; the job is now applied to .github/workflows/ci.yml.

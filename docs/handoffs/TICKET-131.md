@@ -7,3 +7,7 @@ Implemented e2e/guest.spec.ts and scripts/test-guest-journey.ts. Real invitation
 Dev journey: 2 pass13.5s (existing cached metadata URL serialization warnings disclosed in first-browser.log). Production journey: 2 pass3.9s. Quick and production build pass. Full verify passes formatting/lint/types/unit/build and769browser165skip4.9m. Dedicated journey is not tagged smoke and must be run explicitly; no claim that default smoke covers it.
 
 CI currently has no database in the browser job. A complete additional job is prepared in docs/reviews/TICKET-131/ci-proposal.md; CI modification needs explicit approval under AGENTS.md before applying. Ticket criterion remains unticked until both projects pass in CI. Next: receive approval, apply the reviewed job, run CI, then full t:pr transition. No product changes or physical-device release certification.
+
+## CI authorization — 2026-11-03
+
+User approved the exact proposed CI job. Applied it under jobs in .github/workflows/ci.yml with unchanged existing jobs and permissions. Resumed through CLI. Awaiting both project results from actual CI before ticking acceptance or moving to review.
