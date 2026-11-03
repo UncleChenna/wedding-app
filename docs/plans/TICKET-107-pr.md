@@ -49,3 +49,7 @@ Automated contrast, keyboard, reduced motion, layout, QR signature and performan
 # Harness changes, if any
 
 No hooks, skills, CI rules or guardrails changed. The isolated review runner generates signing keys only in memory and cleans up only the synthetic fixture IDs it creates.
+
+## 2026-11-03 integration evidence
+
+Integrated develop22b94bf (approved PR76) in868de00, retaining both RSVP readParty details and automatic offline-pass saving. Quick verification and production build pass. Both real database flows run together with ephemeral signing keys: offline reload/revocation/eviction and RSVP tag-alongs/meals/persistence/tamper rejection pass (2tests,21.3s). All24 offline/online screenshots refreshed; release QA gates201/184 remain mandatory. The user explicitly authorized PR78's merge after renewed CI; no other merge authorization is implied. Full publication gate runs against this combined code before review/merge.

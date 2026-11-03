@@ -17,3 +17,7 @@ Persistent caffeinate session 52403 prevents sleep; stop when ending the impleme
 ## 2026-11-03 — approved sequential integration
 
 User explicitly approved merging PRs76/78/79/80 with renewed integration checks. PR76 merged as22b94bf0530d40c7a6ae7703fff25bd76a49e3c2. Integrating that base into PR78 produced one conflict in the personal invitation route: preserve both readParty-backed RSVP editing and QrPass saveOffline. No requirement dropped. Ticket resumed through CLI for this repair; full gate and both live feature flows will be rerun before merge. Release-blocking201 remains mandatory.
+
+## 2026-11-03 integration evidence
+
+Integrated develop22b94bf (approved PR76) in868de00, retaining both RSVP readParty details and automatic offline-pass saving. Quick verification and production build pass. Both real database flows run together with ephemeral signing keys: offline reload/revocation/eviction and RSVP tag-alongs/meals/persistence/tamper rejection pass (2tests,21.3s). All24 offline/online screenshots refreshed; release QA gates201/184 remain mandatory. The user explicitly authorized PR78's merge after renewed CI; no other merge authorization is implied. Full publication gate runs against this combined code before review/merge.
