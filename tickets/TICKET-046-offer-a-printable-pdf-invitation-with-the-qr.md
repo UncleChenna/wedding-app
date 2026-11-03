@@ -2,7 +2,7 @@
 id: TICKET-046
 title: Offer a printable PDF invitation with the QR
 epic: invitations
-status: in_review
+status: in_progress
 priority: urgent
 estimate: L
 labels: [frontend, backend]
@@ -66,3 +66,4 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-5) · [Tec
 - 2026-11-02 — in_progress → blocked — divine (codex) — Awaiting human exact-path authorization for generated pnpm-lock.yaml and permission to record it; implementation and review evidence preserved locally, full gate must be rerun after authorization.
 - 2026-11-03 — blocked → in_progress — divine (codex) — User approved generated pnpm-lock.yaml and exact-path authorization record
 - 2026-11-03 — in_progress → in_review — divine (codex)
+- 2026-11-03 — in_review → in_progress — divine (codex) — Resolve develop integration conflicts while preserving PDF, image and offline pass saving
