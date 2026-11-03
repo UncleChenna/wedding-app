@@ -39,7 +39,7 @@ See: [Journey 1: receiving the IV and RSVP](../docs/prd.md#journey-1-receiving-t
 
 ## Acceptance criteria
 
-- [ ] The journey passes on mobile and desktop projects in CI.
+- [x] The journey passes on mobile and desktop projects in CI.
 
 ## Test plan
 
@@ -51,6 +51,8 @@ See: [Journey 1: receiving the IV and RSVP](../docs/prd.md#journey-1-receiving-t
 - `e2e/guest.spec.ts`
 
 ## Notes / decisions
+
+- 2026-11-03 — Approved CI job passes both projects: run41732191620, job126252318493, 2tests7.4s on27e54fb. Full local gate also passes852unit/769browser tests.
 
 - 2026-11-03 — Complete real guest journey passes both local browser projects; full verify passes. CI criterion remains open pending approval of the concrete dedicated database/browser job in docs/reviews/TICKET-131/ci-proposal.md.
 

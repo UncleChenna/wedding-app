@@ -11,3 +11,7 @@ CI currently has no database in the browser job. A complete additional job is pr
 ## CI authorization — 2026-11-03
 
 User approved the exact proposed CI job. Applied it under jobs in .github/workflows/ci.yml with unchanged existing jobs and permissions. Resumed through CLI. Awaiting both project results from actual CI before ticking acceptance or moving to review.
+
+## CI journey passed — 2026-11-03
+
+Approved job126252318493 in run41732191620 passed on27e54fb38f9816fb2e13c7df5b457d82979c5cf5: both mobile and desktop tests,2passed7.4s. Retrieved completed job log via GitHub API to artifacts/TICKET-131/ci-journey.log. All acceptance criteria now proved; full local gate previously passed852unit55skip,769browser165skip. Next: enforced t:pr verification/transition, mark draft ready, await required CI and human merge. PR83 is the linked review.

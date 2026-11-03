@@ -4,7 +4,7 @@ Ticket: TICKET-131
 
 # Summary
 
-Add one real guest journey regression spanning invitation, RSVP, companion details, pass downloads, returning edits and wedding-day lock. The user-approved dedicated CI job now runs the journey against PostgreSQL; this remains draft pending actual CI results.
+Add one real guest journey regression spanning invitation, RSVP, companion details, pass downloads, returning edits and wedding-day lock. The user-approved dedicated CI job now runs the journey against PostgreSQL; both projects passed in CI.
 
 # Changes
 
@@ -15,11 +15,11 @@ Add one real guest journey regression spanning invitation, RSVP, companion detai
 
 # Acceptance criteria and evidence
 
-Local production journey passes both projects (2 tests,3.9s); dev run passes2tests13.5s. CI acceptance remains incomplete until the dedicated PostgreSQL-backed job passes.
+Local production journey passes both projects (2 tests,3.9s); dev run passes2tests13.5s. CI acceptance passed in run41732191620/job126252318493 on27e54fb:2tests7.4s, mobile and desktop.
 
 # Verification
 
-Quick gate, production build and full pnpm verify pass. Full browser gate:769pass165skip4.9minutes. Dedicated journey ran separately; no silent CI coverage claim. Logs: artifacts/TICKET-131/{first-browser,production-browser,quick,build,full-verify}.log. Dev server emitted existing cached metadata URL serialization warnings; production run passed.
+Quick gate, production build and full pnpm verify pass. Full gate:852unit55skip;769browser165skip4.9minutes. Dedicated journey ran separately; no silent CI coverage claim. Logs: artifacts/TICKET-131/{first-browser,production-browser,quick,build,full-verify}.log. Dev server emitted existing cached metadata URL serialization warnings; production run passed.
 
 # Risks and rollout
 
