@@ -41,13 +41,13 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-6) · [On 
 
 ## Acceptance criteria
 
-- [ ] After rsvp_lock_at, every RSVP mutation is rejected server-side (unit test with a fake clock).
-- [ ] Each change writes before/after JSON with a timestamp.
-- [ ] Locked IVs still show the QR pass.
+- [x] After rsvp_lock_at, every RSVP mutation is rejected server-side (unit test with a fake clock).
+- [x] Each change writes before/after JSON with a timestamp.
+- [x] Locked IVs still show the QR pass.
 
-- [ ] Enforce the approved event timezone/lock boundary on the server, log previous/new values and timestamp, and apply the approved pass-version rule when party size changes.
+- [x] Enforce the approved event timezone/lock boundary on the server, log previous/new values and timestamp, and apply the approved pass-version rule when party size changes.
 
-- [ ] Missing or invalid event time zone rejects live lock configuration; a development/test time zone is never substituted for the TBD venue time zone.
+- [x] Missing or invalid event time zone rejects live lock configuration; a development/test time zone is never substituted for the TBD venue time zone.
 
 ## Test plan
 
@@ -65,7 +65,7 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-6) · [On 
 
 - 2026-10-26: Owner approved event-local midnight on 2026-12-19; exact UTC rsvp_lock_at remains unset until venue time zone is configured. See docs/prd.md#approved-event-defaults.
 
-2026-11-03 — Implemented locked mutations, atomic history and locked-page/pass behavior. Boundary/database/browser regressions pass; all-theme screenshots reviewed. Full verification and latest-develop integration remain pending. No production time zone inferred.
+2026-11-03 — Implemented locked mutations, atomic history and locked-page/pass behavior. Boundary/database/browser regressions pass; all-theme screenshots reviewed. Full verification passed against develop f5e5db58446363c6a0b4998dea3dbdfa603a43c1: 834 unit tests and 769 browser tests; 54 unit and 165 browser tests skipped by their existing opt-in/project conditions. Draft PR #81 is published. No production time zone inferred.
 
 ## Activity log
 

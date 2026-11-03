@@ -21,9 +21,9 @@ Boundary fake-clock tests cover one millisecond before/at/after midnight, DST da
 
 # Verification
 
-Initial base develop fbe67fccf783fac676024e5ceeb9b8bc95092709. Twelve cutoff tests and32focusedtests pass; production build passes. Dedicated locked browser passes9.8s; existing RSVP/party flows4passed20.5s. Lighthouse98/99/98,accessibility100,CLS0; initial locked layout unchanged by the final stale-action refresh fix. Detailed evidence: docs/reviews/TICKET-042/REVIEW.md.
+Initial base develop fbe67fccf783fac676024e5ceeb9b8bc95092709. Twelve cutoff tests and 32 focused tests pass; production build passes. Dedicated locked browser passes (9.8s); existing RSVP/party flows: 4 passed (20.5s). Lighthouse 98/99/98, accessibility 100, CLS 0; initial locked layout unchanged by the final stale-action refresh fix. Detailed evidence: docs/reviews/TICKET-042/REVIEW.md.
 
-Remaining before ready review: integrate current develop, complete full pnpm verify and final CI, then record CLI review status. This is a draft until those gates pass.
+Integrated develop f5e5db58446363c6a0b4998dea3dbdfa603a43c1 without conflicts. Full pnpm verify passed on 1c91a7f: ticket validation, formatting, lint, types, 834 unit tests (54 skipped), production build, and 769 browser tests (165 skipped; 9.6 minutes). Opt-in database/browser suites were run separately as described above. Final PR-workflow verification and CI remain required before review readiness.
 
 # Risks and rollout
 
@@ -35,7 +35,7 @@ Twelve full-page captures: docs/reviews/TICKET-042/<theme>/<375|768|1280>-locked
 
 # UI checklist
 
-PASS browser screenshots, tokens, restraint, mobile overflow, reduced motion, keyboard, contrast, copy, shared components and initial-load metrics. No photographs, new font or staff UI. Physical-device/WhatsApp/native QR checks are not verified and remain release gates. Full verification pending; no launch certification.
+PASS browser screenshots, tokens, restraint, mobile overflow, reduced motion, keyboard, contrast, copy, shared components and initial-load metrics. No photographs, new font or staff UI. Physical-device/WhatsApp/native QR checks are not verified and remain release gates. Full local verification passed; no launch certification.
 
 # Harness changes, if any
 
