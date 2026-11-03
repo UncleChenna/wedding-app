@@ -2,7 +2,7 @@
 
 Generated with `pnpm db:generate --name staff-pin-attempts` on 2026-11-03.
 
-Exact protected outputs awaiting commit authorization:
+Exact protected outputs approved for commit by the user on 2026-11-03:
 
 - `drizzle/0011_staff-pin-attempts.sql`
 - `drizzle/meta/0011_snapshot.json`

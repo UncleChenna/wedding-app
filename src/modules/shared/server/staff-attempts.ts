@@ -11,7 +11,7 @@ export type PinAttemptResult<T> =
 /** Hold the device row lock until verification finishes, including across instances. */
 export async function withStaffPinAttempt<T>(
   deviceId: string,
-  verify: () => Promise<PinAttemptResult<T>>,
+  verify: (tx: Parameters<Parameters<typeof db.transaction>[0]>[0]) => Promise<PinAttemptResult<T>>,
 ): Promise<PinAttemptResult<T>> {
   if (!/^[0-9a-f]{64}$/.test(deviceId)) return { status: "wrong" };
   return db.transaction(async (tx) => {
@@ -35,7 +35,7 @@ export async function withStaffPinAttempt<T>(
     const reset = now.getTime() - row.windowStartedAt.getTime() >= WINDOW_MS;
     const failures = reset ? 0 : row.failures;
     if (failures >= 5) return { status: "locked" };
-    const result = await verify();
+    const result = await verify(tx);
     const nextFailures = result.status === "success" ? 0 : failures + 1;
     await tx
       .update(schema.staffPinAttempts)

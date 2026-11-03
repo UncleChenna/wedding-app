@@ -19,10 +19,19 @@ database tests, including eight simultaneous attempts executing only five checks
 Migration 0011 is generated and applied only to this isolated stack. A repeated
 migration preserves all counts (12 migration records); all 15 public tables have
 RLS enabled. Exact-path commit/authorization-record approval was requested and is
-pending. See docs/reviews/TICKET-031/migration-approval.md. Do not commit generated
-files before approval. Quick verification passes lint, types and 49 related tests
+approved by the user on 2026-11-03 and recorded in the ignored authorization file.
+See docs/reviews/TICKET-031/migration-approval.md. Quick verification passes lint, types and 49 related tests
 (34 opt-in tests skipped); the 16 new credential/session tests passed separately.
 Full application verification and browser checks remain outstanding.
+
+The authentication service now checks role, credential version and device/staff
+revocation live, caps session expiry at the approved venue-local 06:00 cutoff,
+and returns no PIN hashes. Three isolated database tests pass, including real
+sign-in and live revocation. All 21 credential/session/cutoff unit tests pass;
+the latest quick gate passes. The first typecheck caught generic inference
+including undefined; an explicit result type fixed it without weakening strictness.
+Cookie/action wiring and UI remain to implement. Installed Next cookies docs were
+read; async reads need Suspense and cookie writes must be actions/handlers.
 
 Next: connect the attempt/session primitives to live credential/role/revocation
 checks and staff entry screens.
