@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ActionBar, Button, Textarea } from "@/modules/shared/components/ui";
 import type { MenuItem } from "../lib/menu";
-import { ORDER_NOTE_MAX, orderCopy } from "../lib/order";
+import { cooldownMessage, ORDER_NOTE_MAX, orderCopy } from "../lib/order";
 import { splitByStation, type Station } from "../lib/stations";
 import { newRequestId, submitOrder, type SubmitDeps } from "../lib/submit-order";
 import { MenuSections } from "./menu-sections";
@@ -99,9 +99,15 @@ export function OrderComposer({
       return;
     }
     requestId.current = null;
-    const { reason, itemIds = [] } = outcome.result;
+    const { reason, itemIds = [], retryAfterSeconds } = outcome.result;
     if (reason === "sold-out") markSoldOut(itemIds);
-    setPhase({ kind: "editing", notice: orderCopy.rejected[reason] });
+    setPhase({
+      kind: "editing",
+      notice:
+        reason === "cooldown" && retryAfterSeconds
+          ? cooldownMessage(retryAfterSeconds)
+          : orderCopy.rejected[reason],
+    });
   }
 
   if (phase.kind === "sent")
