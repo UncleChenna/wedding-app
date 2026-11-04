@@ -2,7 +2,7 @@
 id: TICKET-084
 title: Queue order alerts in an outbox and batch them per station
 epic: alerts
-status: in_progress
+status: blocked
 priority: high
 estimate: M
 labels: [backend, db]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-11-04
 started: 2026-11-04
 completed: ""
-reason: ""
-resume_to: ""
+reason: "Needs owner: exact-path approval for the order_alerts migration, and the production database host (Supabase or Neon) that decides the scheduler. Draft PR #91."
+resume_to: in_progress
 ---
 
 # TICKET-084: Queue order alerts in an outbox and batch them per station
@@ -82,3 +82,4 @@ _Agents append dated notes here while working._
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-04 — todo → claimed — unclechenna (claude)
 - 2026-11-04 — todo → in_progress — unclechenna (claude)
+- 2026-11-04 — in_progress → blocked — unclechenna (claude) — Needs owner: exact-path approval for the order_alerts migration, and the production database host (Supabase or Neon) that decides the scheduler. Draft PR #91.
