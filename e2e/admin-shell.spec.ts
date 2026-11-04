@@ -13,13 +13,13 @@ test.describe("admin shell", () => {
     await page.goto("/dev/admin");
     const nav = page.getByRole("navigation", { name: "Admin" });
     const links = nav.getByRole("link");
-    await expect(links).toHaveText(["Control room", "Sharing", "Sign out"]);
+    await expect(links).toHaveText(["Control room", "Sharing", "Menu", "Sign out"]);
     await expect(nav.getByRole("link", { name: "Control room" })).toHaveAttribute(
       "aria-current",
       "page",
     );
     const reached: string[] = [];
-    for (let i = 0; i < 20 && reached.length < 3; i++) {
+    for (let i = 0; i < 20 && reached.length < 4; i++) {
       await page.keyboard.press("Tab");
       const focused = await page.evaluate(() => {
         const el = document.activeElement;
@@ -37,7 +37,7 @@ test.describe("admin shell", () => {
         reached.push(focused.text ?? "");
       }
     }
-    expect(reached).toEqual(["Control room", "Sharing", "Sign out"]);
+    expect(reached).toEqual(["Control room", "Sharing", "Menu", "Sign out"]);
     await page.keyboard.press("Shift+Tab");
     await page.keyboard.press("Enter");
     // The link opens /admin/sharing; without a session the proxy sends the browser to sign-in.

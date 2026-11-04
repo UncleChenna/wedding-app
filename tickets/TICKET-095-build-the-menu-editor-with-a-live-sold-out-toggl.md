@@ -39,8 +39,8 @@ See: [Admin dashboard](../docs/prd.md#admin-dashboard) (ADM-4) · [Table orderin
 
 ## Acceptance criteria
 
-- [ ] Sold-out toggle updates the order page within 5s (e2e).
-- [ ] Validation prevents an item without a station.
+- [x] Sold-out toggle updates the order page within 5s (e2e).
+- [x] Validation prevents an item without a station.
 
 ## Test plan
 
@@ -55,6 +55,23 @@ See: [Admin dashboard](../docs/prd.md#admin-dashboard) (ADM-4) · [Table orderin
 ## Notes / decisions
 
 _Agents append dated notes here while working._
+
+- 2026-11-04:
+  - **Page.** `/admin/menu` (in the admin shell's navigation and the control-room grid): items by category with
+    Available / Sold out in words, a sold-out toggle, an edit form in a disclosure, removal, and an "Add an item"
+    form. Fields: name, description, category, station (required), most per order, position, dietary tags.
+  - **Safety.** Every Server Action checks admin access itself (`withCurrentAdminAccess`), not only the page and
+    proxy. Input is validated with Zod and normalised to single-line text. Removing an item that has been ordered is
+    refused ("mark it sold out instead") because `order_items` references it. Database errors become a retryable
+    message without details.
+  - **Found and fixed:** a refused form was emptied, because React 19 resets a form after its action. Rejected values
+    now come back as defaults, and the two selects are controlled (selects don't take new defaults after a reset).
+  - **Evidence.** `e2e/admin-menu.spec.ts` (`RUN_ADMIN_MENU_TESTS=1`, a fresh `ADMIN_MENU_TEST_EMAIL` on
+    `ADMIN_EMAIL_ALLOWLIST`, this worktree's local Auth): real email-code and TOTP sign-in; no-station refusal with
+    typed values kept; add; sold out reaches an open guest order page within 5s and back; axe once per theme; no
+    overflow at 375/768/1280; removal. Unit: `menu-item.test.ts`.
+  - **Not done:** photos (no image column on `menu_items`, needs a migration); a confirmation step before removing an
+    item that has never been ordered.
 
 ## Activity log
 

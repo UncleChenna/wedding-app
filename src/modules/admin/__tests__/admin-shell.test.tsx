@@ -24,6 +24,7 @@ it("names the event and offers every section plus sign-out in one labelled navig
   expect(links.map((link) => [link.textContent, link.getAttribute("href")])).toEqual([
     ["Control room", "/admin"],
     ["Sharing", "/admin/sharing"],
+    ["Menu", "/admin/menu"],
     ["Sign out", "/admin/sign-out"],
   ]);
   expect(screen.getByRole("heading", { name: "Page content" })).toBeVisible();
