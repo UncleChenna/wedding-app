@@ -8,6 +8,7 @@ const item = (overrides: Partial<MenuItem>): MenuItem => ({
   description: null,
   category: "meal",
   maxPerOrder: 5,
+  station: "kitchen",
   available: true,
   dietaryTags: [],
   ...overrides,

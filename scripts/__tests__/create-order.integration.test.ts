@@ -88,6 +88,34 @@ describe.runIf(process.env.RUN_ORDER_SUBMIT_DB_TESTS === "1")("guest order submi
     ]);
   });
 
+  it.each([
+    ["kitchen", "meal"],
+    ["bar", "drink"],
+  ] as const)("keeps a %s-only submission as one station ticket", async (station, key) => {
+    const order = submission({ items: [{ menuItemId: menuIds[key], quantity: 1 }] });
+    const result = await createOrder(database, order);
+    expect(result.status).toBe("created");
+    const tickets = await sql<
+      { station: string; order_id: string }[]
+    >`select s.station, s.order_id from station_orders s join orders o on o.id = s.order_id where o.client_request_id = ${order.clientRequestId}`;
+    expect(tickets).toEqual([
+      { station, order_id: result.status === "created" ? result.orderId : "" },
+    ]);
+  });
+
+  it("gives both station tickets of a mixed submission the same submission id", async () => {
+    const order = submission();
+    const result = await createOrder(database, order);
+    const tickets = await sql<
+      { station: string; order_id: string }[]
+    >`select s.station, s.order_id from station_orders s join orders o on o.id = s.order_id where o.client_request_id = ${order.clientRequestId} order by s.station::text`;
+    const orderId = result.status === "created" ? result.orderId : "";
+    expect(tickets).toEqual([
+      { station: "bar", order_id: orderId },
+      { station: "kitchen", order_id: orderId },
+    ]);
+  });
+
   it("answers an identical replay with the same order and refuses a changed one", async () => {
     const order = submission();
     const first = await createOrder(database, order);

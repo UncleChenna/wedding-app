@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { Station } from "./stations";
 
 export const MENU_CATEGORIES = [
   { value: "meal", label: "Meals" },
@@ -7,13 +8,14 @@ export const MENU_CATEGORIES = [
 ] as const;
 export type MenuCategory = (typeof MENU_CATEGORIES)[number]["value"];
 
-/** Guest-safe menu fields; station routing and timestamps stay on the server. */
+/** Guest-safe menu fields. The station lets the confirmation group items; timestamps stay on the server. */
 export type MenuItem = {
   id: string;
   name: string;
   description: string | null;
   category: MenuCategory;
   maxPerOrder: number;
+  station: Station;
   available: boolean;
   dietaryTags: string[];
 };

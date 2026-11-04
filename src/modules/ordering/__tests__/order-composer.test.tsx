@@ -16,6 +16,7 @@ const items: MenuItem[] = [
     description: null,
     category: "meal",
     maxPerOrder: 5,
+    station: "kitchen",
     available: true,
     dietaryTags: [],
   },
@@ -25,6 +26,7 @@ const items: MenuItem[] = [
     description: null,
     category: "alcohol",
     maxPerOrder: 2,
+    station: "bar",
     available: true,
     dietaryTags: [],
   },
@@ -102,7 +104,10 @@ it("shows sending, then the sent confirmation with the order and note", async ()
   );
   const heading = await screen.findByRole("heading", { name: orderCopy.sent });
   expect(heading).toHaveFocus();
-  expect(screen.getByRole("list", { name: "Your order" })).toHaveTextContent("Jollof rice× 1");
+  expect(screen.getByRole("list", { name: "From the kitchen" })).toHaveTextContent(
+    "Jollof rice× 1",
+  );
+  expect(screen.queryByRole("list", { name: "From the bar" })).toBeNull();
   expect(screen.getByText("Your note: No pepper please")).toBeVisible();
   fireEvent.click(screen.getByRole("button", { name: orderCopy.another }));
   expect(screen.getByText(orderCopy.emptyCart)).toBeVisible();
@@ -175,4 +180,19 @@ it("takes a sold-out item out of the order and explains why", async () => {
   expect(screen.getByLabelText("Jollof rice quantity")).toHaveAccessibleDescription("Sold out");
   expect(screen.getByLabelText("Red wine quantity")).toHaveValue(1);
   expect(screen.getByRole("status")).toHaveTextContent("Jollof rice has just sold out.");
+});
+
+it("groups a mixed order's confirmation by kitchen and bar", async () => {
+  setup([async () => Response.json({ status: "created", orderId: ORDER_ID }, { status: 201 })]);
+  choose("Red wine");
+  choose("Jollof rice");
+  choose("Jollof rice");
+  fireEvent.click(sendButton());
+  await screen.findByRole("heading", { name: orderCopy.sent });
+  const groups = screen.getAllByRole("heading", { level: 4 }).map((heading) => heading.textContent);
+  expect(groups).toEqual(["From the kitchen", "From the bar"]);
+  expect(screen.getByRole("list", { name: "From the kitchen" })).toHaveTextContent(
+    "Jollof rice× 2",
+  );
+  expect(screen.getByRole("list", { name: "From the bar" })).toHaveTextContent("Red wine× 1");
 });
