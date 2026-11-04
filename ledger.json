@@ -1857,9 +1857,10 @@
     "WED-043": {
       "log": [
         "- 2026-11-04 — todo → claimed — divine (codex)",
-        "- 2026-11-04 — todo → in_progress — divine (codex)"
+        "- 2026-11-04 — todo → in_progress — divine (codex)",
+        "- 2026-11-04 — in_progress → blocked — divine (codex) — Audit migration must follow PR89 migration0012; isolated base migration exited 1 during severe Docker memory pressure. Real database lifecycle tests and full verification remain incomplete."
       ],
-      "status": "in_progress",
+      "status": "blocked",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-043",
@@ -1867,8 +1868,8 @@
       "started": "2026-11-04",
       "completed": "",
       "updated": "2026-11-04",
-      "reason": "",
-      "resume_to": ""
+      "reason": "Audit migration must follow PR89 migration0012; isolated base migration exited 1 during severe Docker memory pressure. Real database lifecycle tests and full verification remain incomplete.",
+      "resume_to": "in_progress"
     },
     "WED-101": {
       "log": [
