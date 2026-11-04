@@ -2,7 +2,7 @@
 id: TICKET-095
 title: Build the menu editor with a live sold-out toggle
 epic: admin
-status: in_progress
+status: in_review
 priority: high
 estimate: M
 labels: [frontend, backend]
@@ -12,7 +12,7 @@ agent: claude
 blocked_by: [TICKET-171, TICKET-088]
 blocks: [TICKET-134, TICKET-157]
 branch: TICKET-095
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/96
 created: 2026-10-21
 updated: 2026-11-04
 started: 2026-11-04
@@ -78,3 +78,4 @@ _Agents append dated notes here while working._
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-04 — todo → claimed — unclechenna (claude)
 - 2026-11-04 — todo → in_progress — unclechenna (claude)
+- 2026-11-04 — in_progress → in_review — unclechenna (claude)
