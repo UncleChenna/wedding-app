@@ -115,3 +115,12 @@ Next: publish these evidence-only updates, make PR84 ready, check all five CI jo
 on the final head, and request an explicit merge exception before merging. The
 user approved review/device deferral, not PR84 merge. Physical checks remain
 unchecked and release-blocking in TICKET-201. No production database changes.
+
+## Closed — 2026-11-04
+
+GitHub confirms PR84 was merged by UncleChenna at 00:48:12Z as
+549b86a25d2721e5535776c08a287d633695751f. All five jobs in CI run
+41747288188 passed on final head 5047e43. CLI recorded done and pushed 045fdbc.
+No agent merge was performed for PR84. Physical-device release checks remain in
+TICKET-201. The isolated wedding-5f49479b1ba7 database stack was stopped with
+backup after verification, freeing local capacity; no production database changed.
