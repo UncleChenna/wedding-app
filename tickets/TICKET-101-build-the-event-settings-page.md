@@ -39,10 +39,10 @@ See: [Journey 1: receiving the IV and RSVP](../docs/prd.md#journey-1-receiving-t
 
 ## Acceptance criteria
 
-- [ ] Saving updates the IV page and limits immediately (e2e).
-- [ ] Invalid dates (lock after the wedding) are rejected (unit).
+- [x] Saving updates the IV page and limits immediately (e2e).
+- [x] Invalid dates (lock after the wedding) are rejected (unit).
 
-- [ ] Draft settings can retain TBD details, but live publication/RSVP activation requires an explicitly configured valid event time zone; missing/invalid values must not become a development default.
+- [x] Draft settings can retain TBD details, but live publication/RSVP activation requires an explicitly configured valid event time zone; missing/invalid values must not become a development default.
 
 ## Test plan
 
@@ -59,6 +59,30 @@ See: [Journey 1: receiving the IV and RSVP](../docs/prd.md#journey-1-receiving-t
 - 2026-10-26: Approved values are in docs/prd.md#approved-event-defaults (owner, 2026-10-26): Uchenna and Adaora; 2026-12-19; default one tag-along editable per invitation; lock at event-local midnight; retention 90 days. Venue, ceremony time, map, dress code and time zone are TBD. Wallet is deferred.
 
 _Agents append dated notes here while working._
+
+- 2026-11-04:
+  - **Page.** `/admin/settings`, in the shell's navigation and the control-room grid. One form, in four groups (the
+    couple, the day, replies, table ordering), for every `event_settings` field except the ordering switch
+    (TICKET-080, control room) and themes (out of scope).
+  - **Validation.** The form parses into the shared `eventSettingsSchema` (one source of rules) with plain-language
+    messages.
+    - The RSVP cutoff is typed in venue time and converted with `zonedLocalToUtc`, which handles daylight saving.
+    - A cutoff after the start of the wedding day is refused, because replies lock then anyway.
+    - A cutoff needs a real time zone.
+    - Blank details stay `null` (TBD), and a blank time zone is never defaulted; replies only open once one is set
+      (`rsvpWindow`).
+  - **Immediate effect.** The personal invitation reads settings per request. The save also calls
+    `revalidatePath("/", "layout")`, so the cached public pages refresh too. Order limits are read inside
+    `createOrder` on every order.
+  - **Not here:** Wi-Fi details (no column yet; table cards are TICKET-094).
+  - **Owner decision still open:** the cooldown default (30 or 60 seconds). It can now simply be set on this page.
+  - **Evidence.**
+    - Unit: `settings-form.test.ts` (12).
+    - Signed-in browser test, `e2e/admin-settings.spec.ts` (`RUN_ADMIN_SETTINGS_TESTS=1`, fresh `ADMIN_TEST_EMAIL` on
+      the allowlist): a cutoff after the wedding is refused with the typed values kept; a valid save stores the cutoff
+      as UTC; a real invitation shows the new venue on its next load; with cooldown 0 a table orders twice, and after
+      saving 3600 the next order is refused with `cooldown`.
+    - Axe once per theme; overflow at all widths.
 
 ## Activity log
 

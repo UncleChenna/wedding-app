@@ -20,6 +20,11 @@ export async function AdminDashboard() {
             name: "Menu",
             text: "Set what guests can order and mark items sold out.",
           },
+          {
+            href: appRoutes.adminSettings.path,
+            name: "Settings",
+            text: "Names, date, venue, replies and ordering limits.",
+          },
         ].map((area) => (
           <li key={area.name}>
             <h2 className="font-display text-3xl">
@@ -33,7 +38,7 @@ export async function AdminDashboard() {
             <p className="mt-3">{area.text}</p>
           </li>
         ))}
-        {["Guests", "Seating", "Staff", "Settings", "Live dashboard"].map((name) => (
+        {["Guests", "Seating", "Staff", "Live dashboard"].map((name) => (
           <li key={name}>
             <h2 className="font-display text-3xl">{name}</h2>
             <p className="mt-3 text-muted-foreground">Coming soon</p>
