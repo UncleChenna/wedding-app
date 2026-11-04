@@ -2,7 +2,7 @@
 id: TICKET-185
 title: Protect invitation and PIN endpoints before invitations launch
 epic: security
-status: in_progress
+status: blocked
 priority: urgent
 estimate: M
 labels: [security, backend, test]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-11-04
 started: 2026-11-04
 completed: ""
-reason: ""
-resume_to: ""
+reason: "Integrated proxy conflict fixed; full verification has 7 browser timeouts and a direct DB timeout with only 53MB Docker VM memory available. Diagnose/reverify after capacity recovers; approvals are complete."
+resume_to: in_progress
 ---
 
 # TICKET-185: Protect invitation and PIN endpoints before invitations launch
@@ -71,3 +71,4 @@ Backlog audit coverage: Security, INV-2, ADM-4. See [PRD](../docs/prd.md) and [a
 - 2026-11-04 — blocked → in_progress — divine (codex) — Owner approved migration and budgets; verification underway.
 - 2026-11-04 — in_progress → in_review — divine (codex)
 - 2026-11-04 — in_review → in_progress — divine (codex) — Integrate merged TICKET-032 while preserving authorization and request budgets.
+- 2026-11-04 — in_progress → blocked — divine (codex) — Integrated proxy conflict fixed; full verification has 7 browser timeouts and a direct DB timeout with only 53MB Docker VM memory available. Diagnose/reverify after capacity recovers; approvals are complete.
