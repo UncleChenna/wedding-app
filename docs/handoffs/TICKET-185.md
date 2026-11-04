@@ -178,3 +178,18 @@ GitHub's PR head now matches that pushed commit. Generated migration is committe
 no pending local source changes remain. Next: confirm CI at the final published
 head and human review; no production application or PR merge has been performed.
 Continue TICKET-032's approved base update, then the requested harness streamlining.
+
+## Integrating externally merged TICKET-032
+
+PR87 was externally merged as develop 696baef1894bc639018bad7eff129506a6e32544
+while local conflict testing was running. Its local ordering tests passed all eight
+mobile/desktop cases; the checkout was reconciled without publishing a duplicate
+merge, and CLI verified/recorded TICKET-032 done. Its isolated stack is stopped
+with backup. The additional cooldown screenshot-path override is preserved under
+TICKET-032 artifacts for a future harness change.
+
+Merged that develop base into TICKET-185, retaining both request authorization and
+guest budgets in src/proxy.ts. Nineteen proxy tests pass, including an exhausted
+guest-budget case that still denies unauthenticated privileged calls and admits
+an authorized admin. All existing assertions remain. Quick verification passes;
+full PR gate must now run on this integrated code. No new migration changes.

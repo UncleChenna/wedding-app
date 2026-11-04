@@ -9,6 +9,13 @@ vi.mock("../../src/modules/shared/server/db/client", () => ({ db: {} }));
 vi.mock("../../src/modules/invitations/server/repository", () => ({
   hasPublishedInvitation: mocks.lookup,
 }));
+vi.mock("../../src/modules/admin/server/request-admin-access", () => ({
+  authorizeAdminRequest: vi.fn(),
+}));
+vi.mock("../../src/modules/shared/server/request-access", () => ({
+  staffRequestRole: () => undefined,
+  authorizeStaffRequest: vi.fn(),
+}));
 import { config, proxy } from "../../src/proxy";
 
 beforeEach(() => {

@@ -29,6 +29,11 @@ network, retaining the existing five-failed-attempt device lockout.
 
 # Verification
 
+Integration base: develop `696baef1894bc639018bad7eff129506a6e32544`, including
+merged TICKET-032. Both authorization and guest budgets are retained. Nineteen
+proxy tests and quick verification pass; the PR gate is being rerun on this
+integration. The full results below describe the pre-integration implementation.
+
 Full verification passes: formatting, lint, types, 937 unit tests, production build
 and 775 browser checks (4.3m). 82 unit and 165 browser opt-in skips are not passes.
 Separate explicit runs passed five database cases and six retry browser cases;

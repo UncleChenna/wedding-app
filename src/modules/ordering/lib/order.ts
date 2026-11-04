@@ -49,12 +49,20 @@ export const orderRejections = [
   "sold-out",
   "over-limit",
   "mismatch",
+  "cooldown",
+  "too-many-open",
 ] as const;
 export type OrderRejection = (typeof orderRejections)[number];
 
 export type OrderResult =
   | { status: "created" | "replayed"; orderId: string }
-  | { status: "rejected"; reason: OrderRejection; itemIds?: string[] }
+  | {
+      status: "rejected";
+      reason: OrderRejection;
+      itemIds?: string[];
+      /** Only for `cooldown`: whole seconds until this table may order again. */
+      retryAfterSeconds?: number;
+    }
   | { status: "unavailable" };
 
 export const orderResponseSchema = z.discriminatedUnion("status", [
@@ -63,6 +71,7 @@ export const orderResponseSchema = z.discriminatedUnion("status", [
     status: z.literal("rejected"),
     reason: z.enum(orderRejections),
     itemIds: z.array(z.uuid()).max(ORDER_MAX_LINES).optional(),
+    retryAfterSeconds: z.number().int().min(1).max(86400).optional(),
   }),
   z.strictObject({ status: z.literal("unavailable") }),
 ]);
@@ -85,5 +94,15 @@ export const orderCopy = {
     "sold-out": "Sorry, something in your order has just sold out. We've taken it out for you.",
     "over-limit": "That's more than we can send of one item at once. Please lower the quantity.",
     mismatch: "Your order changed while sending. Please check it and send again.",
+    cooldown: "Your table's last order went in a moment ago. Please send this one shortly.",
+    "too-many-open":
+      "Your table already has a few orders on the way. Once one arrives, you can order again.",
   } satisfies Record<OrderRejection, string>,
 } as const;
+
+/** The cooldown message names the wait, so guests know exactly when to try again. */
+export function cooldownMessage(seconds: number): string {
+  return seconds <= 1
+    ? "Your table's last order went in a moment ago. You can send this one in a second."
+    : `Your table's last order went in a moment ago. You can send this one in ${seconds} seconds.`;
+}

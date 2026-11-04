@@ -1,7 +1,7 @@
 import { randomInt, randomUUID } from "node:crypto";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres, { type Sql } from "postgres";
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { assertDatabaseTarget } from "../database-target";
 import * as schema from "../../src/modules/shared/server/db/schema";
 import type { Db } from "../../src/modules/shared/server/db/client";
@@ -12,7 +12,8 @@ let sql: Sql;
 let database: Db;
 let createOrder: typeof CreateOrder;
 const tag = "TICKET-072 fixture " + randomInt(100000, 900000);
-const table = randomInt(100000, 900000);
+/** Each test orders at its own table, so one test's orders never trip another's limits. */
+let table = 0;
 const tableIds: string[] = [];
 const menuIds: Record<"meal" | "drink" | "soldOut", string> = {
   meal: randomUUID(),
@@ -46,14 +47,17 @@ describe.runIf(process.env.RUN_ORDER_SUBMIT_DB_TESTS === "1")("guest order submi
     sql = postgres(url, { max: 8, connect_timeout: 10 });
     database = drizzle(sql, { schema }) as unknown as Db;
     createOrder = (await import("../../src/modules/ordering/server/create-order")).createOrder;
-    const [row] = await sql<
-      { id: string }[]
-    >`insert into tables(number, name, capacity) values (${table}, ${tag}, 8) returning id`;
-    if (row) tableIds.push(row.id);
     await sql`insert into menu_items(id, name, category_v2, station, max_per_order, is_available) values
       (${menuIds.meal}, ${tag + " meal"}, 'meal', 'kitchen', 3, true),
       (${menuIds.drink}, ${tag + " drink"}, 'soft_drink', 'bar', 2, true),
       (${menuIds.soldOut}, ${tag + " sold out"}, 'meal', 'kitchen', 3, false)`;
+  });
+  beforeEach(async () => {
+    table = randomInt(100000, 900000);
+    const [row] = await sql<
+      { id: string }[]
+    >`insert into tables(number, name, capacity) values (${table}, ${tag}, 8) returning id`;
+    if (row) tableIds.push(row.id);
   });
   afterAll(async () => {
     if (!sql) return;
@@ -154,7 +158,7 @@ describe.runIf(process.env.RUN_ORDER_SUBMIT_DB_TESTS === "1")("guest order submi
   const rejections: [OrderRejection, Partial<OrderSubmission>, string[] | undefined][] = [
     ["sold-out", { items: [{ menuItemId: menuIds.soldOut, quantity: 1 }] }, [menuIds.soldOut]],
     ["over-limit", { items: [{ menuItemId: menuIds.drink, quantity: 3 }] }, [menuIds.drink]],
-    ["table-missing", { table: table + 1 }, undefined],
+    ["table-missing", { table: 2_000_000 }, undefined],
     ["invalid", { items: [{ menuItemId: randomUUID(), quantity: 1 }] }, undefined],
   ];
   it.each(rejections)("rejects %s without writing anything", async (reason, overrides, itemIds) => {
@@ -217,5 +221,98 @@ describe.runIf(process.env.RUN_ORDER_SUBMIT_DB_TESTS === "1")("guest order submi
     expect(
       await sql`select 1 from station_orders s join orders o on o.id = s.order_id where o.client_request_id = ${order.clientRequestId}`,
     ).toHaveLength(0);
+  });
+
+  describe("table limits (TICKET-073)", () => {
+    const tableId = () => tableIds.at(-1) ?? "";
+    /** Earlier orders for this test's table, placed long enough ago to be past any cooldown. */
+    async function earlier(statuses: string[], minutesAgo = 10) {
+      for (const status of statuses)
+        await sql`insert into orders(table_id, status, created_at) values (${tableId()}, ${status}, now() - make_interval(mins => ${minutesAgo}))`;
+    }
+    const tableOrders = async () =>
+      (
+        await sql<
+          { n: number }[]
+        >`select count(*)::int as n from orders where table_id = ${tableId()}`
+      )[0]?.n;
+    /** Runs with changed event settings inside a transaction that is always rolled back. */
+    async function withSettings(
+      values: Partial<typeof schema.eventSettings.$inferInsert>,
+      run: (tx: Pick<Db, "transaction">) => Promise<void>,
+    ) {
+      const rollback = new Error("rollback settings");
+      await database
+        .transaction(async (tx) => {
+          await tx
+            .insert(schema.eventSettings)
+            .values({ id: 1, ...values })
+            .onConflictDoUpdate({ target: schema.eventSettings.id, set: values });
+          await run(tx as unknown as Pick<Db, "transaction">);
+          throw rollback;
+        })
+        .catch((error: unknown) => {
+          if (error !== rollback) throw error;
+        });
+    }
+
+    it("refuses the 4th open order with the default limit of 3", async () => {
+      await earlier(["received", "preparing", "ready"]);
+      const order = submission();
+      expect(await createOrder(database, order)).toEqual({
+        status: "rejected",
+        reason: "too-many-open",
+      });
+      expect(await ordersFor(order.clientRequestId)).toHaveLength(0);
+    });
+
+    it("frees a slot once an order is served or cancelled", async () => {
+      await earlier(["received", "preparing", "served", "cancelled"]);
+      expect((await createOrder(database, submission())).status).toBe("created");
+    });
+
+    it("refuses a second order within a 60-second cooldown and states the seconds left", async () => {
+      await withSettings({ orderCooldownSeconds: 60 }, async (tx) => {
+        expect((await createOrder(tx, submission())).status).toBe("created");
+        const second = await createOrder(tx, submission());
+        expect(second).toMatchObject({ status: "rejected", reason: "cooldown" });
+        const seconds = second.status === "rejected" ? (second.retryAfterSeconds ?? 0) : 0;
+        expect(seconds).toBeGreaterThanOrEqual(55);
+        expect(seconds).toBeLessThanOrEqual(60);
+      });
+    });
+
+    it("counts a mixed kitchen and bar submission once", async () => {
+      await earlier(["received", "received"]);
+      const mixed = submission();
+      expect((await createOrder(database, mixed)).status).toBe("created");
+      expect(await tableOrders()).toBe(3);
+      // Past the cooldown, the table is now at its limit of 3 submissions, not 4 station tickets.
+      await sql`update orders set created_at = now() - interval '10 minutes' where table_id = ${tableId()}`;
+      expect(await createOrder(database, submission())).toEqual({
+        status: "rejected",
+        reason: "too-many-open",
+      });
+    });
+
+    it("lets parallel submissions from one table through only once", async () => {
+      await earlier(["received", "received"]);
+      const results = await Promise.all(
+        Array.from({ length: 8 }, () => createOrder(database, submission())),
+      );
+      expect(results.filter((result) => result.status === "created")).toHaveLength(1);
+      expect(
+        results.filter((result) => result.status === "rejected" && result.reason === "cooldown"),
+      ).toHaveLength(7);
+      expect(await tableOrders()).toBe(3);
+    });
+
+    it("caps every item at the event-wide quantity limit too", async () => {
+      await withSettings({ maxItemQuantity: 1 }, async (tx) => {
+        expect(
+          await createOrder(tx, submission({ items: [{ menuItemId: menuIds.meal, quantity: 2 }] })),
+        ).toEqual({ status: "rejected", reason: "over-limit", itemIds: [menuIds.meal] });
+      });
+    });
   });
 });

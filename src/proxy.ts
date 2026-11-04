@@ -8,7 +8,24 @@ import { requestRateLimit } from "@/modules/shared/server/request-rate-limit";
 import { requestBudgetResponse } from "@/modules/shared/server/request-budget-gate";
 import { requestRetryDocument } from "@/modules/shared/server/request-retry-document";
 
+import { authorizeAdminRequest } from "@/modules/admin/server/request-admin-access";
+import { authorizeStaffRequest, staffRequestRole } from "@/modules/shared/server/request-access";
+
 export async function proxy(request: NextRequest) {
+  const path = request.nextUrl.pathname;
+  const adminBootstrap = ["/admin/sign-in", "/admin/sign-out", "/admin/mfa"].includes(path);
+  if (
+    !adminBootstrap &&
+    (path === "/admin" ||
+      path.startsWith("/admin/") ||
+      path === "/api/admin" ||
+      path.startsWith("/api/admin/"))
+  ) {
+    return authorizeAdminRequest(request);
+  }
+  const staffRole = staffRequestRole(path);
+  if (staffRole) return authorizeStaffRequest(request, staffRole);
+
   const privateLookup =
     request.nextUrl.pathname.startsWith("/i/") || request.nextUrl.pathname.startsWith("/p/");
   if (privateLookup && (request.method === "GET" || request.method === "HEAD")) {
@@ -75,6 +92,11 @@ export const config = {
     "/admin/:path*",
     "/checkin/:path*",
     "/kitchen/:path*",
+    "/bar/:path*",
+    "/api/admin/:path*",
+    "/api/checkin/:path*",
+    "/api/kitchen/:path*",
+    "/api/bar/:path*",
     "/order/:path*",
   ],
 };
