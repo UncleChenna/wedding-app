@@ -2,7 +2,7 @@
 id: TICKET-031
 title: Add staff PIN sign-in with hashed, expiring PINs
 epic: data-auth
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [security, backend]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/84
 created: 2026-10-21
 updated: 2026-11-04
 started: 2026-11-03
-completed: ""
+completed: 2026-11-04
 reason: ""
 resume_to: ""
 ---
@@ -70,3 +70,4 @@ See: [Users and roles](../docs/prd.md#users-and-roles) · [Security](../docs/prd
 - 2026-11-03 — in_progress → blocked — divine (codex) — Automated verification passes; awaiting physical staff-device review evidence or user-approved deferral before advancing draft PR84.
 - 2026-11-04 — blocked → in_progress — divine (codex) — User approved proceeding to review with physical staff-device checks retained as release requirements.
 - 2026-11-04 — in_progress → in_review — divine (codex)
+- 2026-11-04 — in_review → done — divine (codex)
