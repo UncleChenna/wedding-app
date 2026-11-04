@@ -216,3 +216,17 @@ limiter and private-route checks, investigate any repeat under healthy condition
 then run the full gate. PR remains draft/incomplete; migration and budget approvals
 are already recorded. TICKET-215 was reserved and its complete definition is in
 the TICKET-032 worktree, awaiting its own branch.
+
+## Resource recovery and unchanged regressions — 2026-11-04
+
+Read-only capacity check showed 1,734MB available in Colima. Restarted only this
+worktree's stack; every service reports healthy. All five unchanged distributed
+limiter integration tests passed (5.61s total), including the shared two-pool budget,
+expiry, RLS and 1,050 legitimate lookup requests. The exact remaining failed
+private-route case passed unchanged: emerald-night `/p/invalid`, 888ms test / 4.1s run.
+Logs: `artifacts/TICKET-185/recovered-db-start.log`, `recovered-limiter.log`,
+`recovered-private-route.log`. This is evidence of recovery, not a claim that all
+previous failures were exclusively environmental. No assertions/timeouts changed.
+
+CLI resumed in_progress and published `07ce1f5`. Next: full integrated PR gate,
+then update PR89 with final results and retain physical-device release requirements.

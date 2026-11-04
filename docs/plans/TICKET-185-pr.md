@@ -73,3 +73,12 @@ Safe default light/dark themes are used during outages without database theme re
 # Harness changes, if any
 
 None. The requested approval-workflow simplification will be tracked separately.
+
+## Recovery recheck
+
+On 2026-11-04, this ticket's isolated database restarted healthy after capacity
+recovered. All five unchanged limiter database tests passed; the exact remaining
+private-route timeout passed unchanged (888ms). Evidence is in the ticket handoff
+and `artifacts/TICKET-185/recovered-*.log`. The earlier integrated failures remain
+recorded above; final full verification must pass before this draft returns to review.
+No migration, budget, assertion or timeout changes were made during recovery.
