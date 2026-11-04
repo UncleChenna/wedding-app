@@ -2,7 +2,7 @@
 id: TICKET-032
 title: Protect admin and staff routes in the request proxy
 epic: data-auth
-status: in_progress
+status: in_review
 priority: urgent
 estimate: M
 labels: [security, backend]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-030, TICKET-031]
 blocks: [TICKET-043, TICKET-059, TICKET-061, TICKET-088, TICKET-181]
 branch: TICKET-032
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/87
 created: 2026-10-21
 updated: 2026-11-04
 started: 2026-11-04
@@ -63,3 +63,4 @@ See: [Users and roles](../docs/prd.md#users-and-roles) · [Security](../docs/prd
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-04 — todo → claimed — divine (codex)
 - 2026-11-04 — todo → in_progress — divine (codex)
+- 2026-11-04 — in_progress → in_review — divine (codex)
