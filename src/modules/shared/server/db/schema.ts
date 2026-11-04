@@ -294,6 +294,14 @@ export const scanEvents = pgTable(
       sql`${t.admittedPeople} = 0 or (${t.result} = 'valid' and ${t.invitationId} is not null)`,
     ),
     check(
+      "scan_events_reported_admission",
+      sql`${t.reportedPeople} = 0 or ${t.reportedResult} = 'valid'`,
+    ),
+    check(
+      "scan_events_unallocated_report_conflict",
+      sql`${t.reportedPeople} = ${t.admittedPeople} or ${t.conflict}`,
+    ),
+    check(
       "scan_events_live_identity",
       sql`${t.source} = 'legacy' or (${t.staffId} is not null and ${t.deviceId} is not null)`,
     ),

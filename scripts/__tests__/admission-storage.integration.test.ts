@@ -1,10 +1,55 @@
 import { randomUUID } from "node:crypto";
-import postgres, { type Sql } from "postgres";
+import { readFileSync } from "node:fs";
+import postgres, { type Sql, type TransactionSql } from "postgres";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { assertDatabaseTarget } from "../database-target";
 
 let db: Sql;
 const rollback = new Error("rollback admission storage fixture");
+
+async function applyProposal(tx: TransactionSql, namespace: string, path: string) {
+  const source = readFileSync(path, "utf8")
+    .replaceAll('"public".', `"${namespace}".`)
+    .replaceAll("public.", `"${namespace}".`);
+  await tx.unsafe(source).simple();
+}
+async function storageTransaction<T>(
+  run: (tx: TransactionSql, namespace: string) => Promise<T>,
+  options: { legacy?: boolean; beforeBackfill?: (tx: TransactionSql) => Promise<void> } = {},
+): Promise<T> {
+  let result: { value: T } | undefined;
+  try {
+    await db.begin(async (tx) => {
+      let namespace = "public";
+      if (process.env.ADMISSION_SCHEMA_PROPOSAL === "1") {
+        namespace = "admission_test_" + randomUUID().replaceAll("-", "");
+        await tx.unsafe(`create schema "${namespace}"`);
+        await tx.unsafe(`set local search_path to "${namespace}", pg_catalog`);
+        // Apply the real empty-scaffold chain; export only this ticket's additive tables.
+        // A full-schema export places an unrelated composite FK before its unique index.
+        const journal = JSON.parse(readFileSync("drizzle/meta/_journal.json", "utf8")) as {
+          entries: { tag: string }[];
+        };
+        const migrations = options.legacy
+          ? journal.entries.filter((entry) => /^(0000_|0009_|0010_)/.test(entry.tag))
+          : journal.entries;
+        for (const migration of migrations) {
+          await applyProposal(tx, namespace, `drizzle/${migration.tag}.sql`);
+        }
+        await applyProposal(tx, namespace, "artifacts/TICKET-024/additive-schema.sql");
+        await options.beforeBackfill?.(tx);
+        await applyProposal(tx, namespace, "docs/reviews/TICKET-024/backfill-proposal.sql");
+        await applyProposal(tx, namespace, "docs/reviews/TICKET-024/guards-proposal.sql");
+      }
+      result = { value: await run(tx, namespace) };
+      throw rollback;
+    });
+  } catch (error) {
+    if (error !== rollback) throw error;
+  }
+  if (!result) throw new Error("Storage test did not return a result");
+  return result.value;
+}
 
 describe.runIf(process.env.RUN_ADMISSION_DB_TESTS === "1")("admission storage", () => {
   beforeAll(() => {
@@ -18,75 +63,173 @@ describe.runIf(process.env.RUN_ADMISSION_DB_TESTS === "1")("admission storage", 
   });
 
   it("retains an unknown-invitation attempt, enforces retry identity and rejects mutation", async () => {
-    try {
-      await db.begin(async (tx) => {
-        const staffId = randomUUID(),
-          deviceId = randomUUID(),
-          eventId = randomUUID();
-        await tx`insert into staff(id,name,role) values (${staffId},'Synthetic gate','gate')`;
-        await tx`insert into registered_devices(id,name,role,registered_by_staff_id) values (${deviceId},'Synthetic scanner','gate',${staffId})`;
-        const [event] = await tx`
+    await storageTransaction(async (tx) => {
+      const staffId = randomUUID(),
+        deviceId = randomUUID(),
+        eventId = randomUUID();
+      await tx`insert into staff(id,name,role) values (${staffId},'Synthetic gate','gate')`;
+      await tx`insert into registered_devices(id,name,role,registered_by_staff_id) values (${deviceId},'Synthetic scanner','gate',${staffId})`;
+      const [event] = await tx`
           insert into scan_events(client_event_id,staff_id,device_id,reported_at,reported_result,result,reported_people,admitted_people,source)
           values (${eventId},${staffId},${deviceId},'2026-12-19T12:00:00Z','invalid','invalid',0,0,'online') returning *`;
-        expect(event?.invitation_id).toBeNull();
-        expect(event?.client_event_id).toBe(eventId);
-        await expect(
-          tx.savepoint(async (sp) => {
-            await sp`insert into scan_events(client_event_id,staff_id,device_id,reported_at,reported_result,result,reported_people,admitted_people,source)
+      expect(event?.invitation_id).toBeNull();
+      expect(event?.client_event_id).toBe(eventId);
+      await expect(
+        tx.savepoint(async (sp) => {
+          await sp`insert into scan_events(client_event_id,staff_id,device_id,reported_at,reported_result,result,reported_people,admitted_people,source)
             values (${eventId},${staffId},${deviceId},'2026-12-19T12:00:00Z','invalid','invalid',0,0,'online')`;
-          }),
-        ).rejects.toMatchObject({ code: "23505" });
-        await expect(
-          tx.savepoint(async (sp) => {
-            await sp`update scan_events set reported_people=1 where client_event_id=${eventId}`;
-          }),
-        ).rejects.toMatchObject({ code: "42501" });
-        await expect(
-          tx.savepoint(async (sp) => {
-            await sp`delete from scan_events where client_event_id=${eventId}`;
-          }),
-        ).rejects.toMatchObject({ code: "42501" });
-        throw rollback;
-      });
-    } catch (error) {
-      if (error !== rollback) throw error;
-    }
+        }),
+      ).rejects.toMatchObject({ code: "23505" });
+      await expect(
+        tx.savepoint(async (sp) => {
+          await sp`update scan_events set reported_people=1 where client_event_id=${eventId}`;
+        }),
+      ).rejects.toMatchObject({ code: "42501" });
+      await expect(
+        tx.savepoint(async (sp) => {
+          await sp`delete from scan_events where client_event_id=${eventId}`;
+        }),
+      ).rejects.toMatchObject({ code: "42501" });
+    });
   }, 15_000);
 
   it("keeps new storage private under row-level security", async () => {
-    const rows =
-      await db`select relname,relrowsecurity from pg_class where oid in ('public.scan_events'::regclass,'public.admission_counters'::regclass) order by relname`;
-    expect(rows).toEqual([
-      { relname: "admission_counters", relrowsecurity: true },
-      { relname: "scan_events", relrowsecurity: true },
-    ]);
+    await storageTransaction(async (tx, namespace) => {
+      const rows =
+        await tx`select relname,relrowsecurity from pg_class where oid in (${namespace + ".scan_events"}::regclass,${namespace + ".admission_counters"}::regclass) order by relname`;
+      expect(rows).toEqual([
+        { relname: "admission_counters", relrowsecurity: true },
+        { relname: "scan_events", relrowsecurity: true },
+      ]);
+    });
   }, 10_000);
 
-  it("rejects a forged allowance and an RSVP reduction below accepted admissions", async () => {
-    try {
-      await db.begin(async (tx) => {
-        const invitationId = randomUUID();
-        await tx`insert into invitations(id,token,status) values (${invitationId},${randomUUID().replaceAll("-", "")},'rsvp_yes')`;
-        await tx`insert into rsvps(invitation_id,attending,count_attending) values (${invitationId},true,4)`;
+  it("rejects impossible reports, unflagged excess, unknown results and missing live identities", async () => {
+    await storageTransaction(async (tx) => {
+      const staffId = randomUUID(),
+        deviceId = randomUUID();
+      await tx`insert into staff(id,name,role) values (${staffId},'Synthetic gate','gate')`;
+      await tx`insert into registered_devices(id,name,role) values (${deviceId},'Synthetic scanner','gate')`;
+      const cases = [
+        { reported: "invalid", people: 1, conflict: true, staff: staffId, code: "23514" },
+        { reported: "valid", people: 1, conflict: false, staff: staffId, code: "23514" },
+        { reported: "valid", people: -1, conflict: true, staff: staffId, code: "23514" },
+        { reported: "unknown-result", people: 0, conflict: false, staff: staffId, code: "22P02" },
+        { reported: "invalid", people: 0, conflict: false, staff: null, code: "23514" },
+        { reported: "invalid", people: 0, conflict: false, staff: randomUUID(), code: "23503" },
+      ];
+      for (const row of cases) {
         await expect(
           tx.savepoint(async (sp) => {
-            await sp`insert into admission_counters(invitation_id,allowance,admitted_people) values (${invitationId},100,5)`;
+            await sp`insert into scan_events(client_event_id,staff_id,device_id,reported_at,reported_result,result,reported_people,admitted_people,conflict,source)
+              values (${randomUUID()},${row.staff},${deviceId},'2026-12-19T12:00:00Z',${row.reported},'invalid',${row.people},0,${row.conflict},'offline')`;
           }),
-        ).rejects.toMatchObject({ code: "23514" });
-        await tx`insert into admission_counters(invitation_id,allowance,admitted_people) values (${invitationId},4,2)`;
-        await expect(
-          tx.savepoint(async (sp) => {
-            await sp`update rsvps set count_attending=1 where invitation_id=${invitationId}`;
-          }),
-        ).rejects.toMatchObject({ code: "23514" });
-        await tx`update rsvps set count_attending=3 where invitation_id=${invitationId}`;
-        const [counter] =
-          await tx`select allowance,admitted_people from admission_counters where invitation_id=${invitationId}`;
-        expect(counter).toMatchObject({ allowance: 3, admitted_people: 2 });
-        throw rollback;
-      });
-    } catch (error) {
-      if (error !== rollback) throw error;
-    }
+        ).rejects.toMatchObject({ code: row.code });
+      }
+    });
   }, 15_000);
+
+  it("rejects a forged allowance and an RSVP reduction below accepted admissions", async () => {
+    await storageTransaction(async (tx) => {
+      const invitationId = randomUUID();
+      const staffId = randomUUID(),
+        deviceId = randomUUID();
+      await tx`insert into staff(id,name,role) values (${staffId},'Synthetic gate','gate')`;
+      await tx`insert into registered_devices(id,name,role) values (${deviceId},'Synthetic scanner','gate')`;
+      await tx`insert into invitations(id,token,status) values (${invitationId},${randomUUID().replaceAll("-", "")},'rsvp_yes')`;
+      await tx`insert into rsvps(invitation_id,attending,count_attending) values (${invitationId},true,4)`;
+      await expect(
+        tx.savepoint(async (sp) => {
+          await sp`insert into admission_counters(invitation_id,allowance,admitted_people) values (${invitationId},100,5)`;
+        }),
+      ).rejects.toMatchObject({ code: "23514" });
+      await tx`insert into scan_events(client_event_id,invitation_id,staff_id,device_id,reported_at,reported_result,result,reported_people,admitted_people,source)
+          values (${randomUUID()},${invitationId},${staffId},${deviceId},'2026-12-19T12:00:00Z','valid','valid',2,2,'online')`;
+      await expect(
+        tx.savepoint(async (sp) => {
+          await sp`update admission_counters set admitted_people=3 where invitation_id=${invitationId}`;
+        }),
+      ).rejects.toMatchObject({ code: "23514" });
+      await expect(
+        tx.savepoint(async (sp) => {
+          await sp`update rsvps set count_attending=1 where invitation_id=${invitationId}`;
+        }),
+      ).rejects.toMatchObject({ code: "23514" });
+      await tx`update rsvps set count_attending=3 where invitation_id=${invitationId}`;
+      const [counter] =
+        await tx`select allowance,admitted_people from admission_counters where invitation_id=${invitationId}`;
+      expect(counter).toMatchObject({ allowance: 3, admitted_people: 2 });
+    });
+  }, 15_000);
+
+  for (const legacy of [false, true]) {
+    it.runIf(process.env.ADMISSION_SCHEMA_PROPOSAL === "1")(
+      `preserves populated ${legacy ? "bootstrap" : "current"} records and retains excess reports`,
+      async () => {
+        const invitationA = randomUUID(),
+          invitationB = randomUUID(),
+          staffId = randomUUID();
+        const knownDevice = randomUUID();
+        let original: unknown;
+        const snapshot = async (tx: TransactionSql) => ({
+          invitations: await tx`select to_jsonb(i) as row from invitations i order by id`,
+          guests: await tx`select to_jsonb(g) as row from guests g order by id`,
+          replies: await tx`select to_jsonb(r) as row from rsvps r order by id`,
+          scans: await tx`select to_jsonb(c) as row from check_ins c order by id`,
+        });
+        await storageTransaction(
+          async (tx) => {
+            expect(await snapshot(tx)).toEqual(original);
+            const events =
+              await tx`select reported_people,admitted_people,conflict,device_id,source from scan_events order by reported_at`;
+            expect(events).toHaveLength(3);
+            expect(events.map((event) => event.reported_people)).toEqual([1, 1, 1]);
+            expect(events.map((event) => event.admitted_people)).toEqual(
+              legacy ? [1, 1, 0] : [1, 0, 0],
+            );
+            expect(events.map((event) => event.conflict)).toEqual(
+              legacy ? [false, false, true] : [false, true, true],
+            );
+            expect(events.map((event) => event.device_id)).toEqual([knownDevice, null, null]);
+            expect(events.every((event) => event.source === "legacy")).toBe(true);
+            const [counter] =
+              await tx`select allowance,admitted_people from admission_counters where invitation_id=${invitationA}`;
+            expect(counter).toMatchObject({
+              allowance: legacy ? 2 : 1,
+              admitted_people: legacy ? 2 : 1,
+            });
+            const [declined] =
+              await tx`select allowance,admitted_people from admission_counters where invitation_id=${invitationB}`;
+            expect(declined).toMatchObject({ allowance: 0, admitted_people: 0 });
+          },
+          {
+            legacy,
+            beforeBackfill: async (tx) => {
+              await tx`insert into staff(id,name,role) values (${staffId},'Synthetic legacy gate','gate')`;
+              await tx`insert into registered_devices(id,name,role) values (${knownDevice},'Known historical scanner','gate')`;
+              if (legacy) {
+                await tx`insert into invitations(id,code,household_name) values (${invitationA},'legacy-a','Synthetic A'),(${invitationB},'legacy-b','Synthetic B')`;
+                await tx`insert into rsvps(invitation_id,status) values (${invitationA},'attending'),(${invitationB},'declined')`;
+              } else {
+                await tx`insert into invitations(id,token,status) values (${invitationA},${randomUUID().replaceAll("-", "")},'rsvp_yes'),(${invitationB},${randomUUID().replaceAll("-", "")},'rsvp_no')`;
+                await tx`insert into rsvps(invitation_id,attending,count_attending) values (${invitationA},true,1),(${invitationB},false,0)`;
+              }
+              for (const index of [0, 1, 2]) {
+                const guest = randomUUID(),
+                  invitation = index < 2 ? invitationA : invitationB;
+                if (legacy) {
+                  await tx`insert into guests(id,invitation_id,first_name,last_name,qr_token) values (${guest},${invitation},'Legacy',${String(index)},${randomUUID()})`;
+                } else {
+                  await tx`insert into guests(id,invitation_id,name) values (${guest},${invitation},${"Legacy " + index})`;
+                }
+                await tx`insert into check_ins(guest_id,staff_id,checked_in_at,device_id,client_event_id) values (${guest},${index === 2 ? null : staffId},${new Date(Date.UTC(2026, 11, 19, 12, index))},${index === 0 ? knownDevice : "legacy device / unregistered"},${randomUUID()})`;
+              }
+              original = await snapshot(tx);
+            },
+          },
+        );
+      },
+      15_000,
+    );
+  }
 });

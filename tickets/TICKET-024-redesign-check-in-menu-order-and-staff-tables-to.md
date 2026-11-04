@@ -55,7 +55,7 @@ See: [Data model](../docs/prd.md#data-model) · [Gate check-in](../docs/prd.md#g
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-11-04 — Draft PR85 includes additive schema and proposed preservation/guard SQL. Four guard tests passed; latest run passed three cases including both populated preservation cases, with three connection timeouts. Quick verification passes lint, types and 45 tests (38 opt-in skips). Final migrations and concurrency verification remain outstanding; no acceptance criteria completed.
 
 ## Activity log
 

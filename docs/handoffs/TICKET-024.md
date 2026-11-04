@@ -47,3 +47,25 @@ still running. Draft PR: https://github.com/UncleChenna/wedding-app/pull/85.
 The CLI records this ticket as blocked; schema/tests are pushed in 2749718 and the
 blocker in 9258e05. Resume only after diagnosing stack health and settling PR84's
 migration base. No database tests or migration generation succeeded.
+
+## Resumed proposal verification — 2026-11-04
+
+Owner divine, branch TICKET-024, draft PR85. The isolated stack recovered after
+parking the completed TICKET-031 stack with backup. Applied existing 0000–0010;
+initial tests failed for missing new tables. CLI resumed in_progress in d9ca7b6.
+Additive schema, guard/backfill SQL proposals, export fixture and six opt-in tests
+now exist. Four guard cases passed together. Latest run: three passed (both populated
+current/bootstrap preservation cases and allowance/RSVP guard), three failed only
+with CONNECT_TIMEOUT. Logs are in artifacts/TICKET-024/proposal-*.log. Proposals
+execute only in temporary schemas inside rolled-back transactions; no final
+TICKET-024 migrations exist. Fixture household_name and a PL/pgSQL variable
+reference were corrected after reproduced failures.
+
+PR84 is now merged as 549b86a; migration 0011 collision is resolved. Next: checkpoint
+this proposal, integrate freshly fetched develop, generate final migrations through
+Drizzle, test concurrency/repeat migration/RLS and request exact-path commit
+authorization with concrete evidence. Local connection instability remains; avoid
+blind parallel stack starts or stopping another owner's stack. A harness follow-up
+should coordinate capacity for full stacks and verification. No production action.
+
+Latest checkpoint quick gate: lint, typecheck and 45 related tests passed; 38 opt-in tests skipped.
