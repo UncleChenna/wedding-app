@@ -2,7 +2,7 @@
 id: TICKET-214
 title: Allow work ahead of reserved ids and in-flight dependencies
 epic: foundations
-status: in_progress
+status: in_review
 priority: urgent
 estimate: S
 labels: [infra, docs]
@@ -12,7 +12,7 @@ agent: claude
 blocked_by: []
 blocks: []
 branch: TICKET-214
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/94
 created: 2026-11-04
 updated: 2026-11-04
 started: 2026-11-04
@@ -90,3 +90,4 @@ _Agents append dated notes here while working._
 - 2026-11-04 — new → todo — unclechenna
 - 2026-11-04 — todo → claimed — unclechenna (claude)
 - 2026-11-04 — todo → in_progress — unclechenna (claude)
+- 2026-11-04 — in_progress → in_review — unclechenna (claude)
