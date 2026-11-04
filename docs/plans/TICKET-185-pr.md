@@ -31,19 +31,19 @@ network, retaining the existing five-failed-attempt device lockout.
 
 Integration base: develop `696baef1894bc639018bad7eff129506a6e32544`, including
 merged TICKET-032. Both authorization and guest budgets are retained. Nineteen
-proxy tests and quick verification pass. The integrated full gate failed: 985 unit
-passes/88 skips; 772 browser passes, seven timeouts and 165 skips. A serial rerun
-passed six of seven failed cases; the direct limiter test also timed out. The local
-Docker VM had only 53MB available and no swap; a wait snapshot also showed queued
-transactions. Root cause is not certified. Preserve failures and reverify after
-resource recovery. The full passing results below describe the pre-integration implementation.
+proxy tests cover their interaction.
 
-Full verification passes: formatting, lint, types, 937 unit tests, production build
-and 775 browser checks (4.3m). 82 unit and 165 browser opt-in skips are not passes.
-Separate explicit runs passed five database cases and six retry browser cases;
-two duplicate matrix cases were skipped. Repeat migration preserved counts and
-all 16 public tables retain RLS. Earlier authorization-hook failures are resolved.
-Review docs and local artifacts under TICKET-185 retain the evidence.
+Final integrated `pnpm t:pr TICKET-185` passed on `4f817c0`: formatting, lint,
+types, 985 unit tests, production build and 779 browser checks (9.6m). The 88 unit
+and 165 browser skips are not certified coverage. Log:
+`artifacts/TICKET-185/recovered-pr-gate.log`.
+
+All five explicit limiter database cases also passed unchanged after the isolated
+stack recovered. The exact previously failing private-route browser case passed
+unchanged in 888ms before the full run. Earlier timeouts and their environment
+observations remain preserved in the handoff and artifacts; no assertions or
+timeouts were relaxed. Prior repeat migration preserved counts and all 16 public
+tables retained RLS. No schema or application code changed during recovery.
 
 # Risks and rollout
 
@@ -72,13 +72,4 @@ Safe default light/dark themes are used during outages without database theme re
 
 # Harness changes, if any
 
-None. The requested approval-workflow simplification will be tracked separately.
-
-## Recovery recheck
-
-On 2026-11-04, this ticket's isolated database restarted healthy after capacity
-recovered. All five unchanged limiter database tests passed; the exact remaining
-private-route timeout passed unchanged (888ms). Evidence is in the ticket handoff
-and `artifacts/TICKET-185/recovered-*.log`. The earlier integrated failures remain
-recorded above; final full verification must pass before this draft returns to review.
-No migration, budget, assertion or timeout changes were made during recovery.
+None. The requested approval-workflow simplification is isolated in TICKET-215 / PR #97.

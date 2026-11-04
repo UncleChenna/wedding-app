@@ -230,3 +230,16 @@ previous failures were exclusively environmental. No assertions/timeouts changed
 
 CLI resumed in_progress and published `07ce1f5`. Next: full integrated PR gate,
 then update PR89 with final results and retain physical-device release requirements.
+
+## Final recovered gate passed
+
+`pnpm t:pr TICKET-185` passed on `4f817c0`: 985 unit passes / 88 skips,
+779 browser passes / 165 skips (9.6m), formatting/lint/types/build pass.
+Log: `artifacts/TICKET-185/recovered-pr-gate.log`. The CLI published in_review
+in `5894bd4`. PR89 is ready to return to review after this documentation checkpoint.
+The five explicit database tests passed separately, as recorded above. No code,
+migration, assertion or timeout changes were needed during recovery.
+
+Next: independent CI and human review of https://github.com/UncleChenna/wedding-app/pull/89.
+Physical-device release requirements remain; production migration application and
+PR merge are not authorized by the earlier local migration approval.

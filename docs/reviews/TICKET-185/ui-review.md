@@ -125,3 +125,12 @@ After integrating develop 696baef, the full gate failed with seven browser timeo
 passed six of those seven cases. Database resource/transaction waits need diagnosis
 under healthy local capacity. Earlier passing results remain historical evidence,
 not approval of the integrated head. No test timeout or assertion was weakened.
+
+## Recovered integrated verification — 2026-11-04
+
+The integrated full gate now passes: 985 unit and 779 browser checks, with 88/165
+opt-in skips. Five explicit database limiter tests and the exact remaining failed
+private-route case also pass unchanged. Log: `artifacts/TICKET-185/recovered-pr-gate.log`.
+This resolves the local verification blocker; physical-device release checks and
+the approved native-response exception remain unchanged. Historical failures above
+remain evidence and were not removed or weakened.
