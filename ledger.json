@@ -1700,9 +1700,10 @@
         "- 2026-11-04 — blocked → in_progress — divine (codex) — Owner approved migration and budgets; verification underway.",
         "- 2026-11-04 — in_progress → in_review — divine (codex)",
         "- 2026-11-04 — in_review → in_progress — divine (codex) — Integrate merged TICKET-032 while preserving authorization and request budgets.",
-        "- 2026-11-04 — in_progress → blocked — divine (codex) — Integrated proxy conflict fixed; full verification has 7 browser timeouts and a direct DB timeout with only 53MB Docker VM memory available. Diagnose/reverify after capacity recovers; approvals are complete."
+        "- 2026-11-04 — in_progress → blocked — divine (codex) — Integrated proxy conflict fixed; full verification has 7 browser timeouts and a direct DB timeout with only 53MB Docker VM memory available. Diagnose/reverify after capacity recovers; approvals are complete.",
+        "- 2026-11-04 — blocked → in_progress — divine (codex) — Isolated database recovered; all five unchanged limiter integration tests pass. Resume private-route and full verification."
       ],
-      "status": "blocked",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-185",
@@ -1710,8 +1711,8 @@
       "started": "2026-11-04",
       "completed": "",
       "updated": "2026-11-04",
-      "reason": "Integrated proxy conflict fixed; full verification has 7 browser timeouts and a direct DB timeout with only 53MB Docker VM memory available. Diagnose/reverify after capacity recovers; approvals are complete.",
-      "resume_to": "in_progress"
+      "reason": "",
+      "resume_to": ""
     },
     "WED-084": {
       "log": [
