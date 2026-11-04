@@ -19,15 +19,20 @@ export function useMenuAvailability(
   {
     pollIntervalMs = MENU_POLL_INTERVAL_MS,
     onSoldOut,
+    initialOpen = true,
   }: {
     pollIntervalMs?: number;
     onSoldOut: (ids: string[]) => void;
+    /** Whether guest ordering was open when the page rendered (ORD-7); polls keep it current. */
+    initialOpen?: boolean;
   },
 ) {
   const [available, setAvailable] = useState<Record<string, boolean>>(() =>
     Object.fromEntries(items.map((item) => [item.id, item.available])),
   );
+  const [open, setOpen] = useState(initialOpen);
   const [announcement, setAnnouncement] = useState("");
+  const openRef = useRef(initialOpen);
   const current = useRef(available);
   const soldOutHandler = useRef(onSoldOut);
   useEffect(() => {
@@ -71,7 +76,13 @@ export function useMenuAvailability(
         const response = await fetch(MENU_AVAILABILITY_URL, { cache: "no-store" });
         if (!response.ok) return;
         const parsed = menuAvailabilitySchema.safeParse(await response.json());
-        if (parsed.success && !cancelled) apply(parsed.data.items);
+        if (!parsed.success || cancelled) return;
+        apply(parsed.data.items);
+        if (parsed.data.open !== openRef.current) {
+          openRef.current = parsed.data.open;
+          setOpen(parsed.data.open);
+          setAnnouncement(parsed.data.open ? menuCopy.reopened : menuCopy.paused);
+        }
       } catch {
         // Keep the last known state; the next poll retries.
       } finally {
@@ -95,5 +106,10 @@ export function useMenuAvailability(
     (ids: readonly string[]) => apply(ids.map((id) => ({ id, available: false }))),
     [apply],
   );
-  return { available, announcement, markSoldOut };
+  /** The server refused a submission because ordering closed; show it at once. */
+  const markClosed = useCallback(() => {
+    openRef.current = false;
+    setOpen(false);
+  }, []);
+  return { available, open, announcement, markSoldOut, markClosed };
 }

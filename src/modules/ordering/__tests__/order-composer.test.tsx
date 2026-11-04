@@ -2,7 +2,7 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { OrderComposer } from "../components/order-composer";
-import type { MenuItem } from "../lib/menu";
+import { menuCopy, type MenuItem } from "../lib/menu";
 import { orderCopy } from "../lib/order";
 import { ORDERS_URL } from "../lib/submit-order";
 
@@ -37,7 +37,7 @@ beforeEach(() => {
   vi.stubGlobal(
     "fetch",
     vi.fn(async () =>
-      Response.json({ items: items.map(({ id, available }) => ({ id, available })) }),
+      Response.json({ open: true, items: items.map(({ id, available }) => ({ id, available })) }),
     ),
   );
 });
@@ -224,4 +224,48 @@ it("explains the open-order limit", async () => {
   choose("Red wine");
   fireEvent.click(sendButton());
   expect(await screen.findByText(orderCopy.rejected["too-many-open"])).toBeVisible();
+});
+
+it("shows a warm closed message instead of the menu while ordering is closed", () => {
+  render(<OrderComposer items={items} table={7} pollIntervalMs={60_000} initialOpen={false} />);
+  expect(screen.getByRole("heading", { name: menuCopy.closedHeading })).toBeVisible();
+  expect(screen.getByText(menuCopy.closed)).toBeVisible();
+  expect(screen.queryByRole("button", { name: orderCopy.send })).toBeNull();
+  expect(screen.queryByLabelText("Jollof rice quantity")).toBeNull();
+});
+
+it("switches to the closed view when the server refuses because ordering closed", async () => {
+  setup([async () => Response.json({ status: "rejected", reason: "closed" }, { status: 422 })]);
+  choose("Red wine");
+  fireEvent.click(sendButton());
+  expect(await screen.findByRole("heading", { name: menuCopy.closedHeading })).toBeVisible();
+});
+
+it("opens and closes live from the availability poll, announcing the change", async () => {
+  vi.useFakeTimers();
+  try {
+    let open = false;
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () =>
+        Response.json({ open, items: items.map(({ id, available }) => ({ id, available })) }),
+      ),
+    );
+    render(<OrderComposer items={items} table={7} pollIntervalMs={3000} initialOpen={false} />);
+    expect(screen.getByRole("heading", { name: menuCopy.closedHeading })).toBeVisible();
+    open = true;
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(3000);
+    });
+    expect(screen.getByRole("button", { name: orderCopy.send })).toBeVisible();
+    expect(screen.getAllByRole("status")[0]).toHaveTextContent(menuCopy.reopened);
+    open = false;
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(3000);
+    });
+    expect(screen.getByRole("heading", { name: menuCopy.closedHeading })).toBeVisible();
+    expect(screen.getByRole("status")).toHaveTextContent(menuCopy.paused);
+  } finally {
+    vi.useRealTimers();
+  }
 });
