@@ -23,3 +23,8 @@ Next: finish/check setup, read current local framework and UI guidance, write fa
 lifecycle tests, implement the transactional workflow and confirmation UI, then verify.
 No acceptance criteria are complete yet. Start status was pushed in `f7cf630`.
 Pure lifecycle and authorization tests can proceed while database setup is repaired.
+
+Draft PR: https://github.com/UncleChenna/wedding-app/pull/99. Plan/handoff checkpoint
+`040c36c` is pushed. The CLI records PR metadata on review transition; this ticket
+remains in_progress with all implementation criteria incomplete. No review status
+was fabricated to attach a draft link.
