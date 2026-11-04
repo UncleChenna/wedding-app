@@ -17,6 +17,24 @@ beforeEach(() => {
 });
 
 describe("private request budget boundary", () => {
+  it("renders a themed retry page for documents while keeping download errors small", async () => {
+    mocks.limit.mockResolvedValue({
+      status: "limited",
+      retryAfterSeconds: 12,
+      message: "Please wait.",
+    });
+    const page = await proxy(new NextRequest("http://localhost/i/private-token"));
+    expect(page.headers.get("Content-Type")).toBe("text/html; charset=utf-8");
+    const html = await page.text();
+    expect(html).toContain("Please try again shortly");
+    expect(html).toContain('<form method="get">');
+    expect(html).not.toContain("private-token");
+    expect(page.status).toBe(429);
+    expect(page.headers.get("Retry-After")).toBe("12");
+    const download = await proxy(new NextRequest("http://localhost/i/private-token/pass.png"));
+    expect(download.headers.get("x-middleware-rewrite")).toBeNull();
+    expect(await download.text()).toBe("Please wait.");
+  });
   it.each([
     "/i/unknown",
     "/i/unknown/invitation.pdf",

@@ -29,10 +29,12 @@ export async function checkRequestBudget(
     const result = await consume({ identity, scope, ...requestBudgetPolicies[scope] });
     if (result.allowed) return { status: "allowed" };
     const seconds = Math.max(1, Math.ceil(result.retryAfterSeconds));
+    const count = seconds >= 60 ? Math.ceil(seconds / 60) : seconds;
+    const unit = seconds >= 60 ? "minute" : "second";
     return {
       status: "limited",
       retryAfterSeconds: seconds,
-      message: `Please wait ${seconds} seconds before trying again. Thank you for your patience.`,
+      message: `Please wait ${count} ${unit}${count === 1 ? "" : "s"} before trying again. Thank you for your patience.`,
     };
   } catch {
     // Database exceptions can contain SQL parameters. Do not log or return them.

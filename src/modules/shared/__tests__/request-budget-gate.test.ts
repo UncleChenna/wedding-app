@@ -8,6 +8,14 @@ const context = {
 };
 
 describe("request budget boundary", () => {
+  it("expresses long waits in minutes while preserving exact protocol seconds", async () => {
+    const consume = vi.fn().mockResolvedValue({ allowed: false, retryAfterSeconds: 600 });
+    const result = await checkRequestBudget(context, "pin", consume);
+    expect(result).toMatchObject({
+      retryAfterSeconds: 600,
+      message: "Please wait 10 minutes before trying again. Thank you for your patience.",
+    });
+  });
   it("denies untrusted identity before reaching the database", async () => {
     const consume = vi.fn();
     expect(

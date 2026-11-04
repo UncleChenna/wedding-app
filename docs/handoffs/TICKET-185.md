@@ -75,3 +75,21 @@ Do not weaken the hook or fabricate approval. After receiving the pending exact-
 approval, record it, commit generated output and rerun the full gate. The prior
 production build and dedicated browser journeys passed independently; they do not
 replace this failed full gate. No acceptance criteria have been checked off.
+
+## Retry UI continuation
+
+Added a native themed retry document to page-level denials; downloads remain plain
+text. An attempted Next page rewrite failed actual HTTP tests (returned 200), so it
+was removed. Native responses preserve 429/503, Retry-After and privacy headers.
+The document uses safe registered light/dark tokens and existing local TTF assets,
+requires no database/theme fetch, and retries the current URL through a native GET
+form. It does not interpolate the private path. PIN waits now say minutes rather
+than hundreds of seconds; protocol retry seconds are unchanged.
+
+Build passes. Nine boundary unit cases and five budget-gate cases pass. Final browser
+run: five passes/one intentionally duplicate visual skip in 9.5s; all 24 theme/width/
+state screenshots inspected, Axe/keyboard/tap-target/overflow checks pass. Evidence:
+`artifacts/TICKET-185/retry-{build,browser}.log`, screenshots and `ui-review.md`.
+UI review remains incomplete: cold-font CLS, performance, physical devices, native
+font-loading/shared-renderer exceptions and administrator-selected theme behaviour
+are not certified. Do not mark done or silently move these to another ticket.

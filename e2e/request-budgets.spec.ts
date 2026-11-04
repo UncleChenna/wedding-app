@@ -2,6 +2,9 @@ import { createHmac } from "node:crypto";
 import postgres, { type Sql } from "postgres";
 import { test, expect } from "@playwright/test";
 import { assertDatabaseTarget } from "../scripts/database-target";
+import { listThemes } from "../src/modules/theming";
+import { applyTheme } from "./support/theme";
+import { scanA11y } from "./support/axe";
 
 // This suite deliberately fills this isolated app's local network bucket. Run serially,
 // alone, with RUN_RATE_LIMIT_BROWSER_TESTS=1; preserve any pre-existing counter exactly.
@@ -93,5 +96,70 @@ test.describe("private request budgets", () => {
     const [counter] =
       await db`select used from request_budgets where scope='pin' and identity=${identity}`;
     expect(counter?.used).toBe(30);
+  });
+
+  test("retry states remain readable and operable across all themes and widths", async ({
+    page,
+  }, info) => {
+    test.skip(
+      info.project.name !== "desktop",
+      "One explicit 375/768/1280 matrix covers the visual states",
+    );
+    test.setTimeout(120_000);
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    for (const state of ["guest", "pin"] as const) {
+      const scope = state === "guest" ? "lookup" : "pin";
+      const used = state === "guest" ? 1200 : 30;
+      const windowSeconds = state === "guest" ? 60 : 600;
+      await db`insert into request_budgets(scope,identity,used,expires_at)
+        values(${scope},${identity},${used},now()+${windowSeconds}*interval '1 second')
+        on conflict(scope,identity) do update set used=excluded.used,expires_at=excluded.expires_at`;
+      const response = await page.goto(
+        state === "guest" ? "/i/synthetic-private-link" : "/checkin",
+      );
+      if (state === "guest") {
+        expect(response?.status()).toBe(429);
+        await expect(page.getByRole("heading", { name: "Please try again shortly" })).toBeVisible();
+        await expect(page).toHaveURL(/\/i\/synthetic-private-link$/);
+      } else {
+        await page.getByLabel("Your six-digit PIN").fill("999999");
+        await page.getByRole("button", { name: "Sign in", exact: true }).click();
+        await expect(
+          page.getByRole("form", { name: "Staff sign-in" }).getByRole("status"),
+        ).toContainText("Please wait");
+      }
+      for (const theme of listThemes()) {
+        await applyTheme(page, theme);
+        for (const width of [375, 768, 1280]) {
+          await page.setViewportSize({ width, height: 900 });
+          expect(
+            await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
+          ).toBe(true);
+          expect(await scanA11y(page)).toEqual([]);
+          const button = page.getByRole("button", {
+            name: state === "guest" ? "Try again" : "Sign in",
+            exact: true,
+          });
+          const bounds = await button.boundingBox();
+          expect(bounds?.width).toBeGreaterThanOrEqual(44);
+          expect(bounds?.height).toBeGreaterThanOrEqual(44);
+          await page.screenshot({
+            path: `docs/reviews/TICKET-185/screenshots/${theme.id}/${width}/${state}.png`,
+            fullPage: true,
+          });
+        }
+      }
+      if (state === "guest") {
+        await page.keyboard.press("Tab");
+        await expect(page.getByRole("button", { name: "Try again" })).toBeFocused();
+        await db`update request_budgets set expires_at=now()-interval '1 second' where scope='lookup' and identity=${identity}`;
+        await page.keyboard.press("Enter");
+        await expect(page.getByRole("heading", { name: "This page wandered off" })).toBeVisible();
+      } else {
+        await page.getByLabel("Your six-digit PIN").focus();
+        await page.keyboard.press("Tab");
+        await expect(page.getByRole("button", { name: "Sign in", exact: true })).toBeFocused();
+      }
+    }
   });
 });

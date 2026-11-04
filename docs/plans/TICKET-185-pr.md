@@ -50,14 +50,18 @@ limits must accommodate this. This helper does not stop attacks across many netw
 
 # Screenshots
 
-Retry wording is returned through existing form status areas and private plain-text
-HTTP responses. Visual review of these states remains pending; no layout, font,
-colour or component styling has changed.
+Twenty-four retry screenshots: `docs/reviews/TICKET-185/screenshots/`, all inspected.
+Guest denials now use a native themed document preserving HTTP 429/503, with no
+private URL in its body and a no-JavaScript retry form. PIN messages use the existing
+form; long waits are expressed in minutes. Downloads remain plain-text errors.
 
 # UI checklist
 
-Pending for retry wording and existing form status states. Physical device checks
-are not certified. No new animation, image, QR rendering or styling was introduced.
+See `docs/reviews/TICKET-185/ui-review.md`: visual, Axe, keyboard and tap-target
+checks pass across four themes and three widths. Five final browser cases pass;
+one duplicate visual matrix is intentionally skipped. Performance, cold-font CLS,
+physical devices and native font-loading/shared-renderer exceptions remain unresolved.
+The UI review is incomplete, and this PR remains draft.
 
 # Harness changes, if any
 
