@@ -2,7 +2,7 @@
 id: TICKET-211
 title: Build the approved household RSVP and migration foundation
 epic: foundations
-status: in_progress
+status: in_review
 priority: medium
 estimate: L
 labels: [backend, db, test, docs]
@@ -89,3 +89,4 @@ The owner supplied a revised end-to-end product mandate on 2026-11-02. It supers
 - 2026-11-03 — blocked → in_progress — ihemegodsfavour8-lang (codex)
 - 2026-11-03 — in_progress → in_review — ihemegodsfavour8-lang (codex)
 - 2026-11-04 — in_review → in_progress — ihemegodsfavour8-lang (codex) — Stop-hook verification exposed an unchecked Git 2.15-incompatible git init -b in the symlink-formatting fixture. Replace with portable init plus symbolic-ref and verify all hook fixtures under the real older Git; retain all rejection checks.
+- 2026-11-04 — in_progress → in_review — ihemegodsfavour8-lang (codex)
