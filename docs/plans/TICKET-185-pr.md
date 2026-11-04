@@ -72,4 +72,4 @@ Safe default light/dark themes are used during outages without database theme re
 
 # Harness changes, if any
 
-None. The requested approval-workflow simplification is isolated in TICKET-215 / PR #97.
+Owner-approved CI repair: the general verification job now starts the same disposable PostgreSQL17 service as the database job and applies migrations before verification. No tests, security checks or timeouts are weakened. See docs/reviews/TICKET-185/ci-proposal.md. The new CI result is pending; earlier local passing results do not certify the workflow repair. Approval-workflow simplification remains isolated in TICKET-215 / PR #97.

@@ -243,3 +243,15 @@ migration, assertion or timeout changes were needed during recovery.
 Next: independent CI and human review of https://github.com/UncleChenna/wedding-app/pull/89.
 Physical-device release requirements remain; production migration application and
 PR merge are not authorized by the earlier local migration approval.
+
+## Approved CI repair — 2026-11-04
+
+User approved docs/reviews/TICKET-185/ci-proposal.md. Added the existing PostgreSQL17
+service and pnpm db:migrate to the general verify job only. The old CI failure
+was 12 browser failures when the limiter correctly returned503 without its database.
+The CLI resumed through in_review (its enforced resume state), then in_progress.
+No application, migration, assertion, timeout or permission changes.
+Local full verification evidence above remains applicable to unchanged application
+code; the repaired CI configuration needs a fresh passing run on its new head.
+Next: check formatting/quick gate, push, then inspect all required CI jobs.
+PR merge and production database application remain unauthorized.
