@@ -52,11 +52,11 @@ and ahead-of-dependency work; do not duplicate it.
 
 ## Acceptance criteria
 
-- [ ] Unchanged staged lockfiles/generated files matching verified develop are accepted; modified files, secrets, invalid refs and unsafe paths still refuse without appropriate authorization.
-- [ ] Shared instructions permit routine reversible owned-worktree actions without repeated permission; production/destructive actions, secrets and unrelated owners' work remain explicit boundaries.
-- [ ] A successful verification record is reusable only for matching source/config/dependency inputs and supported runtime; changed or new source/tests/config invalidate it, and missing/failed/malformed evidence forces full verification.
-- [ ] The PR command reports whether verification was run or reused, offers a force-rerun, and never interprets skipped/unverified checks as passes.
-- [ ] Claude inherits the same canonical policy; relevant hook/workflow tests, agent-link checks and full verification pass.
+- [x] Unchanged staged lockfiles/generated files matching verified develop are accepted; modified files, secrets, invalid refs and unsafe paths still refuse without appropriate authorization.
+- [x] Shared instructions permit routine reversible owned-worktree actions without repeated permission; production/destructive actions, secrets and unrelated owners' work remain explicit boundaries.
+- [x] A successful verification record is reusable only for matching source/config/dependency inputs and supported runtime; changed or new source/tests/config invalidate it, and missing/failed/malformed evidence forces full verification.
+- [x] The PR command reports whether verification was run or reused, offers a force-rerun, and never interprets skipped/unverified checks as passes.
+- [x] Claude inherits the same canonical policy; relevant hook/workflow tests, agent-link checks and full verification pass.
 
 ## Test plan
 
@@ -86,3 +86,5 @@ and ahead-of-dependency work; do not duplicate it.
 - 2026-11-04 — new → todo — divine
 - 2026-11-04 — todo → claimed — divine (codex)
 - 2026-11-04 — todo → in_progress — divine (codex)
+
+- 2026-11-04 — Initial full gate passed (971 unit / 795 browser; 83 / 171 skipped). Added command-identity regression before final PR gate. Database startup unavailable; no database or physical QA claim.
