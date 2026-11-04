@@ -1691,9 +1691,10 @@
       "log": [
         "- 2026-11-04 — todo → claimed — divine (codex)",
         "- 2026-11-04 — todo → in_progress — divine (codex)",
-        "- 2026-11-04 — in_progress → blocked — divine (codex) — Awaiting exact-path migration commit authorization and launch-budget approval; cold-font regression and full verification remain incomplete (draft PR #89)."
+        "- 2026-11-04 — in_progress → blocked — divine (codex) — Awaiting exact-path migration commit authorization and launch-budget approval; cold-font regression and full verification remain incomplete (draft PR #89).",
+        "- 2026-11-04 — blocked → in_progress — divine (codex) — Continue independent cold-font diagnosis; migration and budget approvals remain pending."
       ],
-      "status": "blocked",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-185",
@@ -1701,8 +1702,8 @@
       "started": "2026-11-04",
       "completed": "",
       "updated": "2026-11-04",
-      "reason": "Awaiting exact-path migration commit authorization and launch-budget approval; cold-font regression and full verification remain incomplete (draft PR #89).",
-      "resume_to": "in_progress"
+      "reason": "",
+      "resume_to": ""
     },
     "WED-084": {
       "log": [
