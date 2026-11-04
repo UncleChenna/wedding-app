@@ -41,7 +41,7 @@ See: [ORD-9 WhatsApp order alerts](../docs/prd.md#ord-9--whatsapp-order-alerts-m
 
 ## Acceptance criteria
 
-- [ ] Three orders in 60s produce one batched message per station (unit with fake clock).
+- [x] Three orders in 60s produce one batched message per station (unit with fake clock).
 - [ ] An alert failure never blocks order creation (test).
 - [ ] ADR merged.
 
@@ -62,6 +62,20 @@ See: [ORD-9 WhatsApp order alerts](../docs/prd.md#ord-9--whatsapp-order-alerts-m
 ## Notes / decisions
 
 _Agents append dated notes here while working._
+
+- 2026-11-04:
+  - **Done:** ADR 0022 (Proposed); `lib/alerts.ts` (PRD message format, 50-second batch window plus 10-second drain,
+    so no alert waits over 60 seconds); `server/alert-drain.ts` (`drainAlerts`, `AlertOutbox` interface, dry-run
+    sender, an in-memory outbox with claim/retry/give-up semantics). 10 fake-clock unit tests pass, including three
+    orders in a window giving one message per station.
+  - **Blocked on the owner:**
+    1. **Migration approval** for the `order_alerts` table: exact-path entries in `.harness/approved-writes.json` for
+       the generated `drizzle/0012_*.sql`, its snapshot and `_journal.json` (0011 is TICKET-031's).
+    2. **Production database host** (Supabase as TICKET-144 plans, or Neon): it decides the scheduler (`pg_cron` +
+       `pg_net` on Supabase; `pg_cron` on Neon only if the compute stays awake and outbound HTTP works).
+  - **Remaining after approval:** the schema and migration, enqueue in `createOrder`'s transaction, a Postgres
+    `SKIP LOCKED` outbox, a secret-protected `POST /api/alerts/drain`, the schedule, and integration tests (stop
+    traffic, advance time, one bounded batch, retry and idempotency).
 
 ## Activity log
 
