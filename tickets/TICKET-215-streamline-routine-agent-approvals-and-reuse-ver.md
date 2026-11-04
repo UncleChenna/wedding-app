@@ -2,7 +2,7 @@
 id: TICKET-215
 title: Streamline routine agent approvals and reuse verified source checks
 epic: foundations
-status: in_progress
+status: in_review
 priority: urgent
 estimate: L
 labels: [infra, test, docs]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: []
 blocks: []
 branch: TICKET-215
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/97
 created: 2026-11-04
 updated: 2026-11-04
 started: 2026-11-04
@@ -86,5 +86,5 @@ and ahead-of-dependency work; do not duplicate it.
 - 2026-11-04 — new → todo — divine
 - 2026-11-04 — todo → claimed — divine (codex)
 - 2026-11-04 — todo → in_progress — divine (codex)
-
 - 2026-11-04 — Initial full gate passed (971 unit / 795 browser; 83 / 171 skipped). Added command-identity regression before final PR gate. Database startup unavailable; no database or physical QA claim.
+- 2026-11-04 — in_progress → in_review — divine (codex)
