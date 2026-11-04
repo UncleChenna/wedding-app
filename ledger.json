@@ -1701,9 +1701,10 @@
         "- 2026-11-04 — in_progress → in_review — divine (codex)",
         "- 2026-11-04 — in_review → in_progress — divine (codex) — Integrate merged TICKET-032 while preserving authorization and request budgets.",
         "- 2026-11-04 — in_progress → blocked — divine (codex) — Integrated proxy conflict fixed; full verification has 7 browser timeouts and a direct DB timeout with only 53MB Docker VM memory available. Diagnose/reverify after capacity recovers; approvals are complete.",
-        "- 2026-11-04 — blocked → in_progress — divine (codex) — Isolated database recovered; all five unchanged limiter integration tests pass. Resume private-route and full verification."
+        "- 2026-11-04 — blocked → in_progress — divine (codex) — Isolated database recovered; all five unchanged limiter integration tests pass. Resume private-route and full verification.",
+        "- 2026-11-04 — in_progress → in_review — divine (codex)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-185",
