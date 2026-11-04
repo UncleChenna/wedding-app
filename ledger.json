@@ -1704,9 +1704,10 @@
         "- 2026-11-04 — blocked → in_progress — divine (codex) — Isolated database recovered; all five unchanged limiter integration tests pass. Resume private-route and full verification.",
         "- 2026-11-04 — in_progress → in_review — divine (codex)",
         "- 2026-11-04 — in_review → blocked — divine (codex) — Local recovered verification passes, but CI general verify lacks the PostgreSQL service required by request budgets (12 browser 503 failures). Awaiting approval of the exact CI proposal; no tests will be weakened.",
-        "- 2026-11-04 — blocked → in_review — divine (codex) — User approved the proposed CI repair; restore recorded prior state before implementing review changes."
+        "- 2026-11-04 — blocked → in_review — divine (codex) — User approved the proposed CI repair; restore recorded prior state before implementing review changes.",
+        "- 2026-11-04 — in_review → in_progress — divine (codex) — Implement the approved CI database repair."
       ],
-      "status": "in_review",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-185",
