@@ -5,7 +5,24 @@ import { NextResponse, type NextRequest } from "next/server";
 import { db } from "@/modules/shared/server/db/client";
 import { hasPublishedInvitation } from "@/modules/invitations/server/repository";
 
+import { authorizeAdminRequest } from "@/modules/admin/server/request-admin-access";
+import { authorizeStaffRequest, staffRequestRole } from "@/modules/shared/server/request-access";
+
 export async function proxy(request: NextRequest) {
+  const path = request.nextUrl.pathname;
+  const adminBootstrap = ["/admin/sign-in", "/admin/sign-out", "/admin/mfa"].includes(path);
+  if (
+    !adminBootstrap &&
+    (path === "/admin" ||
+      path.startsWith("/admin/") ||
+      path === "/api/admin" ||
+      path.startsWith("/api/admin/"))
+  ) {
+    return authorizeAdminRequest(request);
+  }
+  const staffRole = staffRequestRole(path);
+  if (staffRole) return authorizeStaffRequest(request, staffRole);
+
   // Signed pass credentials must never enter caches, referrers or search indexes.
   if (request.nextUrl.pathname.startsWith("/p/")) {
     const response = NextResponse.next();
@@ -54,6 +71,11 @@ export const config = {
     "/admin/:path*",
     "/checkin/:path*",
     "/kitchen/:path*",
+    "/bar/:path*",
+    "/api/admin/:path*",
+    "/api/checkin/:path*",
+    "/api/kitchen/:path*",
+    "/api/bar/:path*",
     "/order/:path*",
   ],
 };

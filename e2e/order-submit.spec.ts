@@ -116,7 +116,7 @@ test.describe("order submission on a flaky network", () => {
         expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
           true,
         );
-        const dir = "docs/reviews/TICKET-074/" + theme.id;
+        const dir = (process.env.ORDER_REVIEW_DIR ?? "docs/reviews/TICKET-074") + "/" + theme.id;
         mkdirSync(dir, { recursive: true });
         await page
           .getByRole("heading", { name: "On its way. Sit back, we've got this." })
@@ -158,7 +158,13 @@ test.describe("order submission on a flaky network", () => {
         expect((await retry.boundingBox())?.height).toBeGreaterThanOrEqual(44);
         await retry.scrollIntoViewIfNeeded();
         await page.screenshot({
-          path: "docs/reviews/TICKET-074/" + theme.id + "/" + width + "-failed.png",
+          path:
+            (process.env.ORDER_REVIEW_DIR ?? "docs/reviews/TICKET-074") +
+            "/" +
+            theme.id +
+            "/" +
+            width +
+            "-failed.png",
         });
       }
 
