@@ -3,6 +3,7 @@ import { mkdirSync, readFileSync } from "node:fs";
 import postgres, { type Sql } from "postgres";
 import { expect, test } from "@playwright/test";
 import { assertDatabaseTarget } from "../scripts/database-target";
+import { setOrderingOpen } from "./support/ordering-open";
 import { themes } from "../src/modules/theming/themes";
 import { applyTheme } from "./support/theme";
 import { scanA11y } from "./support/axe";
@@ -10,6 +11,7 @@ import { scanA11y } from "./support/axe";
 test.describe("live menu availability", () => {
   test.skip(process.env.RUN_MENU_BROWSER_TESTS !== "1", "Requires isolated local menu fixtures");
   let db: Sql;
+  let restoreOrdering: (() => Promise<void>) | undefined;
   let table: number;
   let tableId: string | undefined;
   const itemIds: string[] = [];
@@ -22,6 +24,8 @@ test.describe("live menu availability", () => {
     expect(meta.path).toBe(process.cwd());
     assertDatabaseTarget(process.env.DATABASE_URL ?? "", { localOnly: true });
     db = postgres(process.env.DATABASE_URL ?? "", { max: 2 });
+    // Ordering is closed by default (TICKET-080); these tests need it open.
+    restoreOrdering = await setOrderingOpen(db, true);
     table = randomInt(100000, 900000);
     const [row] = await db<
       { id: string }[]
@@ -46,6 +50,7 @@ test.describe("live menu availability", () => {
       if (itemIds.length) await db`delete from menu_items where id in ${db(itemIds)}`;
       if (tableId) await db`delete from tables where id = ${tableId}`;
     } finally {
+      await restoreOrdering?.();
       await db.end();
     }
   });

@@ -26,6 +26,8 @@ const OPEN_STATUSES = ["received", "preparing", "ready"] as const;
 export async function createOrder(
   database: Pick<Db, "transaction">,
   order: OrderSubmission,
+  /** Staff entering an order for a table (TICKET-079) may do so while guest ordering is closed. */
+  options: { staffEntered?: boolean } = {},
 ): Promise<OrderResult> {
   const fingerprint = orderFingerprint({
     tableNumber: order.table,
@@ -35,6 +37,12 @@ export async function createOrder(
   return database.transaction(async (tx) => {
     const replay = await findReplay(tx, order.clientRequestId, fingerprint);
     if (replay) return replay;
+
+    // ORD-7: guests can only order while the couple has ordering open. A retry of an order made
+    // before it closed is answered above, so closing never turns a sent order into a refusal.
+    const settings = await getEventSettings(tx);
+    if (!settings.orderingOpen && !options.staffEntered)
+      return { status: "rejected", reason: "closed" };
 
     // Locking the table row serializes this table's submissions across every server instance,
     // so concurrent orders cannot both slip under the open-order limit or the cooldown.
@@ -50,7 +58,6 @@ export async function createOrder(
     const raced = await findReplay(tx, order.clientRequestId, fingerprint);
     if (raced) return raced;
 
-    const settings = await getEventSettings(tx);
     const [usage] = await tx
       .select({
         open: sql<number>`count(*) filter (where ${inArray(orders.status, OPEN_STATUSES)})::int`,

@@ -3,6 +3,7 @@ import { mkdirSync, readFileSync } from "node:fs";
 import postgres, { type Sql } from "postgres";
 import { expect, test } from "@playwright/test";
 import { assertDatabaseTarget } from "../scripts/database-target";
+import { setOrderingOpen } from "./support/ordering-open";
 import { themes } from "../src/modules/theming/themes";
 import { applyTheme } from "./support/theme";
 import { scanA11y } from "./support/axe";
@@ -15,6 +16,7 @@ test.describe("admin menu editor", () => {
   );
   test.setTimeout(300_000);
   let db: Sql;
+  let restoreOrdering: (() => Promise<void>) | undefined;
   let table: number;
   let tableId: string | undefined;
   const tag = "TICKET-095 fixture " + randomInt(100000, 900000);
@@ -26,6 +28,8 @@ test.describe("admin menu editor", () => {
     expect(meta.path).toBe(process.cwd());
     assertDatabaseTarget(process.env.DATABASE_URL ?? "", { localOnly: true });
     db = postgres(process.env.DATABASE_URL ?? "", { max: 2 });
+    // Ordering is closed by default (TICKET-080); these tests need it open.
+    restoreOrdering = await setOrderingOpen(db, true);
     table = randomInt(100000, 900000);
     const [row] = await db<
       { id: string }[]
@@ -38,6 +42,7 @@ test.describe("admin menu editor", () => {
       await db`delete from menu_items where name like ${tag + "%"}`;
       if (tableId) await db`delete from tables where id = ${tableId}`;
     } finally {
+      await restoreOrdering?.();
       await db.end();
     }
   });
@@ -50,6 +55,21 @@ test.describe("admin menu editor", () => {
   }, info) => {
     // Each run needs an address that has not enrolled TOTP yet; pass one with ADMIN_MENU_TEST_EMAIL.
     await signInAdmin(page, request, adminTestEmail(info.project.name, "menu"));
+    // TICKET-080: the control room switch closes and reopens guest ordering.
+    const ordering = page.getByRole("region", { name: "Table ordering" });
+    await expect(ordering.getByText("Ordering is open.", { exact: false })).toBeVisible();
+    await ordering.getByRole("button", { name: "Close ordering" }).click();
+    await expect(ordering.getByRole("status")).toHaveText(
+      "Ordering is closed. Order pages update within seconds.",
+    );
+    expect(
+      (await db`select ordering_open from event_settings where id = 1`)[0]?.ordering_open,
+    ).toBe(false);
+    await ordering.getByRole("button", { name: "Open ordering" }).click();
+    await expect(ordering.getByRole("button", { name: "Close ordering" })).toBeVisible();
+    expect(
+      (await db`select ordering_open from event_settings where id = 1`)[0]?.ordering_open,
+    ).toBe(true);
     await page
       .getByRole("navigation", { name: "Admin" })
       .getByRole("link", { name: "Menu" })

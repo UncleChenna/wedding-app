@@ -3,7 +3,16 @@ import { menuCopy, type MenuItem } from "../lib/menu";
 import type { MenuLoad } from "../server/menu";
 import { OrderComposer } from "./order-composer";
 
-export function OrderMenu({ menu, table }: { menu: MenuLoad; table: number }) {
+export function OrderMenu({
+  menu,
+  table,
+  open,
+}: {
+  menu: MenuLoad;
+  table: number;
+  /** Guest ordering is open right now (ORD-7). */
+  open: boolean;
+}) {
   const items: MenuItem[] = menu.status === "ready" ? menu.items : [];
   return (
     <section aria-labelledby="order-menu" className="mt-12">
@@ -16,7 +25,7 @@ export function OrderMenu({ menu, table }: { menu: MenuLoad; table: number }) {
         ) : items.length === 0 ? (
           <p className="text-lg leading-relaxed">{menuCopy.empty}</p>
         ) : (
-          <OrderComposer items={items} table={table} />
+          <OrderComposer items={items} table={table} initialOpen={open} />
         )}
       </div>
     </section>
