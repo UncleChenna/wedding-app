@@ -141,3 +141,11 @@ in TICKET-201 and are not claimed passed. No source or generated migration chang
 Remaining blockers: exact-path migration commit authorization and launch-budget
 approval. After those approvals, record only the authorized paths, commit generated
 output and rerun full verification before advancing the draft PR.
+
+## Approval-evidence correction
+
+Updated the migration and budget review documents to reflect completed endpoint
+integration and the six passing browser cases; their earlier pending wording was
+stale. No new test run or approval is claimed. The queue remains without ready
+tickets; PR #87 still conflicts and awaits its base-update approval. Exact-path
+migration authorization and proposed launch budgets remain unanswered.

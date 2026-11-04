@@ -18,7 +18,11 @@ Two independent pools made 30 simultaneous requests against a budget of five:
 exactly five passed. Another case made 1,050 requests for 350 synthetic households
 sharing a network (three requests each); all passed within the 1,200 request window.
 Expiry, scope/network isolation and RLS checks also passed. This is counter-level
-traffic evidence; real HTTP/browser coverage remains pending.
+traffic evidence. The subsequent real HTTP/browser suite passes six cases, with
+two duplicate matrix skips: private-route 429/no-store responses despite forged
+headers/cookies, PIN cookie-reset resistance, native keyboard retry, all-theme
+accessibility and cold-font layout stability. See [UI review](ui-review.md).
+These results do not imply approval of the proposed launch budgets.
 
 ## Identity and trust
 

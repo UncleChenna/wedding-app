@@ -31,13 +31,17 @@ The opt-in four database cases above were run explicitly; skips are not passes.
 Second migration run made no count changes, including migration history. Evidence:
 `artifacts/TICKET-185/counts-before-repeat.txt` and `counts-after-repeat.txt`.
 `pnpm db:check-rls` confirms all 16 public tables have RLS enabled.
-Endpoints and full verification remain incomplete. Migration application in production
+Endpoint integration is implemented and its focused browser checks now pass;
+full verification remains incomplete. The expanded database suite passed five
+cases, including the 1,050-request shared-household scenario documented in
+[rate-limits.md](rate-limits.md). The native retry UI exception was explicitly
+approved on 4 November 2026; that approval does not authorize this migration. Migration application in production
 is not requested. Commit authorization and its ignored exact-path record are requested
 under docs/collaboration.md; neither has been assumed or fabricated.
 
 ## Rollout and rollback
 
-Deploy the additive migration before code that consumes the table. Until endpoint
-integration is complete the counter is unused by application traffic. Application
+Deploy the additive migration before code that consumes the table. The implemented endpoint guards require this table; do not deploy the code before
+the migration. Application
 rollback can leave this additive table intact; do not roll back by dropping data.
 Counter cleanup is limited to expired rows, in batches of at most 32 per request.
