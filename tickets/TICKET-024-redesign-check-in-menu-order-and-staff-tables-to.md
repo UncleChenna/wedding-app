@@ -2,7 +2,7 @@
 id: TICKET-024
 title: Migrate admission counters and scan event tables
 epic: data-auth
-status: blocked
+status: in_progress
 priority: urgent
 estimate: M
 labels: [db, backend]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-11-04
 started: 2026-11-04
 completed: ""
-reason: "Isolated stack failed startup twice; migration generation must also wait for PR84's reserved 0011 migration to reach develop. Draft schema and tests are preserved for review."
-resume_to: in_progress
+reason: ""
+resume_to: ""
 ---
 
 # TICKET-024: Migrate admission counters and scan event tables
@@ -63,3 +63,4 @@ _Agents append dated notes here while working._
 - 2026-11-03 — todo → claimed — divine (codex)
 - 2026-11-04 — todo → in_progress — divine (codex)
 - 2026-11-04 — in_progress → blocked — divine (codex) — Isolated stack failed startup twice; migration generation must also wait for PR84's reserved 0011 migration to reach develop. Draft schema and tests are preserved for review.
+- 2026-11-04 — blocked → in_progress — divine (codex) — Isolated stack recovered after parking the verified owned TICKET-031 stack. Existing migrations apply; three storage tests now fail for the missing tables. Continue schema/guard work while awaiting PR84 migration integration.
