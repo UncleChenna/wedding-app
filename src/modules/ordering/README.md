@@ -20,4 +20,19 @@ After a table is confirmed, `/order` renders `menu_items` on the server, grouped
 
 `MenuSections` polls `GET /api/menu/availability` every 3 seconds while the tab is visible, and once immediately on return. The endpoint is `private, no-store` and returns only `{ id, available }`. A newly sold-out item stays visible, shows "Sold out" as text tied to its quantity control, is disabled, loses any chosen quantity, and is announced in a polite live region. Failed or malformed polls keep the last known state. Items added after load appear on reload.
 
-Polling, not Supabase Realtime: Realtime on `menu_items` needs an anonymous read policy, which is an RLS change requiring an ADR. Availability on the page is display only; order submission (TICKET-074) must revalidate every item at commit time. Quantities are local until the cart (TICKET-072). No photos yet: `menu_items` has no image column.
+Polling, not Supabase Realtime: Realtime on `menu_items` needs an anonymous read policy, which is an RLS change requiring an ADR. Availability on the page is display only; order submission revalidates every item at commit time (see below). No photos yet: `menu_items` has no image column.
+
+## Sending an order
+
+`OrderComposer` holds the cart: quantities from the menu, a 140-character note and a Send button in the sticky `ActionBar`. Pressing Send creates one client request id (`newRequestId`). `submitOrder` posts to `POST /api/orders` and retries network failures, timeouts (10s per attempt), 408/429 and 5xx after 1s, 2s and 4s with that same id. The page says "Sending your order…", then "Still sending…" on retries, "On its way. Sit back, we've got this." on success, or a failed message with **Try again**, which reuses the id. Any edit after a failure starts a new id. Rejections are final and never retried.
+
+`createOrder` runs in one transaction:
+
+1. An existing order with the same `client_request_id` is a replay. The same table, note and items (in any order) return the original order; anything else is a `mismatch` (HTTP 409).
+2. The table must exist. The chosen `menu_items` rows are read `FOR SHARE`, so a concurrent sold-out change either commits first (and the order is refused as `sold-out`) or waits for the order.
+3. Every item must exist, be available and be within `max_per_order`.
+4. The order, one `station_orders` row per station used, and the `order_items` (with `quantity_limit` snapshotted) are inserted. A racing duplicate loses the unique `client_request_id` insert and answers as a replay.
+
+The note is plain text: control and format characters become spaces, whitespace collapses, and it renders as text. Only JSON bodies up to 8 KB are accepted. Expected failures are fixed codes; database errors become a retryable 503 with nothing logged but the outcome.
+
+Not here: table limits and cooldowns (TICKET-073), the guest confirmation grouped by station and routing tests (TICKET-074), live order status (TICKET-075), and the admin open/close switch (TICKET-080).

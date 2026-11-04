@@ -1,0 +1,16 @@
+{
+  "route": "/order (confirmed table, menu and cart; Cookie wedding-table=1, seeded data)",
+  "date": "2026-11-03",
+  "tool": "lighthouse@12.6.1, mobile, production build",
+  "machineLoad": "load average about 23 during runs",
+  "runs": [
+    { "run": 1, "performance": 95, "accessibility": 100, "cls": 0, "lcpMs": 2600 },
+    { "run": 2, "performance": 93, "accessibility": 100, "cls": 0, "lcpMs": 3037 },
+    { "run": 3, "performance": 93, "accessibility": 100, "cls": 0, "lcpMs": 3038 }
+  ],
+  "weightKb": {
+    "menuAndCart": { "js": 161, "font": 188, "html": 13, "total": 412 },
+    "tableFormBaseline": { "js": 161, "font": 188, "html": 10 },
+    "note": "The PRD asks for an order page under 200 KB. Fonts and framework JavaScript already exceed it on the unchanged table form; this ticket adds about 3 KB of HTML."
+  }
+}
