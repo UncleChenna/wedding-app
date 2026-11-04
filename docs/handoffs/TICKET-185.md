@@ -149,3 +149,22 @@ integration and the six passing browser cases; their earlier pending wording was
 stale. No new test run or approval is claimed. The queue remains without ready
 tickets; PR #87 still conflicts and awaits its base-update approval. Exact-path
 migration authorization and proposed launch budgets remain unanswered.
+
+## Migration and budgets approved — 4 November 2026
+
+Owner approved both TICKET-185's migration/budgets and TICKET-032's base update.
+Recorded exact TICKET-185 migration paths in the ignored authorization record.
+Budgets are now approved: lookup 1,200/60s, PIN 30/600s, retaining device lockout.
+Next: commit generated migration and rerun full verification, then proceed with
+TICKET-032 sequentially. The request to streamline agent approvals must receive
+its own harness ticket; do not weaken application security or failing checks.
+
+## Authorized full verification passed
+
+Full gate passed: 937 unit passes/82 opt-in skips, 775 browser passes/165 opt-in
+skips (4.3m), formatting/lint/types/build pass. Log: approved-full-verify.log.
+No checks bypassed. GitHub intermittently rejected ledger/branch writes with
+commit_refs_rules/Internal Server Error; normal CLI retry updated ledger to
+in_progress, while its branch push failed. Preserve commit 85429e4 and retry the
+normal push with the approved migration commit. Next: publish and t:pr, then fix
+TICKET-032's approved base update. Harness approval simplification remains requested.

@@ -1,85 +1,66 @@
 # Ticket
 
-TICKET-185
+TICKET-185 — Protect invitation and PIN endpoints before invitations launch.
 
 # Summary
 
-Device-cookie lockout can be reset by replacing the cookie. This draft begins shared
-network-based abuse protection for invitation/pass lookups and staff PIN attempts.
+Replacing a device cookie could reset PIN protection. Shared database-backed request
+budgets now protect invitation/pass reads, RSVP actions and staff PIN attempts across
+instances, before sensitive work occurs.
 
 # Changes
 
-Adds a keyed network identity helper and its tests. Only explicitly configured Vercel
-ingress trusts its platform IP header. IPv6 /64 grouping, mapped IPv4 normalization
-and a shared local identity prevent easy identity churn. Adds an atomic PostgreSQL
-counter with database-clock expiry, bounded cleanup and separate scope/network keys.
-Generated migration files await exact-path commit authorization and are not yet in
-this PR. Adds the implementation plan and migration review.
+- Atomic PostgreSQL counters with database-clock expiry, bounded cleanup and RLS.
+- HMAC network identities; trusted Vercel ingress only, normalized IPv4/IPv6 and
+  a shared local bucket that ignores spoofed headers and client cookies.
+- Private 429/503 responses, Retry-After and generic action feedback. Native HTML
+  retry pages preserve status codes and support keyboard/no-JavaScript retry.
+- Metric-matched font fallbacks and reserved space keep retry-page CLS at zero.
+- Generated additive migration 0012, explicitly authorized for commit by the owner.
 
 # Acceptance criteria and evidence
 
-Criteria remain unticked pending full review and required approvals. Atomic storage,
-expiry and shared-household traffic pass isolated tests. Private GET/HEAD downloads
-and pages, RSVP/party actions and staff PIN sign-in now enforce request budgets.
-Denied requests return private retry guidance before sensitive work. Generated
-migrations and proposed launch budgets await approval.
+All three ticket criteria are checked. Two independent database pools admit exactly
+five of 30 simultaneous attempts against a budget of five. Expiry, scope separation,
+RLS and 1,050 requests from 350 synthetic households pass. HTTP/browser tests cover
+private routes, forged headers, cookie resets, PIN lockout, keyboard retry and themes.
+Owner approved lookup 1,200 requests/60 seconds and PIN 30 requests/600 seconds per
+network, retaining the existing five-failed-attempt device lockout.
 
 # Verification
 
-Identity suite: initially failed for missing implementation; subsequently 12 passed.
-Database suite: four cases pass, including 30 concurrent calls through two independent
-pools with exactly five allowed. Two earlier runs timed out under Docker resource
-pressure; unchanged tests passed after only this worktree's unused services stopped.
-Repeat migration preserves counts; all 16 public tables have RLS enabled.
-Quick verification passes lint/types/45 related tests (51 opt-in skips).
-After endpoint integration, quick verification passes lint/types/24 affected tests
-(five opt-in DB cases skipped); the explicit database suite passes all five cases.
-Production build passes. New rate-limit HTTP/browser tests pass mobile and desktop
-(four passes, 4.4s). Existing guest journey passes both (4.5s); existing staff PIN
-journey passes both (9.5s). Full gate then passed format/lint/types but stopped at
-three existing stop-hook tests: they reject the unapproved generated migration
-journal before executing their fake verifier. Other unit results: 932 passed,
-82 skipped. This is a failed gate, pending exact-path migration approval and rerun;
-no hook/test was bypassed. Log: `artifacts/TICKET-185/full-verify.log`.
+Full verification passes: formatting, lint, types, 937 unit tests, production build
+and 775 browser checks (4.3m). 82 unit and 165 browser opt-in skips are not passes.
+Separate explicit runs passed five database cases and six retry browser cases;
+two duplicate matrix cases were skipped. Repeat migration preserved counts and
+all 16 public tables retain RLS. Earlier authorization-hook failures are resolved.
+Review docs and local artifacts under TICKET-185 retain the evidence.
 
 # Risks and rollout
 
-No rollout yet. Rate budgets require synthetic-traffic review. Migration authorization
-will be requested for exact generated paths. Shared NAT may group legitimate users;
-limits must accommodate this. This helper does not stop attacks across many networks.
+Apply the additive migration before deploying consuming code. Commit/local testing
+approval does not authorize production application. Application rollback may leave
+the additive table intact; do not drop data. Shared networks can exhaust their
+budget; fixed windows permit boundary bursts and do not stop distributed attacks.
+Non-Vercel production requires a reviewed ingress identity contract. Deployments
+must share the existing signing secret; no raw IPs, PINs or invitation tokens are logged.
 
 # Screenshots
 
-Twenty-four retry screenshots: `docs/reviews/TICKET-185/screenshots/`, all inspected.
-Guest denials now use a native themed document preserving HTTP 429/503, with no
-private URL in its body and a no-JavaScript retry form. PIN messages use the existing
-form; long waits are expressed in minutes. Downloads remain plain-text errors.
+24 guest/PIN screenshots across four themes and 375/768/1280 are in
+`docs/reviews/TICKET-185/screenshots/`; all inspected, with 12 guest captures refreshed
+after the font fix. Axe, overflow, keyboard and tap-target checks pass.
 
 # UI checklist
 
-See `docs/reviews/TICKET-185/ui-review.md`: visual, Axe, keyboard and tap-target
-checks pass across four themes and three widths. Five final browser cases pass;
-one duplicate visual matrix is intentionally skipped. The owner approved the native font-loading/shared-renderer exception on 4 November 2026. Physical-device checks remain unverified release requirements.
-The UI review is incomplete, and this PR remains draft.
+Owner approved native HTML/existing local fonts to preserve 429/503 status, with
+physical-phone checks retained as release requirements in TICKET-201. No device
+pass is claimed. Six delayed-font variants measure CLS 0. Three Lighthouse 12.6.1
+mobile runs score Performance 100/100/100 and Accessibility 100/100/100, CLS 0.
+Lighthouse's explicit error-page option preserves real 429/no-store responses;
+its expected status warnings remain in `docs/reviews/TICKET-185/performance.json`.
+Safe default light/dark themes are used during outages without database theme reads.
 
 # Harness changes, if any
 
-None.
-
-# Latest retry verification
-
-Metric-matched fallback fonts and reserved text space keep the native retry page
-stable while fonts load. A redundant decorative label was removed. Exact-zero CLS
-passes light/dark at 375/768/1280 with font requests delayed 500ms. The complete
-retry suite passes six cases (two duplicate mobile matrix skips), covering HTTP
-privacy, cookie replacement, keyboard retry, Axe and all-theme layouts. Twelve
-updated guest screenshots were inspected; PIN screenshots are unchanged. Production
-build and quick verification pass, including nine related unit tests. Migration
-authorization, approved budgets and full verification
-remain outstanding; this PR is still draft.
-
-Production retry-page measurement: Lighthouse 12.6.1 mobile Performance 100/100/100,
-Accessibility 100/100/100 and CLS 0 across three serial runs. All responses remained
-429/no-store. The explicit error-page auditing option was used, and its 429 warnings
-are retained in `docs/reviews/TICKET-185/performance.json`. This evidence covers the
-retry page only and does not certify real phones or the normal invitation journey.
+None. The requested approval-workflow simplification will be tracked separately.

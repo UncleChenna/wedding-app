@@ -1,6 +1,6 @@
-# Proposed launch request budgets
+# Approved launch request budgets
 
-These defaults await the ticket's human review; they are not yet approved launch policy.
+Owner approved these launch budgets on 4 November 2026 after reviewing the synthetic-traffic evidence.
 
 | Scope  | Budget per network | Window      | Coverage                                                                             |
 | ------ | ------------------ | ----------- | ------------------------------------------------------------------------------------ |
@@ -22,7 +22,7 @@ traffic evidence. The subsequent real HTTP/browser suite passes six cases, with
 two duplicate matrix skips: private-route 429/no-store responses despite forged
 headers/cookies, PIN cookie-reset resistance, native keyboard retry, all-theme
 accessibility and cold-font layout stability. See [UI review](ui-review.md).
-These results do not imply approval of the proposed launch budgets.
+The owner subsequently approved these proposed budgets on 4 November 2026.
 
 ## Identity and trust
 

@@ -37,9 +37,9 @@ Backlog audit coverage: Security, INV-2, ADM-4. See [PRD](../docs/prd.md) and [a
 
 ## Acceptance criteria
 
-- [ ] Use a shared atomic rate-limit store across instances for invitation/pass lookups and PIN attempts, with bounded expiry and a documented identity strategy that cannot be reset by changing a client device id.
-- [ ] Validate trusted proxy headers, avoid logging raw tokens/PINs/IP addresses, and return uniform privacy-safe lookup failures with retry guidance.
-- [ ] Test distributed bursts, cooldown expiry and legitimate households behind one network; TICKET-123 later adds ordering limits and cross-endpoint regression.
+- [x] Use a shared atomic rate-limit store across instances for invitation/pass lookups and PIN attempts, with bounded expiry and a documented identity strategy that cannot be reset by changing a client device id.
+- [x] Validate trusted proxy headers, avoid logging raw tokens/PINs/IP addresses, and return uniform privacy-safe lookup failures with retry guidance.
+- [x] Test distributed bursts, cooldown expiry and legitimate households behind one network; TICKET-123 later adds ordering limits and cross-endpoint regression.
 
 ## Test plan
 
@@ -51,6 +51,8 @@ Backlog audit coverage: Security, INV-2, ADM-4. See [PRD](../docs/prd.md) and [a
 - src/modules/shared/server/; src/modules/invitations/; src/modules/checkin/
 
 ## Notes / decisions
+
+- 2026-11-04 — Owner approved migration commit/authorization and launch budgets (lookup 1,200/60s; PIN 30/600s). Full verification passes: 937 unit tests, 775 browser checks; 82 unit and 165 browser opt-in skips are not counted as passes. Five explicit database tests and six focused retry browser cases passed separately. Device release checks remain mandatory.
 
 - 2026-11-04 — Owner approved the native HTML retry page and existing local fonts; physical-phone checks remain mandatory release requirements in TICKET-201. Migration authorization, launch-budget approval and full verification remain pending.
 

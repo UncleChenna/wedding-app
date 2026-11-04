@@ -45,3 +45,10 @@ Deploy the additive migration before code that consumes the table. The implement
 the migration. Application
 rollback can leave this additive table intact; do not roll back by dropping data.
 Counter cleanup is limited to expired rows, in batches of at most 32 per request.
+
+## Commit authorization — 4 November 2026
+
+The owner approved TICKET-185's migration and rate-limit budgets and instructed
+that the work be completed. The three exact generated paths listed above are
+recorded in the ignored `.harness/approved-writes.json` for commit. This does not
+authorize production database application. Full verification is being rerun.

@@ -1,6 +1,6 @@
 # TICKET-185 retry-state review — 2026-11-04
 
-Decision: **UI exception approved; ticket verification incomplete**. On 4 November
+Decision: **UI exception approved; automated ticket verification passed**. On 4 November
 2026 the owner approved the native HTML response and existing local fonts, with
 physical-phone checks retained as release requirements. Automated browser,
 accessibility, cold-font and performance evidence passes. This is not a device-test
@@ -45,7 +45,7 @@ that the outage document uses an administrator's custom active pair.
 | Sharing/devices      | NOT VERIFIED — no physical WhatsApp/iOS/Android check. Owner approved deferral on 4 November 2026; existing release gates remain mandatory.                                                                                                                                     |
 | QR                   | N/A — no QR rendering changed; denial prevents download generation.                                                                                                                                                                                                             |
 | Staff feedback       | PASS for tested lockout — existing pending/status region, readable text, immediate form response; no scan/haptic change.                                                                                                                                                        |
-| Verification         | FAIL / pending — full gate stops at three migration-authorization hook tests; quick gate and dedicated browser/build checks are separate evidence.                                                                                                                              |
+| Verification         | PASS — authorized full gate: formatting, lint, types, 937 unit tests, build and 775 browser checks; 82 unit/165 browser opt-in skips remain distinct from explicit database/browser evidence.                                                                                   |
 
 Next: resolve font/performance review, obtain pending exact-path migration and budget
 approvals, rerun full verification and keep the PR draft until criteria are proved.
@@ -109,3 +109,11 @@ HTML renderer and existing local fonts to preserve HTTP 429/503. Physical WhatsA
 iOS and Android checks remain unverified release requirements in TICKET-201; this
 exception does not remove them. Migration authorization, launch-budget approval
 and full verification remain outstanding.
+
+## Approved full gate
+
+After the owner's migration authorization, full verification passed: 937 unit
+tests and 775 browser checks in 4.3 minutes, plus formatting, lint, types and build.
+82 opt-in unit and 165 opt-in browser cases were skipped; dedicated five-case
+database and six-case retry runs remain separate evidence. Physical-device release
+checks remain mandatory under the approved exception.
