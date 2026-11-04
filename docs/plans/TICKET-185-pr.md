@@ -59,7 +59,7 @@ form; long waits are expressed in minutes. Downloads remain plain-text errors.
 
 See `docs/reviews/TICKET-185/ui-review.md`: visual, Axe, keyboard and tap-target
 checks pass across four themes and three widths. Five final browser cases pass;
-one duplicate visual matrix is intentionally skipped. Physical devices and native font-loading/shared-renderer exceptions remain unresolved.
+one duplicate visual matrix is intentionally skipped. The owner approved the native font-loading/shared-renderer exception on 4 November 2026. Physical-device checks remain unverified release requirements.
 The UI review is incomplete, and this PR remains draft.
 
 # Harness changes, if any
@@ -75,7 +75,7 @@ retry suite passes six cases (two duplicate mobile matrix skips), covering HTTP
 privacy, cookie replacement, keyboard retry, Axe and all-theme layouts. Twelve
 updated guest screenshots were inspected; PIN screenshots are unchanged. Production
 build and quick verification pass, including nine related unit tests. Migration
-authorization, approved budgets, device/native-renderer review and full verification
+authorization, approved budgets and full verification
 remain outstanding; this PR is still draft.
 
 Production retry-page measurement: Lighthouse 12.6.1 mobile Performance 100/100/100,

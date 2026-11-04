@@ -52,6 +52,8 @@ Backlog audit coverage: Security, INV-2, ADM-4. See [PRD](../docs/prd.md) and [a
 
 ## Notes / decisions
 
+- 2026-11-04 — Owner approved the native HTML retry page and existing local fonts; physical-phone checks remain mandatory release requirements in TICKET-201. Migration authorization, launch-budget approval and full verification remain pending.
+
 - 2026-10-21 — Added by HARNESS-002. All criteria describe future work; no completion or human approval is implied.
 
 ## Activity log

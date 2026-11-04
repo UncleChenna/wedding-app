@@ -131,3 +131,13 @@ Remaining: exact-path migration authorization, proposed launch-budget approval,
 full verification, physical-device review and the native renderer/font-loader
 exception. TICKET-032's base-update approval is also pending. No merge is authorized
 for either current draft/review merely by these measurements.
+
+## 4 November 2026 — native retry exception approved
+
+Owner response: “Allow native retry page; retain device release checks.” Recorded
+in the UI review and PR description. Native HTML and existing local fonts are
+approved for the retry response; physical-phone checks remain release requirements
+in TICKET-201 and are not claimed passed. No source or generated migration changed.
+Remaining blockers: exact-path migration commit authorization and launch-budget
+approval. After those approvals, record only the authorized paths, commit generated
+output and rerun full verification before advancing the draft PR.

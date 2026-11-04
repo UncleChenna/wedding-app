@@ -1,8 +1,10 @@
 # TICKET-185 retry-state review — 2026-11-04
 
-Decision: **CHANGES REQUESTED / incomplete**. Screenshots and browser accessibility
-pass; physical devices and the native document's
-font-loading exception remain unresolved. No UI completion is claimed.
+Decision: **UI exception approved; ticket verification incomplete**. On 4 November
+2026 the owner approved the native HTML response and existing local fonts, with
+physical-phone checks retained as release requirements. Automated browser,
+accessibility, cold-font and performance evidence passes. This is not a device-test
+pass, migration approval, launch-budget approval, merge approval or release approval.
 
 ## Verified evidence
 
@@ -27,23 +29,23 @@ that the outage document uses an administrator's custom active pair.
 
 ## Checklist
 
-| Item                 | Result and evidence                                                                                                                                                                                                                                                        |
-| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Screenshots          | PASS — 24 captured and inspected; no clipping or crowded copy.                                                                                                                                                                                                             |
-| Tokens               | PASS — registered colour/radius/font-role variables; no new palette or font files.                                                                                                                                                                                         |
-| Restraint/typography | PASS for rendered states — one primary retry action, serif heading, 18px body, clear spacing.                                                                                                                                                                              |
-| Mobile               | PASS at 375/768/1280 — no horizontal overflow; buttons at least 44px; guest retry near bottom on phones.                                                                                                                                                                   |
-| Motion               | PASS — reduced-motion mode exercised; native document has no animation or script.                                                                                                                                                                                          |
-| Keyboard             | PASS — visible focus, native form retry and PIN-to-submit tab sequence.                                                                                                                                                                                                    |
-| Contrast             | PASS — Axe checks in all theme/width combinations, textual status guidance.                                                                                                                                                                                                |
-| Load/images          | PASS for measured CLS — zero in all six default light/dark × width variants; see final measurements below. Native response references existing local TTF assets with swap rather than next/font; resolve or obtain an explicit exception before approval. No images added. |
-| Performance          | PASS — three mobile production runs: Performance 100/100/100, Accessibility 100/100/100, CLS 0; see performance.json and methodology below.                                                                                                                                |
-| Copy                 | Provisional — warm generic retry text; long waits use minutes, while Retry-After keeps exact seconds. No credential or exception details.                                                                                                                                  |
-| Shared components    | Existing PIN form unchanged; native outage document cannot use the normal streamed page renderer while preserving the tested status. Review this exception before completion.                                                                                              |
-| Sharing/devices      | NOT VERIFIED — no physical WhatsApp/iOS/Android check. Existing release gates remain mandatory.                                                                                                                                                                            |
-| QR                   | N/A — no QR rendering changed; denial prevents download generation.                                                                                                                                                                                                        |
-| Staff feedback       | PASS for tested lockout — existing pending/status region, readable text, immediate form response; no scan/haptic change.                                                                                                                                                   |
-| Verification         | FAIL / pending — full gate stops at three migration-authorization hook tests; quick gate and dedicated browser/build checks are separate evidence.                                                                                                                         |
+| Item                 | Result and evidence                                                                                                                                                                                                                                                             |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Screenshots          | PASS — 24 captured and inspected; no clipping or crowded copy.                                                                                                                                                                                                                  |
+| Tokens               | PASS — registered colour/radius/font-role variables; no new palette or font files.                                                                                                                                                                                              |
+| Restraint/typography | PASS for rendered states — one primary retry action, serif heading, 18px body, clear spacing.                                                                                                                                                                                   |
+| Mobile               | PASS at 375/768/1280 — no horizontal overflow; buttons at least 44px; guest retry near bottom on phones.                                                                                                                                                                        |
+| Motion               | PASS — reduced-motion mode exercised; native document has no animation or script.                                                                                                                                                                                               |
+| Keyboard             | PASS — visible focus, native form retry and PIN-to-submit tab sequence.                                                                                                                                                                                                         |
+| Contrast             | PASS — Axe checks in all theme/width combinations, textual status guidance.                                                                                                                                                                                                     |
+| Load/images          | PASS for measured CLS — zero in all six default light/dark × width variants; see final measurements below. Native response references existing local TTF assets with swap rather than next/font; owner approved this native-font exception on 4 November 2026. No images added. |
+| Performance          | PASS — three mobile production runs: Performance 100/100/100, Accessibility 100/100/100, CLS 0; see performance.json and methodology below.                                                                                                                                     |
+| Copy                 | Provisional — warm generic retry text; long waits use minutes, while Retry-After keeps exact seconds. No credential or exception details.                                                                                                                                       |
+| Shared components    | Existing PIN form unchanged; native outage document cannot use the normal streamed page renderer while preserving the tested status. Owner approved this exception on 4 November 2026.                                                                                          |
+| Sharing/devices      | NOT VERIFIED — no physical WhatsApp/iOS/Android check. Owner approved deferral on 4 November 2026; existing release gates remain mandatory.                                                                                                                                     |
+| QR                   | N/A — no QR rendering changed; denial prevents download generation.                                                                                                                                                                                                             |
+| Staff feedback       | PASS for tested lockout — existing pending/status region, readable text, immediate form response; no scan/haptic change.                                                                                                                                                        |
+| Verification         | FAIL / pending — full gate stops at three migration-authorization hook tests; quick gate and dedicated browser/build checks are separate evidence.                                                                                                                              |
 
 Next: resolve font/performance review, obtain pending exact-path migration and budget
 approvals, rerun full verification and keep the PR draft until criteria are proved.
@@ -99,3 +101,11 @@ was used without dependency installation. The owned test server was stopped.
 
 Reproduction script and full reports remain in `artifacts/TICKET-185/` as
 `measure-retry-performance.mjs` and `lighthouse-retry-{1,2,3}.json`.
+
+## Owner authorization — 4 November 2026
+
+“Allow native retry page; retain device release checks.” This permits the native
+HTML renderer and existing local fonts to preserve HTTP 429/503. Physical WhatsApp,
+iOS and Android checks remain unverified release requirements in TICKET-201; this
+exception does not remove them. Migration authorization, launch-budget approval
+and full verification remain outstanding.
