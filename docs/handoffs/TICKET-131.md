@@ -27,3 +27,13 @@ Readiness correction verified: all26 invitation-page checks pass on mobile and d
 ## Corrected full gate passed — 2026-11-03
 
 Full t:pr passed on b3dd899 after the streaming-readiness assertion; CLI moved ticket to in_review in fb5d1b6 and updated PR83. Prior failed traces remain disclosed. The test-only correction preserves every previous assertion; all26focused checks passed under the same database-outage conditions. Final GitHub CI on the published head and human merge remain required. No PR83 merge exception exists.
+
+## Approved merge completed — 2026-11-04
+
+The user explicitly approved PR83's merge. Rechecked head
+4b77eb700599bd8486212181e7834efca6682ea7, develop base, mergeability and all five
+successful CI jobs; GitHub reports no configured required-check list. Merged with
+an exact-head guard at 00:06:37Z, merge commit e051979ea9da63bf5a429bb65ee874a92e3cc2c7.
+The CLI verified the merge and marked TICKET-131 done; closure commit 5e3bbaf is pushed.
+No production deployment or database application was performed. This supersedes
+the earlier statement that no merge exception exists.
