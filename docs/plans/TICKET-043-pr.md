@@ -4,42 +4,56 @@ Ticket: TICKET-043
 
 # Summary
 
-Draft preparation for administrator invitation revocation/reissue. Implementation
-is not complete. The plan preserves immediate online rejection and the approved
-limits of offline revocation.
+Adds administrator controls to revoke or reissue an invitation with confirmation,
+while preserving the saved RSVP and explaining delayed offline propagation.
+**Draft: database migration and integration verification are outstanding.**
 
 # Changes
 
-Claimed the ticket in an isolated branch from develop c3dd68f. Added an implementation
-plan and handoff covering action authorization, token/version rotation, durable audit,
-confirmation UI and offline snapshot behavior. No application or schema code yet.
+- Strict commands with expected status/version prevent stale administrative edits.
+- Authenticated actions supply the audit actor; transactional service rotates the
+  capability/version or revokes access and inserts a durable audit event atomically.
+- Dedicated audit table definition excludes invitation capabilities and contacts.
+- Gate-session-protected snapshot returns only invitation IDs, statuses and versions.
+- Confirmation sheets in Admin Sharing; synthetic controls in /dev/share for review.
+- Approved ADR0020 wording is retained: stale versions are “Replaced pass”. The
+  dependent TICKET-065 retains actual offline scanner integration testing.
 
 # Acceptance criteria and evidence
 
-All acceptance criteria remain incomplete. Existing status/version lookup primitives
-were inspected; there is no general invitation lifecycle audit table. Dedicated
-storage and migration ordering must be resolved before implementation is certified.
+Pure version-transition, stale-form, signature/version snapshot, freshness and
+safe-response tests pass. Action tests cover authorization and verified actor identity.
+All ticket acceptance criteria remain unchecked pending real database integration.
 
 # Verification
 
-Ticket-start commit checks passed. Locked dependencies and shared skills were installed.
-Initial isolated database startup failed; no database behavior or feature test is
-claimed. No production, real-device or scanner end-to-end verification occurred.
+- verify:quick: lint/types pass, 64 related tests pass, 53 skipped.
+- Focused dev-server browser suite: 13 pass; four themes × 375/768/1280, axe AA,
+  keyboard confirmation/Escape/focus return, 44px targets, overflow and session denial.
+- 24 confirmation screenshots: docs/reviews/TICKET-043/screenshots.
+- Full production verification, authenticated lifecycle E2E, transaction rollback and
+  concurrency, migration/RLS checks, Lighthouse and physical phones remain unverified.
 
 # Risks and rollout
 
-PR89 owns migration0012. Avoid competing generated migration indices; settle integration
-order before generation. New migration outputs require exact-path authorization;
-no production application is authorized. This draft contains documentation only.
+Do not merge/deploy yet: the service references a new audit table whose migration
+has not been generated. PR89 owns migration0012; settle integration order first.
+Isolated database startup failed. No production database changes are authorized.
+Offline scanners can accept an old pass until their snapshot refreshes under ADR0020.
+Migration rollback/rollout instructions will be completed alongside generated SQL.
 
-# Screenshots
+# Review steps and screenshots
 
-Not applicable yet: confirmation UI is not implemented.
+In this worktree, run pnpm dev and open /dev/share. Select each theme, try Revoke
+invitation, cancel, then confirm and reissue. This preview changes synthetic state
+only. Production controls require an authenticated administrator and migrated database.
+See docs/reviews/TICKET-043/screenshots for confirmation captures.
 
 # UI checklist
 
-Pending implementation and all-theme browser evidence; no UI completion claimed.
+Focused automated preview checks pass as above. Full UI completion is not claimed;
+production performance, device QA and authenticated database journeys remain pending.
 
-# Harness changes, if any
+# Harness changes
 
-None. TICKET-215 carries workflow improvements separately.
+None. TICKET-215 carries approval-workflow improvements separately.

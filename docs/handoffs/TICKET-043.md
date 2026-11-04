@@ -2,29 +2,34 @@
 
 2026-11-04 — divine / codex — branch TICKET-043.
 Base: develop `c3dd68fa5f2e6d2ef134fae18d12eea7cd05171f`.
+Draft PR: https://github.com/UncleChenna/wedding-app/pull/99.
 
-Claimed through the shared ledger and moved to in_progress. Read the ticket, live
-queue, PRD INV-7, existing online pass/version checks and TICKET-169 offline policy.
-Plan: `docs/plans/2026-11-04-TICKET-043.md`. No feature or schema code is implemented.
+Implemented a partial revoke/reissue workflow: strict confirmed commands, expected
+status/version conflict checks, authenticated administrator actions, transactional
+invitation update plus a dedicated lifecycle audit table definition, and a minimal
+live gate-session-protected revocation snapshot endpoint. Reissue preserves RSVP
+attendance and rotates the capability/version; audit records omit capabilities and
+contact details. Admin Sharing includes confirmation sheets and /dev/share offers
+an explicitly synthetic preview.
 
-Managed worktree setup installed locked dependencies and linked shared skills. The
-isolated database startup exited 1 with its safe startup-failure message. No
-startup process remains active; inspect Docker health/ports before retrying. Project wedding-bf77f6b10d5f, database port20301, app20310, browser20311.
-Do not touch other collaborators' stacks.
+Verification: lint/types pass; verify:quick reports 64 passing related tests and
+53 skipped. Focused browser checks pass 13/13 using the dev preview server, including
+four themes at 375/768/1280, keyboard confirmation/Escape/focus return, axe AA,
+44px targets, no horizontal overflow and unauthenticated snapshot rejection.
+24 screenshots are in docs/reviews/TICKET-043/screenshots. The mobile ivory revoke
+capture was visually inspected. This does not certify production build, Lighthouse,
+physical devices, authenticated database actions or offline scanner integration.
+Logs: /tmp/TICKET-043-quick.log and /tmp/TICKET-043-browser.log.
 
-Existing invitation schema has status/token/tokenVersion and old-link lookups, but
-no general lifecycle audit table. Dedicated durable audit storage must be designed;
-RSVP history should not silently absorb unrelated lifecycle events. PR89 owns new
-migration0012, so settle migration integration order before generating a competing
-artifact. Scanner download remains065; accurately distinguish its future real-device
-coverage from contract/unit tests in043.
+No migration was generated or applied. PR89 owns migration0012; resolve integration
+order before generating the audit migration. Isolated stack startup failed during
+worktree setup. Project wedding-bf77f6b10d5f, database20301, app20310, browser20311.
+Do not use a copied primary database URL or touch other collaborators' stacks.
 
-Next: finish/check setup, read current local framework and UI guidance, write failing
-lifecycle tests, implement the transactional workflow and confirmation UI, then verify.
-No acceptance criteria are complete yet. Start status was pushed in `f7cf630`.
-Pure lifecycle and authorization tests can proceed while database setup is repaired.
-
-Draft PR: https://github.com/UncleChenna/wedding-app/pull/99. Plan/handoff checkpoint
-`040c36c` is pushed. The CLI records PR metadata on review transition; this ticket
-remains in_progress with all implementation criteria incomplete. No review status
-was fabricated to attach a draft link.
+Next: restore this isolated database, settle PR89 migration ordering, generate and
+review the additive audit migration with exact-path authorization, test transaction
+rollback/concurrency and real old-link rejection, then run full verification/UI
+checks. Do not merge this draft without the migration and database evidence.
+Scanner download and real offline-scanner end-to-end testing remain mandatory in
+TICKET-065; this ticket tests its snapshot contract only. No acceptance criteria
+are marked complete yet. The shared ledger remains authoritative.
