@@ -29,9 +29,9 @@ The schema declarations alone do not enforce these missing behaviors.
 
 Quick verification passes lint, types and 45 related tests (34 opt-in skips).
 The first explicit database test attempt was refused by the managed-target guard
-because local-stack setup had not completed; no database assertions ran. Startup
-failed once and a second isolated attempt is still being observed. No full gate
-or migration preservation result is claimed.
+because local-stack setup had not completed; no database assertions ran. Both isolated startup attempts ended in failure. The ticket is blocked pending
+stack health and migration-base integration. No full gate or migration preservation
+result is claimed.
 
 # Risks and rollout
 
