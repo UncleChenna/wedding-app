@@ -17,3 +17,24 @@ inventory invitation/pass/action entry points and integrate rate checks. Obtain
 approval for concrete budgets using synthetic evidence and exact generated migration
 paths before protected commits. No new migration, secret, policy or CI authorization
 is implied. PR87's latest head lacks CI checks; do not merge based on its earlier run.
+
+## Atomic store checkpoint
+
+Implemented `request-budget.ts` and the additive Drizzle source table. Drizzle
+generated `0012_request-budgets.sql`, its snapshot and journal entry. Applied only
+to this ticket's database; repeat migration preserves every table/migration count,
+and all 16 public tables retain RLS. Four opt-in tests pass in 1.29s, including
+30 concurrent calls across two pools admitting exactly five. Quick verification
+passes lint/types/45 related tests (51 skips); database cases ran separately.
+
+Two earlier DB runs timed out, including the RLS read. No database lock waits were
+observed. Only this worktree's Studio, metadata, Storage and Realtime services were
+stopped to reduce Docker memory; the unchanged tests then passed. Restore those
+four exact `*_wedding-da3e28ae7711` containers before full application verification.
+Database/Auth/Kong stayed running. Other collaborators' stacks were untouched.
+
+Exact migration commit/authorization-record approval is pending in the conversation;
+see `docs/reviews/TICKET-185/migration-approval.md`. Generated files must remain
+uncommitted until approved. PR89 remains draft, and no acceptance criterion is done.
+Next implement the request wrapper, configured budgets, private retry responses and
+all lookup/PIN entry points, then run end-to-end synthetic shared-network tests.
