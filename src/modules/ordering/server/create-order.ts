@@ -9,6 +9,7 @@ import {
   tables,
 } from "@/modules/shared/server/db/schema";
 import { orderFingerprint, type OrderResult, type OrderSubmission } from "../lib/order";
+import { splitByStation } from "../lib/stations";
 
 type Tx = Parameters<Parameters<Db["transaction"]>[0]>[0];
 
@@ -73,25 +74,30 @@ export async function createOrder(
         (await findReplay(tx, order.clientRequestId, fingerprint)) ?? { status: "unavailable" }
       );
 
-    // The schema stores every item under its station's submission row (TICKET-171).
-    const stations = [...new Set(menu.map((item) => item.station))];
+    // One ticket per station sharing this submission's id, so each board sees only its items.
+    const tickets = splitByStation(
+      order.items.map((item) => {
+        const menuItem = byId.get(item.menuItemId);
+        if (!menuItem) throw new Error("Order item lost its menu row");
+        return { ...item, station: menuItem.station, quantityLimit: menuItem.maxPerOrder };
+      }),
+    );
     const rows = await tx
       .insert(stationOrders)
-      .values(stations.map((station) => ({ orderId: created.id, station })))
+      .values(tickets.map(({ station }) => ({ orderId: created.id, station })))
       .returning({ id: stationOrders.id, station: stationOrders.station });
     const stationRow = new Map(rows.map((row) => [row.station, row.id]));
     await tx.insert(orderItems).values(
-      order.items.map((item) => {
-        const menuItem = byId.get(item.menuItemId);
-        const stationOrderId = menuItem && stationRow.get(menuItem.station);
-        if (!menuItem || !stationOrderId) throw new Error("Order item lost its station");
-        return {
+      tickets.flatMap(({ station, items }) => {
+        const stationOrderId = stationRow.get(station);
+        if (!stationOrderId) throw new Error("Station ticket was not created");
+        return items.map((item) => ({
           orderId: created.id,
           stationOrderId,
           menuItemId: item.menuItemId,
           quantity: item.quantity,
-          quantityLimit: menuItem.maxPerOrder,
-        };
+          quantityLimit: item.quantityLimit,
+        }));
       }),
     );
     return { status: "created", orderId: created.id };

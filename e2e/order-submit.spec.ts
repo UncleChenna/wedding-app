@@ -96,6 +96,9 @@ test.describe("order submission on a flaky network", () => {
       { notes: string | null; items: number; stations: number }[]
     >`select o.notes, (select count(*)::int from order_items i where i.order_id = o.id) as items, (select count(*)::int from station_orders s where s.order_id = o.id) as stations from orders o where o.table_id = ${tableId ?? ""} order by o.created_at desc limit 1`;
     expect(stored).toEqual({ notes: "No pepper, <b>please</b>", items: 2, stations: 2 });
+    // One confirmation, grouped the way the kitchen and bar will each receive it.
+    await expect(page.getByRole("list", { name: "From the kitchen" })).toContainText(meal);
+    await expect(page.getByRole("list", { name: "From the bar" })).toContainText(drink);
     // Plain text: the note renders as typed, never as markup.
     await expect(page.getByText("Your note: No pepper, <b>please</b>")).toBeVisible();
 
@@ -108,7 +111,7 @@ test.describe("order submission on a flaky network", () => {
         expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
           true,
         );
-        const dir = "docs/reviews/TICKET-072/" + theme.id;
+        const dir = "docs/reviews/TICKET-074/" + theme.id;
         mkdirSync(dir, { recursive: true });
         await page
           .getByRole("heading", { name: "On its way. Sit back, we've got this." })
@@ -150,7 +153,7 @@ test.describe("order submission on a flaky network", () => {
         expect((await retry.boundingBox())?.height).toBeGreaterThanOrEqual(44);
         await retry.scrollIntoViewIfNeeded();
         await page.screenshot({
-          path: "docs/reviews/TICKET-072/" + theme.id + "/" + width + "-failed.png",
+          path: "docs/reviews/TICKET-074/" + theme.id + "/" + width + "-failed.png",
         });
       }
 
