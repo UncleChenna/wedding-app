@@ -1690,9 +1690,10 @@
     "WED-185": {
       "log": [
         "- 2026-11-04 — todo → claimed — divine (codex)",
-        "- 2026-11-04 — todo → in_progress — divine (codex)"
+        "- 2026-11-04 — todo → in_progress — divine (codex)",
+        "- 2026-11-04 — in_progress → blocked — divine (codex) — Awaiting exact-path migration commit authorization and launch-budget approval; cold-font regression and full verification remain incomplete (draft PR #89)."
       ],
-      "status": "in_progress",
+      "status": "blocked",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-185",
@@ -1700,8 +1701,8 @@
       "started": "2026-11-04",
       "completed": "",
       "updated": "2026-11-04",
-      "reason": "",
-      "resume_to": ""
+      "reason": "Awaiting exact-path migration commit authorization and launch-budget approval; cold-font regression and full verification remain incomplete (draft PR #89).",
+      "resume_to": "in_progress"
     },
     "WED-084": {
       "log": [
