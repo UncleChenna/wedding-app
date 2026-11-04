@@ -2,7 +2,7 @@
 id: TICKET-185
 title: Protect invitation and PIN endpoints before invitations launch
 epic: security
-status: blocked
+status: in_progress
 priority: urgent
 estimate: M
 labels: [security, backend, test]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-11-04
 started: 2026-11-04
 completed: ""
-reason: "Awaiting exact-path migration commit authorization and launch-budget approval before full verification. Native retry exception approved; physical-phone checks remain release requirements. Draft PR #89."
-resume_to: in_progress
+reason: ""
+resume_to: ""
 ---
 
 # TICKET-185: Protect invitation and PIN endpoints before invitations launch
@@ -66,3 +66,4 @@ Backlog audit coverage: Security, INV-2, ADM-4. See [PRD](../docs/prd.md) and [a
 - 2026-11-04 — in_progress → blocked — divine (codex) — Awaiting migration commit authorization, launch-budget approval and native retry/device-review exception; full verification remains pending. Cold-font and Lighthouse checks now pass (draft PR #89).
 - 2026-11-04 — blocked → in_progress — divine (codex) — Record approved native retry-page exception; retain physical-device release checks.
 - 2026-11-04 — in_progress → blocked — divine (codex) — Awaiting exact-path migration commit authorization and launch-budget approval before full verification. Native retry exception approved; physical-phone checks remain release requirements. Draft PR #89.
+- 2026-11-04 — blocked → in_progress — divine (codex) — Owner approved migration and budgets; verification underway.
