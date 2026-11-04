@@ -1722,18 +1722,19 @@
       "log": [
         "- 2026-11-03 — backlog → todo — ihemegodsfavour8-lang",
         "- 2026-11-03 — todo → claimed — ihemegodsfavour8-lang (codex)",
-        "- 2026-11-03 — todo → in_progress — ihemegodsfavour8-lang (codex)"
+        "- 2026-11-03 — todo → in_progress — ihemegodsfavour8-lang (codex)",
+        "- 2026-11-04 — in_progress → blocked — ihemegodsfavour8-lang (codex) — Normal commit/full gate require missing unmerged TICKET-211 definition; AGENTS.md forbids syncing unrelated ticket files. Owner metadata exception is pending. Source passes quick gate, 950 unit cases and one managed-local rollback Postgres case; no hooks bypassed."
       ],
-      "status": "in_progress",
+      "status": "blocked",
       "owner": "ihemegodsfavour8-lang",
       "agent": "codex",
       "branch": "TICKET-212",
       "pr": "",
       "started": "2026-11-03",
       "completed": "",
-      "updated": "2026-11-03",
-      "reason": "",
-      "resume_to": ""
+      "updated": "2026-11-04",
+      "reason": "Normal commit/full gate require missing unmerged TICKET-211 definition; AGENTS.md forbids syncing unrelated ticket files. Owner metadata exception is pending. Source passes quick gate, 950 unit cases and one managed-local rollback Postgres case; no hooks bypassed.",
+      "resume_to": "in_progress"
     }
   }
 }
