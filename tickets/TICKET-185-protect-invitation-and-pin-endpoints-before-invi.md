@@ -2,7 +2,7 @@
 id: TICKET-185
 title: Protect invitation and PIN endpoints before invitations launch
 epic: security
-status: in_progress
+status: in_review
 priority: urgent
 estimate: M
 labels: [security, backend, test]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-031, TICKET-036, TICKET-183]
 blocks: [TICKET-048, TICKET-123, TICKET-176]
 branch: TICKET-185
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/89
 created: 2026-10-21
 updated: 2026-11-04
 started: 2026-11-04
@@ -69,3 +69,4 @@ Backlog audit coverage: Security, INV-2, ADM-4. See [PRD](../docs/prd.md) and [a
 - 2026-11-04 — blocked → in_progress — divine (codex) — Record approved native retry-page exception; retain physical-device release checks.
 - 2026-11-04 — in_progress → blocked — divine (codex) — Awaiting exact-path migration commit authorization and launch-budget approval before full verification. Native retry exception approved; physical-phone checks remain release requirements. Draft PR #89.
 - 2026-11-04 — blocked → in_progress — divine (codex) — Owner approved migration and budgets; verification underway.
+- 2026-11-04 — in_progress → in_review — divine (codex)
