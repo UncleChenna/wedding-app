@@ -57,3 +57,18 @@ were not the template's exact names. Corrected them to Summary, Acceptance crite
 and evidence, Verification, and Risks and rollout; content/results are unchanged.
 Next t:pr must pass the actual review gate; do not treat this validation failure as
 an implementation failure or a completed review transition.
+
+## Ready for review — 2026-11-04
+
+The corrected t:pr gate passed on 7492aa7: 948 unit passes / 74 skips, 779 browser
+passes / 165 skips (8.0m). CLI recorded in_review and pushed 9877e3e with PR87's URL.
+No verification process remains running. The source has not changed since the
+previously passing targeted staff/MFA/order journeys; the last test-only change
+routes screenshots to this ticket's artifact folder.
+
+Next: publish this evidence-only handoff, mark PR87 ready and verify CI on its
+actual final head. GitHub reported no checks on the intermediate documentation
+heads, so do not reuse 40bbd79's green CI as proof for a later SHA. The configured
+ready_for_review event should request a fresh run; inspect the result. Leave the
+PR unmerged unless the human merges or provides an explicit exception. Then use
+CLI to mark done. TICKET-185 is next ready and may proceed in its own worktree.

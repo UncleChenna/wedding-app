@@ -37,8 +37,10 @@ points remain reachable; guest ordering and invitation capabilities stay separat
 
 Full local verification passed: 948 unit tests / 74 opt-in skips, 779 browser
 checks / 165 opt-in skips (9.4m). All five CI jobs passed at 40bbd79 in run
-41752790966, including migrations/seed and the real invitation journey. Final-head
-review gate and CI will be checked again after this evidence update.
+41752790966, including migrations/seed and the real invitation journey. The final local t:pr gate passed again on 7492aa7: 948 unit passes / 74 skips
+and 779 browser passes / 165 skips (8.0m). CLI moved this ticket to in_review.
+CI on the final published head remains to confirm; earlier green checks are not
+presented as checks for a later SHA.
 
 Initial proxy regressions failed 8/9 before implementation. The first real staff
 journey failed while the shared database was unhealthy; after health recovered,
