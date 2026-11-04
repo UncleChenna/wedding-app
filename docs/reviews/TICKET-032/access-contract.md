@@ -45,5 +45,12 @@ implementation remains its existing tickets, not an added login requirement.
 
 - New request regressions initially failed 8/9 cases on develop's proxy.
 - Request and direct-operation matrix: 53 passing tests.
-- Production browser, local Auth/staff and guest journeys, full gate: pending.
+- Production anonymous access/guest endpoint matrix: 4 passes (mobile + desktop).
+- Real gate/kitchen/bar sign-in, cross-role denial and live credential-version revocation: 2 passes (15.1s).
+- Real local admin OTP/TOTP, AAL1 restrictions and AAL2 upgrade: 2 passes (1.1m).
+- Real anonymous ordering, lost responses, retry idempotency and sold-out rejection: 6 passes (58.4s).
+- Full local verification: 948 unit passes / 74 opt-in skips; 779 browser passes / 165 opt-in skips (9.4m).
+- CI run 41752790966 on 40bbd79: all five jobs passed, including the invitation/RSVP/pass journey in both browser projects.
+- Initial staff journey failed twice waiting for a PIN response while PostgreSQL was unhealthy and pg_isready reported no response. After health recovered, the unchanged test passed. Logs retain both results; no assertion or timeout was weakened.
+- Ordering images use artifacts/TICKET-032/ordering via the new optional ORDER_REVIEW_DIR; existing TICKET-072 evidence is untouched.
 - No visual layout, database schema, policy, CI or production configuration changes.

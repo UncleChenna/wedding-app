@@ -30,3 +30,24 @@ The operation test initially returned a mock from beforeEach, which Vitest treat
 as cleanup; a rejected mock then failed cleanup after the correct guard response.
 Changed the hook to return void, preserving the failing-provider assertion. The
 corrected full matrix passes; initial failure log is retained.
+
+## Verification complete before review gate — 2026-11-04
+
+Implementation 40bbd79 pushed; draft PR87 targets develop. Full local gate passed:
+948 unit / 74 skips, 779 browser / 165 skips (9.4m). Production access matrix 4
+passes; real staff journey 2 passes; real MFA journey 2 passes; anonymous ordering
+6 passes. CI run 41752790966 passed all five jobs at 40bbd79, including the real
+invitation journey. No verifier remains running. All ticket criteria are now ticked.
+
+First staff run failed waiting for PIN responses while all local PostgreSQL stacks
+were unhealthy. TICKET-032 pg_isready returned no response. Later the stack recovered
+without restart or other-owner cleanup; pg_isready accepted connections and the
+unchanged test passed in 15.1s. The optional old-WED-001 cleanup question no longer
+blocks verification. No other owner's stack was stopped. TICKET-024 stays parked
+with backup and its separate protected-file approval remains pending.
+
+Only subsequent code change is the order test's optional ORDER_REVIEW_DIR output
+path, exercised by all six order cases; no assertions changed. Next: commit/push
+this evidence and test-output isolation, run pnpm t:pr TICKET-032, make PR87 ready,
+and verify final-head CI. Human merge is required by AGENTS.md unless the user
+provides a specific exception. No production changes or physical-device claims.

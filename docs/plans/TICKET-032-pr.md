@@ -21,14 +21,33 @@ points remain reachable; guest ordering and invitation capabilities stay separat
 
 # Acceptance evidence
 
-Incomplete. Initial proxy regression: 8 failures / 1 pass. The implemented request
-and direct-operation matrix now passes 53 tests. Existing live identity checks are
-retained; no new scanner/board/admin mutation feature is claimed.
+- Admin/staff access: 53 request/direct-operation matrix tests pass, including
+  missing/expired/wrong-role credentials, provider failure and callback denial.
+- Guest separation: real anonymous ordering passes 6 browser cases; CI invitation
+  journey passes both projects. Private admin/staff operations are unavailable to
+  guest or anonymous identities. Existing status endpoints disclose no households.
+- Production route matrix passes 4 cases; real staff journey passes both projects,
+  including gate/kitchen/bar isolation and live credential revocation. Real admin
+  MFA passes both projects, including AAL1 restrictions and AAL2 access.
+- Current surface inventory and bootstrap exceptions are documented in
+  docs/reviews/TICKET-032/access-contract.md. No scanner or station API feature is
+  claimed; future operations must use live guards, not merely the proxy.
 
-# Validation and remaining work
+# Validation
 
-Production build, browser matrix, local staff/admin/guest journeys and full verify
-are still pending. This PR remains a draft. No acceptance criterion is marked done.
+Full local verification passed: 948 unit tests / 74 opt-in skips, 779 browser
+checks / 165 opt-in skips (9.4m). All five CI jobs passed at 40bbd79 in run
+41752790966, including migrations/seed and the real invitation journey. Final-head
+review gate and CI will be checked again after this evidence update.
+
+Initial proxy regressions failed 8/9 before implementation. The first real staff
+journey failed while the shared database was unhealthy; after health recovered,
+the unchanged mobile/desktop cases passed in 15.1s. Failure and success logs are
+retained under artifacts/TICKET-032/. No checks or timeouts were weakened.
+
+Order regression screenshots are directed to this ticket's artifact directory;
+no previous ticket's review images were overwritten. Physical-device release QA
+remains in the existing release tickets; this change does not certify it.
 
 # Risks and rollback
 
