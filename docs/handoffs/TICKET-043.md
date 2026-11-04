@@ -26,10 +26,33 @@ order before generating the audit migration. Isolated stack startup failed durin
 worktree setup. Project wedding-bf77f6b10d5f, database20301, app20310, browser20311.
 Do not use a copied primary database URL or touch other collaborators' stacks.
 
-Next: restore this isolated database, settle PR89 migration ordering, generate and
+Next: restore this isolated database when capacity is available, settle PR89 migration ordering, generate and
 review the additive audit migration with exact-path authorization, test transaction
 rollback/concurrency and real old-link rejection, then run full verification/UI
 checks. Do not merge this draft without the migration and database evidence.
 Scanner download and real offline-scanner end-to-end testing remain mandatory in
 TICKET-065; this ticket tests its snapshot contract only. No acceptance criteria
 are marked complete yet. The shared ledger remains authoritative.
+
+## Database follow-up — 2026-11-04
+
+Added four opt-in real PostgreSQL tests in scripts/**tests**/invitation-lifecycle.integration.test.ts:
+old capability rejection/new lookup and audit contents; revocation preserving RSVP;
+audit insertion failure rolling back the invitation; and competing reissues producing
+one success and one audit event. Types pass. These tests have NOT executed: base
+migration failed first, so the shell did not launch the test command.
+
+The owned stack started successfully on retry. The existing committed migrations
+then exited 1 without a useful diagnostic. pg_isready still accepted connections,
+but Colima had only 119 MB available of 5910 MB; memory pressure is observed, not
+proven to be the migration exit cause. Stop only this stack with backup preserved.
+Logs: /tmp/TICKET-043-db-start.log, /tmp/TICKET-043-base-migrate.log,
+/tmp/TICKET-043-db-stop.log. No new audit migration generated/applied.
+
+Five new non-database service tests pass: invalid actor/command never opens a
+transaction; capability collision retries stop at five; unrelated uniqueness,
+connection and constraint errors propagate without retries. The fixture concurrency
+test retains its audit and deactivates only its synthetic invitation.
+
+Exact next database test after the approved migration is available:
+RUN_INVITATION_LIFECYCLE_DB_TESTS=1 pnpm exec vitest run scripts/**tests**/invitation-lifecycle.integration.test.ts

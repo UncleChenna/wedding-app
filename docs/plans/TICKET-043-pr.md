@@ -31,6 +31,8 @@ All ticket acceptance criteria remain unchecked pending real database integratio
 - Focused dev-server browser suite: 13 pass; four themes × 375/768/1280, axe AA,
   keyboard confirmation/Escape/focus return, 44px targets, overflow and session denial.
 - 24 confirmation screenshots: docs/reviews/TICKET-043/screenshots.
+- Five additional service-boundary tests pass (input rejection, bounded collision retries, unrelated failures).
+- Four real database tests are written/typechecked but not run: base migration exited 1 first.
 - Full production verification, authenticated lifecycle E2E, transaction rollback and
   concurrency, migration/RLS checks, Lighthouse and physical phones remain unverified.
 
@@ -38,7 +40,7 @@ All ticket acceptance criteria remain unchecked pending real database integratio
 
 Do not merge/deploy yet: the service references a new audit table whose migration
 has not been generated. PR89 owns migration0012; settle integration order first.
-Isolated database startup failed. No production database changes are authorized.
+Isolated database startup recovered, but base migration exited 1 with only 119 MB VM memory available. The owned stack is stopped with backup preserved. No production database changes are authorized.
 Offline scanners can accept an old pass until their snapshot refreshes under ADR0020.
 Migration rollback/rollout instructions will be completed alongside generated SQL.
 
