@@ -1577,18 +1577,19 @@
       "log": [
         "- 2026-11-03 — todo → claimed — divine (codex)",
         "- 2026-11-03 — todo → in_progress — divine (codex)",
-        "- 2026-11-03 — in_progress → blocked — divine (codex) — Automated verification passes; awaiting physical staff-device review evidence or user-approved deferral before advancing draft PR84."
+        "- 2026-11-03 — in_progress → blocked — divine (codex) — Automated verification passes; awaiting physical staff-device review evidence or user-approved deferral before advancing draft PR84.",
+        "- 2026-11-04 — blocked → in_progress — divine (codex) — User approved proceeding to review with physical staff-device checks retained as release requirements."
       ],
-      "status": "blocked",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-031",
       "pr": "",
       "started": "2026-11-03",
       "completed": "",
-      "updated": "2026-11-03",
-      "reason": "Automated verification passes; awaiting physical staff-device review evidence or user-approved deferral before advancing draft PR84.",
-      "resume_to": "in_progress"
+      "updated": "2026-11-04",
+      "reason": "",
+      "resume_to": ""
     },
     "WED-072": {
       "log": [
