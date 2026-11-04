@@ -7,7 +7,7 @@ Ticket: TICKET-031
 Gate, kitchen and bar entry pages now require a six-digit staff PIN. Incorrect,
 expired and locked-out attempts get distinct friendly messages; successful sessions
 are bound to the browser device and cannot open a different role's station.
-The owner approved proceeding to review with physical-device checks retained as mandatory release requirements in TICKET-201. Those checks remain unverified. The branch now includes develop e051979 and is running its final integrated review gate.
+The owner approved proceeding to review with physical-device checks retained as mandatory release requirements in TICKET-201. Those checks remain unverified. The branch includes develop e051979 and passed its integrated full review gate.
 
 # Changes
 
@@ -38,10 +38,17 @@ The owner approved proceeding to review with physical-device checks retained as 
 - Delayed-font exact-zero CLS: 12 passes. Preview behavior: one pass.
 - Standard screenshots: 48 cases pass across four routes, four themes and three widths.
 - Final full `pnpm verify` passes: 878 unit passes (65 skips), 775 browser passes
-  (165 skips; 8.3 minutes), formatting, lint, types and production build.
+  (165 skips; final integrated run 7.3 minutes), formatting, lint, types and production build.
   The initial run had nine browser failures;
   corrected typography, idle status semantics and isolated fixture scheduling now pass focused checks.
   See `docs/reviews/TICKET-031/ui-review.md` for retained evidence and limitations.
+
+The first integrated review attempt hit one existing pass-image test timeout
+(877 unit passes, one failure). Both image tests passed unchanged in isolation
+in 1.24 seconds after the concurrent verification process exited. A full rerun
+with one unit worker passed; no assertion or timeout changed. Logs:
+`artifacts/TICKET-031/review-gate.log`, `pass-image-isolated.log`, and
+`review-gate-serial.log`.
 
 # Risks and rollout
 
@@ -62,6 +69,8 @@ Review `docs/reviews/TICKET-031/screenshots/` for all staff routes and
 `docs/reviews/TICKET-031/preview/` for the changed shared-form preview, at 375/768/1280
 in every theme. Contact sheets are in the same review folder. Original standard
 captures are retained locally under `artifacts/screenshots/`.
+
+![Staff sign-in at 375px across themes](https://github.com/UncleChenna/wedding-app/blob/TICKET-031/docs/reviews/TICKET-031/screenshots-375.png?raw=true)
 
 # UI checklist
 

@@ -101,3 +101,17 @@ PR83 was explicitly approved, merged and closed; integrated its develop commit
 e051979 into this branch in 1adb8b9 without conflicts. Next run t:pr on the
 integrated branch, publish actual results and mark PR84 ready after success.
 The review deferral does not itself authorize merging PR84.
+
+## Integrated review complete — 2026-11-04
+
+Full t:pr passed on 87eaa57 (develop base e051979): 878 unit / 65 skipped,
+775 browser / 165 skipped (7.3 minutes). CLI moved this ticket to in_review
+in 0b551f1 and pushed PR84. The first integrated gate had one existing image-test
+timeout: 877 passes/one failure. Both unchanged image tests then passed isolated
+in 1.24s; the other observed verifier had exited. The full rerun used one unit
+worker and passed without changing assertions or timeouts. All logs are retained.
+
+Next: publish these evidence-only updates, make PR84 ready, check all five CI jobs
+on the final head, and request an explicit merge exception before merging. The
+user approved review/device deferral, not PR84 merge. Physical checks remain
+unchecked and release-blocking in TICKET-201. No production database changes.

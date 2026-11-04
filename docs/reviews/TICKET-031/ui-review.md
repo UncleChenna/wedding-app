@@ -1,7 +1,7 @@
 # TICKET-031 UI review
 
 2026-11-03. Routes: `/checkin`, `/kitchen`, `/bar`; shared form on `/dev/theme`.
-Automated review passes. On 2026-11-04 the owner approved proceeding to review with physical staff-device and on-screen-keyboard checks retained as mandatory release requirements in TICKET-201. These checks remain unverified. Review disposition: APPROVE for review under that explicit deferral once the integrated full gate passes; not release or merge approval.
+Automated review passes. On 2026-11-04 the owner approved proceeding to review with physical staff-device and on-screen-keyboard checks retained as mandatory release requirements in TICKET-201. These checks remain unverified. Review disposition: APPROVE for review under that explicit deferral; the integrated full gate passes; not release or merge approval.
 
 | Check                  | Result and evidence                                                                                                                                                                                                    |
 | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -45,3 +45,13 @@ No application error has been hidden or test assertion removed.
   65 skips, 775 browser passes, 165 skips (8.3 minutes browser time).
 - Verified product source is commit `393595a`, based on develop `df8a970`;
   subsequent changes contain review evidence and documentation only.
+
+## Integrated review result — 2026-11-04
+
+Full t:pr passed on source head 87eaa57 against develop e051979: 878 unit passes,
+65 opt-in skips, production build, 775 browser passes and 165 skips (7.3 minutes).
+CLI moved the ticket to in_review in 0b551f1. The first integrated attempt had one
+pass-image timeout under concurrent verification; the unchanged isolated suite
+passed both tests in 1.24 seconds and the full rerun with one unit worker passed.
+No assertions, timeouts or tests were weakened. Logs are review-gate.log,
+pass-image-isolated.log and review-gate-serial.log under artifacts/TICKET-031/.
