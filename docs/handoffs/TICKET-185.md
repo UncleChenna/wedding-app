@@ -168,3 +168,13 @@ commit_refs_rules/Internal Server Error; normal CLI retry updated ledger to
 in_progress, while its branch push failed. Preserve commit 85429e4 and retry the
 normal push with the approved migration commit. Next: publish and t:pr, then fix
 TICKET-032's approved base update. Harness approval simplification remains requested.
+
+## PR gate completed
+
+The mandatory t:pr gate also passed on committed implementation a718f88: 937 unit
+passes/82 opt-in skips and 775 browser passes/165 opt-in skips (4.6m), with all
+other verification stages passing. CLI recorded in_review and pushed a04ab5f.
+GitHub's PR head now matches that pushed commit. Generated migration is committed;
+no pending local source changes remain. Next: confirm CI at the final published
+head and human review; no production application or PR merge has been performed.
+Continue TICKET-032's approved base update, then the requested harness streamlining.
