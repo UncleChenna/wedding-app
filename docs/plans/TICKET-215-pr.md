@@ -24,14 +24,17 @@ Protected-artifact temporary-Git tests and evidence regression tests cover uncha
 versus changed inputs, missing/malformed records, failures, expiry, configuration,
 new tests and volatile command identity. Source changes during a run cannot certify
 success. Agent links pass. Existing ownership, clean-tree, acceptance and PR-body
-checks remain in place. Full final verification runs through the PR command.
+checks remain in place. Final verification passed through the PR command.
 
 # Verification
 
 Initial full gate: 971 unit tests passed, 83 skipped; 795 browser tests passed,
 171 skipped. Formatting, lint, types and production build passed. Local log:
-`artifacts/TICKET-215/verify.log`. Final verification includes the subsequent volatile
-command-ID regression fix. CI remains an independent complete gate.
+`artifacts/TICKET-215/verify.log`. Final `pnpm t:pr TICKET-215` passed on implementation commit `b2bc0c5`: 973 unit
+tests passed (83 skipped), 795 browser tests passed (171 skipped), with formatting,
+lint, types and build passing. Log: `artifacts/TICKET-215/final-pr-gate.log`.
+This includes volatile command-ID and ignored worktree-configuration regressions.
+CI remains an independent complete gate.
 
 Database startup failed locally; opt-in database tests and physical devices are not
 certified. No product UI or schema changed.
