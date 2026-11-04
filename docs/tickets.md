@@ -50,10 +50,10 @@ anything except done → cancelled (--reason)
 | Move                      | Rule enforced by `pnpm t:move`                                                                                                                      |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `backlog → todo`          | Always allowed                                                                                                                                      |
-| `todo → in_progress`      | You claimed it, every `blocked_by` ticket is `done`, and you are on the ticket's branch                                                             |
+| `todo → in_progress`      | You claimed it, every `blocked_by` ticket is `done` (or, with `--ahead`, still in progress, in review or blocked), and you are on the ticket branch |
 | `in_progress → in_review` | Every acceptance criterion is ticked, the tree is clean, the branch is pushed, a PR is open, and `pnpm verify` passes. `pnpm t:pr` does all of this |
 | `in_review → in_progress` | `--reason` gives the requested changes                                                                                                              |
-| `in_review → done`        | The PR is merged (checked with `gh`) and every criterion is ticked in the merged file on `develop`                                                  |
+| `in_review → done`        | The PR is merged (checked with `gh`), every criterion is ticked in the merged file on `develop`, and every `blocked_by` ticket is `done`            |
 | `→ blocked`               | From todo, in_progress or in_review, with `--reason` naming the blocking ticket or question                                                         |
 | `blocked → previous`      | Only back to the recorded `resume_to`                                                                                                               |
 | `→ cancelled`             | `--reason` required. `done` is final                                                                                                                |
@@ -78,20 +78,20 @@ the coordination checkout stays clean.
 
 ## Commands
 
-| Command                                                                                           | Does                                                                                                                        |
-| ------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm t:list [--status s] [--epic e] [--module m] [--owner o] [--label l] [--json]`               | Table of tickets (live)                                                                                                     |
-| `pnpm t:board`                                                                                    | Terminal kanban (live)                                                                                                      |
-| `pnpm t:next [--module m] [--human] [--json]`                                                     | Best `todo` ticket with every blocker done. Skips `human` tickets unless `--human`                                          |
-| `pnpm t:show <id> [--json]`                                                                       | One ticket (live)                                                                                                           |
-| `pnpm t:claim <id> --owner <name> --agent <name>`                                                 | Atomic claim; fails if claimed or blocked                                                                                   |
-| `pnpm t:release <id>`                                                                             | Owner gives back a claimed `todo` ticket                                                                                    |
-| `pnpm t:move <id> <status> [--reason text] [--push]`                                              | Enforced transition; `--push` commits only the assigned ticket as `TICKET-NNN: move to <status>` and pushes                 |
-| `pnpm t:pr <id>`                                                                                  | Verify, push, open the PR (title `TICKET-NNN: <title>`, body from `docs/plans/TICKET-NNN-pr.md`), move to `in_review`, push |
-| `pnpm t:new --title … --epic … --module … [--priority --estimate --labels --blocked-by --status]` | Scaffold the next id                                                                                                        |
-| `pnpm t:sync <id>`                                                                                | Sync the named ticket only, on its own branch                                                                               |
-| `pnpm t:validate`                                                                                 | Schema, sections, unique and contiguous ids, real dependencies, no cycles, status/branch/PR consistency                     |
-| `pnpm t:render`                                                                                   | Generate ignored Markdown snapshots in `artifacts/tickets/`                                                                 |
+| Command                                                                                           | Does                                                                                                                                   |
+| ------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm t:list [--status s] [--epic e] [--module m] [--owner o] [--label l] [--json]`               | Table of tickets (live)                                                                                                                |
+| `pnpm t:board`                                                                                    | Terminal kanban (live)                                                                                                                 |
+| `pnpm t:next [--module m] [--human] [--json]`                                                     | Best `todo` ticket with every blocker done. Skips `human` tickets unless `--human`                                                     |
+| `pnpm t:show <id> [--json]`                                                                       | One ticket (live)                                                                                                                      |
+| `pnpm t:claim <id> --owner <name> --agent <name> [--ahead]`                                       | Atomic claim; fails if claimed or blocked (`--ahead`: allowed while blockers are in progress or review)                                |
+| `pnpm t:release <id>`                                                                             | Owner gives back a claimed `todo` ticket                                                                                               |
+| `pnpm t:move <id> <status> [--reason text] [--push]`                                              | Enforced transition; `--push` commits only the assigned ticket as `TICKET-NNN: move to <status>` and pushes                            |
+| `pnpm t:pr <id>`                                                                                  | Verify, push, open the PR (title `TICKET-NNN: <title>`, body from `docs/plans/TICKET-NNN-pr.md`), move to `in_review`, push            |
+| `pnpm t:new --title … --epic … --module … [--priority --estimate --labels --blocked-by --status]` | Scaffold the next id                                                                                                                   |
+| `pnpm t:sync <id>`                                                                                | Sync the named ticket only, on its own branch                                                                                          |
+| `pnpm t:validate`                                                                                 | Schema, sections, unique and contiguous ids (ledger-reserved gaps allowed), real dependencies, no cycles, status/branch/PR consistency |
+| `pnpm t:render`                                                                                   | Generate ignored Markdown snapshots in `artifacts/tickets/`                                                                            |
 
 `owner` defaults to `git config harness.owner` or `AGENT_OWNER`. `agent` defaults to `TICKETS_AGENT`.
 
@@ -102,6 +102,23 @@ the coordination checkout stays clean.
 - The legacy pre-commit `t:render --staged` call is a no-op for compatibility. Validation still runs; no hook stages generated files.
 - The `commit-msg` hook requires `TICKET-NNN: …` subjects on ticket branches and rejects AI attribution.
 - Feature PRs never regenerate tracked boards. Preserve their stable links. Reverse dependency fields are derived at read time; `blocked_by` remains the authoritative edge list. Dependency readiness is checked atomically by claim/move using the live ledger, not stale file statuses.
+
+## Working ahead of other people's tickets
+
+Several people share this backlog, so two rules make room for parallel work (TICKET-214):
+
+- **Reserved ids.** `t:validate` accepts a missing ticket number when the shared ledger has allocated it and its file
+  isn't on `develop` yet. That's another collaborator's ticket in flight, not a deletion. A gap nobody reserved, or a
+  ticket removed after it reached `develop`, still fails. Without ledger access the strict check applies.
+- **`--ahead`.** `pnpm t:claim <id> --ahead` and `pnpm t:move <id> in_progress --ahead` start a ticket while its
+  `blocked_by` tickets are still `in_progress`, `in_review` or `blocked`. A dependency nobody has started still
+  refuses. The activity log records what it was started ahead of.
+
+When you start ahead:
+
+- Build on the dependency's branch or merged commits where you need its code, and say so in your PR.
+- Keep the PR a draft until the dependency's PR has merged. Reviewers merge dependencies first.
+- `t:move <id> done` still waits until every `blocked_by` ticket is `done`.
 
 ## The `human` label
 
