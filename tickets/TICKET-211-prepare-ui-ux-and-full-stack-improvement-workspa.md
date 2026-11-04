@@ -2,7 +2,7 @@
 id: TICKET-211
 title: Build the approved household RSVP and migration foundation
 epic: foundations
-status: in_progress
+status: in_review
 priority: medium
 estimate: L
 labels: [backend, db, test, docs]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: []
 blocks: []
 branch: TICKET-211
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/92
 created: 2026-11-02
 updated: 2026-11-03
 started: 2026-11-02
@@ -79,3 +79,4 @@ The owner supplied a revised end-to-end product mandate on 2026-11-02. It supers
 - 2026-11-02 — todo → in_progress — ihemegodsfavour8-lang (codex)
 - 2026-11-02 — in_progress → blocked — ihemegodsfavour8-lang (codex) — Human must create .harness/approved-writes.json for the seven generated migration files; full gate has three protected-file hook failures. Local implementation preserved; no production operation authorized.
 - 2026-11-03 — blocked → in_progress — ihemegodsfavour8-lang (codex)
+- 2026-11-03 — in_progress → in_review — ihemegodsfavour8-lang (codex)
