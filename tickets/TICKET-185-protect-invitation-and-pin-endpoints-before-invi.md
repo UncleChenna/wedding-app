@@ -2,7 +2,7 @@
 id: TICKET-185
 title: Protect invitation and PIN endpoints before invitations launch
 epic: security
-status: in_progress
+status: in_review
 priority: urgent
 estimate: M
 labels: [security, backend, test]
