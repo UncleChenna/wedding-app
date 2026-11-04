@@ -2,7 +2,7 @@
 id: TICKET-074
 title: Route order items to kitchen and bar stations
 epic: ordering
-status: in_progress
+status: in_review
 priority: high
 estimate: M
 labels: [backend]
@@ -12,7 +12,7 @@ agent: claude
 blocked_by: [TICKET-072]
 blocks: [TICKET-073, TICKET-075, TICKET-076, TICKET-084]
 branch: TICKET-074
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/88
 created: 2026-10-21
 updated: 2026-11-04
 started: 2026-11-04
@@ -74,3 +74,4 @@ _Agents append dated notes here while working._
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-04 — todo → claimed — unclechenna (claude)
 - 2026-11-04 — todo → in_progress — unclechenna (claude)
+- 2026-11-04 — in_progress → in_review — unclechenna (claude)
