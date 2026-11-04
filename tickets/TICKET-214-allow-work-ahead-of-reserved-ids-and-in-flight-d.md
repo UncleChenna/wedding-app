@@ -54,11 +54,11 @@ The owner asked for these to be less strict.
 
 ## Acceptance criteria
 
-- [ ] `validateTickets` accepts a gap for a ledger-reserved id and still reports an unreserved gap (unit).
-- [ ] `t:claim --ahead` succeeds when blockers are in progress or in review, and refuses when a blocker is an unowned todo (unit).
-- [ ] Without `--ahead`, claim and in-progress refusals are unchanged and mention the new flag (unit).
-- [ ] Moving to done still refuses while any blocker is unfinished (unit).
-- [ ] Docs describe `--ahead`, its limits and the merge-order expectation.
+- [x] `validateTickets` accepts a gap for a ledger-reserved id and still reports an unreserved gap (unit).
+- [x] `t:claim --ahead` succeeds when blockers are in progress or in review, and refuses when a blocker is an unowned todo (unit).
+- [x] Without `--ahead`, claim and in-progress refusals are unchanged and mention the new flag (unit).
+- [x] Moving to done still refuses while any blocker is unfinished (unit).
+- [x] Docs describe `--ahead`, its limits and the merge-order expectation.
 
 ## Test plan
 
@@ -73,6 +73,17 @@ The owner asked for these to be less strict.
 ## Notes / decisions
 
 _Agents append dated notes here while working._
+
+- 2026-11-04:
+  - **Reserved ids.** `t:validate` computes reserved ids as ledger-allocated ids (1..`lastId`) whose file is not on
+    `origin/develop`. A gap for one of those is allowed; any other gap, including a ticket deleted after reaching
+    develop, still fails. If the ledger can't be read, validation is strict as before. Evidence: with TICKET-213 and 214
+    present and TICKET-211/212 only reserved by another collaborator, `pnpm t:validate` reports 212 tickets valid.
+  - **`--ahead`.** `checkBlockers` in `workflow.ts` is shared by claim and the move to in progress. Without the flag
+    the refusal is the same, plus a hint. With it, every unfinished blocker must be `in_progress`, `in_review` or
+    `blocked`. The log line records "started ahead of …". `done` now also requires every blocker done.
+  - **Carries TICKET-213's definition** (mine), which couldn't be committed before this change.
+  - **Tests:** `scripts/__tests__/tickets.test.ts`, 34 passed (6 new).
 
 ## Activity log
 

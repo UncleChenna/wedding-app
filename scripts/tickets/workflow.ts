@@ -15,6 +15,8 @@ export interface MoveFacts {
   reason?: string;
   /** Effective status of every ticket, for blocker checks. */
   statusOf: (id: string) => Status | undefined;
+  /** `--ahead`: start while blockers are still in progress or in review. */
+  ahead?: boolean;
   /** Current git branch of the checkout running the command. */
   branch?: string;
   /** in_review: working tree clean, HEAD pushed, `pnpm verify` passed, PR open. */
@@ -33,6 +35,27 @@ export type Change = Partial<LedgerFields>;
 const unfinished = (meta: Frontmatter, facts: MoveFacts) =>
   meta.blocked_by.filter((id) => facts.statusOf(id) !== "done");
 
+/** Someone is actively working on these, so building on top of them is a deliberate, recorded choice. */
+const IN_FLIGHT: readonly (Status | undefined)[] = ["in_progress", "in_review", "blocked"];
+
+/**
+ * Unfinished blockers stop a start unless `--ahead` is given and every one of them is actively owned. Work can then
+ * proceed in parallel; `done` still waits for every blocker (see `move`).
+ */
+function checkBlockers(meta: Frontmatter, facts: MoveFacts) {
+  const open = unfinished(meta, facts);
+  if (!open.length) return;
+  if (!facts.ahead)
+    throw new TransitionError(
+      `${meta.id} is still blocked by ${open.join(", ")}. If they are in progress or in review, add --ahead to start in parallel.`,
+    );
+  const notStarted = open.filter((id) => !IN_FLIGHT.includes(facts.statusOf(id)));
+  if (notStarted.length)
+    throw new TransitionError(
+      `${meta.id} can only start ahead of in-progress or in-review work; ${notStarted.join(", ")} has not started.`,
+    );
+}
+
 function requireOwner(meta: Frontmatter, facts: MoveFacts) {
   if (meta.owner && meta.owner !== facts.actor)
     throw new TransitionError(
@@ -44,8 +67,7 @@ export function claim(meta: Frontmatter, facts: MoveFacts, branch: string): Chan
   if (meta.status !== "todo")
     throw new TransitionError(`${meta.id} is ${meta.status}; only todo tickets can be claimed.`);
   if (meta.owner) throw new TransitionError(`${meta.id} is already claimed by ${meta.owner}.`);
-  const open = unfinished(meta, facts);
-  if (open.length) throw new TransitionError(`${meta.id} is still blocked by ${open.join(", ")}.`);
+  checkBlockers(meta, facts);
   if (!facts.actor || !facts.agent)
     throw new TransitionError(
       "Claims need --owner and --agent (or harness.owner / TICKETS_AGENT).",
@@ -89,9 +111,7 @@ export function move(meta: Frontmatter, to: Status, facts: MoveFacts): Change {
 
   if (to === "in_progress") {
     if (!meta.owner) throw new TransitionError(`Claim ${meta.id} first: pnpm t:claim ${meta.id}.`);
-    const open = unfinished(meta, facts);
-    if (open.length)
-      throw new TransitionError(`${meta.id} is still blocked by ${open.join(", ")}.`);
+    checkBlockers(meta, facts);
     if (from === "in_review" && !facts.reason?.trim())
       throw new TransitionError("Returning to in_progress needs --reason (the requested changes).");
     if (facts.branch !== undefined && !branchHasTicket(facts.branch, meta.id))
@@ -117,6 +137,12 @@ export function move(meta: Frontmatter, to: Status, facts: MoveFacts): Change {
   }
 
   if (to === "done") {
+    // Work started --ahead is only finished once everything it was built on is finished too.
+    const open = unfinished(meta, facts);
+    if (open.length)
+      throw new TransitionError(
+        `${meta.id} cannot be done before ${open.join(", ")}; mark those done first.`,
+      );
     if (!facts.mergedPr) throw new TransitionError(`${meta.id}'s PR is not merged into verified develop history yet. Check fetch access, ancestry and the merged ticket file.`);
     if (!facts.criteriaTicked)
       throw new TransitionError(`${meta.id} has unticked acceptance criteria on main.`);
