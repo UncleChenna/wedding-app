@@ -1607,16 +1607,17 @@
     },
     "WED-024": {
       "log": [
-        "- 2026-11-03 — todo → claimed — divine (codex)"
+        "- 2026-11-03 — todo → claimed — divine (codex)",
+        "- 2026-11-04 — todo → in_progress — divine (codex)"
       ],
-      "status": "todo",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-024",
       "pr": "",
-      "started": "",
+      "started": "2026-11-04",
       "completed": "",
-      "updated": "2026-11-03",
+      "updated": "2026-11-04",
       "reason": "",
       "resume_to": ""
     }
