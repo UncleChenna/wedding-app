@@ -2,7 +2,7 @@
 id: TICKET-185
 title: Protect invitation and PIN endpoints before invitations launch
 epic: security
-status: in_review
+status: in_progress
 priority: urgent
 estimate: M
 labels: [security, backend, test]
@@ -70,3 +70,4 @@ Backlog audit coverage: Security, INV-2, ADM-4. See [PRD](../docs/prd.md) and [a
 - 2026-11-04 — in_progress → blocked — divine (codex) — Awaiting exact-path migration commit authorization and launch-budget approval before full verification. Native retry exception approved; physical-phone checks remain release requirements. Draft PR #89.
 - 2026-11-04 — blocked → in_progress — divine (codex) — Owner approved migration and budgets; verification underway.
 - 2026-11-04 — in_progress → in_review — divine (codex)
+- 2026-11-04 — in_review → in_progress — divine (codex) — Integrate merged TICKET-032 while preserving authorization and request budgets.
