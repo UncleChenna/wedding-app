@@ -1890,12 +1890,13 @@
     },
     "WED-096": {
       "log": [
-        "- 2026-11-04 — todo → claimed — divine (codex)"
+        "- 2026-11-04 — todo → claimed — divine (codex)",
+        "- 2026-11-04 — todo → released — divine (codex)"
       ],
       "status": "todo",
-      "owner": "divine",
-      "agent": "codex",
-      "branch": "TICKET-096",
+      "owner": "",
+      "agent": "",
+      "branch": "",
       "pr": "",
       "started": "",
       "completed": "",
