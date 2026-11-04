@@ -1631,14 +1631,15 @@
     },
     "WED-074": {
       "log": [
-        "- 2026-11-04 — todo → claimed — unclechenna (claude)"
+        "- 2026-11-04 — todo → claimed — unclechenna (claude)",
+        "- 2026-11-04 — todo → in_progress — unclechenna (claude)"
       ],
-      "status": "todo",
+      "status": "in_progress",
       "owner": "unclechenna",
       "agent": "claude",
       "branch": "TICKET-074",
       "pr": "",
-      "started": "",
+      "started": "2026-11-04",
       "completed": "",
       "updated": "2026-11-04",
       "reason": "",
