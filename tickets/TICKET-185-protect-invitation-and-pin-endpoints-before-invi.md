@@ -2,7 +2,7 @@
 id: TICKET-185
 title: Protect invitation and PIN endpoints before invitations launch
 epic: security
-status: in_review
+status: in_progress
 priority: urgent
 estimate: M
 labels: [security, backend, test]
@@ -73,3 +73,6 @@ Backlog audit coverage: Security, INV-2, ADM-4. See [PRD](../docs/prd.md) and [a
 - 2026-11-04 — in_review → in_progress — divine (codex) — Integrate merged TICKET-032 while preserving authorization and request budgets.
 - 2026-11-04 — in_progress → blocked — divine (codex) — Integrated proxy conflict fixed; full verification has 7 browser timeouts and a direct DB timeout with only 53MB Docker VM memory available. Diagnose/reverify after capacity recovers; approvals are complete.
 - 2026-11-04 — blocked → in_progress — divine (codex) — Isolated database recovered; all five unchanged limiter integration tests pass. Resume private-route and full verification.
+- 2026-11-04 — in_review → blocked — divine (codex) — Local recovered verification passes, but CI general verify lacks the PostgreSQL service required by request budgets (12 browser 503 failures). Awaiting approval of the exact CI proposal; no tests will be weakened.
+- 2026-11-04 — blocked → in_review — divine (codex) — User approved the proposed CI repair; restore recorded prior state before implementing review changes.
+- 2026-11-04 — in_review → in_progress — divine (codex) — Implement the approved CI database repair.
