@@ -13,6 +13,7 @@ test.describe("order submission on a flaky network", () => {
   let table: number;
   let tableId: string | undefined;
   const itemIds: string[] = [];
+  const tableIds: string[] = [];
   const tag = "TICKET-072 fixture " + randomInt(100000, 900000);
   const meal = tag + " rice";
   const drink = tag + " punch";
@@ -23,11 +24,6 @@ test.describe("order submission on a flaky network", () => {
     expect(meta.path).toBe(process.cwd());
     assertDatabaseTarget(process.env.DATABASE_URL ?? "", { localOnly: true });
     db = postgres(process.env.DATABASE_URL ?? "", { max: 2 });
-    table = randomInt(100000, 900000);
-    const [row] = await db<
-      { id: string }[]
-    >`insert into tables(number,name,capacity) values(${table},${tag},4) returning id`;
-    tableId = row?.id;
     for (const [name, category, station] of [
       [meal, "meal", "kitchen"],
       [drink, "soft_drink", "bar"],
@@ -40,12 +36,21 @@ test.describe("order submission on a flaky network", () => {
       itemIds.push(item.id);
     }
   });
+  // A fresh table per test: the table cooldown (TICKET-073) would otherwise refuse the next test's order.
+  test.beforeEach(async () => {
+    table = randomInt(100000, 900000);
+    const [row] = await db<
+      { id: string }[]
+    >`insert into tables(number,name,capacity) values(${table},${tag},4) returning id`;
+    tableId = row?.id;
+    if (tableId) tableIds.push(tableId);
+  });
   test.afterAll(async () => {
     if (!db) return;
     try {
-      if (tableId) await db`delete from orders where table_id = ${tableId}`;
+      if (tableIds.length) await db`delete from orders where table_id in ${db(tableIds)}`;
       if (itemIds.length) await db`delete from menu_items where id in ${db(itemIds)}`;
-      if (tableId) await db`delete from tables where id = ${tableId}`;
+      if (tableIds.length) await db`delete from tables where id in ${db(tableIds)}`;
     } finally {
       await db.end();
     }
@@ -194,5 +199,42 @@ test.describe("order submission on a flaky network", () => {
     } finally {
       await db`update menu_items set is_available = true where name = ${meal}`;
     }
+  });
+
+  test("a second order straight away says how many seconds to wait", async ({ page }) => {
+    await openMenu(page);
+    await page.getByRole("button", { name: "Increase " + meal + " quantity" }).click();
+    await page.getByRole("button", { name: "Send order" }).click();
+    await expect(
+      page.getByRole("heading", { name: "On its way. Sit back, we've got this." }),
+    ).toBeVisible();
+    await page.getByRole("button", { name: "Order something else" }).click();
+    await page.getByRole("button", { name: "Increase " + drink + " quantity" }).click();
+    const before = await orderCount();
+    await page.getByRole("button", { name: "Send order" }).click();
+    const notice = page.getByText(
+      /^Your table's last order went in a moment ago\. You can send this one in \d+ seconds\.$/,
+    );
+    await expect(notice).toBeVisible();
+    const seconds = Number(/in (\d+) seconds/.exec((await notice.textContent()) ?? "")?.[1]);
+    expect(seconds).toBeGreaterThan(0);
+    expect(seconds).toBeLessThanOrEqual(30);
+    expect(await orderCount()).toBe(before);
+    // The guest's choice is kept so they can simply send again once the wait is over.
+    await expect(page.getByLabel(drink + " quantity", { exact: true })).toHaveValue("1");
+
+    for (const theme of themes)
+      for (const width of [375, 768, 1280]) {
+        await page.setViewportSize({ width, height: 900 });
+        await applyTheme(page, theme);
+        expect(await scanA11y(page)).toEqual([]);
+        expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+          true,
+        );
+        const dir = "docs/reviews/TICKET-073/" + theme.id;
+        mkdirSync(dir, { recursive: true });
+        await notice.scrollIntoViewIfNeeded();
+        await page.screenshot({ path: dir + "/" + width + "-cooldown.png" });
+      }
   });
 });

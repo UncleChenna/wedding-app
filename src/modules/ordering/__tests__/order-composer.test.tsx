@@ -196,3 +196,32 @@ it("groups a mixed order's confirmation by kitchen and bar", async () => {
   );
   expect(screen.getByRole("list", { name: "From the bar" })).toHaveTextContent("Red wine× 1");
 });
+
+it("says how long to wait on a cooldown and keeps the order to send again", async () => {
+  const { send } = setup([
+    async () =>
+      Response.json(
+        { status: "rejected", reason: "cooldown", retryAfterSeconds: 42 },
+        { status: 422 },
+      ),
+  ]);
+  choose("Red wine");
+  fireEvent.click(sendButton());
+  expect(
+    await screen.findByText(
+      "Your table's last order went in a moment ago. You can send this one in 42 seconds.",
+    ),
+  ).toBeVisible();
+  expect(send).toHaveBeenCalledTimes(1);
+  expect(screen.getByLabelText("Red wine quantity")).toHaveValue(1);
+  expect(screen.getByRole("button", { name: orderCopy.send })).toBeEnabled();
+});
+
+it("explains the open-order limit", async () => {
+  setup([
+    async () => Response.json({ status: "rejected", reason: "too-many-open" }, { status: 422 }),
+  ]);
+  choose("Red wine");
+  fireEvent.click(sendButton());
+  expect(await screen.findByText(orderCopy.rejected["too-many-open"])).toBeVisible();
+});
