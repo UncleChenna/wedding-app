@@ -1,4 +1,5 @@
 import { createHmac } from "node:crypto";
+import { mkdirSync, writeFileSync } from "node:fs";
 import postgres, { type Sql } from "postgres";
 import { test, expect } from "@playwright/test";
 import { assertDatabaseTarget } from "../scripts/database-target";
@@ -96,6 +97,53 @@ test.describe("private request budgets", () => {
     const [counter] =
       await db`select used from request_budgets where scope='pin' and identity=${identity}`;
     expect(counter?.used).toBe(30);
+  });
+
+  test("native retry layout stays stable while cold fonts load", async ({ page }, info) => {
+    test.skip(info.project.name !== "desktop", "Explicit light/dark and three-width matrix");
+    await page.addInitScript(() => {
+      const state = window as typeof window & { retryShifts: number[] };
+      state.retryShifts = [];
+      new PerformanceObserver((list) => {
+        for (const entry of list.getEntries()) {
+          const shift = entry as PerformanceEntry & { value: number; hadRecentInput: boolean };
+          if (!shift.hadRecentInput) state.retryShifts.push(shift.value);
+        }
+      }).observe({ type: "layout-shift", buffered: true });
+    });
+    await page.route("**/share/fonts/**", async (route) => {
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      await route.continue();
+    });
+    const measurements: { scheme: string; width: number; shifts: number[]; total: number }[] = [];
+    for (const scheme of ["light", "dark"] as const) {
+      await page.emulateMedia({ colorScheme: scheme });
+      for (const width of [375, 768, 1280]) {
+        await db`insert into request_budgets(scope,identity,used,expires_at)
+          values('lookup',${identity},1200,now()+interval '60 seconds')
+          on conflict(scope,identity) do update set used=excluded.used,expires_at=excluded.expires_at`;
+        await page.setViewportSize({ width, height: 900 });
+        const response = await page.goto("/i/synthetic-cold-font-link");
+        expect(response?.status()).toBe(429);
+        await page.evaluate(async () => {
+          await document.fonts.ready;
+          await new Promise((resolve) =>
+            requestAnimationFrame(() => requestAnimationFrame(resolve)),
+          );
+        });
+        const shifts = await page.evaluate(
+          () => (window as typeof window & { retryShifts: number[] }).retryShifts,
+        );
+        const total = shifts.reduce((sum, value) => sum + value, 0);
+        measurements.push({ scheme, width, shifts, total });
+        expect.soft(total, `${scheme} ${width} cold-font CLS`).toBe(0);
+      }
+    }
+    mkdirSync("artifacts/TICKET-185", { recursive: true });
+    writeFileSync(
+      "artifacts/TICKET-185/retry-cold-fonts.json",
+      JSON.stringify(measurements, null, 2),
+    );
   });
 
   test("retry states remain readable and operable across all themes and widths", async ({

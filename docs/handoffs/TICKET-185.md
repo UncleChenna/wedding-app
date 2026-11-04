@@ -93,3 +93,15 @@ state screenshots inspected, Axe/keyboard/tap-target/overflow checks pass. Evide
 UI review remains incomplete: cold-font CLS, performance, physical devices, native
 font-loading/shared-renderer exceptions and administrator-selected theme behaviour
 are not certified. Do not mark done or silently move these to another ticket.
+
+## Cold-font verification checkpoint
+
+Added a six-variant cold-font regression test with exact-zero CLS assertions.
+It fails in all six variants (baseline 0.0004118127–0.0220330954). A height/width
+reservation experiment built successfully but also failed all six assertions;
+that source change was reverted. Measurements are recorded in the UI review.
+The new test is retained to expose the outstanding defect, not skipped or relaxed.
+Migration commit authorization and launch-budget approval remain pending.
+The live queue reports no ready next ticket. Leave other collaborators' stacks alone.
+Next: diagnose font-swap source rectangles, resolve the layout shifts, then repeat
+the browser matrix and full verification after migration approval.
