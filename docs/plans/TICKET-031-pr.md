@@ -7,7 +7,7 @@ Ticket: TICKET-031
 Gate, kitchen and bar entry pages now require a six-digit staff PIN. Incorrect,
 expired and locked-out attempts get distinct friendly messages; successful sessions
 are bound to the browser device and cannot open a different role's station.
-Automated verification is complete. This PR remains a draft while the physical-device review disposition is resolved.
+The owner approved proceeding to review with physical-device checks retained as mandatory release requirements in TICKET-201. Those checks remain unverified. The branch now includes develop e051979 and is running its final integrated review gate.
 
 # Changes
 
@@ -54,7 +54,7 @@ it would delete data and requires separate approval.
 
 Clearing cookies creates a new device identity; broader abuse protection stays in
 TICKET-185. Staff administration stays in TICKET-096, and scanner/board implementation
-remains separate. Physical phone keyboards and operational devices remain unverified.
+remains separate. Physical phone keyboards and operational devices remain unverified and are explicitly tracked in release-blocking TICKET-201 under the owner’s 2026-11-04 review deferral.
 
 # Screenshots
 

@@ -91,3 +91,13 @@ release checks. Next: resolve that review disposition, complete the ticket notes
 and run `pnpm t:pr TICKET-031`; confirm the final-head CI before requesting merge.
 Do not claim production application or physical-device verification. PR83 merge
 also still awaits its separately requested user exception.
+
+## Review deferral approved — 2026-11-04
+
+The owner approved proceeding to review while retaining physical-phone keyboard and
+staff-device checks as release requirements. The exact checks are now unchecked in
+TICKET-201, which blocks both releases. CLI resumed this ticket to in_progress.
+PR83 was explicitly approved, merged and closed; integrated its develop commit
+e051979 into this branch in 1adb8b9 without conflicts. Next run t:pr on the
+integrated branch, publish actual results and mark PR84 ready after success.
+The review deferral does not itself authorize merging PR84.

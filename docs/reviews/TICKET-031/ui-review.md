@@ -1,7 +1,7 @@
 # TICKET-031 UI review
 
 2026-11-03. Routes: `/checkin`, `/kitchen`, `/bar`; shared form on `/dev/theme`.
-Automated review passes. Physical staff-device and on-screen-keyboard testing remains unverified; draft review disposition is CHANGES REQUESTED until required device evidence or an explicit deferral is recorded.
+Automated review passes. On 2026-11-04 the owner approved proceeding to review with physical staff-device and on-screen-keyboard checks retained as mandatory release requirements in TICKET-201. These checks remain unverified. Review disposition: APPROVE for review under that explicit deferral once the integrated full gate passes; not release or merge approval.
 
 | Check                  | Result and evidence                                                                                                                                                                                                    |
 | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

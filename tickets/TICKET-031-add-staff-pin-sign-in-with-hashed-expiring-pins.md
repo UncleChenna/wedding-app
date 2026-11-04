@@ -41,9 +41,9 @@ See: [Users and roles](../docs/prd.md#users-and-roles) · [Security](../docs/prd
 
 ## Acceptance criteria
 
-- [ ] Wrong PIN, expired PIN and locked-out device each return a distinct friendly state (tested).
-- [ ] PIN hashes never leave the server; the session holds role and staff id only.
-- [ ] A gate PIN cannot open the kitchen board and vice versa.
+- [x] Wrong PIN, expired PIN and locked-out device each return a distinct friendly state (tested).
+- [x] PIN hashes never leave the server; the session holds role and staff id only.
+- [x] A gate PIN cannot open the kitchen board and vice versa.
 
 ## Test plan
 
@@ -58,7 +58,9 @@ See: [Users and roles](../docs/prd.md#users-and-roles) · [Security](../docs/prd
 
 ## Notes / decisions
 
-- 2026-11-03: Approved migration and authorization record committed; only the isolated local database was changed. Draft PR84 contains staff PIN entry, lockout, expiry and role isolation. Full verification passes (878 unit / 775 browser; opt-in skips documented); three isolated database tests and both production staff journeys pass. Physical-device review disposition remains pending, so this ticket is not complete. Session identity is staff ID and role, plus required expiry/issue-time/credential-version security metadata; no PIN/hash/name/email enters the session.
+- 2026-11-03: Approved migration and authorization record committed; only the isolated local database was changed. Draft PR84 contains staff PIN entry, lockout, expiry and role isolation. Full verification passes (878 unit / 775 browser; opt-in skips documented); three isolated database tests and both production staff journeys pass. The owner approved proceeding to review on 2026-11-04 while retaining physical-device checks as mandatory release evidence in TICKET-201; this is not a physical-device pass or merge approval. Session identity is staff ID and role, plus required expiry/issue-time/credential-version security metadata; no PIN/hash/name/email enters the session.
+
+- 2026-11-04: Integrated develop e051979 after the approved PR83 merge. Rerunning the full review gate on the integrated branch.
 
 ## Activity log
 
