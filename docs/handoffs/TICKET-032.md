@@ -51,3 +51,9 @@ path, exercised by all six order cases; no assertions changed. Next: commit/push
 this evidence and test-output isolation, run pnpm t:pr TICKET-032, make PR87 ready,
 and verify final-head CI. Human merge is required by AGENTS.md unless the user
 provides a specific exception. No production changes or physical-device claims.
+
+The first t:pr call stopped before running verification because four PR headings
+were not the template's exact names. Corrected them to Summary, Acceptance criteria
+and evidence, Verification, and Risks and rollout; content/results are unchanged.
+Next t:pr must pass the actual review gate; do not treat this validation failure as
+an implementation failure or a completed review transition.

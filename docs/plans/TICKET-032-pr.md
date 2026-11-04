@@ -2,7 +2,7 @@
 
 TICKET-032 — Protect admin and staff routes in the request proxy.
 
-# Problem and result
+# Summary
 
 The proxy previously passed admin requests through and omitted bar routes. This
 adds credential prefilters for admin and staff route families while retaining
@@ -19,7 +19,7 @@ points remain reachable; guest ordering and invitation capabilities stay separat
 - Executable request/action actor matrix; expanded production browser coverage.
 - Detailed endpoint and bootstrap exceptions in docs/reviews/TICKET-032/access-contract.md.
 
-# Acceptance evidence
+# Acceptance criteria and evidence
 
 - Admin/staff access: 53 request/direct-operation matrix tests pass, including
   missing/expired/wrong-role credentials, provider failure and callback denial.
@@ -33,7 +33,7 @@ points remain reachable; guest ordering and invitation capabilities stay separat
   docs/reviews/TICKET-032/access-contract.md. No scanner or station API feature is
   claimed; future operations must use live guards, not merely the proxy.
 
-# Validation
+# Verification
 
 Full local verification passed: 948 unit tests / 74 opt-in skips, 779 browser
 checks / 165 opt-in skips (9.4m). All five CI jobs passed at 40bbd79 in run
@@ -49,13 +49,24 @@ Order regression screenshots are directed to this ticket's artifact directory;
 no previous ticket's review images were overwritten. Physical-device release QA
 remains in the existing release tickets; this change does not certify it.
 
-# Risks and rollback
+# Risks and rollout
 
 Proxy is only an optimistic filter, never the sole operation authorization. New
 privileged actions must invoke live guards themselves. No migrations, new services,
 RLS changes or CI modifications. Revert this ticket to roll back the prefilters.
 
-# Screenshots / UI checklist
+# Screenshots
 
 No visual changes. Existing sign-in layouts and copy are retained; browser checks
 will verify that authentication entry points remain usable.
+
+# UI checklist
+
+N/A for visual changes: no rendered component, styling, typography, theme or copy
+was changed. Existing authentication entry screens remain covered by the passing
+full browser suite and real staff/admin journeys. Physical release QA is unchanged.
+
+# Harness changes, if any
+
+The ordering browser test accepts an optional ORDER_REVIEW_DIR so integration
+runs preserve prior tickets' screenshots. All existing assertions remain intact.
