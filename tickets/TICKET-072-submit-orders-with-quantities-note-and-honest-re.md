@@ -2,7 +2,7 @@
 id: TICKET-072
 title: Submit orders with quantities, note and honest retrying
 epic: ordering
-status: in_progress
+status: in_review
 priority: high
 estimate: L
 labels: [frontend, backend]
@@ -12,9 +12,9 @@ agent: claude
 blocked_by: [TICKET-071]
 blocks: [TICKET-074, TICKET-080, TICKET-097, TICKET-116, TICKET-123]
 branch: TICKET-072
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/86
 created: 2026-10-21
-updated: 2026-11-03
+updated: 2026-11-04
 started: 2026-11-03
 completed: ""
 reason: ""
@@ -83,3 +83,4 @@ _Agents append dated notes here while working._
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-03 — todo → claimed — unclechenna (claude)
 - 2026-11-03 — todo → in_progress — unclechenna (claude)
+- 2026-11-04 — in_progress → in_review — unclechenna (claude)
