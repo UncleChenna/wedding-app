@@ -10,6 +10,10 @@ test("anonymous requests cannot cross privileged boundaries @smoke", async ({ re
   ]) {
     const response = await request.get(route, { maxRedirects: 0 });
     expect(response.status(), route).toBe(307);
+    if (route.startsWith("/admin"))
+      expect(new URL(response.headers().location ?? "", "http://x").pathname, route).toBe(
+        "/admin/sign-in",
+      );
     expect(response.headers()["cache-control"]).toContain("no-store");
     expect(response.headers()["referrer-policy"]).toBe("no-referrer");
     const mutation = await request.post(route, { data: { forgedRole: "admin" }, maxRedirects: 0 });

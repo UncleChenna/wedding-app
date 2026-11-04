@@ -46,6 +46,7 @@ Day-of navigation uses the configured venue's calendar date. With the owner's ti
 | `/dev/rsvp`              | Preview index                               | Local RSVP prototype review                                   | 040–043 → personal IV       |
 | `/dev/order`             | Preview index                               | Ordering prototype review                                     | 070–075 → `/order`          |
 | `/dev/pass`              | Preview index                               | Synthetic read-only pass; home                                | 183 → `/p/[pass]`           |
+| `/dev/admin`             | Preview index                               | Sample admin shell: Control room, Sharing, Sign out           | 088 → `/admin`              |
 | `/dev/share`             | Preview index                               | Synthetic share controls                                      | 050/052 → `/admin/sharing`  |
 
 Production preview routes return404 by default. The negative orphan-route browser fixture and full authenticated production crawl pass. The live test covers email/TOTP sign-in, published invitation sharing, draft/revoked exclusion, rendered-link traversal and the actual offline fallback. Initial local Auth/Postgres failures recovered without changed timeouts or weakened assertions. Preview URLs must not become production navigation destinations. Full UI review is outstanding; this map does not certify release readiness.

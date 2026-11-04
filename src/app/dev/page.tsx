@@ -11,6 +11,7 @@ const pages = [
   [appRoutes.devOrder.path, "Table ordering preview"],
   [appRoutes.devShare.path, "Invitation sharing preview"],
   [appRoutes.devPass.path, "Gate pass preview"],
+  [appRoutes.devAdmin.path, "Admin shell preview"],
   [appRoutes.devTheme.path, "Components and themes"],
 ] as const;
 export default function PreviewIndex() {
