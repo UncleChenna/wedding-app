@@ -1388,13 +1388,14 @@
         "- 2026-11-02 — todo → claimed — ihemegodsfavour8-lang (codex)",
         "- 2026-11-02 — todo → in_progress — ihemegodsfavour8-lang (codex)",
         "- 2026-11-02 — in_progress → blocked — ihemegodsfavour8-lang (codex) — Human must create .harness/approved-writes.json for the seven generated migration files; full gate has three protected-file hook failures. Local implementation preserved; no production operation authorized.",
-        "- 2026-11-03 — blocked → in_progress — ihemegodsfavour8-lang (codex)"
+        "- 2026-11-03 — blocked → in_progress — ihemegodsfavour8-lang (codex)",
+        "- 2026-11-03 — in_progress → in_review — ihemegodsfavour8-lang (codex)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "ihemegodsfavour8-lang",
       "agent": "codex",
       "branch": "TICKET-211",
-      "pr": "",
+      "pr": "https://github.com/UncleChenna/wedding-app/pull/92",
       "started": "2026-11-02",
       "completed": "",
       "updated": "2026-11-03",
