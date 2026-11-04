@@ -4,6 +4,7 @@ import postgres, { type Sql } from "postgres";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { assertDatabaseTarget } from "../database-target";
 import * as schema from "../../src/modules/shared/server/db/schema";
+import { requestBudgetPolicies } from "../../src/modules/shared/server/request-budget-gate";
 
 let first: Sql;
 let second: Sql;
@@ -90,4 +91,24 @@ describe.runIf(process.env.RUN_RATE_LIMIT_DB_TESTS === "1")("shared atomic reque
       await first`select policyname from pg_policies where schemaname = 'public' and tablename = 'request_budgets'`;
     expect(policies).toHaveLength(0);
   });
+
+  it("allows 350 households sharing one network three lookup requests each", async () => {
+    const { consumeRequestBudget } = await import("../../src/modules/shared/server/request-budget");
+    const clients = [drizzle(first, { schema }), drizzle(second, { schema })] as const;
+    const budget = {
+      identity: identity(),
+      scope: "lookup" as const,
+      ...requestBudgetPolicies.lookup,
+    };
+    for (let batch = 0; batch < 35; batch++) {
+      const results = await Promise.all(
+        Array.from({ length: 30 }, (_, index) =>
+          consumeRequestBudget(clients[index % 2] ?? clients[0], budget),
+        ),
+      );
+      expect(results.every((result) => result.allowed)).toBe(true);
+    }
+    const [row] = await first`select used from request_budgets where identity = ${budget.identity}`;
+    expect(row?.used).toBe(1050);
+  }, 30_000);
 });

@@ -1,12 +1,32 @@
 import { beforeEach, expect, it, vi } from "vitest";
-const mocks = vi.hoisted(() => ({ save: vi.fn(), revalidate: vi.fn() }));
+const mocks = vi.hoisted(() => ({ save: vi.fn(), revalidate: vi.fn(), limit: vi.fn() }));
+vi.mock("@/modules/shared/server/request-rate-limit", () => ({ actionRateLimit: mocks.limit }));
 vi.mock("@/modules/shared/server/db/client", () => ({ db: {} }));
 vi.mock("../server/save-rsvp", () => ({ saveRsvp: mocks.save }));
 vi.mock("next/cache", () => ({ revalidatePath: mocks.revalidate }));
 vi.mock("next/navigation", () => ({ unstable_rethrow: () => {} }));
 import { respondToInvitation } from "../server/rsvp-actions";
 const token = "a".repeat(43);
-beforeEach(() => vi.clearAllMocks());
+beforeEach(() => {
+  vi.clearAllMocks();
+  mocks.limit.mockResolvedValue({ status: "allowed" });
+});
+it("rejects an exhausted request budget before touching the invitation", async () => {
+  mocks.limit.mockResolvedValue({
+    status: "limited",
+    retryAfterSeconds: 12,
+    message: "Please wait 12 seconds.",
+  });
+  const form = new FormData();
+  form.set("token", token);
+  form.set("attendance", "yes");
+  expect(await respondToInvitation({ status: "idle", message: "" }, form)).toEqual({
+    status: "error",
+    message: "Please wait 12 seconds.",
+  });
+  expect(mocks.save).not.toHaveBeenCalled();
+  expect(mocks.revalidate).not.toHaveBeenCalled();
+});
 it.each(["yes", "no"])("refreshes the saved invitation after a %s reply", async (attendance) => {
   mocks.save.mockResolvedValue("saved");
   const form = new FormData();

@@ -18,10 +18,11 @@ this PR. Adds the implementation plan and migration review.
 
 # Acceptance criteria and evidence
 
-All ticket criteria remain incomplete. Atomic storage and expiry pass isolated tests;
-endpoint integration,
-retry responses and distributed/shared-household verification remain to be implemented.
-No request path currently calls this helper.
+Criteria remain unticked pending full review and required approvals. Atomic storage,
+expiry and shared-household traffic pass isolated tests. Private GET/HEAD downloads
+and pages, RSVP/party actions and staff PIN sign-in now enforce request budgets.
+Denied requests return private retry guidance before sensitive work. Generated
+migrations and proposed launch budgets await approval.
 
 # Verification
 
@@ -31,7 +32,15 @@ pools with exactly five allowed. Two earlier runs timed out under Docker resourc
 pressure; unchanged tests passed after only this worktree's unused services stopped.
 Repeat migration preserves counts; all 16 public tables have RLS enabled.
 Quick verification passes lint/types/45 related tests (51 opt-in skips).
-Full application verification remains pending.
+After endpoint integration, quick verification passes lint/types/24 affected tests
+(five opt-in DB cases skipped); the explicit database suite passes all five cases.
+Production build passes. New rate-limit HTTP/browser tests pass mobile and desktop
+(four passes, 4.4s). Existing guest journey passes both (4.5s); existing staff PIN
+journey passes both (9.5s). Full gate then passed format/lint/types but stopped at
+three existing stop-hook tests: they reject the unapproved generated migration
+journal before executing their fake verifier. Other unit results: 932 passed,
+82 skipped. This is a failed gate, pending exact-path migration approval and rerun;
+no hook/test was bypassed. Log: `artifacts/TICKET-185/full-verify.log`.
 
 # Risks and rollout
 
@@ -41,11 +50,14 @@ limits must accommodate this. This helper does not stop attacks across many netw
 
 # Screenshots
 
-Not applicable: no UI changes in this draft.
+Retry wording is returned through existing form status areas and private plain-text
+HTTP responses. Visual review of these states remains pending; no layout, font,
+colour or component styling has changed.
 
 # UI checklist
 
-Not applicable to the current server-only helper. Reassess when responses are integrated.
+Pending for retry wording and existing form status states. Physical device checks
+are not certified. No new animation, image, QR rendering or styling was introduced.
 
 # Harness changes, if any
 
