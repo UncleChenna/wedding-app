@@ -59,7 +59,7 @@ form; long waits are expressed in minutes. Downloads remain plain-text errors.
 
 See `docs/reviews/TICKET-185/ui-review.md`: visual, Axe, keyboard and tap-target
 checks pass across four themes and three widths. Five final browser cases pass;
-one duplicate visual matrix is intentionally skipped. Performance, cold-font CLS,
+one duplicate visual matrix is intentionally skipped. Performance,
 physical devices and native font-loading/shared-renderer exceptions remain unresolved.
 The UI review is incomplete, and this PR remains draft.
 
@@ -67,14 +67,14 @@ The UI review is incomplete, and this PR remains draft.
 
 None.
 
-## Cold-font verification checkpoint
+# Latest retry verification
 
-Added a six-variant cold-font regression test with exact-zero CLS assertions.
-It fails in all six variants (baseline 0.0004118127–0.0220330954). A height/width
-reservation experiment built successfully but also failed all six assertions;
-that source change was reverted. Measurements are recorded in the UI review.
-The new test is retained to expose the outstanding defect, not skipped or relaxed.
-Migration commit authorization and launch-budget approval remain pending.
-The live queue reports no ready next ticket. Leave other collaborators' stacks alone.
-Next: diagnose font-swap source rectangles, resolve the layout shifts, then repeat
-the browser matrix and full verification after migration approval.
+Metric-matched fallback fonts and reserved text space keep the native retry page
+stable while fonts load. A redundant decorative label was removed. Exact-zero CLS
+passes light/dark at 375/768/1280 with font requests delayed 500ms. The complete
+retry suite passes six cases (two duplicate mobile matrix skips), covering HTTP
+privacy, cookie replacement, keyboard retry, Axe and all-theme layouts. Twelve
+updated guest screenshots were inspected; PIN screenshots are unchanged. Production
+build and quick verification pass, including nine related unit tests. Migration
+authorization, approved budgets, performance/device review and full verification
+remain outstanding; this PR is still draft.

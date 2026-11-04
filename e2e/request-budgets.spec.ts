@@ -102,12 +102,29 @@ test.describe("private request budgets", () => {
   test("native retry layout stays stable while cold fonts load", async ({ page }, info) => {
     test.skip(info.project.name !== "desktop", "Explicit light/dark and three-width matrix");
     await page.addInitScript(() => {
-      const state = window as typeof window & { retryShifts: number[] };
+      const state = window as typeof window & { retryShifts: number[]; retrySources: string[] };
       state.retryShifts = [];
+      state.retrySources = [];
       new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
-          const shift = entry as PerformanceEntry & { value: number; hadRecentInput: boolean };
-          if (!shift.hadRecentInput) state.retryShifts.push(shift.value);
+          const shift = entry as PerformanceEntry & {
+            value: number;
+            hadRecentInput: boolean;
+            sources: { node?: Node; previousRect: DOMRectReadOnly; currentRect: DOMRectReadOnly }[];
+          };
+          if (!shift.hadRecentInput) {
+            state.retryShifts.push(shift.value);
+            for (const source of shift.sources ?? []) {
+              state.retrySources.push(
+                JSON.stringify({
+                  node: source.node?.nodeName,
+                  text: source.node?.textContent?.slice(0, 100),
+                  previous: source.previousRect,
+                  current: source.currentRect,
+                }),
+              );
+            }
+          }
         }
       }).observe({ type: "layout-shift", buffered: true });
     });
@@ -115,7 +132,13 @@ test.describe("private request budgets", () => {
       await new Promise((resolve) => setTimeout(resolve, 500));
       await route.continue();
     });
-    const measurements: { scheme: string; width: number; shifts: number[]; total: number }[] = [];
+    const measurements: {
+      scheme: string;
+      width: number;
+      shifts: number[];
+      total: number;
+      sources: string[];
+    }[] = [];
     for (const scheme of ["light", "dark"] as const) {
       await page.emulateMedia({ colorScheme: scheme });
       for (const width of [375, 768, 1280]) {
@@ -135,7 +158,10 @@ test.describe("private request budgets", () => {
           () => (window as typeof window & { retryShifts: number[] }).retryShifts,
         );
         const total = shifts.reduce((sum, value) => sum + value, 0);
-        measurements.push({ scheme, width, shifts, total });
+        const sources = await page.evaluate(
+          () => (window as typeof window & { retrySources: string[] }).retrySources,
+        );
+        measurements.push({ scheme, width, shifts, total, sources });
         expect.soft(total, `${scheme} ${width} cold-font CLS`).toBe(0);
       }
     }

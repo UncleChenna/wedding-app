@@ -105,3 +105,16 @@ Migration commit authorization and launch-budget approval remain pending.
 The live queue reports no ready next ticket. Leave other collaborators' stacks alone.
 Next: diagnose font-swap source rectangles, resolve the layout shifts, then repeat
 the browser matrix and full verification after migration approval.
+
+## Cold-font correction verified
+
+Continued independent work while migration/budget approvals remain pending. Added
+source rectangles to the existing regression diagnostics. Matched fallback metrics
+to the existing font registry, reserved heading/body space and removed a redundant
+decorative label. Exact-zero CLS now passes all six default light/dark × width
+variants. Full retry browser suite: six passes/two duplicate matrix skips, 12.5s.
+Build and quick verification pass (nine related unit tests); all twelve changed
+guest screenshots inspected. PIN screenshots unchanged. Full gate remains blocked
+by migration authorization; performance/devices/native-font-loader review remain.
+Next: measure production denial-page Lighthouse, obtain outstanding migration/budget
+approvals and rerun full verification. No other collaborator's stack was touched.
