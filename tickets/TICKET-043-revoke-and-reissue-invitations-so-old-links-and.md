@@ -2,20 +2,20 @@
 id: TICKET-043
 title: Revoke and reissue invitations so old links and QRs stop working
 epic: invitations
-status: todo
+status: in_progress
 priority: urgent
 estimate: M
 labels: [backend, security]
 module: invitations
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-036, TICKET-056, TICKET-032, TICKET-088]
 blocks: [TICKET-065, TICKET-089, TICKET-176]
-branch: ""
+branch: TICKET-043
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-04
+started: 2026-11-04
 completed: ""
 reason: ""
 resume_to: ""
@@ -67,3 +67,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-04 — todo → claimed — divine (codex)
+- 2026-11-04 — todo → in_progress — divine (codex)
