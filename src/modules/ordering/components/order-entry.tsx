@@ -39,7 +39,7 @@ async function OrderSelection({ searchParams }: { searchParams: TableSearch }) {
             Change table
           </Link>
         </section>
-        <OrderMenu menu={await loadMenu(listMenuItems)} />
+        <OrderMenu menu={await loadMenu(listMenuItems)} table={selected.table.number} />
       </>
     );
   const value =
