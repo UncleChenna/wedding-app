@@ -78,6 +78,13 @@
       "when": 1793743751882,
       "tag": "0010_staff-pin-envelope-fix",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1793747299266,
+      "tag": "0011_staff-pin-attempts",
+      "breakpoints": true
     }
   ]
 }

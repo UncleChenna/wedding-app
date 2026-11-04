@@ -1,5 +1,6 @@
 import { InstallPrompt } from "@/modules/shared/components/install-prompt";
 import { IosInstallGuide } from "@/modules/shared/components/ios-install-guide";
+import { StaffSignIn } from "@/modules/shared/components/staff-sign-in";
 import {
   ActionBar,
   Button,
@@ -344,6 +345,14 @@ export function ThemeShowcase({ theme, active }: { theme: Theme; active: boolean
                 </CardContent>
               </Card>
               <ShowcaseInteractive />
+              <Card>
+                <CardHeader>
+                  <CardTitle>Staff sign-in</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <StaffSignIn role="gate" preview />
+                </CardContent>
+              </Card>
             </div>
           </div>
         </div>

@@ -14,6 +14,13 @@ export const serverEnvSchema = z.object({
     .regex(/^postgres(ql)?:\/\//, "DATABASE_URL must start with postgres:// or postgresql://"),
   LOG_LEVEL: z.enum(LOG_LEVELS).default("info"),
   ADMIN_EMAIL_ALLOWLIST: z.string().default(""),
+  STAFF_SESSION_SECRET: z
+    .string()
+    .regex(
+      /^(?:[0-9a-f]{64})?$/,
+      "STAFF_SESSION_SECRET must be 32 random bytes encoded as lowercase hex",
+    )
+    .default(""),
 });
 
 export const clientEnvSchema = z.object({
