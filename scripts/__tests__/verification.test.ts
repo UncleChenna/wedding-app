@@ -86,3 +86,14 @@ it("ignores per-command tool identifiers while keeping application inputs signif
     else process.env.CODEX_TOOL_CALL_ID = previous;
   }
 });
+
+it("invalidates ignored worktree configuration and additional environment files", () => {
+  const dir = fixture();
+  mkdirSync(join(dir, ".harness"), { recursive: true });
+  verify(dir, () => true);
+  writeFileSync(join(dir, ".harness/worktree.json"), '{"devPort":3123}');
+  expect(reusableVerification(dir)).toBe(false);
+  verify(dir, () => true);
+  writeFileSync(join(dir, ".env.production.local"), "EXAMPLE=changed");
+  expect(reusableVerification(dir)).toBe(false);
+});

@@ -5,6 +5,7 @@ import {
   lstatSync,
   mkdirSync,
   readFileSync,
+  readdirSync,
   readlinkSync,
   rmSync,
   writeFileSync,
@@ -52,7 +53,12 @@ export function fingerprint(cwd) {
     .split("\0")
     .filter(Boolean);
   // Ignored configuration and installed package metadata also affect verification.
-  names.push(".env.local", "node_modules/.modules.yaml", "node_modules/.pnpm/lock.yaml");
+  names.push(
+    ...readdirSync(cwd).filter((name) => name === ".env" || name.startsWith(".env.")),
+    ".harness/worktree.json",
+    "node_modules/.modules.yaml",
+    "node_modules/.pnpm/lock.yaml",
+  );
   for (const name of [...new Set(names)].sort()) {
     hash.update(name + "\0");
     const path = join(cwd, name);

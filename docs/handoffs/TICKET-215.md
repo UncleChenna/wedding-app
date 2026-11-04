@@ -22,3 +22,5 @@ require `pnpm t:pr TICKET-215 --force-verify`.
 Next: final full gate via `pnpm t:pr TICKET-215`, inspect CI and leave for human review.
 Do not merge without specific authorization. TICKET-185 remains blocked separately
 on integrated database/browser timeouts; its approvals are already complete.
+
+Final PR run was deliberately interrupted before publication to include ignored worktree metadata and all root environment-file variants in invalidation. Added regression coverage; rerun the full gate on the final commit. The first complete passing run above remains historical evidence.
