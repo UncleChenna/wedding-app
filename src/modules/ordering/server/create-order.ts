@@ -1,6 +1,7 @@
 import "server-only";
-import { eq, inArray } from "drizzle-orm";
+import { eq, inArray, sql } from "drizzle-orm";
 import type { Db } from "@/modules/shared/server/db/client";
+import { getEventSettings } from "@/modules/shared/server/settings";
 import {
   menuItems,
   orderItems,
@@ -9,8 +10,12 @@ import {
   tables,
 } from "@/modules/shared/server/db/schema";
 import { orderFingerprint, type OrderResult, type OrderSubmission } from "../lib/order";
+import { splitByStation } from "../lib/stations";
 
 type Tx = Parameters<Parameters<Db["transaction"]>[0]>[0];
+
+/** Orders still in progress count toward the table limit; served and cancelled ones free a slot. */
+const OPEN_STATUSES = ["received", "preparing", "ready"] as const;
 
 /**
  * Creates one guest submission atomically (ORD-3). The client request id makes retries safe:
@@ -31,12 +36,40 @@ export async function createOrder(
     const replay = await findReplay(tx, order.clientRequestId, fingerprint);
     if (replay) return replay;
 
+    // Locking the table row serializes this table's submissions across every server instance,
+    // so concurrent orders cannot both slip under the open-order limit or the cooldown.
     const [table] = await tx
       .select({ id: tables.id })
       .from(tables)
       .where(eq(tables.number, order.table))
-      .limit(1);
+      .limit(1)
+      .for("update");
     if (!table) return { status: "rejected", reason: "table-missing" };
+    // A duplicate tap may have committed while this one waited for the lock: answer it as a
+    // replay rather than charging the table's limits twice for one guest action.
+    const raced = await findReplay(tx, order.clientRequestId, fingerprint);
+    if (raced) return raced;
+
+    const settings = await getEventSettings(tx);
+    const [usage] = await tx
+      .select({
+        open: sql<number>`count(*) filter (where ${inArray(orders.status, OPEN_STATUSES)})::int`,
+        // Database time after the lock, so the wait is measured the same on every instance.
+        sinceLast: sql<
+          number | null
+        >`extract(epoch from clock_timestamp() - max(${orders.createdAt}))::float8`,
+      })
+      .from(orders)
+      .where(eq(orders.tableId, table.id));
+    const sinceLast = usage?.sinceLast ?? null;
+    if (sinceLast !== null && sinceLast < settings.orderCooldownSeconds)
+      return {
+        status: "rejected",
+        reason: "cooldown",
+        retryAfterSeconds: Math.max(1, Math.ceil(settings.orderCooldownSeconds - sinceLast)),
+      };
+    if ((usage?.open ?? 0) >= settings.maxOpenOrdersPerTable)
+      return { status: "rejected", reason: "too-many-open" };
 
     const ids = order.items.map((item) => item.menuItemId);
     const menu = await tx
@@ -49,7 +82,13 @@ export async function createOrder(
       .from(menuItems)
       .where(inArray(menuItems.id, ids))
       .for("share");
-    const byId = new Map(menu.map((item) => [item.id, item]));
+    // Each item's own cap, never above the event-wide per-item cap.
+    const byId = new Map(
+      menu.map((item) => [
+        item.id,
+        { ...item, maxPerOrder: Math.min(item.maxPerOrder, settings.maxItemQuantity) },
+      ]),
+    );
     if (byId.size !== ids.length) return { status: "rejected", reason: "invalid" };
     const soldOut = ids.filter((id) => !byId.get(id)?.available);
     if (soldOut.length) return { status: "rejected", reason: "sold-out", itemIds: soldOut };
@@ -73,25 +112,30 @@ export async function createOrder(
         (await findReplay(tx, order.clientRequestId, fingerprint)) ?? { status: "unavailable" }
       );
 
-    // The schema stores every item under its station's submission row (TICKET-171).
-    const stations = [...new Set(menu.map((item) => item.station))];
+    // One ticket per station sharing this submission's id, so each board sees only its items.
+    const tickets = splitByStation(
+      order.items.map((item) => {
+        const menuItem = byId.get(item.menuItemId);
+        if (!menuItem) throw new Error("Order item lost its menu row");
+        return { ...item, station: menuItem.station, quantityLimit: menuItem.maxPerOrder };
+      }),
+    );
     const rows = await tx
       .insert(stationOrders)
-      .values(stations.map((station) => ({ orderId: created.id, station })))
+      .values(tickets.map(({ station }) => ({ orderId: created.id, station })))
       .returning({ id: stationOrders.id, station: stationOrders.station });
     const stationRow = new Map(rows.map((row) => [row.station, row.id]));
     await tx.insert(orderItems).values(
-      order.items.map((item) => {
-        const menuItem = byId.get(item.menuItemId);
-        const stationOrderId = menuItem && stationRow.get(menuItem.station);
-        if (!menuItem || !stationOrderId) throw new Error("Order item lost its station");
-        return {
+      tickets.flatMap(({ station, items }) => {
+        const stationOrderId = stationRow.get(station);
+        if (!stationOrderId) throw new Error("Station ticket was not created");
+        return items.map((item) => ({
           orderId: created.id,
           stationOrderId,
           menuItemId: item.menuItemId,
           quantity: item.quantity,
-          quantityLimit: menuItem.maxPerOrder,
-        };
+          quantityLimit: item.quantityLimit,
+        }));
       }),
     );
     return { status: "created", orderId: created.id };
