@@ -53,6 +53,12 @@ export const appRoutes = {
   devOrder: { path: "/dev/order", label: "Ordering preview", audience: "dev", access: "preview" },
   devPass: { path: "/dev/pass", label: "Gate pass preview", audience: "dev", access: "preview" },
   devShare: { path: "/dev/share", label: "Sharing preview", audience: "dev", access: "preview" },
+  devAdmin: {
+    path: "/dev/admin",
+    label: "Admin shell preview",
+    audience: "dev",
+    access: "preview",
+  },
 } as const satisfies Record<string, AppRoute>;
 
 export const routeList = Object.values(appRoutes);

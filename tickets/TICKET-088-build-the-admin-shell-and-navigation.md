@@ -39,8 +39,8 @@ See: [Admin dashboard](../docs/prd.md#admin-dashboard) · [Users and roles](../d
 
 ## Acceptance criteria
 
-- [ ] Navigation works by keyboard and at 375px (e2e).
-- [ ] Unauthenticated access redirects to sign-in.
+- [x] Navigation works by keyboard and at 375px (e2e).
+- [x] Unauthenticated access redirects to sign-in.
 
 ## Test plan
 
@@ -55,6 +55,20 @@ See: [Admin dashboard](../docs/prd.md#admin-dashboard) · [Users and roles](../d
 ## Notes / decisions
 
 _Agents append dated notes here while working._
+
+- 2026-11-04:
+  - **Shell.** `AdminShell` wraps every protected admin page: the event name (couple names from settings), and
+    navigation that's a bottom bar on phones and a sidebar from `md`. Links are Control room, Sharing and Sign out.
+    Only `AdminNavLink` is a client component (for `aria-current`). The dashboard's own sign-out link moved into the
+    shell. Sections are listed in `adminSections`; feature tickets add theirs as their pages land.
+  - **Evidence without Auth.** Admin sign-in needs the local Supabase Auth stack, which wouldn't start here (Docker).
+    `/dev/admin` renders the same shell with sample content for the browser tests: keyboard order and visible focus;
+    bottom bar pinned to the viewport and last content clear of it at 375px; sidebar at 768/1280; 44px targets; axe in
+    every theme; screenshots.
+  - **Unauthenticated access.** `e2e/access-matrix.spec.ts` now asserts `/admin` and `/admin/sharing` redirect to
+    `/admin/sign-in`, and the keyboard test follows a shell link to the sign-in page.
+  - **Not verified:** a signed-in run of the real `/admin` with the shell (needs local Auth, or the hosted dev project
+    proposed in TICKET-213), and real phones.
 
 ## Activity log
 

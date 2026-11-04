@@ -27,20 +27,6 @@ export async function AdminDashboard() {
           </li>
         ))}
       </ul>
-      <nav aria-label="Admin account" className="mt-12 flex flex-wrap gap-8">
-        <Link
-          href={appRoutes.home.path}
-          className="inline-flex min-h-11 items-center text-primary underline underline-offset-4"
-        >
-          Back to our day
-        </Link>
-        <Link
-          href={appRoutes.adminSignOut.path}
-          className="inline-flex min-h-11 items-center text-primary underline underline-offset-4"
-        >
-          Sign out
-        </Link>
-      </nav>
     </main>
   );
 }
