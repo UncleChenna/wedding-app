@@ -1698,9 +1698,10 @@
         "- 2026-11-04 — blocked → in_progress — divine (codex) — Record approved native retry-page exception; retain physical-device release checks.",
         "- 2026-11-04 — in_progress → blocked — divine (codex) — Awaiting exact-path migration commit authorization and launch-budget approval before full verification. Native retry exception approved; physical-phone checks remain release requirements. Draft PR #89.",
         "- 2026-11-04 — blocked → in_progress — divine (codex) — Owner approved migration and budgets; verification underway.",
-        "- 2026-11-04 — in_progress → in_review — divine (codex)"
+        "- 2026-11-04 — in_progress → in_review — divine (codex)",
+        "- 2026-11-04 — in_review → in_progress — divine (codex) — Integrate merged TICKET-032 while preserving authorization and request budgets."
       ],
-      "status": "in_review",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-185",
