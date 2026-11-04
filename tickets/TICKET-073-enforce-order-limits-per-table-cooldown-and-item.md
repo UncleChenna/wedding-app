@@ -2,7 +2,7 @@
 id: TICKET-073
 title: Enforce order limits per table, cooldown and item caps
 epic: ordering
-status: in_progress
+status: in_review
 priority: high
 estimate: M
 labels: [backend, security]
@@ -12,7 +12,7 @@ agent: claude
 blocked_by: [TICKET-025, TICKET-074]
 blocks: [TICKET-079, TICKET-081, TICKET-130, TICKET-133, TICKET-137]
 branch: TICKET-073
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/90
 created: 2026-10-21
 updated: 2026-11-04
 started: 2026-11-04
@@ -84,3 +84,4 @@ _Agents append dated notes here while working._
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-04 — todo → claimed — unclechenna (claude)
 - 2026-11-04 — todo → in_progress — unclechenna (claude)
+- 2026-11-04 — in_progress → in_review — unclechenna (claude)
