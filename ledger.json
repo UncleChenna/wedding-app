@@ -1720,12 +1720,13 @@
     },
     "WED-212": {
       "log": [
-        "- 2026-11-03 — backlog → todo — ihemegodsfavour8-lang"
+        "- 2026-11-03 — backlog → todo — ihemegodsfavour8-lang",
+        "- 2026-11-03 — todo → claimed — ihemegodsfavour8-lang (codex)"
       ],
       "status": "todo",
-      "owner": "",
-      "agent": "",
-      "branch": "",
+      "owner": "ihemegodsfavour8-lang",
+      "agent": "codex",
+      "branch": "TICKET-212",
       "pr": "",
       "started": "",
       "completed": "",
