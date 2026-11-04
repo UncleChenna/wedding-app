@@ -1387,18 +1387,19 @@
       "log": [
         "- 2026-11-02 — todo → claimed — ihemegodsfavour8-lang (codex)",
         "- 2026-11-02 — todo → in_progress — ihemegodsfavour8-lang (codex)",
-        "- 2026-11-02 — in_progress → blocked — ihemegodsfavour8-lang (codex) — Human must create .harness/approved-writes.json for the seven generated migration files; full gate has three protected-file hook failures. Local implementation preserved; no production operation authorized."
+        "- 2026-11-02 — in_progress → blocked — ihemegodsfavour8-lang (codex) — Human must create .harness/approved-writes.json for the seven generated migration files; full gate has three protected-file hook failures. Local implementation preserved; no production operation authorized.",
+        "- 2026-11-03 — blocked → in_progress — ihemegodsfavour8-lang (codex)"
       ],
-      "status": "blocked",
+      "status": "in_progress",
       "owner": "ihemegodsfavour8-lang",
       "agent": "codex",
       "branch": "TICKET-211",
       "pr": "",
       "started": "2026-11-02",
       "completed": "",
-      "updated": "2026-11-02",
-      "reason": "Human must create .harness/approved-writes.json for the seven generated migration files; full gate has three protected-file hook failures. Local implementation preserved; no production operation authorized.",
-      "resume_to": "in_progress"
+      "updated": "2026-11-03",
+      "reason": "",
+      "resume_to": ""
     },
     "WED-022": {
       "log": [
