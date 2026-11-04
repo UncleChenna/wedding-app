@@ -24,9 +24,11 @@ const headers = {
  */
 export async function menuAvailabilityResponse(
   list: () => Promise<MenuAvailability["items"]>,
+  isOpen: () => Promise<boolean>,
 ): Promise<Response> {
   try {
-    const body: MenuAvailability = { items: await list() };
+    const [items, open] = await Promise.all([list(), isOpen()]);
+    const body: MenuAvailability = { open, items };
     return Response.json(body, { headers });
   } catch {
     logger.child({ module: "ordering" }).warn("Menu availability unavailable");
