@@ -2,20 +2,20 @@
 id: TICKET-088
 title: Build the admin shell and navigation
 epic: admin
-status: todo
+status: in_progress
 priority: urgent
 estimate: M
 labels: [frontend]
 module: admin
-owner: ""
-agent: ""
+owner: unclechenna
+agent: claude
 blocked_by: [TICKET-017, TICKET-032]
 blocks: [TICKET-043, TICKET-048, TICKET-064, TICKET-067, TICKET-069, TICKET-080, TICKET-089, TICKET-095, TICKET-096, TICKET-098, TICKET-099, TICKET-101, TICKET-143, TICKET-166, TICKET-174, TICKET-175]
-branch: ""
+branch: TICKET-088
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-04
+started: 2026-11-04
 completed: ""
 reason: ""
 resume_to: ""
@@ -59,3 +59,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-04 — todo → claimed — unclechenna (claude)
+- 2026-11-04 — todo → in_progress — unclechenna (claude)
