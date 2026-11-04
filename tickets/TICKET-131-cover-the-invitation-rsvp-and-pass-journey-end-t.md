@@ -2,7 +2,7 @@
 id: TICKET-131
 title: Cover the invitation, RSVP and pass journey end to end
 epic: testing
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [test]
@@ -14,9 +14,9 @@ blocks: [TICKET-154, TICKET-176]
 branch: TICKET-131
 pr: https://github.com/UncleChenna/wedding-app/pull/83
 created: 2026-10-21
-updated: 2026-11-03
+updated: 2026-11-04
 started: 2026-11-03
-completed: ""
+completed: 2026-11-04
 reason: ""
 resume_to: ""
 ---
@@ -66,3 +66,4 @@ _Agents append dated notes here while working._
 - 2026-11-03 — in_progress → blocked — divine (codex) — Local full verification and mobile/desktop journey pass; awaiting explicit approval for concrete dedicated CI job in PR83, required for CI acceptance.
 - 2026-11-03 — blocked → in_progress — divine (codex) — User approved the proposed dedicated guest journey CI job
 - 2026-11-03 — in_progress → in_review — divine (codex)
+- 2026-11-04 — in_review → done — divine (codex)
