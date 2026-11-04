@@ -1694,9 +1694,10 @@
         "- 2026-11-04 — in_progress → blocked — divine (codex) — Awaiting exact-path migration commit authorization and launch-budget approval; cold-font regression and full verification remain incomplete (draft PR #89).",
         "- 2026-11-04 — blocked → in_progress — divine (codex) — Continue independent cold-font diagnosis; migration and budget approvals remain pending.",
         "- 2026-11-04 — in_progress → blocked — divine (codex) — Awaiting migration commit authorization, launch-budget approval and native retry/device-review exception; full verification remains pending. Cold-font and Lighthouse checks now pass (draft PR #89).",
-        "- 2026-11-04 — blocked → in_progress — divine (codex) — Record approved native retry-page exception; retain physical-device release checks."
+        "- 2026-11-04 — blocked → in_progress — divine (codex) — Record approved native retry-page exception; retain physical-device release checks.",
+        "- 2026-11-04 — in_progress → blocked — divine (codex) — Awaiting exact-path migration commit authorization and launch-budget approval before full verification. Native retry exception approved; physical-phone checks remain release requirements. Draft PR #89."
       ],
-      "status": "in_progress",
+      "status": "blocked",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-185",
@@ -1704,8 +1705,8 @@
       "started": "2026-11-04",
       "completed": "",
       "updated": "2026-11-04",
-      "reason": "",
-      "resume_to": ""
+      "reason": "Awaiting exact-path migration commit authorization and launch-budget approval before full verification. Native retry exception approved; physical-phone checks remain release requirements. Draft PR #89.",
+      "resume_to": "in_progress"
     },
     "WED-084": {
       "log": [
