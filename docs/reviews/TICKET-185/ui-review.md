@@ -1,6 +1,6 @@
 # TICKET-185 retry-state review — 2026-11-04
 
-Decision: **UI exception approved; automated ticket verification passed**. On 4 November
+Decision: **UI exception approved; integrated full verification failed**. On 4 November
 2026 the owner approved the native HTML response and existing local fonts, with
 physical-phone checks retained as release requirements. Automated browser,
 accessibility, cold-font and performance evidence passes. This is not a device-test
@@ -117,3 +117,11 @@ tests and 775 browser checks in 4.3 minutes, plus formatting, lint, types and bu
 82 opt-in unit and 165 opt-in browser cases were skipped; dedicated five-case
 database and six-case retry runs remain separate evidence. Physical-device release
 checks remain mandatory under the approved exception.
+
+## Integration gate supersedes earlier completion evidence
+
+After integrating develop 696baef, the full gate failed with seven browser timeouts
+(772 passes/165 skips); 985 unit tests passed with 88 opt-in skips. A serial retry
+passed six of those seven cases. Database resource/transaction waits need diagnosis
+under healthy local capacity. Earlier passing results remain historical evidence,
+not approval of the integrated head. No test timeout or assertion was weakened.

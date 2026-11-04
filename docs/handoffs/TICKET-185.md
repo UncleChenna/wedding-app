@@ -193,3 +193,26 @@ guest budgets in src/proxy.ts. Nineteen proxy tests pass, including an exhausted
 guest-budget case that still denies unauthenticated privileged calls and admits
 an authorized admin. All existing assertions remain. Quick verification passes;
 full PR gate must now run on this integrated code. No new migration changes.
+
+## Integrated verification blocked by local failures
+
+Integrated t:pr run exited 1: 985 unit passes/88 opt-in skips; browser 772 passes,
+7 mobile timeouts and 165 skips (9.5m). Six of seven unchanged failed cases passed
+in a serial recheck; the first private-pass navigation still timed out. The unchanged
+direct two-pool limiter test also timed out at 5s. Do not treat earlier passing
+verification as verification of the integrated head.
+
+Read-only Colima memory check: 5,910MB total, 5,856MB used, 53MB available, no swap.
+Only this worktree's unused Studio/metadata/storage/realtime services were stopped.
+Other collaborators' stacks were untouched. Host db:counts succeeded. One aggregate
+wait snapshot showed five transaction-id waits and one idle-in-transaction client;
+causality is not proven, so recheck this after resource recovery rather than declaring
+the problem solely environmental. Failure traces are preserved in
+artifacts/TICKET-185/integrated-failure-results, with integrated-pr-gate.log,
+integrated-failure-recheck.log and integrated-limiter-direct.log.
+
+Next: recover capacity without touching another owner's stack, rerun the direct
+limiter and private-route checks, investigate any repeat under healthy conditions,
+then run the full gate. PR remains draft/incomplete; migration and budget approvals
+are already recorded. TICKET-215 was reserved and its complete definition is in
+the TICKET-032 worktree, awaiting its own branch.
