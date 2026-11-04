@@ -23,3 +23,7 @@
 - Git2.15 lacks branch --show-current and newer rev-parse path formatting. TICKET-211 uses symbolic-ref and resolves git-common-dir output, failing closed on detached HEAD; disposable-repository tests verify old-Git branch and protected-file checks without inspecting unrelated working-tree changes.
 
 - A streamed preview can initially expose only a loading shell. Require its real heading before collecting links, measuring tap targets or testing Tab entry; an empty link collection can otherwise pass vacuously. TICKET-211 reused the upstream heading-readiness assertion and verified all26 invitation-page cases without relaxing checks. Inspect upstream before fixing old-base regressions.
+
+- 2026-11-04 (TICKET-211): Git2.15 cannot use init -b. Disposable fixtures use init -q plus symbolic-ref and throw on every failed setup command. Both hook/pnpm suites pass43 cases with actual2.15; retain that minimum-Git fixture run in the harness verification checklist.
+
+- 2026-11-04 (TICKET-211): PW_WORKERS is an explicit positive-safe-integer verification resource limit; invalid values fail before discovery and2 preserves all844 smoke cases. Preserve default-worker failure traces and label unresolved timing causes; a resource-bounded passing run is not a load or wedding-readiness result.

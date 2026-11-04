@@ -38,6 +38,8 @@ The owner supplied a revised end-to-end product mandate on 2026-11-02. It supers
 
 - Owner-requested verification repairs: portable Git checks, disposable hook fixtures and the existing upstream streamed-page readiness assertion.
 
+- Verification runner: opt-in positive PW_WORKERS resource limit, retaining defaults and the complete test inventory.
+
 ## Out of scope
 
 - Other owners' active branches, public deployment, production migration/reset or real guest messaging.
@@ -71,6 +73,12 @@ The owner supplied a revised end-to-end product mandate on 2026-11-02. It supers
 - 2026-11-02 — First implementation slice and local regression evidence prepared. Required full gate:665 unit cases pass,42 skipped,3 protected-file hook failures pending human exact-path approval. Implementation is uncommitted; branch scaffold only is pushed. No production changes or readiness claim. See handoff for next steps.
 
 - 2026-11-03 — Human seven-path source record verified unchanged. Canonical gate passes:682 unit/697 browser cases,42/147 conditional skips, with build/lint/types/format passing. Old-Git guards and explicit unapproved-write rejection remain active. Original base2f066eb; draft integration is blocked by newer develop0006–0011 and overlapping RSVP work. Hosted legacy execution, real-data deletion and token reissue remain unauthorized; see handoff.
+
+
+- 2026-11-04 — Repaired the stop-gate fixture's unsupported init -b and unchecked setup. The red case reproduces with2.15;43 hook/pnpm cases and primary quick verification pass afterward. Repeating the full gate; no migration, approval or hosted action.
+
+
+- 2026-11-04 — Follow-up full gate passes with explicit PW_WORKERS=2:682 unit/697 browser cases and build/lint/types/format;42/147 conditional skips. Old-Git fixture/denial suites pass57 cases and the actual primary stop entrypoint passes. Default-worker focus timeouts remain recorded with unknown cause. No migration/approval/hosted action; draft integration remains blocked.
 
 ## Activity log
 

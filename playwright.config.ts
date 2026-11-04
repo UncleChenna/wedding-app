@@ -10,7 +10,15 @@ const baseURL = `http://localhost:${PORT}`;
 // `pnpm verify` runs against the production build; `pnpm screenshots` uses the dev server.
 const useDevServer = process.env.PW_SERVER === "dev";
 
+// Limit only when explicitly requested by a resource-constrained verification host.
+const workerLimit =
+  process.env.PW_WORKERS === undefined ? undefined : Number(process.env.PW_WORKERS);
+if (workerLimit !== undefined && (!Number.isSafeInteger(workerLimit) || workerLimit < 1)) {
+  throw new Error("PW_WORKERS must be a positive safe integer.");
+}
+
 export default defineConfig({
+  workers: workerLimit,
   testDir: "./e2e",
   outputDir: "./test-results",
   fullyParallel: true,

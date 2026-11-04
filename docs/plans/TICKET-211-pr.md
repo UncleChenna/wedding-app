@@ -48,3 +48,15 @@ The detailed checklist records PASS for existing-layout regression screenshots, 
 # Harness changes, if any
 
 Portable branch/common-directory lookups, workdir/Git-C branch-target protection, strict message validation and isolated hook fixtures are included. Existing protected-file authorization remains active. Only supported execution worker limits were used; CI configuration, hooks, test assertions/timeouts and retries remain intact. No approval record was created by this work.
+
+## 4 November minimum-Git follow-up
+
+The primary stop gate exposed an unsupported init -b and unchecked setup in the symlink fixture. Portable setup now checks all child results and requests absent global configuration where supported. All original assertions remain. The same case fails before repair;43 hook/pnpm cases and the primary quick gate pass under actual Git2.15. Final full-gate evidence is recorded in the dated handoff before publication. Migration approval, current-develop integration and deployment/device blockers are unchanged.
+
+The first full run of this fixture follow-up had one envelope focus timeout (696 browser passes/147 skips). Its unchanged focused case passes in2.3 seconds; trace is preserved. No product/UI/test timing modification was made. The cause remains unverified and passing subsequent checks does not establish device or wedding readiness. The final complete-gate result is recorded in the handoff.
+
+Second default-worker full run:682 unit passes/42 skips and build;695 browser passes/147 skips, with mobile midnight-champagne768 envelope viewport and mobile blush-sage768 letter Enter timeouts. Traces are retained in stop-fixture-browser-failure-retry. These are unresolved default-worker timing observations, not a product fix. Added an explicit PW_WORKERS resource limit with positive-integer validation; unset retains the existing runner default. No CI settings, assertions, clocks, timeouts or retry counts change. Before the change an invalid0 was ignored; after it must fail before discovery. Valid2 must list the identical844 smoke cases. Use PW_WORKERS=2 for the complete gate and normal review workflow on this host; record every result and preserve earlier failures.
+
+## Final local follow-up verification
+
+Complete gate passes with VITEST_MAX_WORKERS=1 PW_WORKERS=2:682 unit passes/42 skips,697 browser passes/147 skips, build/lint/types/format/ticket validation pass. Discovery remains844 smoke cases. The actual primary stop entrypoint passes with Git2.15;43 fixture cases plus14 compatibility/denial cases pass under that version. Default-worker failures remain preserved and their cause unverified; this is a documented runner-capacity result, not a product/UI timing repair, integration result or readiness approval. The normal review CLI independently repeats the complete gate before its metadata transition.

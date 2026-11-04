@@ -102,15 +102,23 @@ it("formats changed regular files but skips symlinks and directories (TICKET-001
   const { tmpdir } = await import("node:os");
   const { join } = await import("node:path");
   const dir = mkdtempSync(join(tmpdir(), "wedding-hook-symlink-"));
-  const git = (...args: string[]) =>
-    spawnSync("git", args, { cwd: join(dir, "repo"), encoding: "utf8", env: isolatedGitEnv() });
+  const git = (...args: string[]) => {
+    const result = spawnSync("git", args, {
+      cwd: join(dir, "repo"),
+      encoding: "utf8",
+      env: isolatedGitEnv({ GIT_CONFIG_GLOBAL: join(dir, "absent-global-config") }),
+    });
+    if (result.status !== 0) throw new Error(result.stderr || "Fixture Git failed");
+    return result;
+  };
   try {
     const repo = join(dir, "repo");
     mkdirSync(join(repo, ".agents/skills/x"), { recursive: true });
     mkdirSync(join(repo, ".claude"));
     writeFileSync(join(repo, ".agents/skills/x/SKILL.md"), "# x\n");
     writeFileSync(join(repo, "notes.md"), "a\n");
-    git("init", "-q", "-b", "chore/x");
+    git("init", "-q");
+    git("symbolic-ref", "HEAD", "refs/heads/chore/x");
     git("-c", "user.email=t@example.test", "-c", "user.name=T", "add", ".");
     git("-c", "user.email=t@example.test", "-c", "user.name=T", "commit", "-qm", "chore: init");
     // A changed regular file and a new (untracked) symlink, as agents:link creates.
