@@ -29,6 +29,8 @@ for (const theme of listThemes()) {
       await page.setViewportSize({ width, height: 900 });
       for (const route of ["/", "/invite", "/dev", `/dev/invitation?theme=${theme.id}`]) {
         await page.goto(route);
+        // Streaming can initially show only the loading shell, with no tab stops.
+        await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
         await applyTheme(page, theme);
         expect(await scanA11y(page)).toEqual([]);
         expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
