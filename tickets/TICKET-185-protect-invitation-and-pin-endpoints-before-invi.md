@@ -2,20 +2,20 @@
 id: TICKET-185
 title: Protect invitation and PIN endpoints before invitations launch
 epic: security
-status: todo
+status: in_progress
 priority: urgent
 estimate: M
 labels: [security, backend, test]
 module: shared
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-031, TICKET-036, TICKET-183]
 blocks: [TICKET-048, TICKET-123, TICKET-176]
-branch: ""
+branch: TICKET-185
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-04
+started: 2026-11-04
 completed: ""
 reason: ""
 resume_to: ""
@@ -57,3 +57,5 @@ Backlog audit coverage: Security, INV-2, ADM-4. See [PRD](../docs/prd.md) and [a
 ## Activity log
 
 - 2026-10-21 — new → todo — divine
+- 2026-11-04 — todo → claimed — divine (codex)
+- 2026-11-04 — todo → in_progress — divine (codex)
