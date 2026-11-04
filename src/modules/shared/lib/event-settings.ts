@@ -56,7 +56,7 @@ export const defaultEventSettings = Object.freeze({
   activeThemeId: "ivory-gold",
   activeDarkThemeId: "midnight-champagne",
   defaultMaxTagAlongs: 1,
-  retentionDays: 90,
+  retentionDays: 365,
   maxOpenOrdersPerTable: 3,
   orderCooldownSeconds: 30,
   maxItemQuantity: 10,

@@ -43,6 +43,27 @@
       "when": 1793458186224,
       "tag": "0005_blue_ravenous",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1793614428355,
+      "tag": "0006_member-rsvp-foundation",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1793614639569,
+      "tag": "0007_member-rsvp-backfill",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1793615646172,
+      "tag": "0008_preserve-large-household-capacity",
+      "breakpoints": true
     }
   ]
 }

@@ -16,7 +16,7 @@ describe("event settings", () => {
       rsvpLockAt: null,
       orderingOpen: false,
       defaultMaxTagAlongs: 1,
-      retentionDays: 90,
+      retentionDays: 365,
       activeThemeId: "ivory-gold",
     });
   });

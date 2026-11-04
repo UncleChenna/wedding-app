@@ -12,6 +12,8 @@ it.each(["yes", "no"] as const)("refreshes pass content after saved %s", async (
   const token = "a".repeat(43);
   const form = new FormData();
   form.set("token", token);
+  form.set("revision", "0");
+  form.set("requestId", "22222222-2222-4222-8222-222222222222");
   mocks.submit.mockResolvedValue({ status, message: "Saved" });
   expect(await respondToInvitation({ status: "idle", message: "" }, form)).toEqual({
     status,
@@ -25,4 +27,14 @@ it("does not refresh after a rejected submission", async () => {
   mocks.submit.mockResolvedValue({ status: "error", message: "Please try again" });
   await respondToInvitation({ status: "idle", message: "" }, form);
   expect(mocks.revalidate).not.toHaveBeenCalled();
+});
+it("rejects a stale form without revision or retry identity before mutation", async () => {
+  const form = new FormData();
+  form.set("token", "a".repeat(43));
+  form.set("attendance", "yes");
+  expect(await respondToInvitation({ status: "idle", message: "" }, form)).toMatchObject({
+    status: "error",
+    message: "Please refresh this invitation before replying.",
+  });
+  expect(mocks.submit).not.toHaveBeenCalled();
 });

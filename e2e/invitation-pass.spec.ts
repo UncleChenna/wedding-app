@@ -1,3 +1,4 @@
+import { removeInvitationFixtures } from "./support/local-fixtures";
 import { randomBytes } from "node:crypto";
 import { mkdirSync, readFileSync } from "node:fs";
 import postgres, { type Sql } from "postgres";
@@ -29,7 +30,7 @@ test.describe("issued invitation pass", () => {
   test.afterAll(async () => {
     if (db) {
       try {
-        if (ids.length) await db`delete from invitations where id in ${db(ids)}`;
+        await removeInvitationFixtures(db, ids);
       } finally {
         await db.end();
       }
@@ -94,7 +95,8 @@ test.describe("issued invitation pass", () => {
             );
             expect(moduleSize).toBeGreaterThanOrEqual(3);
             if (reducedMotion === "reduce") {
-              const directory = "docs/reviews/TICKET-044/" + theme.id;
+              const directory =
+                (process.env.PASS_REVIEW_DIR ?? "docs/reviews/TICKET-044") + "/" + theme.id;
               mkdirSync(directory, { recursive: true });
               await page
                 .locator("#pass")

@@ -1,45 +1,50 @@
 # Ticket
 
-Ticket: TICKET-211. Target: develop. Draft only until the checks and review requirements below are resolved.
+Ticket: [TICKET-211](https://github.com/UncleChenna/wedding-app/blob/TICKET-211/tickets/TICKET-211-prepare-ui-ux-and-full-stack-improvement-workspa.md). Target: develop. Draft: this source branch uses base2f066eb; current develop already owns migration numbers0006–0011. Reconciliation and a fresh exact-path proposal are required before integration.
 
 # Summary
 
-A populated original database could not upgrade safely, and invitation-wide RSVP edits silently overwrote one another without enforcing a deadline or writing history. This first foundation slice adds a controlled transactional upgrade and a shared member response writer. The existing form now carries revision/retry metadata, rejects stale edits, enforces the cutoff and preserves the signed-pass projection.
+The original populated schema could not upgrade safely, and invitation-wide replies lacked member state, conflict protection and atomic history. This phase adds transactional member responses and a controlled legacy conversion. It also repairs old-Git branch checks and isolates hook tests from unrelated dirty files, preserving rejection of unapproved protected changes.
 
 # Changes
 
-- Add household/member metadata, member responses, scoped retry receipts and restricted migration archive through generated0006–0008 migrations. RLS stays enabled; no browser grant is added. Preserve large legacy groups without creating extra people.
-- Run the original pending migration SQL with validated legacy conversion and original database JSON/timestamp preservation in one transaction. Refuse implicit upgrades, ambiguous source data and unapproved weak-code replacement. Stable identifiers/contacts/check-ins/RSVP meaning survive; a forced failure restores schema/data/journal together.
-- Write mixed attendance/diet, person counts, optimistic conflicts, replay receipts and before/after history atomically. Adapt the existing yes/no form and retain current pass behavior.
-- Update deterministic seeds and local fixture cleanup. Record the complete revised requirements and remaining phases, rollout/recovery, ADR0022, environment blockers and operating draft.
+- Generated0006–0008 add household/member metadata, member responses, scoped retry receipts and restricted original-record archive; keep RLS enabled with no browser policy, set365-day defaults and preserve large-group allowances.
+- The shared writer validates the private capability and actual household membership, locks the invitation, checks expected revision/deadline/reopening, writes attendance/diet/history and records replay receipts atomically. The existing form supplies revision/retry metadata and preserves the aggregate pass projection.
+- A separately flagged legacy bridge archives original database JSON/timestamp precision, runs unchanged pending SQL and restores mapped identities/data in one transaction. Default execution refuses an implicit bootstrap conversion. No hosted execution or token reissue is authorized by source approval.
+- Wrong-target migration/seed CLIs now reject before importing the heavy schema graph; the existing no-connection/no-secret tests pass unchanged. Deterministic local seed and repeat migration counts match after this refactor.
+- Replace unsupported Git branch lookup with symbolic-ref, fail closed on detached HEAD, preserve message-prefix checks and support explicit execution/Git-C targets without allowing main/develop writes. Install the tested hook/parser copy in the primary checkout for the active tool guard; no primary-branch commit.
+- Hook tests use disposable repositories and clean Git environments. Explicit pre/post/stop/commit tests still reject unapproved protected writes before verification. Real Git2.15 and portable unsupported-flag cases are covered. No hook, assertion, timeout or retry is disabled.
 
 # Acceptance criteria and evidence
 
-- Requirements map: `docs/implementation-checklist.md` covers the complete mandate and distinguishes verified primitives from incomplete journeys.
-- Upgrade/data preservation: populated individual/group/shared-contact/partial-state and large-group tests; rollback and exact original-record regression. Applied0000–0005 are unchanged.
-- Member transaction: mixed answers/diet, membership/FK uniqueness, revision concurrency, duplicate request replay, exact deadline and controlled household reopening tested. The existing form surfaces refresh/contact instructions.
-- Repeat migrations/seeds and RLS: local logs and handoff. No schema drift,9 migrations,15 public tables all RLS. Counts unchanged on repeated migrations/seeds.
-- Full gate: **incomplete** pending the human protected-file authorization record; current result is665 pass,42 opt-in skips,3 hook failures. No tests/hooks weakened.
-- Review/rollout notes available. Production/hosted/physical/full-app readiness is not established.
+The full mandate and outstanding work are mapped in docs/implementation-checklist.md. Member validation/concurrency and populated/current-schema preservation are covered by recorded local DB regressions; large-group and exact original JSON/timestamp preservation are included. New source artifacts were generated through Drizzle; applied0000–0005 remain unchanged. The generator reports no drift on both the disposable-copy and actual approved snapshot set. Seven exact SHA-256 hashes and SQL review findings are in docs/reviews/TICKET-211/migration-source-review.md.
+
+Fresh/repeat migrations and deterministic seed counts were verified only in the managed local stack. The human record is unchanged and covers only the seven listed source paths. Full UI/hosted/release requirements remain explicitly unverified below.
 
 # Verification
 
-See `docs/handoffs/TICKET-211.md` for exact logs/results and commands. Database integration37 pass; final bridge preservation suite6 pass; targeted units33 pass; real RSVP mobile/desktop10 pass; additional pass/RSVP4 pass; visual review12 cases/60 states pass. Formatting/lint/types pass; production build passed separately. Separate browser smoke:697 passed,147 opt-in skipped. Required full gate stops at the human migration-file hook as described above. Any subsequent result must replace this status before review.
+PASS: VITEST_MAX_WORKERS=1 pnpm verify completed with exit0, using the unchanged default browser worker count. Ticket validation, formatting, lint, types and production build pass;682 unit cases pass/42 conditional skips,697 browser cases pass/147 conditional skips. Evidence:artifacts/TICKET-211/verify-canonical-final.log. No current failure remains in this local original-base gate. Earlier failed runs remain recorded below.
+
+Focused streaming regression:26 invitation-page cases pass after reusing the exact upstream heading-readiness assertion; all original keyboard/accessibility/layout assertions remain. Earlier evidence:37 database integration cases;6 final preservation cases;10 actual mobile/desktop RSVP cases;4 additional pass/RSVP cases;60 visual states across four themes and three widths. Current focused regressions:56 hook cases on real Git2.15,14 final branch/parser cases,3 unchanged wrong-target CLI cases. Fixture identity was confirmed before repeating seed/migration happy paths; counts match with9 applied migrations and zero token reissues. No hosted operation ran.
+
+Failed default/two-worker unit runs, serial envelope/dashboard timeouts and four-browser-worker timeout traces are preserved under artifacts/TICKET-211. A subsequent lint startup stall led to a pnpm frozen-lockfile dependency refresh using copy import and a temporary store; the lockfile is unchanged. No assertion or time limit was relaxed. Those failures are not silently replaced by a targeted-only passing claim. See docs/handoffs/TICKET-211.md for exact final evidence and limitations.
 
 # Risks and rollout
 
-This is phase A/member-RSVP foundation only. Member editing/approvals, persistent sessions/staff roles, seating, stock/orders/delivery/alcohol, durable notifications/provider, content/retention/holds/backups, approved envelope and end-to-end rehearsal remain incomplete. The365-day default is not a deletion job. History/receipts/archive contain personal data and require later retention/access controls. Legacy history cannot be reconstructed.
+DEPLOYMENT BLOCKED. Do not apply this older migration sequence to current develop or treat source approval as execution permission. Reconcile the merged ordering/staff/RSVP work and regenerate future artifacts under a separate reviewed exact-path proposal. The source branch is reviewable, not merge/deploy ready.
 
-Follow `docs/migration-rollout.md`: verify backups/restoration and rehearse on isolated restored data; require maintenance/no writes for the original bootstrap conversion; deploy schema before code. Reissue obsolete weak links only with explicit operator acknowledgement and deliberate redistribution. No message is sent. Do not drop tables to roll back; transactional failures preserve the source, committed conversion needs a verified restore or reviewed fix forward. No public deployment or production migration has run.
+The legacy bridge contains TRUNCATE and runs historical column-dropping SQL. Before any hosted execution require a reviewed target-specific plan, verified backup, restore rehearsal and explicit execution authorization. Source approval does not permit invitation-token reissue or real-data deletion. Failures before commit roll back schema/data/journal; after commit use a reviewed fix forward or verified separate-target restore/cutover, not table drops. Cloud restoration is unverified. Archive/history/receipt retention, event-end anchoring and preservation holds remain incomplete;365 is not a deletion job.
+
+Full member UI/approvals, guest/staff authorization, seating/orders/delivery/alcohol, durable notifications/provider integration, content and complete responsive flows remain checklist phases. No wedding-readiness claim.
 
 # Screenshots
 
-`docs/reviews/TICKET-211/README.md` records all checklist outcomes and includes representative mobile/desktop captures. Full local60-image set: `artifacts/TICKET-211/rsvp` (all four themes ×375/768/1280 ×five states). Synthetic names/settings only.
+See docs/reviews/TICKET-211/README.md and its four contact sheets plus representative originals. Full local60-image set is artifacts/TICKET-211/rsvp. Synthetic people/settings only; user photography remains unchanged.
 
 # UI checklist
 
-PASS: existing-layout screenshots, tokens, restraint/typography, keyboard, reduced motion, automated contrast, clear copy, shared controls and emulated44px/no-overflow checks. N/A: new component showcase/staff feedback; no new component or staff UI. Not verified: Lighthouse95/CLS, physical WhatsApp previews/iOS/Android, physical QR scans and device safe-area handling. Full UI decision remains CHANGES REQUESTED. No visual-fidelity claim while the reference requires owner sign-in.
+The detailed checklist records PASS for existing-layout regression screenshots, tokens, typography, keyboard/focus, reduced motion, automated contrast, copy/shared controls and emulated44px/no-overflow checks. Not verified: Lighthouse95/guest CLS, physical WhatsApp/iOS/Android/camera/Auth/MFA and safe-area handling. Staff feedback is N/A for this guest-only slice. Full UI decision remains CHANGES REQUESTED; design-reference fidelity is unverified because owner sign-in/assets are needed.
 
 # Harness changes, if any
 
-Hooks/skills/CI remain unchanged. The existing migration approval requirement is honored. Local-only fixture helpers clean their own synthetic records transactionally; they do not grant production deletion permission.
+Portable branch/common-directory lookups, workdir/Git-C branch-target protection, strict message validation and isolated hook fixtures are included. Existing protected-file authorization remains active. Only supported execution worker limits were used; CI configuration, hooks, test assertions/timeouts and retries remain intact. No approval record was created by this work.

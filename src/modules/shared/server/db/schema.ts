@@ -6,6 +6,7 @@ import {
   date,
   time,
   check,
+  foreignKey,
   index,
   integer,
   jsonb,
@@ -95,6 +96,9 @@ export const invitations = pgTable(
     maxTagAlongs: integer("max_tag_alongs").notNull().default(1),
     status: invitationStatus("status").notNull().default("draft"),
     tokenVersion: integer("token_version").notNull().default(1),
+    rsvpRevision: integer("rsvp_revision").notNull().default(0),
+    rsvpReopenUntil: timestamp("rsvp_reopen_until", { withTimezone: true }),
+    kind: text("kind").notNull().default("individual"),
     tableId: uuid("table_id").references(() => tables.id, { onDelete: "set null" }),
     side: text("side"),
     notes: text("notes"),
@@ -103,9 +107,11 @@ export const invitations = pgTable(
     updatedAt: updatedAt(),
   },
   (t) => [
-    check("invitations_tag_along_capacity", sql`${t.maxTagAlongs} between 0 and 10`),
+    check("invitations_tag_along_capacity", sql`${t.maxTagAlongs} >= 0`),
     check("invitations_token_format", sql`${t.token} ~ '^[A-Za-z0-9_-]{22,}$'`),
     check("invitations_token_version_positive", sql`${t.tokenVersion} > 0`),
+    check("invitations_rsvp_revision", sql`${t.rsvpRevision} >= 0`),
+    check("invitations_kind", sql`${t.kind} in ('individual', 'family', 'group')`),
     index("invitations_table_id_idx").on(t.tableId),
   ],
 ).enableRLS();
@@ -135,6 +141,7 @@ export const guests = pgTable(
     phone: text("phone"),
     /** The named invitee (false for tag-alongs added by the household). */
     isPrimary: boolean("is_primary").notNull().default(false),
+    ageBand: text("age_band").notNull().default("unspecified"),
     mealChoice: text("meal_choice"),
     dietaryNotes: text("dietary_notes"),
     tableId: uuid("table_id").references(() => tables.id, {
@@ -148,6 +155,8 @@ export const guests = pgTable(
     check("guests_phone_e164", sql`${t.phone} is null or ${t.phone} ~ '^\\+[1-9][0-9]{1,14}$'`),
     index("guests_invitation_id_idx").on(t.invitationId),
     index("guests_table_id_idx").on(t.tableId),
+    uniqueIndex("guests_invitation_member_key").on(t.invitationId, t.id),
+    check("guests_age_band", sql`${t.ageBand} in ('unspecified', 'adult', 'child')`),
   ],
 ).enableRLS();
 
@@ -272,7 +281,7 @@ export const eventSettings = pgTable(
     activeThemeId: text("active_theme_id").notNull().default("ivory-gold"),
     activeDarkThemeId: text("active_dark_theme_id").notNull().default("midnight-champagne"),
     defaultMaxTagAlongs: integer("default_max_tag_alongs").notNull().default(1),
-    retentionDays: integer("retention_days").notNull().default(90),
+    retentionDays: integer("retention_days").notNull().default(365),
     maxOpenOrdersPerTable: integer("max_open_orders_per_table").notNull().default(3),
     orderCooldownSeconds: integer("order_cooldown_seconds").notNull().default(30),
     maxItemQuantity: integer("max_item_quantity").notNull().default(10),
@@ -311,6 +320,71 @@ export const eventSettings = pgTable(
       sql`length(trim(${t.activeDarkThemeId})) between 1 and 100`,
     ),
     check("event_settings_map_https", sql`${t.mapUrl} is null or ${t.mapUrl} like 'https://%'`),
+  ],
+).enableRLS();
+
+/** One current response per named person in this application's single wedding event. */
+export const memberRsvps = pgTable(
+  "member_rsvps",
+  {
+    guestId: uuid("guest_id").primaryKey(),
+    invitationId: uuid("invitation_id").notNull(),
+    attendance: text("attendance").$type<"pending" | "yes" | "no">().notNull().default("pending"),
+    respondedAt: timestamp("responded_at", { withTimezone: true }),
+    updatedAt: updatedAt(),
+  },
+  (t) => [
+    foreignKey({
+      columns: [t.invitationId, t.guestId],
+      foreignColumns: [guests.invitationId, guests.id],
+    }).onDelete("cascade"),
+    check("member_rsvps_attendance", sql`${t.attendance} in ('pending', 'yes', 'no')`),
+    check(
+      "member_rsvps_response_time",
+      sql`(${t.attendance} = 'pending' and ${t.respondedAt} is null) or (${t.attendance} <> 'pending' and ${t.respondedAt} is not null)`,
+    ),
+    index("member_rsvps_invitation_idx").on(t.invitationId),
+  ],
+).enableRLS();
+
+/** Scoped receipts contain a payload digest and a minimal outcome, never a bearer credential. */
+export const rsvpReceipts = pgTable(
+  "rsvp_receipts",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    invitationId: uuid("invitation_id")
+      .notNull()
+      .references(() => invitations.id, { onDelete: "cascade" }),
+    requestId: uuid("request_id").notNull(),
+    fingerprint: text("fingerprint").notNull(),
+    revision: integer("revision").notNull(),
+    countAttending: integer("count_attending").notNull(),
+    createdAt: createdAt(),
+  },
+  (t) => [
+    uniqueIndex("rsvp_receipts_scope_key").on(t.invitationId, t.requestId),
+    check("rsvp_receipts_hash", sql`${t.fingerprint} ~ '^[0-9a-f]{64}$'`),
+    check("rsvp_receipts_counts", sql`${t.revision} >= 0 and ${t.countAttending} >= 0`),
+  ],
+).enableRLS();
+
+/** Restricted, lossless legacy evidence for a reviewed upgrade; subject to event retention. */
+export const legacyMigrationRecords = pgTable(
+  "legacy_migration_records",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    sourceTable: text("source_table").notNull(),
+    sourceId: uuid("source_id").notNull(),
+    record: jsonb("record").$type<Record<string, unknown>>().notNull(),
+    createdAt: createdAt(),
+  },
+  (t) => [
+    uniqueIndex("legacy_migration_records_source_key").on(t.sourceTable, t.sourceId),
+    check(
+      "legacy_migration_records_table",
+      sql`${t.sourceTable} in ('invitations', 'guests', 'rsvps', 'check_ins')`,
+    ),
+    check("legacy_migration_records_object", sql`jsonb_typeof(${t.record}) = 'object'`),
   ],
 ).enableRLS();
 

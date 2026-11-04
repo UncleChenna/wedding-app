@@ -75,12 +75,12 @@ describe.runIf(enabled)("invitation schema on isolated Postgres", () => {
     });
   });
 
-  it("accepts capacity boundaries and rejects negative or excessive tag-alongs", async () => {
+  it("preserves large household allowances and rejects negative capacity", async () => {
     await exercise(async (tx) => {
       const id = await invitation(tx);
-      for (const capacity of [0, 10])
+      for (const capacity of [0, 10, 25])
         await tx`update invitations set max_tag_alongs = ${capacity} where id = ${id}`;
-      for (const capacity of [-1, 11])
+      for (const capacity of [-1])
         await expect(
           tx.savepoint(
             (sp) => sp`update invitations set max_tag_alongs = ${capacity} where id = ${id}`,

@@ -3,6 +3,7 @@ import { chmodSync, mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync }
 import { tmpdir } from "node:os";
 import { delimiter, dirname, join, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
+import { hookRepo } from "./hook-repo";
 import { pnpmRuntime } from "../harness/pnpm-runtime.mjs";
 
 const scratch: string[] = [];
@@ -57,20 +58,25 @@ it("uses PNPM_HOME and fails with actionable guidance when no executable exists"
 });
 it.each([0, 1])("the actual stop hook runs verification and preserves exit %s", (exit) => {
   const { home } = fixture();
-  const result = spawnSync(
-    process.execPath,
-    [resolve("scripts/harness/hooks.mjs"), "stop", "codex"],
-    {
-      input: JSON.stringify({ cwd: process.cwd() }),
-      encoding: "utf8",
-      env: {
-        ...process.env,
-        PATH: "/usr/bin:/bin",
-        PNPM_HOME: join(home, ".npm-global/bin"),
-        TEST_EXIT: String(exit),
+  const repo = hookRepo();
+  try {
+    const result = spawnSync(
+      process.execPath,
+      [resolve("scripts/harness/hooks.mjs"), "stop", "codex"],
+      {
+        input: JSON.stringify({ cwd: repo.path }),
+        encoding: "utf8",
+        env: {
+          ...repo.env,
+          PATH: "/usr/bin:/bin",
+          PNPM_HOME: join(home, ".npm-global/bin"),
+          TEST_EXIT: String(exit),
+        },
       },
-    },
-  );
-  expect(result.status).toBe(exit ? 2 : 0);
-  expect(exit ? result.stderr : result.stdout).toContain(exit ? "verify:quick" : "{}");
+    );
+    expect(result.status).toBe(exit ? 2 : 0);
+    expect(exit ? result.stderr : result.stdout).toContain(exit ? "verify:quick" : "{}");
+  } finally {
+    repo.cleanup();
+  }
 });

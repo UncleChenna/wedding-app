@@ -4,7 +4,7 @@ import { existsSync, lstatSync, readFileSync, realpathSync } from "node:fs";
 import { dirname, relative, resolve, sep } from "node:path";
 import { spawnSync } from "node:child_process";
 import { pnpmRuntime } from "./pnpm-runtime.mjs";
-import { shellAccess } from "./shell-access.mjs";
+import { shellAccess, gitCommitTargets } from "./shell-access.mjs";
 import { protectedPath } from "./core.mjs";
 import { git, isMain, root } from "./io.mjs";
 
@@ -96,7 +96,11 @@ export async function main() {
     const raw = readFileSync(0, "utf8");
     if (raw.trim()) input = JSON.parse(raw);
   }
-  const cwd = root(input.cwd ?? input.workspace_roots?.[0] ?? process.cwd());
+  const executionCwd =
+    typeof input.tool_input?.workdir === "string"
+      ? input.tool_input.workdir
+      : (input.cwd ?? input.workspace_roots?.[0] ?? process.cwd());
+  const cwd = root(executionCwd);
   try {
     if (mode === "pre") {
       const paths = editPaths(input);
@@ -109,7 +113,16 @@ export async function main() {
         );
       const tool = input.tool_input ?? input;
       const shell = tool.command ?? tool.cmd ?? "";
-      if (/\bgit\b[^\n]*\bcommit\b/.test(shell) && isMain(git(["branch", "--show-current"], cwd)))
+      const targets = gitCommitTargets(shell, cwd);
+      for (const target of targets) {
+        if (isMain(git(["symbolic-ref", "--quiet", "--short", "HEAD"], root(target))))
+          throw new Error("No commits on main or develop. Create a task branch/worktree.");
+      }
+      if (
+        !targets.length &&
+        /\bgit\b[^\n]*\bcommit\b/.test(shell) &&
+        isMain(git(["symbolic-ref", "--quiet", "--short", "HEAD"], cwd))
+      )
         throw new Error("No commits on main or develop. Create a task branch/worktree.");
       const access = shellAccess(shell, cwd);
       access.reads.forEach((path) => verifyRead(cwd, path));
@@ -136,7 +149,10 @@ export async function main() {
           command(cwd, ["exec", "eslint", "--fix", "--max-warnings=0", "--no-warn-ignored", path]);
       }
     } else if (mode === "commit") {
-      if (isMain(git(["branch", "--show-current"], cwd)) || !git(["branch", "--show-current"], cwd))
+      if (
+        isMain(git(["symbolic-ref", "--quiet", "--short", "HEAD"], cwd)) ||
+        !git(["symbolic-ref", "--quiet", "--short", "HEAD"], cwd)
+      )
         throw new Error(
           "Commits require a named task branch, never main, develop or detached HEAD.",
         );

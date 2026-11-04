@@ -9,10 +9,14 @@ export function RsvpForm({
   token,
   attendance,
   open,
+  revision,
+  requestId,
 }: {
   token: string;
   attendance: "yes" | "no" | null;
   open: boolean;
+  revision: number;
+  requestId: string;
 }) {
   const initial: RsvpState = {
     status: attendance ?? "idle",
@@ -50,6 +54,8 @@ export function RsvpForm({
           className="mt-6 grid gap-4 pb-[env(safe-area-inset-bottom)] sm:grid-cols-2"
         >
           <input type="hidden" name="token" value={token} />
+          <input type="hidden" name="revision" value={revision} />
+          <input type="hidden" name="requestId" value={requestId} />
           <Button
             type="submit"
             name="attendance"

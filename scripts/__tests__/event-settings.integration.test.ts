@@ -49,7 +49,7 @@ describe.runIf(process.env.RUN_SETTINGS_DB_TESTS === "1")(
           rsvp_lock_at: null,
           ordering_open: false,
           default_max_tag_alongs: 1,
-          retention_days: 90,
+          retention_days: 365,
           active_theme_id: "ivory-gold",
           active_dark_theme_id: "midnight-champagne",
         });

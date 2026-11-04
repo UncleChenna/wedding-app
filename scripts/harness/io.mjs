@@ -16,7 +16,7 @@ export function root(cwd = process.cwd()) {
   return git(["rev-parse", "--show-toplevel"], cwd);
 }
 export function common(cwd = process.cwd()) {
-  return git(["rev-parse", "--path-format=absolute", "--git-common-dir"], cwd);
+  return resolve(cwd, git(["rev-parse", "--git-common-dir"], cwd));
 }
 export function json(path) {
   return JSON.parse(readFileSync(path, "utf8"));

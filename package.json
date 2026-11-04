@@ -27,7 +27,7 @@
     "db:stop": "node scripts/db-local.mjs stop",
     "db:status": "node scripts/db-local.mjs status",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate",
+    "db:migrate": "tsx scripts/migrate.ts",
     "db:seed": "tsx scripts/seed.ts",
     "db:reset": "node scripts/db-local.mjs reset",
     "db:check-rls": "tsx scripts/db-check.ts rls",

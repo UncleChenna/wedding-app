@@ -1,3 +1,4 @@
+import { removeInvitationFixtures } from "./support/local-fixtures";
 import { randomBytes } from "node:crypto";
 import { mkdirSync, readFileSync } from "node:fs";
 import AxeBuilder from "@axe-core/playwright";
@@ -28,12 +29,14 @@ test.describe("saved RSVP visual review", () => {
   test.afterAll(async () => {
     if (db) {
       await db`update event_settings set time_zone='Etc/UTC' where id=1 and venue='RSVP browser test only'`;
-      if (ids.length) await db`delete from invitations where id in ${db(ids)}`;
+      await removeInvitationFixtures(db, ids);
       await db.end();
     }
   });
 
   async function capture(page: Page, path: string) {
+    // Route revalidation streams metadata after the updated reply; require it to settle too.
+    await expect(page).toHaveTitle("Your invitation · Our Wedding");
     await settleAnimations(page);
     expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)).toBe(
       false,

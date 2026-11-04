@@ -36,6 +36,8 @@ The owner supplied a revised end-to-end product mandate on 2026-11-02. It supers
 - Implement and verify transactional member RSVP/cutoff/history behavior and preserve compatibility with current invitation/pass data.
 - Document rollout, recovery and external launch blockers.
 
+- Owner-requested verification repairs: portable Git checks, disposable hook fixtures and the existing upstream streamed-page readiness assertion.
+
 ## Out of scope
 
 - Other owners' active branches, public deployment, production migration/reset or real guest messaging.
@@ -47,8 +49,8 @@ The owner supplied a revised end-to-end product mandate on 2026-11-02. It supers
 - [x] Populated bootstrap and current-schema upgrades preserve representative individual/family/group records, contacts, check-ins and RSVP meaning without rewriting committed migration files.
 - [x] Per-member responses enforce invitation scope, one current response, revision conflicts, replay-safe idempotency, deadlines and atomic history.
 - [x] Fresh migrations and repeat migrations pass; all public tables retain RLS and no broad browser policies.
-- [ ] Relevant checks and the full project gate pass, with external/device/provider limitations recorded separately.
-- [ ] Rollout/recovery notes and a reviewable branch/PR state are available without launching publicly.
+- [x] Relevant checks and the full project gate pass, with external/device/provider limitations recorded separately.
+- [x] Rollout/recovery notes and a reviewable branch/PR state are available without launching publicly.
 
 ## Test plan
 
@@ -67,6 +69,8 @@ The owner supplied a revised end-to-end product mandate on 2026-11-02. It supers
 - 2026-11-02 — Owner expanded the prepared workspace into an implementation mandate. Begin with phase A; track remaining requirements without misrepresenting schema or prototypes as working journeys. Preserve the untracked audit and portrait.
 
 - 2026-11-02 — First implementation slice and local regression evidence prepared. Required full gate:665 unit cases pass,42 skipped,3 protected-file hook failures pending human exact-path approval. Implementation is uncommitted; branch scaffold only is pushed. No production changes or readiness claim. See handoff for next steps.
+
+- 2026-11-03 — Human seven-path source record verified unchanged. Canonical gate passes:682 unit/697 browser cases,42/147 conditional skips, with build/lint/types/format passing. Old-Git guards and explicit unapproved-write rejection remain active. Original base2f066eb; draft integration is blocked by newer develop0006–0011 and overlapping RSVP work. Hosted legacy execution, real-data deletion and token reissue remain unauthorized; see handoff.
 
 ## Activity log
 

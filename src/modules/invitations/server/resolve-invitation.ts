@@ -6,6 +6,7 @@ export interface GuestInvitation {
   householdName: string | null;
   primaryNames: string[];
   attendance: "yes" | "no" | null;
+  revision?: number;
 }
 
 interface StoredInvitation extends Omit<GuestInvitation, "attendance"> {
@@ -26,5 +27,6 @@ export async function resolveInvitation(
       invitation.status === "rsvp_yes" ? "yes" : invitation.status === "rsvp_no" ? "no" : null,
     householdName: invitation.householdName,
     primaryNames: invitation.primaryNames,
+    ...(invitation.revision === undefined ? {} : { revision: invitation.revision }),
   };
 }

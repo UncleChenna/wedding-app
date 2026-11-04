@@ -132,3 +132,56 @@ export function shellAccess(shell, cwd) {
   inspect(segment);
   return { reads, writes };
 }
+
+/** Resolve explicit Git -C targets before the protected-branch check. */
+export function gitCommitTargets(shell, cwd) {
+  const targets = [];
+  let directory = cwd;
+  let segment = [];
+  const inspect = () => {
+    const words = segment.filter((token) => !token.operator).map((token) => token.value);
+    while (
+      words[0] &&
+      (/^[A-Za-z_][A-Za-z_0-9]*=/.test(words[0]) || ["command", "env"].includes(words[0]))
+    )
+      words.shift();
+    const command = words.shift()?.split("/").at(-1);
+    if (command === "cd" && words[0] && !words[0].startsWith("-")) {
+      directory = resolve(directory, words[0]);
+      return;
+    }
+    if (command !== "git") return;
+    if (!words.includes("commit")) return;
+    let target = directory;
+    for (let i = 0; i < words.length; i++) {
+      const word = words[i];
+      if (word === "-C") {
+        const destination = words[++i];
+        if (!destination || /[$\x60*?{}]/.test(destination))
+          throw new Error("Use a literal Git execution directory.");
+        target = resolve(target, destination);
+        continue;
+      }
+      if (word === "-c") {
+        const config = words[++i] ?? "";
+        if (/^core\.(worktree|bare|hooksPath)=/i.test(config))
+          throw new Error("Repository and hook overrides are not allowed here.");
+        continue;
+      }
+      if (["--no-pager", "--paginate", "--literal-pathspecs", "--no-optional-locks"].includes(word))
+        continue;
+      if (word.startsWith("--git-dir") || word.startsWith("--work-tree"))
+        throw new Error("Use a reviewed Git -C directory instead of repository overrides.");
+      if (word === "commit") targets.push(target);
+      break;
+    }
+  };
+  for (const token of tokens(shell)) {
+    if (token.operator && [";", "|", "&&", "||", "\n"].includes(token.value)) {
+      inspect();
+      segment = [];
+    } else segment.push(token);
+  }
+  inspect();
+  return targets;
+}

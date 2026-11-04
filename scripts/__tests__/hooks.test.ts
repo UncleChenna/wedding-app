@@ -1,9 +1,23 @@
-import { describe, expect, it } from "vitest";
-import { spawnSync } from "node:child_process";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { hookRepo } from "./hook-repo";
+import {
+  spawnSync as spawnProcess,
+  type SpawnSyncOptionsWithStringEncoding,
+} from "node:child_process";
 import { resolve } from "node:path";
 import { editPaths } from "../harness/hooks.mjs";
 import { isolatedGitEnv } from "./git-env";
 const hook = resolve("scripts/harness/hooks.mjs");
+let fixture: ReturnType<typeof hookRepo>;
+beforeEach(() => {
+  fixture = hookRepo();
+});
+afterEach(() => {
+  fixture.cleanup();
+});
+function spawnSync(command: string, args: string[], options: SpawnSyncOptionsWithStringEncoding) {
+  return spawnProcess(command, args, { env: fixture.env, ...options });
+}
 describe("agent hook adapters", () => {
   it("extracts every file from a Codex patch including rename targets", () => {
     expect(
@@ -21,7 +35,7 @@ describe("agent hook adapters", () => {
         input: JSON.stringify({
           tool_name: "Write",
           tool_input: { file_path: ".env.local" },
-          cwd: process.cwd(),
+          cwd: fixture.path,
         }),
         encoding: "utf8",
       });
@@ -52,9 +66,9 @@ it("never accepts a failing stop after repeated attempts", async () => {
     chmodSync(fake, 0o755);
     for (let attempt = 0; attempt < 4; attempt++) {
       const result = spawnSync(process.execPath, [hook, "stop", "codex"], {
-        input: JSON.stringify({ cwd: process.cwd(), stop_hook_active: attempt > 0 }),
+        input: JSON.stringify({ cwd: fixture.path, stop_hook_active: attempt > 0 }),
         encoding: "utf8",
-        env: { ...process.env, PATH: `${dir}:${process.env.PATH}` },
+        env: { ...fixture.env, PATH: `${dir}:${process.env.PATH}` },
       });
       expect(result.status).toBe(2);
       expect(result.stderr).toContain("verification failed");
@@ -66,7 +80,7 @@ it("never accepts a failing stop after repeated attempts", async () => {
 
 it("allows reading generated migrations while blocking writes", () => {
   const input = {
-    cwd: process.cwd(),
+    cwd: fixture.path,
     tool_name: "Read",
     tool_input: { file_path: "drizzle/0000_init.sql" },
   };
@@ -164,7 +178,7 @@ it("rejects direct pushes to develop", () => {
 
 function preflight(tool_name: string, tool_input: Record<string, string>) {
   return spawnSync(process.execPath, [hook, "pre", "codex"], {
-    input: JSON.stringify({ cwd: process.cwd(), tool_name, tool_input }),
+    input: JSON.stringify({ cwd: fixture.path, tool_name, tool_input }),
     encoding: "utf8",
   });
 }

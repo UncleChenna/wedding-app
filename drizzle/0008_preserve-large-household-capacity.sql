@@ -1,0 +1,2 @@
+ALTER TABLE "invitations" DROP CONSTRAINT "invitations_tag_along_capacity";--> statement-breakpoint
+ALTER TABLE "invitations" ADD CONSTRAINT "invitations_tag_along_capacity" CHECK ("invitations"."max_tag_alongs" >= 0);

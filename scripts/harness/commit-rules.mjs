@@ -47,9 +47,13 @@ export function ticketProblems(message, branch) {
 
 function branchName() {
   try {
-    return execFileSync("git", ["branch", "--show-current"], { encoding: "utf8" }).trim();
+    return execFileSync("git", ["symbolic-ref", "--quiet", "--short", "HEAD"], {
+      encoding: "utf8",
+    }).trim();
   } catch {
-    return "";
+    throw new Error(
+      "Cannot validate a message without a named branch; refusing detached or unavailable HEAD.",
+    );
   }
 }
 

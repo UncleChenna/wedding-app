@@ -53,6 +53,7 @@ describe.runIf(enabled)("invitation persistence on isolated Postgres", () => {
           attendance: null,
           householdName: "Test household",
           primaryNames: ["Primary guest"],
+          revision: 0,
         });
         await tx
           .update(schema.invitations)

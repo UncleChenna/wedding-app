@@ -36,6 +36,11 @@ describe("RSVP input and outcomes", () => {
       message: "Replies aren’t open just yet. Please check back soon.",
     });
   });
+  it.each(["locked", "conflict"] as const)("does not claim success after %s", async (outcome) => {
+    const result = await submitRsvp({ token, attendance: "yes" }, async () => outcome);
+    expect(result.status).toBe("error");
+    expect(result.message).toContain(outcome === "locked" ? "Replies are closed" : "Refresh");
+  });
   it("propagates outages to the action's safe error boundary", async () => {
     await expect(
       submitRsvp({ token, attendance: "yes" }, async () => {

@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { randomUUID } from "node:crypto";
 import Link from "next/link";
 import { RsvpForm } from "./rsvp-form";
 import { InvitationLetter, type InvitationEventDetails } from "./invitation-letter";
@@ -28,7 +29,13 @@ export function PersonalInvitation({
       pass={invitation.attendance === "yes" ? pass : undefined}
     >
       {invitation.attendance === "yes" && passNotice}
-      <RsvpForm token={token} attendance={invitation.attendance} open={repliesOpen} />
+      <RsvpForm
+        token={token}
+        attendance={invitation.attendance}
+        open={repliesOpen}
+        revision={invitation.revision ?? 0}
+        requestId={randomUUID()}
+      />
       <Link
         href="/"
         prefetch={false}

@@ -4,7 +4,7 @@ import { invitationTokenSchema } from "../lib/token";
 import { invitationSiteCopy } from "../lib/copy";
 import type { RsvpState } from "../lib/rsvp-state";
 
-export type SaveRsvpResult = "saved" | "unavailable" | "not-open";
+export type SaveRsvpResult = "saved" | "unavailable" | "not-open" | "locked" | "conflict";
 const inputSchema = z
   .object({ token: invitationTokenSchema, attendance: z.enum(["yes", "no"]) })
   .strict();
@@ -24,6 +24,17 @@ export async function submitRsvp(
     };
   if (result === "not-open")
     return { status: "error", message: "Replies aren’t open just yet. Please check back soon." };
+  if (result === "locked")
+    return {
+      status: "error",
+      message: "Replies are closed. Please contact the couple to request a change.",
+    };
+  if (result === "conflict")
+    return {
+      status: "error",
+      message:
+        "This invitation was updated on another device. Refresh to review the latest reply before trying again.",
+    };
   return {
     status: parsed.data.attendance,
     message:

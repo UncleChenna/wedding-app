@@ -14,6 +14,7 @@ export interface SeedData {
   invitations: Insert<typeof schema.invitations>[];
   guests: Insert<typeof schema.guests>[];
   rsvps: Insert<typeof schema.rsvps>[];
+  memberRsvps: Insert<typeof schema.memberRsvps>[];
   checkIns: Insert<typeof schema.checkIns>[];
   menuItems: Insert<typeof schema.menuItems>[];
   orders: Insert<typeof schema.orders>[];
@@ -294,6 +295,20 @@ export function buildSeedData(seed = 20261021): SeedData {
     }
   }
 
+  const memberRsvps: SeedData["memberRsvps"] = guests.map((person) => {
+    if (!person.id) throw new Error("Seed member is missing its deterministic identifier");
+    const response = rsvps.find((response) => response.invitationId === person.invitationId);
+    return {
+      guestId: person.id,
+      invitationId: person.invitationId,
+      attendance: response ? (response.attending ? "yes" : "no") : "pending",
+      respondedAt: response?.respondedAt ?? null,
+    };
+  });
+  for (const invitation of invitations) {
+    const people = guests.filter((person) => person.invitationId === invitation.id);
+    invitation.kind = people.length === 1 ? "individual" : "group";
+  }
   return {
     eventSettings: { ...defaultEventSettings, coupleNames: [...defaultEventSettings.coupleNames] },
     themes,
@@ -302,6 +317,7 @@ export function buildSeedData(seed = 20261021): SeedData {
     invitations,
     guests,
     rsvps,
+    memberRsvps,
     checkIns,
     menuItems,
     orders,

@@ -19,3 +19,7 @@
 
 - Cached root-layout theme data can make formerly static private placeholders browser-cacheable. TICKET-012's offline regression failed in both browser projects; explicit private no-store proxy headers fixed all twelve PWA checks. Retain both HTTP-header and offline-response assertions when adding root caches.
 - Google-font resolution can fail in cold Turbopack CI even when local builds pass. PR54's exact head passed one retry after the resolver error; the failure recurred on PR56. Track the permanent fix in TICKET-207, preserve failed-run evidence, and require a passing final-head gate rather than weakening it.
+
+- Git2.15 lacks branch --show-current and newer rev-parse path formatting. TICKET-211 uses symbolic-ref and resolves git-common-dir output, failing closed on detached HEAD; disposable-repository tests verify old-Git branch and protected-file checks without inspecting unrelated working-tree changes.
+
+- A streamed preview can initially expose only a loading shell. Require its real heading before collecting links, measuring tap targets or testing Tab entry; an empty link collection can otherwise pass vacuously. TICKET-211 reused the upstream heading-readiness assertion and verified all26 invitation-page cases without relaxing checks. Inspect upstream before fixing old-base regressions.

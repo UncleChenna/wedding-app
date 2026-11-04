@@ -97,7 +97,8 @@ const str = (args: Args, key: string): string | undefined =>
 
 const root = () => git(["rev-parse", "--show-toplevel"], process.cwd());
 const today = () => process.env.TICKETS_TODAY ?? new Date().toLocaleDateString("en-CA");
-const currentBranch = (cwd: string) => tryGit(["branch", "--show-current"], cwd) ?? "";
+const currentBranch = (cwd: string) =>
+  tryGit(["symbolic-ref", "--quiet", "--short", "HEAD"], cwd) ?? "";
 /** Ticket files are only rewritten off main, so the coordination checkout stays clean. */
 const canWriteFiles = (cwd: string, mode: LedgerMode) =>
   mode === "off" || !/^(main|master|develop|)$/.test(currentBranch(cwd));

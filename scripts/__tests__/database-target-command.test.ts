@@ -40,12 +40,7 @@ it.each(["migration", "seed", "counts"] as const)(
       );
       const args =
         command === "migration"
-          ? [
-              resolve(root, "node_modules/drizzle-kit/bin.cjs"),
-              "migrate",
-              "--config",
-              resolve(root, "drizzle.config.ts"),
-            ]
+          ? ["--import", import.meta.resolve("tsx"), resolve(root, "scripts/migrate.ts")]
           : [
               "--import",
               import.meta.resolve("tsx"),

@@ -12,7 +12,7 @@ type InvitationDb = Pick<Db, "select" | "insert">;
 const newInvitationSchema = z
   .object({
     householdName: z.string().trim().min(1).max(200),
-    maxTagAlongs: z.number().int().min(0).max(10).default(1),
+    maxTagAlongs: z.number().int().min(0).max(2_147_483_647).default(1),
   })
   .strict();
 
@@ -35,6 +35,7 @@ export async function findGuestInvitation(db: InvitationDb, token: unknown) {
     const rows = await db
       .select({
         status: invitations.status,
+        revision: invitations.rsvpRevision,
         householdName: invitations.householdName,
         name: guests.name,
       })
@@ -46,6 +47,7 @@ export async function findGuestInvitation(db: InvitationDb, token: unknown) {
     if (!first) return null;
     return {
       status: first.status,
+      revision: first.revision,
       householdName: first.householdName,
       primaryNames: rows.flatMap((row) => (row.name === null ? [] : [row.name])),
     };

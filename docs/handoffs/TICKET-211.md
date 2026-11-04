@@ -1,4 +1,8 @@
-# TICKET-211 handoff — 2026-11-02 10:48 UTC
+# TICKET-211 handoff
+
+Latest continuation: see **3 November 2026 — explicit source approval and verification repairs** below. Earlier entries are preserved history; their missing-approval blocker is resolved. Integration and deployment blockers remain.
+
+## 2 November 2026 — initial implementation
 
 Owner: ihemegodsfavour8-lang. Agent: codex. Branch/worktree: `TICKET-211`, `.worktrees/TICKET-211`. Base develop: `2f066ebbb175c4b8d42b0ab6f54545134f52f592`. Ticket status is blocked in the shared ledger and pushed as `00f5382` (initial branch commit `22d8ede`). Documentation/evidence are being pushed separately; application/migration implementation below is currently uncommitted because the required human migration authorization record is absent. No PR yet. Do not infer remote availability of these changes from the existing branch.
 
@@ -26,7 +30,7 @@ Evidence is local under ignored `artifacts/TICKET-211/`; concise review and repr
 
 ## Blocking action and exact continuation
 
-The repository hook (`scripts/harness/hooks.mjs`, `docs/collaboration.md:80`) requires the human to create ignored `.harness/approved-writes.json` naming the seven generated migration files. It says agents must not fabricate authorization. An unactivated proposal is ready at `artifacts/TICKET-211/migration-approval-for-human.json`; the owner was asked to review/copy it. Do not write the live approval yourself or disable the hook. It authorizes review/commit of generated files only, not production migration.
+The repository hook (`scripts/harness/hooks.mjs`, `docs/collaboration.md:80`) requires the human to create ignored `.harness/approved-writes.json` naming the seven generated migration files. It says agents must not fabricate authorization. An unactivated proposal is ready at `artifacts/TICKET-211/migration-approval-for-human.json`; the owner was asked to review/copy it. Do not write the live approval yourself or disable the hook. The intended authorization is source generation/review/commit, not database execution. Mechanically the hook permits writes to the named paths until expiry, without checking a content hash or limiting it to one commit. See the3 November approval-scope clarification in docs/migration-rollout.md.
 
 After the owner records approval:
 
@@ -40,3 +44,37 @@ After the owner records approval:
 ## Lessons
 
 Preserve raw original JSON inside PostgreSQL, not via Date serialization, when promising a legacy recovery archive. Materialize the entire prior member state before a partial change, otherwise aggregate fallback can incorrectly infer a previously unanswered member's answer. Current tests cover both issues. The generated composite FK must follow its referenced unique index;0006 was corrected before applying and schema drift is now empty. Do not modify applied migration files.
+
+## 3 November 2026 — owner approval review
+
+Read the exact collaboration policy, full proposed JSON, hook implementation, migration runner/target guard, raw SQL and all three failing assertions. The human record remains absent and the proposal is unchanged. Clarified source-write scope, expiry, independent database authorization, already-completed local testing, legacy TRUNCATE/dropped columns/pending-row mapping and backup recovery limitations. No migration, reset, approval creation or hook/test change was run during this review. User audit/portrait copies match originals; git diff --check passes. Next action remains the owner’s decision on the source-file approval.
+
+## 3 November 2026 — explicit source approval and verification repairs
+
+The owner created the exact seven-path human record, expiring5 November23:59:59Z. The record was not changed. No hosted execution, real-data deletion or invitation-token reissue is authorized. The destructive legacy bridge is a separate deployment blocker requiring a target-specific plan, verified backup, restore rehearsal and explicit execution authorization.
+
+Fixed Git2.15 compatibility using symbolic-ref, common-directory resolution, detached-HEAD refusal and strict message-prefix validation. Hook tests now use disposable repositories with inherited Git variables cleared. Explicit pre/post/stop/commit rejection remains covered;56 cases passed with the actual old Git and14 final parser cases passed separately. The explicit execution/Git-C target is checked so main/develop cannot be reached through another caller checkout. Read-only repository inspection remains available. Active primary-checkout hooks.mjs/shell-access.mjs are the same tested runtime repair, intentionally uncommitted there; source control belongs to this ticket, never a develop commit.
+
+Wrong-target migration/seed commands repeatedly timed out while loading the schema before validation. Moved the guard before heavy dynamic imports without changing the tests or10-second limit; all3 unchanged tests pass in1.13 seconds. Verified only the known synthetic invitation ID set and no new history/receipts/archive activity before repeat local seed and migration checks; counts remain identical and legacyUpgraded=false/reissuedTokens=0. No legacy upgrade/reissue flag ran.
+
+Default-parallel unit runs had startup failures (11 then4 worker errors), preserved in verify-default-worker-failure.log and verify-bounded.log. A subsequent single-worker unit run passed681 tests/42 conditional skips and production build; four-browser-worker smoke then timed out in public accessibility cases. Traces remain under four-worker-browser-failures. Final complete serial gate result is pending in verify-final-serial.log; no test/assertion/timeout/retry was removed or enlarged. Source/runtime code is now frozen for that run.
+
+Agent-created reference copies of the unchanged user audit/portrait are preserved under artifacts/TICKET-211/preserved-references so they remain out of commits; primary original files remain in place. Next independent ticket212 is prepared in the primary coordination checkout, still unclaimed/backlog until this handoff.
+
+Next: finish the complete gate, record actual results, commit/push through normal hooks and publish a draft into develop. The old numbered migrations conflict with newer develop and require a fresh exact-path proposal after reconciliation; do not expand the current approval. Then claim212 and implement only its independent guest-session foundation. For every ticket command set the known AGENT_OWNER explicitly; repeated missing-owner attempts are avoided without weakening identity checks.
+
+Upstream read-only preview: develop `de24fbff52b70555e91c915cf5335ebc3cb2caf2` includes staff sign-in031 and orders072/074. Disposable-index merge preview records75 conflict markers across migration snapshots/journal, schema, RSVP/UI/tests and seed/package files; no branch merge or source rewrite performed. The full gate proves only original211 base2f066eb plus this candidate. New independent work must start from fresh develop.
+
+Final quick gate: lint/types pass;210 related unit cases pass with42 conditional skips (quick-final.log). The old-Git/fixture regression lesson is recorded in docs/learnings.md; CI, assertions, retry limits and timeouts are unchanged.
+
+The completed serial gate passed682 unit cases/42 skips and build, then finished695 browser passes/147 conditional skips with two unchanged30-second timeouts: mobile emerald768 envelope Enter navigation and desktop live dashboard. Traces are retained in serial-browser-failures. Dashboard trace shows approximately108 seconds in synchronous fixture preparation between page creation and navigation; attribution to filesystem latency is an inference. A second two-browser-worker attempt passed formatting but stalled loading lint dependencies and was terminated only for environment repair (verify-final-two-workers.log), not counted as a pass. Read-only profiler samples showed kernel file reads; memory inspection did not show severe pressure. Source warmup read1920 tracked files without edits. Optional dependency warmup was stopped; normal scheduling was restored only for owned verification processes. Pnpm then reinstalled exact locked packages with copy import and a temporary store outside Desktop in31.6 seconds. Lockfile and all seven approved migration hashes remain unchanged. The next complete gate is verify-refreshed-deps.log; its result is pending. No assertion, timeout, retry, hook or CI configuration was changed.
+
+Post-refresh full gate:682 unit cases/42 conditional skips and build passed; browser smoke finished695 passes/147 skips with two invitation-preview focus failures (verify-refreshed-deps.log). The existing upstream test already waits for its real heading: without that assertion, the streamed loading shell has no links/tab stops and the link-size loop can be vacuous. Reused only that two-line readiness addition;26 mobile/desktop cases pass in53.3 seconds (focus-stream-ready-final.log). All original keyboard/Axe/bounds/long-name assertions remain. Temporary focus experiments and diagnostic hooks were removed. Their failed/aborted logs are not green evidence. Lesson: inspect the current upstream test before repairing an older-base baseline failure.
+
+The primary checkout automatic formatter also reported a transient invalid Prettier package configuration. Refreshed its locked dependencies through pnpm copy import/temporary store in43.5 seconds, with the primary lockfile unchanged and no primary source commit. Both application/dependency JSON files were subsequently parsed successfully; the211 application manifest equals the staged candidate and seven approved hashes still match. This is observed local recovery, not proof that every filesystem issue is permanently resolved. The next canonical full-gate result is pending in verify-canonical-final.log.
+
+## 3 November 2026 — final canonical gate PASS
+
+PASS: VITEST_MAX_WORKERS=1 pnpm verify completed with exit0, using the unchanged default browser worker count. Ticket validation, formatting, lint, types and production build pass;682 unit cases pass/42 conditional skips,697 browser cases pass/147 conditional skips. Evidence:artifacts/TICKET-211/verify-canonical-final.log. No current failure remains in this local original-base gate. Earlier failed runs remain recorded below.
+
+This verifies original develop2f066eb plus the frozen211 candidate, not integration with de24fbf. Commit/push through normal hooks and create a draft PR; use t:pr for the enforced review transition. Keep the draft integration-blocked until current develop is reconciled and future migration paths receive a fresh exact-path proposal. The destructive legacy bridge remains a separate hosted-execution blocker requiring a target-specific reviewed plan, verified backup, restore rehearsal and explicit execution authorization. Physical devices, hosted Auth, cloud restore, load/staff rehearsals and guest Lighthouse/CLS remain unverified. No deployment or wedding-readiness claim.
