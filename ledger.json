@@ -1579,13 +1579,14 @@
         "- 2026-11-03 — todo → claimed — divine (codex)",
         "- 2026-11-03 — todo → in_progress — divine (codex)",
         "- 2026-11-03 — in_progress → blocked — divine (codex) — Automated verification passes; awaiting physical staff-device review evidence or user-approved deferral before advancing draft PR84.",
-        "- 2026-11-04 — blocked → in_progress — divine (codex) — User approved proceeding to review with physical staff-device checks retained as release requirements."
+        "- 2026-11-04 — blocked → in_progress — divine (codex) — User approved proceeding to review with physical staff-device checks retained as release requirements.",
+        "- 2026-11-04 — in_progress → in_review — divine (codex)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-031",
-      "pr": "",
+      "pr": "https://github.com/UncleChenna/wedding-app/pull/84",
       "started": "2026-11-03",
       "completed": "",
       "updated": "2026-11-04",
