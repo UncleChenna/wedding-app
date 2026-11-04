@@ -1,7 +1,7 @@
 # TICKET-185 retry-state review — 2026-11-04
 
 Decision: **CHANGES REQUESTED / incomplete**. Screenshots and browser accessibility
-pass; performance, physical devices and the native document's
+pass; physical devices and the native document's
 font-loading exception remain unresolved. No UI completion is claimed.
 
 ## Verified evidence
@@ -37,7 +37,7 @@ that the outage document uses an administrator's custom active pair.
 | Keyboard             | PASS — visible focus, native form retry and PIN-to-submit tab sequence.                                                                                                                                                                                                    |
 | Contrast             | PASS — Axe checks in all theme/width combinations, textual status guidance.                                                                                                                                                                                                |
 | Load/images          | PASS for measured CLS — zero in all six default light/dark × width variants; see final measurements below. Native response references existing local TTF assets with swap rather than next/font; resolve or obtain an explicit exception before approval. No images added. |
-| Performance          | NOT VERIFIED — no Lighthouse result for the denial document.                                                                                                                                                                                                               |
+| Performance          | PASS — three mobile production runs: Performance 100/100/100, Accessibility 100/100/100, CLS 0; see performance.json and methodology below.                                                                                                                                |
 | Copy                 | Provisional — warm generic retry text; long waits use minutes, while Retry-After keeps exact seconds. No credential or exception details.                                                                                                                                  |
 | Shared components    | Existing PIN form unchanged; native outage document cannot use the normal streamed page renderer while preserving the tested status. Review this exception before completion.                                                                                              |
 | Sharing/devices      | NOT VERIFIED — no physical WhatsApp/iOS/Android check. Existing release gates remain mandatory.                                                                                                                                                                            |
@@ -81,3 +81,21 @@ overflow and target-size checks pass. Production build and quick verification
 (lint, types, nine related unit tests) pass. Evidence: `artifacts/TICKET-185/metric-*.log`
 and `retry-cold-fonts.json`. This does not certify other operating systems or the
 remaining native-font-loader exception, performance, devices or full gate.
+
+## Production performance measurement
+
+Three serial Lighthouse **12.6.1** mobile runs of the real production denial route
+`http://localhost:37411/i/synthetic-performance-link` scored Performance **100/100/100**
+and Accessibility **100/100/100**. CLS was zero throughout; LCP was approximately
+1.36 seconds. Machine-readable results: [performance.json](performance.json).
+
+The synthetic local lookup counter was temporarily exhausted and restored exactly
+after testing. Each run independently asserted HTTP 429 and `Cache-Control: no-store`.
+Lighthouse's documented `--ignore-status-code` option allowed measurement of this
+intentional error document; no response was changed to 200. The resulting HTTP 429
+warning is retained in every result. This measures the retry document only, not
+normal invitation/PIN pages, database throughput, or physical phones. Cached tooling
+was used without dependency installation. The owned test server was stopped.
+
+Reproduction script and full reports remain in `artifacts/TICKET-185/` as
+`measure-retry-performance.mjs` and `lighthouse-retry-{1,2,3}.json`.

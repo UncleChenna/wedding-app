@@ -118,3 +118,16 @@ guest screenshots inspected. PIN screenshots unchanged. Full gate remains blocke
 by migration authorization; performance/devices/native-font-loader review remain.
 Next: measure production denial-page Lighthouse, obtain outstanding migration/budget
 approvals and rerun full verification. No other collaborator's stack was touched.
+
+## Retry performance verified
+
+Three serial production mobile Lighthouse 12.6.1 runs: Performance 100/100/100,
+Accessibility 100/100/100, CLS 0 throughout. Each real response asserted 429 and
+no-store. Used Lighthouse's explicit ignore-status-code option to audit the error
+document without changing its response; warnings retained in performance.json.
+The local counter was restored and only the owned test server stopped. No dependency
+was installed. No other collaborator's stack was touched.
+Remaining: exact-path migration authorization, proposed launch-budget approval,
+full verification, physical-device review and the native renderer/font-loader
+exception. TICKET-032's base-update approval is also pending. No merge is authorized
+for either current draft/review merely by these measurements.
