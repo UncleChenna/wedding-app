@@ -41,3 +41,9 @@ First stack startup definitively failed and removed its containers. A second
 `pnpm db:start` attempt is live (session63045); observe it before retrying. The
 user approved PR83's merge and TICKET-031's review with physical-device release
 checks retained, so finish those reviews before resuming this editing ticket.
+
+Both isolated startup attempts are now terminal failures. No startup process is
+still running. Draft PR: https://github.com/UncleChenna/wedding-app/pull/85.
+The CLI records this ticket as blocked; schema/tests are pushed in 2749718 and the
+blocker in 9258e05. Resume only after diagnosing stack health and settling PR84's
+migration base. No database tests or migration generation succeeded.
