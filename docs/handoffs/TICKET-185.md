@@ -270,3 +270,17 @@ Return PR89 to review with the evidence recorded. The documentation/status push
 will receive its own CI run; recheck the resulting head before any merge.
 A separate explicit merge exception is still required under AGENTS.md. Physical
 device release requirements and production migration restrictions remain unchanged.
+
+## Publishing interruption
+
+Evidence commit a7413e6 is local and cleanly committed, but three ordinary pushes
+were rejected by GitHub with `fatal error in commit_refs_rules`. Remote remains
+c892e93. Read-only API reports no applicable branch rules, repository enabled and
+push permission granted. PR-body update also returned502; no general outage cause
+is established. Do not force-push or alter protections.
+
+PR89 was successfully marked ready for review. The ticket remains in_progress:
+the review transition correctly refused the unpublished branch. Next: retry the
+ordinary push after GitHub recovers, publish docs/plans/TICKET-185-pr.md, then
+use t:move TICKET-185 in_review and publish its status. Recheck final-head CI and
+request a specific merge exception. No production migration is authorized.
