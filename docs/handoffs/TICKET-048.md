@@ -83,3 +83,14 @@ result is recorded in /tmp/TICKET-048-ui-quick.log. Migration and budget approva
 remain pending; generated outputs remain local and unapplied. Next: complete guest
 performance evidence, then approved database integration and admin/state UI coverage.
 No acceptance criterion is marked complete from these isolated UI checks.
+
+## Public form performance — 2026-11-05
+
+Three serial mobile Lighthouse 13.6.0 runs against the owned production server at
+39410 each score Performance100/Accessibility100/CLS0 without runtime errors.
+Reviewable summary: docs/reviews/TICKET-048/performance.json; full local reports:
+artifacts/TICKET-048/lighthouse-lost-link-{1,2,3}.json. No dependency/lockfile change.
+The per-item UI review explicitly remains CHANGES REQUESTED for missing admin,
+submission-state, intermediate-width and physical-device evidence. Next: approved
+isolated migration, repeatability/RLS and real public-submit/admin-re-share journey.
+Migration and proposed budget approval are still pending; no new SQL was applied.

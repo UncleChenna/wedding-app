@@ -31,8 +31,12 @@ the full submit-to-admin journey are **not verified or operational yet**. The
 proposed separate limit is 10 requests per network per minute; lookup/PIN limits
 are unchanged. Migration numbering must be reconciled with pending PR99.
 
+Three serial production mobile Lighthouse runs of /lost-link score Performance100,
+Accessibility100 and CLS0 each. See docs/reviews/TICKET-048/performance.json and
+ui-review.md for evidence and remaining checklist items.
+
 Remaining: approved isolated migration, database/browser integration, full verify,
-UI evidence including admin/success/error states, performance and device checks.
+UI evidence including admin/success/error states and device checks.
 
 # Rollout and risks
 
