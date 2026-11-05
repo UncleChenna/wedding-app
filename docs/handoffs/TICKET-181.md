@@ -122,3 +122,27 @@ This does not supersede the failed full gate or prove database behavior.
 Next: exact-path migration approval/record, isolated migration twice/counts/RLS,
 RUN_THEME_PUBLICATION_DB_TESTS=1 tests, initial HTML/artifact integration, then full
 verification. No production migration and no protected-file bypass.
+
+## Migration approval received; database timeout — 2026-11-05
+
+User explicitly approved isolated testing, commit and exact-path authorization for
+0013_theme-published-tokens.sql,0013_snapshot.json and journal. Recorded the actual
+approval in .harness/approved-writes.json and resumed via CLI (ad2852b). TICKET-166
+was first marked blocked for its separate failed database startup; one active ticket.
+
+Guarded sequence stopped at the first db:counts with CONNECT_TIMEOUT127.0.0.1:39461
+(session39267 exit1). Therefore migration did NOT run and no repeatability/RLS or
+publication DB result exists. Docker health/memory read remains live in session35227;
+its lack of output is not proof of terminal failure. Prior three failing hook tests
+are rerunning independently in session75960, /tmp/TICKET-181-approved-hooks.log.
+Next: obtain diagnostics, restore only authorized owned infrastructure, apply the
+approved migration, then five DB tests and real browser/artifact evidence.
+
+Diagnostics completed: owned DB reports running/unhealthy; Docker VM has212MB
+available,81MB free of5910MB and no swap. This establishes severe capacity pressure,
+not proof of the sole cause. All43 hook tests now PASS with the approved record;
+no hook changes. Requested narrow permission to stop blocked owned TICKET-048 stack
+wedding-0b9a885bfc5f with backup preserved because collaboration rules restrict
+stopping unfinished projects. No stop has occurred; no other collaborator affected.
+Migration remains unapplied. Its approved generated files are now being published
+for review with this explicit unverified status; do not merge without DB evidence.

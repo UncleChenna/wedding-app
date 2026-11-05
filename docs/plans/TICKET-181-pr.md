@@ -12,8 +12,8 @@ storage and explicit publication so draft edits cannot implicitly change live pa
 - One-query published selection read before rendering, preserving preset fallback.
 - Immediate active-theme cache expiry only after publication commits.
 
-Generated migration adds one nullable published_tokens column. It is unapplied and
-uncommitted pending exact-path approval; proposal: docs/reviews/TICKET-181/migration-approval.md.
+Generated migration adds one nullable published_tokens column. The user approved isolated testing/commit and the exact-path record is written.
+It remains unapplied because the guarded database count query timed out; proposal: docs/reviews/TICKET-181/migration-approval.md.
 This draft is not deployable without that migration and remaining verification.
 
 ## Evidence and remaining work
@@ -23,10 +23,11 @@ runtime/action quick gate21 passes/7 skips, with lint/types passing. Five databa
 fixture tests are prepared but have NOT run, including post-write rollback and
 two-connection publication serialization. The first full gate caught fixture
 transaction typing; that was fixed. The subsequent full gate FAILED: format/lint/types pass,1043 unit passes,99 skips
-and3 hook-test failures. The real hooks reject the unapproved migration journal
-before their fake verification command executes. That gate did not reach build/browser stages. A separate production build now
+and3 hook-test failures. Those hook failures arose from the then-unapproved migration journal. After the
+user approval was recorded, all43 focused hook tests pass without code changes. That gate did not reach build/browser stages. A separate production build now
 passes; browser activation remains unverified.
-No protection was bypassed; rerun after authorization.
+No protection was bypassed. Full verification still needs rerunning; database is
+unhealthy with only212MB VM memory available. Capacity recovery permission pending.
 
 Required before review: approved isolated migration/repeat counts/RLS, real draft
 isolation and concurrent activation, post-write rollback, initial HTML/artifact
