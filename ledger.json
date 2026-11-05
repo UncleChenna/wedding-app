@@ -1972,14 +1972,15 @@
     },
     "WED-166": {
       "log": [
-        "- 2026-11-05 — todo → claimed — divine (codex)"
+        "- 2026-11-05 — todo → claimed — divine (codex)",
+        "- 2026-11-05 — todo → in_progress — divine (codex)"
       ],
-      "status": "todo",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-166",
       "pr": "",
-      "started": "",
+      "started": "2026-11-05",
       "completed": "",
       "updated": "2026-11-05",
       "reason": "",
