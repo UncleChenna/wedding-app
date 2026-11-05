@@ -35,6 +35,10 @@ Three serial production mobile Lighthouse runs of /lost-link score Performance10
 Accessibility100 and CLS0 each. See docs/reviews/TICKET-048/performance.json and
 ui-review.md for evidence and remaining checklist items.
 
+Three opt-in database tests are prepared for persistence, constraints and RLS.
+They have not run (all three skipped); lint and types pass. They do not replace
+the required real budget and authenticated browser checks.
+
 Remaining: approved isolated migration, database/browser integration, full verify,
 UI evidence including admin/success/error states and device checks.
 

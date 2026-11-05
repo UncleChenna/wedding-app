@@ -99,3 +99,19 @@ The owned review server was stopped after measurement. Its output included
 “Theme selection unavailable; using default light and dark themes”; therefore
 these Lighthouse results cover the default fallback theme, not successful database
 theme selection. The four-theme screenshot suite applies themes explicitly.
+
+## Database test preparation — 2026-11-05
+
+Added scripts/**tests**/lost-link.integration.test.ts, guarded by
+RUN_LOST_LINK_DB_TESTS=1. It checks real normalized inserts through the submission
+service's persistence boundary, identical receipts, generated UUID/timestamp,
+malformed-row constraints and RLS/no policies. Transaction fixtures deliberately
+roll back; the target guard requires this worktree's isolated local database.
+The budget is stubbed allowed here, so these tests do not certify atomic budgets,
+authenticated queue matching or a browser journey. Those remain necessary.
+
+Lint and types pass. All three database tests are SKIPPED, not passed, because the
+migration is still unapproved/unapplied. Log: /tmp/TICKET-048-db-test-quick.log.
+After approval and repeat migration/count/RLS checks, run:
+RUN_LOST_LINK_DB_TESTS=1 pnpm exec vitest run scripts/**tests**/lost-link.integration.test.ts
+Then add real submit/admin/re-share coverage. No SQL was applied in this follow-up.
