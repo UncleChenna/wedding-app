@@ -214,3 +214,20 @@ Started full pnpm verify with output in /tmp/TICKET-043-final-verify.log. Do not
 infer completion from this start record; obtain its terminal result. Next: finish
 admin capture inspection, update ui-review.md/PR body with final evidence, resolve
 physical-device release handling, then advance via t:pr when all gates permit.
+
+## Final local verification and visual review — 2026-11-05
+
+Owner divine/codex, branch TICKET-043, approved base develop 5747c3d.
+All 24 authenticated captures are now inspected, including Emerald Night,
+Blush & Sage and Midnight Champagne at every required width in both states.
+Warnings and actions are readable, long synthetic names wrap and focus is visible.
+Together with the preview matrix, all 48 captures are inspected.
+
+Full verification at 599355c completed successfully: 1044 unit passes/95 skips,
+build and 849 browser passes/183 skips. Separate four database tests and the
+authenticated flows remain the explicit opt-in evidence. Updated UI review and
+rewrote the PR body around the final result. No production source changed.
+
+PR: https://github.com/UncleChenna/wedding-app/pull/99 (draft). Next: resolve
+physical iOS/Android WhatsApp and safe-area evidence or a preview exception, then
+advance through t:pr and obtain required CI. No PR99 merge permission exists.

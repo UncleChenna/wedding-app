@@ -1,96 +1,83 @@
 # Ticket
 
-Ticket: TICKET-043
+TICKET-043 — Revoke and reissue invitations so old links and QRs stop working.
 
-# Summary
+# Problem and result
 
-Adds administrator controls to revoke or reissue an invitation with confirmation,
-while preserving the saved RSVP and explaining delayed offline propagation.
-**Draft: remaining UI review evidence is still outstanding.**
+Administrators can now revoke an invitation or replace its link from Admin Sharing,
+with an explicit confirmation. The old link stops working online, saved replies
+remain intact, and each successful change records the authenticated actor and time.
+Disconnected scanners learn the change after refreshing their snapshot; the UI
+states this limitation explicitly.
 
-# Changes
+Draft pending physical-device UI evidence or a preview exception. No production
+migration application or PR merge is authorized by the migration approval.
 
-- Strict commands with expected status/version prevent stale administrative edits.
-- Authenticated actions supply the audit actor; transactional service rotates the
-  capability/version or revokes access and inserts a durable audit event atomically.
-- Dedicated audit table definition excludes invitation capabilities and contacts.
-- Gate-session-protected snapshot returns only invitation IDs, statuses and versions.
-- Confirmation sheets in Admin Sharing; synthetic controls in /dev/share for review.
-- Approved ADR0020 wording is retained: stale versions are “Replaced pass”. The
-  dependent TICKET-065 retains actual offline scanner integration testing.
+# Changes and acceptance evidence
 
-# Acceptance criteria and evidence
+- Strict commands check expected status/version to reject stale administrative edits.
+- A row-locked transaction changes status or rotates the token/version and inserts
+  the audit event atomically. Collision retries are bounded; other errors propagate.
+- Audit records omit invitation capabilities, contact details, IP addresses and PINs.
+- Gate-session-protected revocation snapshots expose only IDs, status/version and
+  timestamps, with private/no-store responses and safe denial/unavailable errors.
+- Signed old pass versions return “Replaced pass”, matching ADR0020. Snapshot
+  freshness contracts are covered; scanner download/UI and real offline refresh
+  testing remain mandatory in dependent TICKET-065.
+- Real authenticated mobile/desktop journeys prove cancellation causes no change,
+  old links return 404 after reissue, new links work, revoked links return 404,
+  replies survive, and both audit events contain the authenticated actor/time.
 
-Pure version-transition, stale-form, signature/version snapshot, freshness and
-safe-response tests pass. Action tests cover authorization and verified actor identity.
-Four real PostgreSQL lifecycle tests pass. Authenticated mobile and desktop browser journeys pass with real local email OTP and TOTP, cancellation, reissue, old-link rejection, revocation, saved reply preservation and actor/time audit verification.
+# Validation
 
-# Verification
+Verified against the explicitly approved develop base 5747c3d.
 
-- verify:quick: lint/types pass, 64 related tests pass, 53 skipped.
-- Focused dev-server browser suite: 13 pass; four themes × 375/768/1280, axe AA,
-  keyboard confirmation/Escape/focus return, 44px targets, overflow and session denial.
-- 24 confirmation screenshots: docs/reviews/TICKET-043/screenshots.
-- Five additional service-boundary tests pass (input rejection, bounded collision retries, unrelated failures).
-- Four real database tests now pass on the approved isolated PostgreSQL instance.
-- Migration repeat counts, seed repeatability and RLS on all 17 tables pass.
-- Latest quick gate passes lint/types; its four opt-in DB cases are skipped by default,
-  and were run explicitly with all four passing as recorded above.
-- Full production verification on 495310f: 1044 unit passes / 95 skips; build passes;
-  849 browser passes / 183 skips.
-- Added authenticated lifecycle E2E: 2/2 pass on mobile and desktop; corrected
-  strict fixture typing and reran typecheck successfully.
-- Remaining visual inspection, load/CLS and applicable physical-device checks are
-  not yet certified.
+- Full `pnpm verify` at 599355c: formatting, lint, types and build pass;
+  1044 unit tests pass / 95 skip; 849 browser checks pass / 183 skip.
+- Four opt-in isolated PostgreSQL lifecycle tests pass: rotation/audit, revocation
+  with RSVP preservation, audit-failure rollback and concurrent reissue arbitration.
+- Repeated migration and seed runs preserve counts; all 17 public tables retain RLS.
+- Focused production preview suite: 16/16 pass, including axe AA on both dialog
+  states across themes/widths and default-theme load CLS=0 at three widths.
+- Authenticated lifecycle suite: 2/2 mobile/desktop pass; measured page-load CLS=0.
+- Authenticated matrix: both dialogs in four themes at 375/540/768/1024/1280 pass
+  keyboard opening, Tab wrapping, Escape/focus return, no overflow and 44px buttons.
+- All 48 screenshots inspected: preview and authenticated routes, four themes,
+  three required widths, both dialogs. No clipping or unreadable action was found.
 
-# Risks and rollout
-
-The owner-approved migration adds only the RLS-enabled audit table. It has been
-applied twice to this worktree's isolated database with identical counts. Seed
-repeatability and RLS on all 17 tables pass. No production application is authorized.
-Deploy the additive migration before consuming code; application rollback should
-leave retained audit history intact. Offline scanners can accept old passes until
-snapshot refresh under ADR0020. Physical-device and final UI review evidence remain outstanding.
+Opt-in database/auth tests are not silently counted as passing in the default
+suite; the explicit runs above provide their evidence. Physical phones, WhatsApp
+in-app browsers and physical safe areas remain unverified. No QR rendering or
+Open Graph assets changed. Guest Lighthouse release gates remain unchanged.
 
 # Review steps and screenshots
 
-In this worktree, run pnpm dev and open /dev/share. Select each theme, try Revoke
-invitation, cancel, then confirm and reissue. This preview changes synthetic state
-only. Production controls require an authenticated administrator and migrated database.
-See docs/reviews/TICKET-043/screenshots for confirmation captures.
+Use a synthetic household on the migrated isolated database. Sign in with an
+allowed administrator and TOTP, open `/admin/sharing`, cancel a revoke operation,
+then reissue. Check the old link fails and the replacement opens. Revoke and check
+that link fails too. Saved replies and actor/time audit records should remain.
 
-# UI checklist
+For a non-mutating UI preview, open `/dev/share` and try both dialogs in each theme.
+Full item-by-item evidence: [UI review](../blob/TICKET-043/docs/reviews/TICKET-043/ui-review.md).
+Screenshots: [all captures](../tree/TICKET-043/docs/reviews/TICKET-043/screenshots).
 
-Focused automated preview checks pass as above. Full UI completion is not claimed;
-remaining screenshot inspection, load/CLS and applicable device QA remain pending.
+![Mobile reissue](../raw/TICKET-043/docs/reviews/TICKET-043/screenshots/admin-ivory-gold-375-reissue.png)
 
-# Harness changes
+# Migration, rollout and rollback
 
-None. TICKET-215 carries approval-workflow improvements separately.
+The approved generated 0013 migration adds one RLS-enabled audit table, without
+changing existing data or policies. Exact-path authorization is recorded locally;
+isolated application, repeatability and lifecycle tests pass. Review details are
+in `docs/reviews/TICKET-043/migration-approval.md`.
 
-# Approved base integration
+Deploy the additive migration before the consuming application only after production
+approval. Application rollback should preserve the table and its audit history.
+The audit is not tamper-proof against a privileged SQL administrator. Offline
+scanners can accept old passes until refresh under ADR0020.
 
-Owner approved develop 5747c3d and its three unchanged protected migration
-artifacts on 2026-11-05. Merge is conflict-free and blobs match exactly. Integrated
-quick verification passes lint/types and 211 related tests (66 skipped). This does
-not replace the separate migration/database verification recorded below.
+# Remaining work
 
-# Audit migration review
-
-The dedicated migration has now been generated locally through Drizzle, inspected,
-and documented in `docs/reviews/TICKET-043/migration-approval.md`. It adds only the
-RLS-enabled audit table, leaving existing table snapshots and journal entries
-unchanged. The owner approved isolated testing and commit of all three generated outputs.
-Migration/repeat counts, seed repeatability, all-table RLS, and four lifecycle database
-tests now pass. The later authenticated browser tests used the owned local Auth, gateway and mail
-services as well as PostgreSQL. Realtime and physical devices are not certified.
-
-# Production UI evidence follow-up
-
-Regenerated all 24 confirmation captures against the verified production build,
-replacing earlier dev-server captures with a development error badge. All eight
-new desktop-width captures inspected. Added axe scans of reissue states across
-all themes/widths and /dev/share cold-load CLS checks at 375/768/1280. Focused
-suite: 16/16 pass, with exact CLS=0 in the three default-theme load cases.
-Final mobile/tablet capture inspection and authenticated page-load stability
-remain outstanding; physical-device results are not certified.
+Physical iOS/Android WhatsApp and safe-area checks, or an explicit preview exception
+retaining these release requirements, precede final UI approval. Required GitHub
+checks must pass before merge; this draft has not been merged. No harness, CI,
+policy, or dependency changes are included.
