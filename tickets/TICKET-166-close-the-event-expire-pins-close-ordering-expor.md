@@ -2,20 +2,20 @@
 id: TICKET-166
 title: "Close the event: expire PINs, close ordering, export memories"
 epic: launch
-status: todo
+status: in_progress
 priority: medium
 estimate: M
 labels: [backend, docs]
 module: admin
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-096, TICKET-080, TICKET-088]
 blocks: [TICKET-154, TICKET-167, TICKET-168]
-branch: ""
+branch: TICKET-166
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-05
+started: 2026-11-05
 completed: ""
 reason: ""
 resume_to: ""
@@ -64,3 +64,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-05 — todo → claimed — divine (codex)
+- 2026-11-05 — todo → in_progress — divine (codex)
