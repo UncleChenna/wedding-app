@@ -2,7 +2,7 @@
 id: TICKET-181
 title: Persist validated theme drafts and activate them atomically
 epic: design-system
-status: blocked
+status: in_progress
 priority: high
 estimate: M
 labels: [backend, security]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-11-05
 started: 2026-11-05
 completed: ""
-reason: "Migration approved, but owned DB unhealthy/connection timeout and VM capacity exhausted; waiting permission to stop inactive owned TICKET-048 with backup preserved. Browser gate failed; no DB publication evidence."
-resume_to: in_progress
+reason: ""
+resume_to: ""
 ---
 
 # TICKET-181: Persist validated theme drafts and activate them atomically
