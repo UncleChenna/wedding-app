@@ -160,3 +160,22 @@ No migration retry or project stop performed. Server logs report fallback event
 details/themes, so this run does not certify stored custom publication or artifacts.
 Stop-TICKET-048 permission remains pending. Database migration and five integration
 tests are still unrun. No acceptance criterion completed from fallback smoke tests.
+
+## Browser gate interrupted after confirmed failures — 2026-11-05
+
+Session67439 is TERMINAL exit130. Stopped only its verified-owned Playwright
+process group after14 confirmed browser failures while DB stayed unhealthy;
+this was an intentional interruption, not a timeout/restart. Final counts:
+493passed/14failed/5interrupted/5skipped/509notrun (8.3min). Invalid invitation/pass
+routes timed out at30s; two service-worker cases timed out around40s. Logs and
+Playwright failure artifacts remain local. Do not claim full verification passed.
+
+Correction to earlier interim commentary: tail-only progress inspection missed
+failures already in the full log. The complete log was searched and failures were
+reported before interruption. Subsequent updates must inspect failure markers as
+well as the latest progress lines. No test/timeout/hook changes made.
+
+Unit1046passes/101skips and production build remain valid evidence, but custom
+publication DB tests and full browser gate remain unverified. Await stop-TICKET-048
+capacity exception, recover owned DB, apply approved migration, run integration
+and then repeat the full gate. No other stack stopped; no production application.

@@ -44,7 +44,12 @@ applied SQL or journal entries. No dependency, CI or RLS-policy changes.
 
 ## Latest verification rerun
 
-With approval recorded, full-gate unit stage passes1046 tests/101 opt-in skips;
-format/lint/types and production build pass. Browser smoke stage is still running
-(session67439; see handoff). No final full-gate pass claimed. Database-unavailable
-fallbacks are observed, so custom activation and generated artifacts remain unverified.
+With approval recorded, unit stage passes1046 tests/101 opt-in skips; format/lint/types
+and production build pass. Browser stage FAILED and was intentionally interrupted
+after confirmed failures against the unhealthy local database:493passed,14failed,
+5interrupted,5skipped,509notrun. Invalid invitation/pass routes and two service-worker
+cases timed out. No assertions or timeouts changed. No full-gate pass claimed.
+
+Migration remains unapplied; custom publication/database/artifact evidence is missing.
+Capacity recovery permission is pending. Resume only with truthful isolated DB
+verification and a fresh complete gate. See handoff for logs and exact next steps.
