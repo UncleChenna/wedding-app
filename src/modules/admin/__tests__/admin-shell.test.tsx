@@ -25,6 +25,7 @@ it("names the event and offers every section plus sign-out in one labelled navig
     ["Control room", "/admin"],
     ["Sharing", "/admin/sharing"],
     ["Menu", "/admin/menu"],
+    ["Staff", "/admin/staff"],
     ["Settings", "/admin/settings"],
     ["Sign out", "/admin/sign-out"],
   ]);
