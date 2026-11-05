@@ -4,6 +4,8 @@ import postgres, { type Sql } from "postgres";
 import { expect, test } from "@playwright/test";
 import { assertDatabaseTarget } from "../scripts/database-target";
 import { adminTestEmail, signInAdmin } from "./support/admin-session";
+import { themes } from "../src/modules/theming/themes";
+import { applyTheme } from "./support/theme";
 
 test.describe("authenticated invitation lifecycle", () => {
   test.skip(
@@ -77,6 +79,52 @@ test.describe("authenticated invitation lifecycle", () => {
     ).toBe(0);
     const controls = page.getByRole("group", { name: `${tag}: invitation controls`, exact: true });
     await expect(controls).toBeVisible();
+    if (process.env.CAPTURE_ADMIN_LIFECYCLE_SCREENSHOTS === "1") {
+      for (const theme of themes) {
+        for (const width of [375, 540, 768, 1024, 1280]) {
+          await page.setViewportSize({ width, height: 900 });
+          await applyTheme(page, theme);
+          for (const operation of ["revoke", "reissue"] as const) {
+            const trigger = controls.getByRole("button", {
+              name: operation === "revoke" ? `Revoke invitation: ${tag}` : `Reissue link: ${tag}`,
+              exact: true,
+            });
+            await trigger.focus();
+            await page.keyboard.press("Enter");
+            const dialog = page.getByRole("dialog", {
+              name: operation === "revoke" ? "Revoke invitation?" : "Reissue invitation link?",
+              exact: true,
+            });
+            await expect(dialog).toBeVisible();
+            const close = dialog.getByRole("button", { name: "Close", exact: true });
+            const cancel = dialog.getByRole("button", { name: "Cancel", exact: true });
+            await close.focus();
+            await page.keyboard.press("Shift+Tab");
+            await expect(cancel).toBeFocused();
+            await page.keyboard.press("Tab");
+            await expect(close).toBeFocused();
+            expect(
+              await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
+            ).toBe(true);
+            const targets = await dialog.locator("button").evaluateAll((buttons) =>
+              buttons.every((button) => {
+                const bounds = button.getBoundingClientRect();
+                return bounds.width >= 44 && bounds.height >= 44;
+              }),
+            );
+            expect(targets).toBe(true);
+            if ([375, 768, 1280].includes(width)) {
+              await page.screenshot({
+                path: `docs/reviews/TICKET-043/screenshots/admin-${theme.id}-${width}-${operation}.png`,
+              });
+            }
+            await page.keyboard.press("Escape");
+            await expect(dialog).not.toBeVisible();
+            await expect(trigger).toBeFocused();
+          }
+        }
+      }
+    }
     const visitor = await browser.newContext({ baseURL });
     try {
       const original = await visitor.request.get(`/i/${originalToken}`);

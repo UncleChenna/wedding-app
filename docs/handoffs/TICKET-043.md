@@ -194,3 +194,23 @@ admin-route theme/width captures, intermediate widths, explicit Tab cycling,
 physical-device evidence or a scoped preview exception, and final full gate remain.
 No product source changed. Next: add those authenticated captures and keyboard
 checks, preserving existing assertions and synthetic-only fixtures.
+
+## Authenticated keyboard and screenshot matrix — 2026-11-05
+
+Extended the opt-in authenticated test with CAPTURE_ADMIN_LIFECYCLE_SCREENSHOTS=1.
+Four themes at 375/540/768/1024/1280 pass both dialogs: keyboard opening,
+Shift+Tab/Tab wrap between close and cancel, Escape dismissal, trigger focus
+return, no horizontal overflow, and all dialog buttons at least 44px. The same
+run then completes the real cancellation/reissue/revoke/audit journey. Result:
+1/1 passes in 19.1s. All fixtures and local mail remain synthetic.
+
+Captured 24 actual admin-route viewport screenshots with admin- filenames in
+docs/reviews/TICKET-043/screenshots. Visually inspected the six Ivory & Gold
+captures at all three widths: long synthetic household names wrap, all warning
+copy and both actions remain visible, and focus outlines are clear. The remaining
+18 admin captures need inspection; earlier preview captures remain fully reviewed.
+
+Started full pnpm verify with output in /tmp/TICKET-043-final-verify.log. Do not
+infer completion from this start record; obtain its terminal result. Next: finish
+admin capture inspection, update ui-review.md/PR body with final evidence, resolve
+physical-device release handling, then advance via t:pr when all gates permit.
