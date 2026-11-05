@@ -4,6 +4,9 @@ vi.mock("next/cache", () => ({ revalidatePath: mocks.revalidate }));
 vi.mock("../server/submit-rsvp", () => ({ submitRsvp: mocks.submit }));
 vi.mock("../server/save-rsvp", () => ({ saveRsvp: vi.fn() }));
 vi.mock("@/modules/shared/server/db/client", () => ({ db: {} }));
+vi.mock("@/modules/shared/server/request-rate-limit", () => ({
+  actionRateLimit: vi.fn().mockResolvedValue({ status: "allowed" }),
+}));
 import { respondToInvitation } from "../server/rsvp-actions";
 beforeEach(() => {
   vi.clearAllMocks();

@@ -4,6 +4,9 @@ import { allowDevPreview } from "@/modules/shared/lib/preview-access";
 import { NextResponse, type NextRequest } from "next/server";
 import { db } from "@/modules/shared/server/db/client";
 import { hasPublishedInvitation } from "@/modules/invitations/server/repository";
+import { requestRateLimit } from "@/modules/shared/server/request-rate-limit";
+import { requestBudgetResponse } from "@/modules/shared/server/request-budget-gate";
+import { requestRetryDocument } from "@/modules/shared/server/request-retry-document";
 
 import { authorizeAdminRequest } from "@/modules/admin/server/request-admin-access";
 import { authorizeStaffRequest, staffRequestRole } from "@/modules/shared/server/request-access";
@@ -23,6 +26,22 @@ export async function proxy(request: NextRequest) {
   const staffRole = staffRequestRole(path);
   if (staffRole) return authorizeStaffRequest(request, staffRole);
 
+  const privateLookup =
+    request.nextUrl.pathname.startsWith("/i/") || request.nextUrl.pathname.startsWith("/p/");
+  if (privateLookup && (request.method === "GET" || request.method === "HEAD")) {
+    const budget = await requestRateLimit(request.headers, "lookup");
+    if (budget.status !== "allowed") {
+      const response = requestBudgetResponse(budget);
+      if (/^\/(?:i|p)\/[^/]+\/?$/.test(request.nextUrl.pathname)) {
+        // A native body preserves 429/503; Next page rewrites reset them to 200.
+        // The form reloads the current URL without embedding its credential.
+        const headers = new Headers(response.headers);
+        headers.set("Content-Type", "text/html; charset=utf-8");
+        return new Response(requestRetryDocument(), { status: response.status, headers });
+      }
+      return response;
+    }
+  }
   // Signed pass credentials must never enter caches, referrers or search indexes.
   if (request.nextUrl.pathname.startsWith("/p/")) {
     const response = NextResponse.next();
@@ -52,7 +71,9 @@ export async function proxy(request: NextRequest) {
   }
   const token = request.nextUrl.pathname.split("/")[2];
   // Actions validate the submitted token themselves. Rewriting POST loses its action module.
-  const available = request.method === "POST" || (await hasPublishedInvitation(db, token));
+  const download = request.nextUrl.pathname.split("/").length > 3;
+  const available =
+    request.method === "POST" || download || (await hasPublishedInvitation(db, token));
   const response = available
     ? NextResponse.next()
     : NextResponse.rewrite(new URL("/invitation-unavailable", request.url), { status: 404 });
@@ -66,8 +87,8 @@ export async function proxy(request: NextRequest) {
 export const config = {
   matcher: [
     "/dev/:path*",
-    "/i/:token",
-    "/p/:pass",
+    "/i/:path*",
+    "/p/:path*",
     "/admin/:path*",
     "/checkin/:path*",
     "/kitchen/:path*",
