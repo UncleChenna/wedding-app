@@ -1957,9 +1957,10 @@
       "log": [
         "- 2026-11-05 — todo → claimed — divine (codex)",
         "- 2026-11-05 — todo → in_progress — divine (codex)",
-        "- 2026-11-05 — in_progress → blocked — divine (codex) — Awaiting exact-path approval for published_tokens migration, isolated testing and commit; full gate rejects unapproved journal, database/browser activation remain unverified."
+        "- 2026-11-05 — in_progress → blocked — divine (codex) — Awaiting exact-path approval for published_tokens migration, isolated testing and commit; full gate rejects unapproved journal, database/browser activation remain unverified.",
+        "- 2026-11-05 — blocked → in_progress — divine (codex)"
       ],
-      "status": "blocked",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-181",
@@ -1967,8 +1968,8 @@
       "started": "2026-11-05",
       "completed": "",
       "updated": "2026-11-05",
-      "reason": "Awaiting exact-path approval for published_tokens migration, isolated testing and commit; full gate rejects unapproved journal, database/browser activation remain unverified.",
-      "resume_to": "in_progress"
+      "reason": "",
+      "resume_to": ""
     },
     "WED-166": {
       "log": [
