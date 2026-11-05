@@ -1916,14 +1916,15 @@
     },
     "WED-064": {
       "log": [
-        "- 2026-11-05 — todo → claimed — unclechenna (claude)"
+        "- 2026-11-05 — todo → claimed — unclechenna (claude)",
+        "- 2026-11-05 — todo → in_progress — unclechenna (claude)"
       ],
-      "status": "todo",
+      "status": "in_progress",
       "owner": "unclechenna",
       "agent": "claude",
       "branch": "TICKET-064",
       "pr": "",
-      "started": "",
+      "started": "2026-11-05",
       "completed": "",
       "updated": "2026-11-05",
       "reason": "",
