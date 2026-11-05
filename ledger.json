@@ -1939,9 +1939,10 @@
     "WED-048": {
       "log": [
         "- 2026-11-05 — todo → claimed — divine (codex)",
-        "- 2026-11-05 — todo → in_progress — divine (codex)"
+        "- 2026-11-05 — todo → in_progress — divine (codex)",
+        "- 2026-11-05 — in_progress → blocked — divine (codex) — Awaiting exact-path approval for generated lost-link migration, isolated application/commit and proposed 10 requests/network/minute budget; SQL remains unapplied."
       ],
-      "status": "in_progress",
+      "status": "blocked",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-048",
@@ -1949,8 +1950,8 @@
       "started": "2026-11-05",
       "completed": "",
       "updated": "2026-11-05",
-      "reason": "",
-      "resume_to": ""
+      "reason": "Awaiting exact-path approval for generated lost-link migration, isolated application/commit and proposed 10 requests/network/minute budget; SQL remains unapplied.",
+      "resume_to": "in_progress"
     }
   }
 }
