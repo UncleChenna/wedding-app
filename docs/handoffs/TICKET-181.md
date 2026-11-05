@@ -179,3 +179,23 @@ Unit1046passes/101skips and production build remain valid evidence, but custom
 publication DB tests and full browser gate remain unverified. Await stop-TICKET-048
 capacity exception, recover owned DB, apply approved migration, run integration
 and then repeat the full gate. No other stack stopped; no production application.
+
+## Recovery recheck — 2026-11-05
+
+The approved migration remains committed and unapplied. A fresh owned-container
+inspection briefly reported healthy, but guarded `pnpm db:counts` still exited 1
+with CONNECT_TIMEOUT on 127.0.0.1:39461 (session55289, terminal). A later Docker
+listing again reported the database unhealthy. Health status alone is insufficient
+to retry migration; require a successful guarded connection/count check first.
+
+Live backlog has no in-progress ticket and suggests TICKET-175. The inspected
+managed worktree setup unconditionally starts Supabase and migrates; it has no
+skip-database option. No additional stack was started. Running completed stacks
+TICKET-106 and TICKET-096 were checked against the live ledger: both belong to
+unclechenna/claude, so neither was stopped. The other owned running stacks are
+blocked TICKET-043/048/181. TICKET-048 data-preserving stop authorization remains
+pending. No new database, browser, or acceptance result is claimed.
+
+Handoff editing lesson: two patch attempts used an unverified ending line and
+failed without changing files. Read the exact tail before constructing an append
+patch; the successful update used that verified context.
