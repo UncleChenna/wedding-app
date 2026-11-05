@@ -23,6 +23,7 @@ it("names the event and offers every section plus sign-out in one labelled navig
   const links = within(nav).getAllByRole("link");
   expect(links.map((link) => [link.textContent, link.getAttribute("href")])).toEqual([
     ["Control room", "/admin"],
+    ["Invitation requests", "/admin/link-requests"],
     ["Sharing", "/admin/sharing"],
     ["Menu", "/admin/menu"],
     ["Staff", "/admin/staff"],

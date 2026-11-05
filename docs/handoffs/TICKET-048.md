@@ -35,3 +35,33 @@ Run real persistence/RLS/repeatability tests and the public-submit/admin-queue
 journey. Complete full verification and all-theme UI review, including screenshots,
 guest Lighthouse and honest physical-device results. Acceptance criteria remain
 unchecked. TICKET-015 pause stays intact. See docs/plans/2026-11-05-TICKET-048.md.
+
+## Form, queue and migration proposal — 2026-11-05
+
+Implemented /lost-link using shared controls and a server action, plus the
+/admin/link-requests queue, pagination and existing ShareMenu. Added guest guide
+and admin navigation links. The private queue authorizes before all data access,
+loads matches only on the server and does not route a credential to an unverified
+submitted contact. Public submissions have no guest lookup path.
+
+Added the Drizzle request table definition and a proposed separate lost_link scope
+(10 requests/network/60 seconds). Generated but DID NOT APPLY or commit:
+drizzle/0013_lost-link-requests.sql, drizzle/meta/0013_snapshot.json and journal.
+Exact-path isolated testing/commit/budget authorization is pending through the user
+question. Concrete proposal: docs/reviews/TICKET-048/migration-approval.md.
+These local generated outputs must be preserved until authorization/reconciliation.
+PR99 owns a different unmerged0013; never overwrite an applied migration to resolve it.
+
+Verification: quick gate lint/types and143 related passes/67skips; production build
+passes; public form browser matrix12/12 passes (four themes x375/768/1280), checking
+AA axe, keyboard field/action order,44px targets, overflow and private no-store.
+Admin reader tests3/3 verify auth before data, unique matches and pagination.
+The first quick run correctly caught the new navigation entry missing from the
+exact navigation expectation; updated it while preserving every prior entry.
+
+Still unverified: actual request persistence and queue/re-share E2E (new SQL is
+unapplied), migration repeatability/RLS, rendered admin queue, success/error UI,
+screenshots/visual inspection, load stability, Lighthouse and physical devices.
+The feature is NOT usable end-to-end until the migration is approved/applied.
+Next: on approval record exact paths, run isolated migration tests; meanwhile
+continue independent UI evidence. Full verification remains required before review.
