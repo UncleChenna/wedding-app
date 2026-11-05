@@ -2,7 +2,7 @@
 id: TICKET-185
 title: Protect invitation and PIN endpoints before invitations launch
 epic: security
-status: in_progress
+status: in_review
 priority: urgent
 estimate: M
 labels: [security, backend, test]
@@ -14,7 +14,7 @@ blocks: [TICKET-048, TICKET-123, TICKET-176]
 branch: TICKET-185
 pr: https://github.com/UncleChenna/wedding-app/pull/89
 created: 2026-10-21
-updated: 2026-11-04
+updated: 2026-11-05
 started: 2026-11-04
 completed: ""
 reason: ""
@@ -78,3 +78,4 @@ Backlog audit coverage: Security, INV-2, ADM-4. See [PRD](../docs/prd.md) and [a
 - 2026-11-04 — in_review → blocked — divine (codex) — Local recovered verification passes, but CI general verify lacks the PostgreSQL service required by request budgets (12 browser 503 failures). Awaiting approval of the exact CI proposal; no tests will be weakened.
 - 2026-11-04 — blocked → in_review — divine (codex) — User approved the proposed CI repair; restore recorded prior state before implementing review changes.
 - 2026-11-04 — in_review → in_progress — divine (codex) — Implement the approved CI database repair.
+- 2026-11-05 — in_progress → in_review — divine (codex) — Approved CI repair passed all five jobs at c892e93; documentation is now published. Recheck final-head CI before merge.
