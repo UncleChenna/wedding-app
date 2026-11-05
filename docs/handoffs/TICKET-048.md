@@ -65,3 +65,21 @@ screenshots/visual inspection, load stability, Lighthouse and physical devices.
 The feature is NOT usable end-to-end until the migration is approved/applied.
 Next: on approval record exact paths, run isolated migration tests; meanwhile
 continue independent UI evidence. Full verification remains required before review.
+
+## Public form UI evidence — 2026-11-05
+
+Added six component tests for required labels/return navigation, disabled pending
+submission, invalid/retry/unavailable announcements and received-state removal of
+the resubmit button. These mock action state; they do not prove persistence.
+Added three production cold-load checks: measured CLS is zero at 375/768/1280.
+The complete focused browser suite passes 15/15 (8.0s). Log:
+/tmp/TICKET-048-ui-capture.log. All 12 form screenshots in this ticket's screenshots
+folder are visually inspected across four themes and three widths. Text, hints,
+focus and actions are readable, with no observed clipping or horizontal overflow.
+
+The first quick check found a forbidden inline import type in the component test;
+changed it to a type-only namespace import without changing assertions. Final quick
+result is recorded in /tmp/TICKET-048-ui-quick.log. Migration and budget approval
+remain pending; generated outputs remain local and unapplied. Next: complete guest
+performance evidence, then approved database integration and admin/state UI coverage.
+No acceptance criterion is marked complete from these isolated UI checks.

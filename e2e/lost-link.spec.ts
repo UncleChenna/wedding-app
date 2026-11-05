@@ -47,3 +47,26 @@ for (const theme of themes) {
     });
   }
 }
+
+for (const width of [375, 768, 1280]) {
+  test(`lost-link initial load @smoke CLS ${width}`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.addInitScript(() => {
+      let cls = 0;
+      new PerformanceObserver((entries) => {
+        for (const entry of entries.getEntries()) {
+          if ("hadRecentInput" in entry && !entry.hadRecentInput && "value" in entry) {
+            cls += Number(entry.value);
+            document.documentElement.dataset.lostLinkCls = String(cls);
+          }
+        }
+      }).observe({ type: "layout-shift", buffered: true });
+    });
+    await page.goto("/lost-link");
+    await page.evaluate(() => document.fonts.ready);
+    await page.waitForLoadState("networkidle");
+    expect(
+      await page.evaluate(() => Number(document.documentElement.dataset.lostLinkCls ?? "0")),
+    ).toBe(0);
+  });
+}

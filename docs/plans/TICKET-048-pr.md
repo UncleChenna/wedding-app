@@ -16,9 +16,13 @@ match only in the private admin queue; supplied contacts never receive a link
 automatically. The existing navigation test was extended for the new queue link.
 
 Quick gate: lint/types and 143 related passes / 67 skips. Production build passes.
-Public form browser matrix: 12/12 pass across four themes and three widths for AA,
+Public form browser suite: 15/15 pass, including zero measured load CLS at three widths.
+The matrix covers four themes and three widths for AA,
 keyboard order, 44px targets, overflow and no-store. Admin-reader unit tests cover
-permission checks before data, private matching and pagination.
+permission checks before data, private matching and pagination. All 12 initial-form
+screenshots are captured and visually reviewed in docs/reviews/TICKET-048/screenshots.
+Six component tests cover pending, failure/retry and received state announcements;
+these use mocked action state and do not certify successful database submission.
 
 The schema and budget proposal are reviewable in
 `docs/reviews/TICKET-048/migration-approval.md`. Generated SQL remains local,
