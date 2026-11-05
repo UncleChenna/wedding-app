@@ -5,7 +5,10 @@ ordering and an anonymous CSV/PDF memories pack. Closure must reject premature
 requests and unknown venue timezone, require human confirmation, and preserve
 admission evidence. This does not authorize production closure or deletion.
 
-Current changes: plan and handoff only. No implementation or feature test result.
+Current changes: pure closure eligibility/confirmation guard and allowlisted
+aggregate CSV serialization, plan and handoff. All22 tests, lint and types pass.
+Transactional revocation, admin action, aggregate queries, PDF and end-to-end
+rehearsal remain unfinished. Isolated database startup failed; diagnosis ongoing.
 Use existing06:00 venue-local next-day expiry and current revocation fields where
 possible. Base develop c9c9e66010ee773189477139d4f8b0d30cf481e1.
 
