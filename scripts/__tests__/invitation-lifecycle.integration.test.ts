@@ -78,7 +78,7 @@ describe.runIf(process.env.RUN_INVITATION_LIFECYCLE_DB_TESTS === "1")(
         expect(updated.token).not.toBe(invitation.token);
         expect(updated.token).toMatch(/^[A-Za-z0-9_-]{43}$/);
         expect(await findGuestInvitation(tx, invitation.token)).toBeNull();
-        expect(await findGuestInvitation(tx, updated.token)).toMatchObject({ attendance: true });
+        expect(await findGuestInvitation(tx, updated.token)).toMatchObject({ attendance: "yes" });
         const history = await tx
           .select()
           .from(schema.invitationLifecycleEvents)

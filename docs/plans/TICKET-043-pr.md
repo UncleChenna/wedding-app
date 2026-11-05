@@ -6,7 +6,7 @@ Ticket: TICKET-043
 
 Adds administrator controls to revoke or reissue an invitation with confirmation,
 while preserving the saved RSVP and explaining delayed offline propagation.
-**Draft: database migration and integration verification are outstanding.**
+**Draft: full integrated verification and authenticated browser coverage remain outstanding.**
 
 # Changes
 
@@ -23,7 +23,7 @@ while preserving the saved RSVP and explaining delayed offline propagation.
 
 Pure version-transition, stale-form, signature/version snapshot, freshness and
 safe-response tests pass. Action tests cover authorization and verified actor identity.
-All ticket acceptance criteria remain unchecked pending real database integration.
+Four real PostgreSQL lifecycle tests now pass; full authenticated browser acceptance remains outstanding.
 
 # Verification
 
@@ -32,17 +32,21 @@ All ticket acceptance criteria remain unchecked pending real database integratio
   keyboard confirmation/Escape/focus return, 44px targets, overflow and session denial.
 - 24 confirmation screenshots: docs/reviews/TICKET-043/screenshots.
 - Five additional service-boundary tests pass (input rejection, bounded collision retries, unrelated failures).
-- Four real database tests are written/typechecked but not run: base migration exited 1 first.
-- Full production verification, authenticated lifecycle E2E, transaction rollback and
-  concurrency, migration/RLS checks, Lighthouse and physical phones remain unverified.
+- Four real database tests now pass on the approved isolated PostgreSQL instance.
+- Migration repeat counts, seed repeatability and RLS on all 17 tables pass.
+- Latest quick gate passes lint/types; its four opt-in DB cases are skipped by default,
+  and were run explicitly with all four passing as recorded above.
+- Full production verification, authenticated lifecycle E2E, Lighthouse and physical
+  phones remain unverified.
 
 # Risks and rollout
 
-Do not merge/deploy yet: the service references a new audit table whose migration
-has not been generated. PR89 is merged. The owner-approved develop base 5747c3d is integrated, including its unchanged migration0012; the audit migration can now follow it.
-Isolated database startup recovered, but base migration exited 1 with only 119 MB VM memory available. The owned stack is stopped with backup preserved. No production database changes are authorized.
-Offline scanners can accept an old pass until their snapshot refreshes under ADR0020.
-Migration rollback/rollout instructions will be completed alongside generated SQL.
+The owner-approved migration adds only the RLS-enabled audit table. It has been
+applied twice to this worktree's isolated database with identical counts. Seed
+repeatability and RLS on all 17 tables pass. No production application is authorized.
+Deploy the additive migration before consuming code; application rollback should
+leave retained audit history intact. Offline scanners can accept old passes until
+snapshot refresh under ADR0020. Full browser/auth verification remains outstanding.
 
 # Review steps and screenshots
 
@@ -65,13 +69,13 @@ None. TICKET-215 carries approval-workflow improvements separately.
 Owner approved develop 5747c3d and its three unchanged protected migration
 artifacts on 2026-11-05. Merge is conflict-free and blobs match exactly. Integrated
 quick verification passes lint/types and 211 related tests (66 skipped). This does
-not certify database integration or the still-missing audit migration.
+not replace the separate migration/database verification recorded below.
 
 # Audit migration review
 
 The dedicated migration has now been generated locally through Drizzle, inspected,
 and documented in `docs/reviews/TICKET-043/migration-approval.md`. It adds only the
 RLS-enabled audit table, leaving existing table snapshots and journal entries
-unchanged. Generated outputs remain uncommitted pending distinct exact-path approval;
-the published draft therefore still lacks that migration. No database application
-or integration-test pass is claimed.
+unchanged. The owner approved isolated testing and commit of all three generated outputs.
+Migration/repeat counts, seed repeatability, all-table RLS, and four lifecycle database
+tests now pass. The PostgreSQL-only test setup does not certify Auth or Realtime.

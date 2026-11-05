@@ -86,3 +86,28 @@ for these new outputs and the changed journal is separate from the prior unchang
 base-file approval. Do not stage them using that old approval record. Existing
 standalone audit tests are ready, but capacity and actual migration verification
 remain outstanding. No production application is authorized.
+
+## Migration approved and database tests passed — 2026-11-05
+
+Owner approved all three 0013 outputs and authorization record; .harness/approved-writes.json
+now records that exact approval. Used Supabase CLI's supported --exclude option to
+start only PostgreSQL in this worktree's existing managed project, with normal
+health checks. It used substantially less VM memory than a full stack. Existing
+.env.local target checks passed; no secret values were displayed or rewritten.
+Auth, Realtime, gateway and mail services are NOT running and are not certified.
+
+Applied migrations twice with identical counts (14 applied migrations); RLS is
+enabled on all 17 public tables. All four lifecycle DB tests pass in 838ms. The
+first run passed three and exposed a test-only DTO mismatch: resolveInvitation
+returns attendance "yes", not boolean true. Corrected the expected value to that
+existing contract and reran all four. Seed repeat counts also match and RLS remains
+enabled. No reset or production data changes occurred.
+
+Logs: /tmp/TICKET-043-migrate-first.log, /tmp/TICKET-043-migrate-repeat.log,
+/tmp/TICKET-043-counts-first.json, /tmp/TICKET-043-counts-repeat.json,
+/tmp/TICKET-043-seed-first.log, /tmp/TICKET-043-seed-repeat.log,
+/tmp/TICKET-043-seed-counts-first.txt, /tmp/TICKET-043-seed-counts-repeat.txt.
+Seed resets the isolated synthetic fixture data, so future lifecycle tests must
+create their own fixtures as already implemented. Next: quick/full verification
+and real authenticated admin reissue browser coverage before review. Draft PR99
+remains incomplete. Stop only this owned project with backup preserved when finished.
