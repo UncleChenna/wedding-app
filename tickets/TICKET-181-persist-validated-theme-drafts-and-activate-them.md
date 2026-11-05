@@ -2,20 +2,20 @@
 id: TICKET-181
 title: Persist validated theme drafts and activate them atomically
 epic: design-system
-status: todo
+status: in_progress
 priority: high
 estimate: M
 labels: [backend, security]
 module: theming
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-012, TICKET-032, TICKET-170]
 blocks: [TICKET-098]
-branch: ""
+branch: TICKET-181
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-05
+started: 2026-11-05
 completed: ""
 reason: ""
 resume_to: ""
@@ -57,3 +57,5 @@ Backlog audit coverage: THM-2, THM-3, THM-6. See [PRD](../docs/prd.md) and [audi
 ## Activity log
 
 - 2026-10-21 — new → todo — divine
+- 2026-11-05 — todo → claimed — divine (codex)
+- 2026-11-05 — todo → in_progress — divine (codex)
