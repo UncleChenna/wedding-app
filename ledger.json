@@ -1863,18 +1863,19 @@
       "log": [
         "- 2026-11-04 — todo → claimed — divine (codex)",
         "- 2026-11-04 — todo → in_progress — divine (codex)",
-        "- 2026-11-04 — in_progress → blocked — divine (codex) — Audit migration must follow PR89 migration0012; isolated base migration exited 1 during severe Docker memory pressure. Real database lifecycle tests and full verification remain incomplete."
+        "- 2026-11-04 — in_progress → blocked — divine (codex) — Audit migration must follow PR89 migration0012; isolated base migration exited 1 during severe Docker memory pressure. Real database lifecycle tests and full verification remain incomplete.",
+        "- 2026-11-05 — blocked → in_progress — divine (codex) — Owner approved exact base update from develop 5747c3d and unchanged protected migration artifacts."
       ],
-      "status": "blocked",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-043",
       "pr": "",
       "started": "2026-11-04",
       "completed": "",
-      "updated": "2026-11-04",
-      "reason": "Audit migration must follow PR89 migration0012; isolated base migration exited 1 during severe Docker memory pressure. Real database lifecycle tests and full verification remain incomplete.",
-      "resume_to": "in_progress"
+      "updated": "2026-11-05",
+      "reason": "",
+      "resume_to": ""
     },
     "WED-101": {
       "log": [
