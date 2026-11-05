@@ -2,7 +2,7 @@
 id: TICKET-064
 title: Register and name scanner and board devices
 epic: checkin
-status: in_progress
+status: in_review
 priority: medium
 estimate: S
 labels: [backend, frontend]
@@ -12,7 +12,7 @@ agent: claude
 blocked_by: [TICKET-031, TICKET-088]
 blocks: [TICKET-061, TICKET-062]
 branch: TICKET-064
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/102
 created: 2026-10-21
 updated: 2026-11-05
 started: 2026-11-05
@@ -73,3 +73,4 @@ _Agents append dated notes here while working._
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-05 — todo → claimed — unclechenna (claude)
 - 2026-11-05 — todo → in_progress — unclechenna (claude)
+- 2026-11-05 — in_progress → in_review — unclechenna (claude)
