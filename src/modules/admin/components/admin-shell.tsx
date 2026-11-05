@@ -7,6 +7,7 @@ export const adminSections = [
   { href: appRoutes.admin.path, label: "Control room", exact: true },
   { href: appRoutes.adminSharing.path, label: appRoutes.adminSharing.label, exact: false },
   { href: appRoutes.adminMenu.path, label: appRoutes.adminMenu.label, exact: false },
+  { href: appRoutes.adminSettings.path, label: appRoutes.adminSettings.label, exact: false },
 ] as const;
 
 /**
@@ -38,7 +39,7 @@ export function AdminShell({
           <p className="type-label text-primary">Wedding control room</p>
           <p className="mt-2 font-display text-2xl leading-tight">{eventName}</p>
         </div>
-        <ul className="grid grid-cols-4 gap-1 md:mt-10 md:grid-cols-1 md:gap-2">
+        <ul className="grid grid-cols-5 gap-1 md:mt-10 md:grid-cols-1 md:gap-2">
           {adminSections.map((section) => (
             <li key={section.href}>
               <AdminNavLink
