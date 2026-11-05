@@ -6,7 +6,7 @@ Ticket: TICKET-043
 
 Adds administrator controls to revoke or reissue an invitation with confirmation,
 while preserving the saved RSVP and explaining delayed offline propagation.
-**Draft: full integrated verification and authenticated browser coverage remain outstanding.**
+**Draft: remaining UI review evidence is still outstanding.**
 
 # Changes
 
@@ -23,7 +23,7 @@ while preserving the saved RSVP and explaining delayed offline propagation.
 
 Pure version-transition, stale-form, signature/version snapshot, freshness and
 safe-response tests pass. Action tests cover authorization and verified actor identity.
-Four real PostgreSQL lifecycle tests now pass; full authenticated browser acceptance remains outstanding.
+Four real PostgreSQL lifecycle tests pass. Authenticated mobile and desktop browser journeys pass with real local email OTP and TOTP, cancellation, reissue, old-link rejection, revocation, saved reply preservation and actor/time audit verification.
 
 # Verification
 
@@ -36,8 +36,12 @@ Four real PostgreSQL lifecycle tests now pass; full authenticated browser accept
 - Migration repeat counts, seed repeatability and RLS on all 17 tables pass.
 - Latest quick gate passes lint/types; its four opt-in DB cases are skipped by default,
   and were run explicitly with all four passing as recorded above.
-- Full production verification, authenticated lifecycle E2E, Lighthouse and physical
-  phones remain unverified.
+- Full production verification on 495310f: 1044 unit passes / 95 skips; build passes;
+  849 browser passes / 183 skips.
+- Added authenticated lifecycle E2E: 2/2 pass on mobile and desktop; corrected
+  strict fixture typing and reran typecheck successfully.
+- Remaining visual inspection, load/CLS and applicable physical-device checks are
+  not yet certified.
 
 # Risks and rollout
 
@@ -46,7 +50,7 @@ applied twice to this worktree's isolated database with identical counts. Seed
 repeatability and RLS on all 17 tables pass. No production application is authorized.
 Deploy the additive migration before consuming code; application rollback should
 leave retained audit history intact. Offline scanners can accept old passes until
-snapshot refresh under ADR0020. Full browser/auth verification remains outstanding.
+snapshot refresh under ADR0020. Physical-device and final UI review evidence remain outstanding.
 
 # Review steps and screenshots
 
@@ -58,7 +62,7 @@ See docs/reviews/TICKET-043/screenshots for confirmation captures.
 # UI checklist
 
 Focused automated preview checks pass as above. Full UI completion is not claimed;
-production performance, device QA and authenticated database journeys remain pending.
+remaining screenshot inspection, load/CLS and applicable device QA remain pending.
 
 # Harness changes
 
@@ -78,4 +82,5 @@ and documented in `docs/reviews/TICKET-043/migration-approval.md`. It adds only 
 RLS-enabled audit table, leaving existing table snapshots and journal entries
 unchanged. The owner approved isolated testing and commit of all three generated outputs.
 Migration/repeat counts, seed repeatability, all-table RLS, and four lifecycle database
-tests now pass. The PostgreSQL-only test setup does not certify Auth or Realtime.
+tests now pass. The later authenticated browser tests used the owned local Auth, gateway and mail
+services as well as PostgreSQL. Realtime and physical devices are not certified.

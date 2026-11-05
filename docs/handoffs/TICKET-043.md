@@ -111,3 +111,34 @@ Seed resets the isolated synthetic fixture data, so future lifecycle tests must
 create their own fixtures as already implemented. Next: quick/full verification
 and real authenticated admin reissue browser coverage before review. Draft PR99
 remains incomplete. Stop only this owned project with backup preserved when finished.
+
+## Authenticated journey and full verification — 2026-11-05
+
+Approved migration outputs were committed and pushed in 495310f. Full pnpm verify
+at that source passed: 1044 unit tests (95 skipped), production build, and 849
+browser tests (183 skipped). Log: /tmp/TICKET-043-full-verify.log. Skips do not
+constitute verification of opt-in flows.
+
+Added e2e/admin-invitation-lifecycle.spec.ts with real local email OTP and TOTP
+administrator authentication. After fixing strict fixture narrowing, typecheck
+passes and both mobile and desktop tests pass (2/2, 5.7s). They verify cancellation
+leaves data unchanged, reissue invalidates the old link and preserves the reply,
+revocation invalidates the replacement link, and both audit events identify the
+actual authenticated actor with timestamps. Fixtures are synthetic; audit rows
+are retained and fixture invitations are deactivated afterward.
+
+For these tests, restarted only the owned project with preserved data and enabled
+PostgreSQL, Auth, gateway and local mail using the supported CLI exclusions.
+Realtime and other excluded services are not certified. No other stack was stopped;
+no production database application occurred. No secret values were printed.
+
+The new test is opt-in: RUN_ADMIN_LIFECYCLE_TESTS=1. Use fresh per-project local
+example.test emails through ADMIN_LIFECYCLE_TEST_PREFIX and ADMIN_EMAIL_ALLOWLIST;
+unset ADMIN_TEST_EMAIL and ADMIN_MENU_TEST_EMAIL overrides when using fresh names.
+Both projects must be allowlisted on the production test server. Run:
+pnpm exec playwright test e2e/admin-invitation-lifecycle.spec.ts --project=mobile --project=desktop --workers=1
+
+Next: finish the remaining UI review evidence (inspect every screenshot, load/CLS
+and applicable device checks), update the acceptance checklist, and run t:pr for
+final review verification. PR99 remains a draft; this evidence is not a claim of
+physical-device or offline-scanner completion. TICKET-065 retains the latter.
