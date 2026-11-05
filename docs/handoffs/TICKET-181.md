@@ -55,3 +55,26 @@ drizzle/meta/0013_snapshot.json, drizzle/meta/_journal.json. Review proposal:
 docs/reviews/TICKET-181/migration-approval.md. Static snapshot diff changes only
 public.themes. Next: approval and isolated DB evidence, admin actions/cache and
 published-reader integration. No acceptance criterion complete.
+
+## Runtime and admin action integration — 2026-11-05
+
+Added a single-query published-theme reader joining singleton selection with both
+published snapshots. It never reads editable tokens. Canonical validation checks
+identity and scheme; absent preset snapshots use preset tokens, invalid/custom
+missing snapshots trigger sanitized default fallback. Updated the cached runtime
+to use this reader and transactional publisher; immediate tag expiry occurs only
+after successful publication. Existing activation/cache assertions are retained;
+added a failure/no-invalidation assertion and custom-published-reader tests.
+
+Admin save/activate actions now check currentAdminAccess ready (AAL2) themselves.
+Seven action tests cover signed-out/denied/enroll/challenge, authorized writes and
+safe errors. Latest quick gate passes lint/types and21 tests/7 skips. Reader test
+first failed against the old preset-only implementation. Log:
+/tmp/TICKET-181-runtime-quick.log. These are mocked boundary tests, not real Auth
+or database verification. Existing PDF/PNG/offline consumers call the shared reader;
+actual post-activation artifacts and initial HTML still require end-to-end checks.
+
+Migration approval remains pending, so new SQL is unapplied and protected outputs
+uncommitted. Next: isolated database tests after approval; verify draft/live isolation,
+concurrent activation, rollback and read consistency; then production build/browser
+checks and full verify. No acceptance criteria marked complete.

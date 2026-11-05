@@ -8,8 +8,9 @@ Current changes: internal draft-save service with authorization-before-validatio
 canonical theme validation and safe persistence failures; dated plan and handoff.
 Seven behavioral tests and lint/types pass. The service has injected boundaries;
 internal draft/publication repositories now preserve separate published tokens and
-serialize activation. Real AAL2 action wiring, published reads and cache integration
-remain incomplete. A generated nullable-column migration awaits approval and is
+serialize activation. AAL2 admin actions, a single-query published reader and post-commit cache expiry
+are now wired. Boundary tests pass (21 related passes/7 opt-in skips plus lint/types);
+real database/Auth/browser activation remains unverified. A generated nullable-column migration awaits approval and is
 not applied or committed; see docs/reviews/TICKET-181/migration-approval.md.
 Quick gate passes lint/types and59 tests, with66 opt-in skips. No database atomicity
 or completed acceptance criteria are claimed. Existing dependencies are complete
