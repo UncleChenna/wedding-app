@@ -52,6 +52,8 @@ Backlog audit coverage: Security, INV-2, ADM-4. See [PRD](../docs/prd.md) and [a
 
 ## Notes / decisions
 
+- Approved CI repair verified in run41874756698 at c892e93: all five required jobs pass, including1008 unit and809 browser checks. Skipped tests and physical-device release requirements remain explicit.
+
 - 2026-11-04 — Owner approved migration commit/authorization and launch budgets (lookup 1,200/60s; PIN 30/600s). Full verification passes: 937 unit tests, 775 browser checks; 82 unit and 165 browser opt-in skips are not counted as passes. Five explicit database tests and six focused retry browser cases passed separately. Device release checks remain mandatory.
 
 - 2026-11-04 — Owner approved the native HTML retry page and existing local fonts; physical-phone checks remain mandatory release requirements in TICKET-201. Migration authorization, launch-budget approval and full verification remain pending.

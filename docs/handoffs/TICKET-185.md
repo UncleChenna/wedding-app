@@ -255,3 +255,18 @@ Local full verification evidence above remains applicable to unchanged applicati
 code; the repaired CI configuration needs a fresh passing run on its new head.
 Next: check formatting/quick gate, push, then inspect all required CI jobs.
 PR merge and production database application remain unauthorized.
+
+## CI repair verified
+
+CI run41874756698 completed successfully on 2026-11-04 at17:26:52Z for
+source head c892e933bd302146e2b460b4f4bc2935ac6c54b8. All five required jobs
+passed, including database preparation in the repaired verify job. Full CI
+verification reports 1008 unit passes /91 skips and809 browser passes /177 skips.
+CI tests the PR integration tree; these counts differ from the earlier local base.
+Skipped tests remain unverified. Migration/seed and mobile/desktop invitation
+journey jobs also passed. Log downloaded to /tmp/TICKET-185-approved-ci-verify.log.
+
+Return PR89 to review with the evidence recorded. The documentation/status push
+will receive its own CI run; recheck the resulting head before any merge.
+A separate explicit merge exception is still required under AGENTS.md. Physical
+device release requirements and production migration restrictions remain unchanged.
