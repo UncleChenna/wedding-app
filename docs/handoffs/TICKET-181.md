@@ -146,3 +146,17 @@ wedding-0b9a885bfc5f with backup preserved because collaboration rules restrict
 stopping unfinished projects. No stop has occurred; no other collaborator affected.
 Migration remains unapplied. Its approved generated files are now being published
 for review with this explicit unverified status; do not merge without DB evidence.
+
+## Approved full gate rerun — 2026-11-05
+
+At source4019d3f, full pnpm verify now passes ticket validation, format, lint, types,
+1046 unit tests (101 opt-in skips) and production build. Browser stage is LIVE in
+session67439, log /tmp/TICKET-181-approved-full.log:1026 scheduled cases,5 workers;
+last observed past case126 with passes and no reported failures yet. Poll this
+exact handle for terminal result; observation timeout is not failure. Do not restart.
+
+The owned DB remains unhealthy; latest Docker VM reading only27MB available.
+No migration retry or project stop performed. Server logs report fallback event
+details/themes, so this run does not certify stored custom publication or artifacts.
+Stop-TICKET-048 permission remains pending. Database migration and five integration
+tests are still unrun. No acceptance criterion completed from fallback smoke tests.

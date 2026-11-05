@@ -41,3 +41,10 @@ before deployment; no production application is authorized here. Application
 rollback retains the nullable column and snapshots. Pending migration0013 files in
 other PRs require sequential integration and reviewed regeneration, never overwriting
 applied SQL or journal entries. No dependency, CI or RLS-policy changes.
+
+## Latest verification rerun
+
+With approval recorded, full-gate unit stage passes1046 tests/101 opt-in skips;
+format/lint/types and production build pass. Browser smoke stage is still running
+(session67439; see handoff). No final full-gate pass claimed. Database-unavailable
+fallbacks are observed, so custom activation and generated artifacts remain unverified.
