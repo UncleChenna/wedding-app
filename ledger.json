@@ -1898,13 +1898,14 @@
         "- 2026-11-04 — todo → claimed — divine (codex)",
         "- 2026-11-04 — todo → released — divine (codex)",
         "- 2026-11-05 — todo → claimed — unclechenna (claude)",
-        "- 2026-11-05 — todo → in_progress — unclechenna (claude)"
+        "- 2026-11-05 — todo → in_progress — unclechenna (claude)",
+        "- 2026-11-05 — in_progress → in_review — unclechenna (claude)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "unclechenna",
       "agent": "claude",
       "branch": "TICKET-096",
-      "pr": "",
+      "pr": "https://github.com/UncleChenna/wedding-app/pull/101",
       "started": "2026-11-05",
       "completed": "",
       "updated": "2026-11-05",
