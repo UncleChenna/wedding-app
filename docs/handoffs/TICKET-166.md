@@ -42,3 +42,10 @@ live or run DB commands against the copied main URL. Sanitized db:status/contain
 health/port inspection is running in session48279; obtain its result before retry.
 No other stack stopped. Next: complete isolated setup, implement transactional
 closure/authenticated action and aggregate query/PDF, then database/browser rehearsal.
+
+Status inspection session48279 terminated: owned database container does not exist;
+reserved22401 has no listener. Docker responds, but several stacks report unhealthy
+services. This does not prove the startup failure cause. No stacks stopped and no
+DB mutation attempted. Next inspect supported reduced-service startup/owned setup
+logs before retrying; do not run migrations using copied main credentials.
+Foundations pushed in31381b3; PR105 remains draft.
