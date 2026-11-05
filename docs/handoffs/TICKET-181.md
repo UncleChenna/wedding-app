@@ -21,3 +21,20 @@ No acceptance criteria complete; no product/database verification claimed.
 
 Draft PR: https://github.com/UncleChenna/wedding-app/pull/104. Planning commit1a447be
 is pushed; no implementation or feature-test result yet.
+
+## Draft validation service — 2026-11-05
+
+Added internal saveValidatedThemeDraft with injected AAL2 authorization and a
+draft-only persistence boundary. Authorization precedes validation and I/O; the
+canonical loadTheme validator reports named schema/contrast/font failures. Failed
+authorization or persistence returns a safe result without database exception text.
+No public action or database repository is wired yet; this is not usable storage.
+
+Seven behavioral tests pass, plus lint/types through verify:quick. Initial red run
+failed on the missing module. First implementation run exposed a fixture that changed
+theme ID while retaining another theme's texture path; removed the optional texture
+from that synthetic fixture and kept canonical validation unchanged. Logs:
+/tmp/TICKET-181-drafts-red.log and /tmp/TICKET-181-drafts-quick.log.
+Next: implement separate draft/published storage and atomic activation, then AAL2
+action wiring, server reads and real database/browser verification. No new migration
+or completed acceptance criterion. PR104 remains draft.
