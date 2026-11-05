@@ -142,3 +142,24 @@ Next: finish the remaining UI review evidence (inspect every screenshot, load/CL
 and applicable device checks), update the acceptance checklist, and run t:pr for
 final review verification. PR99 remains a draft; this evidence is not a claim of
 physical-device or offline-scanner completion. TICKET-065 retains the latter.
+
+## Production UI evidence — 2026-11-05
+
+Inspected the earlier 375px and 768px revoke/reissue captures in every theme.
+The tablet captures showed a development error badge, so regenerated all 24
+captures against the existing verified production build (13/13 checks pass).
+Inspected all eight new 1280px captures: readable, restrained dialogs, visible
+cancel/confirm controls and no development error badge. The regenerated 375px
+and 768px captures still require final visual inspection; do not infer that review
+from the old files.
+
+Extended the focused suite to scan the reissue dialog with axe in every theme
+and width, in addition to the existing revoke scan. Added cold-load CLS checks
+for /dev/share at 375/768/1280. All 16 tests pass (14.7s), including exact CLS=0
+in those three default-theme load cases. This does not measure authenticated
+/admin/sharing cold-load CLS or certify physical devices. These are additive
+tests; no existing assertions were removed or relaxed.
+
+Next: inspect the regenerated mobile/tablet captures, complete a per-item UI
+review with applicability reasons, and check authenticated page-load stability.
+No new product implementation changed in this follow-up.

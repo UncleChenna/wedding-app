@@ -84,3 +84,13 @@ unchanged. The owner approved isolated testing and commit of all three generated
 Migration/repeat counts, seed repeatability, all-table RLS, and four lifecycle database
 tests now pass. The later authenticated browser tests used the owned local Auth, gateway and mail
 services as well as PostgreSQL. Realtime and physical devices are not certified.
+
+# Production UI evidence follow-up
+
+Regenerated all 24 confirmation captures against the verified production build,
+replacing earlier dev-server captures with a development error badge. All eight
+new desktop-width captures inspected. Added axe scans of reissue states across
+all themes/widths and /dev/share cold-load CLS checks at 375/768/1280. Focused
+suite: 16/16 pass, with exact CLS=0 in the three default-theme load cases.
+Final mobile/tablet capture inspection and authenticated page-load stability
+remain outstanding; physical-device results are not certified.

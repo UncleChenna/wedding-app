@@ -55,6 +55,14 @@ for (const theme of themes) {
       await page.getByRole("button", { name: "Reissue link: Alex Morgan" }).click();
       const reissue = page.getByRole("dialog", { name: "Reissue invitation link?" });
       await expect(reissue).toBeVisible();
+      expect(
+        (
+          await new AxeBuilder({ page })
+            .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
+
       if (process.env.CAPTURE_LIFECYCLE_SCREENSHOTS === "1")
         await page.screenshot({
           path: `docs/reviews/TICKET-043/screenshots/${theme.id}-${width}-reissue.png`,
@@ -75,3 +83,25 @@ test("revocation snapshot requires a gate session @smoke", async ({ request }) =
   expect(response.headers()["cache-control"]).toContain("no-store");
   expect(await response.text()).not.toContain("invitationId");
 });
+
+for (const width of [375, 768, 1280]) {
+  test(`sharing preview load has zero CLS at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.addInitScript(() => {
+      const state = window as unknown as { lifecycleCls: number };
+      state.lifecycleCls = 0;
+      new PerformanceObserver((list) => {
+        for (const entry of list.getEntries()) {
+          const shift = entry as PerformanceEntry & { value: number; hadRecentInput: boolean };
+          if (!shift.hadRecentInput) state.lifecycleCls += shift.value;
+        }
+      }).observe({ type: "layout-shift", buffered: true });
+    });
+    await page.goto("/dev/share");
+    await page.evaluate(() => document.fonts.ready);
+    await page.waitForLoadState("networkidle");
+    expect(
+      await page.evaluate(() => (window as unknown as { lifecycleCls: number }).lifecycleCls),
+    ).toBe(0);
+  });
+}
