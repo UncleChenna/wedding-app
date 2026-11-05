@@ -88,6 +88,8 @@ export const themes = pgTable("themes", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
   tokens: jsonb("tokens").notNull(),
+  /** Immutable to draft saves; replaced only by an explicit atomic publication. */
+  publishedTokens: jsonb("published_tokens"),
   isActive: boolean("is_active").notNull().default(false),
   createdAt: createdAt(),
   updatedAt: updatedAt(),

@@ -38,3 +38,20 @@ from that synthetic fixture and kept canonical validation unchanged. Logs:
 Next: implement separate draft/published storage and atomic activation, then AAL2
 action wiring, server reads and real database/browser verification. No new migration
 or completed acceptance criterion. PR104 remains draft.
+
+## Publication repository and generated proposal — 2026-11-05
+
+Added complete light/dark publication validation and internal repository methods.
+Draft writes preserve published tokens; publication uses a transaction-scoped
+advisory lock, locks selected draft rows, revalidates both schemes/identities,
+publishes snapshots and changes singleton selection in one transaction. Cache
+invalidation remains outside the transaction and is not wired yet. Four new
+validation tests passed after the expected missing-module red run. Quick gate:
+lint/types,59 passes/66 skips. No database atomicity claim from those tests.
+
+Generated additive published_tokens column only. Three outputs remain local,
+unapplied and uncommitted pending approval: drizzle/0013_theme-published-tokens.sql,
+drizzle/meta/0013_snapshot.json, drizzle/meta/_journal.json. Review proposal:
+docs/reviews/TICKET-181/migration-approval.md. Static snapshot diff changes only
+public.themes. Next: approval and isolated DB evidence, admin actions/cache and
+published-reader integration. No acceptance criterion complete.
