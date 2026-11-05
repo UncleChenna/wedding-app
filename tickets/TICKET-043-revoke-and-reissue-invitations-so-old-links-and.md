@@ -2,7 +2,7 @@
 id: TICKET-043
 title: Revoke and reissue invitations so old links and QRs stop working
 epic: invitations
-status: in_progress
+status: blocked
 priority: urgent
 estimate: M
 labels: [backend, security]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-11-05
 started: 2026-11-04
 completed: ""
-reason: ""
-resume_to: ""
+reason: "Audit migration0013 generated and reviewed; awaiting its distinct exact-path testing/commit authorization and isolated database capacity. Database and full integration verification remain incomplete."
+resume_to: in_progress
 ---
 
 # TICKET-043: Revoke and reissue invitations so old links and QRs stop working
@@ -72,3 +72,4 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-7) · [Sec
 - 2026-11-04 — Clarified stale-version wording to the already-approved ADR 0020 "Replaced pass" and preserved real offline-scanner testing in dependent TICKET-065; contract tests here do not certify that future scanner flow.
 - 2026-11-04 — in_progress → blocked — divine (codex) — Audit migration must follow PR89 migration0012; isolated base migration exited 1 during severe Docker memory pressure. Real database lifecycle tests and full verification remain incomplete.
 - 2026-11-05 — blocked → in_progress — divine (codex) — Owner approved exact base update from develop 5747c3d and unchanged protected migration artifacts.
+- 2026-11-05 — in_progress → blocked — divine (codex) — Audit migration0013 generated and reviewed; awaiting its distinct exact-path testing/commit authorization and isolated database capacity. Database and full integration verification remain incomplete.
