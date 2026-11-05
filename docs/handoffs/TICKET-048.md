@@ -94,3 +94,8 @@ The per-item UI review explicitly remains CHANGES REQUESTED for missing admin,
 submission-state, intermediate-width and physical-device evidence. Next: approved
 isolated migration, repeatability/RLS and real public-submit/admin-re-share journey.
 Migration and proposed budget approval are still pending; no new SQL was applied.
+
+The owned review server was stopped after measurement. Its output included
+“Theme selection unavailable; using default light and dark themes”; therefore
+these Lighthouse results cover the default fallback theme, not successful database
+theme selection. The four-theme screenshot suite applies themes explicitly.
