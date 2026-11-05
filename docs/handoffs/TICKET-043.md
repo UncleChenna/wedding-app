@@ -163,3 +163,19 @@ tests; no existing assertions were removed or relaxed.
 Next: inspect the regenerated mobile/tablet captures, complete a per-item UI
 review with applicability reasons, and check authenticated page-load stability.
 No new product implementation changed in this follow-up.
+
+## Remaining screenshot inspection — 2026-11-05
+
+Visually inspected all 16 refreshed production captures at 375px and 768px,
+covering revoke and reissue in ivory-gold, emerald-night, blush-sage and
+midnight-champagne. Together with the previously inspected eight 1280px captures,
+all 24 current preview captures have now been inspected. Dialog text, household
+identity, offline warning, confirmation and cancellation controls are readable;
+no clipped dialog text or development error badges were observed. Mobile action
+wrapping varies with font metrics but both actions remain visible. These are
+full-page captures of the shared controls on /dev/share, not authenticated-route
+screenshots or physical-device evidence.
+
+Next: measure authenticated /admin/sharing load stability and complete the
+per-item UI checklist with explicit applicability and unverified device results,
+then run the final t:pr verification gate. No product code changed in this review.
