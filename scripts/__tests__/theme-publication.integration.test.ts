@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres, { type Sql } from "postgres";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import type { Db } from "../../src/modules/shared/server/db/client";
 import { beforeAll, afterAll, describe, expect, it } from "vitest";
 import { assertDatabaseTarget } from "../database-target";
@@ -36,7 +36,7 @@ describe.runIf(process.env.RUN_THEME_PUBLICATION_DB_TESTS === "1")(
       process.loadEnvFile(".env.local");
       const url = process.env.DATABASE_URL ?? "";
       assertDatabaseTarget(url, { localOnly: true });
-      client = postgres(url, { max: 1, prepare: false });
+      client = postgres(url, { max: 3, prepare: false });
     });
     afterAll(async () => {
       if (client) await client.end();
@@ -121,5 +121,98 @@ describe.runIf(process.env.RUN_THEME_PUBLICATION_DB_TESTS === "1")(
         ).rejects.toThrow(/identity/);
         expect(await read()).toEqual(before);
       }));
+    it("rolls back published rows and flags if the final selection write fails", () =>
+      isolated(async (database) => {
+        const { persistThemeDraft, publishThemeDrafts } =
+          await import("../../src/modules/theming/server/theme-draft-repository");
+        const { loadPublishedThemeSelection } =
+          await import("../../src/modules/theming/server/theme-repository");
+        const initial = fixture();
+        await persistThemeDraft(initial.light, database);
+        await persistThemeDraft(initial.dark, database);
+        await publishThemeDrafts({ light: initial.light.id, dark: initial.dark.id }, database);
+        const proposed = fixture();
+        proposed.light.id = `test-fail-${randomUUID()}`;
+        await persistThemeDraft(proposed.light, database);
+        await persistThemeDraft(proposed.dark, database);
+        const readRows = () => database.select().from(schema.themes).orderBy(schema.themes.id);
+        const beforeRows = await readRows();
+        const beforeSelection = await loadPublishedThemeSelection(database);
+        // Synthetic failure only; this DDL and all fixture writes roll back together.
+        await database.execute(sql`alter table event_settings add constraint test_181_selection_failure
+          check (active_theme_id not like 'test-fail-%') not valid`);
+        await expect(
+          publishThemeDrafts({ light: proposed.light.id, dark: proposed.dark.id }, database),
+        ).rejects.toMatchObject({ cause: { code: "23514" } });
+        expect(await readRows()).toEqual(beforeRows);
+        expect(await loadPublishedThemeSelection(database)).toEqual(beforeSelection);
+      }));
+    it("serializes competing publications across separate database connections", async () => {
+      const { persistThemeDraft, publishThemeDrafts } =
+        await import("../../src/modules/theming/server/theme-draft-repository");
+      const { loadPublishedThemeSelection } =
+        await import("../../src/modules/theming/server/theme-repository");
+      const ready = Promise.withResolvers<void>();
+      const release = Promise.withResolvers<void>();
+      const secondPid = Promise.withResolvers<number>();
+      const first = isolated(async (database) => {
+        try {
+          const pair = fixture();
+          await persistThemeDraft(pair.light, database);
+          await persistThemeDraft(pair.dark, database);
+          await publishThemeDrafts({ light: pair.light.id, dark: pair.dark.id }, database);
+          ready.resolve();
+          await release.promise;
+        } catch (error) {
+          ready.reject(error);
+          throw error;
+        }
+      });
+      // Attach rejection observers immediately; failures are asserted again below.
+      void first.catch(() => {});
+      let second: Promise<void> | undefined;
+      try {
+        await ready.promise;
+        second = isolated(async (database) => {
+          try {
+            const rows = await database.execute<{ pid: number }>(
+              sql`select pg_backend_pid() as pid`,
+            );
+            const pid = rows[0]?.pid;
+            if (!pid) throw new Error("Missing second backend PID");
+            secondPid.resolve(pid);
+            const pair = fixture();
+            await persistThemeDraft(pair.light, database);
+            await persistThemeDraft(pair.dark, database);
+            await publishThemeDrafts({ light: pair.light.id, dark: pair.dark.id }, database);
+            const selected = await loadPublishedThemeSelection(database);
+            expect(selected).toMatchObject({ light: pair.light.id, dark: pair.dark.id });
+            const active = await database
+              .select({ id: schema.themes.id })
+              .from(schema.themes)
+              .where(eq(schema.themes.isActive, true));
+            expect(active.map((row) => row.id).sort()).toEqual(
+              [pair.light.id, pair.dark.id].sort(),
+            );
+          } catch (error) {
+            secondPid.reject(error);
+            throw error;
+          }
+        });
+        void second.catch(() => {});
+        const pid = await secondPid.promise;
+        await expect
+          .poll(async () => {
+            const locks = await client`select granted from pg_locks where pid = ${pid}
+            and locktype = 'advisory' and classid = 181 and objid = 1`;
+            return locks.some((lock) => lock.granted === false);
+          })
+          .toBe(true);
+      } finally {
+        release.resolve();
+        const results = await Promise.allSettled([first, ...(second ? [second] : [])]);
+        for (const result of results) if (result.status === "rejected") throw result.reason;
+      }
+    });
   },
 );

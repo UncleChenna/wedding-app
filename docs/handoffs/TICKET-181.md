@@ -104,3 +104,21 @@ authorization, not a passing gate or a reason to weaken protected-file checks.
 Build and browser stages did not execute. Session29691 is terminal; rerun the gate
 after approved migration authorization and database verification. New publication
 DB tests were skipped and remain unverified.
+
+## Post-write rollback, competing publishers and build — 2026-11-05
+
+Prepared two more isolated DB tests (five total, all SKIPPED). One adds a
+transaction-local check constraint so the final event-settings write fails after
+published rows/flags were written; it requires SQL23514 and exact restoration of
+rows and selection. DDL and fixtures are rolled back. The other uses distinct
+connections and observes the second backend waiting on advisory lock181/1 before
+releasing the first rollback-only transaction; the second must see its coherent
+pair and exactly two active rows, one per scheme. This tests serialization without
+committing fixture state. Neither test has executed; migration approval is pending.
+
+Production build independently PASSED (/tmp/TICKET-181-build.log). Latest quick
+gate passes lint/types with5 database skips (/tmp/TICKET-181-concurrency-quick.log).
+This does not supersede the failed full gate or prove database behavior.
+Next: exact-path migration approval/record, isolated migration twice/counts/RLS,
+RUN_THEME_PUBLICATION_DB_TESTS=1 tests, initial HTML/artifact integration, then full
+verification. No production migration and no protected-file bypass.

@@ -19,11 +19,13 @@ This draft is not deployable without that migration and remaining verification.
 ## Evidence and remaining work
 
 Focused boundary checks pass: draft validation7, publication validation4, and the
-runtime/action quick gate21 passes/7 skips, with lint/types passing. Three database
-fixture tests are prepared but have NOT run. The first full gate caught fixture
+runtime/action quick gate21 passes/7 skips, with lint/types passing. Five database
+fixture tests are prepared but have NOT run, including post-write rollback and
+two-connection publication serialization. The first full gate caught fixture
 transaction typing; that was fixed. The subsequent full gate FAILED: format/lint/types pass,1043 unit passes,99 skips
 and3 hook-test failures. The real hooks reject the unapproved migration journal
-before their fake verification command executes. Build/browser stages did not run.
+before their fake verification command executes. That gate did not reach build/browser stages. A separate production build now
+passes; browser activation remains unverified.
 No protection was bypassed; rerun after authorization.
 
 Required before review: approved isolated migration/repeat counts/RLS, real draft
