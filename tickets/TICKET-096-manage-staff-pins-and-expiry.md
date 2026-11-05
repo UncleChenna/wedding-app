@@ -2,7 +2,7 @@
 id: TICKET-096
 title: Manage staff, PINs and expiry
 epic: admin
-status: in_progress
+status: in_review
 priority: high
 estimate: M
 labels: [frontend, backend, security]
@@ -12,7 +12,7 @@ agent: claude
 blocked_by: [TICKET-031, TICKET-088, TICKET-034]
 blocks: [TICKET-086, TICKET-129, TICKET-134, TICKET-166]
 branch: TICKET-096
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/101
 created: 2026-10-21
 updated: 2026-11-05
 started: 2026-11-05
@@ -87,3 +87,4 @@ _Agents append dated notes here while working._
 - 2026-11-04 — todo → released — divine (codex)
 - 2026-11-05 — todo → claimed — unclechenna (claude)
 - 2026-11-05 — todo → in_progress — unclechenna (claude)
+- 2026-11-05 — in_progress → in_review — unclechenna (claude)
