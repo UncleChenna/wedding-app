@@ -78,3 +78,29 @@ Migration approval remains pending, so new SQL is unapplied and protected output
 uncommitted. Next: isolated database tests after approval; verify draft/live isolation,
 concurrent activation, rollback and read consistency; then production build/browser
 checks and full verify. No acceptance criteria marked complete.
+
+## Database fixture preparation and full gate — 2026-11-05
+
+Added three opt-in tests in scripts/**tests**/theme-publication.integration.test.ts
+for draft/published separation, invalid-font rejection preserving the selected
+pair, and inconsistent stored identity preserving published rows/active flags.
+All fixtures run in rolled-back Drizzle transactions on the guarded local target.
+These tests have NOT run: RUN_THEME_PUBLICATION_DB_TESTS remains unset pending
+migration approval. Concurrent independent connections and failure after writes
+still need additional tests; the present cases do not prove those properties.
+
+The first full verification stopped on fixture typing: Drizzle cannot wrap a raw
+postgres TransactionSql. Changed fixtures to native Drizzle transaction objects
+and replaced raw SQL access with typed queries. The second full gate passed format,
+lint and types and is running unit tests in session29691, log
+/tmp/TICKET-181-full-verify.log. Poll the live handle for completion; do not restart
+on timeout. No new migration applied and no end-to-end activation certified.
+
+Full gate terminal result: FAILED, exit1. Format/lint/types passed; unit tests
+1043passed/99skipped/3failed. All three failures are hooks.test.ts and
+pnpm-resolution.test.ts expecting their fake verifier to execute; the real hook
+first rejects unapproved drizzle/meta/_journal.json. This is the pending migration
+authorization, not a passing gate or a reason to weaken protected-file checks.
+Build and browser stages did not execute. Session29691 is terminal; rerun the gate
+after approved migration authorization and database verification. New publication
+DB tests were skipped and remain unverified.

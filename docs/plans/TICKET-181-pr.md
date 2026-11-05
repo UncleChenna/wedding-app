@@ -1,26 +1,40 @@
 # TICKET-181: validated theme drafts and atomic activation
 
-Draft planning work for server-side theme persistence. Current runtime resolves
-preset IDs only; the intended result supports validated custom drafts and atomic
-publication without leaking draft edits to live pages or generated artifacts.
+The existing runtime only resolved preset IDs. This change adds validated draft
+storage and explicit publication so draft edits cannot implicitly change live pages.
 
-Current changes: internal draft-save service with authorization-before-validation,
-canonical theme validation and safe persistence failures; dated plan and handoff.
-Seven behavioral tests and lint/types pass. The service has injected boundaries;
-internal draft/publication repositories now preserve separate published tokens and
-serialize activation. AAL2 admin actions, a single-query published reader and post-commit cache expiry
-are now wired. Boundary tests pass (21 related passes/7 opt-in skips plus lint/types);
-real database/Auth/browser activation remains unverified. A generated nullable-column migration awaits approval and is
-not applied or committed; see docs/reviews/TICKET-181/migration-approval.md.
-Quick gate passes lint/types and59 tests, with66 opt-in skips. No database atomicity
-or completed acceptance criteria are claimed. Existing dependencies are complete
-according to the shared ledger. Base develop c9c9e66010ee773189477139d4f8b0d30cf481e1.
+## Implementation
 
-Required evidence: AAL2 denial before I/O, named contrast/font validation failures,
-independent drafts, concurrent atomic activation, cache invalidation and selected
-variables in initial HTML/artifacts. Unit/database/browser tests, full verification
-and applicable UI checks remain outstanding. No production application authorized.
+- AAL2 admin save/activate action boundaries, with safe expected-error responses.
+- Canonical schema, curated-font, contrast, QR and semantic-status validation.
+- Separate editable tokens and published snapshots; publication revalidates both
+  schemes and identities and serializes updates in one database transaction.
+- One-query published selection read before rendering, preserving preset fallback.
+- Immediate active-theme cache expiry only after publication commits.
 
-Risks and rollback: preserve preset fallback and current light/dark pairing; never
-publish editable draft tokens implicitly. Storage/migration design is still under
-review. No deployment or rollback procedure is claimed ready at this stage.
+Generated migration adds one nullable published_tokens column. It is unapplied and
+uncommitted pending exact-path approval; proposal: docs/reviews/TICKET-181/migration-approval.md.
+This draft is not deployable without that migration and remaining verification.
+
+## Evidence and remaining work
+
+Focused boundary checks pass: draft validation7, publication validation4, and the
+runtime/action quick gate21 passes/7 skips, with lint/types passing. Three database
+fixture tests are prepared but have NOT run. The first full gate caught fixture
+transaction typing; that was fixed. The subsequent full gate FAILED: format/lint/types pass,1043 unit passes,99 skips
+and3 hook-test failures. The real hooks reject the unapproved migration journal
+before their fake verification command executes. Build/browser stages did not run.
+No protection was bypassed; rerun after authorization.
+
+Required before review: approved isolated migration/repeat counts/RLS, real draft
+isolation and concurrent activation, post-write rollback, initial HTML/artifact
+checks, full verification and applicable UI evidence. No criteria are marked done.
+
+## Risks and rollout
+
+Base develop c9c9e66010ee773189477139d4f8b0d30cf481e1. Preserve the current
+light/dark pair and safe preset fallback. Install the approved additive migration
+before deployment; no production application is authorized here. Application
+rollback retains the nullable column and snapshots. Pending migration0013 files in
+other PRs require sequential integration and reviewed regeneration, never overwriting
+applied SQL or journal entries. No dependency, CI or RLS-policy changes.
