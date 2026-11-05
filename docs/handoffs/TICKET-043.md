@@ -72,3 +72,17 @@ proceed after 0012. Next: generate/review the dedicated audit migration through
 Drizzle, obtain its distinct exact-path commit authorization, then verify against
 this worktree's isolated database when capacity permits. Full verification and
 actual authenticated lifecycle journeys remain required before review.
+
+## Audit migration generated for review — 2026-11-05
+
+Drizzle generated `drizzle/0013_invitation-lifecycle.sql`,
+`drizzle/meta/0013_snapshot.json` and the new journal entry. SQL adds only the
+lifecycle audit table, constraints, foreign key/index and RLS enabled with no
+policies. Static JSON comparison verifies all existing tables and journal entries
+are unchanged. These outputs remain uncommitted and have NOT been applied.
+
+Review: `docs/reviews/TICKET-043/migration-approval.md`. Exact-path authorization
+for these new outputs and the changed journal is separate from the prior unchanged
+base-file approval. Do not stage them using that old approval record. Existing
+standalone audit tests are ready, but capacity and actual migration verification
+remain outstanding. No production application is authorized.

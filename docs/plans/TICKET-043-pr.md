@@ -66,3 +66,12 @@ Owner approved develop 5747c3d and its three unchanged protected migration
 artifacts on 2026-11-05. Merge is conflict-free and blobs match exactly. Integrated
 quick verification passes lint/types and 211 related tests (66 skipped). This does
 not certify database integration or the still-missing audit migration.
+
+# Audit migration review
+
+The dedicated migration has now been generated locally through Drizzle, inspected,
+and documented in `docs/reviews/TICKET-043/migration-approval.md`. It adds only the
+RLS-enabled audit table, leaving existing table snapshots and journal entries
+unchanged. Generated outputs remain uncommitted pending distinct exact-path approval;
+the published draft therefore still lacks that migration. No database application
+or integration-test pass is claimed.
