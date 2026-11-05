@@ -1973,9 +1973,10 @@
     "WED-166": {
       "log": [
         "- 2026-11-05 — todo → claimed — divine (codex)",
-        "- 2026-11-05 — todo → in_progress — divine (codex)"
+        "- 2026-11-05 — todo → in_progress — divine (codex)",
+        "- 2026-11-05 — in_progress → blocked — divine (codex) — Isolated Supabase startup terminated with failure; no owned database container exists. Pure closure/export foundations pushed; database recovery and integration pending."
       ],
-      "status": "in_progress",
+      "status": "blocked",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-166",
@@ -1983,8 +1984,8 @@
       "started": "2026-11-05",
       "completed": "",
       "updated": "2026-11-05",
-      "reason": "",
-      "resume_to": ""
+      "reason": "Isolated Supabase startup terminated with failure; no owned database container exists. Pure closure/export foundations pushed; database recovery and integration pending.",
+      "resume_to": "in_progress"
     }
   }
 }
