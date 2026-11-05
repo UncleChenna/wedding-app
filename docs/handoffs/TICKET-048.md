@@ -1,7 +1,8 @@
 # TICKET-048 handoff
 
 2026-11-05. Owner divine/codex. Branch TICKET-048. Base develop
-c9c9e66010ee773189477139d4f8b0d30cf481e1. In progress, not complete.
+c9c9e66010ee773189477139d4f8b0d30cf481e1. In progress, not complete. Draft PR: https://github.com/UncleChenna/wedding-app/pull/103.
+Published implementation commit: e6994c6.
 
 ## Current work
 
