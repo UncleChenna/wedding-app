@@ -2,20 +2,20 @@
 id: TICKET-024
 title: Migrate admission counters and scan event tables
 epic: data-auth
-status: todo
+status: in_progress
 priority: urgent
 estimate: M
 labels: [db, backend]
 module: shared
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-023, TICKET-172]
 blocks: [TICKET-026, TICKET-027, TICKET-058, TICKET-061, TICKET-069, TICKET-173]
-branch: ""
+branch: TICKET-024
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-04
+started: 2026-11-04
 completed: ""
 reason: ""
 resume_to: ""
@@ -55,8 +55,12 @@ See: [Data model](../docs/prd.md#data-model) · [Gate check-in](../docs/prd.md#g
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-11-04 — Draft PR85 includes additive schema and proposed preservation/guard SQL. Four guard tests passed; latest run passed three cases including both populated preservation cases, with three connection timeouts. Quick verification passes lint, types and 45 tests (38 opt-in skips). Final migrations and concurrency verification remain outstanding; no acceptance criteria completed.
 
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-03 — todo → claimed — divine (codex)
+- 2026-11-04 — todo → in_progress — divine (codex)
+- 2026-11-04 — in_progress → blocked — divine (codex) — Isolated stack failed startup twice; migration generation must also wait for PR84's reserved 0011 migration to reach develop. Draft schema and tests are preserved for review.
+- 2026-11-04 — blocked → in_progress — divine (codex) — Isolated stack recovered after parking the verified owned TICKET-031 stack. Existing migrations apply; three storage tests now fail for the missing tables. Continue schema/guard work while awaiting PR84 migration integration.
