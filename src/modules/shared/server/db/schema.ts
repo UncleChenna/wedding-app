@@ -464,3 +464,33 @@ export const rsvpChanges = pgTable(
     check("rsvp_changes_actor_not_blank", sql`length(trim(${t.actor})) between 1 and 200`),
   ],
 ).enableRLS();
+
+/** Dedicated lifecycle history; capabilities and guest contact data are never recorded. */
+export const invitationLifecycleEvents = pgTable(
+  "invitation_lifecycle_events",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    invitationId: uuid("invitation_id")
+      .notNull()
+      .references(() => invitations.id, { onDelete: "restrict" }),
+    operation: text("operation").notNull(),
+    actorId: uuid("actor_id").notNull(),
+    beforeStatus: invitationStatus("before_status").notNull(),
+    afterStatus: invitationStatus("after_status").notNull(),
+    beforeVersion: integer("before_version").notNull(),
+    afterVersion: integer("after_version").notNull(),
+    occurredAt: timestamp("occurred_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("invitation_lifecycle_invitation_time_idx").on(t.invitationId, t.occurredAt),
+    check("invitation_lifecycle_operation", sql`${t.operation} in ('revoke', 'reissue')`),
+    check(
+      "invitation_lifecycle_versions_positive",
+      sql`${t.beforeVersion} > 0 and ${t.afterVersion} > 0`,
+    ),
+    check(
+      "invitation_lifecycle_transition",
+      sql`(${t.operation} = 'revoke' and ${t.afterStatus} = 'revoked' and ${t.afterVersion} = ${t.beforeVersion}) or (${t.operation} = 'reissue' and ${t.afterStatus} in ('sent', 'rsvp_yes', 'rsvp_no') and ${t.afterVersion}::bigint = ${t.beforeVersion}::bigint + 1)`,
+    ),
+  ],
+).enableRLS();
