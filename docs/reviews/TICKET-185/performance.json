@@ -1,0 +1,38 @@
+[
+  {
+    "run": 1,
+    "status": 429,
+    "version": "12.6.1",
+    "performance": 1,
+    "accessibility": 1,
+    "cls": 0,
+    "lcp": 1361.7396,
+    "warnings": [
+      "Lighthouse was unable to reliably load the page you requested. Make sure you are testing the correct URL and that the server is properly responding to all requests. (Status code: 429)"
+    ]
+  },
+  {
+    "run": 2,
+    "status": 429,
+    "version": "12.6.1",
+    "performance": 1,
+    "accessibility": 1,
+    "cls": 0,
+    "lcp": 1358.0038,
+    "warnings": [
+      "Lighthouse was unable to reliably load the page you requested. Make sure you are testing the correct URL and that the server is properly responding to all requests. (Status code: 429)"
+    ]
+  },
+  {
+    "run": 3,
+    "status": 429,
+    "version": "12.6.1",
+    "performance": 1,
+    "accessibility": 1,
+    "cls": 0,
+    "lcp": 1354.7369,
+    "warnings": [
+      "Lighthouse was unable to reliably load the page you requested. Make sure you are testing the correct URL and that the server is properly responding to all requests. (Status code: 429)"
+    ]
+  }
+]

@@ -25,6 +25,7 @@ it("names the event and offers every section plus sign-out in one labelled navig
     ["Control room", "/admin"],
     ["Sharing", "/admin/sharing"],
     ["Menu", "/admin/menu"],
+    ["Settings", "/admin/settings"],
     ["Sign out", "/admin/sign-out"],
   ]);
   expect(screen.getByRole("heading", { name: "Page content" })).toBeVisible();

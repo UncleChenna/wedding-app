@@ -39,7 +39,7 @@ All ticket acceptance criteria remain unchecked pending real database integratio
 # Risks and rollout
 
 Do not merge/deploy yet: the service references a new audit table whose migration
-has not been generated. PR89 owns migration0012; settle integration order first.
+has not been generated. PR89 is merged. The owner-approved develop base 5747c3d is integrated, including its unchanged migration0012; the audit migration can now follow it.
 Isolated database startup recovered, but base migration exited 1 with only 119 MB VM memory available. The owned stack is stopped with backup preserved. No production database changes are authorized.
 Offline scanners can accept an old pass until their snapshot refreshes under ADR0020.
 Migration rollback/rollout instructions will be completed alongside generated SQL.
@@ -59,3 +59,10 @@ production performance, device QA and authenticated database journeys remain pen
 # Harness changes
 
 None. TICKET-215 carries approval-workflow improvements separately.
+
+# Approved base integration
+
+Owner approved develop 5747c3d and its three unchanged protected migration
+artifacts on 2026-11-05. Merge is conflict-free and blobs match exactly. Integrated
+quick verification passes lint/types and 211 related tests (66 skipped). This does
+not certify database integration or the still-missing audit migration.

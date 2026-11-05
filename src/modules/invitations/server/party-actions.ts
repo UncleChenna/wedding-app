@@ -8,9 +8,12 @@ import { invitationHref } from "@/modules/shared/lib/routes";
 import { invitationTokenSchema } from "../lib/token";
 import type { PartyState } from "../lib/party";
 import { saveParty } from "./party";
+import { actionRateLimit } from "@/modules/shared/server/request-rate-limit";
 
 export async function updateParty(_previous: PartyState, form: FormData): Promise<PartyState> {
   try {
+    const budget = await actionRateLimit("lookup");
+    if (budget.status !== "allowed") return { status: "error", message: budget.message };
     const token = invitationTokenSchema.safeParse(form.get("token"));
     const raw = form.get("people");
     if (!token.success || typeof raw !== "string" || raw.length > 400_000) {

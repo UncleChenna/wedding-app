@@ -1,7 +1,7 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ActionBar, Button, Textarea } from "@/modules/shared/components/ui";
-import type { MenuItem } from "../lib/menu";
+import { menuCopy, type MenuItem } from "../lib/menu";
 import { cooldownMessage, ORDER_NOTE_MAX, orderCopy } from "../lib/order";
 import { splitByStation, type Station } from "../lib/stations";
 import { newRequestId, submitOrder, type SubmitDeps } from "../lib/submit-order";
@@ -22,10 +22,13 @@ export function OrderComposer({
   table,
   pollIntervalMs,
   deps,
+  initialOpen = true,
 }: {
   items: MenuItem[];
   table: number;
   pollIntervalMs?: number;
+  /** Whether guest ordering was open at render (ORD-7). */
+  initialOpen?: boolean;
   /** Test seam; the page uses the browser's fetch and real timers. */
   deps?: Partial<SubmitDeps>;
 }) {
@@ -44,9 +47,10 @@ export function OrderComposer({
       return kept;
     });
   }, []);
-  const { available, announcement, markSoldOut } = useMenuAvailability(items, {
+  const { available, open, announcement, markSoldOut, markClosed } = useMenuAvailability(items, {
     pollIntervalMs,
     onSoldOut: dropItems,
+    initialOpen,
   });
 
   useEffect(() => {
@@ -101,6 +105,8 @@ export function OrderComposer({
     requestId.current = null;
     const { reason, itemIds = [], retryAfterSeconds } = outcome.result;
     if (reason === "sold-out") markSoldOut(itemIds);
+    // Closed while the page still showed it open: switch to the closed view, keeping the choices.
+    if (reason === "closed") markClosed();
     setPhase({
       kind: "editing",
       notice:
@@ -154,6 +160,19 @@ export function OrderComposer({
             {orderCopy.another}
           </Button>
         </div>
+      </section>
+    );
+
+  if (!open)
+    return (
+      <section aria-labelledby="order-closed">
+        <p role="status" className="sr-only">
+          {announcement}
+        </p>
+        <h3 id="order-closed" className="font-display text-3xl leading-tight">
+          {menuCopy.closedHeading}
+        </h3>
+        <p className="mt-6 max-w-prose text-lg leading-relaxed">{menuCopy.closed}</p>
       </section>
     );
 

@@ -12,6 +12,7 @@ import {
   jsonb,
   pgEnum,
   pgTable,
+  primaryKey,
   text,
   timestamp,
   uniqueIndex,
@@ -34,6 +35,24 @@ const updatedAt = () =>
     .notNull()
     .defaultNow()
     .$onUpdate(() => new Date());
+
+/** Ephemeral keyed network counters; no credentials or raw addresses are stored. */
+export const requestBudgets = pgTable(
+  "request_budgets",
+  {
+    scope: text("scope").notNull(),
+    identity: text("identity").notNull(),
+    used: integer("used").notNull().default(0),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+  },
+  (t) => [
+    primaryKey({ columns: [t.scope, t.identity] }),
+    index("request_budgets_expiry_idx").on(t.expiresAt),
+    check("request_budgets_scope", sql`${t.scope} in ('lookup', 'pin')`),
+    check("request_budgets_identity", sql`${t.identity} ~ '^[0-9a-f]{64}$'`),
+    check("request_budgets_used", sql`${t.used} between 0 and 100000`),
+  ],
+).enableRLS();
 
 // ─── Enums ────────────────────────────────────────────────────────────────
 

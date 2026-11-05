@@ -9,6 +9,7 @@ import {
 } from "../lib/table-selection";
 import { resolveTableSelection } from "../server/table-selection";
 import { findTable } from "../server/table-repository";
+import { getEventSettings } from "@/modules/shared/server/settings";
 import { loadMenu } from "../server/menu";
 import { listMenuItems } from "../server/menu-repository";
 import { OrderMenu } from "./order-menu";
@@ -39,7 +40,11 @@ async function OrderSelection({ searchParams }: { searchParams: TableSearch }) {
             Change table
           </Link>
         </section>
-        <OrderMenu menu={await loadMenu(listMenuItems)} table={selected.table.number} />
+        <OrderMenu
+          menu={await loadMenu(listMenuItems)}
+          table={selected.table.number}
+          open={(await getEventSettings()).orderingOpen}
+        />
       </>
     );
   const value =

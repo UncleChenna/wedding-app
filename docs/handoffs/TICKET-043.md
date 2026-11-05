@@ -36,7 +36,7 @@ are marked complete yet. The shared ledger remains authoritative.
 
 ## Database follow-up — 2026-11-04
 
-Added four opt-in real PostgreSQL tests in scripts/**tests**/invitation-lifecycle.integration.test.ts:
+Added four opt-in real PostgreSQL tests in `scripts/__tests__/invitation-lifecycle.integration.test.ts`:
 old capability rejection/new lookup and audit contents; revocation preserving RSVP;
 audit insertion failure rolling back the invitation; and competing reissues producing
 one success and one audit event. Types pass. These tests have NOT executed: base
@@ -55,4 +55,20 @@ connection and constraint errors propagate without retries. The fixture concurre
 test retains its audit and deactivates only its synthetic invitation.
 
 Exact next database test after the approved migration is available:
-RUN_INVITATION_LIFECYCLE_DB_TESTS=1 pnpm exec vitest run scripts/**tests**/invitation-lifecycle.integration.test.ts
+RUN_INVITATION_LIFECYCLE_DB_TESTS=1 pnpm exec vitest run `scripts/__tests__/invitation-lifecycle.integration.test.ts`
+
+## Approved base update — 2026-11-05
+
+Owner approved integrating develop 5747c3d62927bd8c34d71c545bba3663d3674e07
+and recording exact-path authorization for unchanged 0012 request-budget SQL,
+its snapshot and journal. The merge is conflict-free; all three staged Git blobs
+match the approved develop commit exactly. Authorization is recorded in the ignored
+.harness/approved-writes.json. No new audit migration was generated or applied.
+
+Integrated verify:quick passes lint, types and 211 related tests, with 66 opt-in
+skips. Log: /tmp/TICKET-043-base-quick.log. Skips are not database verification.
+PR89 is merged and TICKET-185 is done in the ledger, so migration ordering can now
+proceed after 0012. Next: generate/review the dedicated audit migration through
+Drizzle, obtain its distinct exact-path commit authorization, then verify against
+this worktree's isolated database when capacity permits. Full verification and
+actual authenticated lifecycle journeys remain required before review.

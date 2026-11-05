@@ -51,6 +51,7 @@ export const orderRejections = [
   "mismatch",
   "cooldown",
   "too-many-open",
+  "closed",
 ] as const;
 export type OrderRejection = (typeof orderRejections)[number];
 
@@ -97,6 +98,7 @@ export const orderCopy = {
     cooldown: "Your table's last order went in a moment ago. Please send this one shortly.",
     "too-many-open":
       "Your table already has a few orders on the way. Once one arrives, you can order again.",
+    closed: "Ordering has paused for now. We'll open it again soon.",
   } satisfies Record<OrderRejection, string>,
 } as const;
 
