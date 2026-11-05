@@ -179,3 +179,18 @@ screenshots or physical-device evidence.
 Next: measure authenticated /admin/sharing load stability and complete the
 per-item UI checklist with explicit applicability and unverified device results,
 then run the final t:pr verification gate. No product code changed in this review.
+
+## Authenticated load stability — 2026-11-05
+
+Added a layout-shift observer before authenticated /admin/sharing navigation to
+e2e/admin-invitation-lifecycle.spec.ts. After font readiness and network settling,
+CLS is exactly zero in both mobile and desktop projects. Both complete lifecycle
+journeys still pass (2/2, 7.1s), including cancellation, old-link rejection,
+revocation, saved reply preservation and authenticated audit identity.
+
+Added docs/reviews/TICKET-043/ui-review.md with every canonical checklist item and
+explicit applicability/limits. Outcome remains verification incomplete: actual
+admin-route theme/width captures, intermediate widths, explicit Tab cycling,
+physical-device evidence or a scoped preview exception, and final full gate remain.
+No product source changed. Next: add those authenticated captures and keyboard
+checks, preserving existing assertions and synthetic-only fixtures.

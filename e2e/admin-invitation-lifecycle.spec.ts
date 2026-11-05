@@ -58,8 +58,23 @@ test.describe("authenticated invitation lifecycle", () => {
       process.env.ADMIN_LIFECYCLE_TEST_PREFIX ?? "lifecycle",
     );
     await signInAdmin(page, request, email);
+    await page.addInitScript(() => {
+      const state = window as unknown as { lifecycleCls: number };
+      state.lifecycleCls = 0;
+      new PerformanceObserver((list) => {
+        for (const entry of list.getEntries()) {
+          const shift = entry as PerformanceEntry & { value: number; hadRecentInput: boolean };
+          if (!shift.hadRecentInput) state.lifecycleCls += shift.value;
+        }
+      }).observe({ type: "layout-shift", buffered: true });
+    });
     await page.goto("/admin/sharing");
     await expect(page.getByRole("heading", { name: "Sharing", exact: true })).toBeVisible();
+    await page.evaluate(() => document.fonts.ready);
+    await page.waitForLoadState("networkidle");
+    expect(
+      await page.evaluate(() => (window as unknown as { lifecycleCls: number }).lifecycleCls),
+    ).toBe(0);
     const controls = page.getByRole("group", { name: `${tag}: invitation controls`, exact: true });
     await expect(controls).toBeVisible();
     const visitor = await browser.newContext({ baseURL });
