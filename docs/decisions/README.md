@@ -29,3 +29,5 @@ Accepted: [0019 — Native RSVP rendering and token-safe form requests](0019-nat
 Accepted: [0020 — Gate pass credential and offline trust](0020-gate-pass-credential.md) (TICKET-169; owner approved 2026-11-01).
 
 Proposed: [0021 — Gate pass signing keys and rotation](0021-gate-signing-keys.md) (TICKET-056).
+
+Proposed: [0023 — Neon branches for worktree databases](0023-neon-worktree-databases.md) (TICKET-213; would supersede 0010; owner decision and Neon account pending).
