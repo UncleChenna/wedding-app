@@ -102,6 +102,58 @@ test.describe("admin staff PINs", () => {
       await device.getByLabel("Your six-digit PIN").fill(pin);
       await device.getByLabel("Your six-digit PIN").press("Enter");
       await expect(device.getByText("You’re signed in.", { exact: true })).toBeVisible();
+      await expect(device.getByText("This device is kitchen device.")).toBeVisible();
+
+      // TICKET-064: the device keeps one id across reloads and a fresh sign-in.
+      const devicesFor = () =>
+        db<
+          { id: string; name: string }[]
+        >`select d.id, d.name from registered_devices d join staff s on s.id = d.registered_by_staff_id where s.name = ${name}`;
+      const [registered] = await devicesFor();
+      expect(registered?.id).toMatch(/^[0-9a-f]{64}$/);
+      await device.reload({ timeout: 15_000 });
+      await device.getByRole("button", { name: "Sign out" }).click({ timeout: 15_000 });
+      await expect(device).toHaveURL(/\/staff$/, { timeout: 15_000 });
+      await device.goto("/kitchen", { timeout: 15_000 });
+      await device.getByLabel("Your six-digit PIN").fill(pin);
+      await device.getByLabel("Your six-digit PIN").press("Enter");
+      await expect(device.getByText("You’re signed in.", { exact: true })).toBeVisible();
+      expect((await devicesFor()).map((row) => row.id)).toEqual([registered?.id]);
+
+      // Renaming shows on the device's next screen.
+      const deviceName = "Kitchen tablet " + randomInt(10, 99);
+      await page.reload({ timeout: 15_000 });
+      const devices = page.getByRole("region", { name: "Devices" });
+      const item = devices.getByRole("listitem").filter({ hasText: "First signed in by " + name });
+      await item.getByLabel("Device name").fill(deviceName, { timeout: 15_000 });
+      await item.getByRole("button", { name: "Rename: kitchen device" }).click();
+      await expect(item.getByRole("status")).toHaveText(
+        "Renamed. The device shows it on its next screen.",
+      );
+      await device.reload();
+      await expect(device.getByText(`This device is ${deviceName}.`)).toBeVisible();
+
+      for (const theme of themes)
+        for (const width of [375, 768, 1280]) {
+          const dir = "docs/reviews/TICKET-064/" + theme.id;
+          mkdirSync(dir, { recursive: true });
+          for (const [view, target] of [
+            [page, item],
+            [device, device.getByText(`This device is ${deviceName}.`)],
+          ] as const) {
+            await view.setViewportSize({ width, height: 900 });
+            await view.emulateMedia({ reducedMotion: "reduce" });
+            await applyTheme(view, theme);
+            if (width === 375) expect(await scanA11y(view)).toEqual([]);
+            expect(
+              await view.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
+            ).toBe(true);
+            await target.scrollIntoViewIfNeeded();
+            await view.screenshot({
+              path: `${dir}/${width}-${view === page ? "admin-devices" : "device-name"}.png`,
+            });
+          }
+        }
 
       await page.getByRole("button", { name: "Remove access: " + name }).click();
       await expect(page.getByText("Access removed").first()).toBeVisible();
