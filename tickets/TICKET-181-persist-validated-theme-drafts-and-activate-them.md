@@ -2,7 +2,7 @@
 id: TICKET-181
 title: Persist validated theme drafts and activate them atomically
 epic: design-system
-status: in_progress
+status: blocked
 priority: high
 estimate: M
 labels: [backend, security]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-11-05
 started: 2026-11-05
 completed: ""
-reason: ""
-resume_to: ""
+reason: "Awaiting exact-path approval for published_tokens migration, isolated testing and commit; full gate rejects unapproved journal, database/browser activation remain unverified."
+resume_to: in_progress
 ---
 
 # TICKET-181: Persist validated theme drafts and activate them atomically
@@ -59,3 +59,4 @@ Backlog audit coverage: THM-2, THM-3, THM-6. See [PRD](../docs/prd.md) and [audi
 - 2026-10-21 — new → todo — divine
 - 2026-11-05 — todo → claimed — divine (codex)
 - 2026-11-05 — todo → in_progress — divine (codex)
+- 2026-11-05 — in_progress → blocked — divine (codex) — Awaiting exact-path approval for published_tokens migration, isolated testing and commit; full gate rejects unapproved journal, database/browser activation remain unverified.
