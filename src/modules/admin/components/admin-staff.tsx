@@ -4,13 +4,19 @@ import { STAFF_ROLE_OPTIONS, staffCopy } from "../lib/staff";
 import { formatStaffExpiry } from "../lib/staff-time";
 import { requireAdminPageAccess } from "../server/current-admin-access";
 import { listStaff } from "../server/staff-repository";
+import { listDevices } from "../server/device-repository";
 import { AddStaffForm } from "./add-staff-form";
+import { AdminDevices } from "./admin-devices";
 import { StaffMemberActions } from "./staff-member-actions";
 
 /** ADM-4: staff PINs for the gate, kitchen and bar (TICKET-096). */
 export async function AdminStaff() {
   await requireAdminPageAccess();
-  const [members, settings] = await Promise.all([listStaff(db), getEventSettings()]);
+  const [members, settings, devices] = await Promise.all([
+    listStaff(db),
+    getEventSettings(),
+    listDevices(db),
+  ]);
   return (
     <main className="mx-auto w-full max-w-4xl px-6 py-12 text-lg leading-relaxed">
       <h1 className="font-display text-4xl leading-tight md:text-5xl">{staffCopy.heading}</h1>
@@ -58,6 +64,7 @@ export async function AdminStaff() {
           <AddStaffForm />
         </div>
       </section>
+      <AdminDevices devices={devices} />
     </main>
   );
 }

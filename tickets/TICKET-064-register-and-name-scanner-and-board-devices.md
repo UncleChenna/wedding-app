@@ -40,8 +40,8 @@ See: [Journey 2: check-in at the gate](../docs/prd.md#journey-2-check-in-at-the-
 
 ## Acceptance criteria
 
-- [ ] A device keeps its id across reloads and offline periods.
-- [ ] Renaming a device updates the name shown on new results.
+- [x] A device keeps its id across reloads and offline periods.
+- [x] Renaming a device updates the name shown on new results.
 
 ## Test plan
 
@@ -56,6 +56,17 @@ See: [Journey 2: check-in at the gate](../docs/prd.md#journey-2-check-in-at-the-
 ## Notes / decisions
 
 _Agents append dated notes here while working._
+
+- 2026-11-05 (unclechenna, claude):
+  - **Device id:** the signed 64-hex `staff_device` cookie, set on first PIN sign-in and kept for 90 days. It survives
+    reloads, sign-out and offline periods, because the device needs no network to keep it. `registered_devices` holds
+    one row per id.
+  - **Renaming:** `/admin/staff` has a Devices section to rename each device. Every staff screen reads the name fresh
+    ("This device is Kitchen tablet 1.").
+  - **Still to come:** the gate's "already used" result and the scan log are built in TICKET-061 and TICKET-062. They
+    read `registered_devices.name` by id.
+  - **Tests:** the id tests are in `e2e/admin-staff.spec.ts`, which checks the same id after a reload and a fresh
+    sign-in. `device.test.ts` covers name and id validation.
 
 ## Activity log
 
