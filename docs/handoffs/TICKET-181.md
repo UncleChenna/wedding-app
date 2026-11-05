@@ -199,3 +199,19 @@ pending. No new database, browser, or acceptance result is claimed.
 Handoff editing lesson: two patch attempts used an unverified ending line and
 failed without changing files. Read the exact tail before constructing an append
 patch; the successful update used that verified context.
+
+## Intermittent recovery and failed migration attempt — 2026-11-05
+
+Guarded counts succeeded with 13 applied migrations and zero rows in all listed
+public tables. Resumed through the CLI at e212e66; its push reported a ref race,
+but `git ls-remote` confirmed origin already equals that exact local commit.
+The approved `pnpm db:migrate` then exited 1 without a success report
+(session5429, terminal). The chained second migration/count comparison, RLS check
+and five publication tests did not execute. A subsequent guarded count succeeded
+and still showed 13 applied migrations with identical public row counts. There is
+no journal evidence of the new migration being applied. Do not certify migration
+success or rerun writes merely because a health/count check briefly succeeds.
+
+Database recovery remains intermittent; no stack was stopped. PR104 remains draft.
+Next: obtain the pending data-preserving stop authorization for owned TICKET-048,
+restore stable capacity, inspect migration state and rerun the approved sequence.
