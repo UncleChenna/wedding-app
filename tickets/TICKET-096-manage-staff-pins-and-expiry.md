@@ -2,20 +2,20 @@
 id: TICKET-096
 title: Manage staff, PINs and expiry
 epic: admin
-status: todo
+status: in_progress
 priority: high
 estimate: M
 labels: [frontend, backend, security]
 module: admin
-owner: ""
-agent: ""
+owner: unclechenna
+agent: claude
 blocked_by: [TICKET-031, TICKET-088, TICKET-034]
 blocks: [TICKET-086, TICKET-129, TICKET-134, TICKET-166]
-branch: ""
+branch: TICKET-096
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-05
+started: 2026-11-05
 completed: ""
 reason: ""
 resume_to: ""
@@ -60,3 +60,7 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-04 — todo → claimed — divine (codex)
+- 2026-11-04 — todo → released — divine (codex)
+- 2026-11-05 — todo → claimed — unclechenna (claude)
+- 2026-11-05 — todo → in_progress — unclechenna (claude)
