@@ -2020,9 +2020,10 @@
     "WED-175": {
       "log": [
         "- 2026-11-06 — todo → claimed — divine (codex)",
-        "- 2026-11-06 — todo → in_progress — divine (codex)"
+        "- 2026-11-06 — todo → in_progress — divine (codex)",
+        "- 2026-11-06 — in_progress → blocked — divine (codex) — Photo upload implemented; migration commit and exact-path authorization pending for 0013_invitation-photos SQL/snapshot/journal. Build, isolated DB and real authenticated upload tests pass; full gate blocked by protected-file hook tests."
       ],
-      "status": "in_progress",
+      "status": "blocked",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-175",
@@ -2030,8 +2031,8 @@
       "started": "2026-11-06",
       "completed": "",
       "updated": "2026-11-06",
-      "reason": "",
-      "resume_to": ""
+      "reason": "Photo upload implemented; migration commit and exact-path authorization pending for 0013_invitation-photos SQL/snapshot/journal. Build, isolated DB and real authenticated upload tests pass; full gate blocked by protected-file hook tests.",
+      "resume_to": "in_progress"
     }
   }
 }
