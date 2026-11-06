@@ -68,3 +68,9 @@ no physical check is represented as passed.
 Final gate update: source1d10459 passes full verification:1061unit/895browser tests,
 100/201opt-in skips, plus production build. The remaining review limitations above
 still apply; no physical-device or admin cold-load CLS result is inferred from this.
+
+Cold-load follow-up: authenticated queue measured exact CLS0 at375/768/1280 in
+fresh browser contexts, before any theme-preview manipulation. Font readiness and
+network settling are included. Desktop live journey and native no-JavaScript case
+pass2/2. This resolves the admin cold-load limitation; physical-device requirements
+remain unverified and retain release-blocking status.

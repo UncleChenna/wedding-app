@@ -30,6 +30,7 @@ test("lost-link validation retains input without JavaScript", async ({ browser, 
 test("lost-link submission reaches the private queue and existing Share menu", async ({
   page,
   request,
+  browser,
 }, info) => {
   test.skip(process.env.RUN_LOST_LINK_BROWSER_TESTS !== "1", "Requires isolated local Auth and DB");
   test.setTimeout(180_000);
@@ -114,6 +115,37 @@ test("lost-link submission reaches the private queue and existing Share menu", a
     expect(saved).toHaveLength(2);
 
     await signInAdmin(page, request, adminTestEmail(info.project.name, "lost-link"));
+    for (const width of [375, 768, 1280]) {
+      const coldContext = await browser.newContext({
+        storageState: await page.context().storageState(),
+        viewport: { width, height: 900 },
+      });
+      try {
+        const coldPage = await coldContext.newPage();
+        await coldPage.addInitScript(() => {
+          let cls = 0;
+          new PerformanceObserver((entries) => {
+            for (const entry of entries.getEntries()) {
+              if ("hadRecentInput" in entry && !entry.hadRecentInput && "value" in entry) {
+                cls += Number(entry.value);
+                document.documentElement.dataset.queueCls = String(cls);
+              }
+            }
+          }).observe({ type: "layout-shift", buffered: true });
+        });
+        await coldPage.goto(new URL("/admin/link-requests", page.url()).href);
+        await expect(
+          coldPage.getByRole("heading", { name: "Invitation requests", exact: true }),
+        ).toBeVisible();
+        await coldPage.evaluate(() => document.fonts.ready);
+        await coldPage.waitForLoadState("networkidle");
+        expect(
+          await coldPage.evaluate(() => Number(document.documentElement.dataset.queueCls ?? "0")),
+        ).toBe(0);
+      } finally {
+        await coldContext.close();
+      }
+    }
     await page.goto("/admin/link-requests");
     const matched = page.getByRole("listitem").filter({ hasText: contact });
     const unmatched = page.getByRole("listitem").filter({ hasText: missingContact });

@@ -1,71 +1,59 @@
-# Ticket
+# TICKET-048: Let guests request their link again
 
-TICKET-048 — Let guests request their link again.
+Guests who lose an invitation can submit their name and contact at `/lost-link`.
+The public response never reveals whether they match a guest. Authenticated admins
+see requests at `/admin/link-requests`, review possible matches, and re-share through
+the existing Share menu. Nothing is sent automatically.
 
-# Problem and intended result
+## Changes
 
-Guests currently need to contact the couple directly to recover a lost invitation.
-This ticket will add a neutral public request form and a private admin queue with
-the existing Share menu. It will not send messages automatically.
+- Validated, private request storage with RLS enabled and no browser policies.
+- Approved separate limit of 10 submissions per trusted network per minute;
+  existing lookup/PIN limits unchanged. Shared networks share this allowance.
+- AAL2-protected queue with conservative matching, pagination and ShareMenu reuse.
+- Validation/retry responses preserve bounded submitted fields, including without
+  JavaScript. Successful receipts do not echo fields or expose invitation links.
+- Admin keyboard regression covers all six navigation links.
 
-# Changes and verification
+## Acceptance evidence
 
-Public /lost-link form and server action, authenticated /admin/link-requests queue,
-pagination, ShareMenu reuse and navigation are now implemented in code. Requests
-match only in the private admin queue; supplied contacts never receive a link
-automatically. The existing navigation test was extended for the new queue link.
+All three functional criteria pass in real local browser journeys: matched and
+unmatched submissions receive identical receipts; requests appear in the private
+queue with the correct unique match; re-sharing copies the correct invitation URL
+through ShareMenu. Signed-out admin access redirects to sign-in; verification uses
+real local OTP and TOTP, with synthetic records cleaned up by exact identifiers.
 
-Quick gate: lint/types and 143 related passes / 67 skips. Production build passes.
-Public form browser suite: 15/15 pass, including zero measured load CLS at three widths.
-The matrix covers four themes and three widths for AA,
-keyboard order, 44px targets, overflow and no-store. Admin-reader unit tests cover
-permission checks before data, private matching and pagination. All 12 initial-form
-screenshots are captured and visually reviewed in docs/reviews/TICKET-048/screenshots.
-Six component tests cover pending, failure/retry and received state announcements;
-these use mocked action state and do not certify successful database submission.
+## Verification
 
-The schema and budget proposal are reviewable in
-`docs/reviews/TICKET-048/migration-approval.md`. The user approved the migration
-and separate 10 requests per network per minute limit on 2026-11-06. Generated SQL
-is committed and applied only to this isolated database. The real submit-to-admin
-journey now passes on mobile and desktop using local OTP/MFA. Lookup/PIN limits
-are unchanged. Migration numbering must be reconciled with pending PR99.
+- Full `pnpm verify`: 1,061 unit tests passed (100 opt-in skips), production build,
+  895 browser tests passed (201 opt-in skips), format/lint/types/ticket validation.
+- Separate isolated database suite: four passes covering persistence, constraints,
+  RLS, ten-request boundary, lookup/PIN independence and expiry reset.
+- Real mobile/desktop authenticated journeys pass. Final desktop follow-up: two
+  passes including native no-JavaScript validation and retained field values.
+- Cold admin queue CLS is exactly zero at 375/768/1280 in fresh browser contexts.
+- Initial, invalid, received and queue screenshots cover four themes at
+  375/768/1280; AA/overflow checks pass. Lower mobile slices show the share button
+  clear of fixed navigation; intermediate queue widths also pass.
+- Prior serial guest-page Lighthouse: performance/accessibility 100 in all three
+  runs, CLS zero. Default-theme fallback was logged; custom persisted theme
+  selection is outside this evidence.
+- Screenshots and checklist: `docs/reviews/TICKET-048/`. Full evidence and failed
+  intermediate attempts are retained in `docs/handoffs/TICKET-048.md`.
 
-Three serial production mobile Lighthouse runs of /lost-link score Performance100,
-Accessibility100 and CLS0 each. See docs/reviews/TICKET-048/performance.json and
-ui-review.md for evidence and remaining checklist items.
+Physical iOS/Android WhatsApp, keyboard and safe-area checks remain unverified.
+A preview exception retaining TICKET-201's release gates is requested, not assumed.
+The PR stays draft; no production-readiness or physical-device pass is claimed.
+Check current-head CI independently before review/merge.
 
-Migration repeatability passed with identical row counts and 14 journal entries;
-RLS passed on all17tables. Three real storage tests initially passed. A fourth
-test now covers10allowed/11threfused, lookup/PIN independence and expiry reset.
-Earlier expanded runs timed out; after the user-approved TICKET-181 stop (backup
-preserved), all4database tests pass. Final lint/types and production build pass.
-The browser journey proves identical public receipts, signed-out admin rejection,
-private matching and existing ShareMenu copying with keyboard focus return.
-Received/queue screenshots cover4themes x3widths, plus4mobile lower-page slices;
-AA and no-overflow checks pass. Lower share buttons remain visible and clickable.
-No test timeout or assertion was weakened.
+## Migration, rollout and rollback
 
-Full gate rerun is in progress. Its earlier run was interrupted after a stale
-navigation assertion and trace collisions from concurrent browser processes; the
-assertion now includes all6links, and subsequent browser runs are sequential.
-Remaining: passing full gate, remaining UI state/intermediate-width/load checks,
-physical-device/WhatsApp verification or an explicit preview exception.
-
-Latest review: clean full gate passed1056unit/895browser tests (100/201skips).
-Invalid-input coverage then exposed cleared fields after rejected submissions;
-the action now returns bounded submitted defaults only on failure.11focused tests,
-production build, real desktop journey and native no-JavaScript regression pass.
-Invalid-state screenshots/AA pass in4themes x3widths; intermediate queue widths
-390/430/600/1024 also pass. Final-source full verification passes1061unit tests
-(100opt-in skips), production build and895browser tests (201opt-in skips).
-Physical-device checks and admin cold-load CLS remain unverified; see UI review.
-
-# Rollout and risks
-
-Base develop c9c9e66010ee773189477139d4f8b0d30cf481e1. Do not deploy this
-draft without the approved migration. Production application is not authorized.
-Application rollback retains submitted requests; no destructive cleanup is proposed.
-Shared networks may hit the submission limit. All request contacts are private
-personal data and need the existing event-retention policy applied before release.
-No automatic sending, new service, dependency or CI change is included.
+Base: develop c9c9e66010ee773189477139d4f8b0d30cf481e1. The user approved generated
+0013_lost-link-requests.sql and its snapshot/journal for isolated testing and commit.
+Applied locally; repeat migration has identical counts (14 journal entries), and
+all 17 public tables retain RLS. No production application is authorized.
+PR99 and PR104 independently use migration number0013: integrate sequentially and
+reconcile with approved tooling; never overwrite an already applied migration.
+Application rollback can retain the additive request table. Submitted contacts are
+personal data covered by the 90-day post-event retention requirement; no destructive
+cleanup is included. No automatic message sending, new service or CI change.

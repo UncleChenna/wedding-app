@@ -221,3 +221,25 @@ while the requested physical-device preview exception is unanswered. No merge is
 authorized for this PR. TICKET-181 remains stopped with backup preserved; no other
 stack stopped. Next: confirm final-head CI, resolve remaining UI release disposition,
 then use the ticket CLI for review transition. No acceptance/device result fabricated.
+
+## Cold admin layout check — 2026-11-06
+
+Added initial-load CLS assertions to the opt-in live journey. Each375/768/1280
+viewport uses a fresh browser context with authenticated state transferred only
+in memory; observer starts before navigation and waits for fonts/network settling.
+All three measure0. Desktop live journey and no-JavaScript regression both pass
+(2tests,6.8s), log /tmp/TICKET-048-cold-admin.log. No application code changed since
+the passing full gate; this is additional regression evidence only. No other
+browser process was running. Physical-device preview exception remains unanswered.
+
+The documentation push superseded CI42201584499 (cancelled, not passed). New
+final-head run42202228672 was confirmed live for c52f788 before this test follow-up.
+Recheck the latest head/run after publication; do not treat a cancelled run as CI
+success. Avoid repeated PR edits during CI because edited events cancel prior runs.
+
+Final follow-up quick verification passes (lint and types; no changed source files
+require related unit tests), log /tmp/TICKET-048-last-quick.log. The live browser
+follow-up already passed separately. CLI status is being set to blocked solely for
+the pending physical-device preview exception; database capacity is no longer the
+blocker. PR103 remains draft. Next: obtain the requested disposition, resume via
+the CLI and complete review publication with current-head CI. No merge is authorized.

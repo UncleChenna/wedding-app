@@ -2,7 +2,7 @@
 id: TICKET-048
 title: Let guests request their link again
 epic: invitations
-status: in_progress
+status: blocked
 priority: urgent
 estimate: M
 labels: [frontend, backend]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-11-06
 started: 2026-11-05
 completed: ""
-reason: ""
-resume_to: ""
+reason: "Local implementation, migration and full verification pass. Await physical-device preview exception retaining TICKET-201 release gates; PR #103 remains draft."
+resume_to: in_progress
 ---
 
 # TICKET-048: Let guests request their link again
@@ -58,6 +58,8 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-5).
 
 ## Notes / decisions
 
+2026-11-06: Approved migration applied and repeated in the isolated database; four database tests pass after stopping TICKET-181 with its backup preserved. Full verification passes (1,061 unit and 895 browser tests), with separate live submission/admin re-sharing and no-JavaScript coverage. Cold admin layout shift is zero at all three widths. Draft PR: https://github.com/UncleChenna/wedding-app/pull/103. Physical-device checks remain unverified; awaiting the preview exception retaining TICKET-201's release gates. See the handoff for evidence and CI status.
+
 2026-11-05: Claimed and isolated on fresh develop c9c9e66. Draft PR103 publishes validation, conservative matching and neutral submission service foundations. All 21 focused tests and verify:quick pass. Persistence, form/admin UI, full integration and UI review remain incomplete; see docs/handoffs/TICKET-048.md.
 
 ## Activity log
@@ -68,3 +70,4 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-5).
 - 2026-11-05 — in_progress → blocked — divine (codex) — Awaiting exact-path approval for generated lost-link migration, isolated application/commit and proposed 10 requests/network/minute budget; SQL remains unapplied.
 - 2026-11-06 — blocked → in_progress — divine (codex)
 - 2026-11-06 — in_progress → blocked — divine (codex) — Migration and 10/network/minute budget approved; isolated migration repeatability and 3 storage tests passed. Expanded 4-test suite repeatedly times out. Await stable database capacity; full browser journey and gate remain unverified.
+- 2026-11-06 — in_progress → blocked — divine (codex) — Local implementation, migration and full verification pass. Await physical-device preview exception retaining TICKET-201 release gates; PR #103 remains draft.
