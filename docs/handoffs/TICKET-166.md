@@ -163,3 +163,20 @@ as incomplete in docs/reviews/TICKET-166/ui-review.md; no browser/device pass cl
 Docker capacity recheck:608MB available; no new stack or database action attempted.
 Next: restore isolated setup once capacity permits, execute database/ordering/session
 rehearsals, inspect all-theme UI/PDF output, run full verify and publish ready review.
+
+## CI confirmed; local capacity prerequisite — 2026-11-06
+
+Run 42234349167 completed successfully at exact head
+c7c454e95ecbb6bf724f037cc14db06268298dbd: all five required jobs pass,
+including full verification and the invitation journey. This does not certify
+the opt-in memories/closure database tests or closure-specific staff-session E2E;
+their flags are not enabled by the CI workflow. PR105 remains draft.
+
+Docker recheck found only537MB available. TICKET-181 remains stopped with its
+database/storage volumes preserved. No collaborator stack was stopped. Requested
+permission to stop idle owned TICKET-048 with backup preserved; its blocked status
+requires an exception to the completed-stack rule. That request is unanswered.
+Do not run database commands against the copied primary environment. Once capacity
+is available, run the managed db:start wrapper in this worktree to establish its
+own environment, then migrate and execute the guarded rehearsals. No production
+closure or data deletion is authorized by this verification work.
