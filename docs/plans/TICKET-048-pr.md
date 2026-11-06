@@ -25,21 +25,25 @@ Six component tests cover pending, failure/retry and received state announcement
 these use mocked action state and do not certify successful database submission.
 
 The schema and budget proposal are reviewable in
-`docs/reviews/TICKET-048/migration-approval.md`. Generated SQL remains local,
-unapplied and uncommitted pending exact-path approval. Therefore persistence and
-the full submit-to-admin journey are **not verified or operational yet**. The
-proposed separate limit is 10 requests per network per minute; lookup/PIN limits
+`docs/reviews/TICKET-048/migration-approval.md`. The user approved the migration
+and separate 10 requests per network per minute limit on 2026-11-06. Generated SQL
+is committed and applied only to this isolated database. The full submit-to-admin
+journey is **not verified yet**. Lookup/PIN limits
 are unchanged. Migration numbering must be reconciled with pending PR99.
 
 Three serial production mobile Lighthouse runs of /lost-link score Performance100,
 Accessibility100 and CLS0 each. See docs/reviews/TICKET-048/performance.json and
 ui-review.md for evidence and remaining checklist items.
 
-Three opt-in database tests are prepared for persistence, constraints and RLS.
-They have not run (all three skipped); lint and types pass. They do not replace
-the required real budget and authenticated browser checks.
+Migration repeatability passed with identical row counts and 14 journal entries;
+RLS passed on all17tables. Three real storage tests initially passed. A fourth
+test now covers10allowed/11threfused, lookup/PIN independence and expiry reset.
+Both expanded runs timed out in all4tests and cleanup, including previously passing
+cases. Final lint/types pass; the new budget test and authenticated browser checks
+remain unverified. No test timeout or assertion was weakened. Capacity recovery is
+pending permission to stop inactive owned TICKET-181 with its backup preserved.
 
-Remaining: approved isolated migration, database/browser integration, full verify,
+Remaining: stable database verification, browser integration, full verify,
 UI evidence including admin/success/error states and device checks.
 
 # Rollout and risks
