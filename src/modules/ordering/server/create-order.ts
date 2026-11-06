@@ -2,7 +2,9 @@ import "server-only";
 import { eq, inArray, sql } from "drizzle-orm";
 import type { Db } from "@/modules/shared/server/db/client";
 import { getEventSettings } from "@/modules/shared/server/settings";
+import { staffEventExpiry } from "@/modules/shared/lib/staff-expiry";
 import {
+  eventSettings,
   menuItems,
   orderItems,
   orders,
@@ -40,7 +42,20 @@ export async function createOrder(
 
     // ORD-7: guests can only order while the couple has ordering open. A retry of an order made
     // before it closed is answered above, so closing never turns a sent order into a refusal.
+    // Event closure takes the matching update lock. Accepted submissions finish before
+    // closure returns; later submissions read the closed state, not an earlier snapshot.
+    await tx
+      .select({ id: eventSettings.id })
+      .from(eventSettings)
+      .where(eq(eventSettings.id, 1))
+      .for("share");
     const settings = await getEventSettings(tx);
+    // A staff request authorized before cutoff may have waited behind closure's lock.
+    // Recheck expiry here so its pause-ordering exception cannot reopen the closed event.
+    if (options.staffEntered) {
+      const expiresAt = staffEventExpiry(settings.eventDate, settings.timeZone);
+      if (!expiresAt || expiresAt <= new Date()) return { status: "rejected", reason: "closed" };
+    }
     if (!settings.orderingOpen && !options.staffEntered)
       return { status: "rejected", reason: "closed" };
 
