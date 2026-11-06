@@ -20,13 +20,15 @@ keyboard timeout. No assertion, timeout, retry, hook or worker setting changed.
 
 ## Conditional skips
 
-The 99 unit skips are 19 opt-in database suites: invitation schema/repository/pass,
+The 99 unit skips comprise 18 opt-in database suites and one PDF visual-review
+case. The database suites cover: invitation schema/repository/pass,
 RSVP persistence and cutoff/history, party details, message persistence, event
 settings, ordering constraints/migration/submission, staff identity/devices/PIN
 attempts/admin/migration, rate budgets and the new three-case migration preview.
 These require explicit flags and disposable local fixtures to avoid modifying an
 unselected database. Only the new three cases were enabled in this checkpoint.
 The ordinary full unit count must not be presented as database verification.
+The skipped PDF visual-review case also leaves its rendered review unverified.
 
 Browser opt-ins include RUN_RSVP_BROWSER_TESTS, RUN_RSVP_REVIEW,
 RUN_INVITATION_DETAILS_TESTS, RUN_PARTY_BROWSER_TESTS, pass/offline/signing modes,
@@ -59,3 +61,15 @@ Ignored artifacts/TICKET-216 contains the build, quick, full-unit, baseline
 control JSON/logs and original trace; see the handoff for exact filenames.
 Protected source authorization is still pending. Hosted applied history is
 unknown; the destructive legacy bridge remains separately execution-blocked.
+
+## Pushed preparation CI evidence
+
+Commit dca3f197f7c4fc0e22472f6818e853f8fe4edb7a passed every required job in
+https://github.com/UncleChenna/wedding-app/actions/runs/42270756098 : ticket
+validation, PR text, migration/seed/schema drift, mobile/desktop invitation
+journey and full pnpm verify. Verification reported 1,034 unit passes/99 skips
+and 837 browser passes/189 skips (two CI workers, 13.9 minutes for browser tests),
+with no failed or flaky summary. Optional review was skipped by its opt-in job
+condition; no provider configuration or paid review was enabled. This commit
+still contains no working PR92 source integration. Later documentation-only
+checkpoints must report their own CI status separately.

@@ -110,3 +110,24 @@ Active drizzle source remains unchanged. Hook false-positive follow-up for its
 owner: quoted documentation containing Git command words must not be classified
 as an executed shell mutation; preserve main/develop write rejection. No hook
 changed. Use worktree-scoped commands for actual Git actions.
+
+## 6 November 18:48 UTC checkpoint correction
+
+Preparation dca3f197f7c4fc0e22472f6818e853f8fe4edb7a passed all five required
+CI jobs in run42270756098 (full verify completed18:43:56Z). Unit 1,034 pass/99
+skip; browser837 pass/189 skip using two workers; no failed/flaky summary.
+Optional review skipped. Corrected skip wording:18 database files plus one PDF
+visual-review case, not19 database files. Original brief word-sequence comparison
+shows all3,028 original words preserved in order; only37 introductory words added.
+No separate UI amendment was found in either earlier supplied attachment.
+
+Additional read-only review notes in ignored
+artifacts/TICKET-216/adjacent-conflict-findings.md flag the seed's station-order/
+registered-device/member-response union and global-window versus household
+reopening mismatch. Test page visibility and both writers after integration.
+
+Human record still absent. Current ignored source-only proposal was refreshed
+for review at18:46Z; expiry2026-11-06T20:46:02Z (14:46:02 Regina), same13 exact
+paths and exclusions. This updates only a proposal, never a human record.
+Use its actual current contents and future expiry when reviewing. The protected
+merge remains pending; source approval does not permit hosted/destructive use.
