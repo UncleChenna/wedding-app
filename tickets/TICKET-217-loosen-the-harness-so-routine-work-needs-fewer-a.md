@@ -60,12 +60,12 @@ See: [Collaboration](../docs/collaboration.md) · [Tickets](../docs/tickets.md).
 
 ## Acceptance criteria
 
-- [ ] New generated migration files pass the hooks; editing an already-committed one is still refused (hook tests).
-- [ ] Destructive migration SQL is detected (unit test).
-- [ ] The stop hook no longer fails on files awaiting approval (hook test).
-- [ ] `2>/dev/null`, heredocs and scratchpad writes are allowed; `.env` and lockfile writes are still refused (hook tests).
-- [ ] `t:pr` runs `verify:quick` by default and the full verify with `--full`.
-- [ ] AGENTS.md, collaboration, tickets and UI-checklist docs and the ticket-workflow skill describe the new rules.
+- [x] New generated migration files pass the hooks; editing an already-committed one is still refused (hook tests).
+- [x] Destructive migration SQL is detected (unit test).
+- [x] The stop hook no longer fails on files awaiting approval (hook test).
+- [x] `2>/dev/null`, heredocs and scratchpad writes are allowed; `.env` and lockfile writes are still refused (hook tests).
+- [x] `t:pr` runs `verify:quick` by default and the full verify with `--full`.
+- [x] AGENTS.md, collaboration, tickets and UI-checklist docs and the ticket-workflow skill describe the new rules.
 
 ## Test plan
 
@@ -82,6 +82,13 @@ See: [Collaboration](../docs/collaboration.md) · [Tickets](../docs/tickets.md).
 ## Notes / decisions
 
 _Agents append dated notes here while working._
+
+- 2026-11-06 (unclechenna, claude): the owner approved the change.
+  - **Migrations:** compared against the merge-base with `origin/develop`, so a migration generated and regenerated on
+    a branch stays free until it merges.
+  - **Destructive SQL:** dropping an index or constraint isn't flagged, since it loses no data.
+  - **Also fixed:** `t:pr` now readies an existing draft PR, because PR #91 stayed a draft after `t:pr`.
+  - **Out of scope:** replacing per-worktree Docker databases (TICKET-213).
 
 ## Activity log
 
