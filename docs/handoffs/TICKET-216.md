@@ -131,3 +131,25 @@ for review at18:46Z; expiry2026-11-06T20:46:02Z (14:46:02 Regina), same13 exact
 paths and exclusions. This updates only a proposal, never a human record.
 Use its actual current contents and future expiry when reviewing. The protected
 merge remains pending; source approval does not permit hosted/destructive use.
+
+## 6 November PM review response
+
+PM requested the full plan/JSON inline because local paths are inaccessible.
+Rechecked archive7 files, old baseline13 SQL/snapshots and journal; all match.
+Latest preparation47eecd068dcb9f0278d9c5630219d08bdcb80cca passed every required
+CI job in run42274183457; optional review skipped. A fresh source fetch found
+develop6fb465347a1426112783a7bf07860d2b71a8c493 with PR91/outbox0013. Old proposed
+0013-0015 now collides. Full source review updated: preserve develop0000-0013,
+append0014-0016, same13-path count and source-only purpose but revised exact names
+requiring human review. New ignored Drizzle preview preserves14 source SQL and
+snapshots plus14 journal entries; three appended SQL files match the previously
+tested preview byte-for-byte. Current-base database tests remain unrun. The
+lineage helper remains unwired; never claim db:migrate already rejects forks.
+
+Proposal refreshed only (no human record), expiry2026-11-06T23:01:38Z,17:01:38
+Regina. Existing working branch/base/database/protected source are unchanged;
+virtual merge/generated preview only. Use system Git for merge-tree --write-tree;
+the old default Git does not support it. Next after human source review: integrate
+current base, generate canonical artifacts, wire and test refusal, then new-base
+clean/populated/RSVP/default-worker/full CI gates. No hosted/legacy execution,
+shared merge or PM acceptance.
