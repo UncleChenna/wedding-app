@@ -2027,9 +2027,10 @@
         "- 2026-11-06 — in_progress → in_review — divine (codex)",
         "- 2026-11-06 — in_review → blocked — divine (codex) — Develop 6fb46534 adds another migration0013; explicit base update, generator reconciliation and isolated reset approval pending. Original-base full verification and implementation are pushed in PR107.",
         "- 2026-11-06 — blocked → in_review — divine (codex) — Integration approval received; restoring prior status before addressing review changes",
-        "- 2026-11-06 — in_review → in_progress — divine (codex) — Apply user-approved develop integration and migration reconciliation"
+        "- 2026-11-06 — in_review → in_progress — divine (codex) — Apply user-approved develop integration and migration reconciliation",
+        "- 2026-11-06 — in_progress → in_review — divine (codex)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-175",
