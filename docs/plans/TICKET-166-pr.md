@@ -23,8 +23,8 @@ server time and explicit confirmation, clears non-admin PIN material and revokes
 devices without deleting admission records. Order submissions hold the matching
 share lock and staff submissions recheck expiry after waiting.
 The rollback-only database closure rehearsal, existing ordering tests and new
-expired-staff-order case are unrun. Download/closure navigation, actual session and
-concurrency rehearsal, and full verification remain unfinished.
+expired-staff-order case are unrun. Live download/closure navigation verification,
+actual session and concurrency rehearsal, and full verification remain unfinished.
 
 The protected `/admin/event-closure` page is now linked from the control room. It
 offers PDF/CSV downloads and closure with a server-derived cutoff, typed confirmation
