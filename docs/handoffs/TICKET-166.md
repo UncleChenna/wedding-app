@@ -180,3 +180,23 @@ Do not run database commands against the copied primary environment. Once capaci
 is available, run the managed db:start wrapper in this worktree to establish its
 own environment, then migrate and execute the guarded rehearsals. No production
 closure or data deletion is authorized by this verification work.
+
+## Capacity recovered and database rehearsal passed — 2026-11-06
+
+The user approved stopping idle TICKET-048 while preserving its backup. Supabase
+stop returned exit0 with backup:true for wedding-0b9a885bfc5f. No other stack was
+stopped. TICKET-166's managed db:start then completed successfully and established
+its isolated environment. Existing branch migrations applied successfully; all16
+public tables have RLS enabled. The ticket resumed through the CLI at8d2fb2e.
+
+Explicit RUN_EVENT_CLOSURE_DB_TESTS, RUN_MEMORIES_DB_TESTS and
+RUN_ORDER_SUBMIT_DB_TESTS execution passed all24 tests across three files, with
+one worker. This proves the prepared transaction/idempotency, aggregate export and
+ordering cases against the real isolated database. It does not yet prove the
+browser closure flow, existing staff-session rejection or concurrent closure/orders.
+
+Full pnpm verify is running in session3368, logging to
+/tmp/TICKET-166-full-verify.log. Poll that existing handle; do not start another
+browser run sharing its output directory. Next: finish this gate, implement/run
+the remaining browser and concurrency rehearsals, complete UI review, then update
+PR105. Physical-device checks remain unverified. No production closure occurred.
