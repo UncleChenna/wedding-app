@@ -29,6 +29,12 @@ export const appRoutes = {
   adminMenu: { path: "/admin/menu", label: "Menu", audience: "admin", access: "admin" },
   adminSettings: { path: "/admin/settings", label: "Settings", audience: "admin", access: "admin" },
   adminStaff: { path: "/admin/staff", label: "Staff", audience: "admin", access: "admin" },
+  adminClosure: {
+    path: "/admin/event-closure",
+    label: "After the celebration",
+    audience: "admin",
+    access: "admin",
+  },
   adminSignIn: { path: "/admin/sign-in", label: "Sign in", audience: "admin", access: "public" },
   adminSignOut: { path: "/admin/sign-out", label: "Sign out", audience: "admin", access: "public" },
   adminMfa: {

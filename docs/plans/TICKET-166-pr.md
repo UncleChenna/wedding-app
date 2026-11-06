@@ -25,6 +25,13 @@ share lock and staff submissions recheck expiry after waiting.
 The rollback-only database closure rehearsal, existing ordering tests and new
 expired-staff-order case are unrun. Download/closure navigation, actual session and
 concurrency rehearsal, and full verification remain unfinished.
+
+The protected `/admin/event-closure` page is now linked from the control room. It
+offers PDF/CSV downloads and closure with a server-derived cutoff, typed confirmation
+and unchecked scanner-evidence acknowledgment. Component tests verify authorization,
+navigation and form feedback. Latest quick gate:117 related tests pass, one opt-in
+skip, lint/types pass. Browser screenshots, device checks and full UI approval remain
+unverified; see `docs/reviews/TICKET-166/ui-review.md`.
 Isolated database startup failed; no other stack has been borrowed or stopped.
 Use existing06:00 venue-local next-day expiry and current revocation fields where
 possible. Base develop c9c9e66010ee773189477139d4f8b0d30cf481e1.

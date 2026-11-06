@@ -121,3 +121,23 @@ has NOT run. Actual concurrent ordering/closure rehearsal, staff-session rejecti
 full verification and UI/navigation remain unverified. No database mutation or
 production closure occurred. CI42231564205 for the preceding commit was still live
 before this follow-up; do not treat it as verification of this new source.
+
+## Admin navigation and confirmation form — 2026-11-06
+
+Added the protected /admin/event-closure page and control-room link. Page access
+is verified before settings are read. It offers native non-prefetched PDF/CSV
+downloads, explains the venue-local cutoff, and leaves closure disabled when the
+timezone is unknown or cutoff has not arrived. The form requires CLOSE EVENT and
+an initially unchecked acknowledgment for all scanner evidence. Controlled fields
+retain input on refusal; live status announces outcomes and success disables it.
+The form adapter delegates to the existing independently authorized Server Action.
+
+New tests first failed for the absent component. Fixed a download-link lint error
+using native-download Next Links and a readonly test tuple mismatch. Final quick
+gate passes lint/types/117 related tests, one opt-in skip. Log
+/tmp/TICKET-166-ui-final-quick.log. React review keeps auth-dependent reads sequential,
+minimal client props and direct shared-component imports. Full UI checklist recorded
+as incomplete in docs/reviews/TICKET-166/ui-review.md; no browser/device pass claimed.
+Docker capacity recheck:608MB available; no new stack or database action attempted.
+Next: restore isolated setup once capacity permits, execute database/ordering/session
+rehearsals, inspect all-theme UI/PDF output, run full verify and publish ready review.

@@ -74,6 +74,10 @@ settings lock/expiry recheck. Eight action tests, lint and types pass. Database
 closure, session and concurrency rehearsals remain unrun; admin navigation/UI and
 full verification remain unfinished. No production action or data deletion occurred.
 
+2026-11-06: Added protected closure page and control-room navigation. Quick gate
+passes lint/types/117 related tests (one opt-in skip). All-theme browser, database,
+session/concurrency and device verification remain outstanding; UI review incomplete.
+
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md

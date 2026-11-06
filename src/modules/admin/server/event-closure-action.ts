@@ -7,6 +7,14 @@ import { createLogger } from "@/modules/shared/lib/logger";
 import { currentAdminAccess } from "./current-admin-access";
 import { closeEvent, type ClosureResult } from "./event-closure-repository";
 
+/** Native form adapter; keeps the same authorization boundary as direct action calls. */
+export async function closeEventFormAction(
+  _previous: Awaited<ReturnType<typeof closeEventAction>> | null,
+  form: FormData,
+) {
+  return closeEventAction(form);
+}
+
 export async function closeEventAction(form: FormData): Promise<
   | ClosureResult
   | {
