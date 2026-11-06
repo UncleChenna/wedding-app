@@ -8,6 +8,8 @@ import { listDevices } from "../server/device-repository";
 import { AddStaffForm } from "./add-staff-form";
 import { AdminDevices } from "./admin-devices";
 import { StaffMemberActions } from "./staff-member-actions";
+import { StaffAlertForm } from "./staff-alert-form";
+import { alertCopy } from "../lib/staff-alerts";
 
 /** ADM-4: staff PINs for the gate, kitchen and bar (TICKET-096). */
 export async function AdminStaff() {
@@ -46,9 +48,26 @@ export async function AdminStaff() {
                             )
                           : staffCopy.noPin}
                     </p>
+                    {member.role !== "gate" && (
+                      <p className="mt-1 text-muted-foreground">
+                        {member.alertsOptIn && member.whatsappNumber
+                          ? alertCopy.on(member.whatsappNumber)
+                          : alertCopy.off}
+                      </p>
+                    )}
                     <div className="mt-4">
                       <StaffMemberActions id={member.id} name={member.name} hasPin={active} />
                     </div>
+                    {member.role !== "gate" && !member.revoked && (
+                      <div className="mt-6">
+                        <StaffAlertForm
+                          id={member.id}
+                          name={member.name}
+                          number={member.whatsappNumber}
+                          optIn={member.alertsOptIn}
+                        />
+                      </div>
+                    )}
                   </li>
                 );
               })}
