@@ -1986,9 +1986,10 @@
         "- 2026-11-05 — in_progress → blocked — divine (codex) — Isolated Supabase startup terminated with failure; no owned database container exists. Pure closure/export foundations pushed; database recovery and integration pending.",
         "- 2026-11-06 — blocked → in_progress — divine (codex)",
         "- 2026-11-06 — in_progress → blocked — divine (codex) — Closure-specific database and staff-session rehearsals require the isolated stack; Docker has only 537MB available. Awaiting permission to stop idle owned TICKET-048 with its backup preserved.",
-        "- 2026-11-06 — blocked → in_progress — divine (codex)"
+        "- 2026-11-06 — blocked → in_progress — divine (codex)",
+        "- 2026-11-06 — in_progress → blocked — divine (codex) — Automated database, browser and UI verification passed. Awaiting review-only exception for physical-phone keyboard/safe-area and downloads; retain release checks. No PR merge authorized."
       ],
-      "status": "in_progress",
+      "status": "blocked",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-166",
@@ -1996,8 +1997,8 @@
       "started": "2026-11-05",
       "completed": "",
       "updated": "2026-11-06",
-      "reason": "",
-      "resume_to": ""
+      "reason": "Automated database, browser and UI verification passed. Awaiting review-only exception for physical-phone keyboard/safe-area and downloads; retain release checks. No PR merge authorized.",
+      "resume_to": "in_progress"
     },
     "WED-216": {
       "log": [
