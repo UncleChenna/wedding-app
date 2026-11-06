@@ -2,7 +2,7 @@
 id: TICKET-084
 title: Queue order alerts in an outbox and batch them per station
 epic: alerts
-status: in_progress
+status: in_review
 priority: high
 estimate: M
 labels: [backend, db]
@@ -12,7 +12,7 @@ agent: claude
 blocked_by: [TICKET-171, TICKET-074]
 blocks: [TICKET-085, TICKET-086, TICKET-112, TICKET-143]
 branch: TICKET-084
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/91
 created: 2026-10-21
 updated: 2026-11-06
 started: 2026-11-04
@@ -97,3 +97,4 @@ _Agents append dated notes here while working._
 - 2026-11-04 — todo → in_progress — unclechenna (claude)
 - 2026-11-04 — in_progress → blocked — unclechenna (claude) — Needs owner: exact-path approval for the order_alerts migration, and the production database host (Supabase or Neon) that decides the scheduler. Draft PR #91.
 - 2026-11-06 — blocked → in_progress — unclechenna (claude)
+- 2026-11-06 — in_progress → in_review — unclechenna (claude)
