@@ -59,7 +59,10 @@ See: [Security](../docs/prd.md#security) · [Privacy (UK GDPR)](../docs/prd.md#p
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-11-06: Added internal anonymous PDF renderer alongside the CSV foundation.
+Six PDF tests and verify:quick pass; native ivory PDF text/raster inspected.
+Database integration, authenticated download, closure/revocation and full review
+remain unfinished. Draft PR105; see docs/handoffs/TICKET-166.md.
 
 ## Activity log
 

@@ -49,3 +49,27 @@ services. This does not prove the startup failure cause. No stacks stopped and n
 DB mutation attempted. Next inspect supported reduced-service startup/owned setup
 logs before retrying; do not run migrations using copied main credentials.
 Foundations pushed in31381b3; PR105 remains draft.
+
+## Anonymous PDF renderer — 2026-11-06
+
+Resumed through the CLI for database-independent work while stack capacity remains
+constrained. Added an internal PDF renderer using the existing aggregate allowlist,
+local embedded fonts and all four themes. No public download route or database
+query is wired yet. Extra contact/dietary fields do not reach its document tree.
+
+Six new tests pass: four actual themed A4 PDFs with embedded fonts and privacy
+projection, invalid-input rejection before rendering, and pagination of 90 menu
+items. The initial missing-module test failed as intended. Intermediate tests
+exposed a whitespace issue in the test text extractor and a type-import lint error;
+both were corrected without reducing assertions. Final verify:quick passes lint,
+types and six related tests. Logs: /tmp/TICKET-166-pdf-{red,green,quick}.log.
+
+RUN_MEMORIES_PDF_REVIEW=1 writes synthetic samples to artifacts/TICKET-166. Native
+PDFKit opened the ivory sample, extracted only expected aggregate text, and
+rasterized it at 300dpi; that first page was visually inspected. The reused helper
+prints an A5 label, but the actual MediaBox test confirms A4. Other themes render
+in tests but have not yet received native visual review. No whole-ticket UI approval
+or full verification is claimed. Transactional closure, authenticated downloads,
+aggregate database query, revocation rehearsal and complete visual review remain.
+No Supabase stack was started/stopped in this follow-up. Database setup still needs
+recovery before integration verification; never migrate against the copied main URL.
