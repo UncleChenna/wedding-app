@@ -2,7 +2,7 @@
 
 TICKET-175 — Validate and store invitation photo uploads. Target develop.
 
-# Problem and result
+# Summary
 
 The future invitation editor needs a safe, private photo pipeline. Admins can now
 submit actual JPEG/PNG/WebP bytes, receive an opaque image reference with dimensions
@@ -23,13 +23,16 @@ authorized endpoint. Original files, filenames and EXIF are not stored.
   allocation refuses full storage without overwriting or deleting photos.
 - Documented access, retention, backup scope and future editor/publication boundary.
 
-# Acceptance and verification
+# Acceptance criteria and evidence
 
 - Admin-only validation:22 decoder/upload cases and7 private-delivery cases pass.
 - Controlled storage: database round-trip, orientation/EXIF removal, gallery quota
   and anonymous read denial pass; mobile/desktop real OTP/TOTP upload journeys pass.
 - Storage access/retention is documented; the user approved all three generated
   migration paths and the authorization record. No existing RLS policy changed.
+
+# Verification
+
 - Full pnpm verify passes: formatting, lint, types,1054 unit tests (97 opt-in skips),
   production build,837 browser tests (189 intentional skips). Log:
   /tmp/TICKET-175-approved-verify.log. Earlier hook failures were caused by pending
@@ -45,7 +48,7 @@ RUN_PHOTO_DB_TESTS=1 pnpm exec vitest run scripts/**tests**/photo-upload.integra
 and pnpm exec tsx scripts/test-photo-upload.ts. The browser runner creates unique
 local test identities; it does not modify the persistent admin allowlist.
 
-# Risks, limitations and rollout
+# Risks and rollout
 
 No production database application is authorized. Other draft branches have migration
 index0013; reconcile the current develop journal before integration, never rewriting
@@ -59,7 +62,11 @@ an unused slot because retries are not deduplicated. When full, operators must
 review assets for separately authorized cleanup. Guest publication/editor integration
 belongs to TICKET-099/178; unpublished images remain private.
 
-# UI and harness
+# Screenshots and UI checklist
 
 No new user interface; no theme, CI, hook, native build permission or existing RLS
 policy changes.
+
+# Harness changes, if any
+
+None. Existing verification and protected-file checks remain unchanged.

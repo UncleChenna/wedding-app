@@ -116,3 +116,7 @@ cleared solely through the approved authorization; no tests/hooks weakened.
 Next: commit/push implementation and updated evidence, run t:pr175, inspect final CI.
 Keep in_review until verified merged into develop; no PR107 merge exception exists.
 No production migration is authorized.
+
+Implementation committed and pushed as9cc8ecdc. First t:pr preflight rejected custom
+PR headings; corrected them to the required template headings. No verification was
+skipped. Rerun t:pr on the corrected body.
