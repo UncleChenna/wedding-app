@@ -1,0 +1,32 @@
+[
+  {
+    "run": 1,
+    "lighthouseVersion": "13.6.0",
+    "fetchTime": "2026-11-05T19:04:51.680Z",
+    "url": "http://localhost:39410/lost-link",
+    "performance": 1,
+    "accessibility": 1,
+    "cls": 0,
+    "runtimeError": null
+  },
+  {
+    "run": 2,
+    "lighthouseVersion": "13.6.0",
+    "fetchTime": "2026-11-05T19:05:04.161Z",
+    "url": "http://localhost:39410/lost-link",
+    "performance": 1,
+    "accessibility": 1,
+    "cls": 0,
+    "runtimeError": null
+  },
+  {
+    "run": 3,
+    "lighthouseVersion": "13.6.0",
+    "fetchTime": "2026-11-05T19:05:15.199Z",
+    "url": "http://localhost:39410/lost-link",
+    "performance": 1,
+    "accessibility": 1,
+    "cls": 0,
+    "runtimeError": null
+  }
+]

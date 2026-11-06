@@ -5,6 +5,11 @@ import { AdminNavLink } from "./admin-nav-link";
 /** Sections with a page today. Feature tickets add theirs here as their routes land. */
 export const adminSections = [
   { href: appRoutes.admin.path, label: "Control room", exact: true },
+  {
+    href: appRoutes.adminLinkRequests.path,
+    label: appRoutes.adminLinkRequests.label,
+    exact: false,
+  },
   { href: appRoutes.adminSharing.path, label: appRoutes.adminSharing.label, exact: false },
   { href: appRoutes.adminMenu.path, label: appRoutes.adminMenu.label, exact: false },
   { href: appRoutes.adminStaff.path, label: appRoutes.adminStaff.label, exact: false },

@@ -48,7 +48,7 @@ export const requestBudgets = pgTable(
   (t) => [
     primaryKey({ columns: [t.scope, t.identity] }),
     index("request_budgets_expiry_idx").on(t.expiresAt),
-    check("request_budgets_scope", sql`${t.scope} in ('lookup', 'pin')`),
+    check("request_budgets_scope", sql`${t.scope} in ('lookup', 'pin', 'lost_link')`),
     check("request_budgets_identity", sql`${t.identity} ~ '^[0-9a-f]{64}$'`),
     check("request_budgets_used", sql`${t.used} between 0 and 100000`),
   ],
@@ -462,5 +462,23 @@ export const rsvpChanges = pgTable(
     ),
     check("rsvp_changes_after_object", sql`jsonb_typeof(${t.after}) = 'object'`),
     check("rsvp_changes_actor_not_blank", sql`length(trim(${t.actor})) between 1 and 200`),
+  ],
+).enableRLS();
+
+/** Public recovery requests; only the authenticated server admin queue reads them. */
+export const invitationLinkRequests = pgTable(
+  "invitation_link_requests",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    name: text("name").notNull(),
+    contact: text("contact").notNull(),
+    contactKind: text("contact_kind").notNull(),
+    createdAt: createdAt(),
+  },
+  (t) => [
+    index("invitation_link_requests_created_idx").on(t.createdAt, t.id),
+    check("invitation_link_requests_name", sql`length(trim(${t.name})) between 1 and 200`),
+    check("invitation_link_requests_contact", sql`length(trim(${t.contact})) between 1 and 254`),
+    check("invitation_link_requests_kind", sql`${t.contactKind} in ('email', 'phone')`),
   ],
 ).enableRLS();
