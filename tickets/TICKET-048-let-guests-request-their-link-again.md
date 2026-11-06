@@ -2,7 +2,7 @@
 id: TICKET-048
 title: Let guests request their link again
 epic: invitations
-status: blocked
+status: in_progress
 priority: urgent
 estimate: M
 labels: [frontend, backend]
@@ -14,11 +14,11 @@ blocks: [TICKET-123, TICKET-176]
 branch: TICKET-048
 pr: ""
 created: 2026-10-21
-updated: 2026-11-05
+updated: 2026-11-06
 started: 2026-11-05
 completed: ""
-reason: "Awaiting exact-path approval for generated lost-link migration, isolated application/commit and proposed 10 requests/network/minute budget; SQL remains unapplied."
-resume_to: in_progress
+reason: ""
+resume_to: ""
 ---
 
 # TICKET-048: Let guests request their link again
@@ -66,3 +66,4 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-5).
 - 2026-11-05 — todo → claimed — divine (codex)
 - 2026-11-05 — todo → in_progress — divine (codex)
 - 2026-11-05 — in_progress → blocked — divine (codex) — Awaiting exact-path approval for generated lost-link migration, isolated application/commit and proposed 10 requests/network/minute budget; SQL remains unapplied.
+- 2026-11-06 — blocked → in_progress — divine (codex)
