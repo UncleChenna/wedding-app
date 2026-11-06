@@ -1,6 +1,10 @@
+import { randomBytes } from "node:crypto";
+import { drizzle } from "drizzle-orm/postgres-js";
+import { sql } from "drizzle-orm";
 import postgres, { type Sql, type TransactionSql } from "postgres";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { assertDatabaseTarget } from "../database-target";
+import * as schema from "../../src/modules/shared/server/db/schema";
 import { submitLostLinkRequest } from "../../src/modules/invitations/server/lost-link-submission";
 
 let db: Sql;
@@ -90,5 +94,34 @@ describe.runIf(process.env.RUN_LOST_LINK_DB_TESTS === "1")("lost-link request st
     const policies = await db`select policyname from pg_policies
       where schemaname = 'public' and tablename = 'invitation_link_requests'`;
     expect(policies).toHaveLength(0);
+  });
+
+  it("enforces ten requests, separates lookup and PIN budgets, and permits the next window", async () => {
+    const { consumeRequestBudget } = await import("../../src/modules/shared/server/request-budget");
+    const { requestBudgetPolicies } =
+      await import("../../src/modules/shared/server/request-budget-gate");
+    const identity = randomBytes(32).toString("hex");
+    try {
+      await drizzle(db, { schema }).transaction(async (tx) => {
+        const consume = (scope: "lost_link" | "lookup" | "pin") =>
+          consumeRequestBudget(tx, { identity, scope, ...requestBudgetPolicies[scope] });
+        for (let index = 0; index < 10; index++) {
+          expect((await consume("lost_link")).allowed).toBe(true);
+        }
+        const refused = await consume("lost_link");
+        expect(refused.allowed).toBe(false);
+        expect(refused.retryAfterSeconds).toBeGreaterThan(0);
+        expect(refused.retryAfterSeconds).toBeLessThanOrEqual(60);
+        expect((await consume("lookup")).allowed).toBe(true);
+        expect((await consume("pin")).allowed).toBe(true);
+        await tx.execute(sql`update request_budgets
+          set expires_at = clock_timestamp() - interval '1 second'
+          where scope = 'lost_link' and identity = ${identity}`);
+        expect((await consume("lost_link")).allowed).toBe(true);
+        throw rollback;
+      });
+    } catch (error) {
+      if (error !== rollback) throw error;
+    }
   });
 });

@@ -115,3 +115,26 @@ migration is still unapproved/unapplied. Log: /tmp/TICKET-048-db-test-quick.log.
 After approval and repeat migration/count/RLS checks, run:
 RUN_LOST_LINK_DB_TESTS=1 pnpm exec vitest run scripts/**tests**/lost-link.integration.test.ts
 Then add real submit/admin/re-share coverage. No SQL was applied in this follow-up.
+
+## Approval and migration verification — 2026-11-06
+
+User approved proceeding with the migration and proposed 10/network/minute limit.
+Recorded the three exact generated paths in ignored .harness/approved-writes.json;
+resumed through CLI at4b54c9e. Initial CLI migration silently exited1. The same
+installed Drizzle postgres-js migrator, guarded configuration and generated files
+completed successfully directly (session10023 terminal0). No SQL was hand-edited.
+Normal CLI repeat passed, counts were identical (14 migrations, all public tables
+empty), and RLS passed for17tables. Initial3storage tests passed in541ms.
+
+Added a rolled-back real-budget test for10allowed/11threfused, separate lookup/PIN
+budgets and expired-window reset. Both expanded4test runs failed with5second test
+and10second cleanup timeouts, including previously passing tests. Fixed a fixture
+typing error by passing the real schema to Drizzle; final quick lint/types pass,
+4DBtests are opt-in skips in that quick gate. No timeout or assertion weakened.
+The new budget assertion is unverified; full gate and authenticated browser journey
+remain required. All acceptance criteria remain incomplete.
+
+Requested approval to stop only inactive owned TICKET-181 project
+wedding-a7dd5180a5a7 with backup preserved, since TICKET-048 is now active. No stop
+has occurred. Next: stable DB capacity, rerun4DBtests, then build the real public
+submission/admin matching/Share-menu browser coverage and complete UI review.

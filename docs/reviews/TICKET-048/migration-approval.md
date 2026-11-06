@@ -3,15 +3,16 @@
 2026-11-05. Base develop c9c9e66010ee773189477139d4f8b0d30cf481e1.
 Generated with `pnpm db:generate --name=lost-link-requests`.
 
-## Exact outputs awaiting approval
+## Approved outputs
 
 - `drizzle/0013_lost-link-requests.sql`
 - `drizzle/meta/0013_snapshot.json`
 - `drizzle/meta/_journal.json`
 
-Authorization would be recorded in the ignored worktree-local
+User approved proceeding on 2026-11-06, including the proposed 10 requests per
+network per minute. Authorization is recorded in the ignored worktree-local
 `.worktrees/TICKET-048/.harness/approved-writes.json` for these exact paths.
-Approval requested for isolated local application/testing and commit only.
+Approval covers isolated local application/testing and commit only.
 No production application, data reset or other worktree modification is requested.
 
 ## Changes
@@ -39,6 +40,23 @@ Unit tests cover budget separation, neutral responses and admin authorization.
 New SQL has **not been applied**. Required isolated tests: persistence, malformed
 row rejection, RLS, repeated migration/row counts, unchanged lookup/PIN budgets and
 submission/admin/re-share browser journey. No successful database result is claimed.
+
+### Verification update — 2026-11-06
+
+Supersedes the unapplied status above: migration applied successfully through the
+installed Drizzle postgres-js migrator, using the guarded drizzle.config.ts and
+unchanged generated files. The first CLI attempt exited 1 without an error; direct
+execution completed. The normal `pnpm db:migrate` repeat then passed. Counts after
+each successful run match exactly: 14 migrations, zero rows in all 17 public tables.
+`pnpm db:check-rls` passed for all 17 tables. Initial three storage tests passed.
+
+Added a fourth real-storage test for the ten-request limit, independent lookup/PIN
+budgets and expiry reset. Both expanded runs timed out in all four tests and cleanup;
+the new budget assertion remains unverified. Lint/types pass after correcting the
+fixture's Drizzle schema typing. No timeout was increased. Full verification and
+the public-submit/authenticated-admin/re-share browser journey remain outstanding.
+Logs/counts: /tmp/TICKET-048-migration-repeat.log and
+/tmp/TICKET-048-counts-{first,second}.txt. No production database was touched.
 
 ## Integration and rollback
 
