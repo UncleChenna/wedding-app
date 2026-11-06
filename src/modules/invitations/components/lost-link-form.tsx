@@ -17,13 +17,21 @@ export function LostLinkForm() {
       </p>
       {result?.status !== "received" && (
         <form action={action} aria-busy={pending} className="mt-10 space-y-6">
-          <Input name="name" label="Your full name" autoComplete="name" required maxLength={200} />
+          <Input
+            name="name"
+            label="Your full name"
+            autoComplete="name"
+            required
+            maxLength={200}
+            defaultValue={result?.fields?.name ?? ""}
+          />
           <Input
             name="contact"
             label="Phone number or email"
             autoComplete="off"
             required
             maxLength={254}
+            defaultValue={result?.fields?.contact ?? ""}
             hint="For an international number, include the country code, such as +234."
           />
           <p className="text-base leading-relaxed text-muted-foreground">

@@ -41,3 +41,26 @@ the full-page queue capture; a scrolled lower-section check is still required.
 Full gate is running, not passed. Physical-device/WhatsApp, intermediate widths,
 browser invalid/retry states and remaining keyboard/load checks remain incomplete.
 Outcome remains CHANGES REQUESTED until these checks or an explicit preview exception.
+
+## Current review — 2026-11-06
+
+Supersedes incomplete integration rows above. All functional acceptance criteria
+have real database/browser evidence. The first clean full gate passed895browser
+tests; a subsequent input-retention fix is undergoing its own full gate.
+
+| Item                        | Current evidence                                                                                                                                                                                                             |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Screenshots                 | PASS: initial, received, invalid and authenticated queue at375/768/1280 in4themes; all inspected. Four lower mobile queue slices confirm the Share button clears fixed navigation.                                           |
+| Tokens/typography/restraint | PASS: same shared token styles, legible input/receipt/queue content, long contacts wrap. No new colour/font/radius or decoration.                                                                                            |
+| Mobile                      | Browser PASS: required and intermediate queue widths390/430/600/1024 have no overflow; controls retain44px targets. Physical keyboard/safe-area checks unverified.                                                           |
+| Motion/keyboard             | Browser PASS: reduced-motion captures; Enter opens sharing and copy restores trigger focus; six navigation links retain visible keyboard focus.                                                                              |
+| Contrast                    | PASS: AA axe on initial, invalid, received and queue states in every theme and required width. Errors are textual.                                                                                                           |
+| Load/images                 | Initial-form CLS0 at3widths. No new images/font loading. Admin cold-load CLS remains unverified.                                                                                                                             |
+| Performance                 | Prior production guest page100/100/100, accessibility100/100/100, CLS0; default theme fallback disclosed. Retention change adds bounded server response defaults, no dependency.                                             |
+| Copy/shared components      | PASS: Warm neutral messages; Input/Button/ShareMenu reused. Failures preserve submitted values, including native no-JavaScript POST.                                                                                         |
+| Sharing/devices             | Browser copy and real local admin OTP/MFA pass. Physical iOS/Android WhatsApp/preview and keyboard checks unverified; retained release requirements.                                                                         |
+| QR/staff feedback           | N/A: this task changes neither QR output nor scanner/station feedback.                                                                                                                                                       |
+| Verification                | Final-source full gate running;11focusedtests, production build, real desktop journey and no-JavaScript regression pass. Retry/unavailable state rendering covered by component tests rather than induced database failures. |
+
+Outcome: CHANGES REQUESTED pending final gate and physical-device preview exception;
+no physical check is represented as passed.

@@ -3,7 +3,11 @@ import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
 import type * as React from "react";
 const state = vi.hoisted(() => ({
-  result: null as null | { status: string; message: string },
+  result: null as null | {
+    status: string;
+    message: string;
+    fields?: { name: string; contact: string };
+  },
   pending: false,
 }));
 vi.mock("react", async (original) => ({
@@ -33,10 +37,16 @@ it("disables duplicate submission while displaying progress", () => {
   expect(screen.getByRole("button", { name: "Saving your request…" })).toBeDisabled();
 });
 it.each(["invalid", "retry", "unavailable"])("announces %s and leaves a retry form", (status) => {
-  state.result = { status, message: "Please try again shortly." };
+  state.result = {
+    status,
+    message: "Please try again shortly.",
+    fields: { name: "Sample Guest", contact: "not-a-contact" },
+  };
   render(<LostLinkForm />);
   expect(screen.getByRole("status")).toHaveTextContent(state.result.message);
   expect(screen.getByRole("button", { name: "Request my link" })).toBeEnabled();
+  expect(screen.getByLabelText("Your full name")).toHaveValue("Sample Guest");
+  expect(screen.getByLabelText("Phone number or email")).toHaveValue("not-a-contact");
 });
 it("announces receipt without leaving an accidental resubmission button", () => {
   state.result = { status: "received", message: "Your request is with us." };

@@ -52,6 +52,14 @@ assertion now includes all6links, and subsequent browser runs are sequential.
 Remaining: passing full gate, remaining UI state/intermediate-width/load checks,
 physical-device/WhatsApp verification or an explicit preview exception.
 
+Latest review: clean full gate passed1056unit/895browser tests (100/201skips).
+Invalid-input coverage then exposed cleared fields after rejected submissions;
+the action now returns bounded submitted defaults only on failure.11focused tests,
+production build, real desktop journey and native no-JavaScript regression pass.
+Invalid-state screenshots/AA pass in4themes x3widths; intermediate queue widths
+390/430/600/1024 also pass. Full verification is rerunning for this final source.
+Physical-device checks and admin cold-load CLS remain unverified; see UI review.
+
 # Rollout and risks
 
 Base develop c9c9e66010ee773189477139d4f8b0d30cf481e1. Do not deploy this

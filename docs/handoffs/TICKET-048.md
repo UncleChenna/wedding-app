@@ -183,3 +183,26 @@ Clean sequential full verification is LIVE in session80018, log
 /tmp/TICKET-048-full-verify-clean.log. Do not start another Playwright invocation
 until it terminates. No timeout, test assertion or hook weakened. Device checks and
 remaining UI states remain unverified; PR stays draft pending full review evidence.
+
+## Full gate passed; validation retention regression fixed — 2026-11-06
+
+Session80018 completed0:1056unitpasses/100skips, build,895browserpasses/201skips.
+Additional invalid-input browser coverage then found that React resets fields after
+an action returns a validation error. Added bounded submitted defaults to action
+failure results and form defaultValues. Success receipts remain unchanged and never
+echo fields; no matched data is returned. Added5action tests for error bounds,
+successful neutrality and blob exclusion, and retained-value component assertions.
+Corrected a test-only getByLabel/getByLabelText mix-up; final quick gate11passes.
+
+Production build passed. Final desktop live journey passes with invalid-state
+AA/screenshots in4themes x3widths and intermediate queue widths390/430/600/1024.
+All12invalid screenshots inspected. Native no-JavaScript invalid submission also
+passes, preserving both fields. Captures regenerated for received/admin states.
+Physical device checks remain unverified; preview exception requested. TICKET-201
+already blocks both releases and covers physical guest forms/WhatsApp testing.
+
+New full gate for the retention fix is LIVE in session3378, log
+/tmp/TICKET-048-final-verify.log. Poll this existing handle; no other browser run
+may share its artifact directory. Earlier pass does not certify this new source.
+Use the documented pnpm PATH prefix for Git too: one commit attempt failed before
+hooks could start because the prefix was omitted; retry with the prefix passed.

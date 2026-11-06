@@ -8,6 +8,25 @@ import { adminTestEmail, signInAdmin } from "./support/admin-session";
 import { themes } from "../src/modules/theming/themes";
 import { applyTheme } from "./support/theme";
 
+test("lost-link validation retains input without JavaScript", async ({ browser, baseURL }) => {
+  test.skip(process.env.RUN_LOST_LINK_BROWSER_TESTS !== "1", "Requires isolated local database");
+  const context = await browser.newContext({ baseURL, javaScriptEnabled: false });
+  try {
+    const page = await context.newPage();
+    await page.goto("/lost-link");
+    await page.getByLabel("Your full name").fill("Sample Guest");
+    await page.getByLabel("Phone number or email").fill("not-a-contact");
+    await page.getByRole("button", { name: "Request my link" }).click();
+    await expect(page.getByRole("main").getByRole("status")).toContainText(
+      "valid email or full phone number",
+    );
+    await expect(page.getByLabel("Your full name")).toHaveValue("Sample Guest");
+    await expect(page.getByLabel("Phone number or email")).toHaveValue("not-a-contact");
+  } finally {
+    await context.close();
+  }
+});
+
 test("lost-link submission reaches the private queue and existing Share menu", async ({
   page,
   request,
@@ -67,6 +86,15 @@ test("lost-link submission reaches the private queue and existing Share menu", a
 
     await page.goto("/admin/link-requests");
     await expect(page).toHaveURL(/\/admin\/sign-in/);
+    await page.goto("/lost-link");
+    await page.getByLabel("Your full name").fill(name);
+    await page.getByLabel("Phone number or email").fill("not-a-contact");
+    await page.getByRole("button", { name: "Request my link" }).click();
+    await expect(page.getByRole("main").getByRole("status")).toHaveText(
+      "Please enter your name and a valid email or full phone number.",
+    );
+    await expect(page.getByLabel("Phone number or email")).toHaveValue("not-a-contact");
+    await capture("invalid");
     const receipts: string[] = [];
     for (const submittedContact of [contact, missingContact]) {
       await page.goto("/lost-link");
@@ -93,6 +121,17 @@ test("lost-link submission reaches the private queue and existing Share menu", a
     await expect(unmatched).toContainText("No unique match");
     await expect(unmatched.getByRole("button", { name: "Share invitation" })).toHaveCount(0);
     await capture("admin-queue");
+    for (const width of [390, 430, 600, 1024]) {
+      await page.setViewportSize({ width, height: 900 });
+      expect(
+        await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
+      ).toBe(true);
+      for (const control of await page.getByRole("button").all()) {
+        const box = await control.boundingBox();
+        expect(box?.height).toBeGreaterThanOrEqual(44);
+        expect(box?.width).toBeGreaterThanOrEqual(44);
+      }
+    }
     await page.evaluate(() => {
       Object.defineProperty(navigator, "clipboard", {
         configurable: true,
