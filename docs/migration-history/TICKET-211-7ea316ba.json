@@ -1,0 +1,43 @@
+{
+  "source_commit": "7ea316ba4bddcfcb418e7c180c2fae03af81e618",
+  "source_pr": "https://github.com/UncleChenna/wedding-app/pull/92",
+  "archive": "TICKET-211-7ea316ba.tar.gz",
+  "archive_sha256": "a0a6a8addb83a3c78c5846eb3c3b5709de0b7f3a0c3ebda3bf1ef7a3d1fb0d2e",
+  "files": [
+    {
+      "path": "drizzle/0006_member-rsvp-foundation.sql",
+      "bytes": 3968,
+      "sha256": "de0dc6b3eb1d9725030e3a8b508e36999c6ff55322c66dbc5ed401d26785df53"
+    },
+    {
+      "path": "drizzle/0007_member-rsvp-backfill.sql",
+      "bytes": 892,
+      "sha256": "143fab7b6162fb30605e924f4bb1650afcaf97f6b91bad2c82384c4788e03687"
+    },
+    {
+      "path": "drizzle/0008_preserve-large-household-capacity.sql",
+      "bytes": 218,
+      "sha256": "33a0467e7899898158238067da8a9473e56d5ec139243abc719209a12df95dcd"
+    },
+    {
+      "path": "drizzle/meta/0006_snapshot.json",
+      "bytes": 45017,
+      "sha256": "0d55026723669290bb86a71dc4110ccbafea2ce8ef5b73464ec5769809d95839"
+    },
+    {
+      "path": "drizzle/meta/0007_snapshot.json",
+      "bytes": 45017,
+      "sha256": "adbec1acb4c4fbe64da22fefb5f5a2e7b5d50aa44d5bf8cc2d4ae3676ef0e0d3"
+    },
+    {
+      "path": "drizzle/meta/0008_snapshot.json",
+      "bytes": 45005,
+      "sha256": "69232344e255a2e13e151419c31e8c687eb6ab6155b17079e1355a21c2da813d"
+    },
+    {
+      "path": "drizzle/meta/_journal.json",
+      "bytes": 1396,
+      "sha256": "0d85944f78bfdda66d908d7a9fc503d8e6ea7e7dd8cc63f250fde4b30616bebf"
+    }
+  ]
+}
