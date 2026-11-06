@@ -1,11 +1,11 @@
 # TICKET-175 photo storage migration
 
-Base: develop c9c9e66010ee773189477139d4f8b0d30cf481e1.
+Integrated base: develop 6fb465347a1426112783a7bf07860d2b71a8c493. Original base was c9c9e66010ee773189477139d4f8b0d30cf481e1.
 
 Generated files explicitly approved by the user for commit and the authorization record on 2026-11-06:
 
-- `drizzle/0013_invitation-photos.sql`
-- `drizzle/meta/0013_snapshot.json`
+- `drizzle/0014_invitation-photos.sql`
+- `drizzle/meta/0014_snapshot.json`
 - `drizzle/meta/_journal.json`
 
 The additive migration creates `invitation_photos` with RLS enabled and no policies.
@@ -36,3 +36,18 @@ Other draft branches also use migration index 0013; integration requires
 reviewing the then-current develop journal before merging, never rewriting an applied
 migration. Application rollback may leave this unused additive table intact; deleting
 it or its assets requires separate data-deletion authorization.
+
+## Approved integration
+
+The user separately approved the base-update proposal, exact-path reconciliation
+and isolated reset. Develop migration0013 and its snapshot were preserved byte-for-byte.
+Drizzle generated0014; its SQL is byte-identical to the previously approved photo SQL.
+The old branch photo0013 was removed under the explicit locally-applied migration
+exception. Only this ticket's managed test database was reset after checks confirmed
+no guest/order/photo data, two matching synthetic Auth accounts, no storage objects
+and one temporary request counter. Reset migrated and seeded the combined history.
+
+Both subsequent migration runs match counts. All18 tables retain RLS. Photo integration
+(1 test) and merged outbox integration(5 tests) pass. Reseeding preserves table counts.
+Integrated build/browser/full-gate results are recorded in the ticket handoff.
+No production application or PR merge is authorized.

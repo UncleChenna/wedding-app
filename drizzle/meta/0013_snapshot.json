@@ -1,5 +1,5 @@
 {
-  "id": "fa411589-6694-421f-8875-0667f038d596",
+  "id": "28d8bf4a-5fe3-455c-aded-89c51b72de70",
   "prevId": "40237d83-3a6f-4304-9397-4e273cdaa806",
   "version": "7",
   "dialect": "postgresql",
@@ -454,94 +454,6 @@
       },
       "isRLSEnabled": true
     },
-    "public.invitation_photos": {
-      "name": "invitation_photos",
-      "schema": "",
-      "columns": {
-        "slot": {
-          "name": "slot",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "bytes": {
-          "name": "bytes",
-          "type": "bytea",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "width": {
-          "name": "width",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "height": {
-          "name": "height",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "blur_data_url": {
-          "name": "blur_data_url",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "uploaded_by": {
-          "name": "uploaded_by",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "invitation_photos_id_unique": {
-          "name": "invitation_photos_id_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "id"
-          ]
-        }
-      },
-      "policies": {},
-      "checkConstraints": {
-        "invitation_photos_slot": {
-          "name": "invitation_photos_slot",
-          "value": "\"invitation_photos\".\"slot\" between 1 and 16"
-        },
-        "invitation_photos_size": {
-          "name": "invitation_photos_size",
-          "value": "octet_length(\"invitation_photos\".\"bytes\") between 1 and 4194304"
-        },
-        "invitation_photos_dimensions": {
-          "name": "invitation_photos_dimensions",
-          "value": "\"invitation_photos\".\"width\" between 1 and 2560 and \"invitation_photos\".\"height\" between 1 and 2560"
-        },
-        "invitation_photos_blur": {
-          "name": "invitation_photos_blur",
-          "value": "length(\"invitation_photos\".\"blur_data_url\") between 24 and 10947 and left(\"invitation_photos\".\"blur_data_url\", 23) = 'data:image/webp' || chr(59) || 'base64,'"
-        }
-      },
-      "isRLSEnabled": true
-    },
     "public.invitations": {
       "name": "invitations",
       "schema": "",
@@ -781,6 +693,145 @@
         "menu_items_quantity_cap": {
           "name": "menu_items_quantity_cap",
           "value": "\"menu_items\".\"max_per_order\" between 1 and 100"
+        }
+      },
+      "isRLSEnabled": true
+    },
+    "public.order_alerts": {
+      "name": "order_alerts",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "station_order_id": {
+          "name": "station_order_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "station": {
+          "name": "station",
+          "type": "station",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "message": {
+          "name": "message",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "order_alert_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'pending'"
+        },
+        "attempts": {
+          "name": "attempts",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "last_attempt_at": {
+          "name": "last_attempt_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "sent_at": {
+          "name": "sent_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "order_alerts_station_order_key": {
+          "name": "order_alerts_station_order_key",
+          "columns": [
+            {
+              "expression": "station_order_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "order_alerts_pending_idx": {
+          "name": "order_alerts_pending_idx",
+          "columns": [
+            {
+              "expression": "status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "station",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "order_alerts_station_order_id_station_orders_id_fk": {
+          "name": "order_alerts_station_order_id_station_orders_id_fk",
+          "tableFrom": "order_alerts",
+          "tableTo": "station_orders",
+          "columnsFrom": [
+            "station_order_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "order_alerts_attempts": {
+          "name": "order_alerts_attempts",
+          "value": "\"order_alerts\".\"attempts\" between 0 and 100"
+        },
+        "order_alerts_message": {
+          "name": "order_alerts_message",
+          "value": "char_length(\"order_alerts\".\"message\") between 1 and 4000"
         }
       },
       "isRLSEnabled": true
@@ -1857,6 +1908,15 @@
         "meal",
         "soft_drink",
         "alcohol"
+      ]
+    },
+    "public.order_alert_status": {
+      "name": "order_alert_status",
+      "schema": "public",
+      "values": [
+        "pending",
+        "sent",
+        "failed"
       ]
     },
     "public.order_status": {

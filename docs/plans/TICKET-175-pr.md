@@ -4,11 +4,10 @@ TICKET-175 — Validate and store invitation photo uploads. Target develop.
 
 # Integration status
 
-Implementation and full verification are published. PR remains draft because develop
-advanced to6fb46534 with TICKET-084's migration0013. Photo migration metadata now
-conflicts. Proposed base update and generator reconciliation are documented in
-docs/reviews/TICKET-175/base-update-proposal.md and await explicit approval.
-The passing checks below establish the original base, not the unresolved integration.
+Integrated the approved develop commit6fb46534. Its outbox migration0013 is preserved;
+the photo migration is now generated0014. The user approved exact paths and a reset
+of this ticket's disposable database. Combined migrations, RLS, deterministic seed,
+photo persistence and outbox integration pass. Final PR gate follows below.
 
 # Summary
 
@@ -41,12 +40,16 @@ authorized endpoint. Original files, filenames and EXIF are not stored.
 
 # Verification
 
-- Full pnpm verify passes: formatting, lint, types,1054 unit tests (97 opt-in skips),
+- Original-base full pnpm verify passes: formatting, lint, types,1054 unit tests (97 opt-in skips),
   production build,837 browser tests (189 intentional skips). Log:
   /tmp/TICKET-175-approved-verify.log. Earlier hook failures were caused by pending
   authorization and cleared after the approved record was written; no hook was changed.
-- Two isolated migration applications pass with matching counts; all17 tables retain
+- Two isolated migration applications pass with matching counts; all18 tables retain
   RLS. Explicit photo database integration and2 authenticated browser tests also pass.
+
+Integrated production build and real OTP/TOTP upload journeys pass again (2 tests).
+Photo and outbox database checks pass (6 tests combined); seed counts match.
+The required t:pr gate will verify the integrated commit before advancing review.
 
 # Review
 
@@ -58,9 +61,8 @@ local test identities; it does not modify the persistent admin allowlist.
 
 # Risks and rollout
 
-No production database application is authorized. Other draft branches have migration
-index0013; reconcile the current develop journal before integration, never rewriting
-an applied migration. Rollback can leave this unused additive table intact; deleting
+No production database application is authorized. The approved integration preserves develop migration0013 and generates photo0014;
+review any later migration changes before another base update. Rollback can leave this unused additive table intact; deleting
 rows/table needs separate authorization. Database backups include photos and uploader
 UUIDs. Retention is documented but automatic deletion is not implemented here.
 

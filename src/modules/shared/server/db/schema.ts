@@ -105,6 +105,7 @@ export const stationOrderStatus = pgEnum("station_order_status", [
   "cancelled",
 ]);
 export const station = pgEnum("station", ["kitchen", "bar"]);
+export const orderAlertStatus = pgEnum("order_alert_status", ["pending", "sent", "failed"]);
 export const orderStatus = pgEnum("order_status", [
   "received",
   "preparing",
@@ -410,6 +411,34 @@ export const orderItems = pgTable(
       sql`${t.quantityLimit} between 1 and 100 and ${t.quantity} <= ${t.quantityLimit}`,
     ),
     check("order_items_quantity_positive", sql`${t.quantity} > 0`),
+  ],
+).enableRLS();
+
+/**
+ * Order alert outbox (ADR 0022): one row per station ticket, written in the order's transaction
+ * and drained on a schedule. The message can include a guest's note, so it is never logged.
+ */
+export const orderAlerts = pgTable(
+  "order_alerts",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    stationOrderId: uuid("station_order_id")
+      .notNull()
+      .references(() => stationOrders.id, { onDelete: "cascade" }),
+    station: station("station").notNull(),
+    message: text("message").notNull(),
+    status: orderAlertStatus("status").notNull().default("pending"),
+    attempts: integer("attempts").notNull().default(0),
+    lastAttemptAt: timestamp("last_attempt_at", { withTimezone: true }),
+    sentAt: timestamp("sent_at", { withTimezone: true }),
+    createdAt: createdAt(),
+  },
+  (t) => [
+    // One alert per ticket, so a replayed order can never queue a second message.
+    uniqueIndex("order_alerts_station_order_key").on(t.stationOrderId),
+    index("order_alerts_pending_idx").on(t.status, t.station, t.createdAt),
+    check("order_alerts_attempts", sql`${t.attempts} between 0 and 100`),
+    check("order_alerts_message", sql`char_length(${t.message}) between 1 and 4000`),
   ],
 ).enableRLS();
 

@@ -133,3 +133,25 @@ requested for integration, exact generated paths and isolated test-data reset.
 Do not silently rewrite locally applied migration0013 or auto-merge the PR.
 Next: obtain proposal approval, reconcile using generator, verify combined history
 and full integration, then advance review. Original migration approval remains valid.
+
+## Approved develop integration — 2026-11-06
+
+User approved the exact base-update/reset proposal. Recorded paths and resumed using
+CLI blocked→in_review→in_progress (the direct transition was correctly rejected).
+A shared ticket lock temporarily prevented the first resume; it disappeared naturally,
+and no lock was removed. Status commits bb9a617c/b6f3650a pushed.
+
+Merged exact approved develop6fb465347a1426112783a7bf07860d2b71a8c493 without commit.
+Resolved two metadata conflicts with unchanged develop0013 snapshot/journal, removed
+old branch photo0013 under explicit exception and generated0014 via Drizzle. Verified
+develop0013 SQL/snapshot unchanged and new photo SQL byte-identical to the old approved
+SQL. Pre-reset: public guest/order/photo tables empty, two matching synthetic photo
+Auth accounts, zero storage objects, one temporary request counter. Guarded db:reset
+affected only wedding-0c649f187525; it migrated and seeded. Subsequent migrations
+twice match counts; all18 tables retain RLS. Photo DB test1pass, outbox DB tests5pass;
+reseed counts match. Logs /tmp/TICKET-175-integrated-migrations.log,
+/tmp/TICKET-175-integrated-outbox.log. Build/browser run session56574 is pending.
+Next: confirm its terminal result, commit approved integration, run t:pr full gate.
+
+Integrated build and real OTP/TOTP photo journey pass (2 mobile/desktop tests,4.0s),
+session56574 exit0. Final integration gate will run through t:pr after merge commit.
