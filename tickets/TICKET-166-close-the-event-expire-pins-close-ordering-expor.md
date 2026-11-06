@@ -2,7 +2,7 @@
 id: TICKET-166
 title: "Close the event: expire PINs, close ordering, export memories"
 epic: launch
-status: blocked
+status: in_progress
 priority: medium
 estimate: M
 labels: [backend, docs]
@@ -14,11 +14,11 @@ blocks: [TICKET-154, TICKET-167, TICKET-168]
 branch: TICKET-166
 pr: ""
 created: 2026-10-21
-updated: 2026-11-05
+updated: 2026-11-06
 started: 2026-11-05
 completed: ""
-reason: "Isolated Supabase startup terminated with failure; no owned database container exists. Pure closure/export foundations pushed; database recovery and integration pending."
-resume_to: in_progress
+reason: ""
+resume_to: ""
 ---
 
 # TICKET-166: Close the event: expire PINs, close ordering, export memories
@@ -67,3 +67,4 @@ _Agents append dated notes here while working._
 - 2026-11-05 — todo → claimed — divine (codex)
 - 2026-11-05 — todo → in_progress — divine (codex)
 - 2026-11-05 — in_progress → blocked — divine (codex) — Isolated Supabase startup terminated with failure; no owned database container exists. Pure closure/export foundations pushed; database recovery and integration pending.
+- 2026-11-06 — blocked → in_progress — divine (codex)
