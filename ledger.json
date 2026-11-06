@@ -2025,9 +2025,10 @@
         "- 2026-11-06 — in_progress → blocked — divine (codex) — Photo upload implemented; migration commit and exact-path authorization pending for 0013_invitation-photos SQL/snapshot/journal. Build, isolated DB and real authenticated upload tests pass; full gate blocked by protected-file hook tests.",
         "- 2026-11-06 — blocked → in_progress — divine (codex) — User approved exact migration commit paths and authorization record",
         "- 2026-11-06 — in_progress → in_review — divine (codex)",
-        "- 2026-11-06 — in_review → blocked — divine (codex) — Develop 6fb46534 adds another migration0013; explicit base update, generator reconciliation and isolated reset approval pending. Original-base full verification and implementation are pushed in PR107."
+        "- 2026-11-06 — in_review → blocked — divine (codex) — Develop 6fb46534 adds another migration0013; explicit base update, generator reconciliation and isolated reset approval pending. Original-base full verification and implementation are pushed in PR107.",
+        "- 2026-11-06 — blocked → in_review — divine (codex) — Integration approval received; restoring prior status before addressing review changes"
       ],
-      "status": "blocked",
+      "status": "in_review",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-175",
@@ -2035,8 +2036,8 @@
       "started": "2026-11-06",
       "completed": "",
       "updated": "2026-11-06",
-      "reason": "Develop 6fb46534 adds another migration0013; explicit base update, generator reconciliation and isolated reset approval pending. Original-base full verification and implementation are pushed in PR107.",
-      "resume_to": "in_review"
+      "reason": "",
+      "resume_to": ""
     },
     "WED-217": {
       "log": [
