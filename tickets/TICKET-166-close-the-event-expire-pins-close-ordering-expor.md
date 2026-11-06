@@ -69,6 +69,11 @@ tests, lint and types pass. One guarded database test is prepared but skipped;
 the owned database is absent. Query execution, full route integration and event
 closure/revocation remain unverified; no acceptance criterion is marked complete.
 
+2026-11-06: Implemented authorized closure transaction/action and matching ordering
+settings lock/expiry recheck. Eight action tests, lint and types pass. Database
+closure, session and concurrency rehearsals remain unrun; admin navigation/UI and
+full verification remain unfinished. No production action or data deletion occurred.
+
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md

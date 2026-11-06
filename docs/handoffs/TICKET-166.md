@@ -96,3 +96,28 @@ setup succeeds. Docker still reports no owned database container. No database wa
 started, migrated, reset or borrowed. Full build/browser and actual aggregate query
 execution remain unverified. Next: transactional closure/action, database recovery,
 integration rehearsal and UI review. PR105 stays draft; no criteria marked done.
+
+## Closure transaction and action — 2026-11-06
+
+Added an AAL2-authorized Server Action and internal transactional closure. It locks
+event settings, samples server time after the lock, checks current date/timezone and
+the exact confirmation/evidence acknowledgment, closes ordering, clears non-admin
+PIN material and revokes active devices. It never deletes admission evidence or
+admin identities. Repeated closure skips already-revoked rows and closed settings.
+Revocation uses revokedAt rather than incrementing credentialVersion; the existing
+staff authenticator independently rejects revoked records and missing PIN material.
+
+Ordering now holds a settings share lock until its submission commits, matching
+closure's update lock. Staff-entered orders recheck event expiry after that lock so
+an earlier authorization cannot bypass closure via the temporary-pause exception.
+The existing staff-order integration fixture now supplies an unexpired event and
+restores it afterward; a new expired-staff-order assertion retains the no-write check.
+
+Eight action tests pass, along with lint/types. The first run failed for the missing
+implementation. Final log /tmp/TICKET-166-closure-final-quick.log reports23 skipped
+database tests, not passes. Added rollback-only real-DB closure rehearsal covering
+early refusal, revocation, admin/admission preservation and repeat invocation; it
+has NOT run. Actual concurrent ordering/closure rehearsal, staff-session rejection,
+full verification and UI/navigation remain unverified. No database mutation or
+production closure occurred. CI42231564205 for the preceding commit was still live
+before this follow-up; do not treat it as verification of this new source.

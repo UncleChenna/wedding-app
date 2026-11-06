@@ -17,8 +17,14 @@ remaining native visual review is unfinished. Tests cover all four themed A4 PDF
 privacy projection, invalid counts and long-menu pagination.
 Nine download-boundary tests and the quick gate pass. The guarded database aggregate
 test is skipped because the isolated database is unavailable; its SQL and actual
-route integration remain unverified. Transactional revocation, closure admin action,
-download navigation, end-to-end rehearsal and full verification remain unfinished.
+route integration remain unverified. The closure transaction and AAL2 Server Action
+are implemented with eight passing boundary tests. Closure locks settings, checks
+server time and explicit confirmation, clears non-admin PIN material and revokes
+devices without deleting admission records. Order submissions hold the matching
+share lock and staff submissions recheck expiry after waiting.
+The rollback-only database closure rehearsal, existing ordering tests and new
+expired-staff-order case are unrun. Download/closure navigation, actual session and
+concurrency rehearsal, and full verification remain unfinished.
 Isolated database startup failed; no other stack has been borrowed or stopped.
 Use existing06:00 venue-local next-day expiry and current revocation fields where
 possible. Base develop c9c9e66010ee773189477139d4f8b0d30cf481e1.
