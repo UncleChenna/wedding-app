@@ -2037,12 +2037,13 @@
     },
     "WED-217": {
       "log": [
-        "- 2026-11-06 — backlog → todo — unclechenna"
+        "- 2026-11-06 — backlog → todo — unclechenna",
+        "- 2026-11-06 — todo → claimed — unclechenna (claude)"
       ],
       "status": "todo",
-      "owner": "",
-      "agent": "",
-      "branch": "",
+      "owner": "unclechenna",
+      "agent": "claude",
+      "branch": "TICKET-217",
       "pr": "",
       "started": "",
       "completed": "",
