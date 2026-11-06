@@ -97,3 +97,16 @@ Full unit suite then passed with normal local-server permission: 1,034 passed,
 99 skipped across 116 passed/19 skipped files, 45.76s, default worker settings.
 The retained sandbox run had 15 failures and three EPERM unhandled errors; none
 remain in the normally permitted run. This is pre-integration evidence only.
+
+Draft checkpoint: https://github.com/UncleChenna/wedding-app/pull/106. Initial
+preparation ff43175ccb4c971f4a90aede23d21346e6114712 is pushed; GitHub CI is
+available and real jobs started. Optional review skipped; it is not technical
+verification. Obtain final-head results after changes; source integration pending.
+
+Provenance now exists in docs/migration-history: three SQL files, three snapshots
+and original journal, produced through Git archive and verified byte-for-byte
+against full 7ea316ba source (seven matches), with public hashes in the manifest.
+Active drizzle source remains unchanged. Hook false-positive follow-up for its
+owner: quoted documentation containing Git command words must not be classified
+as an executed shell mutation; preserve main/develop write rejection. No hook
+changed. Use worktree-scoped commands for actual Git actions.
