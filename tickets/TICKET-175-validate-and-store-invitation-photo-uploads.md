@@ -2,7 +2,7 @@
 id: TICKET-175
 title: Validate and store invitation photo uploads
 epic: admin
-status: in_review
+status: blocked
 priority: medium
 estimate: M
 labels: [backend, security]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-11-06
 started: 2026-11-06
 completed: ""
-reason: ""
-resume_to: ""
+reason: "Develop 6fb46534 adds another migration0013; explicit base update, generator reconciliation and isolated reset approval pending. Original-base full verification and implementation are pushed in PR107."
+resume_to: in_review
 ---
 
 # TICKET-175: Validate and store invitation photo uploads
@@ -64,3 +64,4 @@ Backlog audit coverage: ADM-5, THM-1. See [PRD](../docs/prd.md) and [audit](AUDI
 - 2026-11-06 — blocked → in_progress — divine (codex) — User approved exact migration commit paths and authorization record
 - 2026-11-06 — User approved the exact generated migration paths and authorization record. Full verification now passes:1054 unit tests,837 browser smoke tests; separate real admin upload and database integration checks pass. Prior hook failures cleared without hook/test changes. No production database application authorized.
 - 2026-11-06 — in_progress → in_review — divine (codex)
+- 2026-11-06 — in_review → blocked — divine (codex) — Develop 6fb46534 adds another migration0013; explicit base update, generator reconciliation and isolated reset approval pending. Original-base full verification and implementation are pushed in PR107.
