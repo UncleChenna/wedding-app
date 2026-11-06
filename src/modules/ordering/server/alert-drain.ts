@@ -54,6 +54,16 @@ export async function drainAlerts(
   return result;
 }
 
+/**
+ * Used until the WhatsApp provider exists (TICKET-085): records that a batch was due without
+ * contacting anyone. It logs counts only, never the message.
+ */
+export const loggingSender: AlertSender = async ({ station, text }) => {
+  logger
+    .child({ module: "order-alerts" })
+    .info("Order alert ready (no provider yet)", { station, lines: text.split("\n").length });
+};
+
 /** Development and test sender: records messages instead of contacting anyone. */
 export function dryRunSender(): AlertSender & { sent: { station: Station; text: string }[] } {
   const sent: { station: Station; text: string }[] = [];

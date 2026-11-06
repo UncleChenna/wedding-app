@@ -42,10 +42,10 @@ See: [ORD-9 WhatsApp order alerts](../docs/prd.md#ord-9--whatsapp-order-alerts-m
 ## Acceptance criteria
 
 - [x] Three orders in 60s produce one batched message per station (unit with fake clock).
-- [ ] An alert failure never blocks order creation (test).
-- [ ] ADR merged.
+- [x] An alert failure never blocks order creation (test).
+- [x] ADR merged.
 
-- [ ] A durable scheduled drain sends the final pending batch within the approved 60-second window even if no new request arrives; request-triggered flushing alone is insufficient.
+- [x] A durable scheduled drain sends the final pending batch within the approved 60-second window even if no new request arrives; request-triggered flushing alone is insufficient.
 
 ## Test plan
 
@@ -76,6 +76,19 @@ _Agents append dated notes here while working._
   - **Remaining after approval:** the schema and migration, enqueue in `createOrder`'s transaction, a Postgres
     `SKIP LOCKED` outbox, a secret-protected `POST /api/alerts/drain`, the schedule, and integration tests (stop
     traffic, advance time, one bounded batch, retry and idempotency).
+- 2026-11-06 (unclechenna, claude): the owner approved the migration and building now on the local Supabase stack.
+  - **Built:**
+    - `order_alerts` (`drizzle/0013_fresh_doctor_faustus.sql`)
+    - enqueue in `createOrder`'s transaction, one row per station ticket and unique per ticket
+    - `server/alert-outbox.ts`: a one-transaction drain with `FOR UPDATE SKIP LOCKED`
+    - `POST /api/alerts/drain`, using Bearer `ALERT_DRAIN_SECRET`
+    - `pnpm alerts:schedule` (`pg_cron` + `pg_net`, every 10 seconds)
+    - a logging sender until TICKET-085
+  - **Evidence:**
+    - 5 Postgres integration tests (`RUN_ORDER_ALERT_DB_TESTS=1`)
+    - a local end-to-end run: one order, no further traffic, sent by `pg_cron` after 57 seconds
+  - **Still open:** the production schedule. Run `pnpm alerts:schedule --url https://<site>/api/alerts/drain` once
+    the host is chosen (TICKET-213). On Neon, `pg_net` isn't available, so the HTTP call needs another path.
 
 ## Activity log
 
