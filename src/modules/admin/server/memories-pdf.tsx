@@ -70,17 +70,26 @@ export async function renderMemoriesPdf(input: unknown, theme: Theme) {
             </View>
           ))
         )}
-        <Text
+        <View
           fixed
           style={{
             position: "absolute",
             bottom: 24,
             left: 42,
             right: 42,
-            fontSize: 10,
-            textAlign: "center",
+            height: 16,
           }}
-          render={({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`}
+          render={(page) => {
+            // The layout supplies the total only on its final pagination pass.
+            const total = "totalPages" in page ? page.totalPages : undefined;
+            return (
+              <Text style={{ fontSize: 10, lineHeight: 1.2, textAlign: "center" }}>
+                {typeof total === "number"
+                  ? `${page.pageNumber} / ${total}`
+                  : String(page.pageNumber)}
+              </Text>
+            );
+          }}
         />
       </Page>
     </Document>,

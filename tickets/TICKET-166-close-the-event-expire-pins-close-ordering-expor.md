@@ -78,6 +78,10 @@ full verification remain unfinished. No production action or data deletion occur
 passes lint/types/117 related tests (one opt-in skip). All-theme browser, database,
 session/concurrency and device verification remain outstanding; UI review incomplete.
 
+2026-11-06: Native PDF review found and fixed missing page numbers. All four themes
+and the seven-page menu pass native A4/page-number/privacy checks; six renderer
+tests and quick verification pass. No database/browser/device completion claimed.
+
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md

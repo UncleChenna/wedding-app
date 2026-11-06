@@ -22,9 +22,12 @@ Disposition: CHANGES REQUESTED until the outstanding verification below is compl
 - NOT VERIFIED: full gate, real database closure, session rejection and ordering
   concurrency. Quick gate passes lint/types/117 related tests (one opt-in skip),
   log /tmp/TICKET-166-ui-final-quick.log. Skipped tests are not passing evidence.
-- PDF: four themes render in unit tests; native ivory text extraction and raster
-  inspection performed previously. Remaining native theme/long-menu inspection
-  and browser/device downloads remain unverified.
+- PDF: all four themed samples and the seven-page long menu pass native PDFKit
+  extraction and the A4/page-number/privacy checks in scripts/verify-memories-pdf.swift.
+  First pages of all themes and the final long-menu page visually inspected. Fixed
+  missing page-number output discovered by native review. Six renderer tests and
+  quick gate pass. Not every middle long-menu page was visually inspected;
+  browser/device downloads remain unverified.
 
 The managed database is absent and Docker has608MB available. No additional stack
 was started. Do not build against the copied primary credentials or present these

@@ -12,8 +12,9 @@ require live AAL2 admin access before querying and use private no-cache attachme
 The repository uses a consistent read-only snapshot of counts and public menu
 labels; cancelled station quantities do not count toward menu popularity.
 The original22 foundation tests passed; six new PDF tests and the quick lint/type
-gate pass. Native PDFKit text/raster inspection passes for the ivory sample;
-remaining native visual review is unfinished. Tests cover all four themed A4 PDFs,
+gate pass. Native PDFKit verifies A4/page numbers/privacy for all four themes and
+the seven-page long menu. Theme first pages and the final menu page were inspected;
+not every middle page has received visual review. Tests cover all four themed A4 PDFs,
 privacy projection, invalid counts and long-menu pagination.
 Nine download-boundary tests and the quick gate pass. The guarded database aggregate
 test is skipped because the isolated database is unavailable; its SQL and actual

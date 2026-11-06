@@ -97,6 +97,28 @@ started, migrated, reset or borrowed. Full build/browser and actual aggregate qu
 execution remain unverified. Next: transactional closure/action, database recovery,
 integration rehearsal and UI review. PR105 stays draft; no criteria marked done.
 
+## Native PDF follow-up — 2026-11-06
+
+Native PDFKit opened all four theme samples and the seven-page90-item menu.
+Text extraction includes every synthetic menu item and no private fixture markers.
+All four theme first-page layouts have been visually inspected; the final long-menu
+page was also inspected. Native review discovered that the original Text render
+callback did not produce page-number content in the installed renderer. A View
+callback returning a Text element fixes it. Its final-pass total is narrowed at
+runtime because View's type only declares the current page number.
+
+Added scripts/verify-memories-pdf.swift: it checks real A4 media boxes, each page's
+number/total, and absence of private fixture markers. All five generated PDFs pass
+after the correction; the long sample reports1/7 through7/7. Six renderer tests and
+the final quick gate pass; log /tmp/TICKET-166-footer-quick.log. No full browser/device
+approval is implied, and not every middle long-menu page received visual inspection.
+
+Capacity audit confirms no completed owned running stack can be stopped under the
+current rule: TICKET-106 is done but owned by unclechenna, TICKET-084 is their active
+work, TICKET-043 is mine but blocked. TICKET-048 stop exception remains pending.
+No stacks touched. CI42233436981 for6675360 was still live (four checks passed,
+pnpm verify running) before the footer follow-up; later source needs its own CI.
+
 ## Closure transaction and action — 2026-11-06
 
 Added an AAL2-authorized Server Action and internal transactional closure. It locks
