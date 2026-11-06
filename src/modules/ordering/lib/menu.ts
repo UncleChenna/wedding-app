@@ -32,6 +32,8 @@ export function groupMenu(items: readonly MenuItem[]): MenuSection[] {
 
 export const MENU_POLL_INTERVAL_MS = 3000;
 export const menuAvailabilitySchema = z.strictObject({
+  /** Whether guests can send orders right now (ORD-7, set by the couple in admin). */
+  open: z.boolean(),
   items: z.array(z.strictObject({ id: z.uuid(), available: z.boolean() })).max(500),
 });
 export type MenuAvailability = z.infer<typeof menuAvailabilitySchema>;
@@ -43,4 +45,9 @@ export const menuCopy = {
   backInStock: (name: string) => `${name} is available again.`,
   empty: "The menu isn't ready yet. Please ask the team for food or drinks.",
   unavailable: "We couldn't load the menu just now. Please refresh, or ask the team.",
+  closedHeading: "The menu opens soon",
+  closed:
+    "Ordering opens after the couple's entrance. This page will open by itself, so keep it handy.",
+  reopened: "Ordering is open. What can we bring you?",
+  paused: "Ordering has paused for now.",
 } as const;

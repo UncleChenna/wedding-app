@@ -30,7 +30,7 @@ const items: MenuItem[] = [
   },
 ];
 let availability: { id: string; available: boolean }[];
-const fetchMock = vi.fn(async () => Response.json({ items: availability }));
+const fetchMock = vi.fn(async () => Response.json({ open: true, items: availability }));
 
 beforeEach(() => {
   vi.useFakeTimers();

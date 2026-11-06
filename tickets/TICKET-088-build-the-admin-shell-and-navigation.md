@@ -2,20 +2,20 @@
 id: TICKET-088
 title: Build the admin shell and navigation
 epic: admin
-status: todo
+status: in_review
 priority: urgent
 estimate: M
 labels: [frontend]
 module: admin
-owner: ""
-agent: ""
+owner: unclechenna
+agent: claude
 blocked_by: [TICKET-017, TICKET-032]
 blocks: [TICKET-043, TICKET-048, TICKET-064, TICKET-067, TICKET-069, TICKET-080, TICKET-089, TICKET-095, TICKET-096, TICKET-098, TICKET-099, TICKET-101, TICKET-143, TICKET-166, TICKET-174, TICKET-175]
-branch: ""
-pr: ""
+branch: TICKET-088
+pr: https://github.com/UncleChenna/wedding-app/pull/95
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-04
+started: 2026-11-04
 completed: ""
 reason: ""
 resume_to: ""
@@ -39,8 +39,8 @@ See: [Admin dashboard](../docs/prd.md#admin-dashboard) · [Users and roles](../d
 
 ## Acceptance criteria
 
-- [ ] Navigation works by keyboard and at 375px (e2e).
-- [ ] Unauthenticated access redirects to sign-in.
+- [x] Navigation works by keyboard and at 375px (e2e).
+- [x] Unauthenticated access redirects to sign-in.
 
 ## Test plan
 
@@ -56,6 +56,23 @@ See: [Admin dashboard](../docs/prd.md#admin-dashboard) · [Users and roles](../d
 
 _Agents append dated notes here while working._
 
+- 2026-11-04:
+  - **Shell.** `AdminShell` wraps every protected admin page: the event name (couple names from settings), and
+    navigation that's a bottom bar on phones and a sidebar from `md`. Links are Control room, Sharing and Sign out.
+    Only `AdminNavLink` is a client component (for `aria-current`). The dashboard's own sign-out link moved into the
+    shell. Sections are listed in `adminSections`; feature tickets add theirs as their pages land.
+  - **Evidence without Auth.** Admin sign-in needs the local Supabase Auth stack, which wouldn't start here (Docker).
+    `/dev/admin` renders the same shell with sample content for the browser tests: keyboard order and visible focus;
+    bottom bar pinned to the viewport and last content clear of it at 375px; sidebar at 768/1280; 44px targets; axe in
+    every theme; screenshots.
+  - **Unauthenticated access.** `e2e/access-matrix.spec.ts` now asserts `/admin` and `/admin/sharing` redirect to
+    `/admin/sign-in`, and the keyboard test follows a shell link to the sign-in page.
+  - **Not verified:** a signed-in run of the real `/admin` with the shell (needs local Auth, or the hosted dev project
+    proposed in TICKET-213), and real phones.
+
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-04 — todo → claimed — unclechenna (claude)
+- 2026-11-04 — todo → in_progress — unclechenna (claude)
+- 2026-11-04 — in_progress → in_review — unclechenna (claude)

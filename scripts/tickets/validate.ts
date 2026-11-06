@@ -17,7 +17,16 @@ const TEMPLATE_PLACEHOLDERS = [
  * Whole-backlog checks. Returns human-readable problems; empty means valid.
  * Parse errors (schema, sections, heading) are reported by the loader.
  */
-export function validateTickets(tickets: readonly Ticket[]): string[] {
+export function validateTickets(
+  tickets: readonly Ticket[],
+  options: {
+    /**
+     * Ids the shared ledger has allocated. Another collaborator may hold one without having pushed its file yet; that
+     * gap is not a deletion. Omit (or pass nothing) when the ledger is unavailable to keep the strict check.
+     */
+    reserved?: ReadonlySet<string>;
+  } = {},
+): string[] {
   const problems: string[] = [];
   const add = (t: Ticket | null, message: string) =>
     problems.push(t ? `${t.meta.id}: ${message}` : message);
@@ -33,10 +42,11 @@ export function validateTickets(tickets: readonly Ticket[]): string[] {
       add(t, `file must be named tickets/${t.meta.id}-<slug>.md (found ${t.path})`);
   }
 
-  // Ids are allocated sequentially and never reused or deleted (cancel instead).
+  // Ids are allocated sequentially and never reused or deleted (cancel instead). A gap is allowed only for an id the
+  // ledger shows as allocated to someone, so another person's unpushed ticket never blocks this checkout.
   const max = Math.max(0, ...tickets.map((t) => idNumber(t.meta.id)));
   const missing = Array.from({ length: max }, (_, i) => formatId(i + 1)).filter(
-    (id) => !map.has(id),
+    (id) => !map.has(id) && !options.reserved?.has(id),
   );
   if (missing.length)
     problems.push(

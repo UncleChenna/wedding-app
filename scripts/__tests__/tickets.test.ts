@@ -588,3 +588,67 @@ describe("ticket CLI with a shared remote", () => {
     expect((await t(a, "validate")).out).toMatch(/TICKET-003/);
   }, 30000);
 });
+
+describe("working ahead (TICKET-214)", () => {
+  const todo = ticket("TICKET-005", { blocked_by: ["TICKET-001", "TICKET-002"] }).meta;
+  type Status = ReturnType<MoveFacts["statusOf"]>;
+  const status = (map: Record<string, Status>) => (id: string) => map[id];
+
+  it("allows an id gap only when the ledger reserved it", () => {
+    const tickets = [ticket("TICKET-001"), ticket("TICKET-004")];
+    expect(validateTickets(tickets).join("\n")).toMatch(/missing TICKET-002, TICKET-003/);
+    const reserved = validateTickets(tickets, { reserved: new Set(["TICKET-002"]) }).join("\n");
+    expect(reserved).toMatch(/missing TICKET-003/);
+    expect(reserved).not.toMatch(/TICKET-002/);
+  });
+
+  it("refuses unfinished blockers by default and points to --ahead", () => {
+    const inReview = facts({
+      statusOf: status({ "TICKET-001": "in_review", "TICKET-002": "done" }),
+    });
+    expect(() => claim(todo, inReview, "TICKET-005")).toThrow(/blocked by TICKET-001.*--ahead/);
+  });
+
+  it("claims ahead of blockers that are in progress, in review or blocked", () => {
+    const busy = facts({
+      ahead: true,
+      statusOf: status({ "TICKET-001": "in_review", "TICKET-002": "in_progress" }),
+    });
+    expect(claim(todo, busy, "TICKET-005")).toMatchObject({ owner: "divine" });
+    const stuck = facts({
+      ahead: true,
+      statusOf: status({ "TICKET-001": "blocked", "TICKET-002": "done" }),
+    });
+    expect(claim(todo, stuck, "TICKET-005")).toMatchObject({ owner: "divine" });
+  });
+
+  it("never starts ahead of a blocker nobody has started", () => {
+    const idle = facts({
+      ahead: true,
+      statusOf: status({ "TICKET-001": "todo", "TICKET-002": "in_review" }),
+    });
+    expect(() => claim(todo, idle, "TICKET-005")).toThrow(/TICKET-001 has not started/);
+  });
+
+  it("moves to in progress ahead with the same rule", () => {
+    const claimed = { ...todo, owner: "divine", agent: "claude", branch: "TICKET-005" };
+    const busy = {
+      statusOf: status({ "TICKET-001": "in_review", "TICKET-002": "done" }),
+      branch: "TICKET-005",
+    };
+    expect(() => move(claimed, "in_progress", facts(busy))).toThrow(/--ahead/);
+    expect(move(claimed, "in_progress", facts({ ...busy, ahead: true }))).toMatchObject({
+      status: "in_progress",
+    });
+  });
+
+  it("still refuses done until every blocker is done", () => {
+    const review = { ...todo, status: "in_review" as const, owner: "divine", branch: "TICKET-005" };
+    const merged = { criteriaTicked: true, mergedPr: "https://x.test/1", ahead: true };
+    const pending = status({ "TICKET-001": "in_review", "TICKET-002": "done" });
+    expect(() => move(review, "done", facts({ ...merged, statusOf: pending }))).toThrow(
+      /cannot be done before TICKET-001/,
+    );
+    expect(move(review, "done", facts(merged))).toMatchObject({ status: "done" });
+  });
+});
