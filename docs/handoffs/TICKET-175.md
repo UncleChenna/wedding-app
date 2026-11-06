@@ -27,3 +27,28 @@ bounded canonical decoding. Prepare storage/access/retention design before any
 schema or policy change. Do not substitute signature-only checks for decoding or
 claim arbitrary polyglot detection. All acceptance criteria remain unverified.
 No product code, dependency, schema, RLS, CI or production change yet.
+
+## Approved decoder implementation — 2026-11-06
+
+Draft PR: https://github.com/UncleChenna/wedding-app/pull/107. User explicitly
+approved sharp0.35.5, generated pnpm-lock.yaml and its authorization record. Recorded
+the exact path in ignored .harness/approved-writes.json and ran pnpm add with the
+exact version. No native build-script permissions, CI, RLS or services changed.
+
+Added internal server-only normalizePhoto: strict complete-container checks for
+JPEG/PNG/WebP; actual bounded Sharp decoding; MIME/dimension/frame/input limits;
+auto-orientation; metadata-free canonical WebP and a bounded blur thumbnail. Rejects
+appended/concatenated payloads, unknown PNG/WebP chunks and animation containers.
+Canonical re-encoding is essential: structural checks alone are not a proof that
+all conceivable polyglots are detectable. No original bytes are returned for storage.
+
+Tests first failed for the missing implementation. The initial ten cases passed;
+strict types then caught a fixture tuple's possibly undefined width, fixed with
+readonly tuples. Added progressive-JPEG and animated-WebP tests. Identical animation
+frames were optimized into one frame; corrected the fixture to distinct pixels.
+Final verify:quick passes lint/types/all12 related tests; log
+/tmp/TICKET-175-image-quick-final.log. Full verification has not run.
+
+Next: authorization boundary and persistence design/integration. No route is exposed
+yet; the decoder alone does not authorize callers. Schema/storage-policy changes
+need a concrete proposal and any required approval. No ticket criterion is complete.
