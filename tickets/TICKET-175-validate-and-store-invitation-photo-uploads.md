@@ -2,7 +2,7 @@
 id: TICKET-175
 title: Validate and store invitation photo uploads
 epic: admin
-status: in_review
+status: in_progress
 priority: medium
 estimate: M
 labels: [backend, security]
@@ -66,3 +66,4 @@ Backlog audit coverage: ADM-5, THM-1. See [PRD](../docs/prd.md) and [audit](AUDI
 - 2026-11-06 — in_progress → in_review — divine (codex)
 - 2026-11-06 — in_review → blocked — divine (codex) — Develop 6fb46534 adds another migration0013; explicit base update, generator reconciliation and isolated reset approval pending. Original-base full verification and implementation are pushed in PR107.
 - 2026-11-06 — blocked → in_review — divine (codex) — Integration approval received; restoring prior status before addressing review changes
+- 2026-11-06 — in_review → in_progress — divine (codex) — Apply user-approved develop integration and migration reconciliation
