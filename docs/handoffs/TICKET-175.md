@@ -120,3 +120,16 @@ No production migration is authorized.
 Implementation committed and pushed as9cc8ecdc. First t:pr preflight rejected custom
 PR headings; corrected them to the required template headings. No verification was
 skipped. Rerun t:pr on the corrected body.
+
+## Published implementation; new integration blocker — 2026-11-06
+
+Implementation9cc8ecdc and template correction5307de1b are pushed. Required t:pr
+full gate passed again; status/PR metadata pushed in45cef7bd. PR107 remains draft.
+During verification, develop advanced to6fb465347a1426112783a7bf07860d2b71a8c493
+(merged PR91/TICKET-084), adding its own migration0013. Read-only merge preview
+conflicts in meta/0013_snapshot.json and meta/_journal.json. No base update performed.
+Proposal now in docs/reviews/TICKET-175/base-update-proposal.md; explicit approval
+requested for integration, exact generated paths and isolated test-data reset.
+Do not silently rewrite locally applied migration0013 or auto-merge the PR.
+Next: obtain proposal approval, reconcile using generator, verify combined history
+and full integration, then advance review. Original migration approval remains valid.

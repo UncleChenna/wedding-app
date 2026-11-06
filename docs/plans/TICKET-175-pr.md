@@ -2,6 +2,14 @@
 
 TICKET-175 — Validate and store invitation photo uploads. Target develop.
 
+# Integration status
+
+Implementation and full verification are published. PR remains draft because develop
+advanced to6fb46534 with TICKET-084's migration0013. Photo migration metadata now
+conflicts. Proposed base update and generator reconciliation are documented in
+docs/reviews/TICKET-175/base-update-proposal.md and await explicit approval.
+The passing checks below establish the original base, not the unresolved integration.
+
 # Summary
 
 The future invitation editor needs a safe, private photo pipeline. Admins can now
