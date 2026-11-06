@@ -1941,18 +1941,19 @@
       "log": [
         "- 2026-11-05 — todo → claimed — divine (codex)",
         "- 2026-11-05 — todo → in_progress — divine (codex)",
-        "- 2026-11-05 — in_progress → blocked — divine (codex) — Awaiting exact-path approval for generated lost-link migration, isolated application/commit and proposed 10 requests/network/minute budget; SQL remains unapplied."
+        "- 2026-11-05 — in_progress → blocked — divine (codex) — Awaiting exact-path approval for generated lost-link migration, isolated application/commit and proposed 10 requests/network/minute budget; SQL remains unapplied.",
+        "- 2026-11-06 — blocked → in_progress — divine (codex)"
       ],
-      "status": "blocked",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-048",
       "pr": "",
       "started": "2026-11-05",
       "completed": "",
-      "updated": "2026-11-05",
-      "reason": "Awaiting exact-path approval for generated lost-link migration, isolated application/commit and proposed 10 requests/network/minute budget; SQL remains unapplied.",
-      "resume_to": "in_progress"
+      "updated": "2026-11-06",
+      "reason": "",
+      "resume_to": ""
     },
     "WED-181": {
       "log": [
