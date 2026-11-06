@@ -2,7 +2,7 @@
 id: TICKET-166
 title: "Close the event: expire PINs, close ordering, export memories"
 epic: launch
-status: blocked
+status: in_progress
 priority: medium
 estimate: M
 labels: [backend, docs]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-11-06
 started: 2026-11-05
 completed: ""
-reason: "Closure-specific database and staff-session rehearsals require the isolated stack; Docker has only 537MB available. Awaiting permission to stop idle owned TICKET-048 with its backup preserved."
-resume_to: in_progress
+reason: ""
+resume_to: ""
 ---
 
 # TICKET-166: Close the event: expire PINs, close ordering, export memories
