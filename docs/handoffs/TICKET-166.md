@@ -240,3 +240,22 @@ corrected to the existing API contract. Both closure database tests then pass,
 and quick lint/types pass (/tmp/TICKET-166-concurrency-quick.log). No application
 code changed. Remaining: keyboard/focus/tap targets, cold CLS, reduced-motion and
 physical-device review/disposition; publish updated PR evidence after these checks.
+
+## Automated UI review complete; device disposition pending — 2026-11-06
+
+Final expanded closure browser run session76239 terminated0 in14.9s; log
+/tmp/TICKET-166-ui-browser-final.log. Keyboard tab/Space operation, focus outline,
+44px target geometry and mobile focused action above navigation pass in all themes.
+Reduced-motion interaction passes. Fresh authenticated contexts at375/768/1280
+measure exactly0 CLS after fonts/network settle. Four focused viewport screenshots
+inspected alongside all12 full-page images. Review copies are committed under
+docs/reviews/TICKET-166/screenshots so GitHub reviewers can see the evidence.
+
+An initial quick gate found an overly strong Window type assertion in the new CLS
+test. Replaced it with typed Object.assign and optional read; missing measurements
+still fail the exact-zero assertion. Final quick gate passes lint/types. All seven
+long-menu PDF pages have now been visually inspected with no clipping found.
+
+Requested permission to advance to review with physical-phone keyboard/safe-area
+and download checks retained as release requirements. No answer yet; PR remains
+draft and the ticket is not complete. No merge or production closure authorized.

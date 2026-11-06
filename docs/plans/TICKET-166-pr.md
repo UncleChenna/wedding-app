@@ -33,9 +33,10 @@ This draft preserves admission evidence and excludes data deletion.
 
 ## Remaining before review
 
-Keyboard/focus and tap-target geometry, focused controls above mobile navigation,
-cold-font CLS, reduced-motion and physical-device checks/disposition remain. Middle
-pages of the long PDF have native text checks but not complete visual inspection.
+Keyboard/focus,44px targets, focused controls above mobile navigation, reduced motion
+and exactly0 cold-load CLS at all three widths pass. All seven long PDF pages were
+visually inspected. Physical-phone keyboard/safe-area and download checks remain;
+the requested review-only exception retaining release checks is unanswered.
 See `docs/reviews/TICKET-166/ui-review.md` and the ticket handoff for exact evidence.
 
 ## Review and rollout

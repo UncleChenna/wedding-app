@@ -18,21 +18,25 @@ Disposition: CHANGES REQUESTED until the outstanding verification below is compl
   session rejection and preserved admin access. All12 theme/width screenshots in
   artifacts/TICKET-166/screenshots were captured and inspected. AA scans and
   horizontal-overflow checks pass at375/768/1280 in all four themes.
-- NOT VERIFIED: keyboard/focus/tap-target geometry, safe-area positioning, cold-font
-  CLS and physical-device behavior. Full-page mobile screenshots include the fixed
-  bottom navigation at the original viewport boundary; viewport-level checks must
-  still confirm focused controls remain unobscured. No final UI approval.
+- PASS: keyboard tab order, Space toggling, visible focused-button outline and
+  minimum44px target geometry in all theme/width variants. Four additional mobile
+  viewport captures show the focused action above the bottom navigation; all four
+  inspected. Reduced-motion interaction passes. Three fresh authenticated browser
+  contexts measure exactly0 CLS after fonts and network settle at375/768/1280.
+- NOT VERIFIED: physical-phone on-screen keyboard/safe-area and download behavior.
+  Requested a review-only exception retaining those release checks; unanswered.
+  No final UI approval.
 - N/A: page photography, QR codes and staff scanner feedback; none changed here.
-  No new animation; inherited motion/reduced-motion still needs browser review.
+  No new animation; reduced-motion browser interaction passes.
 - PASS: full gate (1076 unit passes/99 conditional skips,851 browser passes/195
   skips), real database closure/idempotency, session rejection and ordering
   concurrency. Concurrency observes PostgreSQL lock contention, retains the accepted
   order and rejects the next order after closure. Quick lint/types pass afterward.
 - PDF: all four themed samples and the seven-page long menu pass native PDFKit
   extraction and the A4/page-number/privacy checks in scripts/verify-memories-pdf.swift.
-  First pages of all themes and the final long-menu page visually inspected. Fixed
+  First pages of all themes and all seven long-menu pages visually inspected. Fixed
   missing page-number output discovered by native review. Six renderer tests and
-  quick gate pass. Not every middle long-menu page was visually inspected;
+  quick gate pass. The long-menu rows and page numbers remain readable without clipping;
   authenticated browser downloads now pass; device downloads remain unverified.
 
 The managed database is now healthy after the user-approved backup-preserving stop

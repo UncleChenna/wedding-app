@@ -104,6 +104,9 @@ test.describe("event closure rehearsal", () => {
     await db`update event_settings set event_date='2000-01-01' where id=1`;
     await page.reload();
     mkdirSync("artifacts/TICKET-166/screenshots", { recursive: true });
+    const evidence = page.getByLabel("All scanners have synced", { exact: false });
+    const confirmation = page.getByLabel("Type CLOSE EVENT to confirm");
+    const closeButton = page.getByRole("button", { name: "Close the event", exact: true });
     for (const theme of themes) {
       await applyTheme(page, theme);
       for (const width of [375, 768, 1280]) {
@@ -119,6 +122,80 @@ test.describe("event closure rehearsal", () => {
           path: `artifacts/TICKET-166/screenshots/${theme.id}-${width}.png`,
           fullPage: true,
         });
+        await page.getByRole("link", { name: "Download PDF", exact: true }).focus();
+        await page.keyboard.press("Tab");
+        await expect(page.getByRole("link", { name: "Download CSV", exact: true })).toBeFocused();
+        await page.keyboard.press("Tab");
+        await expect(evidence).toBeFocused();
+        await page.keyboard.press("Space");
+        await expect(evidence).toBeChecked();
+        await page.keyboard.press("Space");
+        await expect(evidence).not.toBeChecked();
+        await page.keyboard.press("Tab");
+        await expect(confirmation).toBeFocused();
+        await confirmation.fill("CLOSE EVENT");
+        await page.keyboard.press("Tab");
+        await expect(closeButton).toBeFocused();
+        const outline = await closeButton.evaluate(
+          (element) => getComputedStyle(element).outlineWidth,
+        );
+        expect(parseFloat(outline)).toBeGreaterThan(0);
+        for (const target of [
+          confirmation,
+          closeButton,
+          page.locator("label").filter({ has: evidence }),
+          page.getByRole("link", { name: "Download PDF", exact: true }),
+          page.getByRole("link", { name: "Download CSV", exact: true }),
+        ]) {
+          const box = await target.boundingBox();
+          expect(box?.height).toBeGreaterThanOrEqual(44);
+          expect(box?.width).toBeGreaterThanOrEqual(44);
+        }
+        if (width === 375) {
+          await closeButton.scrollIntoViewIfNeeded();
+          const buttonBox = await closeButton.boundingBox();
+          const navBox = await page
+            .getByRole("navigation", { name: "Admin", exact: true })
+            .boundingBox();
+          if (!buttonBox || !navBox) throw new Error("Missing mobile control geometry");
+          expect(buttonBox.y + buttonBox.height).toBeLessThanOrEqual(navBox.y);
+          await page.screenshot({
+            path: `artifacts/TICKET-166/screenshots/${theme.id}-375-focused.png`,
+          });
+        }
+        await confirmation.fill("");
+      }
+    }
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await evidence.focus();
+    await page.keyboard.press("Space");
+    await expect(evidence).toBeChecked();
+    await evidence.uncheck();
+    for (const width of [375, 768, 1280]) {
+      const coldContext = await browser.newContext({
+        baseURL,
+        viewport: { width, height: 900 },
+        storageState: await page.context().storageState(),
+      });
+      try {
+        await coldContext.addInitScript(() => {
+          const measured = Object.assign(window, { closureCLS: 0 });
+          new PerformanceObserver((list) => {
+            for (const entry of list.getEntries()) {
+              const shift = entry as PerformanceEntry & { value: number; hadRecentInput: boolean };
+              if (!shift.hadRecentInput) measured.closureCLS += shift.value;
+            }
+          }).observe({ type: "layout-shift", buffered: true });
+        });
+        const cold = await coldContext.newPage();
+        await cold.goto("/admin/event-closure");
+        await cold.evaluate(() => document.fonts.ready);
+        await cold.waitForLoadState("networkidle");
+        expect(
+          await cold.evaluate(() => (window as Window & { closureCLS?: number }).closureCLS),
+        ).toBe(0);
+      } finally {
+        await coldContext.close();
       }
     }
     await page.getByLabel("All scanners have synced", { exact: false }).check();
