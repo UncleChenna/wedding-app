@@ -57,7 +57,8 @@ Invalid-input coverage then exposed cleared fields after rejected submissions;
 the action now returns bounded submitted defaults only on failure.11focused tests,
 production build, real desktop journey and native no-JavaScript regression pass.
 Invalid-state screenshots/AA pass in4themes x3widths; intermediate queue widths
-390/430/600/1024 also pass. Full verification is rerunning for this final source.
+390/430/600/1024 also pass. Final-source full verification passes1061unit tests
+(100opt-in skips), production build and895browser tests (201opt-in skips).
 Physical-device checks and admin cold-load CLS remain unverified; see UI review.
 
 # Rollout and risks

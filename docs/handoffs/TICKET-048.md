@@ -206,3 +206,18 @@ New full gate for the retention fix is LIVE in session3378, log
 may share its artifact directory. Earlier pass does not certify this new source.
 Use the documented pnpm PATH prefix for Git too: one commit attempt failed before
 hooks could start because the prefix was omitted; retry with the prefix passed.
+
+## Final local gate — 2026-11-06
+
+Session3378 is TERMINAL0. At source1d10459, full pnpm verify passes ticket validation,
+format, lint, types,1061unit tests (100opt-in skips), production build and895browser
+tests (201opt-in skips). Log /tmp/TICKET-048-final-verify.log. The real lost-link
+database/authenticated/no-JavaScript checks were run separately as recorded above;
+their opt-in skips in the general gate do not replace that evidence.
+
+CI run42201584499 was confirmed live: ticket validation, PR text and migrations+seed
+passed; verification and invitation journey were still running. PR103 stays draft
+while the requested physical-device preview exception is unanswered. No merge is
+authorized for this PR. TICKET-181 remains stopped with backup preserved; no other
+stack stopped. Next: confirm final-head CI, resolve remaining UI release disposition,
+then use the ticket CLI for review transition. No acceptance/device result fabricated.

@@ -64,3 +64,7 @@ tests; a subsequent input-retention fix is undergoing its own full gate.
 
 Outcome: CHANGES REQUESTED pending final gate and physical-device preview exception;
 no physical check is represented as passed.
+
+Final gate update: source1d10459 passes full verification:1061unit/895browser tests,
+100/201opt-in skips, plus production build. The remaining review limitations above
+still apply; no physical-device or admin cold-load CLS result is inferred from this.
