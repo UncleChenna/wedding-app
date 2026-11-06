@@ -64,6 +64,11 @@ Six PDF tests and verify:quick pass; native ivory PDF text/raster inspected.
 Database integration, authenticated download, closure/revocation and full review
 remain unfinished. Draft PR105; see docs/handoffs/TICKET-166.md.
 
+2026-11-06: Added private CSV/PDF download routes and aggregate query. Nine boundary
+tests, lint and types pass. One guarded database test is prepared but skipped;
+the owned database is absent. Query execution, full route integration and event
+closure/revocation remain unverified; no acceptance criterion is marked complete.
+
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md

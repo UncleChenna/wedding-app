@@ -73,3 +73,26 @@ or full verification is claimed. Transactional closure, authenticated downloads,
 aggregate database query, revocation rehearsal and complete visual review remain.
 No Supabase stack was started/stopped in this follow-up. Database setup still needs
 recovery before integration verification; never migrate against the copied main URL.
+
+## Private download boundary and aggregate query — 2026-11-06
+
+Added /admin/memories/csv and /admin/memories/pdf?scheme=light|dark as route-only
+wrappers around an independently authorized module boundary. Live AAL2 access is
+checked before querying; invalid options fail before loading data. Responses use
+fixed filenames, no-store/no-referrer/noindex/nosniff; errors are sanitized.
+CSV reuses the allowlist and formula protection, PDF uses the stored theme pair.
+
+The repository selects counts and public menu names only in a read-only,
+repeatable-read transaction. It counts RSVP households separately from attendance,
+and sums station-order quantities excluding cancelled projections. Served totals
+come only from served station orders. It never selects guest/order notes or contact.
+
+Nine download tests pass; the first run failed for the missing implementation.
+Final quick gate passes lint/types/nine tests; one guarded real-database test is
+SKIPPED, not passed. Log /tmp/TICKET-166-download-final-quick.log. That pending test
+uses exact random fixtures and cleanup, checks baseline deltas, zero-order menu
+items, cancelled quantities and privacy. RUN_MEMORIES_DB_TESTS=1 only after managed
+setup succeeds. Docker still reports no owned database container. No database was
+started, migrated, reset or borrowed. Full build/browser and actual aggregate query
+execution remain unverified. Next: transactional closure/action, database recovery,
+integration rehearsal and UI review. PR105 stays draft; no criteria marked done.
