@@ -2023,13 +2023,14 @@
         "- 2026-11-06 — todo → claimed — divine (codex)",
         "- 2026-11-06 — todo → in_progress — divine (codex)",
         "- 2026-11-06 — in_progress → blocked — divine (codex) — Photo upload implemented; migration commit and exact-path authorization pending for 0013_invitation-photos SQL/snapshot/journal. Build, isolated DB and real authenticated upload tests pass; full gate blocked by protected-file hook tests.",
-        "- 2026-11-06 — blocked → in_progress — divine (codex) — User approved exact migration commit paths and authorization record"
+        "- 2026-11-06 — blocked → in_progress — divine (codex) — User approved exact migration commit paths and authorization record",
+        "- 2026-11-06 — in_progress → in_review — divine (codex)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-175",
-      "pr": "",
+      "pr": "https://github.com/UncleChenna/wedding-app/pull/107",
       "started": "2026-11-06",
       "completed": "",
       "updated": "2026-11-06",
