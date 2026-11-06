@@ -53,9 +53,12 @@ Backlog audit coverage: ADM-5, THM-1. See [PRD](../docs/prd.md) and [audit](AUDI
 ## Notes / decisions
 
 - 2026-10-21 — Added by HARNESS-002. All criteria describe future work; no completion or human approval is implied.
+- 2026-11-06 — Decoder, authorized raw upload, private retrieval and bounded Drizzle storage implemented. Quick checks, production build, two isolated migration runs/RLS checks, persistence integration and real mobile/desktop OTP/TOTP upload tests pass. Migration commit authorization remains pending; full verification is not green because three hook tests encounter the unauthorized journal. See docs/handoffs/TICKET-175.md and docs/reviews/TICKET-175/migration-approval.md. No production application or public photo access is authorized.
 
 ## Activity log
 
 - 2026-10-21 — new → todo — divine
 - 2026-11-06 — todo → claimed — divine (codex)
 - 2026-11-06 — todo → in_progress — divine (codex)
+- 2026-11-06 — in_progress → blocked — divine (codex) — Photo upload implemented; migration commit and exact-path authorization pending for 0013_invitation-photos SQL/snapshot/journal. Build, isolated DB and real authenticated upload tests pass; full gate blocked by protected-file hook tests.
+- 2026-11-06 — blocked → in_progress — divine (codex) — User approved exact migration commit paths and authorization record
