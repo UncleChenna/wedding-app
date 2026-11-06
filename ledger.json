@@ -1983,18 +1983,19 @@
       "log": [
         "- 2026-11-05 — todo → claimed — divine (codex)",
         "- 2026-11-05 — todo → in_progress — divine (codex)",
-        "- 2026-11-05 — in_progress → blocked — divine (codex) — Isolated Supabase startup terminated with failure; no owned database container exists. Pure closure/export foundations pushed; database recovery and integration pending."
+        "- 2026-11-05 — in_progress → blocked — divine (codex) — Isolated Supabase startup terminated with failure; no owned database container exists. Pure closure/export foundations pushed; database recovery and integration pending.",
+        "- 2026-11-06 — blocked → in_progress — divine (codex)"
       ],
-      "status": "blocked",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-166",
       "pr": "",
       "started": "2026-11-05",
       "completed": "",
-      "updated": "2026-11-05",
-      "reason": "Isolated Supabase startup terminated with failure; no owned database container exists. Pure closure/export foundations pushed; database recovery and integration pending.",
-      "resume_to": "in_progress"
+      "updated": "2026-11-06",
+      "reason": "",
+      "resume_to": ""
     },
     "WED-216": {
       "log": [
