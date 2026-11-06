@@ -2,7 +2,7 @@
 id: TICKET-048
 title: Let guests request their link again
 epic: invitations
-status: blocked
+status: in_progress
 priority: urgent
 estimate: M
 labels: [frontend, backend]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-11-06
 started: 2026-11-05
 completed: ""
-reason: "Migration and 10/network/minute budget approved; isolated migration repeatability and 3 storage tests passed. Expanded 4-test suite repeatedly times out. Await stable database capacity; full browser journey and gate remain unverified."
-resume_to: in_progress
+reason: ""
+resume_to: ""
 ---
 
 # TICKET-048: Let guests request their link again
