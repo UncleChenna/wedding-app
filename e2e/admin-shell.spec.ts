@@ -13,7 +13,15 @@ test.describe("admin shell", () => {
     await page.goto("/dev/admin");
     const nav = page.getByRole("navigation", { name: "Admin" });
     const links = nav.getByRole("link");
-    await expect(links).toHaveText(["Control room", "Sharing", "Menu", "Staff", "Settings"]);
+    const sections = [
+      "Control room",
+      "Invitation requests",
+      "Sharing",
+      "Menu",
+      "Staff",
+      "Settings",
+    ];
+    await expect(links).toHaveText(sections);
     // On phones sign-out sits in the header, away from the section bar.
     await expect(
       page.getByRole("banner").getByRole("link", { name: "Sign out", exact: true }),
@@ -23,7 +31,7 @@ test.describe("admin shell", () => {
       "page",
     );
     const reached: string[] = [];
-    for (let i = 0; i < 20 && reached.length < 5; i++) {
+    for (let i = 0; i < 20 && reached.length < sections.length; i++) {
       await page.keyboard.press("Tab");
       const focused = await page.evaluate(() => {
         const el = document.activeElement;
@@ -41,7 +49,7 @@ test.describe("admin shell", () => {
         reached.push(focused.text ?? "");
       }
     }
-    expect(reached).toEqual(["Control room", "Sharing", "Menu", "Staff", "Settings"]);
+    expect(reached).toEqual(sections);
     await page.keyboard.press("Shift+Tab");
     await page.keyboard.press("Enter");
     // The link opens /admin/sharing; without a session the proxy sends the browser to sign-in.

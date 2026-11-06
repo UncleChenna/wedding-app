@@ -26,3 +26,18 @@ announcements and success removal of the submit button, not real submission or
 visual rendering. Migration/budget approval is pending; request persistence and the
 admin queue must not be represented as operational or verified until isolated
 migration and end-to-end tests pass.
+
+## Integration update — 2026-11-06
+
+Supersedes the pending approval/integration status above: approved migration applied,
+repeatability/RLS and4storage/budget tests pass. Real public-submit/admin-OTP+MFA/
+private-match/ShareMenu browser journey passes on mobile and desktop. Matched and
+unmatched submissions have identical receipts and no public bearer-link exposure.
+All24received/admin-queue captures in4themes x375/768/1280 were visually inspected;
+AA and no horizontal overflow pass throughout. Long contact strings wrap. Typography
+and restrained layout remain legible. Mobile fixed navigation overlays a portion of
+the full-page queue capture; a scrolled lower-section check is still required.
+
+Full gate is running, not passed. Physical-device/WhatsApp, intermediate widths,
+browser invalid/retry states and remaining keyboard/load checks remain incomplete.
+Outcome remains CHANGES REQUESTED until these checks or an explicit preview exception.

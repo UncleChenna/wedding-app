@@ -27,8 +27,8 @@ these use mocked action state and do not certify successful database submission.
 The schema and budget proposal are reviewable in
 `docs/reviews/TICKET-048/migration-approval.md`. The user approved the migration
 and separate 10 requests per network per minute limit on 2026-11-06. Generated SQL
-is committed and applied only to this isolated database. The full submit-to-admin
-journey is **not verified yet**. Lookup/PIN limits
+is committed and applied only to this isolated database. The real submit-to-admin
+journey now passes on mobile and desktop using local OTP/MFA. Lookup/PIN limits
 are unchanged. Migration numbering must be reconciled with pending PR99.
 
 Three serial production mobile Lighthouse runs of /lost-link score Performance100,
@@ -38,13 +38,19 @@ ui-review.md for evidence and remaining checklist items.
 Migration repeatability passed with identical row counts and 14 journal entries;
 RLS passed on all17tables. Three real storage tests initially passed. A fourth
 test now covers10allowed/11threfused, lookup/PIN independence and expiry reset.
-Both expanded runs timed out in all4tests and cleanup, including previously passing
-cases. Final lint/types pass; the new budget test and authenticated browser checks
-remain unverified. No test timeout or assertion was weakened. Capacity recovery is
-pending permission to stop inactive owned TICKET-181 with its backup preserved.
+Earlier expanded runs timed out; after the user-approved TICKET-181 stop (backup
+preserved), all4database tests pass. Final lint/types and production build pass.
+The browser journey proves identical public receipts, signed-out admin rejection,
+private matching and existing ShareMenu copying with keyboard focus return.
+Received/queue screenshots cover4themes x3widths, plus4mobile lower-page slices;
+AA and no-overflow checks pass. Lower share buttons remain visible and clickable.
+No test timeout or assertion was weakened.
 
-Remaining: stable database verification, browser integration, full verify,
-UI evidence including admin/success/error states and device checks.
+Full gate rerun is in progress. Its earlier run was interrupted after a stale
+navigation assertion and trace collisions from concurrent browser processes; the
+assertion now includes all6links, and subsequent browser runs are sequential.
+Remaining: passing full gate, remaining UI state/intermediate-width/load checks,
+physical-device/WhatsApp verification or an explicit preview exception.
 
 # Rollout and risks
 

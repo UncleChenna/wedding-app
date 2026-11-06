@@ -40,9 +40,9 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-5).
 
 ## Acceptance criteria
 
-- [ ] The form responds identically whether or not a guest matches (no enumeration).
-- [ ] Requests appear in the admin queue with the matched invitation, if any.
-- [ ] Re-sharing from the queue uses the Share menu.
+- [x] The form responds identically whether or not a guest matches (no enumeration).
+- [x] Requests appear in the admin queue with the matched invitation, if any.
+- [x] Re-sharing from the queue uses the Share menu.
 
 ## Test plan
 

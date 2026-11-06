@@ -138,3 +138,48 @@ Requested approval to stop only inactive owned TICKET-181 project
 wedding-a7dd5180a5a7 with backup preserved, since TICKET-048 is now active. No stop
 has occurred. Next: stable DB capacity, rerun4DBtests, then build the real public
 submission/admin matching/Share-menu browser coverage and complete UI review.
+
+## Capacity recovered and live journey verified — 2026-11-06
+
+User explicitly approved stopping only inactive TICKET-181. Supabase stop returned
+project_id_filter wedding-a7dd5180a5a7, backup true, stopped successfully. No other
+stack or volume was stopped/deleted. TICKET-048 counts respond promptly and all4
+DBtests now pass in560ms, including ten-request limit, scope independence/reset.
+Resumed through CLI atfa8ce64. TICKET-181 remains stopped with backup preserved.
+
+Added e2e/lost-link-live.spec.ts with guarded synthetic invitation/request fixtures
+and cleanup scoped to their exact IDs/contacts. Real public action receipts match
+for existing/missing guests, requests persist, signed-out admin access redirects,
+real OTP/TOTP login sees private matches, and existing ShareMenu copies the correct
+synthetic link. Mobile and desktop each pass. First browser attempt failed because
+two status landmarks matched; scoped the assertion to main, retaining all checks.
+Build and quick lint/types pass. Desktop capture checks AA and overflow for received
+and authenticated queue states in4themes x3widths. All24new screenshots inspected;
+mobile full-page captures show the fixed navigation over the lower list, so lower
+scroll-position visibility still needs explicit evidence. Physical devices unverified.
+
+Full pnpm verify is LIVE in session84236, log /tmp/TICKET-048-full-verify.log.
+Lint/types,1056unitpasses/100skips and build pass. Browser gate is still running;
+poll the existing handle and inspect failure markers as well as log tail. Do not
+claim completion or restart because of observation timeouts. No production writes.
+
+## Browser review follow-up — 2026-11-06
+
+The lower queue is visible and clickable above fixed navigation in all4themes;
+admin-lower captures inspected. Keyboard Enter opens ShareMenu and closing after
+copy restores focus. Latest mobile live journey passes in38.4s with4theme capture
+and actual Auth. All3ticket functional criteria are now checked from live evidence.
+
+First full gate session84236 is terminal130, intentionally interrupted after6known
+failures: stale5link admin keyboard expectation and5RSVP trace-file ENOENT failures.
+The latter were caused by running the additional browser process with the same
+default test-results directory. Keep browser runs sequential or give each a unique
+output directory; separate server ports alone do not isolate artifacts. No product
+RSVP defect is established by these missing-file errors. Final633passed/6failed/
+4interrupted/5skipped/448notrun. Updated admin keyboard test to include Invitation
+requests and verify all6links, retaining focus/redirect assertions.
+
+Clean sequential full verification is LIVE in session80018, log
+/tmp/TICKET-048-full-verify-clean.log. Do not start another Playwright invocation
+until it terminates. No timeout, test assertion or hook weakened. Device checks and
+remaining UI states remain unverified; PR stays draft pending full review evidence.
