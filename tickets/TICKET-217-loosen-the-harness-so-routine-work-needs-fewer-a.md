@@ -2,7 +2,7 @@
 id: TICKET-217
 title: Loosen the harness so routine work needs fewer approvals
 epic: foundations
-status: in_progress
+status: in_review
 priority: high
 estimate: M
 labels: [infra, docs]
@@ -12,7 +12,7 @@ agent: claude
 blocked_by: []
 blocks: []
 branch: TICKET-217
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/108
 created: 2026-11-06
 updated: 2026-11-06
 started: 2026-11-06
@@ -96,3 +96,4 @@ _Agents append dated notes here while working._
 - 2026-11-06 — backlog → todo — unclechenna
 - 2026-11-06 — todo → claimed — unclechenna (claude)
 - 2026-11-06 — todo → in_progress — unclechenna (claude)
+- 2026-11-06 — in_progress → in_review — unclechenna (claude)
