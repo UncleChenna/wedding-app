@@ -38,3 +38,62 @@ TICKET-215's harness changes belong to another owner and are not merged here.
 TICKET-212's server helpers remain the intended Phase 1 reuse source. Keep the
 legacy destructive bridge blocked for its separate target plan/backup/restore
 rehearsal/execution authorization. No shared develop/main merge or real send.
+
+## 6 November continuation — 18:20 UTC
+
+Status In progress; no PM acceptance. Source heads remain develop c9c9e66 and
+TICKET-211 7ea316ba. Exact pnpm 12.14.0 was restored through Corepack into
+/private/tmp/wedding-phase0-corepack-20261106 after its earlier temporary cache
+lost its executable. Project versions and lockfile are unchanged. A temporary
+two-hour caffeinate process began at 17:40 UTC; no power settings changed.
+Neither sleep nor the overnight tool interruption establishes a failure cause.
+
+Checks actually run:
+
+- Production build on ae13c7085776666e6483d9a5359002d6c853a314 passes.
+- Default four-worker production controls: 72 envelope first-visit cases and
+  78 invitation-letter cases pass (three repetitions, mobile and desktop).
+  Timeouts, assertions and retries are unchanged. These are baseline controls,
+  not integrated PR92 verification. Original keyboard timeout cause unresolved.
+- Original trace records a reply-focus expectation lasting about 28.4 seconds
+  within an overall 30-second timeout, despite its logged 5-second expectation
+  timeout. This does not prove that the expectation itself failed.
+- Nine lineage contracts plus three opt-in local migration-preview cases pass.
+  Preview covers clean/migrate-twice/RLS, populated preservation and ambiguous
+  attendance refusal with full DDL/journal/data rollback. The original backfill
+  failed the ambiguity assertion before the new guard. Earlier fixture setup
+  errors are retained but are not regression evidence.
+- verify:quick passes lint/types and nine unit cases; three local DB cases skip
+  by opt-in design. They were explicitly enabled and passed separately above.
+
+Logs are ignored artifacts/TICKET-216: develop-baseline-build.log,
+production-default-control/results.json, letter-default-control/results.json,
+history-and-preview-green.log, migration-ambiguity-regression-red.log,
+preview-support-quick.log and original-focus-failure/trace.zip. The initial
+letter run could not bind its local port inside the sandbox; its subsequent
+normally approved server run passes. No protection was disabled.
+
+New source includes scripts/migration-history.ts, nine contracts, two public
+history manifests and integration-migrations.test.ts. The lineage helper is
+NOT wired into migration execution yet. Actual protected migration source is
+unchanged and the merge has not started. The generator preview is ignored.
+
+The 13-path source-only human proposal is
+artifacts/TICKET-216/migration-source-approval-for-human.json, expiring
+2026-11-06T19:01:40Z (13:01:40 Regina). Human creation of the worktree's ignored
+.harness/approved-writes.json is required. Never create it, reuse the expired
+T211 record or extend its expiry. After expiry prepare a new proposal only.
+
+Next after authorization: archive original fork bytes, reconcile all 16 conflicts
+by intended behaviour, generate actual append-only 0013-0015 with db:generate,
+wire lineage refusal and test adjacent party/member writer coherence. Then run
+the full RSVP/database/default-worker gate and obtain CI for the integrated SHA.
+Hosted history, original timeout cause, final integrated behaviour, complete
+guest sessions and real-device/wedding readiness remain unverified. Destructive
+legacy execution stays separately blocked by target plan/backup/restore/explicit
+execution authorization. No shared merge or real guest message is authorized.
+
+Full unit suite then passed with normal local-server permission: 1,034 passed,
+99 skipped across 116 passed/19 skipped files, 45.76s, default worker settings.
+The retained sandbox run had 15 failures and three EPERM unhandled errors; none
+remain in the normally permitted run. This is pre-integration evidence only.
