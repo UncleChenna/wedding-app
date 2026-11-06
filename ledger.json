@@ -1724,18 +1724,19 @@
       "log": [
         "- 2026-11-04 — todo → claimed — unclechenna (claude)",
         "- 2026-11-04 — todo → in_progress — unclechenna (claude)",
-        "- 2026-11-04 — in_progress → blocked — unclechenna (claude) — Needs owner: exact-path approval for the order_alerts migration, and the production database host (Supabase or Neon) that decides the scheduler. Draft PR #91."
+        "- 2026-11-04 — in_progress → blocked — unclechenna (claude) — Needs owner: exact-path approval for the order_alerts migration, and the production database host (Supabase or Neon) that decides the scheduler. Draft PR #91.",
+        "- 2026-11-06 — blocked → in_progress — unclechenna (claude)"
       ],
-      "status": "blocked",
+      "status": "in_progress",
       "owner": "unclechenna",
       "agent": "claude",
       "branch": "TICKET-084",
       "pr": "",
       "started": "2026-11-04",
       "completed": "",
-      "updated": "2026-11-04",
-      "reason": "Needs owner: exact-path approval for the order_alerts migration, and the production database host (Supabase or Neon) that decides the scheduler. Draft PR #91.",
-      "resume_to": "in_progress"
+      "updated": "2026-11-06",
+      "reason": "",
+      "resume_to": ""
     },
     "WED-212": {
       "log": [
