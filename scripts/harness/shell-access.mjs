@@ -16,7 +16,29 @@ function tokens(shell) {
   }));
 }
 
-export function shellAccess(shell, cwd) {
+/**
+ * Drops heredoc bodies: they are data fed to a program (a script, a commit message), not shell
+ * commands, so arrows or `>` inside them must not read as redirects (TICKET-217).
+ */
+export function withoutHeredocBodies(shell) {
+  const lines = shell.split("\n");
+  const kept = [];
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    kept.push(line);
+    const markers = [...line.matchAll(/<<(-?)\s*(['"]?)([A-Za-z_][A-Za-z0-9_]*)\2/g)];
+    for (const [, dash, , word] of markers) {
+      while (++i < lines.length) {
+        const body = dash ? lines[i].replace(/^\t+/, "") : lines[i];
+        if (body === word) break;
+      }
+    }
+  }
+  return kept.join("\n");
+}
+
+export function shellAccess(rawShell, cwd) {
+  const shell = withoutHeredocBodies(rawShell);
   const reads = [];
   const writes = [];
   let directory = cwd;

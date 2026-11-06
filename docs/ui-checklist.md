@@ -1,8 +1,13 @@
 # UI completion checklist
 
-Run after every UI change against [the design principles](design-principles.md). Record **PASS** or **FAIL** and evidence for every item in the task summary. An item may be **N/A** only with a concrete reason (for example, no images on the affected route); unavailable testing is **not verified**, not a pass. Do not mark a UI task done with failures or required checks unverified.
+Run after every UI change against [the design principles](design-principles.md). Record **PASS** or **FAIL** and evidence for every item in the PR body. An item may be **N/A** only with a concrete reason (for example, no images on the affected route); unavailable testing is **not verified**, not a pass. Do not mark a UI task done with failures or required checks unverified.
 
-- [ ] **Screenshots:** Playwright screenshots of affected routes at 375px, 768px, and 1280px in every registered theme (at least two). Record paths and inspect them; use `SCREENSHOT_ROUTES=/affected-route pnpm screenshots`.
+**Scope (TICKET-217).**
+
+- **Guest-facing pages** (invitation, RSVP, pass, ordering) need the full list below.
+- **Admin and staff screens** need lighter evidence: screenshots in one theme at 375px, an axe scan, and contrast checked in every theme, which the axe scan per theme covers. Sharing and devices, Performance and QR are N/A unless the change touches them.
+
+- [ ] **Screenshots:** Playwright screenshots of affected routes at 375px, 768px, and 1280px in every registered theme (at least two). For admin and staff screens: one theme at 375px. Record paths and inspect them; use `SCREENSHOT_ROUTES=/affected-route pnpm screenshots`.
 - [ ] **Tokens:** Search changed files for hard-coded colours, font families, radii, and shadows. Components use theme tokens; any new token is defined through the documented theming process.
 - [ ] **Restraint and typography:** One main idea per section, restrained palette and decoration, required spacing, font roles, body size, line height, and prose width.
 - [ ] **Mobile:** No horizontal page scroll at review or intermediate widths; all tap targets at least 44×44px; primary actions reachable and safe-area/keyboard handling checked.

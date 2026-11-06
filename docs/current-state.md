@@ -54,7 +54,8 @@ The older theming-gap entry below is superseded: four registered palettes exist,
   (SETUP-004), `/dev/theme` UI review (SETUP-005). All are migrated into tickets.
 - **Collaboration setup unfinished.** `.github/CODEOWNERS` still has `@REPLACE_ME_*` placeholders; branch protection
   is not enabled; the managed worktree lifecycle (`wt:new` → `wt:remove`) has not been proven end to end on this
-  machine; `.harness/approved-writes.json` flow has no test.
+  machine. The protected-file rules (generated migrations, destructive SQL, stop and post warnings) are covered by
+  `scripts/__tests__/hooks-migrations.test.ts` (TICKET-217).
 - **Harness defects found during this audit:**
   - The post-tool hook runs `prettier --write .claude/skills`, which fails on the symlink, so **every** agent tool
     call reports a blocking error.

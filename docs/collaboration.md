@@ -54,11 +54,11 @@ The reservation is locked across worktrees in one clone; live port checks also a
 
 ## PR flow and cleanup
 
-1. Follow `ticket-workflow` and `implement-task`, including the full gate and UI checklist where applicable. Every commit subject starts `TICKET-NNN: `; no AI attribution.
-2. Tick the acceptance criteria you proved and add notes to the ticket. Write or update `docs/handoffs/<ticket-id>.md`; never append to the shared historical `docs/progress.md`. Commit ticket changes only.
-3. Copy `.github/pull_request_template.md` to `docs/plans/<ticket-id>-pr.md`, fill in evidence and commit it.
-4. Run `pnpm t:pr <id>` inside the worktree. It independently verifies, pushes the branch, opens/reuses a detailed PR targeting `develop`, titled `<id>: <title>` and moves the ticket to `in_review`. It requires `gh` and an authenticated `origin`.
-5. The human reviews; CI must pass. Only the human merges via GitHub, then `pnpm t:move <id> done` verifies the merged PR and records completion in the ledger. Only the ticket’s own branch syncs its file; other branches read completion from the shared ledger.
+1. Follow `ticket-workflow` and `implement-task`, including the UI checklist where applicable. Every commit subject starts `TICKET-NNN: `; no AI attribution.
+2. Tick the acceptance criteria you proved. Never append to the shared historical `docs/progress.md`. Commit ticket changes only.
+3. Copy `.github/pull_request_template.md` to `docs/plans/<ticket-id>-pr.md`, fill in evidence and commit it. This PR body is the single write-up for finished work: no separate handoff, plan or review file is required. Write `docs/handoffs/<ticket-id>.md` only when work is unfinished or changing hands.
+4. Run `pnpm t:pr <id>` inside the worktree. It runs `verify:quick` (`--full` runs the whole suite locally), pushes the branch, opens, updates or readies a PR targeting `develop` titled `<id>: <title>`, and moves the ticket to `in_review`. It requires `gh` and an authenticated `origin`.
+5. CI runs the full `pnpm verify` and is the merge gate. When every required check is green, the ticket owner's agent merges its own PR into `develop`, unless the owner asked to review first. Never merge another owner's PR or on red or pending checks. Then `pnpm t:move <id> done` verifies the merged PR and records completion in the ledger. Only the ticket’s own branch syncs its file; other branches read completion from the shared ledger. Only the owner merges `develop` into `main`.
 6. From the primary checkout, run `pnpm wt:remove <id>`. It refuses dirty or unmerged work, stops only that stack, deletes its disposable database volumes, and removes the checkout. The Git branch remains for recovery. Removal is explicit authorization to delete that worktree's disposable data; back up anything valuable first.
 
 `wt:list` lists Git checkouts; `wt:prune` removes stale Git metadata only, never data. A failed setup leaves a reservation and checkout for retry; use `wt:remove` for cleanup. If a harness process crashes while holding `.git/harness-*.lock`, confirm no process is active before manually removing that lock directory. No automatic expiry can evict a live agent's lock.
@@ -73,11 +73,16 @@ Codex uses a shared `.codex/hooks.json`; its `.codex/config.local.toml` and `*.l
 
 Author each portable skill at `.agents/skills/<name>/SKILL.md` with YAML `name` and a precise “use when” `description`. Keep procedures short; put long references inside the skill. Canonical design rules remain in `docs/`, not copied into every skill. Run `pnpm agents:link`, `pnpm agents:check`, and `pnpm plugin:build` after changes. `agents:link --copy` exercises the Windows fallback; copied skills refresh on every link run. Codex and Cursor read `.agents/skills` directly, so no duplicate discovery path is created for them.
 
-Shared pre-tool hooks allow non-secret reads outside the checkout, resolve symlink targets, and confine edits to the checkout. Secret environment-file reads remain blocked (`.env.example` is allowed). Common shell commands and redirects are inspected by their read/write operands, so mentioning a protected path in quoted data or a read-only pipeline does not imply a write. Dynamic write targets must use an explicit path. This is static inspection, not a complete shell interpreter; arbitrary programs still rely on post-tool/staged checks and platform permissions.
+Shared pre-tool hooks allow non-secret reads outside the checkout, resolve symlink targets, and confine edits to the checkout, except for throwaway locations (`/dev/null` and temp folders such as `/tmp` and the agent scratchpad). Other checkouts, including other people's worktrees, stay off limits. Secret environment-file reads remain blocked (`.env.example` is allowed). Common shell commands and redirects are inspected by their read/write operands, so mentioning a protected path in quoted data or a read-only pipeline does not imply a write. Heredoc bodies are treated as data, not commands. Dynamic write targets must use an explicit path. This is static inspection, not a complete shell interpreter; arbitrary programs still rely on post-tool/staged checks and platform permissions.
 
-Shared pre-tool hooks reject direct protected-file edits and obvious shell writes; post-tool hooks format/lint changed editable files. Stop hooks require `verify:quick` with no failure-count escape. Cursor uses uncapped follow-ups. Husky blocks main/develop commits and direct pushes, validates protected staged files, runs lint-staged and the quick gate. CI remains the full merge gate. Hooks cannot prevent a user killing a process, disabling local hooks, or arbitrary external programs changing files; they are workflow enforcement, not an OS security boundary. Sandbox permissions and GitHub protection remain necessary.
+Shared pre-tool hooks reject direct protected-file edits and obvious shell writes. Post-tool hooks format/lint changed editable files and only _report_ protected files changed by a program (a generator, `pnpm install`). The stop hook likewise reports them and requires `verify:quick`, with no failure-count escape for a failing check. Cursor uses uncapped follow-ups. Husky is the enforcement point: it blocks main/develop commits and direct pushes, refuses unapproved protected staged files, and runs lint-staged and the quick gate. CI remains the full merge gate. Hooks cannot prevent a user killing a process, disabling local hooks, or arbitrary external programs changing files; they are workflow enforcement, not an OS security boundary. Sandbox permissions and GitHub protection remain necessary.
 
-For an explicitly requested protected-file change, the human creates ignored `.harness/approved-writes.json` with exact paths, a reason, and a future ISO `expires_at`:
+### Protected files
+
+- **Migrations (TICKET-217):** new output from `pnpm db:generate` needs no approval. That covers new `drizzle/NNNN_*.sql` and snapshot files, and `drizzle/meta/_journal.json` while it only appends entries. Files that already exist on `develop` stay locked. A new migration that drops, retypes or renames a table or column, or truncates or deletes rows, is refused at commit until the owner says yes.
+- **Everything else protected** (lockfiles, generated schemas, installed or build output) needs the owner's yes. A yes in the conversation counts: record it in the PR body, and put the exact paths in ignored `.harness/approved-writes.json`. The owner may write that file, or tell the agent to write it on their behalf; the reason must say who approved it. An agent never writes it without that explicit instruction.
+
+The approval file lists exact paths, a reason, and a future ISO `expires_at`:
 
 ```json
 {
@@ -87,7 +92,7 @@ For an explicitly requested protected-file change, the human creates ignored `.h
 }
 ```
 
-Agents must not fabricate this authorization. Use package/schema generators even after approval; never hand-edit an applied migration. Secret environment files are never commit-eligible. Database bootstrap is an expressly authorized script operation that copies/rewrites local values without displaying secrets; it is not permission to inspect them.
+Agents must not invent this authorization. Use package/schema generators even after approval; never hand-edit a migration that is already on `develop`. Secret environment files are never commit-eligible. Database bootstrap is an expressly authorized script operation that copies/rewrites local values without displaying secrets; it is not permission to inspect them.
 
 ## Claude plugin (optional)
 

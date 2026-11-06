@@ -9,7 +9,7 @@ import { join } from "node:path";
 
 import { activity, criteria, parseTicket, serializeTicket } from "./tickets/format";
 import { dashboardHtml } from "./tickets/dashboard";
-import { REVIEW_BASE, reviewBodyProblems } from "./tickets/review";
+import { REVIEW_BASE, reviewBodyProblems, reviewVerifyScript } from "./tickets/review";
 import { mergedReviewEvidence } from "./tickets/merged-review";
 import type { ReviewPr } from "./tickets/merged-review";
 import { ready } from "./tickets/graph";
@@ -300,9 +300,10 @@ function doMove(state: State, id: string, to: Status, args: Args): Ticket {
   move(ticket.meta, to, dry);
   if (to === "in_review" && !dry.verified) {
     const head = git(["rev-parse", "HEAD"], state.cwd);
-    console.log("Running pnpm verify before review…");
-    if (!stream("pnpm", ["verify"], state.cwd))
-      throw new TransitionError("pnpm verify failed; fix it before review.");
+    const script = reviewVerifyScript(args.flags);
+    console.log(`Running pnpm ${script} before review (CI runs the full verify)…`);
+    if (!stream("pnpm", [script], state.cwd))
+      throw new TransitionError(`pnpm ${script} failed; fix it before review.`);
     process.env.TICKETS_VERIFIED_SHA = head;
   }
   const result = commitChange(state, ticket.meta.id, (current, statusOf) => {
@@ -629,13 +630,22 @@ function main(): number {
       const currentPr = prFor(state.cwd, branch);
       if (currentPr && currentPr.baseRefName !== REVIEW_BASE)
         throw new Error(`Retarget this ticket PR to ${REVIEW_BASE} before continuing.`);
-      console.log("Running pnpm verify…");
-      if (!stream("pnpm", ["verify"], state.cwd)) throw new Error("pnpm verify failed.");
+      const script = reviewVerifyScript(args.flags);
+      console.log(`Running pnpm ${script} (CI runs the full verify)…`);
+      if (!stream("pnpm", [script], state.cwd)) throw new Error(`pnpm ${script} failed.`);
       process.env.TICKETS_VERIFIED_SHA = git(["rev-parse", "HEAD"], state.cwd);
       if (!stream("git", ["push", "-u", "origin", "HEAD"], state.cwd))
         throw new Error("Push failed.");
       const existing = prFor(state.cwd, branch);
-      if (existing) run("gh", ["pr", "edit", existing.url, "--body-file", body], state.cwd);
+      if (existing) {
+        run("gh", ["pr", "edit", existing.url, "--body-file", body], state.cwd);
+        // An earlier draft (from a blocked hand-off) is ready once t:pr succeeds.
+        try {
+          run("gh", ["pr", "ready", existing.url], state.cwd);
+        } catch {
+          // Already ready for review.
+        }
+      }
       if (!existing) {
         run(
           "gh",
