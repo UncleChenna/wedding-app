@@ -186,11 +186,13 @@ it.each([
   ["sed -n '1p' drizzle/0001.sql", 0],
   ["sed -i s/a/b/ .env.local", 2],
   ["sed -i '' 's/a/b/' .env.local", 2],
-  ["cp x drizzle/0001.sql", 2],
+  // Migrations already on develop stay locked (TICKET-217 only frees new generator output).
+  ["cp x drizzle/0000_init.sql", 2],
   ["cp -t drizzle x", 2],
   ["cp -tdrizzle x", 2],
   ["cp --target-directory=drizzle x", 2],
-  ["mv drizzle/0001.sql scratch.sql", 2],
+  ["mv drizzle/0000_init.sql scratch.sql", 2],
+  ["cp x drizzle/9999_new-migration.sql", 0],
   ["printf hello > node_modules/example.js", 2],
   ["printf hello > '.env.local'", 2],
   ["printf hello | tee -a .env.local", 2],
@@ -199,8 +201,16 @@ it.each([
   ["cp .env.local scratch.txt", 2],
   ["cat < .env.local", 2],
   ["echo hello 2>&1", 0],
-  ["cp x /tmp/ticket-hook-out.txt", 2],
-  ["cd /tmp && cp x ticket-hook-out.txt", 2],
+  // TICKET-217: throwaway output and temp folders are fine; secrets and lockfiles are not.
+  ["ls 2>/dev/null", 0],
+  ["ls > /dev/null 2>&1", 0],
+  ["cp x /tmp/ticket-hook-out.txt", 0],
+  ["cd /tmp && cp x ticket-hook-out.txt", 0],
+  ["printf hello > pnpm-lock.yaml", 2],
+  ["cp x ../elsewhere/ticket-hook-out.txt", 2],
+  ["node - <<'EOF'\nconst big = (a) => a > 1;\nEOF", 0],
+  ["cat <<EOF > notes.txt\nx > .env.local\nEOF", 0],
+  ["cat > .env.local <<EOF\nx\nEOF", 2],
 ])("classifies shell accesses: %s", (command, status) => {
   const result = preflight("Bash", { command });
   expect(result.status, result.stderr).toBe(status);
@@ -219,7 +229,11 @@ it("confines edits while allowing non-secret external reads and resolving symlin
     writeFileSync(secret, "synthetic test fixture, not credentials");
     symlinkSync(secret, alias);
     expect(preflight("Read", { file_path: plain }).status).toBe(0);
-    expect(preflight("Write", { file_path: plain }).status).toBe(2);
+    // Temp folders are scratch space (TICKET-217); another checkout is not.
+    expect(preflight("Write", { file_path: plain }).status).toBe(0);
+    expect(preflight("Write", { file_path: resolve("..", "not-this-checkout.txt") }).status).toBe(
+      2,
+    );
     expect(preflight("Read", { file_path: alias }).status).toBe(2);
     expect(preflight("Bash", { command: `cat '${alias}'` }).status).toBe(2);
   } finally {
