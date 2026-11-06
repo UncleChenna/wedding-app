@@ -1,46 +1,50 @@
 # TICKET-166: event closure and anonymous memories
 
-Draft implementation for post-event staff/device revocation, closed
-ordering and an anonymous CSV/PDF memories pack. Closure must reject premature
-requests and unknown venue timezone, require human confirmation, and preserve
-admission evidence. This does not authorize production closure or deletion.
+After the event, an authenticated administrator can close ordering, revoke staff
+and devices, and download anonymous counts/menu statistics as CSV or themed PDF.
+This draft preserves admission evidence and excludes data deletion.
 
-Current changes: pure closure eligibility/confirmation guard and allowlisted
-aggregate CSV serialization, themed PDF renderer, private download boundary and
-aggregate repository. Downloads at `/admin/memories/csv` and `/admin/memories/pdf`
-require live AAL2 admin access before querying and use private no-cache attachments.
-The repository uses a consistent read-only snapshot of counts and public menu
-labels; cancelled station quantities do not count toward menu popularity.
-The original22 foundation tests passed; six new PDF tests and the quick lint/type
-gate pass. Native PDFKit verifies A4/page numbers/privacy for all four themes and
-the seven-page long menu. Theme first pages and the final menu page were inspected;
-not every middle page has received visual review. Tests cover all four themed A4 PDFs,
-privacy projection, invalid counts and long-menu pagination.
-Nine download-boundary tests and the quick gate pass. The guarded database aggregate
-test is skipped because the isolated database is unavailable; its SQL and actual
-route integration remain unverified. The closure transaction and AAL2 Server Action
-are implemented with eight passing boundary tests. Closure locks settings, checks
-server time and explicit confirmation, clears non-admin PIN material and revokes
-devices without deleting admission records. Order submissions hold the matching
-share lock and staff submissions recheck expiry after waiting.
-The rollback-only database closure rehearsal, existing ordering tests and new
-expired-staff-order case are unrun. Live download/closure navigation verification,
-actual session and concurrency rehearsal, and full verification remain unfinished.
+## Implementation
 
-The protected `/admin/event-closure` page is now linked from the control room. It
-offers PDF/CSV downloads and closure with a server-derived cutoff, typed confirmation
-and unchecked scanner-evidence acknowledgment. Component tests verify authorization,
-navigation and form feedback. Latest quick gate:117 related tests pass, one opt-in
-skip, lint/types pass. Browser screenshots, device checks and full UI approval remain
-unverified; see `docs/reviews/TICKET-166/ui-review.md`.
-Isolated database startup failed; no other stack has been borrowed or stopped.
-Use existing06:00 venue-local next-day expiry and current revocation fields where
-possible. Base develop c9c9e66010ee773189477139d4f8b0d30cf481e1.
+- Protected `/admin/event-closure` page linked from the control room, with typed
+  confirmation and an initially unchecked scanner-evidence acknowledgment.
+- Live AAL2 authorization at every mutation/download boundary. Closure refuses
+  unknown timezone, premature requests and mismatched event details.
+- Settings lock serializes closure with accepted orders. PIN material is cleared,
+  staff/devices revoked, ordering closed; repeat closure makes no further changes.
+- Read-only aggregate snapshot and allowlisted CSV/PDF serialization. Exports omit
+  contacts, guest names and dietary notes; downloads use private no-store headers.
+- Existing schema only; no new migration or production operation.
 
-Required evidence: authorization/time gates, atomic/idempotent revocation, staff
-session rejection, no contact/dietary identifiers in exports, CSV safety, PDF,
-synthetic end-to-end rehearsal and full verification. Applicable UI evidence remains.
+## Verification
 
-Risks: pending offline admissions, concurrent sign-in/orders, accidental early
-closure and personal data leaking through export joins. No cleanup/deletion is
-included. Rollout/recovery steps will be documented and rehearsed before review.
+- Full local gate: lint/types/format/build pass;1076 unit tests pass (99 conditional
+  skips),851 browser checks pass (195 skips). Skips are not claimed as evidence.
+- Explicit database suite:24 passes covering closure, memories and ordering.
+  Additional concurrency rehearsal passes: closure visibly waits on PostgreSQL's
+  lock until an accepted order commits, then rejects the next order without a write.
+- Real local OTP/TOTP admin and all three staff-role browser sessions: closure,
+  session rejection, retained admin access, early-disabled form and downloads pass.
+- All four themes at375/768/1280:12 AA/overflow checks pass and screenshots inspected
+  at `artifacts/TICKET-166/screenshots/`. Native PDFKit checks pass for all four
+  themes and a seven-page menu, including A4 size, page numbers and privacy markers.
+- Quick verification passes after the concurrency test. Full-gate evidence predates
+  that test-only addition; required CI must be rechecked on the final review head.
+
+## Remaining before review
+
+Keyboard/focus and tap-target geometry, focused controls above mobile navigation,
+cold-font CLS, reduced-motion and physical-device checks/disposition remain. Middle
+pages of the long PDF have native text checks but not complete visual inspection.
+See `docs/reviews/TICKET-166/ui-review.md` and the ticket handoff for exact evidence.
+
+## Review and rollout
+
+Base: develop c9c9e66010ee773189477139d4f8b0d30cf481e1. Review with the owned isolated
+stack only: `pnpm exec tsx scripts/test-event-closure.ts` refuses existing staff or
+devices, creates synthetic identities, and restores its exact fixtures/settings.
+
+Production closure requires approved venue time and human confirmation that all
+scanner queues are synced or safely exported. This PR does not authorize it.
+Rolling back code cannot restore revoked credentials; recovery requires deliberate
+admin reissuance, never resurrecting old PIN material. No evidence is deleted.

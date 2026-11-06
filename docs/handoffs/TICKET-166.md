@@ -219,3 +219,24 @@ build, lint and types; browser smoke remains LIVE. Do not run the new rehearsal
 until that session terminates. Then run pnpm exec tsx scripts/test-event-closure.ts
 in this worktree. Screenshots still require inspection and concurrency remains
 unrehearsed. No additional acceptance criterion is marked complete.
+
+## Full gate, browser closure and concurrency passed — 2026-11-06
+
+Session3368 terminated0:1076 unit passes/99 conditional skips, production build,
+lint/types/format and851 browser passes/195 skips. Log
+/tmp/TICKET-166-full-verify.log. Closure runner session78791 also terminated0:
+real local admin OTP/TOTP, all three staff roles, protected exports, early-disabled
+form, actual closure, revoked sessions even after restoring a future synthetic
+date, retained admin access,12 theme/width AA/overflow checks all pass. Log
+/tmp/TICKET-166-closure-browser.log. All12 screenshots inspected; mobile full-page
+images show fixed navigation at the original viewport boundary, so focused-control
+viewport checks remain required rather than treating the capture as sufficient.
+
+Added a real ordering/closure race: hold an accepted order's transaction, observe
+the closure query waiting on PostgreSQL's lock, commit the order, then assert
+closure finishes and the next order is rejected without another inserted order.
+The first run used the wrong result assertion (closed rather than rejected/closed);
+corrected to the existing API contract. Both closure database tests then pass,
+and quick lint/types pass (/tmp/TICKET-166-concurrency-quick.log). No application
+code changed. Remaining: keyboard/focus/tap targets, cold CLS, reduced-motion and
+physical-device review/disposition; publish updated PR evidence after these checks.
