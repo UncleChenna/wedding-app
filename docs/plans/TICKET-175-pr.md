@@ -7,7 +7,7 @@ TICKET-175 — Validate and store invitation photo uploads. Target develop.
 Integrated the approved develop commit6fb46534. Its outbox migration0013 is preserved;
 the photo migration is now generated0014. The user approved exact paths and a reset
 of this ticket's disposable database. Combined migrations, RLS, deterministic seed,
-photo persistence and outbox integration pass. Final PR gate follows below.
+photo persistence and outbox integration pass. The final integrated PR gate passes.
 
 # Summary
 
@@ -40,16 +40,16 @@ authorized endpoint. Original files, filenames and EXIF are not stored.
 
 # Verification
 
-- Original-base full pnpm verify passes: formatting, lint, types,1054 unit tests (97 opt-in skips),
+- Integrated full pnpm verify passes: formatting, lint, types,1068 unit tests (102 opt-in skips),
   production build,837 browser tests (189 intentional skips). Log:
-  /tmp/TICKET-175-approved-verify.log. Earlier hook failures were caused by pending
+  /tmp/TICKET-175-integrated-pr-gate.log. Earlier hook failures were caused by pending
   authorization and cleared after the approved record was written; no hook was changed.
 - Two isolated migration applications pass with matching counts; all18 tables retain
   RLS. Explicit photo database integration and2 authenticated browser tests also pass.
 
 Integrated production build and real OTP/TOTP upload journeys pass again (2 tests).
 Photo and outbox database checks pass (6 tests combined); seed counts match.
-The required t:pr gate will verify the integrated commit before advancing review.
+The required t:pr gate verified integrated commit c8c7af3e and advanced the ticket to in_review.
 
 # Review
 

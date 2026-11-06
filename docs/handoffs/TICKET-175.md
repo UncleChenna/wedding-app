@@ -155,3 +155,15 @@ Next: confirm its terminal result, commit approved integration, run t:pr full ga
 
 Integrated build and real OTP/TOTP photo journey pass (2 mobile/desktop tests,4.0s),
 session56574 exit0. Final integration gate will run through t:pr after merge commit.
+
+## Final integrated review checkpoint — 2026-11-06
+
+Approved merge commit c8c7af3e is pushed. Required t:pr gate passed terminal exit0
+(session59198):1068 unit tests,102 opt-in skips,build/format/lint/types,837 browser
+tests,189 skips (6.2min). Log /tmp/TICKET-175-integrated-pr-gate.log. Status commit
+682b9fdc records in_review and PR107. All18-table RLS/migration/seed checks and
+explicit photo/outbox database plus authenticated mobile/desktop tests passed.
+
+Migration conflict resolved against approved develop6fb46534; no production migration
+applied. Final evidence update is documentation only. Mark PR ready and leave for
+review/CI. No PR107 merge authorization exists; retain in_review until confirmed merged.
