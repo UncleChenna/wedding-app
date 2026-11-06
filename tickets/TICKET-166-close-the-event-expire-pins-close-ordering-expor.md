@@ -2,7 +2,7 @@
 id: TICKET-166
 title: "Close the event: expire PINs, close ordering, export memories"
 epic: launch
-status: in_progress
+status: blocked
 priority: medium
 estimate: M
 labels: [backend, docs]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-11-06
 started: 2026-11-05
 completed: ""
-reason: ""
-resume_to: ""
+reason: "Automated database, browser and UI verification passed. Awaiting review-only exception for physical-phone keyboard/safe-area and downloads; retain release checks. No PR merge authorized."
+resume_to: in_progress
 ---
 
 # TICKET-166: Close the event: expire PINs, close ordering, export memories
@@ -90,3 +90,4 @@ tests and quick verification pass. No database/browser/device completion claimed
 - 2026-11-05 — in_progress → blocked — divine (codex) — Isolated Supabase startup terminated with failure; no owned database container exists. Pure closure/export foundations pushed; database recovery and integration pending.
 - 2026-11-06 — blocked → in_progress — divine (codex)
 - 2026-11-06 — in_progress → blocked — divine (codex) — Closure-specific database and staff-session rehearsals require the isolated stack; Docker has only 537MB available. Awaiting permission to stop idle owned TICKET-048 with its backup preserved.
+- 2026-11-06 — in_progress → blocked — divine (codex) — Automated database, browser and UI verification passed. Awaiting review-only exception for physical-phone keyboard/safe-area and downloads; retain release checks. No PR merge authorized.
