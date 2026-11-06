@@ -6,6 +6,7 @@ import {
   date,
   time,
   check,
+  customType,
   foreignKey,
   index,
   integer,
@@ -35,6 +36,37 @@ const updatedAt = () =>
     .notNull()
     .defaultNow()
     .$onUpdate(() => new Date());
+
+const photoBytes = customType<{ data: Buffer; driverData: Buffer }>({
+  dataType: () => "bytea",
+});
+
+/** Bounded private invitation assets; original uploads and filenames are never stored. */
+export const invitationPhotos = pgTable(
+  "invitation_photos",
+  {
+    slot: integer("slot").primaryKey(),
+    id: uuid("id").notNull().defaultRandom().unique(),
+    bytes: photoBytes("bytes").notNull(),
+    width: integer("width").notNull(),
+    height: integer("height").notNull(),
+    blurDataUrl: text("blur_data_url").notNull(),
+    uploadedBy: uuid("uploaded_by").notNull(),
+    createdAt: createdAt(),
+  },
+  (t) => [
+    check("invitation_photos_slot", sql`${t.slot} between 1 and 16`),
+    check("invitation_photos_size", sql`octet_length(${t.bytes}) between 1 and 4194304`),
+    check(
+      "invitation_photos_dimensions",
+      sql`${t.width} between 1 and 2560 and ${t.height} between 1 and 2560`,
+    ),
+    check(
+      "invitation_photos_blur",
+      sql`length(${t.blurDataUrl}) between 24 and 10947 and left(${t.blurDataUrl}, 23) = 'data:image/webp' || chr(59) || 'base64,'`,
+    ),
+  ],
+).enableRLS();
 
 /** Ephemeral keyed network counters; no credentials or raw addresses are stored. */
 export const requestBudgets = pgTable(
