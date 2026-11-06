@@ -200,3 +200,22 @@ Full pnpm verify is running in session3368, logging to
 browser run sharing its output directory. Next: finish this gate, implement/run
 the remaining browser and concurrency rehearsals, complete UI review, then update
 PR105. Physical-device checks remain unverified. No production closure occurred.
+
+## Browser rehearsal prepared — 2026-11-06
+
+Added e2e/event-closure.spec.ts and scripts/test-event-closure.ts. The runner uses
+ephemeral in-process staff signing material and a fresh allowlisted synthetic admin.
+The test refuses pre-existing staff/devices before mutating anything; it signs in
+all three staff roles, checks denied private exports, completes real admin MFA,
+checks early closure disabled and authenticated downloads, captures all themes at
+three widths with AA assertions, and closes the synthetic event. It then restores
+a future synthetic date to distinguish live credential revocation from simple
+event expiry before checking all three existing sessions lose access. Exact test
+fixtures/settings are restored in teardown.
+
+Lint, formatting and typecheck pass for this rehearsal; it has NOT executed yet.
+Full verification session3368 has passed1076 unit tests (99 conditional skips),
+build, lint and types; browser smoke remains LIVE. Do not run the new rehearsal
+until that session terminates. Then run pnpm exec tsx scripts/test-event-closure.ts
+in this worktree. Screenshots still require inspection and concurrency remains
+unrehearsed. No additional acceptance criterion is marked complete.
