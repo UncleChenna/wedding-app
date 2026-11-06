@@ -2,20 +2,20 @@
 id: TICKET-175
 title: Validate and store invitation photo uploads
 epic: admin
-status: todo
+status: in_progress
 priority: medium
 estimate: M
 labels: [backend, security]
 module: admin
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-088]
 blocks: [TICKET-099, TICKET-178]
-branch: ""
+branch: TICKET-175
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-06
+started: 2026-11-06
 completed: ""
 reason: ""
 resume_to: ""
@@ -57,3 +57,5 @@ Backlog audit coverage: ADM-5, THM-1. See [PRD](../docs/prd.md) and [audit](AUDI
 ## Activity log
 
 - 2026-10-21 — new → todo — divine
+- 2026-11-06 — todo → claimed — divine (codex)
+- 2026-11-06 — todo → in_progress — divine (codex)
