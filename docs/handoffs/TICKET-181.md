@@ -252,3 +252,8 @@ exact-path reconciliation and isolated reset are in
 `docs/reviews/TICKET-181/base-update-proposal.md`; NOT authorized or executed.
 Next: finish full gate, publish evidence, obtain approval for that concrete base
 update, regenerate0015 using Drizzle and rerun integrated verification.
+
+Terminal verification update: session17090 exited 0. Full verify PASS: formatting,
+lint, types, build, 1046 unit passes/101 skips and 837 browser passes/189 skips
+(6.9 minutes). No tracked screenshots changed. Evidence commit6185cf62 pushed;
+PR104 updated. Integration approval remains pending; no base update/reset made.

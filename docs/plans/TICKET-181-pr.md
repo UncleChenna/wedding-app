@@ -42,9 +42,9 @@ publication with AAL2 authorization and cache invalidation after commit.
 - verify:quick and production build pass.
 - RUN_PUBLISHED_THEME_BROWSER=1, mobile project, one worker: one test passes,
   24 captures, eight Axe scans with zero violations, preview PNG checks pass.
-- Full verify rerun is still in progress: format/lint/types/build and 1046 unit
-  tests pass (101 opt-in skips); browser terminal result pending. Earlier unhealthy
-  database run failed and was interrupted; historical evidence is in the handoff.
+- Full verify PASS (exit 0): format/lint/types/build, 1046 unit tests
+  (101 opt-in skips), and 837 browser checks (189 skips, 6.9 minutes). Earlier
+  unhealthy database run failed and was interrupted; history is in the handoff.
 
 # Risks and rollout
 
@@ -75,7 +75,7 @@ animations or editor controls. Existing routes are exercised to check published 
 - NOT VERIFIED: fresh Lighthouse95/CLS0 measurements, physical phone/WhatsApp,
   native keyboard/safe-area behavior, QR scans and authenticated editor activation.
   JavaScript-disabled reduced-motion captures do not certify interactive motion.
-- Full verification: pending terminal browser result and later base integration.
+- Full verification: PASS on this branch; must rerun after base integration.
 - Disposition: CHANGES REQUESTED until remaining required checks or explicit preview
   exceptions are resolved. This is not a launch-readiness approval.
 
