@@ -2,7 +2,7 @@
 id: TICKET-181
 title: Persist validated theme drafts and activate them atomically
 epic: design-system
-status: blocked
+status: in_progress
 priority: high
 estimate: M
 labels: [backend, security]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-11-07
 started: 2026-11-05
 completed: ""
-reason: "Awaiting approval of docs/reviews/TICKET-181/base-update-proposal.md: reconcile locally applied migration 0013 as 0015 and reset only the isolated test database. Full branch verification passes; PR104 remains draft."
-resume_to: in_progress
+reason: ""
+resume_to: ""
 ---
 
 # TICKET-181: Persist validated theme drafts and activate them atomically
@@ -68,3 +68,4 @@ Backlog audit coverage: THM-2, THM-3, THM-6. See [PRD](../docs/prd.md) and [audi
 - 2026-11-07 — blocked → in_progress — divine (codex) — Completed TICKET-175 stack removed; owned preserved stack restarted and guarded counts now pass. Resume approved isolated migration verification.
 - 2026-11-07 — Full verification passed: 1046 unit passes/101 skips, 837 browser passes/189 skips; format/lint/types/build pass. Integration approval remains pending; PR104 stays draft.
 - 2026-11-07 — in_progress → blocked — divine (codex) — Awaiting approval of docs/reviews/TICKET-181/base-update-proposal.md: reconcile locally applied migration 0013 as 0015 and reset only the isolated test database. Full branch verification passes; PR104 remains draft.
+- 2026-11-07 — blocked → in_progress — divine (codex)
