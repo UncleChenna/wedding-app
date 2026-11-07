@@ -52,6 +52,9 @@ Backlog audit coverage: THM-2, THM-3, THM-6. See [PRD](../docs/prd.md) and [audi
 
 ## Notes / decisions
 
+- 2026-11-07 — User-approved integration of develop205cc663 preserves outbox0013/photo0014 and regenerates theme0015. Approved isolated reset, repeat counts, 18 RLS checks and five publication DB tests pass. Full gate passes (1089 unit, 837 browser); dedicated publication rerun passes with 24 unchanged captures. PR104 remains draft pending UI disposition; no production application or merge.
+
+
 - 2026-11-07 — Database recovered; five publication tests, repeated migration/counts and 16 RLS checks pass. Dedicated four-palette browser/PNG verification passes with 24 inspected captures. Full gate running; base-update proposal required for migration0013 collision. PR104 remains draft; device/performance checks unverified.
 
 - 2026-10-21 — Added by HARNESS-002. All criteria describe future work; no completion or human approval is implied.

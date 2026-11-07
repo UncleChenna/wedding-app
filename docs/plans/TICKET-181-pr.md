@@ -30,8 +30,7 @@ publication with AAL2 authorization and cache invalidation after commit.
   matches selected light background; invalid draft preserves invitation and PNG.
   Browser fixtures publish through SQL and wait for cache revalidation; they do not
   certify the immediate authenticated action-to-browser journey. Editor UI is TICKET-098.
-- Remaining: integrate current develop migration history, full integrated gate,
-  final UI/device/performance disposition. PR remains draft; no completion claim.
+- Remaining: final UI/device/performance disposition. PR remains draft; no completion claim.
 
 # Verification
 
@@ -48,10 +47,14 @@ publication with AAL2 authorization and cache invalidation after commit.
 
 # Risks and rollout
 
-Current migration0013 collides with merged outbox0013 and photo0014. Do not merge
-this branch as-is. Concrete reconciliation proposal: docs/reviews/TICKET-181/base-update-proposal.md.
-It requests regenerating the additive column as0015 and resetting only the owned
-disposable database after a data-provenance check. Approval is pending.
+The user-approved integration preserves develop's outbox0013 and photo0014,
+regenerates the theme column as0015 and resets only the confirmed disposable
+TICKET-181 database. Integrated base:205cc66350864c0a4f57c392db7b663ff20bf25c.
+Both migration runs preserve counts; all18 public tables retain RLS and five
+publication database tests pass. Full integrated verification passes: 1089 unit tests (107 opt-in skips),
+837 browser checks (189 skips), formatting, lint, types and production build.
+Dedicated publication browser rerun passes (1.1 minutes). All 24 screenshots
+are byte-identical to the reviewed captures.
 No production application is authorized. Apply the final reviewed additive migration
 before deployment; application rollback can retain its nullable column/snapshots.
 No RLS-policy, CI or new dependency change is proposed by this ticket.
@@ -75,7 +78,8 @@ animations or editor controls. Existing routes are exercised to check published 
 - NOT VERIFIED: fresh Lighthouse95/CLS0 measurements, physical phone/WhatsApp,
   native keyboard/safe-area behavior, QR scans and authenticated editor activation.
   JavaScript-disabled reduced-motion captures do not certify interactive motion.
-- Full verification: PASS on this branch; must rerun after base integration.
+- Full verification: PASS after integrating develop205cc663, including the
+  dedicated publication rerun.
 - Disposition: CHANGES REQUESTED until remaining required checks or explicit preview
   exceptions are resolved. This is not a launch-readiness approval.
 

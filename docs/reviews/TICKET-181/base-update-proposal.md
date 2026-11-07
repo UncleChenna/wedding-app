@@ -1,6 +1,6 @@
 # TICKET-181 integration proposal — 2026-11-07
 
-Approval requested, not executed. Target develop commit
+Approved by the user on 2026-11-07 and integrated locally. Target develop commit
 `205cc66350864c0a4f57c392db7b663ff20bf25c`.
 
 The merge preview conflicts in `drizzle/meta/0013_snapshot.json` and
@@ -48,3 +48,13 @@ Authorization record: `.worktrees/TICKET-181/.harness/approved-writes.json`.
 No production database application, other stack reset, policy change or PR merge
 is included. Existing local history remains intact until approval. The earlier
 TICKET-175 integration exception does not cover these operations.
+
+## Execution evidence — 2026-11-07
+
+Protected develop files match the pinned commit byte-for-byte. Drizzle generated
+0015 with exactly the expected nullable column addition. Before reset all public
+tables were empty except one request-budget row, verified to match the known
+local-test identity. The managed reset applied the combined history and seeded
+deterministic fixtures. A second migration run preserved every count (16 applied
+migrations); all 18 public tables retain RLS. Five publication database tests pass.
+Production database application and PR merge remain unauthorized.

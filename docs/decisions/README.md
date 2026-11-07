@@ -29,3 +29,5 @@ Accepted: [0019 — Native RSVP rendering and token-safe form requests](0019-nat
 Accepted: [0020 — Gate pass credential and offline trust](0020-gate-pass-credential.md) (TICKET-169; owner approved 2026-11-01).
 
 Proposed: [0021 — Gate pass signing keys and rotation](0021-gate-signing-keys.md) (TICKET-056).
+
+Accepted: [0022 — Order alert outbox and scheduled drain](0022-order-alert-outbox.md) (TICKET-084; owner approved the migration 2026-11-06; the production scheduler follows the database host, TICKET-213).

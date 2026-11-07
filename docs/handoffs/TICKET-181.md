@@ -257,3 +257,29 @@ Terminal verification update: session17090 exited 0. Full verify PASS: formattin
 lint, types, build, 1046 unit passes/101 skips and 837 browser passes/189 skips
 (6.9 minutes). No tracked screenshots changed. Evidence commit6185cf62 pushed;
 PR104 updated. Integration approval remains pending; no base update/reset made.
+
+## Approved integration — 2026-11-07
+
+User approved the exact integration proposal and isolated reset. Resumed ticket
+through CLI. Integrated pinned develop205cc663, resolved only expected snapshot/
+journal conflicts, preserved approved develop files byte-for-byte and regenerated
+theme migration0015 using Drizzle. Reset only owned project wedding-a7dd5180a5a7
+after confirming zero application rows except the known local-test budget bucket.
+Reset/seed succeeds; repeat migration counts identical, 16 migrations, all18 RLS
+checks pass, five publication DB tests pass (593ms). Frozen install passes.
+Logs: /tmp/TICKET-181-approved-reset.log, /tmp/TICKET-181-integrated-counts-first.txt,
+/tmp/TICKET-181-integrated-counts-second.txt. Next: integrated full verification and
+dedicated publication browser test, then commit/push. No PR merge authorization.
+
+### Integrated terminal results — 2026-11-07
+
+Full verification session14362 exited0: formatting/lint/types/build pass,
+1089 unit passes/107 opt-in skips, 837 browser passes/189 skips (4.7 minutes).
+Dedicated publication session47037 exited0: one test passes in1.1 minutes;
+all24 captures byte-identical to previously inspected screenshots. No unrelated
+screenshot edits. Logs: /tmp/TICKET-181-integrated-full.log and
+/tmp/TICKET-181-integrated-published-browser.log. Database five tests also pass.
+No production migration or PR merge occurred. Pending question: may this proceed
+to review with fresh Lighthouse/CLS and physical-device checks retained in201?
+Until answered, preserve draft; no completion claim. Next: publish this integration,
+wait for CI and review disposition. PR104 merge requires separate authorization.
