@@ -2,7 +2,7 @@
 id: TICKET-218
 title: Start tickets in one fast command with an on-demand database
 epic: foundations
-status: in_progress
+status: in_review
 priority: high
 estimate: M
 labels: [infra]
@@ -12,7 +12,7 @@ agent: claude
 blocked_by: []
 blocks: []
 branch: TICKET-218
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/109
 created: 2026-11-07
 updated: 2026-11-07
 started: 2026-11-07
@@ -90,3 +90,4 @@ _Agents append dated notes here while working._
 - 2026-11-07 — backlog → todo — unclechenna
 - 2026-11-07 — todo → claimed — unclechenna (claude)
 - 2026-11-07 — todo → in_progress — unclechenna (claude)
+- 2026-11-07 — in_progress → in_review — unclechenna (claude)
