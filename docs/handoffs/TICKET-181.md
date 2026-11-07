@@ -215,3 +215,40 @@ success or rerun writes merely because a health/count check briefly succeeds.
 Database recovery remains intermittent; no stack was stopped. PR104 remains draft.
 Next: obtain the pending data-preserving stop authorization for owned TICKET-048,
 restore stable capacity, inspect migration state and rerun the approved sequence.
+
+## Capacity recovered and publication verified — 2026-11-07
+
+After the authorized PR107 merge and completed TICKET-175 cleanup, restarted only
+owned preserved project wedding-a7dd5180a5a7. Guarded counts passed and CLI resumed
+181 at d5f450c1. Approved migration applied twice; identical counts (14 migrations,
+zero rows in all 16 public tables), all 16 RLS checks pass. All five real publication
+DB tests PASS, including post-write rollback and two-connection serialization.
+Logs: /tmp/TICKET-181-migration-recovery.log, /tmp/TICKET-181-after-first.txt,
+/tmp/TICKET-181-after-second.txt, /tmp/TICKET-181-publication-db.log.
+
+Added opt-in e2e/published-themes.spec.ts. Dedicated production browser run PASS
+(one test, 1.2min), covering four custom-ID palette snapshots, invitation/order
+HTML before hydration at 375/768/1280, no horizontal overflow, eight zero-violation
+Axe scans and matching 1200x630 preview PNG. Invalid draft does not affect the
+invitation or preview bytes. All 24 captures inspected: no clipping/overlap; clear
+hierarchy and readable text. No editor controls added (TICKET-098).
+
+Fixture limitation: publication is direct SQL, so browser test waits for normal
+cache revalidation. Immediate post-action invalidation is covered by unit tests,
+not a real authenticated activation browser journey. Initial fixture failed by
+assuming an API response proved browser navigation refreshed; poll actual page
+navigation HTML instead, without weakening no-JavaScript assertions. Tuple fixture
+inference also failed typecheck; readonly tuples fixed it. Repeated-mistake proposal:
+add a testing-guide instruction to type table-driven route tuples with `as const`;
+recorded here for a maintenance ticket, without changing shared harness scope.
+
+Quick gate/build pass. New full gate running in session17090, log
+/tmp/TICKET-181-recovered-full.log; unit1046pass/101skip, browser still running.
+Do not claim terminal full success yet. Physical phones, fresh Lighthouse/CLS and
+artifact QR scans remain unverified; no UI completion approval claimed.
+
+Merge preview against develop205cc663 conflicts in snapshot0013/journal. Proposed
+exact-path reconciliation and isolated reset are in
+`docs/reviews/TICKET-181/base-update-proposal.md`; NOT authorized or executed.
+Next: finish full gate, publish evidence, obtain approval for that concrete base
+update, regenerate0015 using Drizzle and rerun integrated verification.

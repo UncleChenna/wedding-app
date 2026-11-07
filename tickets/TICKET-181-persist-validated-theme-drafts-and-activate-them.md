@@ -52,6 +52,8 @@ Backlog audit coverage: THM-2, THM-3, THM-6. See [PRD](../docs/prd.md) and [audi
 
 ## Notes / decisions
 
+- 2026-11-07 — Database recovered; five publication tests, repeated migration/counts and 16 RLS checks pass. Dedicated four-palette browser/PNG verification passes with 24 inspected captures. Full gate running; base-update proposal required for migration0013 collision. PR104 remains draft; device/performance checks unverified.
+
 - 2026-10-21 — Added by HARNESS-002. All criteria describe future work; no completion or human approval is implied.
 
 ## Activity log

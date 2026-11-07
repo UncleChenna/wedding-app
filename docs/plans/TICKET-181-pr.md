@@ -1,55 +1,85 @@
-# TICKET-181: validated theme drafts and atomic activation
+# Ticket
 
-The existing runtime only resolved preset IDs. This change adds validated draft
-storage and explicit publication so draft edits cannot implicitly change live pages.
+Ticket: TICKET-181
 
-## Implementation
+# Summary
 
-- AAL2 admin save/activate action boundaries, with safe expected-error responses.
-- Canonical schema, curated-font, contrast, QR and semantic-status validation.
-- Separate editable tokens and published snapshots; publication revalidates both
-  schemes and identities and serializes updates in one database transaction.
-- One-query published selection read before rendering, preserving preset fallback.
-- Immediate active-theme cache expiry only after publication commits.
+Theme drafts must not change live invitations until an administrator publishes
+valid light/dark snapshots. This adds separate draft storage and transactional
+publication with AAL2 authorization and cache invalidation after commit.
 
-Generated migration adds one nullable published_tokens column. The user approved isolated testing/commit and the exact-path record is written.
-It remains unapplied because the guarded database count query timed out; proposal: docs/reviews/TICKET-181/migration-approval.md.
-This draft is not deployable without that migration and remaining verification.
+# Changes
 
-## Evidence and remaining work
+- Canonical schema, curated-font and named contrast validation before saving.
+- Separate editable tokens and published snapshots in the themes table.
+- Serialized publication revalidates both schemes and atomically updates snapshots,
+  active flags and singleton selection. The active selection is one light/dark pair.
+- Single-query published reads preserve preset fallback and never read drafts.
+- AAL2 save/activate actions return safe errors; immediate cache expiry follows commit.
+- Database rollback/concurrency tests and production HTML/preview browser evidence.
 
-Focused boundary checks pass: draft validation7, publication validation4, and the
-runtime/action quick gate21 passes/7 skips, with lint/types passing. Five database
-fixture tests are prepared but have NOT run, including post-write rollback and
-two-connection publication serialization. The first full gate caught fixture
-transaction typing; that was fixed. The subsequent full gate FAILED: format/lint/types pass,1043 unit passes,99 skips
-and3 hook-test failures. Those hook failures arose from the then-unapproved migration journal. After the
-user approval was recorded, all43 focused hook tests pass without code changes. That gate did not reach build/browser stages. A separate production build now
-passes; browser activation remains unverified.
-No protection was bypassed. Full verification still needs rerunning; database is
-unhealthy with only212MB VM memory available. Capacity recovery permission pending.
+# Acceptance criteria and evidence
 
-Required before review: approved isolated migration/repeat counts/RLS, real draft
-isolation and concurrent activation, post-write rollback, initial HTML/artifact
-checks, full verification and applicable UI evidence. No criteria are marked done.
+- AAL2 and validation: draft service and action unit tests cover denied, signed-out,
+  enrolment/challenge and authorized boundaries, named validation failures and safe errors.
+- Atomic publication: five isolated PostgreSQL tests pass, including failed final
+  write rollback and two competing connections. Exactly one active pair remains.
+  Cache invalidation ordering/failure behavior is covered by unit tests.
+- Initial HTML/artifacts: dedicated browser test passes four custom-ID palettes on
+  invitation/order routes at 375/768/1280 with JavaScript disabled. Preview PNG
+  matches selected light background; invalid draft preserves invitation and PNG.
+  Browser fixtures publish through SQL and wait for cache revalidation; they do not
+  certify the immediate authenticated action-to-browser journey. Editor UI is TICKET-098.
+- Remaining: integrate current develop migration history, full integrated gate,
+  final UI/device/performance disposition. PR remains draft; no completion claim.
 
-## Risks and rollout
+# Verification
 
-Base develop c9c9e66010ee773189477139d4f8b0d30cf481e1. Preserve the current
-light/dark pair and safe preset fallback. Install the approved additive migration
-before deployment; no production application is authorized here. Application
-rollback retains the nullable column and snapshots. Pending migration0013 files in
-other PRs require sequential integration and reviewed regeneration, never overwriting
-applied SQL or journal entries. No dependency, CI or RLS-policy changes.
+2026-11-07 on base c9c9e66010ee773189477139d4f8b0d30cf481e1:
 
-## Latest verification rerun
+- Approved migration applied twice, identical counts, 16 public tables retain RLS.
+- RUN_THEME_PUBLICATION_DB_TESTS=1: five PostgreSQL tests pass.
+- verify:quick and production build pass.
+- RUN_PUBLISHED_THEME_BROWSER=1, mobile project, one worker: one test passes,
+  24 captures, eight Axe scans with zero violations, preview PNG checks pass.
+- Full verify rerun is still in progress: format/lint/types/build and 1046 unit
+  tests pass (101 opt-in skips); browser terminal result pending. Earlier unhealthy
+  database run failed and was interrupted; historical evidence is in the handoff.
 
-With approval recorded, unit stage passes1046 tests/101 opt-in skips; format/lint/types
-and production build pass. Browser stage FAILED and was intentionally interrupted
-after confirmed failures against the unhealthy local database:493passed,14failed,
-5interrupted,5skipped,509notrun. Invalid invitation/pass routes and two service-worker
-cases timed out. No assertions or timeouts changed. No full-gate pass claimed.
+# Risks and rollout
 
-Migration remains unapplied; custom publication/database/artifact evidence is missing.
-Capacity recovery permission is pending. Resume only with truthful isolated DB
-verification and a fresh complete gate. See handoff for logs and exact next steps.
+Current migration0013 collides with merged outbox0013 and photo0014. Do not merge
+this branch as-is. Concrete reconciliation proposal: docs/reviews/TICKET-181/base-update-proposal.md.
+It requests regenerating the additive column as0015 and resetting only the owned
+disposable database after a data-provenance check. Approval is pending.
+No production application is authorized. Apply the final reviewed additive migration
+before deployment; application rollback can retain its nullable column/snapshots.
+No RLS-policy, CI or new dependency change is proposed by this ticket.
+
+# Screenshots
+
+24 reviewed captures: docs/reviews/TICKET-181/screenshots/, named
+`t181-<palette>-<invitation|order>-<375|768|1280>.png`. Four palettes: ivory-gold,
+midnight-champagne, blush-sage and emerald-night. No clipping or overlapping text
+observed; normal existing typography, spacing and controls preserved.
+
+# UI checklist
+
+This ticket changes server persistence/readers, not component markup, CSS, fonts,
+animations or editor controls. Existing routes are exercised to check published output.
+
+- PASS: screenshots at all required widths/palettes, pre-hydration variables,
+  no horizontal overflow at those widths, eight rendered Axe scans, approved copy.
+- N/A: new token design, new shared components, new motion, staff feedback or photo
+  rendering; none introduced. Canonical validation and existing token consumers retained.
+- NOT VERIFIED: fresh Lighthouse95/CLS0 measurements, physical phone/WhatsApp,
+  native keyboard/safe-area behavior, QR scans and authenticated editor activation.
+  JavaScript-disabled reduced-motion captures do not certify interactive motion.
+- Full verification: pending terminal browser result and later base integration.
+- Disposition: CHANGES REQUESTED until remaining required checks or explicit preview
+  exceptions are resolved. This is not a launch-readiness approval.
+
+# Harness changes, if any
+
+No harness changes. Handoff records the repeated tuple-inference mistake and proposes
+readonly route tuples in a future testing-guide maintenance change.
