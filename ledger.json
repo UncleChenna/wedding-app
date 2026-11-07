@@ -1970,9 +1970,10 @@
         "- 2026-11-05 — blocked → in_progress — divine (codex)",
         "- 2026-11-05 — in_progress → blocked — divine (codex) — Owned database intermittently responds; approved migration exited 1 and journal remains at 13. Repeatability, RLS and publication tests did not run. Pending data-preserving capacity recovery authorization.",
         "- 2026-11-07 — blocked → in_progress — divine (codex) — Completed TICKET-175 stack removed; owned preserved stack restarted and guarded counts now pass. Resume approved isolated migration verification.",
-        "- 2026-11-07 — in_progress → blocked — divine (codex) — Awaiting approval of docs/reviews/TICKET-181/base-update-proposal.md: reconcile locally applied migration 0013 as 0015 and reset only the isolated test database. Full branch verification passes; PR104 remains draft."
+        "- 2026-11-07 — in_progress → blocked — divine (codex) — Awaiting approval of docs/reviews/TICKET-181/base-update-proposal.md: reconcile locally applied migration 0013 as 0015 and reset only the isolated test database. Full branch verification passes; PR104 remains draft.",
+        "- 2026-11-07 — blocked → in_progress — divine (codex)"
       ],
-      "status": "blocked",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-181",
@@ -1980,8 +1981,8 @@
       "started": "2026-11-05",
       "completed": "",
       "updated": "2026-11-07",
-      "reason": "Awaiting approval of docs/reviews/TICKET-181/base-update-proposal.md: reconcile locally applied migration 0013 as 0015 and reset only the isolated test database. Full branch verification passes; PR104 remains draft.",
-      "resume_to": "in_progress"
+      "reason": "",
+      "resume_to": ""
     },
     "WED-166": {
       "log": [
