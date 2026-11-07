@@ -283,3 +283,8 @@ No production migration or PR merge occurred. Pending question: may this proceed
 to review with fresh Lighthouse/CLS and physical-device checks retained in201?
 Until answered, preserve draft; no completion claim. Next: publish this integration,
 wait for CI and review disposition. PR104 merge requires separate authorization.
+
+CI run42357871230 terminal SUCCESS: all five required checks passed on
+53963aab1ae24710b6fd583c68764d8df5074b3e. Integration pushed; worktree clean
+before this evidence update. Remaining blocker is the pending preview-review
+exception, not migration approval. Keep PR104 draft; no merge authorization.

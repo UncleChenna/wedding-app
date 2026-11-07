@@ -87,3 +87,6 @@ animations or editor controls. Existing routes are exercised to check published 
 
 No harness changes. Handoff records the repeated tuple-inference mistake and proposes
 readonly route tuples in a future testing-guide maintenance change.
+
+CI: all five required jobs passed on integrated implementation commit
+`53963aab1ae24710b6fd583c68764d8df5074b3e` in run42357871230.
