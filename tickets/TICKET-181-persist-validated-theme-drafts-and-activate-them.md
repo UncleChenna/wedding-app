@@ -2,7 +2,7 @@
 id: TICKET-181
 title: Persist validated theme drafts and activate them atomically
 epic: design-system
-status: blocked
+status: in_progress
 priority: high
 estimate: M
 labels: [backend, security]
@@ -14,11 +14,11 @@ blocks: [TICKET-098]
 branch: TICKET-181
 pr: ""
 created: 2026-10-21
-updated: 2026-11-05
+updated: 2026-11-07
 started: 2026-11-05
 completed: ""
-reason: "Owned database intermittently responds; approved migration exited 1 and journal remains at 13. Repeatability, RLS and publication tests did not run. Pending data-preserving capacity recovery authorization."
-resume_to: in_progress
+reason: ""
+resume_to: ""
 ---
 
 # TICKET-181: Persist validated theme drafts and activate them atomically
@@ -63,3 +63,4 @@ Backlog audit coverage: THM-2, THM-3, THM-6. See [PRD](../docs/prd.md) and [audi
 - 2026-11-05 — blocked → in_progress — divine (codex)
 - 2026-11-05 — in_progress → blocked — divine (codex) — Migration approved, but owned DB unhealthy/connection timeout and VM capacity exhausted; waiting permission to stop inactive owned TICKET-048 with backup preserved. Browser gate failed; no DB publication evidence.
 - 2026-11-05 — in_progress → blocked — divine (codex) — Owned database intermittently responds; approved migration exited 1 and journal remains at 13. Repeatability, RLS and publication tests did not run. Pending data-preserving capacity recovery authorization.
+- 2026-11-07 — blocked → in_progress — divine (codex) — Completed TICKET-175 stack removed; owned preserved stack restarted and guarded counts now pass. Resume approved isolated migration verification.
