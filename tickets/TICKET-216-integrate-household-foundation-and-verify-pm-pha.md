@@ -66,6 +66,8 @@ The owner's PM direction dated 2026-11-05 authorizes Phase 0 of the consolidated
 
 ## Notes / decisions
 
+- 2026-11-07 — PM scope review recorded without phase acceptance. Current develop205cc66 adds photo0014; proposed append mapping shifts to0015-0017 and needs review. Previous13-path plan also omitted5 protected upstream carry-over files for conventional merge; report proposes18 exact paths subject to review. Old JSON remains expired, no human record or hosted execution.
+
 - 2026-11-06 — Generator-only preview: three guarded local cases pass; nine lineage contracts pass but execution wiring is pending. Default four-worker production baseline: 72 envelope and 78 letter cases pass. Original timeout unresolved. Actual source merge awaits fresh human record. No PM acceptance.
 
 - 2026-11-05 — Explicit PM assignment takes precedence over the automatic next suggestion. TICKET-215 is separately owned and in review; do not duplicate or merge its work. Preserve the original Desktop checkouts and caches, and use a fresh local clone for the managed integration worktree. PM acceptance remains a distinct explicit decision.

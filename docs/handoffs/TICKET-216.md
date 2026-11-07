@@ -153,3 +153,28 @@ the old default Git does not support it. Next after human source review: integra
 current base, generate canonical artifacts, wire and test refusal, then new-base
 clean/populated/RSVP/default-worker/full CI gates. No hosted/legacy execution,
 shared merge or PM acceptance.
+
+## 7 November PM recheck
+
+PM accepted the prior source plan in scope only, not Phase0 or hosted execution.
+Fresh fetch: develop205cc66350864c0a4f57c392db7b663ff20bf25c now adds photo0014
+through PR107. Old reviewed base6fb4653 already had outbox0013. Reverified all14
+prior SQL/snapshots and journal prefix unchanged;7-file fork archive still exact.
+Revised candidate mapping must be0015 key/0016 foundation+capacity/0017 backfill,
+subject to review. Expired proposal untouched; no record creation command or
+human file was generated. See the dated develop-drift report for exact paths.
+
+Also corrected an omission: conventional develop merge from this older checkout
+carries5 additional protected upstream files (0013/0014 SQL+snapshots and lockfile).
+The current hook has no upstream reuse exemption. A combined exact-source-copy
+plus generated-source record would be18 paths; earlier13-path scope acceptance
+does not approve it. Static analysis only; no merge rejection or bypass claimed.
+
+Read-only proofs are ignored artifacts/TICKET-216/2026-11-07-develop-review.json
+and2026-11-07-upstream-carry-over.json. All required CI passed for previous
+preparationefd02fb; no claim for current/future integration. No tests needed for
+this read-only/source-doc review beyond integrity and formatting/link checks.
+Next: PM review changed mapping and carry-over scope, then fresh exact JSON and
+human terminal command. Afterwards perform the already requested actual entry
+point guard, command refusal and integrated fixture/RSVP/final-CI verification.
+Keep hosted/legacy/token/shared-merge restrictions. No PM acceptance.

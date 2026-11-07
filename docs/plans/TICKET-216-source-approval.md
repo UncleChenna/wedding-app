@@ -1,5 +1,9 @@
 # TICKET-216 source/history/recovery review — 6 November 2026
 
+> Superseded for execution review on7 November: develop now owns0014. Read
+> [the changed-path and scope report](TICKET-216-develop-drift-2026-11-07.md).
+> The old13-path JSON remains expired; do not create a record from it.
+
 Status: proposal only. No human record exists; no working source merge has started.
 No phase is PM accepted. This plan supersedes the earlier 0013-0015 proposal.
 
