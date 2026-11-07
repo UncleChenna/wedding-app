@@ -37,9 +37,9 @@ Backlog audit coverage: THM-2, THM-3, THM-6. See [PRD](../docs/prd.md) and [audi
 
 ## Acceptance criteria
 
-- [ ] AAL2 admin-only draft save validates the canonical schema, curated fonts and contrast with named failing pairs before persistence.
-- [ ] Activate performs an atomic active-theme switch and invalidates affected server caches; concurrent activations leave exactly one active theme.
-- [ ] A fresh response contains the selected variables before hydration; failed validation cannot change the live invitation, order page or generated artifacts.
+- [x] AAL2 admin-only draft save validates the canonical schema, curated fonts and contrast with named failing pairs before persistence.
+- [x] Activate performs an atomic active-theme switch and invalidates affected server caches; concurrent activations leave exactly one active theme.
+- [x] A fresh response contains the selected variables before hydration; failed validation cannot change the live invitation, order page or generated artifacts.
 
 ## Test plan
 
@@ -51,6 +51,9 @@ Backlog audit coverage: THM-2, THM-3, THM-6. See [PRD](../docs/prd.md) and [audi
 - src/modules/theming/server/; src/modules/shared/server/db/
 
 ## Notes / decisions
+
+- 2026-11-07 — User explicitly approved proceeding to review with physical-device checks and fresh Lighthouse/CLS measurements retained in release-blocking TICKET-201. All three functional criteria are supported by the PR evidence; this is not release approval or merge authorization.
+
 
 - 2026-11-07 — User-approved integration of develop205cc663 preserves outbox0013/photo0014 and regenerates theme0015. Approved isolated reset, repeat counts, 18 RLS checks and five publication DB tests pass. Full gate passes (1089 unit, 837 browser); dedicated publication rerun passes with 24 unchanged captures. PR104 remains draft pending UI disposition; no production application or merge.
 

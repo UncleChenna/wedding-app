@@ -288,3 +288,12 @@ CI run42357871230 terminal SUCCESS: all five required checks passed on
 53963aab1ae24710b6fd583c68764d8df5074b3e. Integration pushed; worktree clean
 before this evidence update. Remaining blocker is the pending preview-review
 exception, not migration approval. Keep PR104 draft; no merge authorization.
+
+## Review exception — 2026-11-07
+
+User approved proceeding to review with physical-device and fresh Lighthouse/CLS
+checks retained in TICKET-201, which blocks both releases154/176. All five CI
+checks pass on42328e6. Resumed through CLI; functional criteria checked against
+the recorded unit, database and publication browser evidence. No merge or
+production application authorized. Next: t:pr mandatory verification, mark PR104
+ready, retain in_review until human merge. The editor journey remains TICKET-098.

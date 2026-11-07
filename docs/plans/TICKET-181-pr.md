@@ -30,20 +30,22 @@ publication with AAL2 authorization and cache invalidation after commit.
   matches selected light background; invalid draft preserves invitation and PNG.
   Browser fixtures publish through SQL and wait for cache revalidation; they do not
   certify the immediate authenticated action-to-browser journey. Editor UI is TICKET-098.
-- Remaining: final UI/device/performance disposition. PR remains draft; no completion claim.
+- Review disposition approved by the user on 2026-11-07. Physical-device and fresh
+  Lighthouse/CLS checks remain mandatory in release-blocking TICKET-201. No merge
+  or production-release authorization is included.
 
 # Verification
 
-2026-11-07 on base c9c9e66010ee773189477139d4f8b0d30cf481e1:
+2026-11-07, integrated develop `205cc66350864c0a4f57c392db7b663ff20bf25c`:
 
-- Approved migration applied twice, identical counts, 16 public tables retain RLS.
-- RUN_THEME_PUBLICATION_DB_TESTS=1: five PostgreSQL tests pass.
-- verify:quick and production build pass.
-- RUN_PUBLISHED_THEME_BROWSER=1, mobile project, one worker: one test passes,
-  24 captures, eight Axe scans with zero violations, preview PNG checks pass.
-- Full verify PASS (exit 0): format/lint/types/build, 1046 unit tests
-  (101 opt-in skips), and 837 browser checks (189 skips, 6.9 minutes). Earlier
-  unhealthy database run failed and was interrupted; history is in the handoff.
+- Migration applied twice with identical counts; all 18 public tables retain RLS.
+- Five publication PostgreSQL tests pass, including rollback and concurrency.
+- Full verification passes: format/lint/types/build, 1089 unit passes (107 opt-in
+  skips), 837 browser passes (189 skips).
+- Dedicated publication browser test passes (1.1 minutes): 24 unchanged screenshots,
+  eight Axe scans without violations, pre-hydration variables and preview PNG.
+- All five CI jobs pass on `42328e6ffee6dd85f1e44f95db0e911a2df0ff7b`.
+- Prior unsuccessful runs and their fixes remain documented in the handoff.
 
 # Risks and rollout
 
@@ -80,8 +82,9 @@ animations or editor controls. Existing routes are exercised to check published 
   JavaScript-disabled reduced-motion captures do not certify interactive motion.
 - Full verification: PASS after integrating develop205cc663, including the
   dedicated publication rerun.
-- Disposition: CHANGES REQUESTED until remaining required checks or explicit preview
-  exceptions are resolved. This is not a launch-readiness approval.
+- Disposition: APPROVED FOR REVIEW under the user's explicit 2026-11-07 preview
+  exception. TICKET-201 retains physical-device and fresh Lighthouse/CLS release
+  gates and blocks TICKET-154/TICKET-176. This does not certify launch readiness.
 
 # Harness changes, if any
 
