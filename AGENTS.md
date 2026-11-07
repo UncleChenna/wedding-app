@@ -53,7 +53,8 @@ See [application journeys](docs/journeys.md) for entry points, route connections
 | `pnpm db:seed` / `db:reset`                                          | Disposable local data only; reset checks stack identity     |
 | `pnpm db:check-rls` / `db:counts`                                    | Fail if a public table lacks RLS; diffable row counts       |
 | `pnpm themes:schema`                                                 | Generate theme JSON schema                                  |
-| `pnpm t:next [--module m]` / `t:board` / `t:list` / `t:show <id>`    | Read the queue (live, includes unmerged claims)             |
+| `pnpm t:next [--module m]` / `t:board` / `t:list` / `t:show <id>`    | Read the queue (live; also lists tickets to start ahead)    |
+| `pnpm t:start <id> [--ahead] [--db]`                                 | Claim, worktree, install and `in_progress` in one go        |
 | `pnpm t:claim <id> --owner <you> --agent <agent>` / `t:release <id>` | Atomic claim via the shared ticket ledger                   |
 | `pnpm t:move <id> <status> [--reason] [--push]`                      | Enforced status transition                                  |
 | `pnpm t:pr <id>`                                                     | Verify, push, open PR, move to in_review                    |
@@ -131,10 +132,13 @@ Before writing or changing code, review the task list to confirm you are working
 - Repeat this check after a scope change or handoff, and compare the result against the acceptance criteria
   before declaring the work finished.
 
-1. **Pick the work.** `pnpm t:next`, then `pnpm t:claim <id> --owner <you> --agent <agent>`. Never work without a
-   claimed ticket; one ticket at a time.
-2. **Isolate it.** `pnpm wt:new <id>`; work only in `.worktrees/<id>` on its branch named exactly after the ticket ID, e.g. `TICKET-188`.
-3. **Start.** `pnpm t:move <id> in_progress --push`, so the change is committed and pushed immediately.
+1. **Pick and start.** `pnpm t:next`, then `pnpm t:start <id>` (add `--ahead` for a ticket listed under "Can start
+   ahead"). It claims the ticket, creates `.worktrees/<id>` on branch `<id>`, installs, and moves it to
+   `in_progress` with a push. Never work without a claimed ticket; one ticket at a time.
+2. **Work in the worktree.** Only in `.worktrees/<id>`. The database isn't started until you need it:
+   `pnpm db:migrate` or `db:seed` starts it on first use (`t:start … --db` starts it straight away).
+3. **Keep the tools current.** If a `t:*`/`wt:*` command says the checkout's tools are behind `origin/develop`,
+   update that checkout (or run the command from the new worktree) before relying on it.
 4. **Build.** Tests, then the implementation (a plan file is optional). Commit in small steps; every subject starts
    with the ticket id, e.g. `TICKET-014: add RSVP form validation`.
 5. **Finish.** Tick the acceptance criteria, write the PR body (`docs/plans/<id>-pr.md`, the single write-up), then

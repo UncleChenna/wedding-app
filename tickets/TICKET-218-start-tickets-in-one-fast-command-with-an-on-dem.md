@@ -56,12 +56,12 @@ Builds on TICKET-217's branch (PR #108), which edits the same harness files; mer
 
 ## Acceptance criteria
 
-- [ ] `t:start` performs claim, worktree, install and `in_progress` in one command (unit test of the plan and a dry run).
-- [ ] `wt:new` without `--db` creates a worktree without starting Docker; with `--db` it starts the stack (test).
-- [ ] `db:migrate` and `db:seed` start a stopped stack before running (test of the wrapper decision).
-- [ ] A checkout behind `origin/develop` on harness files gets a warning from `t:*` and `wt:*` (unit test).
-- [ ] `t:next` shows ahead-startable tickets after ready ones, labelled (unit test).
-- [ ] AGENTS.md, `docs/collaboration.md`, `docs/tickets.md` and the ticket-workflow skill describe `t:start`.
+- [x] `t:start` performs claim, worktree, install and `in_progress` in one command (unit test of the plan and a dry run).
+- [x] `wt:new` without `--db` creates a worktree without starting Docker; with `--db` it starts the stack (test).
+- [x] `db:migrate` and `db:seed` start a stopped stack before running (test of the wrapper decision).
+- [x] A checkout behind `origin/develop` on harness files gets a warning from `t:*` and `wt:*` (unit test).
+- [x] `t:next` shows ahead-startable tickets after ready ones, labelled (unit test).
+- [x] AGENTS.md, `docs/collaboration.md`, `docs/tickets.md` and the ticket-workflow skill describe `t:start`.
 
 ## Test plan
 
@@ -76,6 +76,13 @@ Builds on TICKET-217's branch (PR #108), which edits the same harness files; mer
 ## Notes / decisions
 
 _Agents append dated notes here while working._
+
+- 2026-11-07 (unclechenna, claude):
+  - **Root cause of the database failures:** the template copy (TICKET-208) is on `develop`, but `wt:new` ran from a
+    main checkout on `divine/ticket-prefix-review`, whose old code skipped it. The stale-harness warning makes that
+    visible.
+  - **Ahead claims:** `--ahead` claims also failed from that checkout, because it predates TICKET-214.
+  - **TICKET-217:** built on its branch, because the two PRs edit the same files.
 
 ## Activity log
 

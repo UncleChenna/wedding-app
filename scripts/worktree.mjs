@@ -13,6 +13,7 @@ import { join, dirname } from "node:path";
 import { branchName, isolatedConfig, safeId } from "./harness/core.mjs";
 import { cli, common, git, json, lock, pnpm, root, writeJson } from "./harness/io.mjs";
 import { copySupabaseTemplates } from "./harness/supabase-templates.mjs";
+import { warnIfStaleHarness } from "./harness/stale-harness.mjs";
 import { worktreeBase } from "./harness/worktree-base.mjs";
 import { liveTicket, ticketOwner } from "./harness/tickets.mjs";
 
@@ -24,8 +25,10 @@ function free(port) {
   });
 }
 async function main() {
-  const [action, rawId] = process.argv.slice(2);
+  const [action, rawId] = process.argv.slice(2).filter((arg) => !arg.startsWith("--"));
+  const withDatabase = process.argv.includes("--db");
   const cwd = root();
+  warnIfStaleHarness(cwd);
   const primary = dirname(common(cwd));
   const stateFile = join(common(cwd), "harness-worktrees.json");
   if (action === "list") {
@@ -159,10 +162,17 @@ async function main() {
       }
       pnpm(["install", "--frozen-lockfile"], path);
       pnpm(["agents:link"], path);
-      pnpm(["db:start"], path);
-      pnpm(["db:migrate"], path);
+      // TICKET-218: the database is on demand. db:migrate, db:seed and db:reset start this
+      // worktree's stack the first time they need it; --db starts it now.
+      if (withDatabase) {
+        pnpm(["db:start"], path);
+        pnpm(["db:migrate"], path);
+      }
       console.log(
-        `Ready: ${path}\nBranch: ${meta.branch}\nApp: http://localhost:${meta.devPort}\nRun pnpm db:seed once if sample data is wanted.`,
+        `Ready: ${path}\nBranch: ${meta.branch}\nApp: http://localhost:${meta.devPort}\n` +
+          (withDatabase
+            ? "Run pnpm db:seed once if sample data is wanted."
+            : "Database not started: pnpm db:migrate (or db:seed / db:start) starts it when you need it."),
       );
     },
     cwd,
