@@ -2078,14 +2078,15 @@
     "WED-218": {
       "log": [
         "- 2026-11-07 — backlog → todo — unclechenna",
-        "- 2026-11-07 — todo → claimed — unclechenna (claude)"
+        "- 2026-11-07 — todo → claimed — unclechenna (claude)",
+        "- 2026-11-07 — todo → in_progress — unclechenna (claude)"
       ],
-      "status": "todo",
+      "status": "in_progress",
       "owner": "unclechenna",
       "agent": "claude",
       "branch": "TICKET-218",
       "pr": "",
-      "started": "",
+      "started": "2026-11-07",
       "completed": "",
       "updated": "2026-11-07",
       "reason": "",
