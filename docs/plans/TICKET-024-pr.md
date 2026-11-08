@@ -22,7 +22,7 @@ design/implementation draft, not a deployable migration.
 
 No ticket acceptance criterion is complete. The old check_ins table is unchanged.
 Cross-table guards, append-only triggers and deterministic backfill are SQL proposals
-exercised in rolled-back temporary schemas. Final migrations, concurrency and
+exercised in rolled-back temporary schemas. Nine proposal tests now cover concurrency and preservation; final migrations and
 repeat-application checks remain incomplete.
 
 # Verification
@@ -53,3 +53,7 @@ N/A: no rendered component or route is changed.
 None. Existing isolation and protected-file guards remain enabled.
 
 Latest checkpoint quick gate: lint, typecheck and 45 related tests passed; 38 opt-in tests skipped.
+
+## 2026-11-08 integration checkpoint
+
+Approved historical develop integration is pushed in `3d76afb2`. Fresh quick verification passes. Current develop already owns migrations0012–0015; the next base update and its sole enum conflict are documented in `docs/reviews/TICKET-024/base-update-proposal.md`. New migrations are not yet generated or certified.

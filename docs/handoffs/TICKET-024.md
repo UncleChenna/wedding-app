@@ -117,3 +117,9 @@ handoff, plan, PR body, three proposal/contract files, admission test, fixture,
 admission schema additions and ticket. Every other staged file is inherited
 unchanged from that approved merged develop base, including CI.
 No new migration generation or production action is approved by this exception.
+
+Approved integration committed/pushed as3d76afb2. Current develop is2706b96 and
+already owns migrations0012–0015. Read-only merge preview has one enum conflict;
+retain scanResult and orderAlertStatus. Reviewable exact-path proposal is
+`docs/reviews/TICKET-024/base-update-proposal.md`. Await that explicit existing-branch
+update approval before generation; no new migrations or database writes performed.
