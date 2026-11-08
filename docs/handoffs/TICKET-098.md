@@ -50,3 +50,18 @@ Lighthouse and exact-zero CLS remain unverified in TICKET-201.
 Lesson: compare validated tokens after JSON normalization because optional
 undefined fields are omitted by persisted JSON. For keyboard testing, scroll
 below-fold native controls into view before focusing and using arrow keys.
+
+## Current develop integration
+
+Integrated `407fb68db4dde004cf0868274a744ebd435dbbb2` without conflicts. The seven
+inherited migration artifacts (0016–0018, their snapshots and journal) match
+fetched develop exactly. Applied only to TICKET-098's isolated database: both
+migration runs succeeded, post-run row counts match exactly, and all 20 public
+tables have RLS enabled. No reset or new migration was introduced. The final
+review gate runs against this integrated base; earlier outage evidence is retained.
+
+Integration quick verification passes. The existing failing-stop regression
+runs against the real dirty worktree and checks protected paths before its fake
+pnpm; recorded the user's standing authorization for the seven exact unchanged
+Drizzle artifacts so that check can exercise its intended failure path. No hook
+or test was weakened. The integration and its six publication DB tests pass.

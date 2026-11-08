@@ -50,3 +50,12 @@ the review CLI will rerun the full gate.
 Disposition: the user's standing authorization permits proceeding through review
 while preserving TICKET-201's release gates. Physical-device checks, fresh
 Lighthouse and exact-zero CLS remain unverified; none is represented as a pass.
+
+## Current develop integration
+
+Integrated `407fb68db4dde004cf0868274a744ebd435dbbb2` without conflicts. The seven
+inherited migration artifacts (0016–0018, their snapshots and journal) match
+fetched develop exactly. Applied only to TICKET-098's isolated database: both
+migration runs succeeded, post-run row counts match exactly, and all 20 public
+tables have RLS enabled. No reset or new migration was introduced. The final
+review gate runs against this integrated base; earlier outage evidence is retained.
