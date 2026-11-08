@@ -57,3 +57,7 @@ Latest checkpoint quick gate: lint, typecheck and 45 related tests passed; 38 op
 ## 2026-11-08 integration checkpoint
 
 Approved historical develop integration is pushed in `3d76afb2`. Fresh quick verification passes. Current develop already owns migrations0012–0015; the next base update and its sole enum conflict are documented in `docs/reviews/TICKET-024/base-update-proposal.md`. New migrations are not yet generated or certified.
+
+## Current develop integrated — 2026-11-08
+
+The approved update to develop `2706b96` is committed and pushed as `9eddc19e`. Both conflicting enum definitions were retained; all ten approved protected files match develop exactly. Frozen install and fresh quick verification pass. No new migration was generated or applied. The isolated database is stopped; final migration generation, fresh database tests and full verification remain outstanding.
