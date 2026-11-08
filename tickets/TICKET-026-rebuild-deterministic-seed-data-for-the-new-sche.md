@@ -2,20 +2,20 @@
 id: TICKET-026
 title: Rebuild deterministic seed data for the new schema
 epic: data-auth
-status: todo
+status: in_progress
 priority: urgent
 estimate: M
 labels: [db, test]
 module: shared
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-024, TICKET-025, TICKET-171, TICKET-172]
 blocks: [TICKET-127, TICKET-137, TICKET-150]
-branch: ""
+branch: TICKET-026
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-08
+started: 2026-11-08
 completed: ""
 reason: ""
 resume_to: ""
@@ -63,3 +63,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-08 — todo → claimed — divine (codex)
+- 2026-11-08 — todo → in_progress — divine (codex)
