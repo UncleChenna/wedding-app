@@ -2,7 +2,7 @@
 id: TICKET-024
 title: Migrate admission counters and scan event tables
 epic: data-auth
-status: in_progress
+status: in_review
 priority: urgent
 estimate: M
 labels: [db, backend]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-023, TICKET-172]
 blocks: [TICKET-026, TICKET-027, TICKET-058, TICKET-061, TICKET-069, TICKET-173]
 branch: TICKET-024
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/85
 created: 2026-10-21
 updated: 2026-11-08
 started: 2026-11-04
@@ -70,3 +70,4 @@ See: [Data model](../docs/prd.md#data-model) · [Gate check-in](../docs/prd.md#g
 - 2026-11-08 — blocked → in_progress — divine (codex) — User approved current develop2706b96 base update, listed unchanged files and authorization record.
 - 2026-11-08 — in_progress → blocked — divine (codex) — Automatic approval review rejected new migration generation; awaiting exact0016/0017/0018 SQL, snapshots and journal generation/testing/commit authorization in docs/reviews/TICKET-024/migration-approval.md. Approved base update is complete.
 - 2026-11-08 — blocked → in_progress — divine (codex) — User approved exact0016–0018 generation, isolated testing, commit and authorization record.
+- 2026-11-08 — in_progress → in_review — divine (codex)
