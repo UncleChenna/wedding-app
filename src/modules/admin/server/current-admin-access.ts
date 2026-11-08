@@ -27,3 +27,13 @@ export async function requireAdminPageAccess() {
   if (access.status !== "ready") redirect(appRoutes.adminMfa.path);
   return access;
 }
+
+/** Direct action/handler boundary; never rely only on the page layout or request proxy. */
+export async function withCurrentAdminAccess<T>(
+  operation: (userId: string) => Promise<T>,
+): Promise<{ ok: true; value: T } | { ok: false; message: string }> {
+  const access = await currentAdminAccess();
+  if (access.status !== "ready")
+    return { ok: false, message: "Please complete two-step sign-in first." };
+  return { ok: true, value: await operation(access.userId) };
+}

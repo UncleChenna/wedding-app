@@ -2,7 +2,7 @@
 id: TICKET-024
 title: Migrate admission counters and scan event tables
 epic: data-auth
-status: blocked
+status: in_progress
 priority: urgent
 estimate: M
 labels: [db, backend]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-11-08
 started: 2026-11-04
 completed: ""
-reason: "Approved historical integration pushed in3d76afb2; awaiting current develop2706b96 base-update authorization per docs/reviews/TICKET-024/base-update-proposal.md to avoid migration0012–0015 collisions."
-resume_to: in_progress
+reason: ""
+resume_to: ""
 ---
 
 # TICKET-024: Migrate admission counters and scan event tables
@@ -67,3 +67,4 @@ See: [Data model](../docs/prd.md#data-model) · [Gate check-in](../docs/prd.md#g
 - 2026-11-04 — in_progress → blocked — divine (codex) — Awaiting exact-path authorization for unchanged develop migration 0011 files and approval record. Prepared merge and nine passing proposal tests are preserved in this worktree; PR85 remains draft.
 - 2026-11-08 — blocked → in_progress — divine (codex) — User approved unchanged develop migration0011 files and authorization record; finish preserved base integration.
 - 2026-11-08 — in_progress → blocked — divine (codex) — Approved historical integration pushed in3d76afb2; awaiting current develop2706b96 base-update authorization per docs/reviews/TICKET-024/base-update-proposal.md to avoid migration0012–0015 collisions.
+- 2026-11-08 — blocked → in_progress — divine (codex) — User approved current develop2706b96 base update, listed unchanged files and authorization record.

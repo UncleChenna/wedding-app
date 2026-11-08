@@ -1,13 +1,14 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ActionBar, Button, Textarea } from "@/modules/shared/components/ui";
-import type { MenuItem } from "../lib/menu";
-import { ORDER_NOTE_MAX, orderCopy } from "../lib/order";
+import { menuCopy, type MenuItem } from "../lib/menu";
+import { cooldownMessage, ORDER_NOTE_MAX, orderCopy } from "../lib/order";
+import { splitByStation, type Station } from "../lib/stations";
 import { newRequestId, submitOrder, type SubmitDeps } from "../lib/submit-order";
 import { MenuSections } from "./menu-sections";
 import { useMenuAvailability } from "./use-menu-availability";
 
-type Line = { id: string; name: string; quantity: number };
+type Line = { id: string; name: string; quantity: number; station: Station };
 type Phase =
   | { kind: "editing"; notice?: string }
   | { kind: "sending"; attempt: number }
@@ -21,10 +22,13 @@ export function OrderComposer({
   table,
   pollIntervalMs,
   deps,
+  initialOpen = true,
 }: {
   items: MenuItem[];
   table: number;
   pollIntervalMs?: number;
+  /** Whether guest ordering was open at render (ORD-7). */
+  initialOpen?: boolean;
   /** Test seam; the page uses the browser's fetch and real timers. */
   deps?: Partial<SubmitDeps>;
 }) {
@@ -43,9 +47,10 @@ export function OrderComposer({
       return kept;
     });
   }, []);
-  const { available, announcement, markSoldOut } = useMenuAvailability(items, {
+  const { available, open, announcement, markSoldOut, markClosed } = useMenuAvailability(items, {
     pollIntervalMs,
     onSoldOut: dropItems,
+    initialOpen,
   });
 
   useEffect(() => {
@@ -54,7 +59,12 @@ export function OrderComposer({
 
   const lines: Line[] = items
     .filter((item) => available[item.id] && (quantities[item.id] ?? 0) > 0)
-    .map((item) => ({ id: item.id, name: item.name, quantity: quantities[item.id] ?? 0 }));
+    .map((item) => ({
+      id: item.id,
+      name: item.name,
+      quantity: quantities[item.id] ?? 0,
+      station: item.station,
+    }));
   const sending = phase.kind === "sending";
 
   function edit(update: () => void) {
@@ -93,9 +103,17 @@ export function OrderComposer({
       return;
     }
     requestId.current = null;
-    const { reason, itemIds = [] } = outcome.result;
+    const { reason, itemIds = [], retryAfterSeconds } = outcome.result;
     if (reason === "sold-out") markSoldOut(itemIds);
-    setPhase({ kind: "editing", notice: orderCopy.rejected[reason] });
+    // Closed while the page still showed it open: switch to the closed view, keeping the choices.
+    if (reason === "closed") markClosed();
+    setPhase({
+      kind: "editing",
+      notice:
+        reason === "cooldown" && retryAfterSeconds
+          ? cooldownMessage(retryAfterSeconds)
+          : orderCopy.rejected[reason],
+    });
   }
 
   if (phase.kind === "sent")
@@ -109,17 +127,25 @@ export function OrderComposer({
         >
           {orderCopy.sent}
         </h3>
-        <ul aria-label="Your order" className="mt-8 space-y-4">
-          {phase.lines.map((line) => (
-            <li
-              key={line.id}
-              className="flex justify-between gap-6 border-b border-border pb-4 text-lg"
-            >
-              <span className="min-w-0 wrap-anywhere">{line.name}</span>
-              <span className="shrink-0 whitespace-nowrap">× {line.quantity}</span>
-            </li>
-          ))}
-        </ul>
+        {/* Kitchen and bar prepare their parts separately; the guest sees both in one place. */}
+        {splitByStation(phase.lines).map((group) => (
+          <div key={group.station} className="mt-8">
+            <h4 id={`order-sent-${group.station}`} className="type-label text-primary">
+              {group.label}
+            </h4>
+            <ul aria-labelledby={`order-sent-${group.station}`} className="mt-4 space-y-4">
+              {group.items.map((line) => (
+                <li
+                  key={line.id}
+                  className="flex justify-between gap-6 border-b border-border pb-4 text-lg"
+                >
+                  <span className="min-w-0 wrap-anywhere">{line.name}</span>
+                  <span className="shrink-0 whitespace-nowrap">× {line.quantity}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
         {phase.note && (
           <p className="mt-6 text-base leading-relaxed wrap-anywhere">Your note: {phase.note}</p>
         )}
@@ -134,6 +160,19 @@ export function OrderComposer({
             {orderCopy.another}
           </Button>
         </div>
+      </section>
+    );
+
+  if (!open)
+    return (
+      <section aria-labelledby="order-closed">
+        <p role="status" className="sr-only">
+          {announcement}
+        </p>
+        <h3 id="order-closed" className="font-display text-3xl leading-tight">
+          {menuCopy.closedHeading}
+        </h3>
+        <p className="mt-6 max-w-prose text-lg leading-relaxed">{menuCopy.closed}</p>
       </section>
     );
 

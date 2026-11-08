@@ -26,6 +26,9 @@ export const appRoutes = {
   kitchen: { path: "/kitchen", label: "Kitchen board", audience: "staff", access: "public" },
   admin: { path: "/admin", label: "Wedding control room", audience: "admin", access: "admin" },
   adminSharing: { path: "/admin/sharing", label: "Sharing", audience: "admin", access: "admin" },
+  adminMenu: { path: "/admin/menu", label: "Menu", audience: "admin", access: "admin" },
+  adminSettings: { path: "/admin/settings", label: "Settings", audience: "admin", access: "admin" },
+  adminStaff: { path: "/admin/staff", label: "Staff", audience: "admin", access: "admin" },
   adminSignIn: { path: "/admin/sign-in", label: "Sign in", audience: "admin", access: "public" },
   adminSignOut: { path: "/admin/sign-out", label: "Sign out", audience: "admin", access: "public" },
   adminMfa: {
@@ -53,6 +56,12 @@ export const appRoutes = {
   devOrder: { path: "/dev/order", label: "Ordering preview", audience: "dev", access: "preview" },
   devPass: { path: "/dev/pass", label: "Gate pass preview", audience: "dev", access: "preview" },
   devShare: { path: "/dev/share", label: "Sharing preview", audience: "dev", access: "preview" },
+  devAdmin: {
+    path: "/dev/admin",
+    label: "Admin shell preview",
+    audience: "dev",
+    access: "preview",
+  },
 } as const satisfies Record<string, AppRoute>;
 
 export const routeList = Object.values(appRoutes);

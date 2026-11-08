@@ -18,6 +18,7 @@ test.describe("staff PIN journey", () => {
   let db: Sql;
   const gateId = randomUUID();
   const kitchenId = randomUUID();
+  const barId = randomUUID();
   const venue = `TICKET-031-${randomUUID()}`;
   const devices = new Set<string>();
   test.beforeAll(async () => {
@@ -28,15 +29,16 @@ test.describe("staff PIN journey", () => {
     await db`insert into event_settings(id,venue,event_date,time_zone) values(1,${venue},'2099-12-19','Etc/UTC')`;
     await db`insert into staff(id,name,role,pin_hash,pin_issued_at,pin_expires_at) values
       (${gateId},'Synthetic gate','gate',${credential("012345")},now() - interval '1 minute','2099-12-20T06:00:00Z'),
-      (${kitchenId},'Synthetic kitchen','kitchen',${credential("654321")},now() - interval '1 minute','2099-12-20T06:00:00Z')`;
+      (${kitchenId},'Synthetic kitchen','kitchen',${credential("654321")},now() - interval '1 minute','2099-12-20T06:00:00Z'),
+      (${barId},'Synthetic bar','bar',${credential("345678")},now() - interval '1 minute','2099-12-20T06:00:00Z')`;
   });
   test.afterAll(async () => {
     if (!db) return;
     try {
-      await db`delete from registered_devices where registered_by_staff_id in (${gateId},${kitchenId})`;
+      await db`delete from registered_devices where registered_by_staff_id in (${gateId},${kitchenId},${barId})`;
       for (const device of devices)
         await db`delete from staff_pin_attempts where device_id=${device}`;
-      await db`delete from staff where id in (${gateId},${kitchenId})`;
+      await db`delete from staff where id in (${gateId},${kitchenId},${barId})`;
       await db`delete from event_settings where id=1 and venue=${venue}`;
     } finally {
       await db.end();
@@ -83,6 +85,10 @@ test.describe("staff PIN journey", () => {
     expect(session?.httpOnly).toBe(true);
     expect(session?.sameSite).toBe("Strict");
     expect(await page.content()).not.toContain("scrypt$");
+    expect((await context.request.post("/api/kitchen/private")).status()).toBe(403);
+    expect((await context.request.post("/api/bar/private")).status()).toBe(403);
+    expect((await context.request.post("/api/admin/private")).status()).toBe(403);
+
     await page.goto("/kitchen");
     await expect(page.getByLabel("Your six-digit PIN")).toBeVisible();
     await expect(page.getByText("You’re signed in.", { exact: true })).toHaveCount(0);
@@ -109,7 +115,27 @@ test.describe("staff PIN journey", () => {
       ?.value.split(".")[0];
     if (!kitchenDevice) throw new Error("Missing kitchen device cookie");
     devices.add(kitchenDevice);
+    expect((await context.request.post("/api/checkin/private")).status()).toBe(403);
+    expect((await context.request.post("/api/bar/private")).status()).toBe(403);
+
     await page.goto("/checkin");
+    await expect(page.getByLabel("Your six-digit PIN")).toBeVisible();
+    await expect(page.getByText("You’re signed in.", { exact: true })).toHaveCount(0);
+    await context.clearCookies();
+    await page.goto("/bar");
+    await page.getByLabel("Your six-digit PIN").fill("345678");
+    await page.getByRole("button", { name: "Sign in", exact: true }).click();
+    await expect(page.getByText("You’re signed in.", { exact: true })).toBeVisible();
+    const barDevice = (await context.cookies())
+      .find((cookie) => cookie.name === "wedding-staff-device")
+      ?.value.split(".")[0];
+    if (!barDevice) throw new Error("Missing bar device cookie");
+    devices.add(barDevice);
+    expect((await context.request.post("/api/checkin/private")).status()).toBe(403);
+    expect((await context.request.post("/api/kitchen/private")).status()).toBe(403);
+    // A valid signed session is not enough after live credentials are revoked.
+    await db`update staff set credential_version=credential_version+1 where id=${barId}`;
+    await page.reload();
     await expect(page.getByLabel("Your six-digit PIN")).toBeVisible();
     await expect(page.getByText("You’re signed in.", { exact: true })).toHaveCount(0);
   });

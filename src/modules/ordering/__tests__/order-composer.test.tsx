@@ -2,7 +2,7 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { OrderComposer } from "../components/order-composer";
-import type { MenuItem } from "../lib/menu";
+import { menuCopy, type MenuItem } from "../lib/menu";
 import { orderCopy } from "../lib/order";
 import { ORDERS_URL } from "../lib/submit-order";
 
@@ -16,6 +16,7 @@ const items: MenuItem[] = [
     description: null,
     category: "meal",
     maxPerOrder: 5,
+    station: "kitchen",
     available: true,
     dietaryTags: [],
   },
@@ -25,6 +26,7 @@ const items: MenuItem[] = [
     description: null,
     category: "alcohol",
     maxPerOrder: 2,
+    station: "bar",
     available: true,
     dietaryTags: [],
   },
@@ -35,7 +37,7 @@ beforeEach(() => {
   vi.stubGlobal(
     "fetch",
     vi.fn(async () =>
-      Response.json({ items: items.map(({ id, available }) => ({ id, available })) }),
+      Response.json({ open: true, items: items.map(({ id, available }) => ({ id, available })) }),
     ),
   );
 });
@@ -102,7 +104,10 @@ it("shows sending, then the sent confirmation with the order and note", async ()
   );
   const heading = await screen.findByRole("heading", { name: orderCopy.sent });
   expect(heading).toHaveFocus();
-  expect(screen.getByRole("list", { name: "Your order" })).toHaveTextContent("Jollof rice× 1");
+  expect(screen.getByRole("list", { name: "From the kitchen" })).toHaveTextContent(
+    "Jollof rice× 1",
+  );
+  expect(screen.queryByRole("list", { name: "From the bar" })).toBeNull();
   expect(screen.getByText("Your note: No pepper please")).toBeVisible();
   fireEvent.click(screen.getByRole("button", { name: orderCopy.another }));
   expect(screen.getByText(orderCopy.emptyCart)).toBeVisible();
@@ -175,4 +180,92 @@ it("takes a sold-out item out of the order and explains why", async () => {
   expect(screen.getByLabelText("Jollof rice quantity")).toHaveAccessibleDescription("Sold out");
   expect(screen.getByLabelText("Red wine quantity")).toHaveValue(1);
   expect(screen.getByRole("status")).toHaveTextContent("Jollof rice has just sold out.");
+});
+
+it("groups a mixed order's confirmation by kitchen and bar", async () => {
+  setup([async () => Response.json({ status: "created", orderId: ORDER_ID }, { status: 201 })]);
+  choose("Red wine");
+  choose("Jollof rice");
+  choose("Jollof rice");
+  fireEvent.click(sendButton());
+  await screen.findByRole("heading", { name: orderCopy.sent });
+  const groups = screen.getAllByRole("heading", { level: 4 }).map((heading) => heading.textContent);
+  expect(groups).toEqual(["From the kitchen", "From the bar"]);
+  expect(screen.getByRole("list", { name: "From the kitchen" })).toHaveTextContent(
+    "Jollof rice× 2",
+  );
+  expect(screen.getByRole("list", { name: "From the bar" })).toHaveTextContent("Red wine× 1");
+});
+
+it("says how long to wait on a cooldown and keeps the order to send again", async () => {
+  const { send } = setup([
+    async () =>
+      Response.json(
+        { status: "rejected", reason: "cooldown", retryAfterSeconds: 42 },
+        { status: 422 },
+      ),
+  ]);
+  choose("Red wine");
+  fireEvent.click(sendButton());
+  expect(
+    await screen.findByText(
+      "Your table's last order went in a moment ago. You can send this one in 42 seconds.",
+    ),
+  ).toBeVisible();
+  expect(send).toHaveBeenCalledTimes(1);
+  expect(screen.getByLabelText("Red wine quantity")).toHaveValue(1);
+  expect(screen.getByRole("button", { name: orderCopy.send })).toBeEnabled();
+});
+
+it("explains the open-order limit", async () => {
+  setup([
+    async () => Response.json({ status: "rejected", reason: "too-many-open" }, { status: 422 }),
+  ]);
+  choose("Red wine");
+  fireEvent.click(sendButton());
+  expect(await screen.findByText(orderCopy.rejected["too-many-open"])).toBeVisible();
+});
+
+it("shows a warm closed message instead of the menu while ordering is closed", () => {
+  render(<OrderComposer items={items} table={7} pollIntervalMs={60_000} initialOpen={false} />);
+  expect(screen.getByRole("heading", { name: menuCopy.closedHeading })).toBeVisible();
+  expect(screen.getByText(menuCopy.closed)).toBeVisible();
+  expect(screen.queryByRole("button", { name: orderCopy.send })).toBeNull();
+  expect(screen.queryByLabelText("Jollof rice quantity")).toBeNull();
+});
+
+it("switches to the closed view when the server refuses because ordering closed", async () => {
+  setup([async () => Response.json({ status: "rejected", reason: "closed" }, { status: 422 })]);
+  choose("Red wine");
+  fireEvent.click(sendButton());
+  expect(await screen.findByRole("heading", { name: menuCopy.closedHeading })).toBeVisible();
+});
+
+it("opens and closes live from the availability poll, announcing the change", async () => {
+  vi.useFakeTimers();
+  try {
+    let open = false;
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () =>
+        Response.json({ open, items: items.map(({ id, available }) => ({ id, available })) }),
+      ),
+    );
+    render(<OrderComposer items={items} table={7} pollIntervalMs={3000} initialOpen={false} />);
+    expect(screen.getByRole("heading", { name: menuCopy.closedHeading })).toBeVisible();
+    open = true;
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(3000);
+    });
+    expect(screen.getByRole("button", { name: orderCopy.send })).toBeVisible();
+    expect(screen.getAllByRole("status")[0]).toHaveTextContent(menuCopy.reopened);
+    open = false;
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(3000);
+    });
+    expect(screen.getByRole("heading", { name: menuCopy.closedHeading })).toBeVisible();
+    expect(screen.getByRole("status")).toHaveTextContent(menuCopy.paused);
+  } finally {
+    vi.useRealTimers();
+  }
 });

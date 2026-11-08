@@ -29,10 +29,10 @@ Polling, not Supabase Realtime: Realtime on `menu_items` needs an anonymous read
 `createOrder` runs in one transaction:
 
 1. An existing order with the same `client_request_id` is a replay. The same table, note and items (in any order) return the original order; anything else is a `mismatch` (HTTP 409).
-2. The table must exist. The chosen `menu_items` rows are read `FOR SHARE`, so a concurrent sold-out change either commits first (and the order is refused as `sold-out`) or waits for the order.
-3. Every item must exist, be available and be within `max_per_order`.
-4. The order, one `station_orders` row per station used, and the `order_items` (with `quantity_limit` snapshotted) are inserted. A racing duplicate loses the unique `client_request_id` insert and answers as a replay.
+2. The table must exist and its row is locked `FOR UPDATE`, which serializes that table's submissions on every server instance. The replay check runs again after the lock (a duplicate tap that waited is still a replay), then the table limits from `event_settings` apply: a cooldown since the table's last order (measured with the database clock; the rejection carries `retryAfterSeconds`) and a cap on open orders (received, preparing or ready; served and cancelled free a slot). A mixed submission is one `orders` row, so it counts once. The chosen `menu_items` rows are read `FOR SHARE`, so a concurrent sold-out change either commits first (and the order is refused as `sold-out`) or waits for the order.
+3. Every item must exist, be available and be within the smaller of its `max_per_order` and the event-wide `max_item_quantity`.
+4. The order, one `station_orders` ticket per station used (`splitByStation`: kitchen first, then bar, each sharing the order id), and the `order_items` (with `quantity_limit` snapshotted) are inserted. A racing duplicate loses the unique `client_request_id` insert and answers as a replay.
 
 The note is plain text: control and format characters become spaces, whitespace collapses, and it renders as text. Only JSON bodies up to 8 KB are accepted. Expected failures are fixed codes; database errors become a retryable 503 with nothing logged but the outcome.
 
-Not here: table limits and cooldowns (TICKET-073), the guest confirmation grouped by station and routing tests (TICKET-074), live order status (TICKET-075), and the admin open/close switch (TICKET-080).
+Not here: live order status (TICKET-075), and the admin open/close switch (TICKET-080). The confirmation groups the order under "From the kitchen" and "From the bar"; the menu carries each item's station for that.

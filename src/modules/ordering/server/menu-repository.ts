@@ -12,6 +12,7 @@ export async function listMenuItems(): Promise<MenuItem[]> {
       description: menuItems.description,
       category: menuItems.category,
       maxPerOrder: menuItems.maxPerOrder,
+      station: menuItems.station,
       available: menuItems.isAvailable,
       dietaryTags: menuItems.dietaryTags,
     })

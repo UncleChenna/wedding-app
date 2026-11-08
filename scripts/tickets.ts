@@ -266,6 +266,7 @@ function gatherFacts(
     today: today(),
     reason: str(args, "reason"),
     statusOf,
+    ahead: args.flags.ahead === true,
     branch:
       state.mode === "off" && !tryGit(["remote", "get-url", "origin"], cwd)
         ? undefined
@@ -310,7 +311,14 @@ function doMove(state: State, id: string, to: Status, args: Args): Ticket {
     const change = move(current.meta, to, facts);
     return {
       meta: change,
-      log: logLine(facts.today, current.meta.status, to, facts.actor, facts.agent, facts.reason),
+      log: logLine(
+        facts.today,
+        current.meta.status,
+        to,
+        facts.actor,
+        facts.agent,
+        joinNotes(facts.reason, aheadNote(current.meta, facts)),
+      ),
     };
   });
   console.log(`${result.meta.id}: ${to}`);
@@ -399,10 +407,48 @@ function newTicket(args: Args): void {
   console.log(`Created ${ticket.path}. Fill in every section, then commit it with your branch.`);
 }
 
+/** Log note for a start made with --ahead, naming what it was built on. */
+function aheadNote(meta: Frontmatter, facts: Pick<MoveFacts, "ahead" | "statusOf">) {
+  if (!facts.ahead) return undefined;
+  const open = meta.blocked_by.filter((id) => facts.statusOf(id) !== "done");
+  return open.length
+    ? `started ahead of ${open.map((id) => `${id} (${facts.statusOf(id)})`).join(", ")}`
+    : undefined;
+}
+const joinNotes = (...notes: (string | undefined)[]) =>
+  notes.filter(Boolean).join("; ") || undefined;
+
+/**
+ * Ids allocated in the shared ledger whose files have not reached develop yet: another collaborator may still be
+ * writing them. Ids already on develop are never reserved, so deleting a committed ticket is still caught. Returns
+ * undefined (strict validation) when the ledger cannot be read.
+ */
+function reservedIds(cwd: string): ReadonlySet<string> | undefined {
+  let ledger: LedgerData | null;
+  try {
+    ledger = readLedger(cwd, ledgerMode())?.data ?? null;
+  } catch {
+    return undefined;
+  }
+  if (!ledger) return undefined;
+  const onDevelop = new Set(
+    (tryGit(["ls-tree", "--name-only", `origin/${REVIEW_BASE}`, "tickets/"], cwd) ?? "")
+      .split("\n")
+      .map((path) => /tickets\/((?:TICKET|WED)-\d{3})-/.exec(path)?.[1])
+      .filter((id): id is string => Boolean(id))
+      .map((id) => formatId(idNumber(id))),
+  );
+  return new Set(
+    Array.from({ length: ledger.lastId }, (_, i) => formatId(i + 1)).filter(
+      (id) => !onDevelop.has(id),
+    ),
+  );
+}
+
 function validate(): number {
   const cwd = root();
   const { tickets, errors } = loadTicketsSafely(cwd);
-  const problems = [...errors, ...validateTickets(tickets)];
+  const problems = [...errors, ...validateTickets(tickets, { reserved: reservedIds(cwd) })];
   if (!existsSync(join(cwd, "tickets/TEMPLATE.md")))
     problems.push("tickets/TEMPLATE.md is missing");
   if (existsSync(join(cwd, "docs/tasks.json")))
@@ -507,8 +553,25 @@ function main(): number {
       const agent = str(args, "agent") || process.env.TICKETS_AGENT || "";
       const t = commitChange(state, id, (current, statusOf) => {
         const branch = id;
-        const change = claim(current.meta, { actor: who, agent, today: today(), statusOf }, branch);
-        return { meta: change, log: logLine(today(), current.meta.status, "claimed", who, agent) };
+        const facts = {
+          actor: who,
+          agent,
+          today: today(),
+          statusOf,
+          ahead: args.flags.ahead === true,
+        };
+        const change = claim(current.meta, facts, branch);
+        return {
+          meta: change,
+          log: logLine(
+            today(),
+            current.meta.status,
+            "claimed",
+            who,
+            agent,
+            aheadNote(current.meta, facts),
+          ),
+        };
       });
       console.log(
         `Claimed ${id} for ${who} (${agent}). Branch: ${t.meta.branch}\nNext: pnpm wt:new ${id}`,

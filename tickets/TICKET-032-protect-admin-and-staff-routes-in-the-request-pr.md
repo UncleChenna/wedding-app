@@ -2,20 +2,20 @@
 id: TICKET-032
 title: Protect admin and staff routes in the request proxy
 epic: data-auth
-status: todo
+status: in_review
 priority: urgent
 estimate: M
 labels: [security, backend]
 module: shared
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-030, TICKET-031]
 blocks: [TICKET-043, TICKET-059, TICKET-061, TICKET-088, TICKET-181]
-branch: ""
-pr: ""
+branch: TICKET-032
+pr: https://github.com/UncleChenna/wedding-app/pull/87
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-04
+started: 2026-11-04
 completed: ""
 reason: ""
 resume_to: ""
@@ -39,9 +39,9 @@ See: [Users and roles](../docs/prd.md#users-and-roles) · [Security](../docs/prd
 
 ## Acceptance criteria
 
-- [ ] Admin/staff routes and server actions reject missing, expired or wrong-role credentials, including direct action invocation.
-- [ ] Anonymous guests can order and authorized invitation holders can RSVP without staff login; neither can invoke privileged actions.
-- [ ] An executable role/route/action matrix covers admin, gate, kitchen, bar, guest capability and anonymous callers; status endpoints disclose no other household data.
+- [x] Admin/staff routes and server actions reject missing, expired or wrong-role credentials, including direct action invocation.
+- [x] Anonymous guests can order and authorized invitation holders can RSVP without staff login; neither can invoke privileged actions.
+- [x] An executable role/route/action matrix covers admin, gate, kitchen, bar, guest capability and anonymous callers; status endpoints disclose no other household data.
 
 ## Test plan
 
@@ -56,8 +56,11 @@ See: [Users and roles](../docs/prd.md#users-and-roles) · [Security](../docs/prd
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-11-04 — Implemented request prefilters and live operation guards on develop base 549b86a. 53 matrix tests, 4 production access checks, 2 staff journeys, 2 real MFA journeys and 6 anonymous order journeys pass. Full verification: 948 unit passes/74 opt-in skips and 779 browser passes/165 opt-in skips. CI run 41752790966 passes all five checks on 40bbd79, including the real invitation journey. Initial staff run failed during shared database ill health; unchanged retry passed after PostgreSQL recovered. Draft PR87; exact review evidence in docs/reviews/TICKET-032/access-contract.md.
 
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-04 — todo → claimed — divine (codex)
+- 2026-11-04 — todo → in_progress — divine (codex)
+- 2026-11-04 — in_progress → in_review — divine (codex)

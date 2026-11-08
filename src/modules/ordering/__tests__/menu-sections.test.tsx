@@ -14,6 +14,7 @@ const items: MenuItem[] = [
     description: "Tomato rice with warm spices.",
     category: "meal",
     maxPerOrder: 5,
+    station: "kitchen",
     available: true,
     dietaryTags: ["vegetarian"],
   },
@@ -23,12 +24,13 @@ const items: MenuItem[] = [
     description: null,
     category: "alcohol",
     maxPerOrder: 2,
+    station: "bar",
     available: false,
     dietaryTags: [],
   },
 ];
 let availability: { id: string; available: boolean }[];
-const fetchMock = vi.fn(async () => Response.json({ items: availability }));
+const fetchMock = vi.fn(async () => Response.json({ open: true, items: availability }));
 
 beforeEach(() => {
   vi.useFakeTimers();

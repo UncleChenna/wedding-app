@@ -6,12 +6,14 @@ import {
   date,
   time,
   check,
+  customType,
   foreignKey,
   index,
   integer,
   jsonb,
   pgEnum,
   pgTable,
+  primaryKey,
   text,
   timestamp,
   uniqueIndex,
@@ -34,6 +36,55 @@ const updatedAt = () =>
     .notNull()
     .defaultNow()
     .$onUpdate(() => new Date());
+
+const photoBytes = customType<{ data: Buffer; driverData: Buffer }>({
+  dataType: () => "bytea",
+});
+
+/** Bounded private invitation assets; original uploads and filenames are never stored. */
+export const invitationPhotos = pgTable(
+  "invitation_photos",
+  {
+    slot: integer("slot").primaryKey(),
+    id: uuid("id").notNull().defaultRandom().unique(),
+    bytes: photoBytes("bytes").notNull(),
+    width: integer("width").notNull(),
+    height: integer("height").notNull(),
+    blurDataUrl: text("blur_data_url").notNull(),
+    uploadedBy: uuid("uploaded_by").notNull(),
+    createdAt: createdAt(),
+  },
+  (t) => [
+    check("invitation_photos_slot", sql`${t.slot} between 1 and 16`),
+    check("invitation_photos_size", sql`octet_length(${t.bytes}) between 1 and 4194304`),
+    check(
+      "invitation_photos_dimensions",
+      sql`${t.width} between 1 and 2560 and ${t.height} between 1 and 2560`,
+    ),
+    check(
+      "invitation_photos_blur",
+      sql`length(${t.blurDataUrl}) between 24 and 10947 and left(${t.blurDataUrl}, 23) = 'data:image/webp' || chr(59) || 'base64,'`,
+    ),
+  ],
+).enableRLS();
+
+/** Ephemeral keyed network counters; no credentials or raw addresses are stored. */
+export const requestBudgets = pgTable(
+  "request_budgets",
+  {
+    scope: text("scope").notNull(),
+    identity: text("identity").notNull(),
+    used: integer("used").notNull().default(0),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+  },
+  (t) => [
+    primaryKey({ columns: [t.scope, t.identity] }),
+    index("request_budgets_expiry_idx").on(t.expiresAt),
+    check("request_budgets_scope", sql`${t.scope} in ('lookup', 'pin')`),
+    check("request_budgets_identity", sql`${t.identity} ~ '^[0-9a-f]{64}$'`),
+    check("request_budgets_used", sql`${t.used} between 0 and 100000`),
+  ],
+).enableRLS();
 
 // ─── Enums ────────────────────────────────────────────────────────────────
 
@@ -61,6 +112,7 @@ export const scanResult = pgEnum("scan_result", [
   "revoked",
   "not_rsvped",
 ]);
+export const orderAlertStatus = pgEnum("order_alert_status", ["pending", "sent", "failed"]);
 export const orderStatus = pgEnum("order_status", [
   "received",
   "preparing",
@@ -76,6 +128,8 @@ export const themes = pgTable("themes", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
   tokens: jsonb("tokens").notNull(),
+  /** Immutable to draft saves; replaced only by an explicit atomic publication. */
+  publishedTokens: jsonb("published_tokens"),
   isActive: boolean("is_active").notNull().default(false),
   createdAt: createdAt(),
   updatedAt: updatedAt(),
@@ -442,6 +496,34 @@ export const orderItems = pgTable(
       sql`${t.quantityLimit} between 1 and 100 and ${t.quantity} <= ${t.quantityLimit}`,
     ),
     check("order_items_quantity_positive", sql`${t.quantity} > 0`),
+  ],
+).enableRLS();
+
+/**
+ * Order alert outbox (ADR 0022): one row per station ticket, written in the order's transaction
+ * and drained on a schedule. The message can include a guest's note, so it is never logged.
+ */
+export const orderAlerts = pgTable(
+  "order_alerts",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    stationOrderId: uuid("station_order_id")
+      .notNull()
+      .references(() => stationOrders.id, { onDelete: "cascade" }),
+    station: station("station").notNull(),
+    message: text("message").notNull(),
+    status: orderAlertStatus("status").notNull().default("pending"),
+    attempts: integer("attempts").notNull().default(0),
+    lastAttemptAt: timestamp("last_attempt_at", { withTimezone: true }),
+    sentAt: timestamp("sent_at", { withTimezone: true }),
+    createdAt: createdAt(),
+  },
+  (t) => [
+    // One alert per ticket, so a replayed order can never queue a second message.
+    uniqueIndex("order_alerts_station_order_key").on(t.stationOrderId),
+    index("order_alerts_pending_idx").on(t.status, t.station, t.createdAt),
+    check("order_alerts_attempts", sql`${t.attempts} between 0 and 100`),
+    check("order_alerts_message", sql`char_length(${t.message}) between 1 and 4000`),
   ],
 ).enableRLS();
 

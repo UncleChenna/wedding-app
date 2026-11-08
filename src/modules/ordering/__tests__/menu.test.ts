@@ -8,6 +8,7 @@ const item = (overrides: Partial<MenuItem>): MenuItem => ({
   description: null,
   category: "meal",
   maxPerOrder: 5,
+  station: "kitchen",
   available: true,
   dietaryTags: [],
   ...overrides,
@@ -34,16 +35,22 @@ it("returns ready items or an unavailable state without raw errors", async () =>
 
 it("serves availability uncached and in the validated shape", async () => {
   const items = [{ id: "00000000-0000-4000-8000-000000000001", available: false }];
-  const response = await menuAvailabilityResponse(async () => items);
+  const response = await menuAvailabilityResponse(
+    async () => items,
+    async () => false,
+  );
   expect(response.status).toBe(200);
   expect(response.headers.get("cache-control")).toBe("private, no-store");
-  expect(menuAvailabilitySchema.parse(await response.json())).toEqual({ items });
+  expect(menuAvailabilitySchema.parse(await response.json())).toEqual({ open: false, items });
 });
 
 it("hides availability lookup failures behind a fixed 503", async () => {
-  const response = await menuAvailabilityResponse(async () => {
-    throw new Error("connection string secret");
-  });
+  const response = await menuAvailabilityResponse(
+    async () => {
+      throw new Error("connection string secret");
+    },
+    async () => true,
+  );
   expect(response.status).toBe(503);
   expect(response.headers.get("cache-control")).toBe("private, no-store");
   expect(await response.text()).not.toContain("secret");

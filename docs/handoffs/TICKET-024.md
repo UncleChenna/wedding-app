@@ -123,3 +123,15 @@ already owns migrations0012–0015. Read-only merge preview has one enum conflic
 retain scanResult and orderAlertStatus. Reviewable exact-path proposal is
 `docs/reviews/TICKET-024/base-update-proposal.md`. Await that explicit existing-branch
 update approval before generation; no new migrations or database writes performed.
+
+## Current develop integration approved — 2026-11-08
+
+User approved the2706b96 base-update proposal and all10 unchanged protected files.
+Recorded the exact paths in the ignored authorization file. Resolved the sole
+schema conflict by preserving scanResult and orderAlertStatus. All10 protected
+files match2706b96 byte-for-byte. The remaining index delta against MERGE_HEAD is
+limited to11 TICKET-024 files (schema, test, fixture, ticket and ticket docs).
+Frozen install and fresh quick verification pass: lint, types and related tests.
+Log: `/tmp/TICKET-024-current-base-quick.log`. No new migration or database write.
+The owned Supabase project has no running containers; fresh database verification
+will need its isolated stack started before any migration evidence is claimed.
