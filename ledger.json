@@ -2129,14 +2129,15 @@
     },
     "WED-120": {
       "log": [
-        "- 2026-11-08 — todo → claimed — unclechenna (claude) — started ahead of TICKET-047 (blocked)"
+        "- 2026-11-08 — todo → claimed — unclechenna (claude) — started ahead of TICKET-047 (blocked)",
+        "- 2026-11-08 — todo → in_progress — unclechenna (claude) — started ahead of TICKET-047 (blocked)"
       ],
-      "status": "todo",
+      "status": "in_progress",
       "owner": "unclechenna",
       "agent": "claude",
       "branch": "TICKET-120",
       "pr": "",
-      "started": "",
+      "started": "2026-11-08",
       "completed": "",
       "updated": "2026-11-08",
       "reason": "",
