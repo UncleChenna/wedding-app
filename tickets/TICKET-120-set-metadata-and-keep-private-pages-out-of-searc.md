@@ -2,7 +2,7 @@
 id: TICKET-120
 title: Set metadata and keep private pages out of search engines
 epic: quality
-status: in_progress
+status: in_review
 priority: urgent
 estimate: S
 labels: [frontend, security]
@@ -12,7 +12,7 @@ agent: claude
 blocked_by: [TICKET-047]
 blocks: [TICKET-154, TICKET-176]
 branch: TICKET-120
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/111
 created: 2026-10-21
 updated: 2026-11-08
 started: 2026-11-08
@@ -66,3 +66,4 @@ _Agents append dated notes here while working._
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-08 — todo → claimed — unclechenna (claude) — started ahead of TICKET-047 (blocked)
 - 2026-11-08 — todo → in_progress — unclechenna (claude) — started ahead of TICKET-047 (blocked)
+- 2026-11-08 — in_progress → in_review — unclechenna (claude)
