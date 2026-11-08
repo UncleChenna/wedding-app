@@ -2,20 +2,20 @@
 id: TICKET-120
 title: Set metadata and keep private pages out of search engines
 epic: quality
-status: todo
+status: in_progress
 priority: urgent
 estimate: S
 labels: [frontend, security]
 module: shared
-owner: ""
-agent: ""
+owner: unclechenna
+agent: claude
 blocked_by: [TICKET-047]
 blocks: [TICKET-154, TICKET-176]
-branch: ""
+branch: TICKET-120
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-08
+started: 2026-11-08
 completed: ""
 reason: ""
 resume_to: ""
@@ -59,3 +59,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-08 — todo → claimed — unclechenna (claude) — started ahead of TICKET-047 (blocked)
+- 2026-11-08 — todo → in_progress — unclechenna (claude) — started ahead of TICKET-047 (blocked)
