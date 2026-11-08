@@ -3,6 +3,7 @@ import { mkdirSync, readFileSync } from "node:fs";
 import postgres, { type Sql } from "postgres";
 import { expect, test, type Page } from "@playwright/test";
 import { assertDatabaseTarget } from "../scripts/database-target";
+import { setOrderingOpen } from "./support/ordering-open";
 import { themes } from "../src/modules/theming/themes";
 import { applyTheme } from "./support/theme";
 import { scanA11y } from "./support/axe";
@@ -10,6 +11,7 @@ import { scanA11y } from "./support/axe";
 test.describe("order submission on a flaky network", () => {
   test.skip(process.env.RUN_ORDER_BROWSER_TESTS !== "1", "Requires isolated local order fixtures");
   let db: Sql;
+  let restoreOrdering: (() => Promise<void>) | undefined;
   let table: number;
   let tableId: string | undefined;
   const itemIds: string[] = [];
@@ -24,6 +26,8 @@ test.describe("order submission on a flaky network", () => {
     expect(meta.path).toBe(process.cwd());
     assertDatabaseTarget(process.env.DATABASE_URL ?? "", { localOnly: true });
     db = postgres(process.env.DATABASE_URL ?? "", { max: 2 });
+    // Ordering is closed by default (TICKET-080); these tests need it open.
+    restoreOrdering = await setOrderingOpen(db, true);
     for (const [name, category, station] of [
       [meal, "meal", "kitchen"],
       [drink, "soft_drink", "bar"],
@@ -52,6 +56,7 @@ test.describe("order submission on a flaky network", () => {
       if (itemIds.length) await db`delete from menu_items where id in ${db(itemIds)}`;
       if (tableIds.length) await db`delete from tables where id in ${db(tableIds)}`;
     } finally {
+      await restoreOrdering?.();
       await db.end();
     }
   });

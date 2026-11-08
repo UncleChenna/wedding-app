@@ -4,7 +4,7 @@ import { connection } from "next/server";
 import { appRoutes } from "../lib/routes";
 import { createLogger } from "../lib/logger";
 import type { StaffRole } from "../server/staff-auth";
-import { currentStaff } from "../server/staff-cookies";
+import { currentStaffDevice } from "../server/staff-cookies";
 import { staffSignOutAction } from "../server/staff-actions";
 import { PagePlaceholder } from "./page-placeholder";
 import { StaffSignIn } from "./staff-sign-in";
@@ -30,8 +30,11 @@ const log = createLogger({ module: "staff-auth" });
 async function StaffEntryContent({ role }: { role: StaffRole }) {
   await connection();
   let authenticated = false;
+  let deviceName: string | null = null;
   try {
-    authenticated = Boolean(await currentStaff(role));
+    const signedIn = await currentStaffDevice(role);
+    authenticated = Boolean(signedIn);
+    deviceName = signedIn?.device.name ?? null;
   } catch {
     log.warn("staff session unavailable");
   }
@@ -50,6 +53,11 @@ async function StaffEntryContent({ role }: { role: StaffRole }) {
           <p className="text-lg leading-relaxed" role="status">
             You’re signed in.
           </p>
+          {deviceName && (
+            <p className="text-lg leading-relaxed">
+              This device is <span className="font-medium">{deviceName}</span>.
+            </p>
+          )}
           <form action={staffSignOutAction}>
             <Button type="submit" variant="secondary" size="lg">
               Sign out

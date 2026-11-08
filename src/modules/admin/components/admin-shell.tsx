@@ -6,6 +6,9 @@ import { AdminNavLink } from "./admin-nav-link";
 export const adminSections = [
   { href: appRoutes.admin.path, label: "Control room", exact: true },
   { href: appRoutes.adminSharing.path, label: appRoutes.adminSharing.label, exact: false },
+  { href: appRoutes.adminMenu.path, label: appRoutes.adminMenu.label, exact: false },
+  { href: appRoutes.adminStaff.path, label: appRoutes.adminStaff.label, exact: false },
+  { href: appRoutes.adminSettings.path, label: appRoutes.adminSettings.label, exact: false },
 ] as const;
 
 /**
@@ -25,9 +28,20 @@ export function AdminShell({
 }) {
   return (
     <div className="flex min-h-dvh flex-col md:flex-row">
-      <header className="border-b border-border px-6 py-4 md:hidden">
-        <p className="type-label text-primary">Wedding control room</p>
-        <p className="mt-1 font-display text-2xl leading-tight">{eventName}</p>
+      <header className="flex items-start justify-between gap-4 border-b border-border px-6 py-4 md:hidden">
+        <div className="min-w-0">
+          <p className="type-label text-primary">Wedding control room</p>
+          <p className="mt-1 font-display text-2xl leading-tight">{eventName}</p>
+        </div>
+        {/* On phones the bottom bar holds the sections; sign-out sits up here, away from them. */}
+        <div className="shrink-0">
+          <AdminNavLink
+            href={appRoutes.adminSignOut.path}
+            label={appRoutes.adminSignOut.label}
+            exact
+            currentPath={currentPath}
+          />
+        </div>
       </header>
       <nav
         aria-label="Admin"
@@ -37,7 +51,7 @@ export function AdminShell({
           <p className="type-label text-primary">Wedding control room</p>
           <p className="mt-2 font-display text-2xl leading-tight">{eventName}</p>
         </div>
-        <ul className="grid grid-cols-3 gap-1 md:mt-10 md:grid-cols-1 md:gap-2">
+        <ul className="grid grid-cols-5 gap-1 md:mt-10 md:grid-cols-1 md:gap-2">
           {adminSections.map((section) => (
             <li key={section.href}>
               <AdminNavLink
@@ -48,7 +62,7 @@ export function AdminShell({
               />
             </li>
           ))}
-          <li className="md:mt-8">
+          <li className="hidden md:mt-8 md:block">
             <AdminNavLink
               href={appRoutes.adminSignOut.path}
               label={appRoutes.adminSignOut.label}

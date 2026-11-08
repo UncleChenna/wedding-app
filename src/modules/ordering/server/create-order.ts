@@ -4,11 +4,13 @@ import type { Db } from "@/modules/shared/server/db/client";
 import { getEventSettings } from "@/modules/shared/server/settings";
 import {
   menuItems,
+  orderAlerts,
   orderItems,
   orders,
   stationOrders,
   tables,
 } from "@/modules/shared/server/db/schema";
+import { formatOrderAlert } from "../lib/alerts";
 import { orderFingerprint, type OrderResult, type OrderSubmission } from "../lib/order";
 import { splitByStation } from "../lib/stations";
 
@@ -26,6 +28,8 @@ const OPEN_STATUSES = ["received", "preparing", "ready"] as const;
 export async function createOrder(
   database: Pick<Db, "transaction">,
   order: OrderSubmission,
+  /** Staff entering an order for a table (TICKET-079) may do so while guest ordering is closed. */
+  options: { staffEntered?: boolean } = {},
 ): Promise<OrderResult> {
   const fingerprint = orderFingerprint({
     tableNumber: order.table,
@@ -35,6 +39,12 @@ export async function createOrder(
   return database.transaction(async (tx) => {
     const replay = await findReplay(tx, order.clientRequestId, fingerprint);
     if (replay) return replay;
+
+    // ORD-7: guests can only order while the couple has ordering open. A retry of an order made
+    // before it closed is answered above, so closing never turns a sent order into a refusal.
+    const settings = await getEventSettings(tx);
+    if (!settings.orderingOpen && !options.staffEntered)
+      return { status: "rejected", reason: "closed" };
 
     // Locking the table row serializes this table's submissions across every server instance,
     // so concurrent orders cannot both slip under the open-order limit or the cooldown.
@@ -50,7 +60,6 @@ export async function createOrder(
     const raced = await findReplay(tx, order.clientRequestId, fingerprint);
     if (raced) return raced;
 
-    const settings = await getEventSettings(tx);
     const [usage] = await tx
       .select({
         open: sql<number>`count(*) filter (where ${inArray(orders.status, OPEN_STATUSES)})::int`,
@@ -75,6 +84,7 @@ export async function createOrder(
     const menu = await tx
       .select({
         id: menuItems.id,
+        name: menuItems.name,
         station: menuItems.station,
         available: menuItems.isAvailable,
         maxPerOrder: menuItems.maxPerOrder,
@@ -117,7 +127,12 @@ export async function createOrder(
       order.items.map((item) => {
         const menuItem = byId.get(item.menuItemId);
         if (!menuItem) throw new Error("Order item lost its menu row");
-        return { ...item, station: menuItem.station, quantityLimit: menuItem.maxPerOrder };
+        return {
+          ...item,
+          name: menuItem.name,
+          station: menuItem.station,
+          quantityLimit: menuItem.maxPerOrder,
+        };
       }),
     );
     const rows = await tx
@@ -136,6 +151,19 @@ export async function createOrder(
           quantity: item.quantity,
           quantityLimit: item.quantityLimit,
         }));
+      }),
+    );
+    // ADR 0022: the alert commits or rolls back with the order. Sending happens later in the
+    // drain, so a slow or failing provider can never hold up or refuse an order.
+    await tx.insert(orderAlerts).values(
+      tickets.map(({ station, items }) => {
+        const stationOrderId = stationRow.get(station);
+        if (!stationOrderId) throw new Error("Station ticket was not created");
+        return {
+          stationOrderId,
+          station,
+          message: formatOrderAlert({ table: order.table, items, note: order.note }),
+        };
       }),
     );
     return { status: "created", orderId: created.id };

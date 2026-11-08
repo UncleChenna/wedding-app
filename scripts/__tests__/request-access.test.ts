@@ -5,7 +5,10 @@ import { proxy, config } from "../../src/proxy";
 import { signStaffSession } from "../../src/modules/shared/server/staff-session";
 import { createStaffDeviceCookie } from "../../src/modules/shared/server/staff-device-cookie";
 
-const mocks = vi.hoisted(() => ({ claims: vi.fn(), publication: vi.fn() }));
+const mocks = vi.hoisted(() => ({ claims: vi.fn(), publication: vi.fn(), budget: vi.fn() }));
+vi.mock("@/modules/shared/server/request-rate-limit", () => ({
+  requestRateLimit: mocks.budget,
+}));
 const key = Buffer.alloc(32, 7);
 vi.mock("@/modules/shared/server/env", () => ({
   serverEnv: {
@@ -51,11 +54,27 @@ function admin(aal: string, email = "admin@example.test") {
 }
 
 beforeEach(() => {
+  mocks.budget.mockReset().mockResolvedValue({ status: "allowed" });
   mocks.claims.mockReset().mockResolvedValue({ data: null, error: new Error("no session") });
   mocks.publication.mockReset().mockResolvedValue(true);
 });
 
 describe("request authorization matrix", () => {
+  it("keeps authorization independent from exhausted guest lookup budgets", async () => {
+    mocks.budget.mockResolvedValue({
+      status: "limited",
+      retryAfterSeconds: 30,
+      message: "Please wait.",
+    });
+    expect((await proxy(request("/i/capability"))).status).toBe(429);
+    expect(mocks.publication).not.toHaveBeenCalled();
+    mocks.budget.mockClear();
+    expect((await proxy(request("/api/admin/settings", "POST"))).status).toBe(403);
+    expect((await proxy(request("/api/checkin/admit", "POST"))).status).toBe(403);
+    admin("aal2");
+    expect((await proxy(request("/admin"))).status).toBe(200);
+    expect(mocks.budget).not.toHaveBeenCalled();
+  });
   it("covers bar and privileged API routes in the literal matcher", () => {
     expect(config.matcher).toEqual(
       expect.arrayContaining([

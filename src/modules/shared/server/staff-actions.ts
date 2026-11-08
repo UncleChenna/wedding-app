@@ -14,6 +14,7 @@ import {
   staffSigningKey,
 } from "./staff-cookies";
 import { signStaffSession } from "./staff-session";
+import { actionRateLimit } from "./request-rate-limit";
 
 const log = createLogger({ module: "staff-auth" });
 const formSchema = z.object({ role: staffRoleSchema, pin: z.string().max(100) });
@@ -23,9 +24,15 @@ export async function staffSignInAction(
   _previous: StaffSignInState,
   form: FormData,
 ): Promise<StaffSignInState> {
-  const parsed = formSchema.safeParse({ role: form.get("role"), pin: form.get("pin") });
-  if (!parsed.success) return { status: "wrong", message: staffSignInMessages.wrong };
   try {
+    const budget = await actionRateLimit("pin");
+    if (budget.status !== "allowed")
+      return {
+        status: budget.status === "limited" ? "locked" : "unavailable",
+        message: budget.message,
+      };
+    const parsed = formSchema.safeParse({ role: form.get("role"), pin: form.get("pin") });
+    if (!parsed.success) return { status: "wrong", message: staffSignInMessages.wrong };
     const key = staffSigningKey();
     if (!key) return { status: "unavailable", message: staffSignInMessages.unavailable };
     const jar = await cookies();
@@ -51,7 +58,8 @@ export async function staffSignInAction(
     log.warn("staff sign-in unavailable");
     return { status: "unavailable", message: staffSignInMessages.unavailable };
   }
-  redirect(destinations[parsed.data.role]);
+  const role = staffRoleSchema.parse(form.get("role"));
+  redirect(destinations[role]);
 }
 
 export async function staffSignOutAction(): Promise<void> {

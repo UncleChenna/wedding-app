@@ -9,12 +9,15 @@ import { createLogger } from "@/modules/shared/lib/logger";
 import type { RsvpState } from "../lib/rsvp-state";
 import { submitRsvp } from "./submit-rsvp";
 import { saveRsvp } from "./save-rsvp";
+import { actionRateLimit } from "@/modules/shared/server/request-rate-limit";
 
 export async function respondToInvitation(
   _previous: RsvpState,
   form: FormData,
 ): Promise<RsvpState> {
   try {
+    const budget = await actionRateLimit("lookup");
+    if (budget.status !== "allowed") return { status: "error", message: budget.message };
     const token = form.get("token");
     const result = await submitRsvp(
       { token, attendance: form.get("attendance") },

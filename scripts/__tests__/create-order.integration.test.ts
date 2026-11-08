@@ -3,12 +3,15 @@ import { drizzle } from "drizzle-orm/postgres-js";
 import postgres, { type Sql } from "postgres";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { assertDatabaseTarget } from "../database-target";
+import { setOrderingOpen } from "../../e2e/support/ordering-open";
 import * as schema from "../../src/modules/shared/server/db/schema";
 import type { Db } from "../../src/modules/shared/server/db/client";
 import type { createOrder as CreateOrder } from "../../src/modules/ordering/server/create-order";
 import type { OrderRejection, OrderSubmission } from "../../src/modules/ordering/lib/order";
 
 let sql: Sql;
+
+let restoreOrdering: (() => Promise<void>) | undefined;
 let database: Db;
 let createOrder: typeof CreateOrder;
 const tag = "TICKET-072 fixture " + randomInt(100000, 900000);
@@ -45,6 +48,8 @@ describe.runIf(process.env.RUN_ORDER_SUBMIT_DB_TESTS === "1")("guest order submi
     const url = process.env.DATABASE_URL ?? "";
     assertDatabaseTarget(url, { localOnly: true });
     sql = postgres(url, { max: 8, connect_timeout: 10 });
+    // Ordering is closed by default (TICKET-080); these tests need it open.
+    restoreOrdering = await setOrderingOpen(sql, true);
     database = drizzle(sql, { schema }) as unknown as Db;
     createOrder = (await import("../../src/modules/ordering/server/create-order")).createOrder;
     await sql`insert into menu_items(id, name, category_v2, station, max_per_order, is_available) values
@@ -66,6 +71,7 @@ describe.runIf(process.env.RUN_ORDER_SUBMIT_DB_TESTS === "1")("guest order submi
       await sql`delete from menu_items where id in ${sql(Object.values(menuIds))}`;
       await sql`delete from tables where id in ${sql(tableIds)}`;
     } finally {
+      await restoreOrdering?.();
       await sql.end();
     }
   });
@@ -313,6 +319,49 @@ describe.runIf(process.env.RUN_ORDER_SUBMIT_DB_TESTS === "1")("guest order submi
           await createOrder(tx, submission({ items: [{ menuItemId: menuIds.meal, quantity: 2 }] })),
         ).toEqual({ status: "rejected", reason: "over-limit", itemIds: [menuIds.meal] });
       });
+    });
+  });
+  describe("ordering open and closed (TICKET-080)", () => {
+    const close = () => sql`update event_settings set ordering_open = false where id = 1`;
+    const open = () => sql`update event_settings set ordering_open = true where id = 1`;
+
+    it("refuses a guest order while closed without writing anything", async () => {
+      await close();
+      try {
+        const order = submission();
+        expect(await createOrder(database, order)).toEqual({
+          status: "rejected",
+          reason: "closed",
+        });
+        expect(await ordersFor(order.clientRequestId)).toHaveLength(0);
+      } finally {
+        await open();
+      }
+    });
+
+    it("still accepts an order staff enter for a table", async () => {
+      await close();
+      try {
+        const order = submission();
+        expect((await createOrder(database, order, { staffEntered: true })).status).toBe("created");
+      } finally {
+        await open();
+      }
+    });
+
+    it("answers a retry of an order sent before closing with that order", async () => {
+      const order = submission();
+      const first = await createOrder(database, order);
+      expect(first.status).toBe("created");
+      await close();
+      try {
+        expect(await createOrder(database, order)).toEqual({
+          status: "replayed",
+          orderId: first.status === "created" ? first.orderId : "",
+        });
+      } finally {
+        await open();
+      }
     });
   });
 });
