@@ -39,10 +39,10 @@ See: [How theming works](../docs/prd.md#how-theming-works) (THM-3, THM-6).
 
 ## Acceptance criteria
 
-- [ ] Saving a failing theme shows each failing pair and does not save (e2e).
-- [ ] Activate restyles the guest site without deploy (e2e).
+- [x] Saving a failing theme shows each failing pair and does not save (e2e).
+- [x] Activate restyles the guest site without deploy (e2e).
 
-- [ ] Use TICKET-181 for save/activate; show named contrast errors and prevent activation of invalid drafts while keeping the current live theme unchanged.
+- [x] Use TICKET-181 for save/activate; show named contrast errors and prevent activation of invalid drafts while keeping the current live theme unchanged.
 
 ## Test plan
 
@@ -58,7 +58,7 @@ See: [How theming works](../docs/prd.md#how-theming-works) (THM-3, THM-6).
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-11-08: Functional criteria pass in the authenticated isolated browser journey. Full verification passed before the embedded-only layout correction; final quick/build/journey pass after it. See docs/reviews/TICKET-098/ui-review.md. Physical-device and fresh CLS/Lighthouse checks remain unverified; not marked done.
 
 ## Activity log
 

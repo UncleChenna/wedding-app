@@ -12,13 +12,21 @@ export interface InvitationDetails {
   dressCode: string;
 }
 
-export function InvitationView({ details }: { details: InvitationDetails }) {
+export function InvitationView({
+  details,
+  embedded = false,
+}: {
+  details: InvitationDetails;
+  embedded?: boolean;
+}) {
+  const Container = embedded ? "div" : "main";
+  const Heading = embedded ? "h3" : "h1";
   return (
-    <main className="mx-auto max-w-7xl px-6 py-12 md:px-12">
+    <Container className={`mx-auto max-w-7xl px-6 py-12 ${embedded ? "" : "md:px-12"}`}>
       <p className="mb-8 text-base leading-relaxed">
         Invitation preview · sample photograph and venue details
       </p>
-      <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+      <div className={`grid gap-12 ${embedded ? "" : "lg:grid-cols-2 lg:items-center"}`}>
         <Image
           src={celebration}
           loading="eager"
@@ -32,10 +40,12 @@ export function InvitationView({ details }: { details: InvitationDetails }) {
           <p className="mb-6 text-base tracking-widest text-primary uppercase">
             Together with our families
           </p>
-          <h1 className="font-display text-5xl leading-tight tracking-tight wrap-anywhere md:text-7xl">
+          <Heading
+            className={`font-display text-5xl leading-tight tracking-tight wrap-anywhere ${embedded ? "" : "md:text-7xl"}`}
+          >
             {details.names[0]} <span className="block text-primary">&amp;</span>
             {details.names[1]}
-          </h1>
+          </Heading>
           <p className="mt-8 font-display text-3xl leading-tight">
             Two stories. One ending: forever.
           </p>
@@ -101,6 +111,6 @@ export function InvitationView({ details }: { details: InvitationDetails }) {
           Back to previews
         </Link>
       </section>
-    </main>
+    </Container>
   );
 }
