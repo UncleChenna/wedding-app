@@ -1,5 +1,5 @@
 import { execFileSync, spawn } from "node:child_process";
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 
@@ -10,6 +10,7 @@ import { attributionProblems, cleanMessage, ticketProblems } from "../harness/co
 import { criteria, parseTicket, serializeTicket } from "../tickets/format";
 import { criticalPath, findCycle, ready, upcoming } from "../tickets/graph";
 import { SECTIONS } from "../tickets/model";
+import { REVIEW_SECTIONS } from "../tickets/review";
 import type { Frontmatter, SectionName, Ticket } from "../tickets/model";
 import { effective, loadTicketsSafely, recordFrom, renderOutputs } from "../tickets/store";
 import { validateTickets } from "../tickets/validate";
@@ -394,6 +395,9 @@ function setup() {
   };
 }
 function t(cwd: string, ...args: string[]) {
+  return tWithEnv(cwd, {}, ...args);
+}
+function tWithEnv(cwd: string, extraEnv: Record<string, string>, ...args: string[]) {
   return new Promise<{ code: number | null; out: string }>((done) => {
     const child = spawn(tsx, [cli, ...args], {
       cwd,
@@ -402,6 +406,7 @@ function t(cwd: string, ...args: string[]) {
         AGENT_OWNER: "",
         TICKETS_LEDGER: "origin",
         TICKETS_TODAY: "2026-10-22",
+        ...extraEnv,
       },
     });
     let out = "";
@@ -412,6 +417,93 @@ function t(cwd: string, ...args: string[]) {
 }
 
 describe("ticket CLI with a shared remote", () => {
+  it.each(["failed", "passed", "forged marker", "changed head", "pr passed", "pr changed head"])(
+    "review transition requires current successful verification: %s",
+    async (scenario) => {
+      const { a, dir, remote } = setup();
+      git(a, "checkout", "-qb", "TICKET-001");
+      const active = ticket(
+        "TICKET-001",
+        {
+          status: "in_progress",
+          owner: "divine",
+          agent: "codex",
+          branch: "TICKET-001",
+          started: "2026-10-22",
+          blocks: ["TICKET-002"],
+        },
+        true,
+      );
+      writeFileSync(join(a, active.path), serializeTicket(active));
+      mkdirSync(join(a, "docs/plans"), { recursive: true });
+      writeFileSync(
+        join(a, "docs/plans/TICKET-001-pr.md"),
+        REVIEW_SECTIONS.map((name) => `# ${name}\nTask-specific evidence for this fixture.\n`).join(
+          "\n",
+        ),
+      );
+      git(a, "add", ".");
+      git(a, "commit", "-qm", "TICKET-001: prepare review fixture");
+      git(a, "push", "-qu", "origin", "HEAD");
+      const before = readFileSync(join(a, active.path), "utf8");
+      const head = git(a, "rev-parse", "HEAD");
+      const bin = join(dir, "review-bin");
+      const calls = join(dir, "verification-calls.json");
+      mkdirSync(bin);
+      writeFileSync(
+        join(bin, "gh"),
+        `#!${process.execPath}\nconsole.log(JSON.stringify({url:"https://example.test/pr/1",state:"OPEN",baseRefName:"develop"}));\n`,
+        { mode: 0o755 },
+      );
+      writeFileSync(
+        join(bin, "pnpm"),
+        `#!${process.execPath}
+const fs = require("node:fs");
+const { execFileSync } = require("node:child_process");
+fs.appendFileSync(process.env.REVIEW_CALLS, JSON.stringify(process.argv.slice(2)) + "\\n");
+if (process.env.REVIEW_SCENARIO.endsWith("changed head")) {
+  execFileSync("git", ["commit", "--allow-empty", "-qm", "TICKET-001: changed while checking"]);
+  execFileSync("git", ["push", "-q", "origin", "HEAD"]);
+}
+process.exit(["failed", "forged marker"].includes(process.env.REVIEW_SCENARIO) ? 1 : 0);
+`,
+        { mode: 0o755 },
+      );
+      const result = await tWithEnv(
+        a,
+        {
+          PATH: `${bin}:${process.env.PATH ?? ""}`,
+          REVIEW_CALLS: calls,
+          REVIEW_SCENARIO: scenario,
+          TICKETS_VERIFIED_SHA: scenario === "forged marker" ? head : "",
+        },
+        scenario.startsWith("pr ") ? "pr" : "move",
+        "TICKET-001",
+        "in_review",
+      );
+      expect(existsSync(calls), result.out).toBe(true);
+      expect(
+        readFileSync(calls, "utf8")
+          .trim()
+          .split("\n")
+          .map((line) => JSON.parse(line)),
+      ).toEqual([["verify"]]);
+      if (scenario.endsWith("passed")) {
+        expect(result.code, result.out).toBe(0);
+        const ledger = JSON.parse(git(remote, "show", "ticket-ledger:ledger.json"));
+        expect(ledger.tickets["WED-001"].status).toBe("in_review");
+      } else {
+        expect(result.code, result.out).not.toBe(0);
+        expect(result.out).toMatch(/pnpm verify/);
+        expect(readFileSync(join(a, active.path), "utf8")).toBe(before);
+        expect(
+          git(remote, "for-each-ref", "--format=%(objectname)", "refs/heads/ticket-ledger"),
+        ).toBe("");
+      }
+    },
+    30000,
+  );
+
   it("new worktree bases use remote develop instead of the current feature HEAD", () => {
     const { a } = setup();
     git(a, "push", "origin", "main:develop");

@@ -45,10 +45,10 @@ tracks only the follow-up repair.
 
 ## Acceptance criteria
 
-- [ ] Direct review runs `pnpm verify`; failure leaves the shared ledger and ticket file unchanged.
-- [ ] A successful direct review advances the ledger only for the verified current HEAD.
-- [ ] An inherited verification marker and a HEAD change during verification cannot bypass the gate.
-- [ ] `t:pr` verifies once, reuses only its successful current invocation, and rejects HEAD changes.
+- [x] Direct review runs `pnpm verify`; failure leaves the shared ledger and ticket file unchanged.
+- [x] A successful direct review advances the ledger only for the verified current HEAD.
+- [x] An inherited verification marker and a HEAD change during verification cannot bypass the gate.
+- [x] `t:pr` verifies once, reuses only its successful current invocation, and rejects HEAD changes.
 - [ ] Targeted regression suites and quick/full verification pass; independent review is recorded.
 
 ## Test plan
