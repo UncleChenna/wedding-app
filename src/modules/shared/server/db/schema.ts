@@ -105,6 +105,13 @@ export const stationOrderStatus = pgEnum("station_order_status", [
   "cancelled",
 ]);
 export const station = pgEnum("station", ["kitchen", "bar"]);
+export const scanResult = pgEnum("scan_result", [
+  "valid",
+  "already_used",
+  "invalid",
+  "revoked",
+  "not_rsvped",
+]);
 export const orderAlertStatus = pgEnum("order_alert_status", ["pending", "sent", "failed"]);
 export const orderStatus = pgEnum("order_status", [
   "received",
@@ -299,6 +306,82 @@ export const rsvps = pgTable(
 
 // ─── Gate check-in ────────────────────────────────────────────────────────
 
+/** Canonical admissions; cross-table guards must enforce the current RSVP allowance. */
+export const admissionCounters = pgTable(
+  "admission_counters",
+  {
+    invitationId: uuid("invitation_id")
+      .primaryKey()
+      .references(() => invitations.id, { onDelete: "restrict" }),
+    allowance: integer("allowance").notNull(),
+    admittedPeople: integer("admitted_people").notNull().default(0),
+    updatedAt: updatedAt(),
+  },
+  (t) => [
+    check("admission_counters_allowance_nonnegative", sql`${t.allowance} >= 0`),
+    check(
+      "admission_counters_bounded",
+      sql`${t.admittedPeople} >= 0 and ${t.admittedPeople} <= ${t.allowance}`,
+    ),
+  ],
+).enableRLS();
+
+/** Preserve physical reports separately from canonical allocation; never store a PIN or QR. */
+export const scanEvents = pgTable(
+  "scan_events",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    clientEventId: uuid("client_event_id").notNull(),
+    invitationId: uuid("invitation_id").references(() => invitations.id, { onDelete: "restrict" }),
+    staffId: uuid("staff_id").references(() => staff.id, { onDelete: "restrict" }),
+    deviceId: text("device_id").references(() => registeredDevices.id, { onDelete: "restrict" }),
+    reportedAt: timestamp("reported_at", { withTimezone: true }).notNull(),
+    receivedAt: timestamp("received_at", { withTimezone: true }).notNull().defaultNow(),
+    reportedResult: scanResult("reported_result").notNull(),
+    result: scanResult("result").notNull(),
+    reportedPeople: integer("reported_people").notNull(),
+    admittedPeople: integer("admitted_people").notNull(),
+    conflict: boolean("conflict").notNull().default(false),
+    source: text("source").notNull(),
+    legacyCheckInId: uuid("legacy_check_in_id").references(() => checkIns.id, {
+      onDelete: "restrict",
+    }),
+  },
+  (t) => [
+    uniqueIndex("scan_events_client_event_id_key").on(t.clientEventId),
+    uniqueIndex("scan_events_legacy_check_in_id_key").on(t.legacyCheckInId),
+    index("scan_events_invitation_received_idx").on(t.invitationId, t.receivedAt),
+    index("scan_events_device_received_idx").on(t.deviceId, t.receivedAt),
+    index("scan_events_staff_received_idx").on(t.staffId, t.receivedAt),
+    check("scan_events_source", sql`${t.source} in ('online', 'offline', 'legacy')`),
+    check(
+      "scan_events_counts",
+      sql`${t.reportedPeople} >= 0 and ${t.admittedPeople} >= 0 and ${t.admittedPeople} <= ${t.reportedPeople}`,
+    ),
+    check(
+      "scan_events_canonical_admission",
+      sql`${t.admittedPeople} = 0 or (${t.result} = 'valid' and ${t.invitationId} is not null)`,
+    ),
+    check(
+      "scan_events_reported_admission",
+      sql`${t.reportedPeople} = 0 or ${t.reportedResult} = 'valid'`,
+    ),
+    check(
+      "scan_events_unallocated_report_conflict",
+      sql`${t.reportedPeople} = ${t.admittedPeople} or ${t.conflict}`,
+    ),
+    check(
+      "scan_events_live_identity",
+      sql`${t.source} = 'legacy' or (${t.staffId} is not null and ${t.deviceId} is not null)`,
+    ),
+    check(
+      "scan_events_legacy_identity",
+      sql`(${t.source} = 'legacy') = (${t.legacyCheckInId} is not null)`,
+    ),
+  ],
+).enableRLS();
+
+/** Historical guest-level archive, retained unchanged during invitation-level migration. */
 export const checkIns = pgTable(
   "check_ins",
   {

@@ -13,6 +13,7 @@ import * as schema from "../src/modules/shared/server/db/schema";
 import { parseServerEnv } from "../src/modules/shared/lib/env/schema";
 import { createLogger } from "../src/modules/shared/lib/logger";
 import { buildSeedData } from "./seed-data";
+import { resetSeedTables } from "./seed-reset";
 import { assertDatabaseTarget } from "./database-target";
 
 const log = createLogger({ script: "seed" }, { format: "pretty" });
@@ -29,14 +30,7 @@ async function main() {
   const data = buildSeedData();
 
   await db.transaction(async (tx) => {
-    // RSVP history is append-only (drizzle/0003). This local-only reset is the one place it may
-    // be cleared; the trigger is off only inside this transaction, so a failure restores it.
-    await tx.execute(sql`alter table rsvp_changes disable trigger rsvp_history_append_only`);
-    await tx.execute(sql`
-      truncate table rsvp_changes, event_settings, order_items, station_orders, orders, menu_items,
-        check_ins, rsvps, guests, tables, invitations, registered_devices, staff, themes restart identity cascade
-    `);
-    await tx.execute(sql`alter table rsvp_changes enable trigger rsvp_history_append_only`);
+    await resetSeedTables((statement) => tx.execute(sql.raw(statement)));
     await tx.insert(schema.eventSettings).values(data.eventSettings);
     await tx.insert(schema.themes).values(data.themes);
     await tx.insert(schema.staff).values(data.staff);
