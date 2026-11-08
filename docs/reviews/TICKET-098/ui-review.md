@@ -40,7 +40,12 @@ were inspected; earlier full visual review remains recorded above.
 
 Six isolated database publication tests passed, including stale snapshots and
 preservation of the live selection. Quick verification passed. A separate review
-of the corrections found no remaining blockers.
+of the corrections found no remaining blockers. The latest broad local gate
+passed lint/types/build and 1,095 unit tests (108 skipped), but its smoke stage
+finished with 837 passes, 195 skips and 14 desktop failures during database
+unavailability (confirmed HTTP 503 on `/p/invalid`). All 14 failed checks passed unchanged in a serial rerun (21.0s) after
+the database recovered. The initial broad command remains recorded as failed;
+the review CLI will rerun the full gate.
 
 Disposition: the user's standing authorization permits proceeding through review
 while preserving TICKET-201's release gates. Physical-device checks, fresh

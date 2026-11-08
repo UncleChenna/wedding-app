@@ -37,8 +37,15 @@ authenticated browser journey passes (27.8s), including two tabs, conflict
 preservation, reload/activation, keyboard focus and 24 Axe/overflow combinations.
 Refreshed screenshots; inspected the Ivory desktop invitation and Emerald mobile
 order examples. A separate read-only reviewer found no blockers in these fixes.
-Full verification is running at `/tmp/TICKET-098-review-verify.log`. Physical
-devices, fresh Lighthouse and exact-zero CLS remain unverified in TICKET-201.
+Full verification reached 1,095 unit passes/108 skips and a passing build, then
+837 smoke passes/195 skips/14 desktop failures when the local database became
+unavailable. A diagnostic `/p/invalid` request returned HTTP 503; invitation/pass
+and PWA-return checks received the retry page. Evidence:
+`/tmp/TICKET-098-review-verify.log`. One subsequent action-boundary test also
+passes (eight action tests total). All 14 failed browser checks passed unchanged in a serial rerun (21.0s)
+after local database recovery. No stack was restarted by this work. Next: run
+the full review gate through `AGENT_OWNER=divine pnpm t:pr TICKET-098`. Physical devices, fresh
+Lighthouse and exact-zero CLS remain unverified in TICKET-201.
 
 Lesson: compare validated tokens after JSON normalization because optional
 undefined fields are omitted by persisted JSON. For keyboard testing, scroll

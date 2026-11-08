@@ -26,6 +26,7 @@ The authenticated journey proves invalid saves create no draft, valid saves rema
 - `pnpm exec tsx scripts/test-theme-editor.ts`: passed before that correction; authenticates with OTP/TOTP and asserts zero Axe violations and no horizontal overflow in 24 combinations.
 - Final correction keeps the narrow embedded invitation single-column, preserving normal public-page breakpoints. Final quick verification, production rebuild and focused browser regression all passed.
 - Review corrections: quick verification passed; six isolated publication database tests passed, including stale draft rejection without changing the live selection. The authenticated browser journey passed in 27.8 seconds, including two-tab conflict/reload/activation, keyboard focus, no embedded development links, guest SSR and all 24 Axe/overflow combinations.
+- Latest local broad run: lint/types/build passed; 1,095 unit tests passed/108 skipped. Smoke: 837 passed/195 skipped/14 desktop failures during local database unavailability. Independent `/p/invalid` returned HTTP 503; invitation/pass and PWA return checks saw the retry screen. All 14 failed checks passed unchanged in a serial rerun (21.0s) after the database became healthy. The initial broad command remains recorded as failed; the review CLI will rerun the full gate. The subsequent action-boundary regression passed (eight action tests total).
 - Physical-device, fresh Lighthouse and exact-zero CLS checks remain unverified. No claim of full UI completion.
 
 # Risks and rollout
