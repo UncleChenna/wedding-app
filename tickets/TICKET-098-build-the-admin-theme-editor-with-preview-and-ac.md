@@ -2,7 +2,7 @@
 id: TICKET-098
 title: Build the admin theme editor with preview and activate
 epic: admin
-status: in_progress
+status: in_review
 priority: medium
 estimate: M
 labels: [frontend, design]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-181, TICKET-088]
 blocks: []
 branch: TICKET-098
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/110
 created: 2026-10-21
 updated: 2026-11-08
 started: 2026-11-08
@@ -69,3 +69,4 @@ See: [How theming works](../docs/prd.md#how-theming-works) (THM-3, THM-6).
 - 2026-11-08 — todo → in_progress — divine (codex)
 - 2026-11-08 — in_progress → blocked — divine (codex) — PR #110 published; awaiting UI review exception for physical-device and fresh Lighthouse/CLS checks retained in TICKET-201. CI pending.
 - 2026-11-08 — blocked → in_progress — divine (codex) — Apply independent PR review fixes; retain release gates
+- 2026-11-08 — in_progress → in_review — divine (codex)
