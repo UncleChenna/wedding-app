@@ -13,6 +13,7 @@ describe("env schema", () => {
       LOG_LEVEL: "info",
       ADMIN_EMAIL_ALLOWLIST: "",
       STAFF_SESSION_SECRET: "",
+      ALERT_DRAIN_SECRET: "",
     });
   });
 
