@@ -14,7 +14,7 @@ blocks: [TICKET-026, TICKET-027, TICKET-058, TICKET-061, TICKET-069, TICKET-173]
 branch: TICKET-024
 pr: ""
 created: 2026-10-21
-updated: 2026-11-04
+updated: 2026-11-08
 started: 2026-11-04
 completed: ""
 reason: ""
@@ -64,3 +64,5 @@ See: [Data model](../docs/prd.md#data-model) · [Gate check-in](../docs/prd.md#g
 - 2026-11-04 — todo → in_progress — divine (codex)
 - 2026-11-04 — in_progress → blocked — divine (codex) — Isolated stack failed startup twice; migration generation must also wait for PR84's reserved 0011 migration to reach develop. Draft schema and tests are preserved for review.
 - 2026-11-04 — blocked → in_progress — divine (codex) — Isolated stack recovered after parking the verified owned TICKET-031 stack. Existing migrations apply; three storage tests now fail for the missing tables. Continue schema/guard work while awaiting PR84 migration integration.
+- 2026-11-04 — in_progress → blocked — divine (codex) — Awaiting exact-path authorization for unchanged develop migration 0011 files and approval record. Prepared merge and nine passing proposal tests are preserved in this worktree; PR85 remains draft.
+- 2026-11-08 — blocked → in_progress — divine (codex) — User approved unchanged develop migration0011 files and authorization record; finish preserved base integration.

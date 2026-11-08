@@ -1,7 +1,8 @@
 // @vitest-environment jsdom
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
-import { MENU_AVAILABILITY_URL, MenuSections } from "../components/menu-sections";
+import { OrderComposer } from "../components/order-composer";
+import { MENU_AVAILABILITY_URL } from "../components/use-menu-availability";
 import type { MenuItem } from "../lib/menu";
 
 const RICE = "00000000-0000-4000-8000-000000000001";
@@ -47,7 +48,7 @@ async function tick(ms = 3000) {
 }
 
 it("groups the menu by category with sold-out items visible, disabled and labelled in text", () => {
-  render(<MenuSections items={items} />);
+  render(<OrderComposer items={items} table={7} />);
   expect(screen.getByRole("heading", { name: "Meals" })).toBeVisible();
   expect(screen.getByRole("heading", { name: "Alcoholic drinks" })).toBeVisible();
   expect(screen.queryByRole("heading", { name: "Soft drinks" })).toBeNull();
@@ -60,7 +61,7 @@ it("groups the menu by category with sold-out items visible, disabled and labell
 });
 
 it("disables and clears an item that sells out while the page is open, and announces it", async () => {
-  render(<MenuSections items={items} />);
+  render(<OrderComposer items={items} table={7} />);
   fireEvent.click(screen.getByRole("button", { name: "Increase Jollof rice quantity" }));
   expect(screen.getByLabelText("Jollof rice quantity")).toHaveValue(1);
   availability = [
@@ -87,7 +88,7 @@ it("disables and clears an item that sells out while the page is open, and annou
 });
 
 it("keeps the last known state when a poll fails or returns an unexpected shape", async () => {
-  render(<MenuSections items={items} />);
+  render(<OrderComposer items={items} table={7} />);
   fetchMock.mockImplementationOnce(async () => new Response("down", { status: 503 }));
   await tick();
   fetchMock.mockImplementationOnce(async () => Response.json({ items: [{ id: RICE }] }));
@@ -103,7 +104,7 @@ it("keeps the last known state when a poll fails or returns an unexpected shape"
 
 it("pauses polling while hidden and checks immediately on return", async () => {
   const visibility = vi.spyOn(document, "visibilityState", "get").mockReturnValue("hidden");
-  render(<MenuSections items={items} />);
+  render(<OrderComposer items={items} table={7} />);
   await tick(9000);
   expect(fetchMock).not.toHaveBeenCalled();
   visibility.mockReturnValue("visible");

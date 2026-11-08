@@ -12,6 +12,7 @@ describe("env schema", () => {
       NODE_ENV: "development",
       LOG_LEVEL: "info",
       ADMIN_EMAIL_ALLOWLIST: "",
+      STAFF_SESSION_SECRET: "",
     });
   });
 

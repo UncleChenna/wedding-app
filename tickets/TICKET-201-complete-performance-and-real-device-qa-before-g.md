@@ -64,6 +64,8 @@ Claiming untested checks pass, weakening thresholds, changing TICKET-015's pause
 
 - [ ] TICKET-045: Download works on iOS Safari and Android Chrome (manual, recorded). Also test WhatsApp in-app save/open-image/hold-to-save and file sharing, cancellation, dark/light appearance, long and non-Latin names, and physical camera decoding of the saved PNG. Record device/OS/browser/WhatsApp/build and results. Missing local-font glyphs must never leak names to remote services; verify fallback advice. Unverified or failed results continue to block both guest releases.
 
+- [ ] TICKET-031: verify staff PIN entry on physical iOS and Android phones/tablets at /checkin, /kitchen and /bar. Record device/OS/browser/build, numeric keyboard behavior, safe areas, focus and readable errors; exercise wrong PIN, expiry, lockout, sign-out and role isolation. Keep failures or missing evidence release-blocking. Owner approved review deferral on 2026-11-04; automated browser evidence does not certify physical devices.
+
 ## Test plan
 
 - End-to-end: production-build Lighthouse, keyboard/axe and 375/768/1280 screenshot matrix in both themes.

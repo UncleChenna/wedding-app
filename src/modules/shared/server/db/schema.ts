@@ -139,6 +139,21 @@ export const registeredDevices = pgTable(
   ],
 ).enableRLS();
 
+/** Anonymous device attempts persist across app instances; no PIN or guest data. */
+export const staffPinAttempts = pgTable(
+  "staff_pin_attempts",
+  {
+    deviceId: text("device_id").primaryKey(),
+    failures: integer("failures").notNull().default(0),
+    windowStartedAt: timestamp("window_started_at", { withTimezone: true }).notNull(),
+  },
+  (t) => [
+    check("staff_pin_attempts_device_format", sql`${t.deviceId} ~ '^[0-9a-f]{64}$'`),
+    check("staff_pin_attempts_failures_range", sql`${t.failures} between 0 and 5`),
+    index("staff_pin_attempts_window_idx").on(t.windowStartedAt),
+  ],
+).enableRLS();
+
 // ─── Invitations ──────────────────────────────────────────────────────────
 
 /** One invitation is the unit of RSVP and gate admission. */

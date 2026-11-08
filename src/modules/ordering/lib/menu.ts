@@ -41,5 +41,4 @@ export const menuCopy = {
   backInStock: (name: string) => `${name} is available again.`,
   empty: "The menu isn't ready yet. Please ask the team for food or drinks.",
   unavailable: "We couldn't load the menu just now. Please refresh, or ask the team.",
-  notOpen: "Sending orders from here opens soon. Until then, please ask the team.",
 } as const;

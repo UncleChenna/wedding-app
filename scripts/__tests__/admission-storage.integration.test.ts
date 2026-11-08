@@ -13,6 +13,29 @@ async function applyProposal(tx: TransactionSql, namespace: string, path: string
     .replaceAll("public.", `"${namespace}".`);
   await tx.unsafe(source).simple();
 }
+async function installProposal(
+  tx: TransactionSql,
+  namespace: string,
+  options: { legacy?: boolean; beforeBackfill?: (tx: TransactionSql) => Promise<void> } = {},
+) {
+  await tx.unsafe(`create schema "${namespace}"`);
+  await tx.unsafe(`set local search_path to "${namespace}", pg_catalog`);
+  // Apply the real empty-scaffold chain; export only this ticket's additive tables.
+  // A full-schema export places an unrelated composite FK before its unique index.
+  const journal = JSON.parse(readFileSync("drizzle/meta/_journal.json", "utf8")) as {
+    entries: { tag: string }[];
+  };
+  const migrations = options.legacy
+    ? journal.entries.filter((entry) => /^(0000_|0009_|0010_)/.test(entry.tag))
+    : journal.entries;
+  for (const migration of migrations) {
+    await applyProposal(tx, namespace, `drizzle/${migration.tag}.sql`);
+  }
+  await applyProposal(tx, namespace, "artifacts/TICKET-024/additive-schema.sql");
+  await options.beforeBackfill?.(tx);
+  await applyProposal(tx, namespace, "docs/reviews/TICKET-024/backfill-proposal.sql");
+  await applyProposal(tx, namespace, "docs/reviews/TICKET-024/guards-proposal.sql");
+}
 async function storageTransaction<T>(
   run: (tx: TransactionSql, namespace: string) => Promise<T>,
   options: { legacy?: boolean; beforeBackfill?: (tx: TransactionSql) => Promise<void> } = {},
@@ -23,23 +46,7 @@ async function storageTransaction<T>(
       let namespace = "public";
       if (process.env.ADMISSION_SCHEMA_PROPOSAL === "1") {
         namespace = "admission_test_" + randomUUID().replaceAll("-", "");
-        await tx.unsafe(`create schema "${namespace}"`);
-        await tx.unsafe(`set local search_path to "${namespace}", pg_catalog`);
-        // Apply the real empty-scaffold chain; export only this ticket's additive tables.
-        // A full-schema export places an unrelated composite FK before its unique index.
-        const journal = JSON.parse(readFileSync("drizzle/meta/_journal.json", "utf8")) as {
-          entries: { tag: string }[];
-        };
-        const migrations = options.legacy
-          ? journal.entries.filter((entry) => /^(0000_|0009_|0010_)/.test(entry.tag))
-          : journal.entries;
-        for (const migration of migrations) {
-          await applyProposal(tx, namespace, `drizzle/${migration.tag}.sql`);
-        }
-        await applyProposal(tx, namespace, "artifacts/TICKET-024/additive-schema.sql");
-        await options.beforeBackfill?.(tx);
-        await applyProposal(tx, namespace, "docs/reviews/TICKET-024/backfill-proposal.sql");
-        await applyProposal(tx, namespace, "docs/reviews/TICKET-024/guards-proposal.sql");
+        await installProposal(tx, namespace, options);
       }
       result = { value: await run(tx, namespace) };
       throw rollback;
@@ -161,6 +168,146 @@ describe.runIf(process.env.RUN_ADMISSION_DB_TESTS === "1")("admission storage", 
       expect(counter).toMatchObject({ allowance: 3, admitted_people: 2 });
     });
   }, 15_000);
+
+  it("retains every scan result and rolls back excess admissions without losing evidence", async () => {
+    await storageTransaction(async (tx) => {
+      const invitationId = randomUUID(),
+        staffId = randomUUID(),
+        deviceId = randomUUID();
+      await tx`insert into staff(id,name,role) values (${staffId},'Synthetic gate','gate')`;
+      await tx`insert into registered_devices(id,name,role) values (${deviceId},'Synthetic scanner','gate')`;
+      await tx`insert into invitations(id,token,status) values (${invitationId},${randomUUID().replaceAll("-", "")},'rsvp_yes')`;
+      await tx`insert into rsvps(invitation_id,attending,count_attending) values (${invitationId},true,1)`;
+      const results = ["valid", "already_used", "invalid", "revoked", "not_rsvped"];
+      for (const result of results) {
+        const people = result === "valid" ? 1 : 0;
+        await tx`insert into scan_events(client_event_id,invitation_id,staff_id,device_id,reported_at,reported_result,result,reported_people,admitted_people,source)
+          values (${randomUUID()},${invitationId},${staffId},${deviceId},'2026-12-19T12:00:00Z',${result},${result},${people},${people},'online')`;
+      }
+      const excessId = randomUUID();
+      await expect(
+        tx.savepoint(async (sp) => {
+          await sp`insert into scan_events(client_event_id,invitation_id,staff_id,device_id,reported_at,reported_result,result,reported_people,admitted_people,source)
+          values (${excessId},${invitationId},${staffId},${deviceId},'2026-12-19T12:01:00Z','valid','valid',1,1,'online')`;
+        }),
+      ).rejects.toMatchObject({ code: "23514" });
+      expect(await tx`select id from scan_events where client_event_id=${excessId}`).toHaveLength(
+        0,
+      );
+      const stored = await tx`select result from scan_events where invitation_id=${invitationId}`;
+      expect(stored.map((row) => row.result).sort()).toEqual([...results].sort());
+      // Preserve a conflicting offline physical report without increasing canonical admissions.
+      await tx`insert into scan_events(client_event_id,invitation_id,staff_id,device_id,reported_at,reported_result,result,reported_people,admitted_people,conflict,source)
+        values (${excessId},${invitationId},${staffId},${deviceId},'2026-12-19T12:01:00Z','valid','already_used',1,0,true,'offline')`;
+      const [counts] =
+        await tx`select sum(reported_people)::integer as reported,sum(admitted_people)::integer as accepted from scan_events where invitation_id=${invitationId}`;
+      expect(counts).toEqual({ reported: 2, accepted: 1 });
+      const [counter] =
+        await tx`select allowance,admitted_people from admission_counters where invitation_id=${invitationId}`;
+      expect(counter).toEqual({ allowance: 1, admitted_people: 1 });
+      await expect(
+        tx.savepoint(async (sp) => {
+          await sp`delete from registered_devices where id=${deviceId}`;
+        }),
+      ).rejects.toMatchObject({ code: "23503" });
+      await expect(
+        tx.savepoint(async (sp) => {
+          await sp`delete from staff where id=${staffId}`;
+        }),
+      ).rejects.toMatchObject({ code: "23503" });
+    });
+  }, 15_000);
+
+  it.runIf(process.env.ADMISSION_SCHEMA_PROPOSAL === "1")(
+    "rejects bulk evidence removal and source truncation",
+    async () => {
+      // Only exercise TRUNCATE against a private, rolled-back proposal schema, never public data.
+      await storageTransaction(async (tx) => {
+        const invitationId = randomUUID();
+        await tx`insert into invitations(id,token,status) values (${invitationId},${randomUUID().replaceAll("-", "")},'rsvp_yes')`;
+        await tx`insert into rsvps(invitation_id,attending,count_attending) values (${invitationId},true,1)`;
+        await tx`insert into admission_counters(invitation_id,allowance,admitted_people) values (${invitationId},1,0)`;
+        for (const table of ["scan_events", "admission_counters", "rsvps", "guests"]) {
+          await expect(
+            tx.savepoint(async (sp) => {
+              // Fixed allowlist; CASCADE includes only foreign-key targets in this isolated schema.
+              await sp.unsafe(`truncate table "${table}" cascade`);
+            }),
+          ).rejects.toMatchObject({ code: "42501" });
+        }
+        await expect(
+          tx.savepoint(async (sp) => {
+            await sp`delete from admission_counters where invitation_id=${invitationId}`;
+          }),
+        ).rejects.toMatchObject({ code: "42501" });
+        expect(await tx`select invitation_id from admission_counters`).toHaveLength(1);
+      });
+    },
+    15_000,
+  );
+
+  it.runIf(process.env.ADMISSION_SCHEMA_PROPOSAL === "1")(
+    "serializes two transactions competing for the last admission",
+    async () => {
+      // A separate committed synthetic schema is needed for two connections to see the fixture.
+      // Its random name is created here and removed here; public application tables are untouched.
+      const namespace = "admission_test_" + randomUUID().replaceAll("-", "");
+      const invitationId = randomUUID(),
+        staffId = randomUUID(),
+        deviceId = randomUUID();
+      const enter = async (tx: TransactionSql) => {
+        await tx.unsafe(`set local search_path to "${namespace}", pg_catalog`);
+        await tx`select id from invitations where id=${invitationId} for update`;
+        await tx`insert into scan_events(client_event_id,invitation_id,staff_id,device_id,reported_at,reported_result,result,reported_people,admitted_people,source)
+        values (${randomUUID()},${invitationId},${staffId},${deviceId},'2026-12-19T12:00:00Z','valid','valid',1,1,'online')`;
+      };
+      const firstReady = Promise.withResolvers<void>();
+      const releaseFirst = Promise.withResolvers<void>();
+      const secondStarted = Promise.withResolvers<void>();
+      let transactions: Promise<unknown>[] = [];
+      try {
+        await db.begin(async (tx) => {
+          await installProposal(tx, namespace);
+          await tx`insert into staff(id,name,role) values (${staffId},'Synthetic gate','gate')`;
+          await tx`insert into registered_devices(id,name,role) values (${deviceId},'Synthetic scanner','gate')`;
+          await tx`insert into invitations(id,token,status) values (${invitationId},${randomUUID().replaceAll("-", "")},'rsvp_yes')`;
+          await tx`insert into rsvps(invitation_id,attending,count_attending) values (${invitationId},true,1)`;
+        });
+        const first = db.begin(async (tx) => {
+          await enter(tx);
+          firstReady.resolve();
+          await releaseFirst.promise;
+        });
+        // Observe rejection immediately so a connection failure cannot strand the synchronization.
+        void first.catch((error: unknown) => firstReady.reject(error));
+        transactions = [first];
+        await firstReady.promise;
+        const second = db.begin(async (tx) => {
+          secondStarted.resolve();
+          await enter(tx);
+        });
+        void second.catch((error: unknown) => secondStarted.reject(error));
+        transactions.push(second);
+        await secondStarted.promise;
+        releaseFirst.resolve();
+        const outcomes = await Promise.allSettled(transactions);
+        expect(outcomes[0]?.status).toBe("fulfilled");
+        expect(outcomes[1]).toMatchObject({ status: "rejected", reason: { code: "23514" } });
+        await db.begin(async (tx) => {
+          await tx.unsafe(`set local search_path to "${namespace}", pg_catalog`);
+          expect(await tx`select id from scan_events`).toHaveLength(1);
+          expect(await tx`select allowance,admitted_people from admission_counters`).toEqual([
+            { allowance: 1, admitted_people: 1 },
+          ]);
+        });
+      } finally {
+        releaseFirst.resolve();
+        await Promise.allSettled(transactions);
+        await db.unsafe(`drop schema if exists "${namespace}" cascade`);
+      }
+    },
+    15_000,
+  );
 
   for (const legacy of [false, true]) {
     it.runIf(process.env.ADMISSION_SCHEMA_PROPOSAL === "1")(

@@ -69,3 +69,51 @@ blind parallel stack starts or stopping another owner's stack. A harness follow-
 should coordinate capacity for full stacks and verification. No production action.
 
 Latest checkpoint quick gate: lint, typecheck and 45 related tests passed; 38 opt-in tests skipped.
+
+## Prepared develop integration — 2026-11-04
+
+Checkpoint 534f0f2 is pushed and PR85 updated. A conflict-free merge of develop
+549b86a is prepared but uncommitted pending exact-path authorization for unchanged
+0011 SQL/snapshot/journal and this worktree's approval record. All three staged
+files match develop byte-for-byte. Integrated quick verification passes lint,
+types and 113 tests (44 opt-in skips), logged in integrated-quick.log. Do not
+start another merge or discard the prepared index. Next: record the requested
+approval when received, commit/push the integration, then generate and verify
+TICKET-024's own migrations. No new migration authorization has been granted.
+
+## Additional tests while authorization is pending — 2026-11-04
+
+Expanded the integration suite to nine tests; all pass together in
+artifacts/TICKET-024/proposal-concurrency.log. New coverage verifies all five results,
+excess-insert rollback, retained conflicting offline reports, restrictive actor
+references, bulk evidence/source removal rejection, and competing transactions for
+the final admission. The concurrent fixture creates and removes only its own random
+synthetic schema; other cases roll back all changes. No public data is changed.
+These test/doc edits remain local because the prepared merge cannot be partially
+committed while its protected-file authorization is pending. The earlier checkpoint
+534f0f2 remains pushed. Record approval, commit the integration and these tests,
+then push; do not discard the index or this working tree.
+
+Expanded quick gate completed successfully: lint, types, 113 related tests passed,
+53 opt-in skips. The nine admission database tests were run explicitly and passed
+separately; their default skip in verify:quick does not replace that evidence.
+No verification process remains running. Protected-file approval is still pending.
+
+## Parked pending approval — 2026-11-04
+
+CLI records the exact-path approval blocker in the shared ledger without --push:
+the prepared merge cannot be committed yet. All pending edits and staged develop
+integration are retained here. Moving to the next ready ticket, TICKET-032, in its
+own worktree; do not edit TICKET-024 concurrently. Resume this ticket only after
+its approval arrives and the active ticket has been handed off safely.
+
+## Approved base integration — 2026-11-08
+
+User approved the prepared merge and exact-path authorization for unchanged
+migration0011 SQL/snapshot/journal. All three match MERGE_HEAD549b86a exactly;
+no unresolved conflicts. Fresh quick gate passes lint, types and related tests.
+The index audit against MERGE_HEAD shows only ten TICKET-024 files differ: its
+handoff, plan, PR body, three proposal/contract files, admission test, fixture,
+admission schema additions and ticket. Every other staged file is inherited
+unchanged from that approved merged develop base, including CI.
+No new migration generation or production action is approved by this exception.

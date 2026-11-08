@@ -85,3 +85,14 @@ current and bootstrap preservation cases passed in proposal-preservation-retry.l
 along with the allowance/RSVP guard test. That run failed overall: three other
 cases hit CONNECT_TIMEOUT at 127.0.0.1:34861. No timeouts or assertions were relaxed.
 Final generated migrations, concurrency and repeat-application checks remain unverified.
+
+## Expanded proposal evidence
+
+All nine tests pass together in proposal-concurrency.log (3.24 seconds), including
+all five results, retry identity, append-only and bulk-removal guards, current and
+bootstrap preservation, excess-report retention, and two transactions competing for
+the final admission. The second transaction is rejected with 23514; one event and
+one canonical admission remain. This test uses a randomly named synthetic schema
+visible to two connections and removes only that test-created schema afterward.
+Application writers must lock the invitation before event insertion as documented.
+These are proposal tests, not evidence that final generated migrations have run.
