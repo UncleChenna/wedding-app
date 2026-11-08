@@ -34,6 +34,26 @@ storage pattern. No existing RLS policy, table or guest row changes. Snapshot
 comparison confirms every pre-existing table is identical and only this table is
 added. Existing migration-journal entries are unchanged.
 
+## 2026-11-08 integration update
+
+Develop `407fb68d` includes migrations 0013–0018. Its SQL and snapshots are
+preserved unchanged. Drizzle regenerated this branch's audit table as
+`drizzle/0019_invitation-lifecycle.sql`, with `drizzle/meta/0019_snapshot.json`
+and `drizzle/meta/_journal.json`. The generated SQL is byte-identical to the
+previously reviewed 0013 audit SQL (SHA-256
+`7ee7c5865b2733f6c57b7212a0a5ea49c9cbfb63db2ffa20a081b341be298258`).
+
+The user's standing authorization covers this owned-worktree integration,
+generator reconciliation, isolated testing and exact-path authorization record.
+It does not certify production application or unrun device QA. The earlier local
+database may still contain the superseded 0013 history; inspect its managed
+identity and verify synthetic-only contents before any isolated reset. No reset
+or database verification of the integrated revision has occurred yet.
+
+Focused post-integration unit checks: six suites, 24 tests passed. Full gate,
+repeat migrations/counts, RLS and seed compatibility remain pending. Prior
+verification below applies to the earlier revision only.
+
 ## Verification
 
 - Drizzle generation succeeds; existing table snapshots and journal entries are unchanged.

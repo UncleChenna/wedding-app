@@ -2,20 +2,20 @@
 id: TICKET-024
 title: Migrate admission counters and scan event tables
 epic: data-auth
-status: todo
+status: in_review
 priority: urgent
 estimate: M
 labels: [db, backend]
 module: shared
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-023, TICKET-172]
 blocks: [TICKET-026, TICKET-027, TICKET-058, TICKET-061, TICKET-069, TICKET-173]
-branch: ""
-pr: ""
+branch: TICKET-024
+pr: https://github.com/UncleChenna/wedding-app/pull/85
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-08
+started: 2026-11-04
 completed: ""
 reason: ""
 resume_to: ""
@@ -39,9 +39,9 @@ See: [Data model](../docs/prd.md#data-model) · [Gate check-in](../docs/prd.md#g
 
 ## Acceptance criteria
 
-- [ ] Admission counters and all five scan results have constrained schemas, indexes and staff/device references.
-- [ ] A unique client event id supports retry without duplicate rows; unknown-token attempts allow a null invitation reference.
-- [ ] Migrate both an empty database and bootstrap schema in disposable tests; retain existing data and prove invalid counts/results are rejected.
+- [x] Admission counters and all five scan results have constrained schemas, indexes and staff/device references.
+- [x] A unique client event id supports retry without duplicate rows; unknown-token attempts allow a null invitation reference.
+- [x] Migrate both an empty database and bootstrap schema in disposable tests; retain existing data and prove invalid counts/results are rejected.
 
 ## Test plan
 
@@ -55,8 +55,23 @@ See: [Data model](../docs/prd.md#data-model) · [Gate check-in](../docs/prd.md#g
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-11-08 — Final migrations0016–0018 generated/applied twice; counts match and RLS passes all20 tables. Ten generated-file database regressions pass, including populated preservation, concurrent admission, and seed rollback before/after truncation. Two approved synthetic seed runs yield identical counts; all five guards remain enabled. Full local verification passes1089 unit/837 browser tests (117/189 skips). Independent review found no blocking defect; both suggested improvements addressed. CI migration+seed now passes; final-head CI still required before merge.
+
+- 2026-11-04 — Draft PR85 includes additive schema and proposed preservation/guard SQL. Four guard tests passed; latest run passed three cases including both populated preservation cases, with three connection timeouts. Quick verification passes lint, types and 45 tests (38 opt-in skips). Final migrations and concurrency verification remain outstanding; no acceptance criteria completed.
 
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-03 — todo → claimed — divine (codex)
+- 2026-11-04 — todo → in_progress — divine (codex)
+- 2026-11-04 — in_progress → blocked — divine (codex) — Isolated stack failed startup twice; migration generation must also wait for PR84's reserved 0011 migration to reach develop. Draft schema and tests are preserved for review.
+- 2026-11-04 — blocked → in_progress — divine (codex) — Isolated stack recovered after parking the verified owned TICKET-031 stack. Existing migrations apply; three storage tests now fail for the missing tables. Continue schema/guard work while awaiting PR84 migration integration.
+- 2026-11-04 — in_progress → blocked — divine (codex) — Awaiting exact-path authorization for unchanged develop migration 0011 files and approval record. Prepared merge and nine passing proposal tests are preserved in this worktree; PR85 remains draft.
+- 2026-11-08 — blocked → in_progress — divine (codex) — User approved unchanged develop migration0011 files and authorization record; finish preserved base integration.
+- 2026-11-08 — in_progress → blocked — divine (codex) — Approved historical integration pushed in3d76afb2; awaiting current develop2706b96 base-update authorization per docs/reviews/TICKET-024/base-update-proposal.md to avoid migration0012–0015 collisions.
+- 2026-11-08 — blocked → in_progress — divine (codex) — User approved current develop2706b96 base update, listed unchanged files and authorization record.
+- 2026-11-08 — in_progress → blocked — divine (codex) — Automatic approval review rejected new migration generation; awaiting exact0016/0017/0018 SQL, snapshots and journal generation/testing/commit authorization in docs/reviews/TICKET-024/migration-approval.md. Approved base update is complete.
+- 2026-11-08 — blocked → in_progress — divine (codex) — User approved exact0016–0018 generation, isolated testing, commit and authorization record.
+- 2026-11-08 — in_progress → in_review — divine (codex)
+- 2026-11-08 — in_review → blocked — divine (codex) — Generated migration/preservation/RLS and full local gates pass; CI seed TRUNCATE conflicts with append-only guards. Await scoped local-seed repair and synthetic reset approval in docs/reviews/TICKET-024/seed-compatibility-proposal.md; prior authorization excluded resets.
+- 2026-11-08 — blocked → in_review — divine (codex) — Approved seed repair and independent-review fixes pass isolated tests and full local verification.

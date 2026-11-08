@@ -231,3 +231,17 @@ rewrote the PR body around the final result. No production source changed.
 PR: https://github.com/UncleChenna/wedding-app/pull/99 (draft). Next: resolve
 physical iOS/Android WhatsApp and safe-area evidence or a preview exception, then
 advance through t:pr and obtain required CI. No PR99 merge permission exists.
+
+# 2026-11-08 integration in progress
+
+Resumed the owned ticket under the user's standing project authorization.
+Integrated develop `407fb68d`; only generated migration metadata conflicted.
+Preserved develop's 0013–0018 history and regenerated the audit migration as 0019. Its SQL matches the reviewed former 0013 byte-for-byte. Exact-path
+authorization is recorded locally. Six focused suites / 24 tests pass.
+
+Database and full-gate verification must be rerun on this integrated revision.
+The owned stack was already healthy and running for three days when inspected;
+no startup, database mutation or reset was performed during integration. Check
+target and synthetic data provenance before resetting its superseded history.
+Coordinate expensive suites with the other worktrees. Physical-device checks
+remain release gates; no new claim of device completion is made.

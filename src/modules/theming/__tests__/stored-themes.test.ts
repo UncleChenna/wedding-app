@@ -63,3 +63,32 @@ describe("stored theme selection", () => {
     expect(invalidate).not.toHaveBeenCalled();
   });
 });
+
+describe("published custom themes", () => {
+  it("reads validated published tokens rather than draft tokens", async () => {
+    const { getTheme } = await import("../lib/registry");
+    const light = { ...getTheme("ivory-gold"), id: "custom-light", pattern: undefined };
+    const dark = { ...getTheme("emerald-night"), id: "custom-dark", pattern: undefined };
+    const result = await readStoredThemes(
+      async () => ({
+        light: light.id,
+        dark: dark.id,
+        published: { light, dark },
+      }),
+      vi.fn(),
+    );
+    expect(result).toEqual({ themes: { light, dark }, fallback: false });
+  });
+  it("falls back safely when published identity disagrees with selected id", async () => {
+    const { getTheme } = await import("../lib/registry");
+    const result = await readStoredThemes(
+      async () => ({
+        light: "custom-light",
+        dark: "emerald-night",
+        published: { light: getTheme("ivory-gold"), dark: getTheme("emerald-night") },
+      }),
+      vi.fn(),
+    );
+    expect(result.fallback).toBe(true);
+  });
+});
