@@ -2104,9 +2104,10 @@
     "WED-098": {
       "log": [
         "- 2026-11-08 — todo → claimed — divine (codex)",
-        "- 2026-11-08 — todo → in_progress — divine (codex)"
+        "- 2026-11-08 — todo → in_progress — divine (codex)",
+        "- 2026-11-08 — in_progress → blocked — divine (codex) — PR #110 published; awaiting UI review exception for physical-device and fresh Lighthouse/CLS checks retained in TICKET-201. CI pending."
       ],
-      "status": "in_progress",
+      "status": "blocked",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-098",
@@ -2114,8 +2115,8 @@
       "started": "2026-11-08",
       "completed": "",
       "updated": "2026-11-08",
-      "reason": "",
-      "resume_to": ""
+      "reason": "PR #110 published; awaiting UI review exception for physical-device and fresh Lighthouse/CLS checks retained in TICKET-201. CI pending.",
+      "resume_to": "in_progress"
     }
   }
 }
