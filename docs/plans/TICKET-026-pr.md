@@ -1,29 +1,53 @@
-# TICKET-026: rebuild deterministic seed profiles
+# Ticket
+
+TICKET-026 — tickets/TICKET-026-rebuild-deterministic-seed-data-for-the-new-sche.md
+
+# Summary
 
 The old seed had no load profile or canonical admission evidence and seated guests
-without setting their invitation's table. This change adds default and load
-profiles, complete household seating and explicit edge cases.
+without setting their invitation's table. This adds repeatable default/load
+profiles with complete household seating and explicit edge cases.
 
-## Changes
+# Changes
 
-- Exactly 350 named guests seated across 30 tables in the load profile.
-- Revoked, declined, partially admitted and sold-out default examples.
-- Canonical scan evidence for archived check-ins, preserving runtime guards.
-- Explicit fixture timestamps and opt-in persisted-row hash verification.
-- Strict `--profile default|load` argument validation before a local reset.
+- Default: 110 invitations, 249 guests, 28 tables; revoked/declined/partial/sold-out examples.
+- Load: 185 invitations, exactly 350 named guests seated across all 30 tables.
+- Historical check-ins have linked canonical scan evidence; runtime guards stay enabled.
+- Explicit timestamps and strict CLI profile validation before local reset.
+- Usage: `pnpm db:seed` or `pnpm db:seed --profile load`.
 
-## Verification and remaining work
+# Acceptance criteria and evidence
 
-20 fixture/CLI tests pass; quick lint/types and related tests passed before the
-latest load-seating assertion. Database startup and persisted hash verification,
-full verification and independent review remain pending. This is a draft, not
-release or completion evidence.
+- Repeated persisted row hashes match for every public table in both profiles (2 DB tests).
+- Exactly 350 guests on 30 tables and consistent household seating (unit tests).
+- All required edge cases present (unit tests); canonical partial counts verified in DB.
+- Full gate pending; draft until verification completes.
 
-## Risks and rollback
+# Verification
 
-Seeding replaces disposable local fixtures only. Existing target identity checks
-and transactional named-trigger restoration remain enforced. No migration,
-dependency, production database or application UI change. Revert this PR to
-restore the previous fixture generator.
+20 fixture/CLI tests pass. Quick lint/types/related tests passed; normal commit hooks
+passed on e0046c1. Migration repeat preserved all counts and 19 migration records;
+20 tables retain RLS. The opt-in persisted-row suite passed 2 tests in 2.94 seconds,
+including enabled-trigger and bounded-counter assertions. Independent review found
+no blocking defects. See docs/handoffs/TICKET-026.md.
 
-Ticket: tickets/TICKET-026-rebuild-deterministic-seed-data-for-the-new-sche.md.
+Separate CLI default seed and full verification remain pending while local VM
+capacity is constrained. These are not claimed successful. Base: develop407fb68.
+
+# Risks and rollout
+
+Seeding replaces disposable local fixtures only. Existing identity checks and
+transactional named-trigger restoration remain enforced. No migration, dependency
+or production database change. Revert this PR to restore the old fixture generator.
+
+# Screenshots
+
+N/A: database fixtures and CLI only, no UI changes.
+
+# UI checklist
+
+N/A: no UI, theme or QR rendering changes. Full verification remains pending.
+
+# Harness changes, if any
+
+None. Seed CLI rejects malformed profile arguments before reset.
