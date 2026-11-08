@@ -51,3 +51,7 @@ If any guard or preservation test fails, keep the ticket incomplete and fix the
 unapplied proposal before committing. Do not weaken assertions or claim missing
 verification passed. Populated pre0001 deployment upgrades remain outside scope:
 the earlier0001 migration is approved only for an empty scaffold.
+
+## Authorization received — 2026-11-08
+
+The user explicitly approved generation, isolated testing, commit and the exact-path authorization record. All seven outputs were generated; tests and repeat-application results are in verification.md. The production/reset/merge exclusions remain in force.

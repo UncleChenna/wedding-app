@@ -159,3 +159,5 @@ Quick passes; full verification is running in session44221, log
 See `docs/reviews/TICKET-024/verification.md` for complete evidence and failed first
 pre-application run. Next: complete full gate, update criteria/PR85 and request review.
 No production application or PR merge authorized.
+
+Full verification session44221 completed with exit0:1089 unit tests passed/116 skipped, production build passed,837 smoke passed/189 skipped. Migration checkpointba34ebdb is pushed. Functional criteria ticked from this evidence. Next run the required t:pr workflow, inspect CI and obtain separate merge authorization.

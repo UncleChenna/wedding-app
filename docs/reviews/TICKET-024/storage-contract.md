@@ -61,12 +61,14 @@ future approval to upgrade an actual populated pre-0001 deployment.
 
 ## Generation and approval boundary
 
-No migration has been generated for this ticket. Concrete SQL proposals
-are in backfill-proposal.sql and guards-proposal.sql; they are not verified migrations. PR84 has merged migration 0011. Integrate that develop base before reserving this ticket's exact SQL/snapshot paths. The expected sequence is expand, deterministic backfill, then append-only
-and cross-table guards. An exact-path proposal will accompany generated SQL and
-isolated test results; nothing authorizes production application or data deletion.
+User approved generation, isolated testing, commit and authorization recording on
+2026-11-08. Final migrations0016–0018 were generated through Drizzle on develop2706b96,
+then verified in temporary schemas and applied twice to this ticket's isolated
+public schema. The check_ins archive remains unchanged. See verification.md for
+actual counts, constraints and preservation results. No production application or
+PR merge is authorized. The proposal files below remain historical design evidence.
 
-## Current evidence — 2026-11-04
+## Historical evidence — 2026-11-04
 
 The isolated stack recovered after the completed local TICKET-031 stack was stopped
 with backup enabled. Existing migrations through 0010 applied successfully. Three

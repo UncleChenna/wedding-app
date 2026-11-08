@@ -39,9 +39,9 @@ See: [Data model](../docs/prd.md#data-model) · [Gate check-in](../docs/prd.md#g
 
 ## Acceptance criteria
 
-- [ ] Admission counters and all five scan results have constrained schemas, indexes and staff/device references.
-- [ ] A unique client event id supports retry without duplicate rows; unknown-token attempts allow a null invitation reference.
-- [ ] Migrate both an empty database and bootstrap schema in disposable tests; retain existing data and prove invalid counts/results are rejected.
+- [x] Admission counters and all five scan results have constrained schemas, indexes and staff/device references.
+- [x] A unique client event id supports retry without duplicate rows; unknown-token attempts allow a null invitation reference.
+- [x] Migrate both an empty database and bootstrap schema in disposable tests; retain existing data and prove invalid counts/results are rejected.
 
 ## Test plan
 

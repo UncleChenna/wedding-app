@@ -15,7 +15,7 @@ Store invitation-level partial admissions and immutable scan evidence without lo
 
 # Acceptance criteria and evidence
 
-All functional storage criteria have evidence in `docs/reviews/TICKET-024/verification.md`: nine generated-file tests cover results/counts, retry identity, unknown invitations, live identity, RLS, preservation, append-only guards and concurrent allocation. Repeat application leaves all counts unchanged. Full repository gate is still running at this checkpoint; no completion claim yet.
+All functional storage criteria have evidence in `docs/reviews/TICKET-024/verification.md`: nine generated-file tests cover results/counts, retry identity, unknown invitations, live identity, RLS, preservation, append-only guards and concurrent allocation. Repeat application leaves all counts unchanged. Full repository verification also passes; the ticket is ready for review, not merged.
 
 # Verification
 
@@ -24,7 +24,7 @@ All functional storage criteria have evidence in `docs/reviews/TICKET-024/verifi
 - Two migration runs pass; both post-run counts match (19 migrations,20 public tables).
 - RLS enabled on all20 public tables.
 - Quick verification passes lint/types; opt-in database tests were run explicitly.
-- Full verification in progress; unit phase passes1089 tests with116 opt-in/skipped tests. Build/browser outcome pending.
+- Full verification passed:1089 unit tests/116 skipped, production build,837 browser smoke tests/189 skipped; terminal exit0.
 - Initial public test run before migration failed for absent tables; subsequent temporary-schema and applied runs passed. Assertions and timeouts were not weakened.
 
 # Risks and rollout

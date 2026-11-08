@@ -20,7 +20,7 @@ The user approved generation, isolated testing, commit and the exact-path record
 - `pnpm db:check-rls`: all20 public tables have RLS.
 - Applied public-schema test mode: five passed, four intentionally skipped (populated preservation/concurrency fixtures execute in isolated-schema mode above).
 - `pnpm verify:quick`: lint/types pass; the opt-in database suite skips by default and was run explicitly above.
-- Full `pnpm verify`: running; no result claimed yet.
+- Full `pnpm verify`: passed lint, types,1089 unit tests (116 skipped), production build and837 browser smoke tests (189 skipped), terminal exit0.
 
 Logs are `/tmp/TICKET-024-generated-schema-tests.log`,
 `/tmp/TICKET-024-migrate-{first,second}.log`, `/tmp/TICKET-024-counts-{before,first,second}.txt`,
