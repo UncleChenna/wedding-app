@@ -1857,16 +1857,17 @@
       "log": [
         "- 2026-11-04 — todo → claimed — divine (codex)",
         "- 2026-11-04 — todo → in_progress — divine (codex)",
-        "- 2026-11-04 — in_progress → in_review — divine (codex)"
+        "- 2026-11-04 — in_progress → in_review — divine (codex)",
+        "- 2026-11-08 — in_review → in_progress — divine (codex) — Fix direct review transitions skipping verification"
       ],
-      "status": "in_review",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-215",
       "pr": "https://github.com/UncleChenna/wedding-app/pull/97",
       "started": "2026-11-04",
       "completed": "",
-      "updated": "2026-11-04",
+      "updated": "2026-11-08",
       "reason": "",
       "resume_to": ""
     },
