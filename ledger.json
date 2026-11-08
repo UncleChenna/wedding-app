@@ -2126,6 +2126,21 @@
       "updated": "2026-11-08",
       "reason": "",
       "resume_to": ""
+    },
+    "WED-120": {
+      "log": [
+        "- 2026-11-08 — todo → claimed — unclechenna (claude) — started ahead of TICKET-047 (blocked)"
+      ],
+      "status": "todo",
+      "owner": "unclechenna",
+      "agent": "claude",
+      "branch": "TICKET-120",
+      "pr": "",
+      "started": "",
+      "completed": "",
+      "updated": "2026-11-08",
+      "reason": "",
+      "resume_to": ""
     }
   }
 }
