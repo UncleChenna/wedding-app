@@ -2,7 +2,7 @@
 id: TICKET-181
 title: Persist validated theme drafts and activate them atomically
 epic: design-system
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [backend, security]
@@ -14,9 +14,9 @@ blocks: [TICKET-098]
 branch: TICKET-181
 pr: https://github.com/UncleChenna/wedding-app/pull/104
 created: 2026-10-21
-updated: 2026-11-07
+updated: 2026-11-08
 started: 2026-11-05
-completed: ""
+completed: 2026-11-08
 reason: ""
 resume_to: ""
 ---
@@ -77,3 +77,4 @@ Backlog audit coverage: THM-2, THM-3, THM-6. See [PRD](../docs/prd.md) and [audi
 - 2026-11-07 — blocked → in_progress — divine (codex)
 - 2026-11-07 — in_progress → blocked — divine (codex) — Approved integration complete; all five CI checks passed at 53963aab. Awaiting preview-review disposition for fresh Lighthouse/CLS and physical-device requirements retained in TICKET-201. PR104 remains draft; no merge authorization.
 - 2026-11-07 — in_progress → in_review — divine (codex)
+- 2026-11-08 — in_review → done — divine (codex)

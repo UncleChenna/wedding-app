@@ -297,3 +297,13 @@ checks pass on42328e6. Resumed through CLI; functional criteria checked against
 the recorded unit, database and publication browser evidence. No merge or
 production application authorized. Next: t:pr mandatory verification, mark PR104
 ready, retain in_review until human merge. The editor journey remains TICKET-098.
+
+## Completed — 2026-11-08
+
+User explicitly authorized verified PR104 merge. Rechecked head33a213dd, clean
+mergeability and successful CI run42378135773, including all five workflow jobs.
+GitHub has no configured required-check list; actual workflow results were checked.
+Merged into develop at2706b96ddd0c7fa12c2e499f302d7e21e3108fde,
+2026-11-08T10:24:11Z. CLI marked TICKET-181 done. No production migration applied.
+TICKET-201 physical-device and fresh Lighthouse/CLS release gates remain mandatory.
+Next ready ticket: TICKET-098 admin theme editor; it has not been claimed here.
