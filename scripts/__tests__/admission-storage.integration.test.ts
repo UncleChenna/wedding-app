@@ -96,6 +96,16 @@ describe.runIf(process.env.RUN_ADMISSION_DB_TESTS === "1")("admission storage", 
         ).rejects.toThrow("synthetic reset failure");
         expect(await guards()).toEqual(before);
         expect(await tx`select id from scan_events`).toHaveLength(1);
+        await expect(
+          tx.savepoint(async (sp) => {
+            await resetSeedTables(async (statement) => {
+              await sp.unsafe(statement).simple();
+            });
+            throw new Error("synthetic fixture insertion failure");
+          }),
+        ).rejects.toThrow("synthetic fixture insertion failure");
+        expect(await guards()).toEqual(before);
+        expect(await tx`select id from scan_events`).toHaveLength(1);
         await resetSeedTables(async (statement) => {
           await tx.unsafe(statement).simple();
         });

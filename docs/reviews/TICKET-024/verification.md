@@ -66,3 +66,15 @@ Logs: `/tmp/TICKET-024-seed-{first,second}.log`,
 `/tmp/TICKET-024-seed-counts-{first,second}.txt`, `/tmp/TICKET-024-seed-rls.log`,
 `/tmp/TICKET-024-after-seed-tests.log`, `/tmp/TICKET-024-final-seed-regression.log`,
 `/tmp/TICKET-024-seed-{quick,full}.log`. No other database was reset.
+
+## Independent review and final seed verification
+
+Read-only review of85a3fcc found no blocking defect and requested stronger
+post-truncation rollback coverage plus current ticket notes. Both are addressed.
+The strengthened regression first timed out at its unchanged5s limit under
+concurrent browser load; serial rerun passed all10 in1.39s with no assertion or
+timeout changes (`/tmp/TICKET-024-seed-review-serial.log`). It now verifies both
+failure while guards are disabled and failure after reset finishes restore the
+original evidence and all five enabled guards. Full seed-repair verification
+passed1089 unit tests/117skips, build,837 smoke tests/189skips, exit0. CI's formerly
+failing migration+seed job passes at85a3fcc; final-head review/CI remains required.

@@ -191,3 +191,10 @@ and granted full permission for continuing project work. This authorizes necessa
 base updates, exact-path records, isolated verification/reset operations and verified
 PR merges going forward. Continue all verification and release gates; authorization
 does not turn unverified device/performance results into passes.
+
+Seed full gate session78441 completed exit0 (1089unit/117skips,837smoke/189skips).
+Review requested post-truncation rollback test and current notes; both fixed.
+First strengthened test timed out under concurrent browser load; serial rerun
+passed all10 in1.39s with unchanged5s timeout. Log /tmp/TICKET-024-seed-review-serial.log.
+Next publish final review fixes, restore in_review through CLI, recheck exact-head CI
+and independent review, then merge under the user's standing authorization.

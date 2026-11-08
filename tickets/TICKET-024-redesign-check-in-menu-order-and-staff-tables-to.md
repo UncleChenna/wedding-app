@@ -55,6 +55,8 @@ See: [Data model](../docs/prd.md#data-model) · [Gate check-in](../docs/prd.md#g
 
 ## Notes / decisions
 
+- 2026-11-08 — Final migrations0016–0018 generated/applied twice; counts match and RLS passes all20 tables. Ten generated-file database regressions pass, including populated preservation, concurrent admission, and seed rollback before/after truncation. Two approved synthetic seed runs yield identical counts; all five guards remain enabled. Full local verification passes1089 unit/837 browser tests (117/189 skips). Independent review found no blocking defect; both suggested improvements addressed. CI migration+seed now passes; final-head CI still required before merge.
+
 - 2026-11-04 — Draft PR85 includes additive schema and proposed preservation/guard SQL. Four guard tests passed; latest run passed three cases including both populated preservation cases, with three connection timeouts. Quick verification passes lint, types and 45 tests (38 opt-in skips). Final migrations and concurrency verification remain outstanding; no acceptance criteria completed.
 
 ## Activity log
