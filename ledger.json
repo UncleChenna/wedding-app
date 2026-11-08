@@ -1880,18 +1880,19 @@
         "- 2026-11-05 — blocked → in_progress — divine (codex) — Owner approved exact base update from develop 5747c3d and unchanged protected migration artifacts.",
         "- 2026-11-05 — in_progress → blocked — divine (codex) — Audit migration0013 generated and reviewed; awaiting its distinct exact-path testing/commit authorization and isolated database capacity. Database and full integration verification remain incomplete.",
         "- 2026-11-05 — blocked → in_progress — divine (codex) — Owner approved migration0013 isolated testing, commit and authorization record; database validation remains required.",
-        "- 2026-11-05 — in_progress → blocked — divine (codex) — Local verification and visual review pass; physical iOS/Android WhatsApp and safe-area checks or requested preview exception remain outstanding. Draft PR99 contains evidence."
+        "- 2026-11-05 — in_progress → blocked — divine (codex) — Local verification and visual review pass; physical iOS/Android WhatsApp and safe-area checks or requested preview exception remain outstanding. Draft PR99 contains evidence.",
+        "- 2026-11-08 — blocked → in_progress — divine (codex) — Owner authorizes completing integration and verified PR workflow; retain physical-device release gates."
       ],
-      "status": "blocked",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-043",
       "pr": "",
       "started": "2026-11-04",
       "completed": "",
-      "updated": "2026-11-05",
-      "reason": "Local verification and visual review pass; physical iOS/Android WhatsApp and safe-area checks or requested preview exception remain outstanding. Draft PR99 contains evidence.",
-      "resume_to": "in_progress"
+      "updated": "2026-11-08",
+      "reason": "",
+      "resume_to": ""
     },
     "WED-101": {
       "log": [
