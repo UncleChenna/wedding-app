@@ -15,7 +15,10 @@ corrected embedded mode only and added image-above-names regression assertion.
 Final quick/build/browser run: `/tmp/TICKET-098-final-{quick,build,browser}.log`.
 
 Final quick/build/browser run passed; corrected invitation screenshots inspected.
-Next: commit/push and open draft PR, then obtain review disposition. Physical-device and fresh Lighthouse/CLS checks
+Published draft PR: https://github.com/UncleChenna/wedding-app/pull/110
+Implementation commit: `1c6bc42ed555da90d7c404de27925c949377ecd4`.
+CI run42473321130 is running; no passing CI claim yet.
+Next: obtain the pending UI review exception, check CI, then use `pnpm t:pr TICKET-098` to advance to review. Physical-device and fresh Lighthouse/CLS checks
 remain unverified; no review exception for098 yet. Do not merge without approval.
 
 Lesson: overflow assertions alone miss severe text wrapping. Inspect actual
