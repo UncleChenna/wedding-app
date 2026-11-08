@@ -15,9 +15,10 @@ vi.mock("next/cache", () => ({
 }));
 vi.mock("@/modules/shared/lib/logger", () => ({ logger: { child: () => ({ warn: ports.warn }) } }));
 vi.mock("../server/theme-repository", () => ({
-  loadThemeSelection: ports.load,
-  saveThemeSelection: ports.save,
+  loadPublishedThemeSelection: ports.load,
 }));
+
+vi.mock("../server/theme-draft-repository", () => ({ publishThemeDrafts: ports.save }));
 
 import { activateThemeSelection, getStoredActiveThemes } from "../server/active-themes";
 
@@ -51,4 +52,12 @@ describe("theme cache boundary", () => {
     expect(ports.warn).toHaveBeenCalledOnce();
     expect(vi.getTimerCount()).toBe(0);
   });
+});
+
+it("does not invalidate the active cache if publication fails", async () => {
+  ports.save.mockRejectedValueOnce(new Error("publication rolled back"));
+  await expect(
+    activateThemeSelection({ light: "ivory-gold", dark: "emerald-night" }),
+  ).rejects.toThrow("publication rolled back");
+  expect(ports.invalidate).not.toHaveBeenCalled();
 });

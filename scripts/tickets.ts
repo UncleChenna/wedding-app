@@ -1,4 +1,5 @@
 #!/usr/bin/env tsx
+import { reusableVerification } from "./harness/verification.mjs";
 /**
  * In-repo ticket system. Ticket files in tickets/ hold definitions and history;
  * the origin/ticket-ledger ref holds live claims and status so two developers
@@ -64,7 +65,9 @@ const USAGE = `Usage: pnpm t:<command>
   t:move <id> <status> [--reason text] [--push]
   t:new --title "Imperative title" --epic e --module m [--priority p] [--estimate S|M|L]
         [--labels a,b] [--blocked-by TICKET-001,TICKET-002] [--status backlog|todo]
-  t:pr <id>                       verify, push, open PR, move to in_review
+  t:pr <id> [--full] [--force-verify]
+                                  verify:quick (--full: full verify or reuse matching success;
+                                  --force-verify: fresh full run), push, open PR, move to in_review
   t:sync <id>                     sync only this branch’s ticket from the ledger
   t:validate                      schema, sections, ids, deps, cycles, consistency
   t:render                        generate ignored Markdown snapshots
@@ -688,9 +691,14 @@ function main(): number {
       const currentPr = prFor(state.cwd, branch);
       if (currentPr && currentPr.baseRefName !== REVIEW_BASE)
         throw new Error(`Retarget this ticket PR to ${REVIEW_BASE} before continuing.`);
-      const script = reviewVerifyScript(args.flags);
-      console.log(`Running pnpm ${script} (CI runs the full verify)…`);
-      if (!stream("pnpm", [script], state.cwd)) throw new Error(`pnpm ${script} failed.`);
+      const force = args.flags["force-verify"] === true;
+      const script = force ? "verify" : reviewVerifyScript(args.flags);
+      if (script === "verify" && !force && reusableVerification(state.cwd)) {
+        console.log("Reusing matching successful verification (less than one hour old).");
+      } else {
+        console.log(`Running pnpm ${script} (CI runs the full verify)…`);
+        if (!stream("pnpm", [script], state.cwd)) throw new Error(`pnpm ${script} failed.`);
+      }
       process.env.TICKETS_VERIFIED_SHA = git(["rev-parse", "HEAD"], state.cwd);
       if (!stream("git", ["push", "-u", "origin", "HEAD"], state.cwd))
         throw new Error("Push failed.");

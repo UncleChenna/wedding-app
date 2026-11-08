@@ -138,3 +138,29 @@ checkout continues using its own older hook code.
 In a managed worktree, migration configuration (including db:generate), db:seed and db:counts/db:check-rls validate the effective DATABASE_URL before creating a database client. The worktree path, project ID and reserved database port must match .harness/worktree.json and the generated Supabase configuration. The URL must use a loopback host, that exact port and the postgres database, without query parameters or a fragment. This also catches shell overrides that would otherwise override .env.local.
 
 If startup failed, do not run database commands with the copied primary URL. Complete pnpm db:start in the worktree and remove conflicting shell overrides. A linked checkout without managed metadata is refused; recreate/resume it through wt:new. No credentials are printed by the guard. Ordinary primary checkouts and deployment archives retain their configured migration/check targets; seed remains local-only and rejects URL query overrides. This is accidental-target protection, not a substitute for database credentials or RLS.
+
+## Routine approvals and local verification evidence
+
+The owner authorizes routine base integration and narrowly scoped compiler-cache
+cleanup in the claimed worktree as described in AGENTS.md. Claude imports those
+same canonical rules; no personal settings change is required. Production data,
+RLS, secrets, paid services, other owners' work and merges retain their approval
+requirements. Never weaken application protection to accelerate development.
+
+At commit time, the hook accepts a regular staged `pnpm-lock.yaml`, Drizzle SQL/JSON
+artifact, or generated theme schema only when its Git blob exactly matches the
+fetched `refs/remotes/origin/develop` commit. Missing refs, deleted files, symlinks,
+unsafe paths and changed artifacts fail closed. This exception permits carrying
+reviewed source, not generating new unapproved changes or applying migrations.
+Pre-tool edits and secret files retain their existing restrictions.
+
+`pnpm verify` runs the original complete sequence and writes ignored local evidence
+only after every command succeeds with unchanged inputs. `t:pr` reports reuse or
+execution; pass `--force-verify` to rerun. Evidence expires after one hour and hashes
+all tracked and nonignored untracked files, runtime, environment, local environment
+configuration and installed dependency metadata. Hashes do not disclose values.
+Any changed input, missing/malformed record or failed new run prevents reuse.
+This is a local workflow optimization, not signed proof or a security boundary:
+never hand-edit evidence, and always retain independent full CI checks. Database
+contents and external services can change independently; use `--force-verify`
+after such changes. Neither reuse nor a passing gate certifies unrun device QA.

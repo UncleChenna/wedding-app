@@ -21,3 +21,5 @@ One ticket at a time, one worktree per ticket. Rules: [docs/tickets.md](../../..
 Fill every task-specific PR section with changes, acceptance evidence, test results, untested cases, risks and rollout/rollback details. Never merge another owner's PR, never merge on red or pending checks, and never enable auto-merge. Small fixes may use the light lane in [docs/tickets.md](../../../docs/tickets.md#light-lane) instead of a ticket.
 
 Never leave finished work unpushed. Never mark a ticket done with failing checks or unticked criteria. Never edit another owner's in-progress ticket. No AI attribution in commits, PRs or comments.
+
+Routine owned-worktree integrations and compiler-cache recovery follow AGENTS.md; do not re-request approval already granted there. `t:pr` may reuse matching, unexpired full verification evidence; use `--force-verify` after database/service changes or for a fresh run. Never manufacture evidence.
