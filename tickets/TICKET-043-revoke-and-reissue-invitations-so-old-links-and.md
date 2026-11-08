@@ -2,7 +2,7 @@
 id: TICKET-043
 title: Revoke and reissue invitations so old links and QRs stop working
 epic: invitations
-status: blocked
+status: in_progress
 priority: urgent
 estimate: M
 labels: [backend, security]
@@ -14,11 +14,11 @@ blocks: [TICKET-065, TICKET-089, TICKET-176]
 branch: TICKET-043
 pr: ""
 created: 2026-10-21
-updated: 2026-11-05
+updated: 2026-11-08
 started: 2026-11-04
 completed: ""
-reason: "Local verification and visual review pass; physical iOS/Android WhatsApp and safe-area checks or requested preview exception remain outstanding. Draft PR99 contains evidence."
-resume_to: in_progress
+reason: ""
+resume_to: ""
 ---
 
 # TICKET-043: Revoke and reissue invitations so old links and QRs stop working
@@ -75,3 +75,4 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-7) · [Sec
 - 2026-11-05 — in_progress → blocked — divine (codex) — Audit migration0013 generated and reviewed; awaiting its distinct exact-path testing/commit authorization and isolated database capacity. Database and full integration verification remain incomplete.
 - 2026-11-05 — blocked → in_progress — divine (codex) — Owner approved migration0013 isolated testing, commit and authorization record; database validation remains required.
 - 2026-11-05 — in_progress → blocked — divine (codex) — Local verification and visual review pass; physical iOS/Android WhatsApp and safe-area checks or requested preview exception remain outstanding. Draft PR99 contains evidence.
+- 2026-11-08 — blocked → in_progress — divine (codex) — Owner authorizes completing integration and verified PR workflow; retain physical-device release gates.
