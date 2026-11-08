@@ -45,3 +45,10 @@ while the local VM is overloaded; do not treat it or full verification as passed
 Stagger full browser runs after TICKET-098. The earlier start commit hook saw the
 intentional failing-test stage; implementation commit e0046c1 subsequently passed
 normal hooks and was pushed. Ticket status is in_progress; no criteria claimed done.
+
+The separate CLI default seed eventually completed successfully at19:45:37Z:
+110 invitations,249 guests,28 tables,31 scan events,28 admission counters. It took
+several minutes during VM overload. Requested an owned026 stack stop with backup
+preserved to give098 sole active verification capacity; confirm stop log before
+restarting. Full gate is still pending. CI migration+seed and invitation journey
+passed on PR112's initial head; full CI remains pending.

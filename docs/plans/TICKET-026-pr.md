@@ -31,8 +31,10 @@ passed on e0046c1. Migration repeat preserved all counts and 19 migration record
 including enabled-trigger and bounded-counter assertions. Independent review found
 no blocking defects. See docs/handoffs/TICKET-026.md.
 
-Separate CLI default seed and full verification remain pending while local VM
-capacity is constrained. These are not claimed successful. Base: develop407fb68.
+The separate CLI default seed also passed (110 invitations/249 guests/28 tables).
+Full verification remains pending while local VM capacity is constrained. CI
+migration+seed and invitation journey passed on the initial PR head; final CI
+and the local full gate remain required. Base: develop407fb68.
 
 # Risks and rollout
 
