@@ -2,7 +2,7 @@
 id: TICKET-024
 title: Migrate admission counters and scan event tables
 epic: data-auth
-status: blocked
+status: in_review
 priority: urgent
 estimate: M
 labels: [db, backend]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-11-08
 started: 2026-11-04
 completed: ""
-reason: "Generated migration/preservation/RLS and full local gates pass; CI seed TRUNCATE conflicts with append-only guards. Await scoped local-seed repair and synthetic reset approval in docs/reviews/TICKET-024/seed-compatibility-proposal.md; prior authorization excluded resets."
-resume_to: in_review
+reason: ""
+resume_to: ""
 ---
 
 # TICKET-024: Migrate admission counters and scan event tables
@@ -74,3 +74,4 @@ See: [Data model](../docs/prd.md#data-model) · [Gate check-in](../docs/prd.md#g
 - 2026-11-08 — blocked → in_progress — divine (codex) — User approved exact0016–0018 generation, isolated testing, commit and authorization record.
 - 2026-11-08 — in_progress → in_review — divine (codex)
 - 2026-11-08 — in_review → blocked — divine (codex) — Generated migration/preservation/RLS and full local gates pass; CI seed TRUNCATE conflicts with append-only guards. Await scoped local-seed repair and synthetic reset approval in docs/reviews/TICKET-024/seed-compatibility-proposal.md; prior authorization excluded resets.
+- 2026-11-08 — blocked → in_review — divine (codex) — Approved seed repair and independent-review fixes pass isolated tests and full local verification.
