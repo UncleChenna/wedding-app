@@ -39,8 +39,8 @@ See: [Design principles](../docs/prd.md#design-principles) · [Privacy (UK GDPR)
 
 ## Acceptance criteria
 
-- [ ] Every private route returns noindex (e2e header/meta check).
-- [ ] robots.txt disallows staff and admin.
+- [x] Every private route returns noindex (e2e header/meta check).
+- [x] robots.txt disallows staff and admin.
 
 ## Test plan
 
@@ -55,6 +55,11 @@ See: [Design principles](../docs/prd.md#design-principles) · [Privacy (UK GDPR)
 ## Notes / decisions
 
 _Agents append dated notes here while working._
+
+- 2026-11-08 (unclechenna, claude):
+  - **robots.txt doesn't block `/i` or `/p`.** A block would stop link-preview crawlers reading the Open Graph tags
+    that TICKET-047 adds, so those pages use the noindex header instead.
+  - **Started ahead of TICKET-047,** which only touches invite-link previews.
 
 ## Activity log
 
