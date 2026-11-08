@@ -42,3 +42,11 @@ N/A: no UI, typography, motion, metadata or QR rendering change.
 # Harness changes, if any
 
 None. Existing generators, isolated-target checks, approval hooks and verification gates remain enabled.
+
+## CI blocker discovered after local verification
+
+CI's migrations+seed job fails in the pre-existing local seed TRUNCATE CASCADE:
+the new append-only admission guard correctly rejects it. No migration failed.
+Do not merge this PR yet. The scoped local reset proposal and required regression
+tests are in `docs/reviews/TICKET-024/seed-compatibility-proposal.md`; approval is
+pending because the migration authorization explicitly excluded resets/deletion.

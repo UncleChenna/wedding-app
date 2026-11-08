@@ -161,3 +161,14 @@ pre-application run. Next: complete full gate, update criteria/PR85 and request 
 No production application or PR merge authorized.
 
 Full verification session44221 completed with exit0:1089 unit tests passed/116 skipped, production build passed,837 smoke passed/189 skipped. Migration checkpointba34ebdb is pushed. Functional criteria ticked from this evidence. Next run the required t:pr workflow, inspect CI and obtain separate merge authorization.
+
+## CI seed incompatibility — 2026-11-08
+
+Required t:pr finished successfully and pushed review-state commitab370d8; its
+second full gate also passed. CI ofba34ebd revealed the existing seed TRUNCATE CASCADE
+hits scan_events' append-only trigger (run42498600206/job128786229638). Migrations
+and guest journey succeeded; no green overall CI claim. Full job log retained at
+/tmp/TICKET-024-ci-db-failure.log. Keep final migrations unchanged. Proposed local
+transactional seed exemption and regression plan are in seed-compatibility-proposal.md.
+Prior approval excludes resets/data deletion, so local seed reset has not run.
+Next obtain the scoped seed repair/reset approval, implement/test and rerun review.
