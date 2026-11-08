@@ -21,7 +21,7 @@
     "test:e2e": "playwright test --project=mobile --project=desktop",
     "test:e2e:smoke": "playwright test --project=mobile --project=desktop --grep @smoke",
     "screenshots": "PW_SERVER=dev playwright test --project=visual",
-    "verify": "pnpm t:validate && pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm test:e2e:smoke",
+    "verify": "node scripts/verify.mjs",
     "verify:quick": "node scripts/verify-quick.mjs",
     "db:start": "node scripts/db-local.mjs start",
     "db:stop": "node scripts/db-local.mjs stop",
@@ -73,6 +73,7 @@
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "server-only": "^0.0.1",
+    "sharp": "0.35.5",
     "zod": "^4.6.7"
   },
   "devDependencies": {
