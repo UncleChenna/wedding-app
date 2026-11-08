@@ -2165,9 +2165,10 @@
     "WED-219": {
       "log": [
         "- 2026-11-08 — todo → claimed — divine (codex)",
-        "- 2026-11-08 — todo → in_progress — divine (codex)"
+        "- 2026-11-08 — todo → in_progress — divine (codex)",
+        "- 2026-11-08 — in_progress → blocked — divine (codex) — Full browser verification blocked by unavailable isolated database; 240 passed, 4 failed, 5 interrupted, 777 not run. Await CI and healthy isolated verification."
       ],
-      "status": "in_progress",
+      "status": "blocked",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-219",
@@ -2175,8 +2176,8 @@
       "started": "2026-11-08",
       "completed": "",
       "updated": "2026-11-08",
-      "reason": "",
-      "resume_to": ""
+      "reason": "Full browser verification blocked by unavailable isolated database; 240 passed, 4 failed, 5 interrupted, 777 not run. Await CI and healthy isolated verification.",
+      "resume_to": "in_progress"
     }
   }
 }
