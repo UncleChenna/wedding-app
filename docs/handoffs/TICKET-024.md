@@ -135,3 +135,13 @@ Frozen install and fresh quick verification pass: lint, types and related tests.
 Log: `/tmp/TICKET-024-current-base-quick.log`. No new migration or database write.
 The owned Supabase project has no running containers; fresh database verification
 will need its isolated stack started before any migration evidence is claimed.
+
+## New migration authorization required — 2026-11-08
+
+Current-base integration is pushed in9eddc19e and PR85 updated inb8881b3a.
+Automatic approval review rejected `pnpm db:generate --name admission-expand`
+before execution: base approval does not authorize new migration artifacts.
+No generated outputs exist. Exact0016/0017/0018 SQL/snapshot/journal proposal is
+`docs/reviews/TICKET-024/migration-approval.md`. Await generation/testing/commit and
+record authorization; do not bypass the rejection. The old proposal tests remain
+historical evidence only; isolated stack is stopped and no verification is live.
