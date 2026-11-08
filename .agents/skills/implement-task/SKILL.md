@@ -14,3 +14,5 @@ Follow the `ticket-workflow` skill for picking, claiming, worktrees, status move
 5. Run `pnpm verify:quick` then `pnpm verify`. Fix failures without weakening checks. If blocked, `pnpm t:move <id> blocked --reason "…" --push`, write a handoff and stop.
 6. Commit in small steps with subjects starting `<id>: `. No AI attribution. Push.
 7. Tick only the acceptance criteria you proved, append dated notes, write `docs/plans/<id>-pr.md` from the PR template with evidence, update docs/ADRs, write a per-ticket handoff, then `pnpm t:pr <id>` to open a detailed PR into `develop`. Include changes, acceptance evidence, actual test results, limitations and rollout/rollback steps. Leave merging to the human; never enable auto-merge. If GitHub/auth is unavailable, leave a reviewable pushed branch and report the missing prerequisite; do not claim a PR exists.
+
+Routine owned-worktree integrations and compiler-cache recovery follow AGENTS.md; do not re-request approval already granted there. `t:pr` may reuse matching, unexpired full verification evidence; use `--force-verify` after database/service changes or for a fresh run. Never manufacture evidence.

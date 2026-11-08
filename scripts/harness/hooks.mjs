@@ -5,6 +5,7 @@ import { dirname, relative, resolve, sep } from "node:path";
 import { spawnSync } from "node:child_process";
 import { pnpmRuntime } from "./pnpm-runtime.mjs";
 import { shellAccess } from "./shell-access.mjs";
+import { unchangedDevelopArtifact } from "./develop-artifacts.mjs";
 import { protectedPath } from "./core.mjs";
 import { git, isMain, root } from "./io.mjs";
 
@@ -19,6 +20,7 @@ export function editPaths(input) {
   return [...new Set(paths)];
 }
 function approved(cwd, path, staged = false) {
+  if (staged && unchangedDevelopArtifact(cwd, path)) return true;
   const file = resolve(cwd, ".harness/approved-writes.json");
   if (!existsSync(file)) return false;
   const approval = JSON.parse(readFileSync(file, "utf8"));

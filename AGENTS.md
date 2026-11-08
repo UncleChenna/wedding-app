@@ -163,3 +163,24 @@ Long rehearsal details live inside the skill's `references/` folder.
 - Handoffs go in `docs/handoffs/<ticket-id>.md`; preserve `docs/progress.md` as history.
 - Start new feature branches from freshly fetched `origin/develop`. For a new ticket not yet present there, carry only its definition, never unrelated feature commits. Existing branches need an explicit base update.
 - Shared implementation edits can still conflict. Inspect overlapping files, integrate PRs sequentially, and report the exact develop commit used for verification. Never auto-merge.
+
+## Routine owned-worktree operations
+
+For a claimed ticket, agents may fetch and integrate `origin/develop` into their own
+branch, resolve conflicts preserving both features, and rerun verification without
+requesting another base-update approval. Report the exact integrated commit. Stop
+for ownership conflicts; never reset or discard another person's changes.
+
+Agents may remove only their own ticket worktree's `.next/cache/turbopack` when
+diagnosing a stale build, then rebuild. Check the resolved path is inside that
+worktree and is not a symlink before removal. Other output and database deletion
+remain protected. This narrow exception does not authorize production changes.
+
+Staged regular generator outputs identical to fetched `origin/develop` can be
+committed without a duplicate approval record (see collaboration documentation).
+New or modified protected artifacts still need exact-path authorization. Existing
+user approvals persist for their stated scope; do not ask for them again.
+
+`pnpm verify` always runs every gate and records local success for up to one hour.
+`t:pr` may reuse matching evidence; `--force-verify` forces a full rerun. Changed
+inputs or failed checks invalidate evidence. CI always runs the full gate.
