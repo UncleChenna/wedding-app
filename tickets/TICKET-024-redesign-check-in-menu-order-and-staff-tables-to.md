@@ -2,7 +2,7 @@
 id: TICKET-024
 title: Migrate admission counters and scan event tables
 epic: data-auth
-status: blocked
+status: in_progress
 priority: urgent
 estimate: M
 labels: [db, backend]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-11-08
 started: 2026-11-04
 completed: ""
-reason: "Automatic approval review rejected new migration generation; awaiting exact0016/0017/0018 SQL, snapshots and journal generation/testing/commit authorization in docs/reviews/TICKET-024/migration-approval.md. Approved base update is complete."
-resume_to: in_progress
+reason: ""
+resume_to: ""
 ---
 
 # TICKET-024: Migrate admission counters and scan event tables
@@ -69,3 +69,4 @@ See: [Data model](../docs/prd.md#data-model) · [Gate check-in](../docs/prd.md#g
 - 2026-11-08 — in_progress → blocked — divine (codex) — Approved historical integration pushed in3d76afb2; awaiting current develop2706b96 base-update authorization per docs/reviews/TICKET-024/base-update-proposal.md to avoid migration0012–0015 collisions.
 - 2026-11-08 — blocked → in_progress — divine (codex) — User approved current develop2706b96 base update, listed unchanged files and authorization record.
 - 2026-11-08 — in_progress → blocked — divine (codex) — Automatic approval review rejected new migration generation; awaiting exact0016/0017/0018 SQL, snapshots and journal generation/testing/commit authorization in docs/reviews/TICKET-024/migration-approval.md. Approved base update is complete.
+- 2026-11-08 — blocked → in_progress — divine (codex) — User approved exact0016–0018 generation, isolated testing, commit and authorization record.

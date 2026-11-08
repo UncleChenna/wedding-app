@@ -145,3 +145,17 @@ No generated outputs exist. Exact0016/0017/0018 SQL/snapshot/journal proposal is
 `docs/reviews/TICKET-024/migration-approval.md`. Await generation/testing/commit and
 record authorization; do not bypass the rejection. The old proposal tests remain
 historical evidence only; isolated stack is stopped and no verification is live.
+
+## Approved migrations generated and tested — 2026-11-08
+
+User approved all seven migration SQL/snapshot/journal paths and authorization
+record. Drizzle generated0016–0018; reviewed custom SQL populated before application.
+Owned isolated stack started without reset. Nine tests against final files pass
+in temporary schemas, including modern/bootstrap preservation and concurrency.
+Public migration ran twice with identical counts (19 applied;20 tables, zero rows).
+RLS passes all20 tables; applied public suite5pass/4skip, with all9 covered separately.
+Quick passes; full verification is running in session44221, log
+`/tmp/TICKET-024-final-verify.log`. Inspect that live handle; do not restart blindly.
+See `docs/reviews/TICKET-024/verification.md` for complete evidence and failed first
+pre-application run. Next: complete full gate, update criteria/PR85 and request review.
+No production application or PR merge authorized.

@@ -4,60 +4,41 @@ Ticket: TICKET-024
 
 # Summary
 
-Prepare invitation-level admission counters and immutable scan evidence while
-retaining the historical guest-level check-in archive. This is an incomplete
-design/implementation draft, not a deployable migration.
+Store invitation-level partial admissions and immutable scan evidence without losing historical guest-level check-ins. Canonical admissions cannot exceed the authoritative RSVP allowance; excess offline physical reports remain recorded as conflicts.
 
 # Changes
 
-- Proposed additive Drizzle tables for counters and scan events, with five result
-  types, retry IDs, staff/device references and basic row constraints.
-- Separate reported physical counts from canonical admissions so offline conflicts
-  can be retained without exceeding the canonical allowance.
-- Initial opt-in database tests for unknown invitations, retry uniqueness, immutable
-  evidence, RLS and rejection of forged allowances/unsafe RSVP reductions.
-- Storage contract and migration-preservation plan in docs/reviews/TICKET-024/.
+- Add RLS-enabled admission counters and scan events with five results, unique client retry IDs, nullable unknown invitations, staff/device references and query indexes.
+- Generate migrations0016–0018: additive schema, deterministic preservation backfill, then append-only and cross-table guards. Existing migrations and check_ins rows remain unchanged.
+- Count admissions from immutable events, reject forged allowances and unsafe RSVP reductions, and preserve concurrent final-seat correctness under the documented invitation-first lock order.
+- Execute preservation/constraint tests against the final generated files, including populated modern and bootstrap fixtures.
 
 # Acceptance criteria and evidence
 
-No ticket acceptance criterion is complete. The old check_ins table is unchanged.
-Cross-table guards, append-only triggers and deterministic backfill are SQL proposals
-exercised in rolled-back temporary schemas. Nine proposal tests now cover concurrency and preservation; final migrations and
-repeat-application checks remain incomplete.
+All functional storage criteria have evidence in `docs/reviews/TICKET-024/verification.md`: nine generated-file tests cover results/counts, retry identity, unknown invitations, live identity, RLS, preservation, append-only guards and concurrent allocation. Repeat application leaves all counts unchanged. Full repository gate is still running at this checkpoint; no completion claim yet.
 
 # Verification
 
-Earlier quick verification passed lint, types and 45 related tests (34 skips).
-Four proposal guard tests passed together. Latest database run: three passed,
-including both current/bootstrap populated preservation cases; three failed with
-local CONNECT_TIMEOUT. No assertions or timeouts were relaxed. No full gate or
-final migration verification is claimed. Logs and limitations are in the handoff.
+- Nine isolated-schema tests pass against final generated SQL.
+- Applied-schema tests: five pass; four preservation/concurrency fixtures run separately in isolated schemas, where all nine pass.
+- Two migration runs pass; both post-run counts match (19 migrations,20 public tables).
+- RLS enabled on all20 public tables.
+- Quick verification passes lint/types; opt-in database tests were run explicitly.
+- Full verification in progress; unit phase passes1089 tests with116 opt-in/skipped tests. Build/browser outcome pending.
+- Initial public test run before migration failed for absent tables; subsequent temporary-schema and applied runs passed. Assertions and timeouts were not weakened.
 
 # Risks and rollout
 
-Do not deploy this draft. PR84 has merged migration 0011; integrate its develop base before generation. Applied migration
-0001 is empty-scaffold-only and must not be applied to populated legacy rows.
-The final proposal needs exact-path migration authorization and isolated evidence.
-No production database action, RLS policy change or data deletion is included.
+User approved generation, isolated testing, commit and exact-path authorization, not production application or PR merge. Base: develop2706b96. No reset or existing-data deletion performed. Keep0001 away from populated pre0001 deployments; bootstrap fixtures do not certify that earlier migration as a safe upgrade. Consumer transactions lock invitation before RSVP/counter and never double-increment counters. Guards intentionally reject evidence deletion and reductions below admissions; retention needs a separately reviewed operation. Rollback application code while retaining additive data; no destructive down migration is provided.
 
 # Screenshots
 
-N/A: backend schema and tests only; no UI changes.
+N/A: backend schema/tests only; no rendered UI change.
 
 # UI checklist
 
-N/A: no rendered component or route is changed.
+N/A: no UI, typography, motion, metadata or QR rendering change.
 
 # Harness changes, if any
 
-None. Existing isolation and protected-file guards remain enabled.
-
-Latest checkpoint quick gate: lint, typecheck and 45 related tests passed; 38 opt-in tests skipped.
-
-## 2026-11-08 integration checkpoint
-
-Approved historical develop integration is pushed in `3d76afb2`. Fresh quick verification passes. Current develop already owns migrations0012–0015; the next base update and its sole enum conflict are documented in `docs/reviews/TICKET-024/base-update-proposal.md`. New migrations are not yet generated or certified.
-
-## Current develop integrated — 2026-11-08
-
-The approved update to develop `2706b96` is committed and pushed as `9eddc19e`. Both conflicting enum definitions were retained; all ten approved protected files match develop exactly. Frozen install and fresh quick verification pass. No new migration was generated or applied. The isolated database is stopped; final migration generation, fresh database tests and full verification remain outstanding.
+None. Existing generators, isolated-target checks, approval hooks and verification gates remain enabled.

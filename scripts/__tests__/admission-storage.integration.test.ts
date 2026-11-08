@@ -20,21 +20,20 @@ async function installProposal(
 ) {
   await tx.unsafe(`create schema "${namespace}"`);
   await tx.unsafe(`set local search_path to "${namespace}", pg_catalog`);
-  // Apply the real empty-scaffold chain; export only this ticket's additive tables.
-  // A full-schema export places an unrelated composite FK before its unique index.
+  // Exercise the final generated migrations, including populated backfill fixtures.
   const journal = JSON.parse(readFileSync("drizzle/meta/_journal.json", "utf8")) as {
     entries: { tag: string }[];
   };
   const migrations = options.legacy
     ? journal.entries.filter((entry) => /^(0000_|0009_|0010_)/.test(entry.tag))
-    : journal.entries;
+    : journal.entries.filter((entry) => Number(entry.tag.slice(0, 4)) < 16);
   for (const migration of migrations) {
     await applyProposal(tx, namespace, `drizzle/${migration.tag}.sql`);
   }
-  await applyProposal(tx, namespace, "artifacts/TICKET-024/additive-schema.sql");
+  await applyProposal(tx, namespace, "drizzle/0016_admission-expand.sql");
   await options.beforeBackfill?.(tx);
-  await applyProposal(tx, namespace, "docs/reviews/TICKET-024/backfill-proposal.sql");
-  await applyProposal(tx, namespace, "docs/reviews/TICKET-024/guards-proposal.sql");
+  await applyProposal(tx, namespace, "drizzle/0017_admission-backfill.sql");
+  await applyProposal(tx, namespace, "drizzle/0018_admission-guards.sql");
 }
 async function storageTransaction<T>(
   run: (tx: TransactionSql, namespace: string) => Promise<T>,
