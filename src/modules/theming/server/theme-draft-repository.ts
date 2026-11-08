@@ -2,10 +2,10 @@ import "server-only";
 import { eq, inArray, sql } from "drizzle-orm";
 import { db, schema, type Db } from "@/modules/shared/server/db/client";
 import { getTheme } from "../lib/registry";
-import type { Theme } from "../lib/schema";
+import type { ActiveThemes, Theme } from "../lib/schema";
 import type { ThemeSelection } from "./stored-themes";
 import { saveThemeSelection } from "./theme-repository";
-import { validateThemePublication } from "./theme-publication";
+import { assertThemeDraftsUnchanged, validateThemePublication } from "./theme-publication";
 
 /** Internal only: caller must validate tokens and authorize an AAL2 administrator. */
 export async function persistThemeDraft(theme: Theme, database: Pick<Db, "insert"> = db) {
@@ -26,6 +26,7 @@ export async function persistThemeDraft(theme: Theme, database: Pick<Db, "insert
 export async function publishThemeDrafts(
   selection: ThemeSelection,
   database: Pick<Db, "transaction"> = db,
+  reviewed?: ActiveThemes,
 ) {
   return database.transaction(async (tx) => {
     // One transaction-scoped lock serializes all publications, including initial setup.
@@ -44,6 +45,7 @@ export async function publishThemeDrafts(
     if (pair.light.id !== selection.light || pair.dark.id !== selection.dark) {
       throw new Error("Stored theme identity does not match its selection");
     }
+    if (reviewed) assertThemeDraftsUnchanged(pair, reviewed);
     await tx.update(schema.themes).set({ isActive: false }).where(eq(schema.themes.isActive, true));
     for (const theme of [pair.light, pair.dark]) {
       await tx

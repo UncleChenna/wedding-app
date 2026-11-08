@@ -69,6 +69,7 @@ test.describe("theme studio", () => {
     expect(await db`select id from themes where id='wedding-light'`).toHaveLength(0);
     const frame = page.getByRole("region", { name: "Draft page preview" });
     await expect(frame.getByRole("heading", { name: /Uchenna/ })).toBeVisible();
+    await expect(frame.locator('a[href^="/dev"]')).toHaveCount(0);
     await page.getByLabel("foreground hex", { exact: true }).fill(light.colors.foreground);
     await page.getByLabel("Theme name").fill("Our light draft");
     await page.getByLabel("Heading font").focus();
@@ -87,8 +88,37 @@ test.describe("theme studio", () => {
     await page.reload();
     await expect(page.getByLabel("Theme name")).toHaveValue("Our light draft");
     await expect(page.getByLabel("Heading font")).toHaveValue("playfair");
-    await page.getByLabel("Preview page").selectOption("order");
+    await page.getByLabel("Preview page").scrollIntoViewIfNeeded();
+    await page.getByLabel("Preview page").focus();
+    await expect(page.getByLabel("Preview page")).toBeFocused();
+    await page.keyboard.press("ArrowDown");
+    await expect(page.getByLabel("Preview page")).toHaveValue("order");
+    await expect(page.getByLabel("Preview page")).toBeFocused();
     await expect(frame.getByRole("heading", { name: "Where are you sitting?" })).toBeVisible();
+    await frame.getByLabel("Table number").fill("1");
+    await frame.getByRole("button", { name: "Browse menu" }).click();
+    await expect(
+      frame.getByRole("heading", { name: "Hungry? Thirsty? Say the word." }),
+    ).toBeFocused();
+    const otherEditor = await page.context().newPage();
+    try {
+      await otherEditor.goto("/admin/themes");
+      await otherEditor.getByLabel("Theme name").fill("Another administrator's draft");
+      await otherEditor.getByRole("button", { name: "Save draft", exact: true }).click();
+      await expect(otherEditor.getByRole("main").getByRole("status").last()).toContainText(
+        "Draft saved",
+      );
+      await page.getByRole("button", { name: "Activate themes" }).click();
+      await expect(page.getByRole("main").getByRole("alert").last()).toContainText(
+        "changed in another editor",
+      );
+      const [unpublished] = await db`select published_tokens from themes where id='wedding-light'`;
+      expect(unpublished?.published_tokens).toBeNull();
+    } finally {
+      await otherEditor.close();
+    }
+    await page.reload();
+    await expect(page.getByLabel("Theme name")).toHaveValue("Another administrator's draft");
     await page.getByRole("button", { name: "Activate themes" }).click();
     await expect(page.getByRole("main").getByRole("status").last()).toContainText(
       "Your themes are live",

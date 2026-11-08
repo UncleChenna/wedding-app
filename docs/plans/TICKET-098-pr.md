@@ -13,16 +13,19 @@ Admins can now edit a light/dark theme pair at `/admin/themes`, preview invitati
 - Reuse TICKET-181 save/activate actions and published snapshots. Invalid drafts show named contrast pairs; unsaved or invalid pairs cannot activate.
 - Scope draft styles to embedded existing preview components. Preserve CSP frame restrictions and public component defaults.
 - Add helper tests and a real OTP/TOTP database-backed browser journey, including reload persistence and fresh no-JavaScript guest HTML after activation.
+- Reject activation when another administrator saved different tokens after the displayed draft was loaded. Compare normalized reviewed tokens inside the publication transaction after row locking; no partial publication or cache invalidation on rejection.
+- Keep embedded invitation previews inside the editor and focus the order heading after user-initiated step transitions without stealing initial editor focus.
 
 # Acceptance criteria and evidence
 
-The authenticated journey proves invalid saves create no draft, valid saves remain unpublished, reload preserves font/name choices, and activation changes both server-rendered guest appearances without deployment. Source and screenshots are in `docs/reviews/TICKET-098/`; final corrected-preview rerun passed in 17.2 seconds.
+The authenticated journey proves invalid saves create no draft, valid saves remain unpublished, reload preserves font/name choices, and activation changes both server-rendered guest appearances without deployment. Source and screenshots are in `docs/reviews/TICKET-098/`; the latest review-regression journey passed in 27.8 seconds.
 
 # Verification
 
 - `pnpm verify`: passed before the final embedded layout correction; 1,091 unit tests passed / 107 skipped; 851 browser smoke tests passed / 195 skipped. Lint, types and build passed.
 - `pnpm exec tsx scripts/test-theme-editor.ts`: passed before that correction; authenticates with OTP/TOTP and asserts zero Axe violations and no horizontal overflow in 24 combinations.
 - Final correction keeps the narrow embedded invitation single-column, preserving normal public-page breakpoints. Final quick verification, production rebuild and focused browser regression all passed.
+- Review corrections: quick verification passed; six isolated publication database tests passed, including stale draft rejection without changing the live selection. The authenticated browser journey passed in 27.8 seconds, including two-tab conflict/reload/activation, keyboard focus, no embedded development links, guest SSR and all 24 Axe/overflow combinations.
 - Physical-device, fresh Lighthouse and exact-zero CLS checks remain unverified. No claim of full UI completion.
 
 # Risks and rollout
@@ -35,7 +38,7 @@ No migration, dependency, CI, account or production-data change. Requires the al
 
 # UI checklist
 
-Detailed PASS/N/A/not-verified evidence: `docs/reviews/TICKET-098/ui-review.md`. Device and fresh performance/CLS checks are not verified; this PR remains draft until review disposition is approved. TICKET-201 remains release-blocking.
+Detailed PASS/N/A/not-verified evidence: `docs/reviews/TICKET-098/ui-review.md`. Device and fresh performance/CLS checks are not verified; the user authorized progression through review while retaining these release gates. TICKET-201 remains release-blocking.
 
 # Harness changes, if any
 

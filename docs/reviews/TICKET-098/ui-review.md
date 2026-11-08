@@ -24,5 +24,24 @@ the generic anonymous screenshot runner cannot capture this protected editor.
 | Staff feedback       | N/A: no staff scanner or station feedback changed.                                                                                                                                                                                                |
 | Verification         | PASS: full gate before final embedded-only correction (1091 unit passed/107 skipped;851 smoke passed/195 skipped). Final quick/build and authenticated journey passed after correction (17.2s), including the layout regression and24 Axe checks. |
 
-Disposition: automated and visual review passed; required device/CLS/performance disposition remains outstanding. Device, CLS and performance requirements remain explicit; TICKET-201 is
-still the release gate. No exception for this ticket has yet been requested or granted.
+## Independent review corrections
+
+The review found stale-draft publication, embedded development links and lost
+keyboard focus after embedded ordering steps. All three are corrected. Publication
+now compares the exact reviewed pair against locked stored rows before writing;
+JSON normalization handles omitted optional fields without false conflicts.
+
+The authenticated browser journey passed in 27.8 seconds, including two-tab draft
+conflict rejection, unchanged publication on rejection, reviewed activation after
+reload, no embedded development links, initial keyboard focus preservation and
+step-heading focus. All 24 Axe/overflow combinations passed and screenshots were
+refreshed. Replacement Ivory desktop invitation and Emerald mobile order captures
+were inspected; earlier full visual review remains recorded above.
+
+Six isolated database publication tests passed, including stale snapshots and
+preservation of the live selection. Quick verification passed. A separate review
+of the corrections found no remaining blockers.
+
+Disposition: the user's standing authorization permits proceeding through review
+while preserving TICKET-201's release gates. Physical-device checks, fresh
+Lighthouse and exact-zero CLS remain unverified; none is represented as a pass.

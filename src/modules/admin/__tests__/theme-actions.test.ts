@@ -1,5 +1,7 @@
 import { beforeEach, expect, it, vi } from "vitest";
 import { themes } from "@/modules/theming/themes";
+import { getTheme } from "@/modules/theming/lib/registry";
+import { ThemeValidationError } from "@/modules/theming/lib/load-theme";
 const ports = vi.hoisted(() => ({ access: vi.fn(), save: vi.fn(), activate: vi.fn() }));
 vi.mock("../server/current-admin-access", () => ({ currentAdminAccess: ports.access }));
 vi.mock("@/modules/theming/server/theme-draft-repository", () => ({
@@ -35,7 +37,11 @@ it("saves valid drafts only after the ready administrator check", async () => {
   );
 });
 it("activates through the atomic publication/cache service", async () => {
-  const selection = { light: "ivory-gold", dark: "emerald-night" };
+  const selection = {
+    light: "ivory-gold",
+    dark: "emerald-night",
+    reviewed: { light: getTheme("ivory-gold"), dark: getTheme("emerald-night") },
+  };
   expect(await activateThemeDraftAction(selection)).toEqual({ status: "activated" });
   expect(ports.activate).toHaveBeenCalledExactlyOnceWith(selection);
 });
@@ -44,4 +50,17 @@ it("does not disclose storage exception text", async () => {
   const result = await activateThemeDraftAction({ light: "ivory-gold", dark: "emerald-night" });
   expect(result.status).toBe("unavailable");
   expect(JSON.stringify(result)).not.toContain("private connection");
+});
+
+it("returns a recoverable validation message for stale draft publication", async () => {
+  ports.activate.mockRejectedValue(
+    new ThemeValidationError("Saved drafts changed. Reload to review."),
+  );
+  expect(
+    await activateThemeDraftAction({
+      light: "ivory-gold",
+      dark: "emerald-night",
+      reviewed: { light: getTheme("ivory-gold"), dark: getTheme("emerald-night") },
+    }),
+  ).toEqual({ status: "invalid", message: "Saved drafts changed. Reload to review." });
 });

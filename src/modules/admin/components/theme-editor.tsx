@@ -58,7 +58,11 @@ export function ThemeEditor({ active, drafts }: { active: ActiveThemes; drafts: 
     setFailure(false);
     startTransition(async () => {
       try {
-        const result = await activateThemeDraftAction({ light: pair.light.id, dark: pair.dark.id });
+        const result = await activateThemeDraftAction({
+          light: pair.light.id,
+          dark: pair.dark.id,
+          reviewed: pair,
+        });
         setFailure(result.status !== "activated");
         setMessage(
           result.status === "activated"

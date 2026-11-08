@@ -96,20 +96,24 @@ export function InvitationView({
           This preview does not send an RSVP. Your personal invitation will let you reply when
           invitations are ready.
         </p>
-        <div>
-          <Link
-            href={appRoutes.devRsvp.path}
-            className="mt-6 inline-flex min-h-11 items-center text-primary underline underline-offset-4"
-          >
-            Try RSVP preview
-          </Link>
-        </div>
-        <Link
-          className="mt-6 inline-flex min-h-11 items-center text-primary underline underline-offset-4"
-          href={appRoutes.dev.path}
-        >
-          Back to previews
-        </Link>
+        {!embedded && (
+          <>
+            <div>
+              <Link
+                href={appRoutes.devRsvp.path}
+                className="mt-6 inline-flex min-h-11 items-center text-primary underline underline-offset-4"
+              >
+                Try RSVP preview
+              </Link>
+            </div>
+            <Link
+              className="mt-6 inline-flex min-h-11 items-center text-primary underline underline-offset-4"
+              href={appRoutes.dev.path}
+            >
+              Back to previews
+            </Link>
+          </>
+        )}
       </section>
     </Container>
   );

@@ -48,10 +48,12 @@ export function OrderPreview({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const heading = useRef<HTMLHeadingElement>(null);
   const form = useRef<HTMLFormElement>(null);
+  const previousStep = useRef(step);
   const theme = themes.find((theme) => theme.id === themeId);
   const selected = SAMPLE_MENU.filter((item) => (quantities[item.id] ?? 0) > 0);
   useEffect(() => {
-    if (!embedded) heading.current?.focus();
+    if (!embedded || previousStep.current !== step) heading.current?.focus();
+    previousStep.current = step;
   }, [step, embedded]);
   useEffect(() => {
     if (Object.keys(errors).length)
