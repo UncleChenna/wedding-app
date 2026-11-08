@@ -2,20 +2,20 @@
 id: TICKET-098
 title: Build the admin theme editor with preview and activate
 epic: admin
-status: todo
+status: in_progress
 priority: medium
 estimate: M
 labels: [frontend, design]
 module: admin
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-181, TICKET-088]
 blocks: []
-branch: ""
+branch: TICKET-098
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-08
+started: 2026-11-08
 completed: ""
 reason: ""
 resume_to: ""
@@ -63,3 +63,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-08 — todo → claimed — divine (codex)
+- 2026-11-08 — todo → in_progress — divine (codex)
