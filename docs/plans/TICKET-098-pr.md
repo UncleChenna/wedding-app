@@ -22,20 +22,20 @@ The authenticated journey proves invalid saves create no draft, valid saves rema
 
 # Verification
 
-- `pnpm verify`: passed before the final embedded layout correction; 1,091 unit tests passed / 107 skipped; 851 browser smoke tests passed / 195 skipped. Lint, types and build passed.
-- `pnpm exec tsx scripts/test-theme-editor.ts`: passed before that correction; authenticates with OTP/TOTP and asserts zero Axe violations and no horizontal overflow in 24 combinations.
-- Final correction keeps the narrow embedded invitation single-column, preserving normal public-page breakpoints. Final quick verification, production rebuild and focused browser regression all passed.
-- Review corrections: quick verification passed; six isolated publication database tests passed, including stale draft rejection without changing the live selection. The authenticated browser journey passed in 27.8 seconds, including two-tab conflict/reload/activation, keyboard focus, no embedded development links, guest SSR and all 24 Axe/overflow combinations.
-- Latest local broad run: lint/types/build passed; 1,095 unit tests passed/108 skipped. Smoke: 837 passed/195 skipped/14 desktop failures during local database unavailability. Independent `/p/invalid` returned HTTP 503; invitation/pass and PWA return checks saw the retry screen. All 14 failed checks passed unchanged in a serial rerun (21.0s) after the database became healthy. The initial broad command remains recorded as failed; the review CLI will rerun the full gate. The subsequent action-boundary regression passed (eight action tests total).
-- Physical-device, fresh Lighthouse and exact-zero CLS checks remain unverified. No claim of full UI completion.
+- Forced `pnpm t:pr TICKET-098 --force-verify` passed the complete gate on integrated develop `407fb68db4dde004cf0868274a744ebd435dbbb2`: ticket/format/lint/type checks, 1,106 unit tests passed / 118 skipped, production build, 851 mobile/desktop smoke tests passed / 195 skipped (8.7 minutes).
+- Six isolated publication database tests passed after integration, including rejection of stale reviewed tokens without changing the live selection. Both inherited migration runs succeeded with identical post-run counts; all 20 public tables retain RLS.
+- Authenticated OTP/TOTP editor journey passed (27.8s): invalid save, draft persistence, two-tab stale-publication rejection, reload/activation, fresh no-JavaScript guest HTML, no embedded development links, initial editor focus and ordering step-heading focus.
+- All 24 palette/preview/width Axe and overflow combinations passed; screenshots were refreshed. A separate review found no remaining blockers in the corrections.
+- Earlier broad verification encountered a confirmed local database outage (HTTP 503), with 14 failures. All 14 passed unchanged after recovery; a second outage-interrupted run was also retained. The final complete run above passed after an idle owned stack was stopped with its backup preserved. No assertions or timeouts were relaxed.
+- Physical-device, fresh Lighthouse and exact-zero CLS checks remain unverified in release-blocking TICKET-201. The standard typography smoke assertion does not certify fresh theme-studio CLS measurements.
 
 # Risks and rollout
 
-No migration, dependency, CI, account or production-data change. Requires the already merged TICKET-181 schema/service. The editor manages the `wedding-light`/`wedding-dark` draft pair; preset-only texture paths are omitted when copying to custom IDs. Publication affects guests on their next page load. Restore a known-good preset through existing Settings if needed; reverting this UI does not delete saved theme data. Base verified: develop `2706b96ddd0c7fa12c2e499f302d7e21e3108fde`.
+No new migration, dependency, CI, account or production-data change introduced by this feature. Requires the already merged TICKET-181 schema/service. The editor manages the `wedding-light`/`wedding-dark` draft pair; preset-only texture paths are omitted when copying to custom IDs. Publication affects guests on their next page load. Restore a known-good preset through existing Settings if needed; reverting this UI does not delete saved theme data. Base for final verification: develop `407fb68db4dde004cf0868274a744ebd435dbbb2`.
 
 # Screenshots
 
-24 PNGs: `docs/reviews/TICKET-098/screenshots/<theme>-<invitation|order>-<375|768|1280>.png`. Four registered themes, both previews, three widths. Corrected invitation captures inspected at all three widths; order captures inspected before the invitation-only correction.
+24 PNGs: `docs/reviews/TICKET-098/screenshots/<theme>-<invitation|order>-<375|768|1280>.png`. Examples: [Ivory desktop invitation](https://github.com/UncleChenna/wedding-app/blob/TICKET-098/docs/reviews/TICKET-098/screenshots/ivory-gold-invitation-1280.png), [Emerald mobile order](https://github.com/UncleChenna/wedding-app/blob/TICKET-098/docs/reviews/TICKET-098/screenshots/emerald-night-order-375.png). Four registered themes, both previews, three widths. The initial set was reviewed across all widths. After the review corrections, all 24 captures were refreshed with Axe/overflow checks; the replacement Ivory desktop invitation and Emerald mobile order examples were inspected.
 
 # UI checklist
 
@@ -52,4 +52,4 @@ inherited migration artifacts (0016–0018, their snapshots and journal) match
 fetched develop exactly. Applied only to TICKET-098's isolated database: both
 migration runs succeeded, post-run row counts match exactly, and all 20 public
 tables have RLS enabled. No reset or new migration was introduced. The final
-review gate runs against this integrated base; earlier outage evidence is retained.
+review gate passed against this integrated base; earlier outage evidence is retained.
