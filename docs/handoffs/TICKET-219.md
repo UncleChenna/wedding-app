@@ -11,7 +11,16 @@ no blocking issue; final committed-head confirmation remains required.
 
 Four direct regressions failed before implementation and passed afterward. On the
 same base in the prior checkout, all 50 targeted ticket/evidence/artifact tests and
-quick verification passed. Fresh TICKET-219 verification remains pending.
+quick verification passed. Fresh TICKET-219 quick verification passed lint, types
+and 40 related tests. Its full gate passed ticket validation, format, lint, types,
+1,105 unit tests (117 skipped), and production build.
+
+The broad browser run was stopped after known database failures to avoid more
+timeouts under shared-machine load: 240 passed, four failed, five interrupted,
+777 did not run; exit 130. Access-matrix received 503 instead of 404 and the three
+gate-pass assertions saw the retry page because the local rate-limit database was
+unavailable. This is a failed/incomplete full gate, not a pass. Evidence is in
+`artifacts/TICKET-219/verify.log` and `test-results/`.
 
 Managed Supabase startup failed. Do not retry or add database stacks under the
 current load. Before full verification, explicitly use this worktree's loopback
@@ -29,5 +38,6 @@ requires an open PR. No review evidence was fabricated to force reconciliation;
 the parent will handle this through a suitable follow-up. Do not mark it done by
 editing ledger/file status manually.
 
-Next: complete quick/full checks, update evidence, commit/push and open a detailed
-draft PR to develop. Report any failing check accurately; never weaken gates.
+Next: run the full CI gate with its disposable database and repeat isolated local
+verification when capacity is available. Keep the PR draft and ticket blocked until
+the verification limitation is resolved. No assertions were weakened or skipped.

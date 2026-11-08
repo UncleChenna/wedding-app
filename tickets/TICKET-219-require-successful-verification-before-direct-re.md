@@ -2,7 +2,7 @@
 id: TICKET-219
 title: Require successful verification before direct review transitions
 epic: foundations
-status: in_progress
+status: blocked
 priority: urgent
 estimate: S
 labels: [infra, test]
@@ -17,8 +17,8 @@ created: 2026-11-08
 updated: 2026-11-08
 started: 2026-11-08
 completed: ""
-reason: ""
-resume_to: ""
+reason: "Full browser verification blocked by unavailable isolated database; 240 passed, 4 failed, 5 interrupted, 777 not run. Await CI and healthy isolated verification."
+resume_to: in_progress
 ---
 
 # TICKET-219: Require successful verification before direct review transitions
@@ -66,6 +66,11 @@ tracks only the follow-up repair.
 
 ## Notes / decisions
 
+- 2026-11-08 — Fresh branch quick gate passed; full gate passed through 1,105 unit
+  tests (117 skipped) and production build. Browser run was stopped after local
+  database unavailability caused four failures: 240 passed, five interrupted,
+  777 not run (exit 130). Full gate remains incomplete. Independent read-only
+  review found no blocking code issue; CI and a healthy isolated database are next.
 - 2026-11-08 — Scoped follow-up to merged TICKET-215; initial four CLI cases
   failed because verification was never invoked. Preserved repair passed all
   50 targeted ticket/evidence/artifact tests before transfer to this branch.
@@ -75,3 +80,4 @@ tracks only the follow-up repair.
 - 2026-11-08 — new → todo — divine
 - 2026-11-08 — todo → claimed — divine (codex)
 - 2026-11-08 — todo → in_progress — divine (codex)
+- 2026-11-08 — in_progress → blocked — divine (codex) — Full browser verification blocked by unavailable isolated database; 240 passed, 4 failed, 5 interrupted, 777 not run. Await CI and healthy isolated verification.
