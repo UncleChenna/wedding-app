@@ -2,6 +2,8 @@
 
 2026-11-08 — divine / codex — branch `TICKET-219`.
 Base: `407fb68db4dde004cf0868274a744ebd435dbbb2`.
+Draft PR: https://github.com/UncleChenna/wedding-app/pull/113.
+Implementation commit: `9675c11a`; ledger is `blocked` on full verification.
 
 Direct review previously skipped verification. The repair separates preflight from
 verification, uses invocation-local HEAD evidence, rejects inherited markers, and
