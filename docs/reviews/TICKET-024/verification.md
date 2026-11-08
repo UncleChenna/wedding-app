@@ -40,3 +40,29 @@ inserting conflicting physical reports and must not increment counters twice.
 No destructive down migration is supplied. Roll back application code while retaining
 the additive archive/counters; any schema rollback or retention deletion needs a
 separate reviewed migration and data-preservation plan. No PR merge is authorized.
+
+## Approved local-seed repair — 2026-11-08
+
+User approved the named-trigger local seed repair and synthetic-only reset tests.
+Before reset, all guest/admission tables were empty; only one test request-budget
+row existed. The helper is called inside seed.ts's existing transaction after
+local-target validation. It disables only the existing RSVP-history guard and four
+approved admission/source guards, resets the named seed tables, and re-enables all
+five before inserting fixtures. Applied migrations and runtime guards are unchanged.
+
+- Regression first failed for the missing helper; implementation then passed.
+- Both `pnpm db:seed` runs succeed. Post-run counts match exactly:110 invitations,
+  248 guests,28 tables,16 menu items,18 orders and30 historical check-ins.
+- RLS remains enabled on all20 public tables.
+- Post-seed public-schema tests:5passed/5fixture-only skips; they assert all five
+  guards enabled and reject evidence mutation.
+- Temporary-schema suite:10passed, including rollback after a synthetic failure
+  while guards are disabled, preservation of prior evidence on failure, successful
+  reset, enabled guards afterward and rejection of subsequent evidence deletion.
+- Quick verification passes. Full verification of the repair is running; no final
+  result or passing replacement CI claim yet.
+
+Logs: `/tmp/TICKET-024-seed-{first,second}.log`,
+`/tmp/TICKET-024-seed-counts-{first,second}.txt`, `/tmp/TICKET-024-seed-rls.log`,
+`/tmp/TICKET-024-after-seed-tests.log`, `/tmp/TICKET-024-final-seed-regression.log`,
+`/tmp/TICKET-024-seed-{quick,full}.log`. No other database was reset.

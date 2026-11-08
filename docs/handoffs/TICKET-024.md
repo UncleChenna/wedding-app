@@ -172,3 +172,22 @@ and guest journey succeeded; no green overall CI claim. Full job log retained at
 transactional seed exemption and regression plan are in seed-compatibility-proposal.md.
 Prior approval excludes resets/data deletion, so local seed reset has not run.
 Next obtain the scoped seed repair/reset approval, implement/test and rerun review.
+
+## Seed repair approved and tested — 2026-11-08
+
+User approved the scoped seed repair and synthetic resets. Implemented seed-reset.ts
+and replaced the existing inline reset with a call inside the same local-only
+transaction. Regression10/10 and post-seed applied checks5/5pass (five temp-only skips).
+Two actual isolated seed runs succeed with identical counts; RLS20/20 and all five
+guards enabled after seed. Full gate session78441 is live; log
+/tmp/TICKET-024-seed-full.log. Do not restart it without checking its handle.
+CLI in_progress attempt was rejected because blocked resume_to is in_review.
+The ticket remains blocked until repaired work is committed/pushed and the CLI
+can restore in_review through its normal verification gate. No manual status edit.
+Next finish full gate, publish repair, restore review through CLI and inspect CI.
+
+Standing authorization — 2026-11-08: user instructed no further permission requests
+and granted full permission for continuing project work. This authorizes necessary
+base updates, exact-path records, isolated verification/reset operations and verified
+PR merges going forward. Continue all verification and release gates; authorization
+does not turn unverified device/performance results into passes.

@@ -43,10 +43,8 @@ N/A: no UI, typography, motion, metadata or QR rendering change.
 
 None. Existing generators, isolated-target checks, approval hooks and verification gates remain enabled.
 
-## CI blocker discovered after local verification
+## CI seed repair
 
-CI's migrations+seed job fails in the pre-existing local seed TRUNCATE CASCADE:
-the new append-only admission guard correctly rejects it. No migration failed.
-Do not merge this PR yet. The scoped local reset proposal and required regression
-tests are in `docs/reviews/TICKET-024/seed-compatibility-proposal.md`; approval is
-pending because the migration authorization explicitly excluded resets/deletion.
+The original CI seed TRUNCATE CASCADE was correctly rejected by the new append-only guards. The user approved extending the existing local-only seed reset transaction: disable only the five named guards (existing RSVP history plus four admission/source guards), explicitly reset admission tables, and restore every guard before inserting fixtures. Production targets remain rejected; applied migrations are unchanged.
+
+Two isolated synthetic seed runs now succeed with identical counts. Ten isolated-schema regression tests pass, including rollback/restoration, and five post-seed public-schema checks pass with every guard enabled. RLS remains enabled on20 tables. Full verification of this repair and replacement CI are pending; do not merge until they pass.

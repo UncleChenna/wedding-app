@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import postgres, { type Sql, type TransactionSql } from "postgres";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { assertDatabaseTarget } from "../database-target";
+import { resetSeedTables } from "../seed-reset";
 
 let db: Sql;
 const rollback = new Error("rollback admission storage fixture");
@@ -68,6 +69,47 @@ describe.runIf(process.env.RUN_ADMISSION_DB_TESTS === "1")("admission storage", 
     if (db) await db.end({ timeout: 1 });
   });
 
+  it.runIf(process.env.ADMISSION_SCHEMA_PROPOSAL === "1")(
+    "restores seed guards after success and rollback without losing retained evidence on failure",
+    async () => {
+      await storageTransaction(async (tx, namespace) => {
+        const staffId = randomUUID(),
+          deviceId = randomUUID();
+        await tx`insert into staff(id,name,role) values (${staffId},'Synthetic gate','gate')`;
+        await tx`insert into registered_devices(id,name,role,registered_by_staff_id) values (${deviceId},'Synthetic scanner','gate',${staffId})`;
+        await tx`insert into scan_events(client_event_id,staff_id,device_id,reported_at,reported_result,result,reported_people,admitted_people,source)
+          values (${randomUUID()},${staffId},${deviceId},now(),'invalid','invalid',0,0,'online')`;
+        const guards = async () => tx`select t.tgname,t.tgenabled from pg_trigger t
+          join pg_class c on c.oid=t.tgrelid join pg_namespace n on n.oid=c.relnamespace
+          where n.nspname=${namespace} and t.tgname in
+          ('rsvp_history_append_only','scan_events_append_only','admission_counters_no_removal','rsvp_admission_no_truncate','guest_admission_no_truncate') order by t.tgname`;
+        const before = await guards();
+        expect(before).toHaveLength(5);
+        expect(before.every((row) => row.tgenabled === "O")).toBe(true);
+        await expect(
+          tx.savepoint(async (sp) => {
+            await resetSeedTables(async (statement) => {
+              if (statement.includes("truncate table")) throw new Error("synthetic reset failure");
+              await sp.unsafe(statement).simple();
+            });
+          }),
+        ).rejects.toThrow("synthetic reset failure");
+        expect(await guards()).toEqual(before);
+        expect(await tx`select id from scan_events`).toHaveLength(1);
+        await resetSeedTables(async (statement) => {
+          await tx.unsafe(statement).simple();
+        });
+        expect(await guards()).toEqual(before);
+        expect(await tx`select id from scan_events`).toHaveLength(0);
+        await expect(
+          tx.savepoint(async (sp) => {
+            await sp`delete from scan_events`;
+          }),
+        ).rejects.toMatchObject({ code: "42501" });
+      });
+    },
+  );
+
   it("retains an unknown-invitation attempt, enforces retry identity and rejects mutation", async () => {
     await storageTransaction(async (tx) => {
       const staffId = randomUUID(),
@@ -107,6 +149,12 @@ describe.runIf(process.env.RUN_ADMISSION_DB_TESTS === "1")("admission storage", 
         { relname: "admission_counters", relrowsecurity: true },
         { relname: "scan_events", relrowsecurity: true },
       ]);
+      const guards = await tx`select t.tgenabled from pg_trigger t
+        join pg_class c on c.oid=t.tgrelid join pg_namespace n on n.oid=c.relnamespace
+        where n.nspname=${namespace} and t.tgname in
+        ('rsvp_history_append_only','scan_events_append_only','admission_counters_no_removal','rsvp_admission_no_truncate','guest_admission_no_truncate')`;
+      expect(guards).toHaveLength(5);
+      expect(guards.every((row) => row.tgenabled === "O")).toBe(true);
     });
   }, 10_000);
 
