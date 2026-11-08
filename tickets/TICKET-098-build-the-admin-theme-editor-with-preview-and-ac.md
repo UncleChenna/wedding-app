@@ -2,7 +2,7 @@
 id: TICKET-098
 title: Build the admin theme editor with preview and activate
 epic: admin
-status: in_progress
+status: blocked
 priority: medium
 estimate: M
 labels: [frontend, design]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-11-08
 started: 2026-11-08
 completed: ""
-reason: ""
-resume_to: ""
+reason: "PR #110 published; awaiting UI review exception for physical-device and fresh Lighthouse/CLS checks retained in TICKET-201. CI pending."
+resume_to: in_progress
 ---
 
 # TICKET-098: Build the admin theme editor with preview and activate
@@ -65,3 +65,4 @@ See: [How theming works](../docs/prd.md#how-theming-works) (THM-3, THM-6).
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-08 — todo → claimed — divine (codex)
 - 2026-11-08 — todo → in_progress — divine (codex)
+- 2026-11-08 — in_progress → blocked — divine (codex) — PR #110 published; awaiting UI review exception for physical-device and fresh Lighthouse/CLS checks retained in TICKET-201. CI pending.
