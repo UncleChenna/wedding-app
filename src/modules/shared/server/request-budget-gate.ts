@@ -6,6 +6,7 @@ import { rateLimitIdentity } from "./rate-limit-identity";
 // Proposed launch budgets; synthetic shared-network review remains required.
 export const requestBudgetPolicies = {
   lookup: { limit: 1200, windowSeconds: 60 },
+  lost_link: { limit: 10, windowSeconds: 60 },
   pin: { limit: 30, windowSeconds: 600 },
 } as const;
 
