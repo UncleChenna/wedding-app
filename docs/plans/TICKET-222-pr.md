@@ -56,3 +56,5 @@ Post-repair verification: five consecutive full guest-import component-suite run
 # Coverage baseline integration
 
 Integrated verified develop `500ba2d7` without conflicts in `9208598`; retained the new coverage test command and unchanged generated lockfile. Complete local `pnpm test` passed **1,441 tests**, with **156 environment-gated skips**, across 181 passing/33 skipped files in 106.42 seconds. Coverage passed: **98.83% statements, 99.28% branches, 100% functions, 98.54% lines** (`/tmp/TICKET-222-integrated-coverage.log`). The normal integration commit quick gate also passed. No database was started. The earlier CI head is superseded by this combined base; fresh final-head CI remains mandatory.
+
+Before final publication, also integrated verified develop `3177b8ca` (admin journey CI) without conflicts in `5407f1d7`. Combined lint and types pass; quick had no uncommitted source files and therefore ran no additional unit tests (`/tmp/TICKET-222-combined-quick.log`). Final CI now includes the admin journey job. The merged baseline's 25-minute verification-job budget is retained unchanged; this ticket does not alter test timeouts.
