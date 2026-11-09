@@ -2,7 +2,7 @@
 id: TICKET-182
 title: Validate and commit guest CSV imports atomically
 epic: admin
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [backend, test]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/124
 created: 2026-10-21
 updated: 2026-11-09
 started: 2026-11-09
-completed: ""
+completed: 2026-11-09
 reason: ""
 resume_to: ""
 ---
@@ -63,3 +63,4 @@ Backlog audit coverage: INV-1, ADM-1. See [PRD](../docs/prd.md) and [audit](AUDI
 - 2026-11-09 — in_progress → in_review — divine (codex)
 - 2026-11-09 — in_review → in_progress — divine (codex) — Review: recheck preview expiry after waiting for database locks
 - 2026-11-09 — Review correction: recheck preview expiry after writer locks and conflict reads before insertion. Controlled-clock PostgreSQL regression reproduced the stale approval and verifies no inserted rows or receipt after correction. All six database tests pass. Retention follow-through explicitly maps to TICKET-127/TICKET-168.
+- 2026-11-09 — in_review → done — divine (codex)
