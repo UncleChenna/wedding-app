@@ -2152,16 +2152,17 @@
     "WED-026": {
       "log": [
         "- 2026-11-08 — todo → claimed — divine (codex)",
-        "- 2026-11-08 — todo → in_progress — divine (codex)"
+        "- 2026-11-08 — todo → in_progress — divine (codex)",
+        "- 2026-11-09 — in_progress → in_review — divine (codex)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-026",
-      "pr": "",
+      "pr": "https://github.com/UncleChenna/wedding-app/pull/112",
       "started": "2026-11-08",
       "completed": "",
-      "updated": "2026-11-08",
+      "updated": "2026-11-09",
       "reason": "",
       "resume_to": ""
     },
