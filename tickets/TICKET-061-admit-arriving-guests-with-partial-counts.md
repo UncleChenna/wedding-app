@@ -2,20 +2,20 @@
 id: TICKET-061
 title: Admit arriving guests with partial counts
 epic: checkin
-status: todo
+status: in_progress
 priority: high
 estimate: M
 labels: [frontend, backend]
 module: checkin
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-024, TICKET-060, TICKET-064, TICKET-032]
 blocks: [TICKET-062, TICKET-063, TICKET-065, TICKET-068, TICKET-097]
-branch: ""
+branch: TICKET-061
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-09
+started: 2026-11-09
 completed: ""
 reason: ""
 resume_to: ""
@@ -62,3 +62,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-09 — todo → claimed — divine (codex)
+- 2026-11-09 — todo → in_progress — divine (codex)
