@@ -68,7 +68,7 @@ describe.runIf(process.env.RUN_RLS_DB_TESTS === "1")("browser access (RLS)", () 
   });
 
   for (const actor of browserRoles) {
-    it(`${actor.label}: reads, changes and deletes zero rows in every public table`, async () => {
+    it(`${actor.label}: reads and deletes zero rows in every public table`, async () => {
       for (const table of tables) {
         await inRolledBack(async (tx) => {
           await actAs(tx, actor.role, actor.claims);
@@ -82,7 +82,12 @@ describe.runIf(process.env.RUN_RLS_DB_TESTS === "1")("browser access (RLS)", () 
           await actAs(tx, actor.role, actor.claims);
           const deleted = await tx
             .unsafe(`delete from public."${table}"`)
-            .catch(() => ({ count: 0 }));
+            .catch((error: unknown) => {
+              // Only a real permission/RLS denial counts: syntax, connection and trigger
+              // failures must not masquerade as proof that browser writes are denied.
+              expect(error).toMatchObject({ code: "42501" });
+              return { count: 0 };
+            });
           expect(deleted.count, `${actor.label} deleted from ${table}`).toBe(0);
         });
       }
@@ -104,6 +109,31 @@ describe.runIf(process.env.RUN_RLS_DB_TESTS === "1")("browser access (RLS)", () 
           [],
         );
       });
+  });
+
+  it("refuses dietary inserts and updates for every browser role", async () => {
+    const [target] = await client<
+      { id: string; invitation_id: string; dietary_notes: string }[]
+    >`select id, invitation_id, dietary_notes from guests where dietary_notes is not null limit 1`;
+    if (!target) throw new Error("Seeded dietary guest required");
+    for (const actor of browserRoles) {
+      await inRolledBack(async (tx) => {
+        await actAs(tx, actor.role, actor.claims);
+        const updated = await tx`update guests set dietary_notes = 'forged dietary value'
+          where id = ${target.id} returning id`;
+        expect(updated, actor.label).toEqual([]);
+      });
+      await inRolledBack(async (tx) => {
+        await actAs(tx, actor.role, actor.claims);
+        await expect(tx`insert into guests (id, invitation_id, name, is_primary, dietary_notes)
+          values (${randomUUID()}, ${target.invitation_id}, 'RLS dietary probe', false, 'forged')`).rejects.toMatchObject(
+          { code: "42501" },
+        );
+      });
+      const [unchanged] = await client<{ dietary_notes: string }[]>`
+        select dietary_notes from guests where id = ${target.id}`;
+      expect(unchanged?.dietary_notes).toBe(target.dietary_notes);
+    }
   });
 
   it("publishes no table to Realtime Postgres Changes", async () => {
@@ -155,7 +185,7 @@ describe.runIf(process.env.RUN_RLS_DB_TESTS === "1")("browser access (RLS)", () 
       await expect(
         tx`insert into realtime.messages (topic, extension, event, payload, private)
           values ('station:kitchen', 'broadcast', 'forged', '{}'::jsonb, true)`,
-      ).rejects.toThrow(/row-level security/);
+      ).rejects.toMatchObject({ code: "42501" });
     });
   });
 });

@@ -1,0 +1,26 @@
+
+ RUN  v5.0.5 /Users/chenna/Documents/codes/wedding/.worktrees/TICKET-223
+      Coverage enabled with v8
+
+
+ Test Files  1 passed (1)
+      Tests  10 passed (10)
+   Start at  17:24:35
+   Duration  291ms (setup 44%, import 29%, transform 14%, tests 9%, worker 5%)
+
+ % Coverage report from v8
+--------------|---------|----------|---------|---------|-------------------
+File          | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+--------------|---------|----------|---------|---------|-------------------
+All files     |    92.3 |    83.33 |     100 |    92.3 |                   
+ scan-sync.ts |    92.3 |    83.33 |     100 |    92.3 | 82                
+--------------|---------|----------|---------|---------|-------------------
+
+=============================== Coverage summary ===============================
+Statements   : 92.3% ( 12/13 )
+Branches     : 83.33% ( 5/6 )
+Functions    : 100% ( 2/2 )
+Lines        : 92.3% ( 12/13 )
+================================================================================
+ERROR: Coverage for lines (92.3%) does not meet global threshold (95%) for src/modules/checkin/lib/scan-sync.ts
+ERROR: Coverage for branches (83.33%) does not meet global threshold (95%) for src/modules/checkin/lib/scan-sync.ts

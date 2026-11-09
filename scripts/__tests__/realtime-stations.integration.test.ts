@@ -96,7 +96,7 @@ function join(supabase: SupabaseClient | StationClient, topic: string) {
   });
 }
 /** Each order gets its own table, so per-table limits and cooldowns never interfere. */
-async function order(items: { menuItemId: string; quantity: number }[]) {
+async function order(items: { menuItemId: string; quantity: number }[], note = "") {
   const table = randomInt(100000, 900000);
   const [row] = await sql<{ id: string }[]>`insert into tables(number, name, capacity)
     values (${table}, ${tag}, 8) returning id`;
@@ -105,7 +105,7 @@ async function order(items: { menuItemId: string; quantity: number }[]) {
     clientRequestId: randomUUID(),
     table,
     items,
-    note: "",
+    note,
   });
   if (result.status !== "created") throw new Error(`order not created: ${JSON.stringify(result)}`);
   return result.orderId;
@@ -163,6 +163,29 @@ describe.runIf(process.env.RUN_REALTIME_DB_TESTS === "1")(
       }
       await new Promise((resolve) => setTimeout(resolve, 500));
       expect(bar.received).toEqual([]);
+    });
+
+    it("bar notifications contain only order identifiers and status, never free text", async () => {
+      const bar = screen("bar");
+      const kitchen = screen("kitchen");
+      await until(() => [bar, kitchen].every((s) => s.statuses.includes("live")));
+      const orderId = await order([{ menuItemId: menu.drink, quantity: 1 }], "No ice");
+      await until(() => bar.received.length > 0, 2_000);
+      const [message] = bar.received;
+      expect(message?.event).toBe("order.changed");
+      expect(message?.payload).toEqual({
+        orderId,
+        stationOrderId: expect.any(String),
+        status: "received",
+      });
+      expect(JSON.stringify(message?.payload)).not.toContain("No ice");
+      // Operational instructions persist for the authorized board reader, never the broadcast.
+      const [persisted] = await sql<
+        { notes: string }[]
+      >`select notes from orders where id = ${orderId}`;
+      expect(persisted?.notes).toBe("No ice");
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      expect(kitchen.received).toEqual([]);
     });
 
     it("refuses guests, other stations and forged tokens on a staff topic", async () => {
