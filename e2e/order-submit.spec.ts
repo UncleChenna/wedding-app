@@ -1,5 +1,5 @@
 import { randomInt } from "node:crypto";
-import { mkdirSync, readFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync } from "node:fs";
 import postgres, { type Sql } from "postgres";
 import { expect, test, type Page } from "@playwright/test";
 import { assertDatabaseTarget } from "../scripts/database-target";
@@ -7,6 +7,7 @@ import { setOrderingOpen } from "./support/ordering-open";
 import { themes } from "../src/modules/theming/themes";
 import { applyTheme } from "./support/theme";
 import { scanA11y } from "./support/axe";
+import { localBudgetIdentity } from "./support/local-budget-identity";
 
 test.describe("order submission on a flaky network", () => {
   test.skip(process.env.RUN_ORDER_BROWSER_TESTS !== "1", "Requires isolated local order fixtures");
@@ -21,9 +22,14 @@ test.describe("order submission on a flaky network", () => {
   const drink = tag + " punch";
 
   test.beforeAll(async () => {
-    process.loadEnvFile(".env.local");
-    const meta = JSON.parse(readFileSync(".harness/worktree.json", "utf8")) as { path: string };
-    expect(meta.path).toBe(process.cwd());
+    if (existsSync(".env.local")) process.loadEnvFile(".env.local");
+    if (existsSync(".harness/worktree.json")) {
+      const meta = JSON.parse(readFileSync(".harness/worktree.json", "utf8")) as { path: string };
+      expect(meta.path).toBe(process.cwd());
+    } else {
+      // Hosted CI uses its disposable loopback PostgreSQL service, not a managed worktree.
+      expect(process.env.CI).toBeTruthy();
+    }
     assertDatabaseTarget(process.env.DATABASE_URL ?? "", { localOnly: true });
     db = postgres(process.env.DATABASE_URL ?? "", { max: 2 });
     // Ordering is closed by default (TICKET-080); these tests need it open.
@@ -74,6 +80,65 @@ test.describe("order submission on a flaky network", () => {
         { n: number }[]
       >`select count(*)::int as n from orders where table_id = ${tableId ?? ""}`
     )[0]?.n;
+
+  test("network limit keeps the cart and retries the same request only after its wait", async ({
+    page,
+  }, info) => {
+    const identity = localBudgetIdentity();
+    const original = await db<
+      { used: number; expires_at: Date }[]
+    >`select used, expires_at from request_budgets where scope='ordering' and identity=${identity}`;
+    const bodies: string[] = [];
+    page.on("request", (request) => {
+      if (request.url().endsWith("/api/orders") && request.method() === "POST")
+        bodies.push(request.postData() ?? "");
+    });
+    try {
+      await openMenu(page);
+      await page.clock.install();
+      await page.getByRole("button", { name: "Increase " + meal + " quantity" }).click();
+      await page.getByLabel("A note for the kitchen or bar").fill("Keep my choices");
+      await db`insert into request_budgets(scope,identity,used,expires_at) values('ordering',${identity},240,now()+interval '60 seconds') on conflict(scope,identity) do update set used=excluded.used, expires_at=excluded.expires_at`;
+      const denied = page.waitForResponse(
+        (response) => response.url().endsWith("/api/orders") && response.status() === 429,
+      );
+      await page.getByRole("button", { name: "Send order" }).click();
+      expect((await denied).headers()["retry-after"]).toBeTruthy();
+      await expect(page.getByText(/Please wait \d+ seconds before trying again/)).toBeVisible();
+      await expect(page.getByRole("button", { name: "Try again" })).toBeDisabled();
+      expect(await orderCount()).toBe(0);
+      for (const theme of themes)
+        for (const width of [375, 768, 1280]) {
+          await page.setViewportSize({ width, height: 900 });
+          await applyTheme(page, theme);
+          expect(await scanA11y(page)).toEqual([]);
+          expect(
+            await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
+          ).toBe(true);
+          const dir = `docs/reviews/TICKET-123/${info.project.name}/${theme.id}`;
+          mkdirSync(dir, { recursive: true });
+          await page.getByRole("button", { name: "Try again" }).scrollIntoViewIfNeeded();
+          await page.screenshot({ path: `${dir}/${width}-limited.png`, fullPage: true });
+        }
+      expect(bodies).toHaveLength(1);
+      await db`update request_budgets set expires_at=now()-interval '1 second' where scope='ordering' and identity=${identity}`;
+      await page.clock.fastForward(61_000);
+      const retry = page.getByRole("button", { name: "Try again" });
+      await expect(retry).toBeEnabled();
+      await retry.focus();
+      await page.keyboard.press("Enter");
+      await expect(
+        page.getByRole("heading", { name: "On its way. Sit back, we've got this." }),
+      ).toBeVisible();
+      expect(bodies).toHaveLength(2);
+      expect(bodies[1]).toBe(bodies[0]);
+      expect(await orderCount()).toBe(1);
+    } finally {
+      await db`delete from request_budgets where scope='ordering' and identity=${identity}`;
+      for (const row of original)
+        await db`insert into request_budgets(scope,identity,used,expires_at) values('ordering',${identity},${row.used},${row.expires_at})`;
+    }
+  });
 
   test("three lost responses still create exactly one order", async ({ page }) => {
     let calls = 0;
