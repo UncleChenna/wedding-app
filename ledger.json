@@ -2727,9 +2727,10 @@
         "- 2026-11-09 — todo → claimed — divine (codex)",
         "- 2026-11-09 — todo → in_progress — divine (codex)",
         "- 2026-11-09 — in_progress → in_review — divine (codex)",
-        "- 2026-11-09 — in_review → in_progress — divine (codex) — Repair CI fixtures that incorrectly require a local environment file despite injected DATABASE_URL"
+        "- 2026-11-09 — in_review → in_progress — divine (codex) — Repair CI fixtures that incorrectly require a local environment file despite injected DATABASE_URL",
+        "- 2026-11-09 — in_progress → in_review — divine (codex)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-061",
