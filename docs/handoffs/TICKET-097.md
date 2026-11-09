@@ -53,3 +53,22 @@ real Supabase OTP/TOTP; local native PostgreSQL alone cannot certify that flow.
 TICKET-061 editor024 owns its branch; TICKET-123 editor theme_fixes owns its branch.
 Both are independently reviewed and advancing through final combined CI. Root097
 has no broad-test slot while123 runs its full suite.
+
+## Authenticated verification checkpoint — 22:20 UTC
+
+Foundation `c28be978` is pushed. Added `e2e/admin-dashboard.spec.ts` to the existing
+guarded real Auth admin journey runner. It uses distinct synthetic allowlist
+addresses and keeps automatic OTP/TOTP artifacts disabled. The test checks denied
+and authorized HTTP responses, starts its timer before an actual canonical scan
+insert and requires visible arrival changes in under two seconds, checks initial
+CLS zero, retained stale counts, every theme at three widths, keyboard refresh,
+and real cookie-removal denial. Screenshots contain only the control room after
+authentication. The CI job retains its original artifact step and adds a separate
+TICKET-097 artifact upload; no service, timeout or assertion is weakened.
+
+The runner also executes the two real aggregate database tests. New opt-in flag
+is documented in `.env.example`. CI harness/parity tests pass 15/15 and latest
+quick lint/types pass. Independent source/CI follow-up review is clean after the
+timer was moved before the insert. Actual hosted browser results are still pending.
+Local Docker has four other healthy Supabase stacks; none were touched and no
+additional full stack was started. Own native PostgreSQL remains stopped.
