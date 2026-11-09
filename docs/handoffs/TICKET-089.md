@@ -1,23 +1,23 @@
 # TICKET-089 — 2026-11-09 verification handoff
 
-Sole editor finished authenticated300-row browser verification in this worktree.
-Production build, real OTP/TOTP mobile/desktop journey2/2, existing shared
-dialogue/shell80/80, and quick lint/types/103related tests pass. All theme/status
+Sole editor finished authenticated 300-row browser verification in this worktree.
+Production build, real OTP/TOTP mobile/desktop journey 2/2, existing shared
+dialogue/shell 80/80, and quick lint/types/103 related tests pass. All theme/status
 axe scans pass; screenshots reviewed. Raw rendering/filter timings and honest
 navigation timing live in docs/reviews/TICKET-089/{mobile,desktop}/performance.json.
 
 The browser caught a real shared Sheet Escape/reopen race. Two new regressions
-failed first; controlled cancel and stale-close protection fix it.18sharedUItests
+failed first; controlled cancel and stale-close protection fix it. 18 shared UI tests
 and real mobile/desktop reopen pass. Independent review found no blocking issue.
 
-TICKET-043 is now merged; no dependency remains. Next: integrate latestdevelop,
-repeat quick verification with updated ticket CLI, publish review and wait for
-all final-head CI before merge. Root handles merge after independent final review.
+TICKET-043 is now merged; no dependency remains. Integrated develop `360914b7896554442659289f4a0bffccc5c8539f` without conflicts;
+its seed/ticket tooling changes leave tested product code unchanged. Integrated
+quick lint/types pass. Next: publish review and wait for all final-head CI before merge. Root handles merge after independent final review.
 The owned Supabase project wedding-9b6398437f85 was stopped with backup:true
 after all database-backed checks. Do not restart it without coordinating capacity.
 
 Full task-specific evidence is docs/plans/TICKET-089-pr.md. Historical failures
-are /tmp/TICKET-089-browser-red.log and /tmp/TICKET-089-sheet-red.log; rawred
+are /tmp/TICKET-089-browser-red.log and /tmp/TICKET-089-sheet-red.log; raw red
 traces are ignored artifacts/TICKET-089/red/. No assertions were relaxed.
 
 ## Earlier implementation handoff

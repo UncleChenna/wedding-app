@@ -41,20 +41,24 @@ focus to the results announcement; reissuing refreshes its shared link.
   because previous synthetic audited fixtures are preserved; filtered datasets
   contain exactly the new 300 rows. Raw samples are in the performance JSON files.
 - Mobile usability: authenticated screenshots and axe checks in all four themes,
-  long-side wrapping, six 44px navigation links and last-action clearance at375px.
+  long-side wrapping, six 44px navigation links and last-action clearance at 375px.
   Keyboard Escape/reopen and successful filtered revoke focus pass on both projects.
 
 # Verification
 
+Integrated develop `360914b7896554442659289f4a0bffccc5c8539f` without conflicts.
+The integration changes seed/ticket tooling only; guest-list and Sheet code are
+unchanged from the authenticated browser run. Integrated quick lint/types pass.
+
 - Production build passed.
 - Ten guest-list unit/component/reader tests passed.
-- Shared Sheet/UI suite:18 passed. Two new race regressions failed before the fix
+- Shared Sheet/UI suite: 18 passed. Two new race regressions failed before the fix
   and passed afterward; the native-close regression passed throughout.
-- `pnpm exec tsx scripts/test-admin-guest-list.ts`:2 passed in40.7s with real local
-  Auth/database, mobile375px and desktop1280px. Includes16 axe scans across mixed
+- `pnpm exec tsx scripts/test-admin-guest-list.ts`: 2 passed in 40.7s with real local
+  Auth/database, mobile375px and desktop1280px. Includes 16 axe scans across mixed
   status lists and expanded actions; no WCAG A/AA violations. Initial CLS=0 both.
-- Existing shell/lifecycle/share browser regressions:80 passed in2.5m.
-- Local quick gate passed lint, strict types and103 related tests across13 files.
+- Existing shell/lifecycle/share browser regressions: 80 passed in 2.5m.
+- Local quick gate passed lint, strict types and 103 related tests across 13 files.
   CI remains mandatory on the final pushed head.
 - Independent source reviews found no blocking issue, including the bounded shared
   Sheet change. Screenshots reviewed for wrapping, readable contrast and navigation.
@@ -63,7 +67,7 @@ focus to the results announcement; reissuing refreshes its shared link.
 
 `docs/reviews/TICKET-089/mobile/` and `desktop/` contain four palette captures and
 raw performance samples; `mobile/bottom-navigation.png` demonstrates action clearance.
-Shell captures at375/768/1280px are under `docs/reviews/TICKET-089/shell/`.
+Shell captures at 375/768/1280px are under `docs/reviews/TICKET-089/shell/`.
 
 # UI checklist
 
