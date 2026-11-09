@@ -12,9 +12,11 @@ Draft: prepare the scanner to survive an offline reload without extending staff 
 
 The dedicated IndexedDB store atomically invalidates pending saves on logout or newer preparation, makes preparation tokens single-use, validates persisted metadata and checks expiry again after database work. The runtime independently fetches the fixed server endpoint, requires every listed asset with valid status and MIME, reads the cache back before publication, and rechecks the complete grant after fallback asset checks. Session replacement and shortened server deadlines clear the old shell before downloads, even when the current worker cannot use the new build; a stale denial cannot clear newer state. These contracts are not yet connected to the service worker. Guest snapshots and unsynced queues are untouched.
 
-The prebuild generator is implemented with deterministic content-addressed JS/CSS/fonts and a final manifest, using existing esbuild/Tailwind dependencies and shared font assets. Three isolated generator tests pass. It is not yet wired into the production build or scanner entry; deployment packaging still needs checksum verification.
+The prebuild generator is implemented with deterministic content-addressed JS/CSS/fonts and a final manifest, using existing esbuild/Tailwind dependencies and shared font assets. Three isolated generator tests pass. The real Scanner entry is now built before Next, with explicit tracing of the finalized manifest. The production build passes, all seven public asset hashes match, and both endpoint/worker traces include the final manifest. Actual Vercel packaging and offline browser reload remain unverified.
 
 The new `/checkin/offline-shell` endpoint uses live gate authorization, a domain-separated HMAC session fingerprint and a rechecked absolute deadline. It returns a minimal document without names, raw cookies, server actions or Flight state, with private/no-store headers. The server validates the complete manifest and its build digest; absent generated assets return unavailable. Framework control-flow errors are rethrown.
+
+A session boundary unmounts the camera at expiry, checks delayed interactions and handles worker invalidation. Five lifecycle tests pass. The standalone entry uses the real Scanner component; service-worker authorization reconciliation and navigation are still outstanding.
 
 # Acceptance criteria and evidence
 
@@ -26,15 +28,15 @@ Initial expiry tests failed on the missing API (six failed, one existing-contrac
 
 # Risks and rollout
 
-Unfinished draft; no migration, dependency, RLS or production changes. All privileged online operations retain live authorization. Offline sessions cannot learn revocations while disconnected, per ADR0020. The planned worker must fetch its own authoritative save response, reject arbitrary private paths, isolate session identity, enforce expiry and fail preparation when any required asset cannot be cached. Reverting the additive expiry API preserves existing session validation.
+Unfinished draft; no migration, RLS or production changes. The unchanged lockfile from verified develop d0231fad was carried with the user’s standing repository authorization and an exact-path local record, then archived after the integration commit; no additional dependency is introduced by this ticket. All privileged online operations retain live authorization. Offline sessions cannot learn revocations while disconnected, per ADR0020. The planned worker must fetch its own authoritative save response, reject arbitrary private paths, isolate session identity, enforce expiry and fail preparation when any required asset cannot be cached. Reverting the additive expiry API preserves existing session validation.
 
 # Screenshots
 
-No UI change yet. Screenshots and all-theme staff accessibility evidence are required when the shell is connected.
+The standalone camera entry is implemented. Screenshots and all-theme staff accessibility evidence are still required once the worker is connected.
 
 # UI checklist
 
-Not yet applicable to this foundation without a rendered UI; the final scanner/offline states remain unverified.
+Pending: the final standalone scanner/offline states, real camera cleanup and cold-font layout checks remain unverified.
 
 # Remaining work
 

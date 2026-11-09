@@ -132,3 +132,39 @@ suite19/19,quicklint/types/relatedtests pass; followupreviewclean. Logs
 /tmp/TICKET-108-endpoint-{red,green,rethrow-red,final,final-quick}.log.
 Next059CI42682799555stillfullverify; sixotherjobsgreen. Keep142draft andfinish
 actualscannerentry/prebuild/tracing/worker/clientpreparation/offlinereloadchecks.
+
+## Real entry and build checkpoint — 2026-11-09
+
+TICKET-059 is done: PR135 merged as d0231fad after all seven checks passed at
+c1abf14a; completion dce699e9 was pushed. TICKET-108 integrated that base cleanly
+as 3c848c4d. The unchanged lockfile matched develop blob
+919aa84a115cd76c0203ae4973bd115a1432cb3c. Standing user authorization was recorded
+for that exact path, then archived locally after commit; the frozen install passed.
+
+The real standalone entry now bundles Scanner and a ScannerSession boundary.
+Five lifecycle tests pass: exact expiry, delayed click, invalid deadline, clock
+rollback and worker invalidation. Scanner.tsx remains owned by TICKET-060's editor
+and was not changed here. The boundary unmounts its child through existing camera
+cleanup. Real browser track shutdown is still unverified.
+
+The build runs the generator before Next and explicitly traces its final manifest
+for /checkin/offline-shell and /sw.js. The production build passes; seven generated
+assets match their SHA-256 names and both NFT traces include the final manifest
+(SHA-256 93c12d7e6c1ceb66e575a3cad99ea8e98e715df5ea78ed3c554d0fd2266f3777).
+This proves local asset integrity/trace inclusion, not a Vercel deployment.
+Generated output is ignored by Git, lint and formatting; source rules remain intact.
+The first quick run failed because it linted minified generated JS; the scoped
+output exclusion fixes that without relaxing source checks. Final quick passes.
+
+Logs: /tmp/TICKET-108-entry-quick.log (failure), -entry-quick-fixed.log (pass),
+-entry-build.log (pass), -session-ui-final.log (five pass). Independent review clean
+for this slice. Reviewer requires durable worker authorization reconciliation on
+initial attachment: an invalidation broadcast can arrive before subscription.
+Add document session/build identity and verify it against the durable grant before
+enabling the offline camera; a deadline alone is not sufficient.
+
+Next: wire worker save/status/invalidation/navigation and public asset serving;
+add the online preparation/logout bridge; verify actual offline reload and expiry
+with QR pixels, all themes and production endpoints. Keep PR142 draft. Agent024
+owns060 result code and a native PostgreSQL fixture on30821. Agent theme_fixes
+owns048 final CI42687100122, with the next merge slot reserved. Root uses no DB.
