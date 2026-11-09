@@ -9,6 +9,7 @@ import {
   type GuestListInvitation,
   type GuestListStatus,
 } from "../lib/guest-list";
+import { undoShareAction } from "../server/share-tracking-actions";
 import { ShareMenu } from "./share-menu";
 import { InvitationLifecycleControls } from "./invitation-lifecycle-controls";
 
@@ -25,6 +26,43 @@ const filterValue = (value: string) =>
   value === "" ? undefined : value === "none" ? null : value.slice(6);
 
 export function GuestList({ invitations }: { invitations: GuestListInvitation[] }) {
+  const [undoRecord, setUndoRecord] = useState<{
+    invitationId: string;
+    eventId: string;
+    tokenVersion: number;
+  } | null>(null);
+  const [undoMessage, setUndoMessage] = useState("");
+  const [undoPending, setUndoPending] = useState(false);
+  const currentUndo =
+    undoRecord &&
+    invitations.some(
+      (row) =>
+        row.id === undoRecord.invitationId &&
+        row.tokenVersion === undoRecord.tokenVersion &&
+        row.status !== "revoked",
+    )
+      ? undoRecord
+      : null;
+  async function undoShare() {
+    if (!currentUndo) return;
+    setUndoPending(true);
+    try {
+      const result = await undoShareAction({
+        invitationId: currentUndo.invitationId,
+        eventId: currentUndo.eventId,
+      });
+      setUndoMessage(
+        result.ok
+          ? "Sharing record undone. Messages already sent are not recalled."
+          : result.message,
+      );
+      if (result.ok) setUndoRecord(null);
+    } catch {
+      setUndoMessage("The sharing record couldn't be undone. Please try again.");
+    } finally {
+      setUndoPending(false);
+    }
+  }
   const [filters, setFilters] = useState<GuestListFilters>({});
   const [expanded, setExpanded] = useState<string | null>(null);
   const visible = useMemo(() => filterGuestList(invitations, filters), [invitations, filters]);
@@ -161,6 +199,18 @@ export function GuestList({ invitations }: { invitations: GuestListInvitation[] 
           </Button>
         </div>
       </form>
+      {(currentUndo || undoMessage) && (
+        <div className="mt-6 space-y-3">
+          <p role="status">
+            {undoMessage || "Sharing attempt recorded. This does not confirm delivery."}
+          </p>
+          {currentUndo && (
+            <Button size="lg" variant="secondary" onClick={undoShare} disabled={undoPending}>
+              Undo sharing record
+            </Button>
+          )}
+        </div>
+      )}
       {visible.length === 0 ? (
         <p className="mt-12 max-w-prose">
           {invitations.length
@@ -228,7 +278,19 @@ export function GuestList({ invitations }: { invitations: GuestListInvitation[] 
                 {expanded === invitation.id ? (
                   invitation.share ? (
                     <ShareMenu
-                      key={`${invitation.tokenVersion}:${invitation.status}`}
+                      key={invitation.tokenVersion}
+                      onRecorded={(eventId) => {
+                        setUndoRecord({
+                          invitationId: invitation.id,
+                          eventId,
+                          tokenVersion: invitation.tokenVersion,
+                        });
+                        setUndoMessage("");
+                      }}
+                      tracking={{
+                        invitationId: invitation.id,
+                        expectedVersion: invitation.tokenVersion,
+                      }}
                       invitation={invitation.share}
                     />
                   ) : (
