@@ -17,7 +17,7 @@ nothing is sent automatically.
 - AAL2-protected queue, conservative unique matching and pagination. Sharing uses
   the exact invitation ID/version and records the copy event through existing APIs.
 - Validation and retry responses preserve bounded input, including without JavaScript.
-- Integrated develop 92451762, preserving migrations0023/0024 and regenerating this
+- Integrated develop 3e75175e, preserving migrations0023/0024 and regenerating this
   additive migration as0025. Corrected admin text to the required18px.
 
 # Acceptance criteria and evidence
@@ -44,7 +44,7 @@ nothing is sent automatically.
   passed after fixes. An intermediate capture correctly hit the10/minute limit;
   retry after actual expiry passed without resetting or weakening the budget.
 - Independent source/migration and mobile queue review found no blocker.
-- Current full CI awaits shared TICKET-223 coverage repair. Old full gate results
+- Shared coverage repair is integrated from verified PR141. Current full CI is pending. Old full gate results
   in the handoff are historical, not certification of this integrated head.
 
 # Risks and rollout
@@ -85,7 +85,7 @@ Four themes ×375/768/1280 × form/invalid/received/admin queue, plus four scrol
 - [ ] Sharing and devices: real phones/WhatsApp remain TICKET-201 release gates.
 - [x] QR codes: N/A, QR output unchanged.
 - [x] Staff feedback: N/A, no scanner/station feedback changes.
-- [ ] Verification: current full CI pending shared coverage repair; no pass claimed.
+- [ ] Verification: current full CI pending; no pass claimed.
 
 # Harness changes, if any
 

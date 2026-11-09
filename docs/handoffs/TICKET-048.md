@@ -312,3 +312,9 @@ Logs: /tmp/TICKET-048-integration-browser-{red,green}.log,
 /tmp/TICKET-048-live-capture-final.log, /tmp/TICKET-048-integrated-quick.log.
 Owned performance server stopped. Only owned database wedding-0b9a885bfc5f stopped
 with backup:true, confirmed in /tmp/TICKET-048-db-stop-current.log. Slot released.
+
+## Verified coverage integration — 2026-11-09
+
+Integrated develop3e75175e (verified PR141) without conflicts; the sole incoming
+change is seven defensive scan-sync test lines. No migration/product/UI changes.
+Earlier TICKET-223 wait is superseded; final quick gate and exact-head CI follow.
