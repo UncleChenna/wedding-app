@@ -39,8 +39,8 @@ See: [Security](../docs/prd.md#security).
 
 ## Acceptance criteria
 
-- [ ] Exceeding each limit returns 429 with a friendly message (unit + e2e).
-- [ ] IPs are stored hashed with a rotating salt (test).
+- [x] Exceeding each limit returns 429 with a friendly message (unit + e2e).
+- [x] IPs are stored hashed with a rotating salt (test).
 
 ## Test plan
 
@@ -54,7 +54,8 @@ See: [Security](../docs/prd.md#security).
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-11-09: Ordering now uses an independent 240-attempt/60-second network budget before request parsing. Existing lookup/PIN/lost-link policies and per-table limits remain unchanged. Daily HMAC salt rotation, fixed-window/midnight burst tradeoffs, generated migration 0026 and rollout are documented in docs/reviews/TICKET-123/rate-limits.md.
+- 2026-11-09: Actual database and browser evidence is in docs/plans/TICKET-123-pr.md (PR145). Server Actions retain existing typed form-message transport; HTTP routes return actual429. Mobile page performance86/88/89 and unverified physical WhatsApp checks remain release requirements under TICKET-201; no95-score/device-pass claim. Final hosted CI still required before merge.
 
 ## Activity log
 

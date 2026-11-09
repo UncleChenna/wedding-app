@@ -95,6 +95,7 @@ test.describe("order submission on a flaky network", () => {
     });
     try {
       await openMenu(page);
+      await page.emulateMedia({ reducedMotion: "reduce" });
       await page.clock.install();
       await page.getByRole("button", { name: "Increase " + meal + " quantity" }).click();
       await page.getByLabel("A note for the kitchen or bar").fill("Keep my choices");
@@ -112,6 +113,9 @@ test.describe("order submission on a flaky network", () => {
           await page.setViewportSize({ width, height: 900 });
           await applyTheme(page, theme);
           expect(await scanA11y(page)).toEqual([]);
+          const target = await page.getByRole("button", { name: "Try again" }).boundingBox();
+          expect(target?.width).toBeGreaterThanOrEqual(44);
+          expect(target?.height).toBeGreaterThanOrEqual(44);
           expect(
             await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
           ).toBe(true);
