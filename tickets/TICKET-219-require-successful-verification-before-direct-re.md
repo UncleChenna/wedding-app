@@ -2,7 +2,7 @@
 id: TICKET-219
 title: Require successful verification before direct review transitions
 epic: foundations
-status: in_review
+status: done
 priority: urgent
 estimate: S
 labels: [infra, test]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/113
 created: 2026-11-08
 updated: 2026-11-09
 started: 2026-11-08
-completed: ""
+completed: 2026-11-09
 reason: ""
 resume_to: ""
 ---
@@ -93,3 +93,4 @@ tracks only the follow-up repair.
 - 2026-11-08 — in_progress → blocked — divine (codex) — Full browser verification blocked by unavailable isolated database; 240 passed, 4 failed, 5 interrupted, 777 not run. Await CI and healthy isolated verification.
 - 2026-11-09 — blocked → in_progress — divine (codex) — Integrate approved quick-default workflow while preserving fail-closed review checks
 - 2026-11-09 — in_progress → in_review — divine (codex)
+- 2026-11-09 — in_review → done — divine (codex)
