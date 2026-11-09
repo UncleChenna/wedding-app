@@ -1,0 +1,69 @@
+// @vitest-environment jsdom
+import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { afterEach, expect, it, vi } from "vitest";
+import { AdmissionResult, type AdmissionSubmitter } from "../components/admission-result";
+const result = {
+  state: "valid" as const,
+  guest: { name: "Ada", partySize: 4, admittedSoFar: 0, tableNumber: 7, admissions: [] },
+};
+afterEach(() => cleanup());
+it("defaults to remaining and shows welcome only after the committed selected count", async () => {
+  const submit = vi.fn<AdmissionSubmitter>(async () => ({
+    state: "recorded" as const,
+    people: 2,
+    admittedSoFar: 2,
+    remaining: 2,
+    name: "Ada",
+    tableNumber: 7,
+    recordedAt: "2026-12-19T12:00:00.000Z",
+  }));
+  render(
+    <AdmissionResult result={result} qr="private QR" submit={submit} onBusyChange={() => {}} />,
+  );
+  expect(screen.getByLabelText("How many are here?")).toHaveValue(4);
+  expect(submit).not.toHaveBeenCalled();
+  fireEvent.click(screen.getByRole("button", { name: "One fewer guest" }));
+  fireEvent.click(screen.getByRole("button", { name: "One fewer guest" }));
+  await act(async () => fireEvent.click(screen.getByRole("button", { name: "Admit 2 guests" })));
+  expect(submit.mock.calls[0]?.[0]).toMatchObject({
+    qr: "private QR",
+    people: 2,
+    clientEventId: expect.any(String),
+  });
+  expect(screen.getByRole("heading", { name: "Admission recorded" })).toBeVisible();
+  expect(screen.getByText("Welcome, Ada. Table 7 is ready for you.")).toBeVisible();
+  expect(screen.queryByRole("heading", { name: "Valid pass" })).toBeNull();
+});
+it("keeps the exact request for uncertain retry and labels duplicate as historical only", async () => {
+  const submit = vi.fn().mockRejectedValueOnce(new Error("connection lost")).mockResolvedValueOnce({
+    state: "duplicate",
+    people: 4,
+    recordedAt: "2026-12-19T12:00:00.000Z",
+  });
+  const busy = vi.fn();
+  render(<AdmissionResult result={result} qr="private QR" submit={submit} onBusyChange={busy} />);
+  await act(async () => fireEvent.click(screen.getByRole("button", { name: "Admit 4 guests" })));
+  expect(screen.getByLabelText("How many are here?")).toBeDisabled();
+  expect(busy).toHaveBeenLastCalledWith(true);
+  await act(async () =>
+    fireEvent.click(screen.getByRole("button", { name: "Retry this admission" })),
+  );
+  expect(submit.mock.calls[1]?.[0]).toEqual(submit.mock.calls[0]?.[0]);
+  expect(screen.getByRole("heading", { name: "Already recorded" })).toBeVisible();
+  expect(screen.queryByText(/Welcome,/)).toBeNull();
+  expect(busy).toHaveBeenLastCalledWith(false);
+});
+it("shows a clear over-admit refusal without a welcome or another submit button", async () => {
+  render(
+    <AdmissionResult
+      result={result}
+      qr="private QR"
+      submit={async () => ({ state: "too_many", remaining: 1 })}
+      onBusyChange={() => {}}
+    />,
+  );
+  await act(async () => fireEvent.click(screen.getByRole("button", { name: "Admit 4 guests" })));
+  expect(screen.getByText(/Only 1 place remains/)).toBeVisible();
+  expect(screen.queryByRole("heading", { name: "Admission recorded" })).toBeNull();
+  expect(screen.queryByRole("button", { name: /^Admit/ })).toBeNull();
+});

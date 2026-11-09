@@ -57,7 +57,8 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-3) · [Journey 2: check-
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-11-09 — Implemented explicit partial admission with strict auth-first POST, signature validation, immutable actor/count replay binding, row locks and final reauthorization. Existing triggers maintain canonical counters; no migration or offline outbox work. UI distinguishes committed admission from read-only validation and historical duplicate receipts.
+- 2026-11-09 — Focused quick55pass, isolated database5/5pass and production browser2/2pass. Browser proves actual lost-response replay does not increment twice; all-theme axe/bounds/44px checks pass. Full coverage, final keyboard assertions and independent UI review are pending. Final base integration waits for TICKET-108; physical checks remain release-gated.
 
 ## Activity log
 
