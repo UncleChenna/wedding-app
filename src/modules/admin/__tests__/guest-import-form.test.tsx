@@ -65,6 +65,9 @@ it("requires confirmation, sends only the approved identity, and reports a repla
   await screen.findByRole("button", { name: "Import guests" });
   expect(commit).not.toHaveBeenCalled();
   expect(screen.getByText("Ada household")).toBeInTheDocument();
+  await waitFor(() =>
+    expect(screen.getByRole("button", { name: "Import guests" })).not.toBeDisabled(),
+  );
   fireEvent.click(screen.getByRole("button", { name: "Import guests" }));
   await screen.findByText(
     "This import was already completed. No duplicate invitations were added.",
@@ -124,6 +127,9 @@ it("discards an expired/stale commit and requires a fresh preview", async () => 
   pick();
   fireEvent.click(screen.getByRole("button", { name: "Preview guests" }));
   await screen.findByRole("button", { name: "Import guests" });
+  await waitFor(() =>
+    expect(screen.getByRole("button", { name: "Import guests" })).not.toBeDisabled(),
+  );
   fireEvent.click(screen.getByRole("button", { name: "Import guests" }));
   await screen.findByText("The preview changed. Preview the file again.");
   expect(screen.queryByRole("button", { name: "Import guests" })).not.toBeInTheDocument();
@@ -200,6 +206,7 @@ it("keeps an in-flight commit authoritative when the preview expiry time passes"
     fireEvent.click(screen.getByRole("button", { name: "Preview guests" }));
   });
   await act(async () => {
+    expect(screen.getByRole("button", { name: "Import guests" })).not.toBeDisabled();
     fireEvent.click(screen.getByRole("button", { name: "Import guests" }));
   });
   await act(async () => {
