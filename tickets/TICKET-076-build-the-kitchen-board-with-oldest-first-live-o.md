@@ -2,20 +2,20 @@
 id: TICKET-076
 title: Build the kitchen board with oldest-first live orders
 epic: ordering
-status: todo
+status: in_progress
 priority: high
 estimate: L
 labels: [frontend]
 module: ordering
-owner: ""
-agent: ""
+owner: unclechenna
+agent: claude
 blocked_by: [TICKET-019, TICKET-031, TICKET-033, TICKET-074, TICKET-128]
 blocks: [TICKET-077, TICKET-078, TICKET-087, TICKET-112]
-branch: ""
+branch: TICKET-076
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-09
+started: 2026-11-09
 completed: ""
 reason: ""
 resume_to: ""
@@ -63,3 +63,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-09 — todo → claimed — unclechenna (claude) — started ahead of TICKET-033 (in_review), TICKET-128 (blocked)
+- 2026-11-09 — todo → in_progress — unclechenna (claude) — started ahead of TICKET-033 (in_review), TICKET-128 (blocked)
