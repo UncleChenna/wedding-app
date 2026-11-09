@@ -2,20 +2,20 @@
 id: TICKET-108
 title: Make the scanner app shell work fully offline
 epic: pwa
-status: todo
+status: in_review
 priority: high
 estimate: M
 labels: [pwa, frontend]
 module: checkin
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-059, TICKET-105, TICKET-169]
 blocks: [TICKET-065, TICKET-113, TICKET-136]
-branch: ""
-pr: ""
+branch: TICKET-108
+pr: https://github.com/UncleChenna/wedding-app/pull/142
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-09
+started: 2026-11-09
 completed: ""
 reason: ""
 resume_to: ""
@@ -40,8 +40,8 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-6).
 
 ## Acceptance criteria
 
-- [ ] An offline reload of /checkin shows the scanner ready (e2e).
-- [ ] Decoder assets are precached (test lists them).
+- [x] An offline reload of /checkin shows the scanner ready (e2e).
+- [x] Decoder assets are precached (test lists them).
 
 ## Test plan
 
@@ -55,8 +55,21 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-6).
 
 ## Notes / decisions
 
+- 2026-11-09: Integrated verified develop2df977c6/TICKET-060.46 real browser/storage tests, production mobile+desktop auth/keyboard/axe/CLS0 journeys and1,733 unit tests pass. All32 screenshots reviewed; final CI/merge pending. Physical scanner QA stays release-blocking in TICKET-114.
+
+- 2026-11-09: Real worker/storage46tests and production PIN/offline/signout2tests pass;24 theme screenshots reviewed. Preparing integration of merged TICKET-060 before final review/CI; PR142 remains draft.
+
+- 2026-11-09: Worker routing and durable offline session reconciliation implemented; quick lint/types/82 related tests pass. Online preparation/logout and real offline-browser proof remain unfinished in draft PR142.
+
+- 2026-11-09: Added isolated scanner-shell authorization storage; 16 Chromium/WebKit storage tests and quick lint/types pass. Worker navigation, asset caching and real offline decoding remain unfinished in draft PR142; see the ticket handoff.
+
 _Agents append dated notes here while working._
 
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-09 — todo → claimed — divine (codex) — started ahead of TICKET-059 (in_review)
+- 2026-11-09 — todo → in_progress — divine (codex) — started ahead of TICKET-059 (in_review)
+- 2026-11-09 — in_progress → blocked — divine (codex) — Offline document and decoder integration awaits verified TICKET-059 camera merge; storage/runtime foundation verified and pushed in draft PR142.
+- 2026-11-09 — blocked → in_progress — divine (codex) — Resume independent offline session review fixes while TICKET-059 is in final CI; keep PR142 draft until its camera dependency merges.; started ahead of TICKET-059 (in_review)
+- 2026-11-09 — in_progress → in_review — divine (codex)

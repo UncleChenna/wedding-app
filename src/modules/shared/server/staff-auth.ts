@@ -110,12 +110,12 @@ export async function signInStaff(
 }
 
 /** Every privileged operation must call this; a valid signature alone grants no access. */
-export async function authenticateStaff(
+export async function authenticateStaffSession(
   token: string,
   deviceId: string,
   role: StaffRole,
   key: Buffer,
-): Promise<StaffSessionIdentity | null> {
+): Promise<{ identity: StaffSessionIdentity; expiresAt: Date } | null> {
   const session = readStaffSession(token, deviceId, key);
   if (!session || session.role !== role) return null;
   const cutoff = await eventExpiry();
@@ -141,5 +141,23 @@ export async function authenticateStaff(
     record.credentialVersion !== session.credentialVersion
   )
     return null;
-  return { staffId: record.id, role, credentialVersion: record.credentialVersion };
+  const expiresAt = new Date(
+    Math.min(session.exp * 1000, cutoff.getTime(), record.pinExpiresAt.getTime()),
+  );
+  // Database reads can span the deadline; never issue a fresh offline grant after it.
+  if (expiresAt.getTime() <= Date.now()) return null;
+  return {
+    identity: { staffId: record.id, role, credentialVersion: record.credentialVersion },
+    expiresAt,
+  };
+}
+
+/** Preserve identity-only callers while sharing the same live authorization checks. */
+export async function authenticateStaff(
+  token: string,
+  deviceId: string,
+  role: StaffRole,
+  key: Buffer,
+): Promise<StaffSessionIdentity | null> {
+  return (await authenticateStaffSession(token, deviceId, role, key))?.identity ?? null;
 }

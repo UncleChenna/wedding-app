@@ -71,6 +71,7 @@ export default defineConfig([
     ".next/**",
     "out/**",
     "build/**",
+    "public/scanner-assets/**", // Generated minified bundle; its source stays linted.
     "coverage/**",
     "playwright-report/**",
     "test-results/**",
