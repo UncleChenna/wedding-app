@@ -1,25 +1,38 @@
 # Ticket
 
-TICKET-134 — Cover admin guest import, seating, menu and staff end to end.
+[TICKET-134](../../tickets/TICKET-134-cover-admin-guest-import-seating-menu-and-staff.md) — Cover admin guest import, seating, menu and staff end to end.
 
-# Summary
+## Problem and result
 
-Draft combined admin setup journey. The individual features are merged; this
-ticket will verify real sign-in, CSV import, seating, menu edits, staff PIN setup
-and explicit invitation sharing together in CI.
+Separate feature tests did not prove the couple could complete setup in one authenticated session. A new combined browser journey now signs in through real local email OTP and TOTP, imports a two-person household, copies its invitation, seats both people, adds and edits a menu item, and provisions a kitchen PIN that works in a separate browser context.
 
-# Changes
+## Changes
 
-Implementation and the isolated CI Auth/database harness are in progress.
-Plan: `docs/plans/2026-11-09-TICKET-134.md`.
+- `e2e/admin.spec.ts` exercises actual navigation and form submissions on mobile (375px) and desktop. Independent SQL assertions verify no import writes before confirmation, one household/two named members, sent status and copy event, household/member table assignments, saved menu edits, hashed PIN and registered kitchen device. Reload proves the issued PIN is not shown again.
+- The browser uses real clipboard permissions and verifies the copied invitation path. It sends no WhatsApp/email invitation and does not claim delivery.
+- `scripts/test-admin-journey.ts` creates fresh synthetic admin addresses and an ephemeral staff session secret, checks database **and Auth** identity before writes, migrates its own stack, and runs both browser projects serially. Run `pnpm exec tsx scripts/test-admin-journey.ts --build` in a managed worktree with its database running. Repeated runs get fresh fixtures; event date is thirty days ahead and the original settings are restored.
+- `scripts/admin-journey-ci.ts` refuses non-hosted execution, another workspace, linked checkouts or existing runtime configuration. A fresh GitHub-hosted checkout reuses `isolatedConfig` and the actual Auth template copier; generated local environment values explicitly override inherited CI defaults. Existing local Auth helper guards remain unchanged.
+- A separate `admin journey (mobile + desktop)` CI job starts disposable Supabase Auth/mail/PostgreSQL, migrates, builds and tests. Existing gates remain intact. An always-run step stops only that job's stack.
+- OTP/TOTP/PIN browser traces, videos and screenshots are disabled. CI uploads only small sanitized outcome JSON, never browser reports, session captures or generated environment files.
 
-# Verification
+## Acceptance and actual evidence
 
-Not complete. No new journey or CI pass claimed yet. Acceptance remains unchecked.
+- [ ] The admin journey passes in CI — new job pending; this criterion is deliberately not yet certified.
+- Local production build passed on integrated product base `b1a15b64` (merge checkpoint `69f04a51`).
+- Both real browser projects passed: mobile 10.0s, desktop 3.8s, total 17.1s; `/tmp/TICKET-134-browser-final.log`. Sanitized outputs: `artifacts/TICKET-134/mobile.json` and `desktop.json` (ignored locally, uploaded by CI).
+- Thirteen bootstrap/CI safety tests passed, including another local DB/Auth target, invalid hosted guards, existing-file preservation, template symlink rejection and environment override.
+- Quick verification passed lint, types and thirteen related unit tests; final publication gate is rerun after evidence edits.
+- Initial browser runs caught a stale newly integrated reminder migration and two selector issues. The runner now migrates locally too, and selectors use actual navigation and the visible assignment dialog. No functional assertions or existing gates were weakened.
+- Owned stack `wedding-5f0289a6a7a4` stopped successfully with `backup:true`; `/tmp/TICKET-134-db-stop.log`.
 
-# Risks and rollout
+## Review steps
 
-Synthetic isolated test data only; no automatic messages or production changes.
-The new CI job must preserve existing verification gates and use ephemeral local
-Auth/database credentials. Review, local browser verification and final-head CI
-are required before merge.
+1. Review the bootstrap's fresh-hosted guards and both target checks before fixture writes.
+2. Run the managed-worktree command above; confirm both projects pass, with no mocked authentication or external messages.
+3. Confirm the dedicated CI job and all existing checks pass on the final PR head before completing the ticket.
+
+## Limits, migration and rollback
+
+No product UI, schema, migration, dependency, production data or account changes. Generated identities and local credentials are ignored runtime files. Only uniquely named synthetic fixtures are removed; settings are restored, and no audit guards are disabled. Auth test users remain solely in the disposable local stack. Revert this ticket's new test/runner/job to roll back.
+
+Browser emulation is not physical-device certification. Real-phone, camera, WhatsApp, venue and page-speed release gates remain separate. This journey does not certify external message delivery or production deployment. No new UI screenshots are required because no product UI changed, and capturing the PIN/authentication screens would retain credentials.
