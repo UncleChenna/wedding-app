@@ -43,6 +43,7 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-4) · [Journey 2: check-
 - [ ] Searching "Adebayo", "adebayo" and "Adébayo" finds the same guest (unit).
 - [ ] Manual check-in is logged with result `manual`.
 - [ ] Results are readable at arm's length (≥18px).
+- [ ] Replace TICKET-059’s interim manual-help link with authenticated name search. With camera permission denied, a gate operator can follow that link, find a primary guest or tag-along and complete the same logged admission flow, including offline cached search.
 
 ## Test plan
 
@@ -56,7 +57,7 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-4) · [Journey 2: check-
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-11-09: Carries the mandatory manual-search recovery link from TICKET-059, whose camera foundation precedes these admission/cache dependencies. CHK-4 is not waived; release journeys TICKET-132 and TICKET-136 remain blocked on this full implementation.
 
 ## Activity log
 
