@@ -42,10 +42,15 @@ export function createScannerShellRuntime({ store, storage, fetcher, origin, bui
         }
         if (!complete(response)) return { state: "unavailable" as const };
         const grant: unknown = await response.json();
-        if (!store.accepts(grant) || grant.build !== build || grant.expiresAt <= Date.now())
+        if (!store.accepts(grant)) return { state: "unavailable" as const };
+        if (grant.expiresAt <= Date.now()) {
+          await store.discard(generation);
+          return { state: "denied" as const };
+        }
+        // New authorization must replace older state even if this worker cannot use the build.
+        if (!(await store.authorize(generation, grant.session, grant.expiresAt)))
           return { state: "unavailable" as const };
-        if (!(await store.authorize(generation, grant.session)))
-          return { state: "unavailable" as const };
+        if (grant.build !== build) return { state: "unavailable" as const };
         const cache = await storage.open(cacheName);
         for (const path of grant.assets) {
           const asset = await fetcher(new URL(path, origin).href, {

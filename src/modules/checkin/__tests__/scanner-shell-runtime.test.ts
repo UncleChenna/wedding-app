@@ -55,7 +55,11 @@ describe("authorized scanner shell preparation", () => {
     expect(await f.runtime.prepare()).toEqual({ state: "ready", expiresAt: f.grant.expiresAt });
     expect(f.fetcher.mock.calls[0]?.[0]).toBe(origin + "/checkin/offline-shell");
     expect(f.cache.put.mock.calls.map(([path]) => path)).toEqual(f.grant.assets);
-    expect(f.store.authorize).toHaveBeenCalledWith("generation", f.grant.session);
+    expect(f.store.authorize).toHaveBeenCalledWith(
+      "generation",
+      f.grant.session,
+      f.grant.expiresAt,
+    );
     expect(f.store.commit).toHaveBeenCalledWith("generation", f.grant);
     expect(f.cache.put.mock.invocationCallOrder.at(-1)).toBeLessThan(
       f.store.commit.mock.invocationCallOrder[0] ?? 0,

@@ -82,3 +82,24 @@ ExternalPR141 verified merged develop3e75175e and independently fixes the shared
 critical coverage blocker.223 now retains both that narrow test and broader
 regressions, awaiting new combinedCI.128/048 editors integrating currentdevelop.
 Root next checkpoints108 then resumes059 integration/CI, which108 still requires.
+
+## Known authorization changes — 2026-11-09
+
+Resumed through CLI --ahead asbc77ab65 while059is in_review. Rootsoleeditor.
+Independentreview identified same-fingerprint shorter serverdeadline retaining an
+olderlongerlivedshell afterassetfailure; rootalsoidentified replaced-session
+responseonnewbuild being rejectedbefore invalidation. Six realbrowserregressions
+failed first (threecases×Chromium/WebKit). Storeauthorize nowreceives trusted
+deadline, discardsoldHTMLifsessionchangesordeadlineshortens, andconsumesexpired
+preparationinsideIDB. Runtime appliesknownauthorizationbeforebuildcompatibility
+andconditionallydiscardsalreadyexpiredgrants. Do notmerelyclampmetadata:oldHTML
+canembedthelaternown-invaliddeadline. Independentfollowupreviewclean.
+
+Fullbrowser26/26pass; runtime10/10pass; quicklint/types/relatedtests pass. Logs:
+/tmp/TICKET-108-known-session-red.log, -green.log, -unit.log, -quick.log.
+059readyfinalc1abf14a actualbase9669c0ce,1555unitpass,CI42682799555watch42180.
+128donePR133merge9669c0ce;223donePR143merge5338f85d.048agenthandlesitsfinalCI.
+No shippedworker/endpoint/bundlegeneratorwiredyet. Nextimplementdeployment-safe
+assetmanifest/generator thenauthorizedminimaldocument andworkerintegration. PRD
+usesVercel, so runtimegeneratedmanifestmustbetraced correctly; architecturepeer
+reviewrequestedbeforechoosingpostbuildfilehandling. Keep142draft.

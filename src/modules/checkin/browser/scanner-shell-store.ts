@@ -150,10 +150,23 @@ export function createScannerShellStore(factory: Pick<IDBFactory, "open"> = inde
     // Call only with the fingerprint returned by the independent authorized server request.
     // Clear a replaced session before downloading assets, but never let an older response
     // invalidate a newer preparation. A failed same-session refresh can retain its old copy.
-    authorize: (generation: string, session: string) =>
+    authorize: (generation: string, session: string, expiresAt: number) =>
       update((state) => {
-        if (state.generation !== generation || !/^[a-f0-9]{64}$/.test(session)) return false;
-        if (state.grant && state.grant.session !== session) state.grant = null;
+        if (
+          state.generation !== generation ||
+          !/^[a-f0-9]{64}$/.test(session) ||
+          !Number.isSafeInteger(expiresAt) ||
+          expiresAt <= 0
+        )
+          return false;
+        if (expiresAt <= Date.now()) {
+          state.generation = crypto.randomUUID();
+          state.grant = null;
+          return false;
+        }
+        // Discard rather than merely clamp metadata: the old HTML may embed its later deadline.
+        if (state.grant && (state.grant.session !== session || state.grant.expiresAt > expiresAt))
+          state.grant = null;
         return true;
       }),
     discard: (generation: string) =>

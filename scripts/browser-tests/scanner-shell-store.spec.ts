@@ -1,15 +1,24 @@
 import { build } from "esbuild";
 import { expect, test } from "@playwright/test";
+import type { createScannerShellRuntime } from "../../src/modules/checkin/browser/scanner-shell-runtime";
 import type { createScannerShellStore } from "../../src/modules/checkin/browser/scanner-shell-store";
 
 declare global {
   interface Window {
-    ScannerStore: { createScannerShellStore: typeof createScannerShellStore };
+    ScannerStore: {
+      createScannerShellStore: typeof createScannerShellStore;
+      createScannerShellRuntime: typeof createScannerShellRuntime;
+    };
   }
 }
 test.beforeEach(async ({ page }) => {
   const bundle = await build({
-    entryPoints: ["src/modules/checkin/browser/scanner-shell-store.ts"],
+    stdin: {
+      contents:
+        'export { createScannerShellStore } from "./src/modules/checkin/browser/scanner-shell-store"; export { createScannerShellRuntime } from "./src/modules/checkin/browser/scanner-shell-runtime";',
+      resolveDir: process.cwd(),
+      loader: "ts",
+    },
     bundle: true,
     platform: "browser",
     format: "iife",
@@ -315,12 +324,12 @@ test("an authorized replacement hides the old shell without letting stale prepar
     await store.commit(await store.begin(), grant);
     const stale = await store.begin();
     const same = await store.begin();
-    const retained = await store.authorize(same, grant.session);
+    const retained = await store.authorize(same, grant.session, grant.expiresAt);
     const sameGrant = await store.current();
-    const rejected = await store.authorize(stale, "c".repeat(64));
+    const rejected = await store.authorize(stale, "c".repeat(64), grant.expiresAt);
     const afterStale = await store.current();
     const replacement = await store.begin();
-    const changed = await store.authorize(replacement, "c".repeat(64));
+    const changed = await store.authorize(replacement, "c".repeat(64), grant.expiresAt);
     const hidden = await store.current();
     const oldSave = await store.commit(same, grant);
     const saved = await store.commit(replacement, { ...grant, session: "c".repeat(64) });
@@ -387,3 +396,57 @@ test("a delayed denial cannot erase a newer grant and a matching denial consumes
     final: null,
   });
 });
+
+for (const scenario of ["new-session-and-build", "shorter-deadline", "expired-deadline"] as const) {
+  test(`known ${scenario} invalidates an older shell even when preparation cannot finish`, async ({
+    page,
+  }) => {
+    const result = await page.evaluate(async (scenario) => {
+      const store = window.ScannerStore.createScannerShellStore();
+      const now = Date.now();
+      const old = {
+        version: 1 as const,
+        session: "a".repeat(64),
+        build: "b".repeat(64),
+        preparedAt: now - 120_000,
+        expiresAt: now + 600_000,
+        html: "<main>Old scanner</main>",
+        headers: [] as [string, string][],
+        assets: ["/scanner-assets/scanner-" + "b".repeat(64) + ".js"],
+      };
+      await store.commit(await store.begin(), old);
+      const fresh = {
+        ...old,
+        session: scenario === "new-session-and-build" ? "c".repeat(64) : old.session,
+        build: scenario === "new-session-and-build" ? "d".repeat(64) : old.build,
+        expiresAt: scenario === "expired-deadline" ? now - 1 : now + 60_000,
+      };
+      let assetRequests = 0;
+      const runtime = window.ScannerStore.createScannerShellRuntime({
+        store,
+        storage: caches,
+        origin: location.origin,
+        build: old.build,
+        fetcher: async (url) => {
+          if (url.endsWith("/checkin/offline-shell"))
+            return new Response(JSON.stringify(fresh), {
+              headers: { "X-Wedding-Scanner-Shell": "1", "Content-Type": "application/json" },
+            });
+          assetRequests += 1;
+          throw new Error("Connection lost during asset download");
+        },
+      });
+      const outcome = await runtime.prepare();
+      return {
+        outcome,
+        current: await store.current(),
+        document: await runtime.document(),
+        assetRequests,
+      };
+    }, scenario);
+    expect(result.outcome.state).toBe(scenario === "expired-deadline" ? "denied" : "unavailable");
+    expect(result.current).toBeNull();
+    expect(result.document).toBeNull();
+    expect(result.assetRequests).toBe(scenario === "shorter-deadline" ? 1 : 0);
+  });
+}
