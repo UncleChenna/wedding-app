@@ -98,5 +98,6 @@ export const config = {
     "/api/kitchen/:path*",
     "/api/bar/:path*",
     "/order/:path*",
+    "/lost-link",
   ],
 };
