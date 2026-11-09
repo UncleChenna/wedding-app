@@ -39,3 +39,7 @@ Integrated develop886c46cc (051+090); preserved create-invitation links and all 
 ## 2026-11-09 ready for CI
 
 Independent source/visual review clean at9665126d after all24screenshots inspected. Integrated CSV developb5fa06c9 without conflicts; focused route/export/seating tests rerun. Final quick lint/types pass (no affected tests selected for finalUI files); explicit prior13tests and2browserjourneys retained. Publish through normal t:pr, then wait exact-head fullCI before merge. No production operation.
+
+## 2026-11-09 admin typography correction
+
+Reopened viaCLI to enforce the canonical18pxadmincontrolrule rather than shared16pxdefaults. Scoped editorstyles nowcoverbuttons/inputs/selects/labels/bodycopy. Added actualcomputedfont-size browser assertions alongside24axechecks; bothjourneyspass16.7s and build/quicklint/typespass.24screenshotsregenerated forvisualre-review. OwnDBstoppedagainbackuptrue(projectwedding-d67592a8d3bc), slotreleased182. Nootherownerstacks touched.

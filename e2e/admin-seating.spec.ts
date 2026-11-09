@@ -140,9 +140,45 @@ test.describe("seating admin", () => {
     for (const theme of themes) {
       await applyTheme(page, theme);
       expect(await scanA11y(page)).toEqual([]);
+      expect(
+        await page
+          .locator(
+            "main button, main input, main select, main label, dialog button, dialog input, dialog select, dialog label",
+          )
+          .evaluateAll((elements) =>
+            elements
+              .filter((element) => {
+                const box = element.getBoundingClientRect();
+                return (
+                  box.width > 0 &&
+                  box.height > 0 &&
+                  Number.parseFloat(getComputedStyle(element).fontSize) < 18
+                );
+              })
+              .map((element) => element.textContent),
+          ),
+      ).toEqual([]);
       await page.screenshot({ path: `${folder}/${theme.id}-seating.png`, fullPage: true });
       await assign.click();
       expect(await scanA11y(page)).toEqual([]);
+      expect(
+        await page
+          .locator(
+            "main button, main input, main select, main label, dialog button, dialog input, dialog select, dialog label",
+          )
+          .evaluateAll((elements) =>
+            elements
+              .filter((element) => {
+                const box = element.getBoundingClientRect();
+                return (
+                  box.width > 0 &&
+                  box.height > 0 &&
+                  Number.parseFloat(getComputedStyle(element).fontSize) < 18
+                );
+              })
+              .map((element) => element.textContent),
+          ),
+      ).toEqual([]);
       await page.screenshot({ path: `${folder}/${theme.id}-assignment.png`, fullPage: true });
       await page.keyboard.press("Escape");
       await expect(assign).toBeFocused();
@@ -159,6 +195,24 @@ test.describe("seating admin", () => {
     for (const theme of themes) {
       await applyTheme(page, theme);
       expect(await scanA11y(page)).toEqual([]);
+      expect(
+        await page
+          .locator(
+            "main button, main input, main select, main label, dialog button, dialog input, dialog select, dialog label",
+          )
+          .evaluateAll((elements) =>
+            elements
+              .filter((element) => {
+                const box = element.getBoundingClientRect();
+                return (
+                  box.width > 0 &&
+                  box.height > 0 &&
+                  Number.parseFloat(getComputedStyle(element).fontSize) < 18
+                );
+              })
+              .map((element) => element.textContent),
+          ),
+      ).toEqual([]);
       await page.screenshot({ path: `${folder}/${theme.id}-edit.png`, fullPage: true });
     }
     await page.getByLabel("Table number", { exact: true }).fill(String(renamed));

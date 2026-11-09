@@ -245,7 +245,7 @@ export function SeatingEditor({ plan }: { plan: SeatingPlan }) {
     party.name.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase()),
   );
   return (
-    <div className="mt-12 space-y-12">
+    <div className="mt-12 space-y-12 [&_button]:text-lg [&_input]:text-lg [&_label]:text-lg [&_p]:text-lg [&_select]:text-lg">
       {notice && (
         <p role="status" tabIndex={-1} ref={result}>
           {notice}

@@ -34,12 +34,12 @@ immediately reads the current assignment, including renamed table numbers.
   reply/meal preservation, stale writes, order-history/deletion guards, CRUD validation
   and two-connection capacity warnings. All13 focused tests pass after integrating
   develop `886c46cc2d965fac2a6a4d5e4e0f1b0f4c142086` and unchanged0020 migration.
-- Two production-browser journeys pass at375/1280px (21.6s): real email/TOTP sign-in,
+- Two production-browser journeys pass at375/1280px (16.7s on the final typography run): real email/TOTP sign-in,
   anonymous redirect, keyboard assignment, delayed-save Escape/Close protection,
   live signed-pass changes, delete confirmation/cancel/return focus, table deletion.
   -24 axe scans across four themes × two widths × list/assignment/edit states pass.
   -24 screenshots in `docs/reviews/TICKET-093/screenshots/`; no overflow at375/600/768/1280,
-  main-page targets at least44px, reduced motion exercised, initial CLS zero.
+  main-page targets at least44px, reduced motion exercised, initial CLS zero. Computed sizes of all visible form labels and controls are at least18px in each reviewed state.
 
 # Verification
 
