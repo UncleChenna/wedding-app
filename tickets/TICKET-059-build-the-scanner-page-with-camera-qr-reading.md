@@ -2,7 +2,7 @@
 id: TICKET-059
 title: Build the scanner page with camera QR reading
 epic: checkin
-status: in_progress
+status: in_review
 priority: high
 estimate: L
 labels: [frontend]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-019, TICKET-031, TICKET-057, TICKET-032]
 blocks: [TICKET-060, TICKET-108, TICKET-124]
 branch: TICKET-059
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/135
 created: 2026-10-21
 updated: 2026-11-09
 started: 2026-11-09
@@ -65,3 +65,4 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-1) · [Journey 2: check-
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-09 — todo → claimed — divine (codex) — started ahead of TICKET-057 (blocked)
 - 2026-11-09 — todo → in_progress — divine (codex) — started ahead of TICKET-057 (blocked)
+- 2026-11-09 — in_progress → in_review — divine (codex)
