@@ -2,7 +2,7 @@
 id: TICKET-123
 title: Apply ordering abuse limits and regress shared endpoint protection
 epic: security
-status: in_progress
+status: in_review
 priority: high
 estimate: M
 labels: [security, backend]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-185, TICKET-072, TICKET-048]
 blocks: [TICKET-129]
 branch: TICKET-123
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/145
 created: 2026-10-21
 updated: 2026-11-09
 started: 2026-11-09
@@ -62,3 +62,4 @@ See: [Security](../docs/prd.md#security).
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-09 — todo → claimed — divine (codex)
 - 2026-11-09 — todo → in_progress — divine (codex)
+- 2026-11-09 — in_progress → in_review — divine (codex)
