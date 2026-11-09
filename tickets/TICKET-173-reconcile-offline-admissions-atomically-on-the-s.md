@@ -2,7 +2,7 @@
 id: TICKET-173
 title: Reconcile offline admissions atomically on the server
 epic: checkin
-status: in_progress
+status: in_review
 priority: high
 estimate: L
 labels: [backend, db, test]
@@ -12,7 +12,7 @@ agent: claude
 blocked_by: [TICKET-024, TICKET-031, TICKET-058]
 blocks: [TICKET-066]
 branch: TICKET-173
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/136
 created: 2026-10-21
 updated: 2026-11-09
 started: 2026-11-09
@@ -69,3 +69,4 @@ Backlog audit coverage: CHK-5–7. See [PRD](../docs/prd.md) and [audit](AUDIT.m
 - 2026-10-21 — new → todo — divine
 - 2026-11-09 — todo → claimed — unclechenna (claude)
 - 2026-11-09 — todo → in_progress — unclechenna (claude)
+- 2026-11-09 — in_progress → in_review — unclechenna (claude)
