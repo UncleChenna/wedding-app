@@ -1,5 +1,5 @@
 {
-  "id": "72d8245c-6ccf-4456-a9d1-812cd88a055a",
+  "id": "b1fc4405-e8e2-4678-97b9-1c14b4d3d501",
   "prevId": "d705f663-8dce-4a0f-b76b-4cff98a96d35",
   "version": "7",
   "dialect": "postgresql",
@@ -712,86 +712,6 @@
         "invitation_lifecycle_transition": {
           "name": "invitation_lifecycle_transition",
           "value": "(\"invitation_lifecycle_events\".\"operation\" = 'revoke' and \"invitation_lifecycle_events\".\"after_status\" = 'revoked' and \"invitation_lifecycle_events\".\"after_version\" = \"invitation_lifecycle_events\".\"before_version\") or (\"invitation_lifecycle_events\".\"operation\" = 'reissue' and \"invitation_lifecycle_events\".\"after_status\" in ('sent', 'rsvp_yes', 'rsvp_no') and \"invitation_lifecycle_events\".\"after_version\"::bigint = \"invitation_lifecycle_events\".\"before_version\"::bigint + 1)"
-        }
-      },
-      "isRLSEnabled": true
-    },
-    "public.invitation_link_requests": {
-      "name": "invitation_link_requests",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "contact": {
-          "name": "contact",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "contact_kind": {
-          "name": "contact_kind",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {
-        "invitation_link_requests_created_idx": {
-          "name": "invitation_link_requests_created_idx",
-          "columns": [
-            {
-              "expression": "created_at",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {
-        "invitation_link_requests_name": {
-          "name": "invitation_link_requests_name",
-          "value": "length(trim(\"invitation_link_requests\".\"name\")) between 1 and 200"
-        },
-        "invitation_link_requests_contact": {
-          "name": "invitation_link_requests_contact",
-          "value": "length(trim(\"invitation_link_requests\".\"contact\")) between 1 and 254"
-        },
-        "invitation_link_requests_kind": {
-          "name": "invitation_link_requests_kind",
-          "value": "\"invitation_link_requests\".\"contact_kind\" in ('email', 'phone')"
         }
       },
       "isRLSEnabled": true
@@ -1824,7 +1744,7 @@
       "checkConstraints": {
         "request_budgets_scope": {
           "name": "request_budgets_scope",
-          "value": "\"request_budgets\".\"scope\" in ('lookup', 'pin', 'lost_link')"
+          "value": "\"request_budgets\".\"scope\" in ('lookup', 'pin')"
         },
         "request_budgets_identity": {
           "name": "request_budgets_identity",
@@ -2374,6 +2294,19 @@
           "primaryKey": false,
           "notNull": false
         },
+        "whatsapp_number": {
+          "name": "whatsapp_number",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "alerts_opt_in": {
+          "name": "alerts_opt_in",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp with time zone",
@@ -2413,6 +2346,14 @@
         "staff_credential_version_positive": {
           "name": "staff_credential_version_positive",
           "value": "\"staff\".\"credential_version\" > 0"
+        },
+        "staff_whatsapp_number_e164": {
+          "name": "staff_whatsapp_number_e164",
+          "value": "\"staff\".\"whatsapp_number\" is null or \"staff\".\"whatsapp_number\" ~ '^[+][1-9][0-9]{7,14}$'"
+        },
+        "staff_alerts_need_number": {
+          "name": "staff_alerts_need_number",
+          "value": "not \"staff\".\"alerts_opt_in\" or (\"staff\".\"whatsapp_number\" is not null and \"staff\".\"role\" in ('kitchen', 'bar'))"
         },
         "staff_pin_credential_complete": {
           "name": "staff_pin_credential_complete",

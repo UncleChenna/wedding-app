@@ -2,20 +2,20 @@
 id: TICKET-130
 title: Enforce coverage on critical logic
 epic: testing
-status: todo
+status: in_review
 priority: high
 estimate: M
 labels: [test]
 module: shared
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-056, TICKET-058, TICKET-073]
 blocks: [TICKET-154]
-branch: ""
-pr: ""
+branch: TICKET-130
+pr: https://github.com/UncleChenna/wedding-app/pull/134
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-09
+started: 2026-11-09
 completed: ""
 reason: ""
 resume_to: ""
@@ -39,7 +39,7 @@ See: [Testing plan](../docs/prd.md#testing-plan).
 
 ## Acceptance criteria
 
-- [ ] `pnpm test` fails when critical-module coverage drops below 95%.
+- [x] `pnpm test` fails when critical-module coverage drops below 95%.
 
 ## Test plan
 
@@ -54,6 +54,11 @@ See: [Testing plan](../docs/prd.md#testing-plan).
 
 _Agents append dated notes here while working._
 
+- 2026-11-09 — Per-file 95% lines/branches now covers all checkin/lib, invitation token, ordering validation and actual extracted limit decisions. Real regressions prove missed branches and unimported files fail even when aggregate coverage exceeds 95%. Integrated develop 7250e483; full pnpm test passes 1,410 tests (156 explicit skips), with 98.54% lines / 99.28% branches overall and every included file above both floors. Actual SQL concurrency/limit suite passes 22 tests on isolated PostgreSQL 16.14 after owned Supabase startup failed; no Supabase/Auth or exact PostgreSQL 17 claim. Owned databases stopped, backup/logs retained. Independent review clean. See docs/plans/TICKET-130-pr.md for evidence and resolved failures. Final CI remains mandatory before merge.
+
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-09 — todo → claimed — divine (codex)
+- 2026-11-09 — todo → in_progress — divine (codex)
+- 2026-11-09 — in_progress → in_review — divine (codex)

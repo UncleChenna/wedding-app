@@ -58,6 +58,8 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-5).
 
 ## Notes / decisions
 
+2026-11-09: Integrated develop92451762 with regenerated0025 migration; four database tests, real browser journeys and all52 screenshot reviews pass. Three fresh Lighthouse runs each100/100/CLS0. Current full CI awaits TICKET-223 shared coverage repair; draftPR103 preserved. Physical-device checks remain release-blocking TICKET-201 under standing preview authorization.
+
 2026-11-06: Approved migration applied and repeated in the isolated database; four database tests pass after stopping TICKET-181 with its backup preserved. Full verification passes (1,061 unit and 895 browser tests), with separate live submission/admin re-sharing and no-JavaScript coverage. Cold admin layout shift is zero at all three widths. Draft PR: https://github.com/UncleChenna/wedding-app/pull/103. Physical-device checks remain unverified; awaiting the preview exception retaining TICKET-201's release gates. See the handoff for evidence and CI status.
 
 2026-11-05: Claimed and isolated on fresh develop c9c9e66. Draft PR103 publishes validation, conservative matching and neutral submission service foundations. All 21 focused tests and verify:quick pass. Persistence, form/admin UI, full integration and UI review remain incomplete; see docs/handoffs/TICKET-048.md.

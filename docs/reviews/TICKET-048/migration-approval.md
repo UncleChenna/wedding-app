@@ -70,3 +70,15 @@ Application rollback can retain this additive request table and scope. Submitted
 contact information is personal data; it is not logged, exposed publicly or sent to
 an unverified address. Include this table in the existing 90-day post-event retention
 process before release. This PR does not authorize destructive cleanup.
+
+## Current approved reconciliation — 2026-11-09
+
+Standing user authorization covers current-base integration, generated0025 outputs,
+isolated synthetic reset and commit. Current SQL0025 is byte-identical to the old
+branch0023 lost-link SQL; develop0023 staff alerts and0024 RLS remain unchanged.
+Before guarded reset, all application tables were empty except one expired budget;
+five Auth accounts were all example.test fixtures. Only owned048 was reset.
+All26 migration journal entries applied; repeat counts match, four database tests
+pass and all24 public tables retain RLS. No production application occurred.
+Application rollback retains the additive table/scope; do not delete collected
+requests or reverse already applied migrations. Existing retention requirement stays.

@@ -114,7 +114,11 @@ test("lost-link submission reaches the private queue and existing Share menu", a
       where contact in (${contact}, ${missingContact})`;
     expect(saved).toHaveLength(2);
 
-    await signInAdmin(page, request, adminTestEmail(info.project.name, "lost-link"));
+    await signInAdmin(
+      page,
+      request,
+      adminTestEmail(info.project.name, process.env.LOST_LINK_TEST_PREFIX ?? "lost-link"),
+    );
     for (const width of [375, 768, 1280]) {
       const coldContext = await browser.newContext({
         storageState: await page.context().storageState(),
@@ -152,6 +156,11 @@ test("lost-link submission reaches the private queue and existing Share menu", a
     await expect(matched).toContainText(`Matching invitation: ${name}`);
     await expect(unmatched).toContainText("No unique match");
     await expect(unmatched.getByRole("button", { name: "Share invitation" })).toHaveCount(0);
+    for (const text of await matched.locator("p").all()) {
+      expect(
+        await text.evaluate((node) => Number.parseFloat(getComputedStyle(node).fontSize)),
+      ).toBeGreaterThanOrEqual(18);
+    }
     await capture("admin-queue");
     for (const width of [390, 430, 600, 1024]) {
       await page.setViewportSize({ width, height: 900 });
@@ -180,6 +189,13 @@ test("lost-link submission reaches the private queue and existing Share menu", a
     await page.getByRole("dialog").getByRole("button", { name: "Copy link", exact: true }).click();
     await expect(page.getByRole("dialog")).not.toBeVisible();
     await expect(shareTrigger).toBeFocused();
+    await expect
+      .poll(async () => {
+        const [row] =
+          await db`select count(*)::int as count from invitation_share_events where invitation_id = ${invitationId ?? ""} and channel = 'copy' and purpose = 'invitation'`;
+        return row?.count;
+      })
+      .toBe(1);
     expect(await page.evaluate(() => document.documentElement.dataset.copied)).toBe(
       new URL(`/i/${token}`, process.env.NEXT_PUBLIC_SITE_URL).href,
     );

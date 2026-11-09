@@ -243,3 +243,72 @@ follow-up already passed separately. CLI status is being set to blocked solely f
 the pending physical-device preview exception; database capacity is no longer the
 blocker. PR103 remains draft. Next: obtain the requested disposition, resume via
 the CLI and complete review publication with current-head CI. No merge is authorized.
+
+## Current-base integration resumed — 2026-11-09
+
+Sole current editing agent resumed divine/codex through CLI at190ac1f8, preserving
+external merge037db461. Live ownership was still blocked/ours and checkout clean.
+PR103 returned to draft. Current develop owns0023staff-alert settings and0024RLS;
+resolved generated snapshot/journal conflicts by preserving those develop files
+exactly, removed only this branch's0023lost-link SQL, and generated0025lost-link
+through `pnpm db:generate --name=lost-link-requests`. New SQL is byte-identical to
+this branch's prior0023 additive request-table/scope migration, with a correctly
+chained new snapshot/journal. No production application.
+
+User standing authorization covers this integration and isolated synthetic reset;
+physical/device checks remain release-blocking TICKET-201, not certified here.
+The database slot was released by128 before starting only048project
+wedding-0b9a885bfc5f. Before reset, every public application table was empty except
+one expired lost_link budget; five Auth accounts all used example.test domains.
+Canonical target guard confirmed the owned database. Reset used guarded db:reset,
+applied current history and seeded synthetic fixtures. Repeat migration counts
+match exactly; all24public tables retain RLS; all4lost-link storage/budget tests
+pass (561ms). Logs /tmp/TICKET-048-{pre-reset-counts,isolated-reset,counts-before-repeat,counts-after-repeat,rls-current,db-current}.log.
+
+Integrated quick gate passes lint/types/378relatedtests,143environment skips.
+Production build passes. New real-browser checks reproduced admin16px body text
+against required18px; the queue text is corrected. Sharing-history wiring from
+TICKET-051 must also be verified: the old real queue omitted ShareMenu's tracking
+identity. Existing guest neutrality/no-JavaScript tests remain unchanged. Final
+browser evidence, visual inspection, fresh performance and full CI remain pending.
+
+## Final integration evidence — 2026-11-09
+
+Current integration base: develop 92451762b29c636d683f5d0cad1c988037d447e0.
+This supersedes historical pending approvals and old measurements above.
+
+- Fixed two reproduced integration defects: admin paragraph text was 16px instead
+  of required 18px; real queue sharing omitted the invitation ID/version required
+  to record a share. Real browser regressions failed before each fix and pass now.
+- Final mobile/desktop authenticated and native no-JavaScript journeys: 4/4 pass
+  (13.7s), including the persisted copy event and focus restoration. Final capture
+  journey: 2/2 pass (17.1s). Initial-form matrix and cold CLS tests pass 15/15.
+- One intermediate capture exhausted the approved 10/network/minute allowance after
+  repeated test runs. It correctly displayed the retry response. After the real
+  minute elapsed, the same assertions passed; no budget reset or bypass was used.
+- All 52 fresh screenshots personally inspected: form, invalid, received and queue
+  in four themes at 375/768/1280, plus four scrolled mobile queue views. No clipping,
+  overflow or unreadable content found. Fixed navigation in full-page mobile images
+  overlays the screenshot's middle; actual scrolled captures prove the share action
+  remains reachable above it. Long contact strings wrap safely.
+- Browser AA, 44px targets, keyboard/Enter/dialog return focus, intermediate widths
+  390/430/600/1024 and reduced motion pass. Guest and authenticated admin cold CLS
+  equal zero at all three required widths. No new images, tokens or animations.
+- Three fresh production Lighthouse 13.6.0 mobile runs: Performance 100/100/100,
+  Accessibility 100/100/100, CLS 0 throughout; performance.json records timestamps.
+- Quick lint/types/378 related tests pass (143 environment skips); production build
+  passes. Four real database tests pass; repeat migration preserves counts and all
+  24 public tables retain RLS. New migration is 0025, preserving develop 0023/0024.
+- Independent source/migration and mobile queue review found no blocking issue.
+- Physical iOS/Android WhatsApp, keyboard and safe-area checks remain unverified in
+  release-blocking TICKET-201. Standing preview authorization retains these gates;
+  this is not a physical-device or production-readiness certification.
+- Current full CI is pending the shared TICKET-223 coverage repair. Historical full
+  passes above do not certify this integration. Keep PR103 draft until current gates
+  pass. No test, coverage threshold or timeout was weakened.
+
+Logs: /tmp/TICKET-048-integration-browser-{red,green}.log,
+/tmp/TICKET-048-tracking-browser-red.log, /tmp/TICKET-048-current-capture.log,
+/tmp/TICKET-048-live-capture-final.log, /tmp/TICKET-048-integrated-quick.log.
+Owned performance server stopped. Only owned database wedding-0b9a885bfc5f stopped
+with backup:true, confirmed in /tmp/TICKET-048-db-stop-current.log. Slot released.

@@ -1,59 +1,95 @@
-# TICKET-048: Let guests request their link again
+# Ticket
 
-Guests who lose an invitation can submit their name and contact at `/lost-link`.
-The public response never reveals whether they match a guest. Authenticated admins
-see requests at `/admin/link-requests`, review possible matches, and re-share through
-the existing Share menu. Nothing is sent automatically.
+Ticket: TICKET-048
 
-## Changes
+# Summary
 
-- Validated, private request storage with RLS enabled and no browser policies.
-- Approved separate limit of 10 submissions per trusted network per minute;
-  existing lookup/PIN limits unchanged. Shared networks share this allowance.
-- AAL2-protected queue with conservative matching, pagination and ShareMenu reuse.
-- Validation/retry responses preserve bounded submitted fields, including without
-  JavaScript. Successful receipts do not echo fields or expose invitation links.
-- Admin keyboard regression covers all six navigation links.
+Guests who lose their invitation can request help at `/lost-link`. The same neutral
+receipt is returned whether a guest matches or not. Authenticated admins review
+requests at `/admin/link-requests` and re-share through the existing Share menu;
+nothing is sent automatically.
 
-## Acceptance evidence
+# Changes
 
-All three functional criteria pass in real local browser journeys: matched and
-unmatched submissions receive identical receipts; requests appear in the private
-queue with the correct unique match; re-sharing copies the correct invitation URL
-through ShareMenu. Signed-out admin access redirects to sign-in; verification uses
-real local OTP and TOTP, with synthetic records cleaned up by exact identifiers.
+- Validated private request storage, RLS enabled with no browser policies.
+- Approved separate budget of 10 requests per trusted network per minute; existing
+  lookup/PIN budgets unchanged. Shared networks share this allowance.
+- AAL2-protected queue, conservative unique matching and pagination. Sharing uses
+  the exact invitation ID/version and records the copy event through existing APIs.
+- Validation and retry responses preserve bounded input, including without JavaScript.
+- Integrated develop 92451762, preserving migrations0023/0024 and regenerating this
+  additive migration as0025. Corrected admin text to the required18px.
 
-## Verification
+# Acceptance criteria and evidence
 
-- Full `pnpm verify`: 1,061 unit tests passed (100 opt-in skips), production build,
-  895 browser tests passed (201 opt-in skips), format/lint/types/ticket validation.
-- Separate isolated database suite: four passes covering persistence, constraints,
-  RLS, ten-request boundary, lookup/PIN independence and expiry reset.
-- Real mobile/desktop authenticated journeys pass. Final desktop follow-up: two
-  passes including native no-JavaScript validation and retained field values.
-- Cold admin queue CLS is exactly zero at 375/768/1280 in fresh browser contexts.
-- Initial, invalid, received and queue screenshots cover four themes at
-  375/768/1280; AA/overflow checks pass. Lower mobile slices show the share button
-  clear of fixed navigation; intermediate queue widths also pass.
-- Prior serial guest-page Lighthouse: performance/accessibility 100 in all three
-  runs, CLS zero. Default-theme fallback was logged; custom persisted theme
-  selection is outside this evidence.
-- Screenshots and checklist: `docs/reviews/TICKET-048/`. Full evidence and failed
-  intermediate attempts are retained in `docs/handoffs/TICKET-048.md`.
+- Identical matched/unmatched receipts: real mobile/desktop browser tests compare
+  responses and assert no public invitation bearer link is exposed.
+- Requests appear privately with a unique suggested match: real local OTP/TOTP
+  admin journey and database persistence tests. Signed-out access redirects.
+- Re-sharing uses ShareMenu: actual copied URL and persisted share event asserted;
+  keyboard Enter opens the dialog and successful copy restores trigger focus.
 
-Physical iOS/Android WhatsApp, keyboard and safe-area checks remain unverified.
-A preview exception retaining TICKET-201's release gates is requested, not assumed.
-The PR stays draft; no production-readiness or physical-device pass is claimed.
-Check current-head CI independently before review/merge.
+# Verification
 
-## Migration, rollout and rollback
+- Quick gate: lint/types and378 related tests pass,143 environment skips.
+- Production build passes. Real database suite4/4 passes; repeat migration leaves
+  counts unchanged and all24 public tables retain RLS.
+- Real authenticated mobile/desktop and native no-JavaScript journeys4/4 pass;
+  final capture journey2/2 passes. Initial form/CLS suite15/15 passes.
+- All52 fresh screenshots inspected, AA across four themes and required widths;
+  44px targets, intermediate widths, reduced motion and keyboard checks pass.
+- Guest/admin cold CLS0 at375/768/1280. Three fresh Lighthouse mobile runs each
+  Performance100/Accessibility100/CLS0; timestamped performance.json committed.
+- Regressions first reproduced16px admin text and missing share tracking, then
+  passed after fixes. An intermediate capture correctly hit the10/minute limit;
+  retry after actual expiry passed without resetting or weakening the budget.
+- Independent source/migration and mobile queue review found no blocker.
+- Current full CI awaits shared TICKET-223 coverage repair. Old full gate results
+  in the handoff are historical, not certification of this integrated head.
 
-Base: develop c9c9e66010ee773189477139d4f8b0d30cf481e1. The user approved generated
-0013_lost-link-requests.sql and its snapshot/journal for isolated testing and commit.
-Applied locally; repeat migration has identical counts (14 journal entries), and
-all 17 public tables retain RLS. No production application is authorized.
-PR99 and PR104 independently use migration number0013: integrate sequentially and
-reconcile with approved tooling; never overwrite an already applied migration.
-Application rollback can retain the additive request table. Submitted contacts are
-personal data covered by the 90-day post-event retention requirement; no destructive
-cleanup is included. No automatic message sending, new service or CI change.
+# Risks and rollout
+
+Migration0025 adds the request table and expands the rate-budget scope check; old
+lookup/PIN values stay allowed. Generated SQL matches the previous approved lost-link
+SQL. Only owned synthetic048 data was reset after aggregate confirmation;26 entries
+apply and repeat cleanly. No production application. Roll back application code while
+retaining the additive table; do not erase collected requests or edit applied SQL.
+Submitted contacts remain subject to the90-day post-event retention requirement.
+Matching is a suggestion, not identity proof; admins must verify before sharing.
+Physical iOS/Android WhatsApp, keyboard and safe-area checks remain unverified in
+release-blocking TICKET-201 under standing preview authorization. No release approval
+or physical-device pass is implied. Owned database stopped with backup preserved.
+
+# Screenshots
+
+All52 reviewed captures: [screenshots](../blob/TICKET-048/docs/reviews/TICKET-048/screenshots).
+Four themes ×375/768/1280 × form/invalid/received/admin queue, plus four scrolled
+375px queue views proving the share action clears fixed navigation.
+
+![Guest form](../blob/TICKET-048/docs/reviews/TICKET-048/screenshots/form-ivory-gold-375.png)
+![Admin sharing](../blob/TICKET-048/docs/reviews/TICKET-048/screenshots/admin-lower-ivory-gold-375.png)
+
+# UI checklist
+
+- [x] Screenshots: all52 fresh captures inspected; paths above.
+- [x] Tokens: existing shared theme tokens; no literal colours/fonts added.
+- [x] Restraint and typography: bounded single column,18px admin body, readable wrapping.
+- [x] Mobile: browser overflow/44px/intermediate-width checks pass; physical checks retained below.
+- [x] Motion: reduced-motion checked; no custom animation introduced.
+- [x] Keyboard: labels, Tab/Enter and Share dialog focus return pass.
+- [x] Contrast: AA axe across actual states and all themes; textual error meaning.
+- [x] Load and images: guest/admin cold CLS0; existing fonts; no new imagery.
+- [x] Performance: production mobile100 performance/100 accessibility, three runs.
+- [x] Copy: Warm neutral receipts and bounded human errors.
+- [x] Shared components: Input, Button and ShareMenu reused.
+- [ ] Sharing and devices: real phones/WhatsApp remain TICKET-201 release gates.
+- [x] QR codes: N/A, QR output unchanged.
+- [x] Staff feedback: N/A, no scanner/station feedback changes.
+- [ ] Verification: current full CI pending shared coverage repair; no pass claimed.
+
+# Harness changes, if any
+
+No harness change. Browser fixtures use fresh synthetic admin prefixes and distinct
+artifact directories; no assertions, hooks, coverage thresholds or timeouts weakened.
+Detailed current and historical results: docs/handoffs/TICKET-048.md and
+docs/reviews/TICKET-048/ui-review.md.

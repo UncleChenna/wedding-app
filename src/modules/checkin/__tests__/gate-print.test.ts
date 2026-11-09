@@ -45,3 +45,18 @@ it("keeps unknown seating and bounds tally rendering without hiding party size",
   expect(row?.tableNumber).toBeNull();
   expect(row?.marks).toEqual([]);
 });
+it("labels blank guest names and deterministically sorts equal surnames and duplicate names", () => {
+  const named = (id: string, name: string): GatePrintInvitation => ({
+    ...base,
+    id,
+    guests: [{ name, isPrimary: false }],
+  });
+  const rows = buildGatePrintRows([
+    named("z", "Ada Okafor"),
+    named("b", "Zoe Okafor"),
+    named("a", "Ada Okafor"),
+    named("blank", "   "),
+  ]);
+  expect(rows.find((row) => row.id === "blank")?.names).toEqual(["Name not recorded"]);
+  expect(rows.filter((row) => row.id !== "blank").map((row) => row.id)).toEqual(["a", "z", "b"]);
+});

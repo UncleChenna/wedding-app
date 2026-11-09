@@ -5,7 +5,7 @@ import { ShareMenu } from "./share-menu";
 export async function LinkRequests({ page }: { page?: string }) {
   const queue = await getLinkRequests(page);
   return (
-    <section className="mx-auto max-w-3xl px-6 py-10">
+    <section className="mx-auto max-w-3xl px-6 py-10 text-lg leading-relaxed">
       <h1 className="font-display text-4xl">Invitation requests</h1>
       <p className="mt-6 text-lg leading-relaxed">
         Check each request before sharing. A matching name and contact is a suggestion, not proof of
@@ -17,14 +17,20 @@ export async function LinkRequests({ page }: { page?: string }) {
           <li key={request.id} className="space-y-4 border-b border-border pb-8">
             <h2 className="font-display text-3xl break-words">{request.name}</h2>
             <p className="text-lg break-all">{request.contact}</p>
-            <p className="text-base text-muted-foreground">
+            <p className="text-lg text-muted-foreground">
               Received {request.createdAt.toISOString().slice(0, 16).replace("T", " ")} UTC
             </p>
             {request.invitation ? (
               <>
                 <p className="text-lg">Matching invitation: {request.invitation.name}</p>
                 {request.invitation.share ? (
-                  <ShareMenu invitation={request.invitation.share} />
+                  <ShareMenu
+                    invitation={request.invitation.share}
+                    tracking={{
+                      invitationId: request.invitation.id,
+                      expectedVersion: request.invitation.tokenVersion,
+                    }}
+                  />
                 ) : (
                   <p className="text-lg">{request.invitation.guidance}</p>
                 )}
