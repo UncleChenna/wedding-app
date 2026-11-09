@@ -23,3 +23,12 @@
 - 2026-11-02 (TICKET-209): Long local test timeouts can reflect macOS Maintenance Sleep. Confirm timestamps with pmset before changing tests; process-scoped caffeinate -is preserved the unchanged journey assertions (5.8s pass after sleep-interrupted15–16min failures). Keep assertions/timeouts intact and ensure fixture cleanup does not depend on an open browser. No persistent power settings changed.
 - 2026-11-06 (TICKET-217): A failing stop hook on a file that only the owner could approve trapped a session for hours (TICKET-084's generated migration). Enforcement belongs at commit; post and stop hooks now report protected files instead of failing, and new `db:generate` output needs no approval (`scripts/__tests__/hooks-migrations.test.ts`).
 - 2026-11-07 (TICKET-218): `wt:new` run from a main checkout on an old branch used old harness code and skipped the auth-template copy, so new worktree databases failed to start (it looked like Docker overload). `t:*`/`wt:*` now warn when their checkout's tooling is behind `origin/develop`, and worktrees start the database only on first use.
+
+### 2026-11-09 — Sleep can invalidate local timing evidence
+
+When unrelated Git-fixture tests take hundreds of seconds and fail different timeout
+assertions, inspect `pmset -g log` before changing test budgets. TICKET-059 power logs
+confirmed maintenance sleep during two failed runs; the unchanged full suite passed
+1,477 tests in 52.57s under `caffeinate -is pnpm test`. Use a command-scoped inhibitor
+for long local verification on macOS, preserve the failed logs, and keep CI as an
+independent check. Do not weaken assertions or permanently alter power settings.

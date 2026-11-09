@@ -96,3 +96,15 @@ instead, asserting count1, usable readyState>=2 and512px width. Exact decodedpay
 > =3000ms spacing, no problems and endedtracks remain mandatory. Independent review
 > confirms this corrects the oracle, not production behavior. Local4/4pass21.0s;
 > new hosted verification still required. No timeout/decoder assertion removed.
+
+Final integrated source2a612185 at develop517805c1 passes all7hosted CI jobs in
+run42652111655, including fullverify, actual admin/staff journey and Linux camera
+Chromium/WebKit. Merge conflict in ci.yml was append-only: retained both complete
+camera/admin jobs plus reviewed25minute overall job budget. No checks removed.
+Local full suite initially failed inconsistent Git fixtures after900second stalls;
+pmset logs confirm DeepIdle/MaintenanceSleep spanning those runs. Unchanged full
+suite via command-scoped caffeinate-is passes1477tests/170optinskips in52.57s,
+criticalcoverage97.9%lines98.2%branches, everyfile>=95. Failurelogs retained/tmp.
+057is nowdone through222guarded reconciliation; normal059reviewtransition next.
+Root's temporary session sleepinhibitor73726 expires after1800seconds; no persistent
+power setting changed. No DB running. Physical-device release checks remainunverified.
