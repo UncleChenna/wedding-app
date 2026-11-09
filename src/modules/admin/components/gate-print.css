@@ -1,0 +1,86 @@
+.gate-print-page {
+  width: 100%;
+}
+.gate-print-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+.gate-print-table th,
+.gate-print-table td {
+  padding: 0.75rem 0.4rem;
+  border-bottom: 1px solid var(--t-color-border);
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+.gate-print-table th:first-child {
+  width: 43%;
+}
+.gate-print-table th:nth-child(2),
+.gate-print-table th:nth-child(3) {
+  width: 12%;
+}
+.gate-print-table th:last-child {
+  width: 33%;
+}
+.gate-print-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid currentColor;
+  margin: 0.15rem;
+  font-size: 0.85rem;
+  line-height: 1;
+}
+@media print {
+  @page gate-guest-list {
+    size: A4 portrait;
+    margin: 12mm;
+  }
+  body:has(.gate-print-page) [data-admin-chrome] {
+    display: none !important;
+  }
+  body:has(.gate-print-page) {
+    color: #000 !important;
+    background: #fff !important;
+  }
+  .gate-print-page {
+    page: gate-guest-list;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    color: #000 !important;
+    background: #fff !important;
+    font-size: 10pt;
+    line-height: 1.4;
+  }
+  .gate-print-page h1 {
+    font-size: 22pt;
+  }
+  .gate-print-controls {
+    display: none !important;
+  }
+  .gate-print-table {
+    font-size: 10pt;
+  }
+  .gate-print-table thead {
+    display: table-header-group;
+  }
+  .gate-print-table tr {
+    break-inside: avoid;
+  }
+  .gate-print-table th,
+  .gate-print-table td {
+    padding: 3mm 1.5mm;
+    border-color: #000;
+  }
+  .gate-print-box {
+    width: 4mm;
+    height: 4mm;
+    font-size: 10pt;
+    margin: 0.5mm;
+  }
+}
