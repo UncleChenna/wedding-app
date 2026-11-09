@@ -2,7 +2,7 @@
 id: TICKET-100
 title: Show each invitation's RSVP change history
 epic: admin
-status: in_review
+status: done
 priority: medium
 estimate: S
 labels: [frontend]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/128
 created: 2026-10-21
 updated: 2026-11-09
 started: 2026-11-09
-completed: ""
+completed: 2026-11-09
 reason: ""
 resume_to: ""
 ---
@@ -60,3 +60,4 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-6).
 - 2026-11-09 — todo → claimed — divine (codex)
 - 2026-11-09 — todo → in_progress — divine (codex)
 - 2026-11-09 — in_progress → in_review — divine (codex)
+- 2026-11-09 — in_review → done — divine (codex)
