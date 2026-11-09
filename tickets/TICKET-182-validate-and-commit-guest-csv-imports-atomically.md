@@ -2,20 +2,20 @@
 id: TICKET-182
 title: Validate and commit guest CSV imports atomically
 epic: admin
-status: todo
+status: in_progress
 priority: urgent
 estimate: M
 labels: [backend, test]
 module: admin
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-090]
 blocks: [TICKET-091]
-branch: ""
+branch: TICKET-182
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-09
+started: 2026-11-09
 completed: ""
 reason: ""
 resume_to: ""
@@ -57,3 +57,5 @@ Backlog audit coverage: INV-1, ADM-1. See [PRD](../docs/prd.md) and [audit](AUDI
 ## Activity log
 
 - 2026-10-21 — new → todo — divine
+- 2026-11-09 — todo → claimed — divine (codex)
+- 2026-11-09 — todo → in_progress — divine (codex)
