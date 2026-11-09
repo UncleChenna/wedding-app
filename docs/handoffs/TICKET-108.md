@@ -113,3 +113,22 @@ Independentgeneratorreviewclean. Realentry/stylechecksandfail-fastrootbuildwirin
 postbuildmanifestdueNext/Vercelpackaging evidence; requiresimmutableprebuildassets
 andpackagedchecksumverification. NativeofflinefontCSSsharesonlinefontfiles/metrics;
 onlineNext/fontunchanged, actualUI/CLSchecksnotyetproved.
+
+## Authorized endpoint — 2026-11-09
+
+Added server/scanner-assets.ts (strict completeinventory+digestparser/freshfile
+read) and server/scanner-shell-response.ts, routedat/checkin/offline-shell.
+UseslivecurrentStaffDevice(gate), trustedexpiryrecheckaftertheme/manifestreads,
+domain-separatedHMACcookie fingerprint andno-storeminimalHTMLgrant. No names,
+rawcookie, NextFlight/serveractions inHTML. Securityheaders preserveCSP/camera
+policy. Routeinjectsthemeloader toavoidfeature-servercrossimport. Missingbuild
+assets503; missing/expiredliveauthority401. Actualproductionentry/buildmanifest
+arenotwiredyet,sothisisnotofflinereadyproof.
+
+IndependentreviewfoundNextcontrol-flowcatch: realnotFound regressionfailed
+1/6passed, thenfixedwithunstable_rethrowfirstincatch. Ordinarybackenderrors
+remain503withoutdetails; missingkey/cookie401. Finalendpoint/manifest/generator
+suite19/19,quicklint/types/relatedtests pass; followupreviewclean. Logs
+/tmp/TICKET-108-endpoint-{red,green,rethrow-red,final,final-quick}.log.
+Next059CI42682799555stillfullverify; sixotherjobsgreen. Keep142draft andfinish
+actualscannerentry/prebuild/tracing/worker/clientpreparation/offlinereloadchecks.

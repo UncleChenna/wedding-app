@@ -14,13 +14,15 @@ The dedicated IndexedDB store atomically invalidates pending saves on logout or 
 
 The prebuild generator is implemented with deterministic content-addressed JS/CSS/fonts and a final manifest, using existing esbuild/Tailwind dependencies and shared font assets. Three isolated generator tests pass. It is not yet wired into the production build or scanner entry; deployment packaging still needs checksum verification.
 
+The new `/checkin/offline-shell` endpoint uses live gate authorization, a domain-separated HMAC session fingerprint and a rechecked absolute deadline. It returns a minimal document without names, raw cookies, server actions or Flight state, with private/no-store headers. The server validates the complete manifest and its build digest; absent generated assets return unavailable. Framework control-flow errors are rethrown.
+
 # Acceptance criteria and evidence
 
 Both ticket criteria remain unfinished: offline /checkin reload and a complete precached decoder asset inventory. TICKET-059 remains a dependency. Its camera code has not been copied into this branch before merge. Guest-data snapshots/outbox remain TICKET-065/066/180.
 
 # Verification
 
-Initial expiry tests failed on the missing API (six failed, one existing-contract test passed). After implementation and independent review, eight expiry tests plus four signed-session tests pass. The additional test crosses the deadline during database reads. Quick verification is run before publishing. Independent follow-up review is clean. The storage suite passes all 28 Chromium/WebKit cases, including a separate worker, expiry during database opening, logout races, single-use preparation, corrupt records and malformed database cleanup. Final quick verification passes lint and types; its related-unit selector finds no affected tests for these browser-only files. Ten runtime unit tests also pass, including quota failure, required-asset eviction, sign-in HTML rejection and concurrent inventory replacement (the latter first reproduced a failure before its fix). Real authenticated offline reload, asset eviction, shipped-worker integration and physical phones remain unverified.
+Initial expiry tests failed on the missing API (six failed, one existing-contract test passed). After implementation and independent review, eight expiry tests plus four signed-session tests pass. The additional test crosses the deadline during database reads. Quick verification is run before publishing. Independent follow-up review is clean. The storage suite passes all 28 Chromium/WebKit cases, including a separate worker, expiry during database opening, logout races, single-use preparation, corrupt records and malformed database cleanup. Final quick verification passes lint and types; its related-unit selector finds no affected tests for these browser-only files. Nineteen endpoint/manifest/generator tests pass, including a real Next control-flow regression and generator-to-server-parser compatibility. Ten runtime unit tests also pass, including quota failure, required-asset eviction, sign-in HTML rejection and concurrent inventory replacement (the latter first reproduced a failure before its fix). Real authenticated offline reload, asset eviction, shipped-worker integration and physical phones remain unverified.
 
 # Risks and rollout
 

@@ -3,6 +3,7 @@ import { cp, mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
+import { parseScannerAssets } from "../../src/modules/checkin/server/scanner-assets";
 import { generateScannerAssets } from "../scanner-assets";
 
 const roots: string[] = [];
@@ -37,6 +38,7 @@ describe("prebuild offline scanner assets", () => {
   it("creates a complete deterministic manifest with embedded decoder and shared style/font assets", async () => {
     const { root } = await fixture();
     const manifest = await generateScannerAssets(root);
+    expect(parseScannerAssets(manifest)).toEqual(manifest);
     const manifestPath = join(root, "public/scanner-assets/manifest.json");
     expect(JSON.parse(await readFile(manifestPath, "utf8"))).toEqual(manifest);
     expect(manifest.assets).toEqual([manifest.script, manifest.stylesheet, ...manifest.fonts]);
