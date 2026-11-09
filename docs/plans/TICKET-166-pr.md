@@ -8,6 +8,12 @@ After the event, an authenticated administrator can close ordering, revoke staff
 and devices, and download anonymous counts/menu statistics as CSV or themed PDF.
 This draft preserves admission evidence and excludes data deletion.
 
+**Open review blocker:** the memories admission aggregate still counts legacy
+`check_ins` rather than canonical admitted people. New database regressions are
+prepared for partial online arrivals, real legacy backfill and no double-counting;
+the query fix and database execution are pending the coordinated verification slot.
+Do not merge this checkpoint.
+
 ## Changes
 
 - Protected `/admin/event-closure` page linked from the control room, with typed

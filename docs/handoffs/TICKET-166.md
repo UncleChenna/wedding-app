@@ -1,3 +1,21 @@
+# 2026-11-09 independent review blocker: canonical admissions
+
+Integration checkpoint `adc6548e` passed quick lint/types/324 related tests and
+53 focused non-database tests. Independent review then found P1: readMemories
+still counts historical check_ins rows instead of canonical admitted people.
+Prepared replacement database regressions with transaction rollback (no destructive
+fixture cleanup): real guarded partial arrivals totaling three people, and an
+isolated real legacy backfill that accepts one of two archived check-ins before
+adding three modern admissions. Expected combined count is four, not archive rows
+or double-counted archive plus counters. Typecheck passes after correcting the
+fixture's category property to the existing schema name.
+
+The production query is intentionally still unchanged for the first failing DB
+run. Tests are prepared, NOT executed. Wait for TICKET-089's DB slot, run the red
+regressions, switch the query to sum(admission_counters.admitted_people), then rerun
+focused DB/closure/export checks. No DB or browser was started. PR105 remains draft
+and this P1 blocks merging. Integrate the latest harness changes before final t:pr.
+
 # 2026-11-09 resumed integration checkpoint
 
 Resumed the existing divine claim through the CLI under the owner's standing
