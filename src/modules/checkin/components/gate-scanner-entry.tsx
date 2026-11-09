@@ -1,15 +1,17 @@
 import { Suspense } from "react";
 import { currentStaffDevice } from "@/modules/shared/server/staff-cookies";
-import { staffSignOutAction } from "@/modules/shared/server/staff-actions";
+import { staffSignOutAction, clearStaffSessionAction } from "@/modules/shared/server/staff-actions";
 import { StaffEntry } from "@/modules/shared/components/staff-entry";
 import { PagePlaceholder } from "@/modules/shared/components/page-placeholder";
-import { Button } from "@/modules/shared/components/ui/button";
+import { ScannerOfflineControls } from "./scanner-offline-controls";
 import { appRoutes } from "@/modules/shared/lib/routes";
+import { scannerSessionFingerprint } from "../server/scanner-session-fingerprint";
 import { Scanner } from "./scanner";
 
 async function Content() {
   const staff = await currentStaffDevice("gate");
-  if (!staff) return <StaffEntry role="gate" />;
+  const session = staff ? await scannerSessionFingerprint() : null;
+  if (!staff || !session) return <StaffEntry role="gate" />;
   return (
     <main className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-6 px-6 py-6">
       <header className="flex flex-col gap-3">
@@ -27,12 +29,14 @@ async function Content() {
           )}
         </p>
       </header>
-      <Scanner />
-      <form action={staffSignOutAction}>
-        <Button size="lg" variant="secondary" type="submit">
-          Sign out
-        </Button>
-      </form>
+      <ScannerOfflineControls
+        session={session}
+        expiresAt={staff.expiresAt.getTime()}
+        signOut={staffSignOutAction}
+        clearSession={clearStaffSessionAction}
+      >
+        <Scanner />
+      </ScannerOfflineControls>
     </main>
   );
 }

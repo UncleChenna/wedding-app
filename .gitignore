@@ -44,3 +44,6 @@ npm-debug.log*
 .codex/*.local.json
 .cursor/*.local.json
 tooling/plugin/dist/
+
+# Generated immutable offline scanner assets (prebuild)
+/public/scanner-assets/

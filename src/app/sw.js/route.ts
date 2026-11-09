@@ -1,4 +1,5 @@
 import { connection } from "next/server";
+import { readScannerAssets } from "@/modules/checkin/server/scanner-assets";
 
 import { serviceWorkerResponse } from "@/modules/shared/server/service-worker";
 
@@ -7,5 +8,11 @@ export async function GET() {
   // Render per request: a prerendered copy would carry framework cache headers, and the
   // worker script itself must never be cached (ADR 0014).
   await connection();
-  return serviceWorkerResponse();
+  const scanner = await readScannerAssets();
+  if (!scanner)
+    return new Response("Offline assets unavailable", {
+      status: 503,
+      headers: { "Cache-Control": "no-store" },
+    });
+  return serviceWorkerResponse(scanner);
 }
