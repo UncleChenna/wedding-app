@@ -1,0 +1,20 @@
+
+ RUN  v5.0.5 /Users/chenna/Documents/codes/wedding/.worktrees/TICKET-223
+      Coverage enabled with v8
+
+
+ Test Files  1 passed (1)
+      Tests  19 passed (19)
+   Start at  17:25:00
+   Duration  688ms (setup 39%, import 29%, tests 15%, transform 12%, worker 5%)
+
+ % Coverage report from v8
+No files with missing coverage.
+1 file fully covered.
+
+=============================== Coverage summary ===============================
+Statements   : 100% ( 13/13 )
+Branches     : 100% ( 6/6 )
+Functions    : 100% ( 2/2 )
+Lines        : 100% ( 13/13 )
+================================================================================
