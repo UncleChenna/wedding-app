@@ -40,10 +40,10 @@ See: [Security](../docs/prd.md#security) · [Privacy (UK GDPR)](../docs/prd.md#p
 
 ## Acceptance criteria
 
-- [ ] After the action no staff session works (e2e).
-- [ ] The memories export contains no contact details or dietary notes (test).
+- [x] After the action no staff session works (e2e).
+- [x] The memories export contains no contact details or dietary notes (test).
 
-- [ ] Implement and rehearse event closure on synthetic data before release; actual production closure requires the approved event time and human confirmation. Expire PINs and ordering without deleting unsynced admission evidence.
+- [x] Implement and rehearse event closure on synthetic data before release; actual production closure requires the approved event time and human confirmation. Expire PINs and ordering without deleting unsynced admission evidence.
 
 ## Test plan
 
@@ -58,6 +58,8 @@ See: [Security](../docs/prd.md#security) · [Privacy (UK GDPR)](../docs/prd.md#p
 - `src/modules/admin/`
 
 ## Notes / decisions
+
+2026-11-09 final integration: develop 360914b7. Independent review found legacy check-in counting missed current admissions and counted legacy overflow. Real red regressions proved both errors; canonical admitted-people sum now passes, including actual backfill and partial arrivals without double-counting. All 26 integrated DB tests, production build and authenticated closure/browser rehearsal pass; all 16 screenshots match reviewed captures. Physical-device checks remain unchecked in release-blocking TICKET-201. Final quick lint/types pass; independent review of the fix and regression is clean. Final-head CI remains required before merge.
 
 2026-11-09: Owner standing authorization resolves the preview-only permission blocker; physical keyboard, safe-area and memories-download checks remain unchecked in release-blocking TICKET-201. Integrated develop fffe7b8d cleanly; eight focused non-database suites / 53 tests pass. Current quick checks pass lint, types and 324 related tests (89 skipped); final-head CI remains pending. Prior full/database/browser evidence is retained in the handoff; no new database was started or production closure attempted.
 

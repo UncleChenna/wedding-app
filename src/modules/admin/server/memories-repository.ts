@@ -2,7 +2,7 @@ import "server-only";
 import { count, eq, sql } from "drizzle-orm";
 import { db, type Db } from "@/modules/shared/server/db/client";
 import {
-  checkIns,
+  admissionCounters,
   invitations,
   menuItems,
   orderItems,
@@ -23,7 +23,13 @@ export async function readMemories(database: Pick<Db, "transaction"> = db) {
           attending: sql<number>`coalesce(sum(${rsvps.countAttending}), 0)`.mapWith(Number),
         })
         .from(rsvps);
-      const [admitted] = await tx.select({ total: count() }).from(checkIns);
+      // Counters include accepted legacy backfill and current partial arrivals.
+      // check_ins is an archive: counting it misses new scans and counts overflow.
+      const [admitted] = await tx
+        .select({
+          total: sql<number>`coalesce(sum(${admissionCounters.admittedPeople}), 0)`.mapWith(Number),
+        })
+        .from(admissionCounters);
       const menu = await tx
         .select({
           name: menuItems.name,

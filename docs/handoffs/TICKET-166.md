@@ -1,3 +1,29 @@
+# 2026-11-09 canonical admissions fixed and integrated checks passed
+
+Current base `360914b7`. Independent P1 reproduced in real PostgreSQL: modern
+partial arrivals expected three but returned zero; legacy overflow expected one
+but returned two. readMemories now sums admissionCounters.admittedPeople. Both
+regressions pass, including actual 0017/0018 backfill and a combined legacy/modern
+total of four. All fixture data and isolated schemas roll back; no archive or
+append-only guard is removed. Logs: `/tmp/TICKET-166-memories-red.log` and
+`/tmp/TICKET-166-memories-green.log`.
+
+All 26 closure/memories/ordering DB tests pass (2.33s), production build passes,
+and the real authenticated closure browser rehearsal passes (16s). It covers
+three staff roles, preserved admin access, private downloads, early refusal,
+all-theme AA/overflow/keyboard/reduced-motion and exact-zero CLS. All 16 screenshots
+match the prior reviewed copies byte-for-byte; the 375px focused view was inspected.
+Logs: `/tmp/TICKET-166-current-db-suite.log`, `/tmp/TICKET-166-current-build.log`,
+`/tmp/TICKET-166-current-browser.log`. Repeated migrations preserve counts; all 21
+public tables retain RLS. No reset or production closure was performed.
+
+The owned stack stopped successfully with backup:true; capacity is released.
+Final quick gate passes lint/types; its two opt-in DB cases are skipped there and
+passed explicitly in the real database suite. Root independent review found the
+canonical query and full regression clean; P1 is resolved subject to final CI.
+Physical-phone checks remain unchecked in TICKET-201. Next: commit/push evidence, publish the ready PR and require final-head CI. No merge
+has been performed; historical full-gate evidence below is not a current full run.
+
 # 2026-11-09 independent review blocker: canonical admissions
 
 Integration checkpoint `adc6548e` passed quick lint/types/324 related tests and

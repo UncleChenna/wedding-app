@@ -8,11 +8,10 @@ After the event, an authenticated administrator can close ordering, revoke staff
 and devices, and download anonymous counts/menu statistics as CSV or themed PDF.
 This draft preserves admission evidence and excludes data deletion.
 
-**Open review blocker:** the memories admission aggregate still counts legacy
-`check_ins` rather than canonical admitted people. New database regressions are
-prepared for partial online arrivals, real legacy backfill and no double-counting;
-the query fix and database execution are pending the coordinated verification slot.
-Do not merge this checkpoint.
+Independent review found and fixed an integration error: memories admissions now
+sum canonical admitted people rather than historical check-in rows. Real database
+regressions proved the former query missed partial arrivals and counted legacy
+overflow. Both now pass without weakening assertions or admission guards.
 
 ## Changes
 
@@ -34,7 +33,30 @@ Do not merge this checkpoint.
 
 ## Verification
 
-Current 2026-11-09 integration: merged develop `fffe7b8d` without conflicts, preserving current admin navigation and ordering logic. All eight focused non-database suites / 53 tests pass. The quick gate passes lint, types and 324 related tests (89 skipped). New-head CI remains pending. Database and browser reruns are queued until the shared verification slot is available; the prior results below are explicitly historical evidence. No database was started or mutated during this integration.
+Current 2026-11-09 integration against develop `360914b7`:
+
+- Eight focused non-database suites / 53 tests pass. The integration quick gate
+  passed lint, types and 324 related tests (89 skipped); final quick rerun after the canonical-count fix passes lint and types. Its two
+  opt-in database cases are skipped in the quick command, but both passed in the
+  explicit database run above. Final-head CI is still required.
+- Both new memories regressions first failed against the old query: three accepted
+  modern arrivals reported zero; two legacy archive rows with allowance one
+  reported two instead of one. Summing guarded canonical counters fixes both,
+  including the combined legacy-plus-modern total of four without double-counting.
+- All 26 real database tests pass across closure, memories and ordering, including
+  the ordering/closure race. Test fixtures and isolated backfill schemas roll back;
+  no append-only guard is disabled or fixture history forcibly deleted.
+- Current production build passes. The real authenticated closure rehearsal passes
+  (1 test, 16 seconds): admin OTP/TOTP, all three staff sessions invalidated, retained
+  admin access, early refusal, protected CSV/PDF downloads, all-theme AA/overflow,
+  keyboard, reduced motion and exact-zero cold CLS.
+- All 16 current screenshots are byte-identical to the prior reviewed captures;
+  the ivory/gold 375px focused-control viewport was reinspected.
+- Applied additive develop migrations only; 21 public tables retain RLS and repeat
+  migration preserves every count. No reset or production closure occurred. The
+  owned stack was stopped afterward with its backup preserved.
+
+Historical full-gate/native-PDF evidence (not a new full local rerun):
 
 - Full local gate: lint/types/format/build pass;1076 unit tests pass (99 conditional
   skips),851 browser checks pass (195 skips). Skips are not claimed as evidence.
@@ -49,7 +71,7 @@ Current 2026-11-09 integration: merged develop `fffe7b8d` without conflicts, pre
 - Quick verification passes after the concurrency test. Full-gate evidence predates
   that test-only addition; required CI must be rechecked on the final review head.
 
-## Remaining integration work
+## Remaining release checks
 
 Keyboard/focus,44px targets, focused controls above mobile navigation, reduced motion
 and exactly0 cold-load CLS at all three widths pass. All seven long PDF pages were
@@ -59,7 +81,7 @@ See `docs/reviews/TICKET-166/ui-review.md` and the ticket handoff for exact evid
 
 ## Risks and rollout
 
-Current integration base: develop `fffe7b8d`. Review with the owned isolated
+Current integration base: develop `360914b7`. Review with the owned isolated
 stack only: `pnpm exec tsx scripts/test-event-closure.ts` refuses existing staff or
 devices, creates synthetic identities, and restores its exact fixtures/settings.
 

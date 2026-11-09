@@ -1,7 +1,7 @@
 # TICKET-166 UI review — preview release gates retained
 
 2026-11-06. Routes: /admin, /admin/event-closure; downloadable memories PDFs.
-Historical automated evidence follows. Current disposition (2026-11-09): the owner authorizes preview progress while physical-phone keyboard, safe-area and PDF/CSV download checks stay unchecked in release-blocking TICKET-201. Current integration quick checks pass lint, types and 324 related tests (89 skipped); new-head CI and any required focused integration reruns remain pending. No device result is claimed.
+Historical automated evidence follows. Current disposition (2026-11-09): the owner authorizes preview progress while physical-phone keyboard, safe-area and PDF/CSV download checks stay unchecked in release-blocking TICKET-201. Current integrated build, 26 database tests and real authenticated closure browser rehearsal pass. Current 16 screenshots match reviewed captures byte-for-byte; 375px focused controls were reinspected. Final quick lint/types pass; the two opt-in memories DB cases passed separately. Independent review is clean; new-head CI remains required. Physical checks are not claimed.
 
 - PASS (component tests): control-room navigation reaches the closure page; page
   authorization precedes settings reads. PDF and CSV are native download links
