@@ -18,7 +18,7 @@ Both ticket criteria remain unfinished: offline /checkin reload and a complete p
 
 # Verification
 
-Initial expiry tests failed on the missing API (six failed, one existing-contract test passed). After implementation and independent review, eight expiry tests plus four signed-session tests pass. The additional test crosses the deadline during database reads. Quick verification is run before publishing. The storage suite passes all 16 Chromium/WebKit cases, including a separate worker, expiry during database opening, logout races, single-use preparation, corrupt records and malformed database cleanup. Final quick verification passes lint and types; its related-unit selector finds no affected tests for these browser-only files. Real authenticated offline reload, asset eviction, shipped-worker integration and physical phones remain unverified.
+Initial expiry tests failed on the missing API (six failed, one existing-contract test passed). After implementation and independent review, eight expiry tests plus four signed-session tests pass. The additional test crosses the deadline during database reads. Quick verification is run before publishing. Independent follow-up review is clean. The storage suite passes all 16 Chromium/WebKit cases, including a separate worker, expiry during database opening, logout races, single-use preparation, corrupt records and malformed database cleanup. Final quick verification passes lint and types; its related-unit selector finds no affected tests for these browser-only files. Real authenticated offline reload, asset eviction, shipped-worker integration and physical phones remain unverified.
 
 # Risks and rollout
 

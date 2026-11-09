@@ -52,10 +52,11 @@ Chromium/WebKit, including a genuinely separate worker reading and invalidating 
 record. Logs `/tmp/TICKET-108-store-worker.log`; final quick lint/types pass with no
 affected related-unit tests (`/tmp/TICKET-108-store-final-quick.log`). This is not a
 claim of service-worker integration, quota handling, asset readiness or offline
-scanner completion. Independent review requested after addressing earlier expiry
-and connection-cleanup findings.
+scanner completion. Independent follow-up review is clean after addressing expiry and connection-cleanup findings. The reviewer checked the actual separate-worker test, corruption recovery, single-use generation and post-transaction expiry checks.
 
 All owned database stacks are now stopped with backups;048 no longer holds a slot.
 223 coverage repair PR143 awaits final full CI. Next: integrate verified059, build
 minimal standalone document and generated required-asset manifest, wire authorized
 worker save/navigation/logout and prove actual offline decoding. Keep142 draft.
+
+Storage checkpoint committed and pushed as232d6d54 to draftPR142; all219 ticket definitions validate. Root remains active on108. Next integration is still gated on223 then059; no offline-ready acceptance criterion was ticked.
