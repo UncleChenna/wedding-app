@@ -2,7 +2,7 @@
 id: TICKET-222
 title: Reconcile merged tickets after a verified repair
 epic: foundations
-status: in_progress
+status: in_review
 priority: high
 estimate: S
 labels: [test]
@@ -70,5 +70,4 @@ TICKET-057 and TICKET-054 were merged while their verification was failing, then
 - 2026-11-09 — Initial 74 focused tests and quick lint/types/76 related tests passed. Final CLI race matrix passed 20 cases; two shared-ledger mode refusals also pass after correcting their test environment. TICKET-057/054 status reconciliation is intentionally post-merge; no direct/manual status mutation occurred. PR: https://github.com/UncleChenna/wedding-app/pull/137.
 - 2026-11-09 — in_progress → in_review — divine (codex)
 - 2026-11-09 — in_review → in_progress — divine (codex) — Investigate unrelated guest-import asynchronous focus assertion failure in final CI before verified recovery merge
-
 - 2026-11-09 — Final CI42633880639 failed the unrelated guest-import synchronous focus assertion after1428unit passes/156skips. Authorized bounded integration-test repair awaits the same focus assertion; no product, assertion or timeout relaxation.
