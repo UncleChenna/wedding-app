@@ -95,6 +95,14 @@ test("online partial admission commits once and safely retries a lost receipt", 
     await page.getByLabel("Your six-digit PIN").fill(pin);
     await page.getByRole("button", { name: "Sign in", exact: true }).click();
     await expect(page.getByRole("button", { name: "Open camera" })).toBeInViewport();
+    const browserDevice = (await context.cookies())
+      .find((cookie) => cookie.name === "wedding-staff-device")
+      ?.value.split(".")[0];
+    if (!browserDevice || !/^[a-f0-9]{64}$/.test(browserDevice))
+      throw new Error("Missing registered browser device");
+    expect(await db`select role from registered_devices where id=${browserDevice}`).toEqual([
+      { role: "gate" },
+    ]);
     await page.getByRole("button", { name: "Open camera" }).click();
     const valid = page.getByRole("heading", { name: "Valid pass", exact: true });
     try {
@@ -171,7 +179,7 @@ test("online partial admission commits once and safely retries a lost receipt", 
         reported_people: 0,
         admitted_people: 0,
         staff_id: staff,
-        device_id: device,
+        device_id: browserDevice,
       },
     ]);
     // Exercise the real authenticated HTTP pipeline, not a preselected repository verdict.

@@ -18,7 +18,11 @@ describe.runIf(process.env.RUN_SCAN_OBSERVATION_DB_TESTS === "1")(
       if (!process.env.DATABASE_URL) process.loadEnvFile(".env.local");
       const url = process.env.DATABASE_URL ?? "";
       assertDatabaseTarget(url, { localOnly: true });
-      client = postgres(url, { max: 5, prepare: false });
+      client = postgres(url, {
+        max: 5,
+        prepare: false,
+        connection: { application_name: "TICKET-062-observation-tests" },
+      });
       db = drizzle(client, { schema });
       // Disposable guarded database only: grant SELECT so empty reads prove RLS, not missing privileges.
       await client`DO $$ BEGIN
@@ -138,6 +142,52 @@ describe.runIf(process.env.RUN_SCAN_OBSERVATION_DB_TESTS === "1")(
           .from(schema.scanEvents)
           .where(eq(schema.scanEvents.staffId, actor.staffId)),
       ).toHaveLength(0);
+    });
+    it("rechecks session expiry after waiting for a concurrent staff lock", async () => {
+      const { actor, invitationId } = await fixture();
+      const locked = Promise.withResolvers<void>(),
+        release = Promise.withResolvers<void>();
+      let authorized = true;
+      const holder = db.transaction(async (tx) => {
+        await tx
+          .select({ id: schema.staff.id })
+          .from(schema.staff)
+          .where(eq(schema.staff.id, actor.staffId))
+          .for("update");
+        locked.resolve();
+        await release.promise;
+      });
+      void holder.catch(locked.reject);
+      await locked.promise;
+      const attempt = recordScanObservation(
+        db,
+        actor,
+        { invitationId, result: "valid", inputMethod: "qr", reportedAt: new Date() },
+        async () => authorized,
+      );
+      try {
+        await expect
+          .poll(async () => {
+            const rows = await db.execute(
+              sql`select count(*)::int as waiting from pg_stat_activity where application_name='TICKET-062-observation-tests' and wait_event_type='Lock'`,
+            );
+            return Number(rows[0]?.waiting ?? 0);
+          })
+          .toBeGreaterThan(0);
+        authorized = false;
+        release.resolve();
+        await holder;
+        expect(await attempt).toBe(false);
+        expect(
+          await db
+            .select()
+            .from(schema.scanEvents)
+            .where(eq(schema.scanEvents.staffId, actor.staffId)),
+        ).toHaveLength(0);
+      } finally {
+        release.resolve();
+        await Promise.allSettled([holder, attempt]);
+      }
     });
     it("preserves append-only guards and denies browser roles any scan log rows", async () => {
       const { actor, invitationId } = await fixture();
