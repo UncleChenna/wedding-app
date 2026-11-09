@@ -39,7 +39,7 @@ See: [Admin dashboard](../docs/prd.md#admin-dashboard).
 
 ## Acceptance criteria
 
-- [ ] The admin journey passes in CI.
+- [x] The admin journey passes in CI.
 
 ## Test plan
 
