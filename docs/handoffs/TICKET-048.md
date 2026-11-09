@@ -318,3 +318,11 @@ with backup:true, confirmed in /tmp/TICKET-048-db-stop-current.log. Slot release
 Integrated develop3e75175e (verified PR141) without conflicts; the sole incoming
 change is seven defensive scan-sync test lines. No migration/product/UI changes.
 Earlier TICKET-223 wait is superseded; final quick gate and exact-head CI follow.
+
+## Final CI and test-only base refresh — 2026-11-09
+
+All six required CI jobs passed at8b09e7a8 in run42668969768, including full verify,
+Chromium/WebKit scanner checks, migrations/repeat seed and both authenticated journeys.
+Before merge, develop advanced to5338f85d (verified223 regression tests/docs only).
+Integrated conflict-free at643769a; no product, schema or UI change. Normal commit
+quick hook passes. Combined final-head CI will be checked before merging PR103.
