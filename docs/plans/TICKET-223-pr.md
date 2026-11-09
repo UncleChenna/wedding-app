@@ -1,6 +1,6 @@
 # TICKET-223: cover scan reconciliation safety boundaries
 
-## Problem and result
+## Summary
 
 The merged scan-sync helper caused the unchanged per-file95% coverage gate to fail:
 92.3%lines and83.33%branches. The missing path was its defensive invalid-count
@@ -15,7 +15,7 @@ behavioral regressions without changing production code, thresholds or exclusion
 - All four device refusal outcomes remain refusals, even if the current server
   invitation is eligible. Refusals never retroactively admit someone.
 
-## Acceptance and evidence
+## Verification
 
 - Reproduced original scoped failure:92.3%lines/83.33%branches; uncovered line82.
 - Added tests pass19/19; scan-sync.ts now100%lines/branches/functions.
@@ -23,7 +23,7 @@ behavioral regressions without changing production code, thresholds or exclusion
 - verify:quick: lint/types/19related tests pass.
 - Independent test-only review clean: invalid-count defense and refusal preservation verified; no production/config changes. Final hosted CI remains required before merge.
 
-## Scope and limitations
+## Risks and rollout
 
 No runtime, database, dependency, UI, CI configuration or migration changes.
 No existing test or assertion was removed. Pure tests require no database;
@@ -40,3 +40,9 @@ Ticket: tickets/TICKET-223-cover-scan-reconciliation-safety-boundaries.md
 ## Screenshots and UI checklist
 
 N/A: tests only; no rendered interface, styling or browser behavior changed.
+
+## Acceptance criteria and evidence
+
+All missing defensive reconciliation cases have behavioral assertions. Fullcoverage
+and quick gates pass with unchanged thresholds; independent review is clean.
+Evidence logs are in docs/reviews/TICKET-223/. Final required CI is checked beforemerge.
