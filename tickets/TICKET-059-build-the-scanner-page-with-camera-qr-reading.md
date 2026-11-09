@@ -2,7 +2,7 @@
 id: TICKET-059
 title: Build the scanner page with camera QR reading
 epic: checkin
-status: blocked
+status: in_review
 priority: high
 estimate: L
 labels: [frontend]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-11-09
 started: 2026-11-09
 completed: ""
-reason: "Final combined CI exposed merged TICKET-173 scan-sync coverage below the mandatory per-file gate; TICKET-223 adds the missing safety-boundary tests. Scanner, camera and authenticated browser jobs pass; hold merge until repair and final CI pass."
-resume_to: in_review
+reason: ""
+resume_to: ""
 ---
 
 # TICKET-059: Build the scanner page with camera QR reading
@@ -67,3 +67,4 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-1) · [Journey 2: check-
 - 2026-11-09 — todo → in_progress — divine (codex) — started ahead of TICKET-057 (blocked)
 - 2026-11-09 — in_progress → in_review — divine (codex)
 - 2026-11-09 — in_review → blocked — divine (codex) — Final combined CI exposed merged TICKET-173 scan-sync coverage below the mandatory per-file gate; TICKET-223 adds the missing safety-boundary tests. Scanner, camera and authenticated browser jobs pass; hold merge until repair and final CI pass.
+- 2026-11-09 — blocked → in_review — divine (codex) — Verified develop PR141 repaired shared coverage; updated branch passes1519 tests with all critical coverage gates.
