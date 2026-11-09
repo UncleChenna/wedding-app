@@ -2675,9 +2675,10 @@
     "WED-108": {
       "log": [
         "- 2026-11-09 — todo → claimed — divine (codex) — started ahead of TICKET-059 (in_review)",
-        "- 2026-11-09 — todo → in_progress — divine (codex) — started ahead of TICKET-059 (in_review)"
+        "- 2026-11-09 — todo → in_progress — divine (codex) — started ahead of TICKET-059 (in_review)",
+        "- 2026-11-09 — in_progress → blocked — divine (codex) — Offline document and decoder integration awaits verified TICKET-059 camera merge; storage/runtime foundation verified and pushed in draft PR142."
       ],
-      "status": "in_progress",
+      "status": "blocked",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-108",
@@ -2685,8 +2686,8 @@
       "started": "2026-11-09",
       "completed": "",
       "updated": "2026-11-09",
-      "reason": "",
-      "resume_to": ""
+      "reason": "Offline document and decoder integration awaits verified TICKET-059 camera merge; storage/runtime foundation verified and pushed in draft PR142.",
+      "resume_to": "in_progress"
     },
     "WED-223": {
       "log": [
