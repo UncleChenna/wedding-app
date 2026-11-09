@@ -2524,9 +2524,10 @@
       "log": [
         "- 2026-11-09 — todo → claimed — divine (codex) — started ahead of TICKET-027 (in_progress)",
         "- 2026-11-09 — todo → in_progress — divine (codex) — started ahead of TICKET-027 (in_progress)",
-        "- 2026-11-09 — in_progress → blocked — divine (codex) — Draft PR #133 https://github.com/UncleChenna/wedding-app/pull/133: independent review clean; waiting for TICKET-027 policy integration and final CI. Local projection checks pass; no RLS integration claimed."
+        "- 2026-11-09 — in_progress → blocked — divine (codex) — Draft PR #133 https://github.com/UncleChenna/wedding-app/pull/133: independent review clean; waiting for TICKET-027 policy integration and final CI. Local projection checks pass; no RLS integration claimed.",
+        "- 2026-11-09 — blocked → in_progress — divine (codex) — Dependencies027 and033 merged; verify privacy against actual RLS and station broadcast contracts"
       ],
-      "status": "blocked",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-128",
@@ -2534,8 +2535,8 @@
       "started": "2026-11-09",
       "completed": "",
       "updated": "2026-11-09",
-      "reason": "Draft PR #133 https://github.com/UncleChenna/wedding-app/pull/133: independent review clean; waiting for TICKET-027 policy integration and final CI. Local projection checks pass; no RLS integration claimed.",
-      "resume_to": "in_progress"
+      "reason": "",
+      "resume_to": ""
     },
     "WED-173": {
       "log": [
