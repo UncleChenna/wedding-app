@@ -18,3 +18,10 @@ inspect installed API after adding generated dependency. No dependencies added y
 130 editorreview_ticket024 owns isolatedDB slot for order-concurrency verification.
 134 editorreview_ticket098 paused waitingverified221merge beforefinalintegration.
 128 draft133blocked027. Physicalphones remain unverified, not waived or declaredpassed.
+
+Camera foundation update: generated @zxing/browser0.2.1 dependency and authorized lockfile.
+Added camera-reader lifecycle/native detection/lazy ZXing fallback/torch/error mapping.
+14 focused tests pass; verify:quick lint/types and11related tests pass. Permission
+regressions caught cross-realm DOMException handling and remain unchanged afterfix.
+Actual browser decoding/UI/auth integration still outstanding; early independent review
+is assigned to review_ticket098. No camera route or completed acceptance claim yet.
