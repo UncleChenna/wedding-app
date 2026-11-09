@@ -42,10 +42,10 @@ See: [Security](../docs/prd.md#security) · [Gate check-in](../docs/prd.md#gate-
 
 ## Acceptance criteria
 
-- [ ] Valid tokens verify and tampered tokens fail in Chromium and WebKit Playwright projects.
-- [ ] No private key material is shipped to the client bundle or cache (bundle/cache scan test).
-- [ ] Shared valid, forged, tampered and expired-policy vectors pass in Node, Chromium and WebKit, including forced fallback when WebCrypto Ed25519 is unavailable. Follow the approved credential/freshness contract; do not invent a new token payload.
-- [ ] Record automated per-token timings and exact browser/build versions against the <20ms target; clearly label these as automated evidence only. TICKET-114 retains the mandatory physical mid-range Android measurement, and automated timings do not certify hardware.
+- [x] Valid tokens verify and tampered tokens fail in Chromium and WebKit Playwright projects.
+- [x] No private key material is shipped to the client bundle or cache (bundle/cache scan test).
+- [x] Shared valid, forged, tampered and expired-policy vectors pass in Node, Chromium and WebKit, including forced fallback when WebCrypto Ed25519 is unavailable. Follow the approved credential/freshness contract; do not invent a new token payload.
+- [x] Record automated per-token timings and exact browser/build versions against the <20ms target; clearly label these as automated evidence only. TICKET-114 retains the mandatory physical mid-range Android measurement, and automated timings do not certify hardware.
 
 ## Test plan
 
@@ -68,3 +68,5 @@ See: [Security](../docs/prd.md#security) · [Gate check-in](../docs/prd.md#gate-
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-09 — todo → claimed — divine (codex)
 - 2026-11-09 — todo → in_progress — divine (codex)
+
+- 2026-11-09 — Implemented strict public-key fallback and trusted session-expiry wrapper; nine shared vectors pass in Node/Chromium/WebKit. Four browser scenarios pass, including forced fallback and bundle/cache scans. Automated timings recorded in docs/reviews/TICKET-057/automated-timings.json; physical certification remains TICKET-114 and camera rehearsal TICKET-163. PR: https://github.com/UncleChenna/wedding-app/pull/127. Full CI remains required before merge.

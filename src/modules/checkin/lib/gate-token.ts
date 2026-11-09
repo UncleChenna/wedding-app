@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { ed25519 } from "@noble/curves/ed25519.js";
 
 /**
  * Gate pass format 1 (ADR 0020): `base64url(JSON payload).base64url(Ed25519 signature)`.
@@ -89,13 +90,26 @@ export async function verifyGatePass(
   keys: readonly GatePublicKey[],
   options: { now: number; maxFutureSkewSeconds?: number },
 ): Promise<GatePassVerification> {
+  const skew = options.maxFutureSkewSeconds ?? GATE_PASS_MAX_FUTURE_SKEW_SECONDS;
+  if (!Number.isFinite(options.now) || !Number.isFinite(skew) || skew < 0) {
+    return { ok: false, reason: "malformed" };
+  }
   const parsed = parseGatePass(token);
   if (!parsed.ok) return parsed;
   const { payload, signedSegment, signature } = parsed.value;
 
   const published = keys.find((key) => key.kid === payload.kid);
   const spki = published ? decodeBase64Url(published.spki) : null;
-  if (!spki) return { ok: false, reason: "unknown-key" };
+  // RFC 8410: Ed25519 SPKI contains this fixed algorithm identifier and a 32-byte key.
+  const prefix = [0x30, 0x2a, 0x30, 0x05, 0x06, 0x03, 0x2b, 0x65, 0x70, 0x03, 0x21, 0x00];
+  if (
+    published?.alg !== "Ed25519" ||
+    !spki ||
+    spki.length !== 44 ||
+    !prefix.every((byte, index) => spki[index] === byte)
+  ) {
+    return { ok: false, reason: "unknown-key" };
+  }
 
   let valid: boolean;
   try {
@@ -107,11 +121,23 @@ export async function verifyGatePass(
       new TextEncoder().encode(signedSegment),
     );
   } catch {
-    return { ok: false, reason: "unknown-key" };
+    // A browser may expose WebCrypto but not Ed25519. Never fall back after a false
+    // verification result; only unavailable/throwing crypto takes this path.
+    try {
+      valid = ed25519.verify(
+        signature,
+        new TextEncoder().encode(signedSegment),
+        spki.subarray(12),
+        {
+          zip215: false,
+        },
+      );
+    } catch {
+      valid = false;
+    }
   }
   if (!valid) return { ok: false, reason: "bad-signature" };
 
-  const skew = options.maxFutureSkewSeconds ?? GATE_PASS_MAX_FUTURE_SKEW_SECONDS;
   if (payload.iat > Math.floor(options.now / 1000) + skew) {
     return { ok: false, reason: "issued-in-future" };
   }
