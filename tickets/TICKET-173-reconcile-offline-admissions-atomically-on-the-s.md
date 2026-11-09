@@ -2,20 +2,20 @@
 id: TICKET-173
 title: Reconcile offline admissions atomically on the server
 epic: checkin
-status: todo
+status: in_progress
 priority: high
 estimate: L
 labels: [backend, db, test]
 module: checkin
-owner: ""
-agent: ""
+owner: unclechenna
+agent: claude
 blocked_by: [TICKET-024, TICKET-031, TICKET-058]
 blocks: [TICKET-066]
-branch: ""
+branch: TICKET-173
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-09
+started: 2026-11-09
 completed: ""
 reason: ""
 resume_to: ""
@@ -58,3 +58,5 @@ Backlog audit coverage: CHK-5–7. See [PRD](../docs/prd.md) and [audit](AUDIT.m
 ## Activity log
 
 - 2026-10-21 — new → todo — divine
+- 2026-11-09 — todo → claimed — unclechenna (claude)
+- 2026-11-09 — todo → in_progress — unclechenna (claude)
