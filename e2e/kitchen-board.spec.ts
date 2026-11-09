@@ -23,16 +23,27 @@ const staffId = randomUUID();
 const pin = String(randomInt(100000, 999999));
 const menuId = randomUUID();
 const tableIds: string[] = [];
+const invitationIds: string[] = [];
 let db: Sql;
+let restoreSettings: (() => Promise<unknown>) | undefined;
 
 /** Writes an order the way createOrder does, including its broadcast, in one transaction. */
-async function placeOrder(item: string, quantity: number) {
+async function placeOrder(item: string, quantity: number, dietary?: string) {
   const number = randomInt(100000, 900000);
   return db.begin(async (tx) => {
     const [table] = await tx<{ id: string }[]>`insert into tables(number, name, capacity)
-      values (${number}, ${tag}, 8) returning id`;
+      values (${number}, 'Baobab', 8) returning id`;
     if (!table) throw new Error("no table");
     tableIds.push(table.id);
+    if (dietary) {
+      const [invitation] = await tx<
+        { id: string }[]
+      >`insert into invitations(token, household_name, status, table_id)
+        values (${randomBytes(32).toString("base64url")}, ${tag}, 'rsvp_yes', ${table.id}) returning id`;
+      invitationIds.push(invitation?.id ?? "");
+      await tx`insert into guests(invitation_id, name, dietary_notes)
+        values (${invitation?.id ?? ""}, 'Ada Obi', ${dietary})`;
+    }
     const [order] = await tx<{ id: string }[]>`insert into orders(table_id, notes)
       values (${table.id}, ${"No pepper"}) returning id`;
     const [ticket] = await tx<{ id: string }[]>`insert into station_orders(order_id, station)
@@ -59,6 +70,17 @@ test.describe("kitchen board", () => {
     if (existsSync(".env.local")) process.loadEnvFile(".env.local");
     assertDatabaseTarget(process.env.DATABASE_URL ?? "", { localOnly: true });
     db = postgres(process.env.DATABASE_URL ?? "", { max: 2, onnotice: () => {} });
+    // Staff access ends after the event day, so sign-in needs an event date in the future and
+    // a time zone. Seeded data may lack the time zone; set both for this run and put them back.
+    const [settings] = await db<{ date: string | null; zone: string | null }[]>`
+      select event_date::text as date, time_zone as zone from event_settings where id = 1`;
+    await db`insert into event_settings(id, event_date, time_zone)
+      values (1, (now() + interval '7 days')::date, 'Africa/Lagos')
+      on conflict (id) do update set event_date = excluded.event_date, time_zone = excluded.time_zone`;
+    restoreSettings = () =>
+      settings
+        ? db`update event_settings set event_date = ${settings.date}, time_zone = ${settings.zone} where id = 1`
+        : db`delete from event_settings where id = 1`;
     await db`insert into staff(id, name, role, pin_hash, pin_issued_at, pin_expires_at)
       values (${staffId}, ${tag}, 'kitchen', ${credential(pin)}, now() - interval '1 minute', now() + interval '1 day')`;
     await db`insert into menu_items(id, name, category_v2, station, max_per_order, is_available)
@@ -68,12 +90,14 @@ test.describe("kitchen board", () => {
     if (!db) return;
     try {
       if (tableIds.length) await db`delete from orders where table_id in ${db(tableIds)}`;
+      if (invitationIds.length) await db`delete from invitations where id in ${db(invitationIds)}`;
       if (tableIds.length) await db`delete from tables where id in ${db(tableIds)}`;
       await db`delete from menu_items where id = ${menuId}`;
       await db`delete from staff_pin_attempts where device_id in
         (select id from registered_devices where registered_by_staff_id = ${staffId})`;
       await db`delete from registered_devices where registered_by_staff_id = ${staffId}`;
       await db`delete from staff where id = ${staffId}`;
+      await restoreSettings?.();
     } finally {
       await db.end();
     }
@@ -96,7 +120,9 @@ test.describe("kitchen board", () => {
     await page.goto("/kitchen");
     await page.getByLabel("Your six-digit PIN").fill(pin);
     await page.getByRole("button", { name: "Sign in", exact: true }).click();
-    await expect(page.getByRole("heading", { name: "Kitchen board", exact: true })).toBeVisible();
+    // Signed in: the board's own heading and sign-out, not the sign-in page with the same title.
+    await expect(page.getByRole("button", { name: "Sign out" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: /orders? waiting/ })).toBeVisible();
     await expect(page.getByRole("status").filter({ hasText: "Live" })).toBeVisible({
       timeout: 15_000,
     });
@@ -114,11 +140,14 @@ test.describe("kitchen board", () => {
     await expect(page.getByText("Sound on")).toBeVisible();
     const afterUnlock = await chimes(page);
 
-    const second = await placeOrder("second", 3);
+    const second = await placeOrder("second", 3, "Nut allergy");
     const secondCard = page.getByRole("listitem").filter({ hasText: `Table ${second.number}` });
     await expect(secondCard).toBeVisible({ timeout: 2_000 });
     await expect(secondCard).toContainText("3 ×");
     await expect(secondCard).toContainText("No pepper");
+    // The kitchen, and only the kitchen, sees the table's dietary notes (PRD privacy rule).
+    await expect(secondCard).toContainText("Ada Obi: Nut allergy");
+    await expect(firstCard).not.toContainText("Dietary");
     await expect.poll(() => chimes(page)).toBeGreaterThan(afterUnlock);
 
     // Oldest first: the first order's card comes before the second's.

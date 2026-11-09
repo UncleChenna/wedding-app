@@ -41,8 +41,8 @@ See: [Table ordering](../docs/prd.md#table-ordering) (ORD-4) · [Users and roles
 
 ## Acceptance criteria
 
-- [ ] New orders appear oldest-first within 2s (e2e).
-- [ ] A new order plays a sound when audio is unlocked and shows a visual flash regardless.
+- [x] New orders appear oldest-first within 2s (e2e).
+- [x] A new order plays a sound when audio is unlocked and shows a visual flash regardless.
 - [ ] Board is legible at 1 metre on a tablet (manual).
 
 ## Test plan
@@ -59,6 +59,18 @@ See: [Table ordering](../docs/prd.md#table-ordering) (ORD-4) · [Users and roles
 ## Notes / decisions
 
 _Agents append dated notes here while working._
+
+- 2026-11-09 (unclechenna, claude):
+  - **Live path:** the TICKET-033 kitchen channel. Every notice, rejoin and retry refetches `GET /api/kitchen/board`,
+    so a missed message can't leave a gap.
+  - **Projection:** the response is checked against a strict kitchen contract. Dietary notes come from guests seated
+    at the order's table (their own table, or else their household's). A bar ticket schema with no dietary field is
+    ready for the bar board.
+  - **Station order statuses** are received, preparing, served and cancelled; there's no "ready". The board shows
+    received and preparing.
+  - **Sound:** a two-note chime made with Web Audio after "Turn on sound", so no audio file has to load. The flash
+    is an opacity fade with a "New" label, and it shows whether sound is on or not.
+  - **Open:** legibility at 1 metre on a real tablet is a manual check for the owner.
 
 ## Activity log
 

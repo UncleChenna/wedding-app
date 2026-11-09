@@ -225,7 +225,9 @@ function TicketCard({
           <h3 className="font-display text-4xl leading-tight">
             Table {ticket.table.number}
             {ticket.table.name ? (
-              <span className="block text-lg text-muted-foreground">{ticket.table.name}</span>
+              <span className="block font-sans text-lg text-muted-foreground">
+                {ticket.table.name}
+              </span>
             ) : null}
           </h3>
           <p className="shrink-0 text-lg font-medium">
