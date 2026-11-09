@@ -20,7 +20,7 @@ confirmation,300-rowimport,repeatedimportno-duplicates,andexistingRSVPpreservati
 
 # Verification
 
-Nine component tests pass after an initial missing-module failure and a reproduced expiry-during-commit failure. Quick lint/types and related tests pass. No production route, actual backend integration, database or browser evidence is claimed yet.
+Eleven focused tests pass (nine component flows plus UTF-8/BOM decoding and malformed-byte rejection) after an initial missing-module failure and a reproduced expiry-during-commit failure. Quick lint/types and related tests pass. No production route, actual backend integration, database or browser evidence is claimed yet.
 
 # Risks and rollout
 
