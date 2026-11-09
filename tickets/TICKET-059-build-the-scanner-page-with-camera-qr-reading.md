@@ -41,9 +41,9 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-1) · [Journey 2: check-
 
 ## Acceptance criteria
 
-- [ ] Decodes a test QR from a fake camera stream in Chromium and WebKit e2e.
-- [ ] Denied camera permission shows a recovery message and keyboard-accessible manual check-in help; TICKET-063 must replace the interim help destination with authenticated name search before gate release.
-- [ ] Same QR held in view is processed once per 3 seconds.
+- [x] Decodes a test QR from a fake camera stream in Chromium and WebKit e2e.
+- [x] Denied camera permission shows a recovery message and keyboard-accessible manual check-in help; TICKET-063 must replace the interim help destination with authenticated name search before gate release.
+- [x] Same QR held in view is processed once per 3 seconds.
 
 ## Test plan
 

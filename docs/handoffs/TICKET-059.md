@@ -76,3 +76,13 @@ mandatory denied-camera search/admission destination. TICKET-059 exposes interim
 help honestly, avoiding the inverse dependency on 063. CHK-4 and release dependencies
 remain intact. Native PG is stopped with its synthetic data preserved.
 Independent delta review requested. Full CI and 057 ledger reconciliation still pending.
+
+Coverage integration: develop500ba2d7 merged as8e79740c. Full unit suite passes
+1,454 tests with156 opt-in skips in59.81s. All per-file critical gates pass;
+camera96.8%lines/95.94%branches, aggregate97.9%/98.2%. Added14 meaningful
+lifecycle/capability tests; independent review clean. Consumed lockfile approval
+archived locally so existing protected-write hook tests remain meaningful.
+CI env-file guard now optional (workflow-provided env still target-validated).
+Held-QR callback stops its fixture aftersecondread; all4browsercases passagain.
+Canonical PRbody: docs/plans/TICKET-059-pr.md. Three scope criteria proved and
+checked;057ledger dependency and finalCI remain outstanding. No real-device claim.

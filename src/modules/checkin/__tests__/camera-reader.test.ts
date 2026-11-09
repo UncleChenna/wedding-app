@@ -135,3 +135,100 @@ it("does not report a pending torch change as successful after shutdown", async 
   finish?.();
   expect(await result).toBe(false);
 });
+it("does not request a camera for an already-cancelled session", async () => {
+  const f = fixture();
+  f.controller.abort();
+  const controls = await startQrCamera({ ...f.options, readFrame: vi.fn() });
+  expect(f.getUserMedia).not.toHaveBeenCalled();
+  expect(await controls.setTorch(true)).toBe(false);
+});
+it("offers recovery when camera APIs are unavailable", async () => {
+  const f = fixture();
+  Object.defineProperty(navigator, "mediaDevices", { configurable: true, value: undefined });
+  await startQrCamera({ ...f.options, readFrame: vi.fn() });
+  expect(f.onProblem).toHaveBeenCalledWith("unsupported");
+  expect(f.getUserMedia).not.toHaveBeenCalled();
+});
+it("cleans up cancellation while video playback is starting", async () => {
+  const f = fixture();
+  let finish: (() => void) | undefined;
+  f.video.play = vi.fn(
+    () =>
+      new Promise<void>((resolve) => {
+        finish = resolve;
+      }),
+  );
+  const readFrame = vi.fn();
+  const pending = startQrCamera({ ...f.options, readFrame });
+  await Promise.resolve();
+  f.controller.abort();
+  finish?.();
+  await pending;
+  expect(f.stop).toHaveBeenCalled();
+  expect(readFrame).not.toHaveBeenCalled();
+  expect(f.onProblem).not.toHaveBeenCalled();
+});
+it("does not report a rejected pending permission request after cancellation", async () => {
+  const f = fixture();
+  let reject: ((error: Error) => void) | undefined;
+  f.getUserMedia.mockImplementation(
+    () =>
+      new Promise((_resolve, fail) => {
+        reject = fail;
+      }),
+  );
+  const pending = startQrCamera({ ...f.options, readFrame: vi.fn() });
+  f.controller.abort();
+  reject?.(new Error("cancelled"));
+  await pending;
+  expect(f.onProblem).not.toHaveBeenCalled();
+});
+it("waits for usable video frames and stops once an unexpected decoder failure occurs", async () => {
+  vi.useFakeTimers();
+  const f = fixture();
+  let ready = 0;
+  const video = document.createElement("video");
+  Object.defineProperty(video, "readyState", { get: () => ready });
+  video.play = vi.fn().mockResolvedValue(undefined);
+  const readFrame = vi.fn().mockRejectedValue(new Error("broken decoder"));
+  await startQrCamera({ ...f.options, video, readFrame });
+  await vi.advanceTimersByTimeAsync(300);
+  expect(readFrame).not.toHaveBeenCalled();
+  ready = 4;
+  await vi.advanceTimersByTimeAsync(300);
+  expect(readFrame).toHaveBeenCalledTimes(1);
+  expect(f.onProblem.mock.calls).toEqual([["failed"]]);
+  expect(f.stop).toHaveBeenCalled();
+  f.track.dispatchEvent(new Event("ended"));
+  await vi.advanceTimersByTimeAsync(300);
+  expect(f.onProblem).toHaveBeenCalledTimes(1);
+});
+it("ignores a decoder rejection after the operator closes the camera", async () => {
+  const f = fixture();
+  let reject: ((error: Error) => void) | undefined;
+  await startQrCamera({
+    ...f.options,
+    readFrame: () =>
+      new Promise((_resolve, fail) => {
+        reject = fail;
+      }),
+  });
+  f.controller.abort();
+  reject?.(new Error("late failure"));
+  await Promise.resolve();
+  expect(f.onProblem).not.toHaveBeenCalled();
+});
+it("hides torch controls when a stream has no usable video track", async () => {
+  const f = fixture();
+  f.getUserMedia.mockResolvedValue({ getTracks: () => [], getVideoTracks: () => [] });
+  const controls = await startQrCamera({ ...f.options, readFrame: async () => [] });
+  expect(f.onTorchAvailable).toHaveBeenCalledWith(false);
+  expect(await controls.setTorch(true)).toBe(false);
+  controls.stop();
+});
+it.each([null, "private detail", { name: 42 }])(
+  "sanitizes unexpected error shapes: %j",
+  (error) => {
+    expect(cameraProblem(error)).toBe("failed");
+  },
+);

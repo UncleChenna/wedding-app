@@ -83,3 +83,32 @@ it("falls back when the native capability probe never settles", async () => {
   const read = await pending;
   expect(await read(document.createElement("video"))).toEqual(["fallback-code"]);
 });
+it.each(["unsupported", "rejected", "constructor"])(
+  "uses fallback after %s native capability",
+  async (mode) => {
+    vi.stubGlobal(
+      "BarcodeDetector",
+      class {
+        static async getSupportedFormats() {
+          if (mode === "rejected") throw new Error("unsupported platform");
+          return mode === "unsupported" ? ["ean_13"] : ["qr_code"];
+        }
+        constructor() {
+          throw new Error("unsupported detector");
+        }
+      },
+    );
+    decode.mockReturnValue({ getText: () => "fallback-code" });
+    const read = await createFrameReader();
+    expect(await read(document.createElement("video"))).toEqual(["fallback-code"]);
+  },
+);
+it("recognizes name-only blank-frame errors across module realms", async () => {
+  vi.stubGlobal("BarcodeDetector", undefined);
+  decode.mockImplementation(() => {
+    throw { name: "NotFoundException" };
+  });
+  const read = await createFrameReader();
+  expect(await read(document.createElement("video"))).toEqual([]);
+  expect(await read(document.createElement("video"))).toEqual([]);
+});
