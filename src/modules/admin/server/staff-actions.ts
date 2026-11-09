@@ -10,7 +10,8 @@ import { getEventSettings } from "@/modules/shared/server/settings";
 import { newStaffSchema, staffCopy, type PinState, type StaffFormState } from "../lib/staff";
 import { formatStaffExpiry } from "../lib/staff-time";
 import { withCurrentAdminAccess } from "./current-admin-access";
-import { addStaff, issueStaffPin, revokeStaff } from "./staff-repository";
+import { addStaff, issueStaffPin, revokeStaff, setAlertContact } from "./staff-repository";
+import { alertContactSchema, alertCopy, type AlertContactState } from "../lib/staff-alerts";
 
 const log = createLogger({ module: "admin-staff" });
 const idSchema = z.uuid();
@@ -92,5 +93,32 @@ export async function revokeStaffAction(_previous: PinState, form: FormData): Pr
     unstable_rethrow(error);
     log.warn("staff revoke failed");
     return { status: "error", message: staffCopy.failed };
+  }
+}
+
+/** Saves a station person's WhatsApp number and alert opt-in (TICKET-086). Numbers are never logged. */
+export async function saveAlertContactAction(
+  _previous: AlertContactState,
+  form: FormData,
+): Promise<AlertContactState> {
+  const typed = { number: String(form.get("number") ?? ""), optIn: form.get("optIn") === "on" };
+  const parsed = alertContactSchema.safeParse({ id: form.get("id") ?? "", ...typed });
+  if (!parsed.success) {
+    const issue = parsed.error.issues.find((item) => item.path[0] === "number");
+    if (!issue) return { status: "error", message: alertCopy.missing, ...typed };
+    return { status: "error", message: alertCopy.check, fieldMessage: issue.message, ...typed };
+  }
+  try {
+    const result = await withCurrentAdminAccess(() =>
+      setAlertContact(db, parsed.data.id, parsed.data),
+    );
+    if (!result.ok) return { status: "error", message: result.message, ...typed };
+    if (!result.value) return { status: "error", message: alertCopy.missing, ...typed };
+    revalidatePath(appRoutes.adminStaff.path);
+    return { status: "saved", message: parsed.data.optIn ? alertCopy.savedOn : alertCopy.savedOff };
+  } catch (error) {
+    unstable_rethrow(error);
+    log.warn("staff alert contact save failed");
+    return { status: "error", message: alertCopy.failed, ...typed };
   }
 }
