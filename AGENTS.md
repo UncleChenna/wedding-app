@@ -53,7 +53,8 @@ See [application journeys](docs/journeys.md) for entry points, route connections
 | `pnpm db:seed` / `db:reset`                                          | Disposable local data only; reset checks stack identity     |
 | `pnpm db:check-rls` / `db:counts`                                    | Fail if a public table lacks RLS; diffable row counts       |
 | `pnpm themes:schema`                                                 | Generate theme JSON schema                                  |
-| `pnpm t:next [--module m]` / `t:board` / `t:list` / `t:show <id>`    | Read the queue (live, includes unmerged claims)             |
+| `pnpm t:next [--module m]` / `t:board` / `t:list` / `t:show <id>`    | Read the queue (live; also lists tickets to start ahead)    |
+| `pnpm t:start <id> [--ahead] [--db]`                                 | Claim, worktree, install and `in_progress` in one go        |
 | `pnpm t:claim <id> --owner <you> --agent <agent>` / `t:release <id>` | Atomic claim via the shared ticket ledger                   |
 | `pnpm t:move <id> <status> [--reason] [--push]`                      | Enforced status transition                                  |
 | `pnpm t:pr <id>`                                                     | Verify, push, open PR, move to in_review                    |
@@ -72,8 +73,10 @@ See [application journeys](docs/journeys.md) for entry points, route connections
 - Server I/O imports `server-only`; validate external input with Zod. Use Drizzle for data.
 - Supabase JS is for Auth/Realtime. Keep RLS enabled; policy changes need authorization and an ADR.
 - Expected errors are return values. Use the shared logger; never expose secrets or guest technical errors.
-- No manual edits to secrets, lockfiles, installed/build output, applied migrations or generated schemas.
-  Use approved generators; explicit human exceptions use the exact-path process in collaboration docs.
+- No manual edits to secrets, lockfiles, installed/build output, migrations already on `develop` or generated
+  schemas. New `pnpm db:generate` output needs no approval; destructive SQL (drop, retype, rename, delete) needs
+  the owner's yes. The owner's yes in the conversation counts; record it in the PR and, for a protected file, in
+  `.harness/approved-writes.json` (see [collaboration](docs/collaboration.md#protected-files)).
 - Ask before paid/new account services, native-build dependencies, CI/RLS changes or data deletion,
   unless the current user request already authorizes the specific action.
 - Never weaken/skip/delete tests, lint rules or hooks to get green.
@@ -91,7 +94,11 @@ with evidence. Nested `src/AGENTS.md` summarises frontend rules.
 All work happens on a claimed ticket in [`tickets/`](tickets/BOARD.md). Rules: [docs/tickets.md](docs/tickets.md).
 Exact commands: the [`ticket-workflow` skill](.agents/skills/ticket-workflow/SKILL.md).
 
-### Traceable branches and human review
+**Light lane:** a small fix (about 50 changed lines; no schema, RLS, CI, dependency or new-feature change) may skip
+the ticket. Use a `chore/<slug>` branch from `origin/develop`, a Conventional Commit, and a PR to `develop` with a
+short description and the checks run. See [docs/tickets.md](docs/tickets.md#light-lane).
+
+### Traceable branches and review
 
 - Keep the ticket ID in its filename (`tickets/TICKET-NNN-description.md`), commit subjects and PR title.
   Name every new work branch **exactly** after its ticket ID: `TICKET-188`, with no owner prefix or extra slug.
@@ -103,8 +110,10 @@ Exact commands: the [`ticket-workflow` skill](.agents/skills/ticket-workflow/SKI
   tests run and their actual results, untested cases, risks/limitations, and any migration or rollback steps.
   Include screenshots for UI changes and exact review steps where useful. Empty templates and vague summaries
   such as "done" are not sufficient. Update the description when the implementation changes.
-- The human reviews and merges. Agents must **never merge, enable auto-merge, or push directly to `develop` or
-  `main`**. Keep the ticket `in_review` until its PR is confirmed merged into `develop`, then mark it `done`.
+- **Merging:** the ticket owner's agent may merge its own PR into `develop` once every required CI check is
+  green, unless the owner asked to review it first. Never merge another owner's PR, never merge on red or pending
+  checks, never enable auto-merge, and never push directly to `develop` or `main`. Only the owner merges into
+  `main`. Keep the ticket `in_review` until its PR is merged, then mark it `done`.
 - Existing active branches retain their names during migration; do not rename another owner's branch or merge
   their work. New claims and branches follow the exact-ID rule.
 
@@ -123,21 +132,27 @@ Before writing or changing code, review the task list to confirm you are working
 - Repeat this check after a scope change or handoff, and compare the result against the acceptance criteria
   before declaring the work finished.
 
-1. **Pick the work.** `pnpm t:next`, then `pnpm t:claim <id> --owner <you> --agent <agent>`. Never work without a
-   claimed ticket; one ticket at a time.
-2. **Isolate it.** `pnpm wt:new <id>`; work only in `.worktrees/<id>` on its branch named exactly after the ticket ID, e.g. `TICKET-188`.
-3. **Start.** `pnpm t:move <id> in_progress --push`, so the change is committed and pushed immediately.
-4. **Build.** Dated plan, failing tests, implementation, `pnpm verify`. Commit in small steps; every subject starts
+1. **Pick and start.** `pnpm t:next`, then `pnpm t:start <id>` (add `--ahead` for a ticket listed under "Can start
+   ahead"). It claims the ticket, creates `.worktrees/<id>` on branch `<id>`, installs, and moves it to
+   `in_progress` with a push. Never work without a claimed ticket; one ticket at a time.
+2. **Work in the worktree.** Only in `.worktrees/<id>`. The database isn't started until you need it:
+   `pnpm db:migrate` or `db:seed` starts it on first use (`t:start … --db` starts it straight away).
+3. **Keep the tools current.** If a `t:*`/`wt:*` command says the checkout's tools are behind `origin/develop`,
+   update that checkout (or run the command from the new worktree) before relying on it.
+4. **Build.** Tests, then the implementation (a plan file is optional). Commit in small steps; every subject starts
    with the ticket id, e.g. `TICKET-014: add RSVP form validation`.
-5. **Finish.** Tick the acceptance criteria, fill in the notes, write the PR body, then `pnpm t:pr <id>`. It verifies,
-   pushes, opens a PR titled `<id>: <title>` targeting `develop` from the template, moves the ticket to `in_review` and pushes.
-6. **Close.** After the human reviews and merges into `develop`: `pnpm t:move <id> done` (records completion date and PR link), then `pnpm wt:remove <id>`.
+5. **Finish.** Tick the acceptance criteria, write the PR body (`docs/plans/<id>-pr.md`, the single write-up), then
+   `pnpm t:pr <id>`. It runs `verify:quick` (`--full` for the whole suite), pushes, opens or readies a PR to
+   `develop`, and moves the ticket to `in_review`. CI runs the full `pnpm verify`.
+6. **Close.** Once CI is green, merge it yourself (see Merging above) unless the owner wants to review first. Then
+   `pnpm t:move <id> done` (records completion date and PR link), then `pnpm wt:remove <id>`.
    The ticket file and boards catch up on your next ticket branch (`t:move … in_progress` syncs them).
 7. **Blocked?** `pnpm t:move <id> blocked --reason "…" --push`, then pick another ticket. Never silently skip anything.
-8. **Hand off.** Write or update your ticket’s file in [docs/handoffs/](docs/handoffs/README.md) before ending any session.
+8. **Hand off.** Only for unfinished or handed-over work: write `docs/handoffs/<ticket-id>.md` before ending the
+   session. Finished work is described in its PR.
 
 Never leave finished work unpushed. Never mark a ticket done with failing checks or unticked criteria. Never edit
-another owner's in-progress ticket. UI work also passes [the UI checklist](docs/ui-checklist.md) in every theme. Update
+another owner's in-progress ticket. UI work also passes [the UI checklist](docs/ui-checklist.md). Update
 docs/ADRs with the change. If you make the same mistake twice, propose a concrete harness fix (hook, skill or doc
 line) in your summary and add a verified fix to [learnings](docs/learnings.md).
 
@@ -162,7 +177,7 @@ Long rehearsal details live inside the skill's `references/` folder.
 - Status/ownership authority is the shared ledger. Do not sync unrelated ticket files. `pnpm t:sync <id>` operates only on that ticket’s branch.
 - Handoffs go in `docs/handoffs/<ticket-id>.md`; preserve `docs/progress.md` as history.
 - Start new feature branches from freshly fetched `origin/develop`. For a new ticket not yet present there, carry only its definition, never unrelated feature commits. Existing branches need an explicit base update.
-- Shared implementation edits can still conflict. Inspect overlapping files, integrate PRs sequentially, and report the exact develop commit used for verification. Never auto-merge.
+- Shared implementation edits can still conflict. Inspect overlapping files, integrate PRs sequentially, and report the exact develop commit used for verification. Never enable auto-merge.
 
 ## Routine owned-worktree operations
 
@@ -182,5 +197,6 @@ New or modified protected artifacts still need exact-path authorization. Existin
 user approvals persist for their stated scope; do not ask for them again.
 
 `pnpm verify` always runs every gate and records local success for up to one hour.
-`t:pr` may reuse matching evidence; `--force-verify` forces a full rerun. Changed
-inputs or failed checks invalidate evidence. CI always runs the full gate.
+`t:pr` runs `verify:quick` by default; `t:pr --full` may reuse matching full-verify
+evidence, and `--force-verify` forces a fresh full run. Changed inputs or failed
+checks invalidate evidence. CI always runs the full gate.

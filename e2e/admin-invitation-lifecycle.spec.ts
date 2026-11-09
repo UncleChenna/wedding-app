@@ -159,15 +159,25 @@ test.describe("authenticated invitation lifecycle", () => {
       expect(current.status()).toBe(200);
       expect(await current.text()).toContain(tag);
 
-      await controls
-        .getByRole("button", { name: `Revoke invitation: ${tag}`, exact: true })
-        .click();
+      const revokeOpener = controls.getByRole("button", {
+        name: `Revoke invitation: ${tag}`,
+        exact: true,
+      });
+      await revokeOpener.focus();
+      await revokeOpener.press("Enter");
       const revoke = page.getByRole("dialog", { name: "Revoke invitation?" });
       await expect(revoke).toContainText(
         "Offline scanners will learn this change when they refresh",
       );
-      await revoke.getByRole("button", { name: "Revoke invitation", exact: true }).click();
+      const revokeConfirm = revoke.getByRole("button", { name: "Revoke invitation", exact: true });
+      await revokeConfirm.focus();
+      await revokeConfirm.press("Enter");
       await expect(controls.getByRole("status")).toContainText("Invitation revoked");
+      await expect(revoke).not.toBeVisible();
+      await expect(revokeOpener).toHaveCount(0);
+      await expect(
+        controls.getByRole("button", { name: `Reissue link: ${tag}`, exact: true }),
+      ).toBeFocused();
       const withdrawn = await visitor.request.get(`/i/${reissued.token}`);
       expect(withdrawn.status()).toBe(404);
       expect(await withdrawn.text()).not.toContain(tag);

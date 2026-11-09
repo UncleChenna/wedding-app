@@ -56,6 +56,19 @@ verification below applies to the earlier revision only.
 
 ## Verification
 
+Integrated database verification (2026-11-08): the managed target's 110 seed
+invitations and seven named lifecycle browser fixtures were checked before its
+authorized reset. Seed invitation/guest values and all checked fixture IDs
+matched; no non-test guest, staff or Auth contact addresses were present. The
+reset then applied 20 migrations and seeded 21 public tables. A second migration
+and second seed each preserved every count; all 21 tables retained RLS. Four
+lifecycle and five current-schema admission tests passed, followed by all ten
+admission migration/backfill/seed-rollback tests in isolated schemas. Logs:
+`/tmp/TICKET-043-integrated-reset.log`, `/tmp/TICKET-043-integrated-db-tests.log`,
+and `/tmp/TICKET-043-admission-regression.log`.
+
+The following evidence predates the integration:
+
 - Drizzle generation succeeds; existing table snapshots and journal entries are unchanged.
 - Started only PostgreSQL in managed project `wedding-bf77f6b10d5f`, keeping health checks
   enabled and all other collaborators' stacks untouched. No target guard was bypassed.

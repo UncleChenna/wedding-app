@@ -1,3 +1,21 @@
+# 2026-11-09 verified completion checkpoint
+
+Integrated develop `37e9202c` and fixed the independent review's keyboard finding.
+A real authenticated red test reproduced lost focus after revoke; the fix now
+passes mobile and desktop (2/2, 6.8s) with fresh synthetic accounts. Full verify
+passes: formatting, lint, types, build, 1,157 unit tests / 121 skipped and 863
+browser tests / 189 skipped (4.4m). All 46 hook tests pass unchanged after removing
+an obsolete carry authorization for the now-unchanged lockfile. No checks were
+weakened. Logs: `/tmp/TICKET-043-focus-green-fresh.log` and
+`/tmp/TICKET-043-full-verify-final.log`.
+
+Database repeatability and isolated migration/lifecycle tests below passed. The
+owned stack `wedding-bf77f6b10d5f` is now stopped with `backup:true` to free capacity
+(`/tmp/TICKET-043-stack-stop.log`). No database or browser job remains active.
+Physical-device requirements remain release gates, and TICKET-065 retains actual
+offline scanner integration testing. Next: commit final evidence, use `t:pr`,
+then require final-head CI and independent review before the authorized merge.
+
 # TICKET-043 handoff
 
 2026-11-04 — divine / codex — branch TICKET-043.
@@ -245,3 +263,22 @@ no startup, database mutation or reset was performed during integration. Check
 target and synthetic data provenance before resetting its superseded history.
 Coordinate expensive suites with the other worktrees. Physical-device checks
 remain release gates; no new claim of device completion is made.
+
+# 2026-11-09 keyboard review and latest base
+
+Integrated develop `37e9202c` cleanly, preserving the new migration history.
+Independent review identified focus loss after successful revoke removes its
+dialog opener. The authenticated desktop test reproduced the failure with the
+surviving Reissue button inactive. A one-shot restoration now waits for saved
+revoke, updated revoked props, closed dialog and completed submission before
+focusing Reissue. It does not arm for initial render, cancellation or reissue.
+The production build passes and mobile browser regression passes. Desktop's
+first rerun reused the red-test's enrolled account; the helper requires a fresh
+synthetic email prefix for every run, so that fixture setup must be rerun with
+fresh addresses before claiming a green desktop result.
+
+The earlier database integration is now verified: authorized synthetic-only
+reset, 20 migrations, 21 RLS-enabled tables, stable repeat migration and seed
+counts, four lifecycle tests and five current-schema admission tests passed;
+all ten admission backfill/rollback tests also passed separately. Full gate and
+final independent review remain pending. Do not merge this checkpoint yet.

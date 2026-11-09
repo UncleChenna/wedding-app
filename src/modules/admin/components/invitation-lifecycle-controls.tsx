@@ -1,5 +1,5 @@
 "use client";
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { Button, Sheet } from "@/modules/shared/components/ui";
 import type { LifecycleFormState, LifecycleStatus } from "../lib/invitation-lifecycle";
 import { changeInvitationLifecycleAction } from "../server/invitation-lifecycle-actions";
@@ -20,17 +20,35 @@ export function InvitationLifecycleControls({
   submitAction = changeInvitationLifecycleAction,
 }: Props) {
   const [operation, setOperation] = useState<"revoke" | "reissue" | null>(null);
+  const controlsRef = useRef<HTMLDivElement>(null);
+  const restoreAfterRevoke = useRef(false);
   const [result, action, pending] = useActionState<LifecycleFormState, FormData>(
     async (previous, data) => {
       const next = await submitAction(previous, data);
-      if (next.status === "saved") setOperation(null);
+      if (next.status === "saved") {
+        restoreAfterRevoke.current = data.get("operation") === "revoke";
+        setOperation(null);
+      }
       return next;
     },
     { status: "idle" },
   );
+  useEffect(() => {
+    // Successful revocation removes the opener. Wait for updated props and the
+    // closed sheet, then restore focus once to the surviving household action.
+    if (restoreAfterRevoke.current && status === "revoked" && operation === null && !pending) {
+      controlsRef.current?.querySelector<HTMLButtonElement>("[data-lifecycle-reissue]")?.focus();
+      restoreAfterRevoke.current = false;
+    }
+  }, [operation, pending, result, status]);
   const revoking = operation === "revoke";
   return (
-    <div className="space-y-4" role="group" aria-label={`${name}: invitation controls`}>
+    <div
+      ref={controlsRef}
+      className="space-y-4"
+      role="group"
+      aria-label={`${name}: invitation controls`}
+    >
       <div className="flex flex-wrap gap-4">
         <Button
           size="lg"
@@ -38,6 +56,7 @@ export function InvitationLifecycleControls({
           disabled={pending}
           onClick={() => setOperation("reissue")}
           aria-label={`Reissue link: ${name}`}
+          data-lifecycle-reissue
         >
           Reissue link
         </Button>

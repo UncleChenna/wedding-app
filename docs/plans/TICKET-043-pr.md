@@ -1,83 +1,82 @@
-# Ticket
+# TICKET-043: revoke and reissue invitations
 
-TICKET-043 — Revoke and reissue invitations so old links and QRs stop working.
+Administrators can revoke an invitation or replace its link from Admin Sharing,
+with confirmation. The old link stops working online, saved replies remain intact,
+and every successful change records the authenticated actor and time. Disconnected
+scanners learn the change after refreshing; the UI explicitly explains this limit.
 
-# Problem and result
+## Changes and acceptance evidence
 
-Administrators can now revoke an invitation or replace its link from Admin Sharing,
-with an explicit confirmation. The old link stops working online, saved replies
-remain intact, and each successful change records the authenticated actor and time.
-Disconnected scanners learn the change after refreshing their snapshot; the UI
-states this limitation explicitly.
-
-Draft pending physical-device UI evidence or a preview exception. No production
-migration application or PR merge is authorized by the migration approval.
-
-# Changes and acceptance evidence
-
-- Strict commands check expected status/version to reject stale administrative edits.
-- A row-locked transaction changes status or rotates the token/version and inserts
-  the audit event atomically. Collision retries are bounded; other errors propagate.
-- Audit records omit invitation capabilities, contact details, IP addresses and PINs.
-- Gate-session-protected revocation snapshots expose only IDs, status/version and
-  timestamps, with private/no-store responses and safe denial/unavailable errors.
-- Signed old pass versions return “Replaced pass”, matching ADR0020. Snapshot
-  freshness contracts are covered; scanner download/UI and real offline refresh
+- Live administrator authentication and strict expected-status/version commands
+  protect the action. A row lock serializes it with RSVP changes; audit insertion
+  and capability rotation are atomic, with bounded collision retries.
+- Reissue rotates the token and increments its version; old links return a neutral
+  404, the new link works, and an old signed pass is classified as replaced after
+  a snapshot refresh. Revoke preserves the saved RSVP but removes online access.
+- Gate-session-protected snapshots expose only IDs, status/version and timestamps,
+  with private/no-store responses. Actual scanner download and offline refresh
   testing remain mandatory in dependent TICKET-065.
-- Real authenticated mobile/desktop journeys prove cancellation causes no change,
-  old links return 404 after reissue, new links work, revoked links return 404,
-  replies survive, and both audit events contain the authenticated actor/time.
+- Independent review identified lost keyboard focus when successful revoke removes
+  its opener. A browser regression reproduced it; one-shot restoration now focuses
+  the surviving Reissue action after the dialog closes and updated state arrives.
+  Initial rendering, cancellation and reissue do not arm this fallback.
+- Audit records contain actor/time and transition details, without capabilities,
+  guest contacts, IP addresses or PINs.
 
-# Validation
+## Verification
 
-Verified against the explicitly approved develop base 5747c3d.
+Integrated develop `37e9202c`. The complete local gate passed on the resulting
+implementation: formatting, lint, types, production build, **1,157 unit tests**
+(121 opt-in/skipped), and **863 browser tests** (189 opt-in/skipped, 4.4 minutes).
 
-- Full `pnpm verify` at 599355c: formatting, lint, types and build pass;
-  1044 unit tests pass / 95 skip; 849 browser checks pass / 183 skip.
-- Four opt-in isolated PostgreSQL lifecycle tests pass: rotation/audit, revocation
-  with RSVP preservation, audit-failure rollback and concurrent reissue arbitration.
-- Repeated migration and seed runs preserve counts; all 17 public tables retain RLS.
-- Focused production preview suite: 16/16 pass, including axe AA on both dialog
-  states across themes/widths and default-theme load CLS=0 at three widths.
-- Authenticated lifecycle suite: 2/2 mobile/desktop pass; measured page-load CLS=0.
-- Authenticated matrix: both dialogs in four themes at 375/540/768/1024/1280 pass
-  keyboard opening, Tab wrapping, Escape/focus return, no overflow and 44px buttons.
-- All 48 screenshots inspected: preview and authenticated routes, four themes,
-  three required widths, both dialogs. No clipping or unreadable action was found.
+Separate opt-in evidence:
 
-Opt-in database/auth tests are not silently counted as passing in the default
-suite; the explicit runs above provide their evidence. Physical phones, WhatsApp
-in-app browsers and physical safe areas remain unverified. No QR rendering or
-Open Graph assets changed. Guest Lighthouse release gates remain unchanged.
+- Four real PostgreSQL lifecycle tests pass: rotation and lookup, revoke preserving
+  replies, audit-failure rollback and concurrent reissue arbitration.
+- Five current-schema admission tests and all ten admission migration/backfill/
+  seed-rollback tests pass after integration.
+- Two authenticated production-browser journeys pass on mobile and desktop in
+  6.8 seconds, including keyboard confirmation, old/new link requests, saved
+  replies, actor/time audit records and focus after successful revoke.
+- Repeat migration and repeat seed counts match: 20 migrations and 21 public
+  tables, all with RLS enabled. Only the proven synthetic owned database was reset.
+- All-theme/width lifecycle accessibility, reduced-motion, cancellation, focus
+  return and default-theme zero-CLS checks pass in the full gate. The existing
+  48 reviewed screenshots remain applicable: no layout/style change was made by
+  the focus fix. The actual ivory/gold 375px revoke capture was reinspected.
 
-# Review steps and screenshots
+Disclosed failed attempts: the first focus test reproduced the reviewed defect;
+initial authenticated reruns needed the required synthetic allowlist and fresh
+per-run email addresses. A full-gate attempt stopped because an obsolete local
+lockfile authorization conflicted with a new harness-test assumption. Removing
+that no-longer-needed authorization restored default protection; all 46 unchanged
+hook tests and the subsequent full gate passed. No assertions, hooks or timeouts
+were weakened.
 
-Use a synthetic household on the migrated isolated database. Sign in with an
-allowed administrator and TOTP, open `/admin/sharing`, cancel a revoke operation,
-then reissue. Check the old link fails and the replacement opens. Revoke and check
-that link fails too. Saved replies and actor/time audit records should remain.
+## Review steps and UI evidence
 
-For a non-mutating UI preview, open `/dev/share` and try both dialogs in each theme.
-Full item-by-item evidence: [UI review](../blob/TICKET-043/docs/reviews/TICKET-043/ui-review.md).
-Screenshots: [all captures](../tree/TICKET-043/docs/reviews/TICKET-043/screenshots).
+On a migrated isolated database, sign in as an allowed administrator with TOTP.
+Open `/admin/sharing`, cancel a revoke, then reissue a synthetic invitation. Check
+that the old link fails and the new link works. Revoke with the keyboard and check
+focus lands on Reissue, the link fails, and the reply/audit history remain.
+`/dev/share` provides a non-mutating preview.
 
-![Mobile reissue](../raw/TICKET-043/docs/reviews/TICKET-043/screenshots/admin-ivory-gold-375-reissue.png)
+[UI checklist and limitations](../blob/TICKET-043/docs/reviews/TICKET-043/ui-review.md)
+· [Screenshots](../tree/TICKET-043/docs/reviews/TICKET-043/screenshots)
 
-# Migration, rollout and rollback
+![Mobile confirmation](../raw/TICKET-043/docs/reviews/TICKET-043/screenshots/admin-ivory-gold-375-revoke.png)
 
-The approved generated 0013 migration adds one RLS-enabled audit table, without
-changing existing data or policies. Exact-path authorization is recorded locally;
-isolated application, repeatability and lifecycle tests pass. Review details are
-in `docs/reviews/TICKET-043/migration-approval.md`.
+## Migration, rollback and remaining release gates
 
-Deploy the additive migration before the consuming application only after production
-approval. Application rollback should preserve the table and its audit history.
-The audit is not tamper-proof against a privileged SQL administrator. Offline
-scanners can accept old passes until refresh under ADR0020.
+Generated `0019_invitation-lifecycle.sql` adds one RLS-enabled audit table; its SQL
+is byte-identical to this branch's formerly reviewed 0013 migration. Develop's
+0013–0018 history is preserved. Exact-path authorization and the synthetic-target
+verification are documented in `docs/reviews/TICKET-043/migration-approval.md`.
+Deploy the additive migration before its consuming application. Application
+rollback should retain the table and audit history; no production migration was
+applied here. Privileged database administrators can still modify audit records.
 
-# Remaining work
-
-Physical iOS/Android WhatsApp and safe-area checks, or an explicit preview exception
-retaining these release requirements, precede final UI approval. Required GitHub
-checks must pass before merge; this draft has not been merged. No harness, CI,
-policy, or dependency changes are included.
+Physical iOS/Android WhatsApp and safe-area checks remain unverified and retained
+as release requirements under the owner's preview exception. This does not claim
+release readiness or certify TICKET-065's future offline scanner journey. Final
+GitHub checks and independent final-head review are required before merge.
