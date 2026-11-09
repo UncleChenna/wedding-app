@@ -1,0 +1,35 @@
+# Ticket
+
+Ticket: TICKET-108
+
+# Summary
+
+Draft: prepare the scanner to survive an offline reload without extending staff authorization beyond its actual deadline. This branch currently implements only the trusted expiry foundation; no offline-ready claim is made.
+
+# Changes
+
+`authenticateStaffSession` retains the existing live role, credential-version, PIN and device-revocation checks and returns the earliest signed-cookie, current event and PIN deadline. Existing identity-only callers retain their exact result contract. `currentStaffDevice` also checks expiry after its device-name read. No session secret, raw cookie or browser-side signing capability is exposed.
+
+# Acceptance criteria and evidence
+
+Both ticket criteria remain unfinished: offline /checkin reload and a complete precached decoder asset inventory. TICKET-059 remains a dependency. Its camera code has not been copied into this branch before merge. Guest-data snapshots/outbox remain TICKET-065/066/180.
+
+# Verification
+
+Initial expiry tests failed on the missing API (six failed, one existing-contract test passed). After implementation and independent review, eight expiry tests plus four signed-session tests pass. The additional test crosses the deadline during database reads. Quick verification is run before publishing. Real offline reload, browser asset eviction/expiry/logout tests and physical phones are not yet verified.
+
+# Risks and rollout
+
+Unfinished draft; no migration, dependency, RLS or production changes. All privileged online operations retain live authorization. Offline sessions cannot learn revocations while disconnected, per ADR0020. The planned worker must fetch its own authoritative save response, reject arbitrary private paths, isolate session identity, enforce expiry and fail preparation when any required asset cannot be cached. Reverting the additive expiry API preserves existing session validation.
+
+# Screenshots
+
+No UI change yet. Screenshots and all-theme staff accessibility evidence are required when the shell is connected.
+
+# UI checklist
+
+Not yet applicable to this server-only foundation; the final scanner/offline states remain unverified.
+
+# Remaining work
+
+Implement and independently review worker save/navigation/cleanup boundaries; integrate merged059; precache all scanner and decoder assets; add expiry-aware UI; run real authenticated offline browser and required CI checks. Keep the PR draft until these criteria and dependencies are satisfied.

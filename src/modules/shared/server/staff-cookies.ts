@@ -1,7 +1,7 @@
 import "server-only";
 import { cookies } from "next/headers";
 import { connection } from "next/server";
-import { authenticateStaff, type StaffRole } from "./staff-auth";
+import { authenticateStaffSession, type StaffRole } from "./staff-auth";
 import { readStaffDeviceCookie } from "./staff-device-cookie";
 import { serverEnv } from "./env";
 import { eq } from "drizzle-orm";
@@ -36,11 +36,12 @@ export async function currentStaffDevice(role: StaffRole) {
   const device = readStaffDeviceCookie(jar.get(STAFF_DEVICE_COOKIE)?.value ?? "", key);
   const token = jar.get(STAFF_SESSION_COOKIE)?.value;
   if (!device || !token) return null;
-  const identity = await authenticateStaff(token, device, role, key);
-  if (!identity) return null;
+  const session = await authenticateStaffSession(token, device, role, key);
+  if (!session) return null;
   const [row] = await db
     .select({ name: registeredDevices.name })
     .from(registeredDevices)
     .where(eq(registeredDevices.id, device));
-  return { identity, device: { id: device, name: row?.name ?? null } };
+  if (session.expiresAt.getTime() <= Date.now()) return null;
+  return { ...session, device: { id: device, name: row?.name ?? null } };
 }
