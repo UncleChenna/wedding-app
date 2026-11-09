@@ -2217,13 +2217,14 @@
     "WED-051": {
       "log": [
         "- 2026-11-09 — todo → claimed — unclechenna (codex) — started ahead of TICKET-089 (in_progress)",
-        "- 2026-11-09 — todo → in_progress — unclechenna (codex) — started ahead of TICKET-089 (in_progress)"
+        "- 2026-11-09 — todo → in_progress — unclechenna (codex) — started ahead of TICKET-089 (in_progress)",
+        "- 2026-11-09 — in_progress → in_review — unclechenna (codex)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "unclechenna",
       "agent": "codex",
       "branch": "TICKET-051",
-      "pr": "",
+      "pr": "https://github.com/UncleChenna/wedding-app/pull/116",
       "started": "2026-11-09",
       "completed": "",
       "updated": "2026-11-09",
