@@ -38,7 +38,11 @@ export function ScanResultPanel({
               Party of {visibleGuest.partySize} · {visibleGuest.admittedSoFar} admitted so far
             </p>
             {state === "valid" && (
-              <p>{visibleGuest.partySize - visibleGuest.admittedSoFar} places remaining</p>
+              <p>
+                {visibleGuest.partySize - visibleGuest.admittedSoFar}{" "}
+                {visibleGuest.partySize - visibleGuest.admittedSoFar === 1 ? "place" : "places"}{" "}
+                remaining
+              </p>
             )}
             {state === "already_used" && (
               <div className="flex flex-col gap-3">

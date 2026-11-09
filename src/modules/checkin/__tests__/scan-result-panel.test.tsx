@@ -34,3 +34,13 @@ it("shows prior admission identity and an unassigned table fallback", () => {
   expect(screen.getByText("Table not assigned")).toBeTruthy();
   expect(screen.getByText(/Gate lead · Gate 1/)).toBeTruthy();
 });
+it("uses singular copy for the last remaining place", () => {
+  render(<ScanResultPanel state="valid" guest={{ ...guest, admittedSoFar: 3 }} />);
+  expect(screen.getByText("1 place remaining")).toBeTruthy();
+});
+it("labels missing legacy provenance honestly", () => {
+  render(
+    <ScanResultPanel state="already_used" guest={{ ...guest, admittedSoFar: 4, admissions: [] }} />,
+  );
+  expect(screen.getByText(/Earlier arrival details are unavailable/)).toBeTruthy();
+});

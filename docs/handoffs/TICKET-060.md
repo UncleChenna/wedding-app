@@ -18,3 +18,11 @@ atomic admission/confirmation,062 all-result logging,065 persistent offline data
 060 cannot claim those built. Keep draft until dependencies and its own actual
 browser/SQL/table-reassignment acceptance pass. Physical device evidence stays
 release-gated; no fake successful admission, offline capability or phone evidence.
+
+Root independent foundation review clean. Before wiring, validate bounded integer
+party/admitted/table values and accepted history provenance/timezone in the actual
+authorized adapter; do not trust raw display props or show negative remaining.
+Feedback must remain a pass-check cue, never a recorded-admission cue before061.
+Two new pure modules measured100%lines/functions (no instrumented branches), scoped
+coverage only, not fullcritical-suite evidence. Added last-place grammar regression
+(RED1failed/4passed, then GREEN19total) and unavailable legacy-provenance copy test.
