@@ -15,8 +15,8 @@ export async function getSharingInvitations() {
     .select({
       id: invitations.id,
       token: invitations.token,
-      status: invitations.status,
       tokenVersion: invitations.tokenVersion,
+      status: invitations.status,
       householdName: invitations.householdName,
     })
     .from(invitations)

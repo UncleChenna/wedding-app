@@ -32,6 +32,7 @@ See: [Milestones, scope and testing](../docs/prd.md#milestones-scope-and-testing
 ## Scope
 
 - Follow the release-checklist skill; record timings, failures and fixes.
+- Retain TICKET-057’s manual timed low-light scans on real devices: use the actual scanner cameras and realistic signed payloads from screens/print in venue lighting. TICKET-114 records physical token-verification timing before release; this rehearsal does not substitute for it.
 
 ## Out of scope
 

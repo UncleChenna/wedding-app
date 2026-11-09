@@ -11,7 +11,7 @@ export async function resetSeedTables(execute: (statement: string) => Promise<un
   for (const [table, trigger] of guards) {
     await execute(`alter table ${table} disable trigger ${trigger}`);
   }
-  await execute(`truncate table scan_events, admission_counters, rsvp_changes, event_settings,
+  await execute(`truncate table guest_import_batches, scan_events, admission_counters, rsvp_changes, event_settings,
     order_items, station_orders, orders, menu_items, check_ins, rsvps, guests, tables,
     invitations, registered_devices, staff, themes restart identity cascade`);
   // Restore before any fixtures are inserted; normal application writes keep every guard.

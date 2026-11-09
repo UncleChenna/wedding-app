@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 
+import { noindexHeaderRules } from "./src/modules/shared/lib/search-privacy";
 import { securityHeaders } from "./src/modules/shared/lib/security-headers";
 
 const isDev = process.env.NODE_ENV !== "production";
@@ -37,11 +38,9 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/admin/:path*",
-        headers: [
-          { key: "Referrer-Policy", value: "no-referrer" },
-          { key: "X-Robots-Tag", value: "noindex, nofollow" },
-        ],
+        headers: [{ key: "Referrer-Policy", value: "no-referrer" }],
       },
+      ...noindexHeaderRules(),
     ];
   },
 };

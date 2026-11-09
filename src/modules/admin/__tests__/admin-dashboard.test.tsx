@@ -18,6 +18,7 @@ it("requires access and offers every area without a redundant sign-in link", asy
     "Menu",
     "Staff",
     "Settings",
+    "After the celebration",
     "Live dashboard",
   ]) {
     expect(screen.getByText(name, { exact: true })).toBeVisible();
@@ -26,6 +27,10 @@ it("requires access and offers every area without a redundant sign-in link", asy
   expect(screen.getByRole("link", { name: "Menu" })).toHaveAttribute("href", "/admin/menu");
   expect(screen.getByRole("link", { name: "Settings" })).toHaveAttribute("href", "/admin/settings");
   expect(screen.getByRole("link", { name: "Staff" })).toHaveAttribute("href", "/admin/staff");
+  expect(screen.getByRole("link", { name: "After the celebration" })).toHaveAttribute(
+    "href",
+    "/admin/event-closure",
+  );
   // Sign-out lives in the admin shell around every page (admin-shell.test.tsx), not in each page.
   expect(screen.queryByRole("link", { name: "Sign out" })).toBeNull();
   expect(screen.queryByRole("link", { name: "Sign in" })).toBeNull();

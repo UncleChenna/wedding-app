@@ -1,5 +1,5 @@
 {
-  "id": "fd1f5cb6-051d-4994-b5c2-204f906a0a29",
+  "id": "dc3a009c-3d30-4f5e-bdf6-3edfefcf6abd",
   "prevId": "f827942d-210c-48b5-8d7d-707145474599",
   "version": "7",
   "dialect": "postgresql",
@@ -40,15 +40,15 @@
         "admission_counters_invitation_id_invitations_id_fk": {
           "name": "admission_counters_invitation_id_invitations_id_fk",
           "tableFrom": "admission_counters",
+          "tableTo": "invitations",
           "columnsFrom": [
             "invitation_id"
           ],
-          "tableTo": "invitations",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "restrict"
+          "onDelete": "restrict",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -127,9 +127,9 @@
             }
           ],
           "isUnique": true,
-          "with": {},
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         },
         "check_ins_client_event_id_key": {
           "name": "check_ins_client_event_id_key",
@@ -142,37 +142,37 @@
             }
           ],
           "isUnique": true,
-          "with": {},
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         }
       },
       "foreignKeys": {
         "check_ins_guest_id_guests_id_fk": {
           "name": "check_ins_guest_id_guests_id_fk",
           "tableFrom": "check_ins",
+          "tableTo": "guests",
           "columnsFrom": [
             "guest_id"
           ],
-          "tableTo": "guests",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         },
         "check_ins_staff_id_staff_id_fk": {
           "name": "check_ins_staff_id_staff_id_fk",
           "tableFrom": "check_ins",
+          "tableTo": "staff",
           "columnsFrom": [
             "staff_id"
           ],
-          "tableTo": "staff",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "set null"
+          "onDelete": "set null",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -453,9 +453,9 @@
             }
           ],
           "isUnique": false,
-          "with": {},
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         },
         "guests_table_id_idx": {
           "name": "guests_table_id_idx",
@@ -468,37 +468,37 @@
             }
           ],
           "isUnique": false,
-          "with": {},
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         }
       },
       "foreignKeys": {
         "guests_invitation_id_invitations_id_fk": {
           "name": "guests_invitation_id_invitations_id_fk",
           "tableFrom": "guests",
+          "tableTo": "invitations",
           "columnsFrom": [
             "invitation_id"
           ],
-          "tableTo": "invitations",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         },
         "guests_table_id_tables_id_fk": {
           "name": "guests_table_id_tables_id_fk",
           "tableFrom": "guests",
+          "tableTo": "tables",
           "columnsFrom": [
             "table_id"
           ],
-          "tableTo": "tables",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "set null"
+          "onDelete": "set null",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -597,24 +597,24 @@
             }
           ],
           "isUnique": false,
-          "with": {},
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         }
       },
       "foreignKeys": {
         "invitation_lifecycle_events_invitation_id_invitations_id_fk": {
           "name": "invitation_lifecycle_events_invitation_id_invitations_id_fk",
           "tableFrom": "invitation_lifecycle_events",
+          "tableTo": "invitations",
           "columnsFrom": [
             "invitation_id"
           ],
-          "tableTo": "invitations",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "restrict"
+          "onDelete": "restrict",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -697,10 +697,10 @@
       "uniqueConstraints": {
         "invitation_photos_id_unique": {
           "name": "invitation_photos_id_unique",
+          "nullsNotDistinct": false,
           "columns": [
             "id"
-          ],
-          "nullsNotDistinct": false
+          ]
         }
       },
       "policies": {},
@@ -720,6 +720,141 @@
         "invitation_photos_blur": {
           "name": "invitation_photos_blur",
           "value": "length(\"invitation_photos\".\"blur_data_url\") between 24 and 10947 and left(\"invitation_photos\".\"blur_data_url\", 23) = 'data:image/webp' || chr(59) || 'base64,'"
+        }
+      },
+      "isRLSEnabled": true
+    },
+    "public.invitation_share_events": {
+      "name": "invitation_share_events",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "sequence": {
+          "name": "sequence",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "invitation_share_events_sequence_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "invitation_id": {
+          "name": "invitation_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "actor_id": {
+          "name": "actor_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "channel": {
+          "name": "channel",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "token_version": {
+          "name": "token_version",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "previous_status": {
+          "name": "previous_status",
+          "type": "invitation_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "previous_sent_at": {
+          "name": "previous_sent_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "undone_at": {
+          "name": "undone_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "invitation_share_events_invitation_idx": {
+          "name": "invitation_share_events_invitation_idx",
+          "columns": [
+            {
+              "expression": "invitation_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "invitation_share_events_invitation_id_invitations_id_fk": {
+          "name": "invitation_share_events_invitation_id_invitations_id_fk",
+          "tableFrom": "invitation_share_events",
+          "tableTo": "invitations",
+          "columnsFrom": [
+            "invitation_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "invitation_share_events_channel": {
+          "name": "invitation_share_events_channel",
+          "value": "\"invitation_share_events\".\"channel\" in ('whatsapp', 'email', 'copy', 'native')"
+        },
+        "invitation_share_events_version": {
+          "name": "invitation_share_events_version",
+          "value": "\"invitation_share_events\".\"token_version\" > 0"
+        },
+        "invitation_share_events_undo_time": {
+          "name": "invitation_share_events_undo_time",
+          "value": "\"invitation_share_events\".\"undone_at\" is null or \"invitation_share_events\".\"undone_at\" >= \"invitation_share_events\".\"created_at\""
         }
       },
       "isRLSEnabled": true
@@ -820,34 +955,34 @@
             }
           ],
           "isUnique": false,
-          "with": {},
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         }
       },
       "foreignKeys": {
         "invitations_table_id_tables_id_fk": {
           "name": "invitations_table_id_tables_id_fk",
           "tableFrom": "invitations",
+          "tableTo": "tables",
           "columnsFrom": [
             "table_id"
           ],
-          "tableTo": "tables",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "set null"
+          "onDelete": "set null",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "invitations_token_unique": {
           "name": "invitations_token_unique",
+          "nullsNotDistinct": false,
           "columns": [
             "token"
-          ],
-          "nullsNotDistinct": false
+          ]
         }
       },
       "policies": {},
@@ -1044,9 +1179,9 @@
             }
           ],
           "isUnique": true,
-          "with": {},
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         },
         "order_alerts_pending_idx": {
           "name": "order_alerts_pending_idx",
@@ -1071,24 +1206,24 @@
             }
           ],
           "isUnique": false,
-          "with": {},
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         }
       },
       "foreignKeys": {
         "order_alerts_station_order_id_station_orders_id_fk": {
           "name": "order_alerts_station_order_id_station_orders_id_fk",
           "tableFrom": "order_alerts",
+          "tableTo": "station_orders",
           "columnsFrom": [
             "station_order_id"
           ],
-          "tableTo": "station_orders",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -1175,9 +1310,9 @@
             }
           ],
           "isUnique": false,
-          "with": {},
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         },
         "order_items_order_menu_key": {
           "name": "order_items_order_menu_key",
@@ -1196,52 +1331,52 @@
             }
           ],
           "isUnique": true,
-          "with": {},
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         }
       },
       "foreignKeys": {
         "order_items_order_id_orders_id_fk": {
           "name": "order_items_order_id_orders_id_fk",
           "tableFrom": "order_items",
+          "tableTo": "orders",
           "columnsFrom": [
             "order_id"
           ],
-          "tableTo": "orders",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         },
         "order_items_menu_item_id_menu_items_id_fk": {
           "name": "order_items_menu_item_id_menu_items_id_fk",
           "tableFrom": "order_items",
+          "tableTo": "menu_items",
           "columnsFrom": [
             "menu_item_id"
           ],
-          "tableTo": "menu_items",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "restrict"
+          "onDelete": "restrict",
+          "onUpdate": "no action"
         },
         "order_items_station_submission_fk": {
           "name": "order_items_station_submission_fk",
           "tableFrom": "order_items",
+          "tableTo": "station_orders",
           "columnsFrom": [
             "order_id",
             "station_order_id"
           ],
-          "tableTo": "station_orders",
           "columnsTo": [
             "order_id",
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -1336,34 +1471,34 @@
             }
           ],
           "isUnique": false,
-          "with": {},
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         }
       },
       "foreignKeys": {
         "orders_table_id_tables_id_fk": {
           "name": "orders_table_id_tables_id_fk",
           "tableFrom": "orders",
+          "tableTo": "tables",
           "columnsFrom": [
             "table_id"
           ],
-          "tableTo": "tables",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "restrict"
+          "onDelete": "restrict",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "orders_client_request_id_unique": {
           "name": "orders_client_request_id_unique",
+          "nullsNotDistinct": false,
           "columns": [
             "client_request_id"
-          ],
-          "nullsNotDistinct": false
+          ]
         }
       },
       "policies": {},
@@ -1426,15 +1561,15 @@
         "registered_devices_registered_by_staff_id_staff_id_fk": {
           "name": "registered_devices_registered_by_staff_id_staff_id_fk",
           "tableFrom": "registered_devices",
+          "tableTo": "staff",
           "columnsFrom": [
             "registered_by_staff_id"
           ],
-          "tableTo": "staff",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "restrict"
+          "onDelete": "restrict",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -1498,9 +1633,9 @@
             }
           ],
           "isUnique": false,
-          "with": {},
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         }
       },
       "foreignKeys": {},
@@ -1592,24 +1727,24 @@
             }
           ],
           "isUnique": false,
-          "with": {},
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         }
       },
       "foreignKeys": {
         "rsvp_changes_invitation_id_invitations_id_fk": {
           "name": "rsvp_changes_invitation_id_invitations_id_fk",
           "tableFrom": "rsvp_changes",
+          "tableTo": "invitations",
           "columnsFrom": [
             "invitation_id"
           ],
-          "tableTo": "invitations",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "restrict"
+          "onDelete": "restrict",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -1693,25 +1828,25 @@
         "rsvps_invitation_id_invitations_id_fk": {
           "name": "rsvps_invitation_id_invitations_id_fk",
           "tableFrom": "rsvps",
+          "tableTo": "invitations",
           "columnsFrom": [
             "invitation_id"
           ],
-          "tableTo": "invitations",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "rsvps_invitation_id_unique": {
           "name": "rsvps_invitation_id_unique",
+          "nullsNotDistinct": false,
           "columns": [
             "invitation_id"
-          ],
-          "nullsNotDistinct": false
+          ]
         }
       },
       "policies": {},
@@ -1829,9 +1964,9 @@
             }
           ],
           "isUnique": true,
-          "with": {},
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         },
         "scan_events_legacy_check_in_id_key": {
           "name": "scan_events_legacy_check_in_id_key",
@@ -1844,9 +1979,9 @@
             }
           ],
           "isUnique": true,
-          "with": {},
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         },
         "scan_events_invitation_received_idx": {
           "name": "scan_events_invitation_received_idx",
@@ -1865,9 +2000,9 @@
             }
           ],
           "isUnique": false,
-          "with": {},
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         },
         "scan_events_device_received_idx": {
           "name": "scan_events_device_received_idx",
@@ -1886,9 +2021,9 @@
             }
           ],
           "isUnique": false,
-          "with": {},
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         },
         "scan_events_staff_received_idx": {
           "name": "scan_events_staff_received_idx",
@@ -1907,63 +2042,63 @@
             }
           ],
           "isUnique": false,
-          "with": {},
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         }
       },
       "foreignKeys": {
         "scan_events_invitation_id_invitations_id_fk": {
           "name": "scan_events_invitation_id_invitations_id_fk",
           "tableFrom": "scan_events",
+          "tableTo": "invitations",
           "columnsFrom": [
             "invitation_id"
           ],
-          "tableTo": "invitations",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "restrict"
+          "onDelete": "restrict",
+          "onUpdate": "no action"
         },
         "scan_events_staff_id_staff_id_fk": {
           "name": "scan_events_staff_id_staff_id_fk",
           "tableFrom": "scan_events",
+          "tableTo": "staff",
           "columnsFrom": [
             "staff_id"
           ],
-          "tableTo": "staff",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "restrict"
+          "onDelete": "restrict",
+          "onUpdate": "no action"
         },
         "scan_events_device_id_registered_devices_id_fk": {
           "name": "scan_events_device_id_registered_devices_id_fk",
           "tableFrom": "scan_events",
+          "tableTo": "registered_devices",
           "columnsFrom": [
             "device_id"
           ],
-          "tableTo": "registered_devices",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "restrict"
+          "onDelete": "restrict",
+          "onUpdate": "no action"
         },
         "scan_events_legacy_check_in_id_check_ins_id_fk": {
           "name": "scan_events_legacy_check_in_id_check_ins_id_fk",
           "tableFrom": "scan_events",
+          "tableTo": "check_ins",
           "columnsFrom": [
             "legacy_check_in_id"
           ],
-          "tableTo": "check_ins",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "restrict"
+          "onDelete": "restrict",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -2089,17 +2224,17 @@
       "uniqueConstraints": {
         "staff_auth_user_id_unique": {
           "name": "staff_auth_user_id_unique",
+          "nullsNotDistinct": false,
           "columns": [
             "auth_user_id"
-          ],
-          "nullsNotDistinct": false
+          ]
         },
         "staff_email_unique": {
           "name": "staff_email_unique",
+          "nullsNotDistinct": false,
           "columns": [
             "email"
-          ],
-          "nullsNotDistinct": false
+          ]
         }
       },
       "policies": {},
@@ -2151,9 +2286,9 @@
             }
           ],
           "isUnique": false,
-          "with": {},
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         }
       },
       "foreignKeys": {},
@@ -2237,9 +2372,9 @@
             }
           ],
           "isUnique": true,
-          "with": {},
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         },
         "station_orders_order_id_id_key": {
           "name": "station_orders_order_id_id_key",
@@ -2258,9 +2393,9 @@
             }
           ],
           "isUnique": true,
-          "with": {},
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         },
         "station_orders_queue_idx": {
           "name": "station_orders_queue_idx",
@@ -2285,24 +2420,24 @@
             }
           ],
           "isUnique": false,
-          "with": {},
+          "concurrently": false,
           "method": "btree",
-          "concurrently": false
+          "with": {}
         }
       },
       "foreignKeys": {
         "station_orders_order_id_orders_id_fk": {
           "name": "station_orders_order_id_orders_id_fk",
           "tableFrom": "station_orders",
+          "tableTo": "orders",
           "columnsFrom": [
             "order_id"
           ],
-          "tableTo": "orders",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -2361,10 +2496,10 @@
       "uniqueConstraints": {
         "tables_number_unique": {
           "name": "tables_number_unique",
+          "nullsNotDistinct": false,
           "columns": [
             "number"
-          ],
-          "nullsNotDistinct": false
+          ]
         }
       },
       "policies": {},
@@ -2525,10 +2660,10 @@
     }
   },
   "schemas": {},
-  "views": {},
   "sequences": {},
   "roles": {},
   "policies": {},
+  "views": {},
   "_meta": {
     "columns": {},
     "schemas": {},

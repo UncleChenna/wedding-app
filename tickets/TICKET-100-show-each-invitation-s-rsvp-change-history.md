@@ -2,20 +2,20 @@
 id: TICKET-100
 title: Show each invitation's RSVP change history
 epic: admin
-status: todo
+status: in_review
 priority: medium
 estimate: S
 labels: [frontend]
 module: admin
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-042, TICKET-089]
 blocks: [TICKET-154]
-branch: ""
-pr: ""
+branch: TICKET-100
+pr: https://github.com/UncleChenna/wedding-app/pull/128
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-09
+started: 2026-11-09
 completed: ""
 reason: ""
 resume_to: ""
@@ -39,7 +39,7 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-6).
 
 ## Acceptance criteria
 
-- [ ] Every change for a seeded invitation is listed newest first with time (e2e).
+- [x] Every change for a seeded invitation is listed newest first with time (e2e).
 
 ## Test plan
 
@@ -52,8 +52,11 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-6).
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-11-09: Added the protected per-invitation timeline with guest-list entry and return links. Real isolated browser evidence proves all three deliberately out-of-order seeded records appear newest first with UTC timestamps. Independent review corrected meal UUID display: current menu labels are identified explicitly, missing menu records remain honest. See docs/plans/TICKET-100-pr.md for privacy, accessibility, tests and limitations.
 
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-09 — todo → claimed — divine (codex)
+- 2026-11-09 — todo → in_progress — divine (codex)
+- 2026-11-09 — in_progress → in_review — divine (codex)

@@ -45,6 +45,9 @@ export async function changeInvitationLifecycleAction(
     if (!result.ok) return { status: "error", message: result.message };
     if (!result.value.ok) return { status: "error", message: messages[result.value.code] };
     revalidatePath(appRoutes.adminSharing.path);
+    revalidatePath(appRoutes.adminGuests.path);
+    // The authenticated mutation already validated this UUID.
+    revalidatePath(`/admin/guests/${String(form.get("invitationId"))}/edit`);
     return {
       status: "saved",
       message:
