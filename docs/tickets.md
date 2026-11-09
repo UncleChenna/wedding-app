@@ -247,7 +247,18 @@ and PR metadata are rechecked; the ledger keeps original/integration heads, merg
 commits, base, CI URLs and audited develop alongside the explanation. The original
 PR link remains unchanged. This does not relax ordinary completion or repair mode.
 
-Rewritten or squash-integrated history without that ancestry is deliberately
-refused, even when similar content exists in develop. TICKET-186/#4 and
-TICKET-187/#5 currently fall into this category; TICKET-225 tracks a separate
-provenance audit. Neither is completed by the existence of this command.
+When the original merge is absent but its exact tested source survives, an
+independently reviewed audit may identify an explicit `--source-commit <full-oid>`
+alongside `--integration-pr`. The source must be a commit ancestor of the original
+tested head, have that head's **identical whole Git tree**, and be an ancestor of
+the tested integration head and fresh develop. Abbreviations, tree objects,
+identical-tree siblings, partial copies and source commits outside integration
+history are refused. All original metadata, criteria and CI checks remain in force.
+The activity records the source/tree and states that original merge ancestry is
+not asserted; the original PR identity stays unchanged. This flag is forbidden
+with ordinary `--repair-pr` mode.
+
+Similar patches or selected files alone never qualify. TICKET-225's
+[provenance audit](reviews/TICKET-225/provenance.md) documents the exact retained
+source for TICKET-186/#4 and TICKET-187/#5. Their statuses remain unchanged until
+the guarded mechanism is independently reviewed, merged and applied through CLI.

@@ -45,9 +45,9 @@ prove ancestry. See [ticket recovery](../docs/tickets.md#historical-stacked-merg
 
 ## Acceptance criteria
 
-- [ ] Each original criterion has an auditable mapping to current tested content, or an explicit evidence gap.
-- [ ] Any proposed recovery checks identity, ownership, dependencies, complete criteria and exact successful CI; negative tests reject unrelated or partial content.
-- [ ] No historical ticket is marked done until independent review accepts sufficient evidence and a verified CLI path exists.
+- [x] Each original criterion has an auditable mapping to current tested content, or an explicit evidence gap.
+- [x] Any proposed recovery checks identity, ownership, dependencies, complete criteria and exact successful CI; negative tests reject unrelated or partial content.
+- [x] No historical ticket is marked done until independent review accepts sufficient evidence and a verified CLI path exists.
 
 ## Test plan
 
@@ -63,6 +63,7 @@ prove ancestry. See [ticket recovery](../docs/tickets.md#historical-stacked-merg
 
 - Created from TICKET-224's real ancestry refusal, not from failed test infrastructure.
 - Preserve TICKET-186 and TICKET-187 in_review while evidence remains insufficient.
+- 2026-11-09 — Exact retained source/whole-tree audit and independent source review support explicit historical source mode. Positive regression failed before implementation; final quick passed lint/types and119 tests. Read-only real proof passed for both originals against PR148. Historical statuses stay unchanged until this mechanism's verified merge and CLI closeout.
 
 ## Activity log
 
