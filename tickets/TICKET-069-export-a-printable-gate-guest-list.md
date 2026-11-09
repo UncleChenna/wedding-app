@@ -2,20 +2,20 @@
 id: TICKET-069
 title: Export a printable gate guest list
 epic: checkin
-status: todo
+status: in_progress
 priority: high
 estimate: S
 labels: [frontend, backend]
 module: checkin
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-024, TICKET-088]
 blocks: [TICKET-161, TICKET-165]
-branch: ""
+branch: TICKET-069
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-09
+started: 2026-11-09
 completed: ""
 reason: ""
 resume_to: ""
@@ -60,3 +60,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-09 — todo → claimed — divine (codex)
+- 2026-11-09 — todo → in_progress — divine (codex)
