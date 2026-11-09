@@ -2,7 +2,7 @@
 id: TICKET-134
 title: Cover admin guest import, seating, menu and staff end to end
 epic: testing
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [test]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/130
 created: 2026-10-21
 updated: 2026-11-09
 started: 2026-11-09
-completed: ""
+completed: 2026-11-09
 reason: ""
 resume_to: ""
 ---
@@ -62,3 +62,4 @@ _Agents append dated notes here while working._
 - 2026-11-09 — in_progress → in_review — divine (codex)
 - 2026-11-09 — in_review → in_progress — divine (codex) — Full CI exhausted its job budget after all 1023 browser tests passed; allow unchanged remaining gates to execute
 - 2026-11-09 — in_review → in_progress — divine (codex) — Integrate newly merged critical coverage enforcement before final verification
+- 2026-11-09 — in_review → done — divine (codex)
