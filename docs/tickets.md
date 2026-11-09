@@ -221,3 +221,33 @@ CI run URL, fetched develop commit and the owner's explanation. The original PR
 link and CI history are not replaced. Other worktrees' ticket files are untouched;
 only the ticket's own branch may later sync its completion metadata. Physical
 release requirements remain separate and mandatory.
+
+### Historical stacked merges
+
+For an owned `in_review` ticket whose original PR merged into an intermediate
+branch rather than `develop`, use the separate, explicit historical mode:
+
+```bash
+pnpm t:reconcile TICKET-NNN --integration-pr 123 --reason "Historical stacked merge reached develop through this tested integration"
+```
+
+The original PR must be merged to a non-develop branch; the separate integration
+must be merged to develop in the same repository. Real Git ancestry must prove
+original head → original merge → tested integration head → integration merge →
+freshly fetched develop. Complete original criteria must already exist at the
+original tested head, integration head and current develop. Owner and completed
+dependency checks still apply; offline recovery and mixed repair/integration flags
+are refused. No ticket file or historical worktree needs to be modified.
+
+Original CI must pass its four historical baseline jobs (tickets, PR attribution,
+full verification, migrations/seed). The integration additionally requires the
+invitation journey job. Every returned job must succeed: skipped, pending, failed,
+or cancelled jobs cannot certify recovery. Exact head, latest run ID, run status
+and PR metadata are rechecked; the ledger keeps original/integration heads, merge
+commits, base, CI URLs and audited develop alongside the explanation. The original
+PR link remains unchanged. This does not relax ordinary completion or repair mode.
+
+Rewritten or squash-integrated history without that ancestry is deliberately
+refused, even when similar content exists in develop. TICKET-186/#4 and
+TICKET-187/#5 currently fall into this category; TICKET-225 tracks a separate
+provenance audit. Neither is completed by the existence of this command.
