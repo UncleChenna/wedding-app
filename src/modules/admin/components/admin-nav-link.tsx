@@ -24,7 +24,7 @@ export function AdminNavLink({
       href={href}
       aria-current={current ? "page" : undefined}
       className={cn(
-        "inline-flex min-h-11 w-full items-center justify-center rounded-md px-3 py-2 text-base leading-tight focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring md:justify-start",
+        "inline-flex min-h-11 w-full items-center justify-center rounded-md px-3 py-2 text-lg leading-tight focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring md:justify-start",
         current
           ? "bg-surface-muted font-medium text-foreground"
           : "text-primary underline-offset-4 hover:underline",

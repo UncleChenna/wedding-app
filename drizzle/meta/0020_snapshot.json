@@ -1,5 +1,5 @@
 {
-  "id": "bd83633d-6784-48ee-a42e-0b2f91768262",
+  "id": "dc3a009c-3d30-4f5e-bdf6-3edfefcf6abd",
   "prevId": "f827942d-210c-48b5-8d7d-707145474599",
   "version": "7",
   "dialect": "postgresql",
@@ -720,6 +720,141 @@
         "invitation_photos_blur": {
           "name": "invitation_photos_blur",
           "value": "length(\"invitation_photos\".\"blur_data_url\") between 24 and 10947 and left(\"invitation_photos\".\"blur_data_url\", 23) = 'data:image/webp' || chr(59) || 'base64,'"
+        }
+      },
+      "isRLSEnabled": true
+    },
+    "public.invitation_share_events": {
+      "name": "invitation_share_events",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "sequence": {
+          "name": "sequence",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "invitation_share_events_sequence_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "invitation_id": {
+          "name": "invitation_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "actor_id": {
+          "name": "actor_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "channel": {
+          "name": "channel",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "token_version": {
+          "name": "token_version",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "previous_status": {
+          "name": "previous_status",
+          "type": "invitation_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "previous_sent_at": {
+          "name": "previous_sent_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "undone_at": {
+          "name": "undone_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "invitation_share_events_invitation_idx": {
+          "name": "invitation_share_events_invitation_idx",
+          "columns": [
+            {
+              "expression": "invitation_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "invitation_share_events_invitation_id_invitations_id_fk": {
+          "name": "invitation_share_events_invitation_id_invitations_id_fk",
+          "tableFrom": "invitation_share_events",
+          "tableTo": "invitations",
+          "columnsFrom": [
+            "invitation_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "invitation_share_events_channel": {
+          "name": "invitation_share_events_channel",
+          "value": "\"invitation_share_events\".\"channel\" in ('whatsapp', 'email', 'copy', 'native')"
+        },
+        "invitation_share_events_version": {
+          "name": "invitation_share_events_version",
+          "value": "\"invitation_share_events\".\"token_version\" > 0"
+        },
+        "invitation_share_events_undo_time": {
+          "name": "invitation_share_events_undo_time",
+          "value": "\"invitation_share_events\".\"undone_at\" is null or \"invitation_share_events\".\"undone_at\" >= \"invitation_share_events\".\"created_at\""
         }
       },
       "isRLSEnabled": true
@@ -2068,19 +2203,6 @@
           "primaryKey": false,
           "notNull": false
         },
-        "whatsapp_number": {
-          "name": "whatsapp_number",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "alerts_opt_in": {
-          "name": "alerts_opt_in",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": false
-        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp with time zone",
@@ -2120,14 +2242,6 @@
         "staff_credential_version_positive": {
           "name": "staff_credential_version_positive",
           "value": "\"staff\".\"credential_version\" > 0"
-        },
-        "staff_whatsapp_number_e164": {
-          "name": "staff_whatsapp_number_e164",
-          "value": "\"staff\".\"whatsapp_number\" is null or \"staff\".\"whatsapp_number\" ~ '^[+][1-9][0-9]{7,14}$'"
-        },
-        "staff_alerts_need_number": {
-          "name": "staff_alerts_need_number",
-          "value": "not \"staff\".\"alerts_opt_in\" or (\"staff\".\"whatsapp_number\" is not null and \"staff\".\"role\" in ('kitchen', 'bar'))"
         },
         "staff_pin_credential_complete": {
           "name": "staff_pin_credential_complete",

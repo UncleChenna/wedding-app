@@ -37,6 +37,27 @@ const updatedAt = () =>
     .defaultNow()
     .$onUpdate(() => new Date());
 
+/** Private expiring CSV previews; committed rows retain only digest and receipt IDs. */
+export const guestImportBatches = pgTable(
+  "guest_import_batches",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    digest: text("digest").notNull().unique(),
+    actorId: uuid("actor_id").notNull(),
+    csv: text("csv"),
+    tableSnapshot: jsonb("table_snapshot")
+      .$type<{ id: string; number: number; name: string | null; capacity: number }[]>()
+      .notNull(),
+    invitationIds: jsonb("invitation_ids").$type<string[] | null>(),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    createdAt: createdAt(),
+  },
+  (t) => [
+    check("guest_import_digest", sql`${t.digest} ~ '^[0-9a-f]{64}$'`),
+    check("guest_import_csv_bound", sql`${t.csv} is null or octet_length(${t.csv}) <= 262144`),
+  ],
+).enableRLS();
+
 const photoBytes = customType<{ data: Buffer; driverData: Buffer }>({
   dataType: () => "bytea",
 });
@@ -248,6 +269,37 @@ export const invitations = pgTable(
     check("invitations_token_format", sql`${t.token} ~ '^[A-Za-z0-9_-]{22,}$'`),
     check("invitations_token_version_positive", sql`${t.tokenVersion} > 0`),
     index("invitations_table_id_idx").on(t.tableId),
+  ],
+).enableRLS();
+
+/** Minimal sharing-attempt history; never stores bearer links or recipient contacts. */
+export const invitationShareEvents = pgTable(
+  "invitation_share_events",
+  {
+    id: uuid("id").primaryKey(),
+    sequence: integer("sequence").generatedAlwaysAsIdentity().notNull(),
+    invitationId: uuid("invitation_id")
+      .notNull()
+      .references(() => invitations.id, { onDelete: "cascade" }),
+    actorId: uuid("actor_id").notNull(),
+    channel: text("channel").notNull(),
+    tokenVersion: integer("token_version").notNull(),
+    previousStatus: invitationStatus("previous_status").notNull(),
+    previousSentAt: timestamp("previous_sent_at", { withTimezone: true }),
+    createdAt: createdAt(),
+    undoneAt: timestamp("undone_at", { withTimezone: true }),
+  },
+  (t) => [
+    index("invitation_share_events_invitation_idx").on(t.invitationId, t.createdAt),
+    check(
+      "invitation_share_events_channel",
+      sql`${t.channel} in ('whatsapp', 'email', 'copy', 'native')`,
+    ),
+    check("invitation_share_events_version", sql`${t.tokenVersion} > 0`),
+    check(
+      "invitation_share_events_undo_time",
+      sql`${t.undoneAt} is null or ${t.undoneAt} >= ${t.createdAt}`,
+    ),
   ],
 ).enableRLS();
 

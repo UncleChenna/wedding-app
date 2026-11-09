@@ -9,8 +9,8 @@ labels: [security, frontend]
 module: checkin
 owner: ""
 agent: ""
-blocked_by: [TICKET-056, TICKET-055]
-blocks: [TICKET-059]
+blocked_by: [TICKET-056]
+blocks: [TICKET-059, TICKET-114]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -33,18 +33,19 @@ See: [Security](../docs/prd.md#security) · [Gate check-in](../docs/prd.md#gate-
 
 - WebCrypto Ed25519 where supported; small pure-JS fallback (approved dependency) otherwise.
 - Same code path tested in Node and the browser.
+- Implementation targets: the repository-pinned Playwright Chromium and WebKit engines, with unsupported WebCrypto simulated to exercise the fallback. Record engine versions; these are development targets, not certified phone models or minimum OS versions.
 
 ## Out of scope
 
 - Admission rules (TICKET-058).
+- Physical scanner-device certification and the mandatory <20ms Android timing evidence (TICKET-114); actual-camera/low-light venue rehearsal remains TICKET-163.
 
 ## Acceptance criteria
 
 - [ ] Valid tokens verify and tampered tokens fail in Chromium and WebKit Playwright projects.
-- [ ] Verification of one token takes <20ms on a mid-range Android (manual timing).
-- [ ] No private key material is shipped to the client bundle (bundle scan test).
-
-- [ ] Verify signatures and expiry using realistic payload lengths on the physical device set; no private signing key ships to a browser or cache.
+- [ ] No private key material is shipped to the client bundle or cache (bundle/cache scan test).
+- [ ] Shared valid, forged, tampered and expired-policy vectors pass in Node, Chromium and WebKit, including forced fallback when WebCrypto Ed25519 is unavailable. Follow the approved credential/freshness contract; do not invent a new token payload.
+- [ ] Record automated per-token timings and exact browser/build versions against the <20ms target; clearly label these as automated evidence only. TICKET-114 retains the mandatory physical mid-range Android measurement, and automated timings do not certify hardware.
 
 ## Test plan
 
@@ -52,7 +53,7 @@ See: [Security](../docs/prd.md#security) · [Gate check-in](../docs/prd.md#gate-
 - End-to-end: Verify in Chromium and WebKit.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
 
-- Audit verification: Unit: forged/tampered/expired token matrix; manual timed low-light scans on real devices.
+- Audit verification: Unit/browser: forged/tampered/expired-policy token matrix and forced fallback. Manual physical token timings and realistic payload checks are mandatory in TICKET-114; timed low-light actual-camera scans remain mandatory in TICKET-163.
 
 ## Files likely touched
 
@@ -60,7 +61,7 @@ See: [Security](../docs/prd.md#security) · [Gate check-in](../docs/prd.md#gate-
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-11-09 (TICKET-220): Removed only the operational-roster dependency TICKET-055. Its physical timing and verification criteria are transferred verbatim to release-blocking TICKET-114, which still requires TICKET-055. No device result is passed or waived; software verification can proceed using the documented browser targets.
 
 ## Activity log
 

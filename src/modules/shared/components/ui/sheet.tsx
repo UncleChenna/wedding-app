@@ -58,7 +58,16 @@ export function Sheet({ open, onOpenChange, title, description, children, classN
       ref={ref}
       aria-labelledby={titleId}
       aria-describedby={description ? descriptionId : undefined}
-      onClose={() => onOpenChange(false)}
+      onCancel={(event) => {
+        // Keep Escape in the controlled-state path: native close restores focus
+        // before its queued close event, allowing a quick reopen to be lost.
+        event.preventDefault();
+        onOpenChange(false);
+      }}
+      onClose={(event) => {
+        // A close event queued before a reopen must not close the new dialog.
+        if (!event.currentTarget.open) onOpenChange(false);
+      }}
       onKeyDown={trapTab}
       onClick={(event) => {
         // A click on the dialog element itself (not its content) is a backdrop click.
