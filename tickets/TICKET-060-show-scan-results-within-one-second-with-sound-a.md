@@ -2,7 +2,7 @@
 id: TICKET-060
 title: Show scan results within one second with sound and vibration
 epic: checkin
-status: in_progress
+status: in_review
 priority: high
 estimate: M
 labels: [frontend]
