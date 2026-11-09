@@ -2,7 +2,7 @@
 id: TICKET-093
 title: "Build the seating plan: tables and assignments"
 epic: admin
-status: in_review
+status: in_progress
 priority: high
 estimate: L
 labels: [frontend, backend]
@@ -67,3 +67,4 @@ See: [Admin dashboard](../docs/prd.md#admin-dashboard) (ADM-2).
 - 2026-11-09 — todo → in_progress — divine (codex)
 - 2026-11-09 — in_progress → in_review — divine (codex)
 - 2026-11-09 — in_review → in_progress — divine (codex) — Enforce the admin 18px control typography rule in seating forms and recheck browser evidence
+- 2026-11-09 — in_review → in_progress — divine (codex) — Integrate merged printable guest list and preserve all admin guest actions
