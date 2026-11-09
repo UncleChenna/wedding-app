@@ -39,8 +39,8 @@ See: [Admin dashboard](../docs/prd.md#admin-dashboard) (ADM-3) · [Overview and 
 
 ## Acceptance criteria
 
-- [ ] Counters match DB queries in a unit test on seed data.
-- [ ] An admission updates 'arrived' within 2s (e2e).
+- [x] Counters match DB queries in a unit test on seed data.
+- [x] An admission updates 'arrived' within 2s (e2e).
 
 ## Test plan
 
@@ -54,7 +54,7 @@ See: [Admin dashboard](../docs/prd.md#admin-dashboard) (ADM-3) · [Overview and 
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-11-09 — Two isolated database fixtures verify aggregate semantics; authenticated mobile/desktop browser tests measure arrival updates at 993.8ms/994.9ms. All seven CI jobs pass on `95aaf252` (run42713917024), and independent review covers source and all42 screenshots. The ticket remains in progress and PR146 draft: TICKET-061 must merge, then the combined base must pass verification. Physical-device completion is not claimed.
 
 ## Activity log
 

@@ -120,3 +120,25 @@ first after fresh checks; wait for actual merge confirmation. TICKET-061 editor
 will integrate123 and rerun combined checks before merging. Root097 then needs
 that combined base, preserving both admin and ordering/scanner CI additions.
 No production application is authorized or attempted; ownPG39021 stays stopped.
+
+## Verified head and integration hold — 23:25 UTC
+
+All seven CI jobs passed at `95aaf252` in run42713917024. Both ticket acceptance
+criteria are now checked against the real database fixtures and authenticated
+browser timing evidence above; status remains in_progress and PR146 remains draft.
+No final combined-base verification or completion is claimed.
+
+Develop is `debc5b347a26b2f69f5ada2f69841bc66de6c858` (TICKET-123 merged).
+A non-mutating merge-tree preview is conflict-free and preserves dashboard
+artifacts plus ordering-last fixture execution. TICKET-061 PR144 final head
+`ae66136fded353574715086285778b6999fe1371` is running CI42718467383. Its diagnostic
+head passes admission browsers on the first attempt, SQL, offline recovery and
+ordering; full verification remains live. Earlier initial QR decode timeouts are
+disclosed in that ticket rather than claimed fixed by a successful retry.
+
+Next: after the verified061 merge, fetch develop, integrate the combined base,
+preserve the guest/scanner/admission/offline/budget/ordering sequence and both
+admin artifact steps, apply unchanged migration0026 to owned nativePG39021, run
+aggregate tests and quick verification, publish through t:pr, and await all final
+CI checks before merge/done. NativePG remains stopped with its datadir retained.
+Other editors own065 and224; never edit their worktrees.

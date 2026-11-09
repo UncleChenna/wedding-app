@@ -26,7 +26,7 @@ The control room’s “Live dashboard — Coming soon” placeholder is replace
 - Quick gate: lint/types and 14 related tests pass after responsive changes.
 - Full local unit suite: **1,745 passed / 187 conditional skips**; critical coverage 98.27% lines / 98.46% branches. This preceded the responsive-only refinement; final combined CI remains required.
 - Isolated native PostgreSQL aggregate tests: **2/2**, also passing in the real Auth CI job. CI harness/parity regression: **15/15**.
-- [Hosted run 42712187041](https://github.com/UncleChenna/wedding-app/actions/runs/42712187041): authenticated admin journey passed, including direct HTTP denial, aggregate projection, live updates, stale retention, real cookie-removal denial, keyboard refresh and all-theme axe checks. Full verification is still running.
+- [Hosted run 42712187041](https://github.com/UncleChenna/wedding-app/actions/runs/42712187041): authenticated admin journey passed, including direct HTTP denial, aggregate projection, live updates, stale retention, real cookie-removal denial, keyboard refresh and all-theme axe checks. The subsequent [run42713917024](https://github.com/UncleChenna/wedding-app/actions/runs/42713917024) passed all seven CI jobs at `95aaf252`; combined-base verification remains outstanding.
 - Independent source review found and resolved legacy-ready counting and offline-after-denial UI behavior. The latter was reproduced red then green. Final source and all 42 responsive images reviewed clean.
 
 ## UI checklist
