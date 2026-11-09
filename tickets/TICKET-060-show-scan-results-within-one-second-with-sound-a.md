@@ -2,20 +2,20 @@
 id: TICKET-060
 title: Show scan results within one second with sound and vibration
 epic: checkin
-status: todo
+status: in_progress
 priority: high
 estimate: M
 labels: [frontend]
 module: checkin
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-058, TICKET-059, TICKET-093]
 blocks: [TICKET-061, TICKET-118]
-branch: ""
+branch: TICKET-060
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-09
+started: 2026-11-09
 completed: ""
 reason: ""
 resume_to: ""
@@ -63,3 +63,5 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-2) · [Journey 2: check-
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-09 — todo → claimed — divine (codex) — started ahead of TICKET-059 (in_progress)
+- 2026-11-09 — todo → in_progress — divine (codex) — started ahead of TICKET-059 (in_progress)
