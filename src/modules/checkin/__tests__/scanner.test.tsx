@@ -7,6 +7,22 @@ vi.mock("../lib/camera-reader", () => ({ startQrCamera: vi.fn() }));
 afterEach(() => {
   cleanup();
   vi.clearAllMocks();
+  vi.unstubAllGlobals();
+});
+it("shows sign-in expiry when the request proxy rejects an expired session", async () => {
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(
+      async () => new Response(JSON.stringify({ error: "Sign-in required." }), { status: 403 }),
+    ),
+  );
+  vi.mocked(startQrCamera).mockResolvedValue({ stop: vi.fn(), setTorch: async () => false });
+  render(<Scanner />);
+  await act(async () => fireEvent.click(screen.getByRole("button", { name: "Open camera" })));
+  const options = vi.mocked(startQrCamera).mock.calls[0]?.[0];
+  await act(async () => options?.onCode("private signed pass"));
+  expect(screen.getByRole("heading", { name: "Sign in again" })).toBeVisible();
+  expect(document.body.textContent).not.toContain("private signed pass");
 });
 it("starts only on a user action and aborts on pause and unmount", async () => {
   const stop = vi.fn();
@@ -36,17 +52,17 @@ it("offers safe permission recovery and focuses real help without exposing a QR 
   expect(document.activeElement?.id).toBe("manual-check-in-help");
   expect(screen.getByText(/Name search is not available yet/)).toBeVisible();
 });
-it("shows neutral reading feedback, never the private code or a grant of admission", async () => {
+it("shows a checked result without exposing the private code or granting admission", async () => {
   vi.mocked(startQrCamera).mockResolvedValue({ stop: vi.fn(), setTorch: async () => true });
-  render(<Scanner />);
+  render(<Scanner resolveRead={async () => ({ state: "invalid" })} />);
   await act(async () => fireEvent.click(screen.getByRole("button", { name: "Open camera" })));
   const options = vi.mocked(startQrCamera).mock.calls[0]?.[0];
-  act(() => {
+  await act(async () => {
     options?.onTorchAvailable(false);
     options?.onCode("private-qr-marker");
   });
-  expect(screen.getByText("QR read")).toBeVisible();
-  expect(screen.getByText(/before admitting anyone/)).toBeVisible();
+  expect(screen.getByRole("heading", { name: "Invalid pass" })).toBeVisible();
+  expect(screen.getByText(/not that admission was recorded/)).toBeVisible();
   expect(document.body.textContent).not.toContain("private-qr-marker");
   expect(screen.queryByRole("button", { name: "Light on" })).not.toBeInTheDocument();
 });
@@ -70,4 +86,61 @@ it("restores torch controls when retrying after a camera failure during a light 
   const next = vi.mocked(startQrCamera).mock.calls[1]?.[0];
   act(() => next?.onTorchAvailable(true));
   expect(screen.getByRole("button", { name: "Light on" })).toBeEnabled();
+});
+it("ignores an older lookup finishing after a newer scan and clears private results before the next scan", async () => {
+  vi.mocked(startQrCamera).mockResolvedValue({ stop: vi.fn(), setTorch: async () => false });
+  let finish: ((value: { state: "invalid" }) => void) | undefined;
+  const resolveRead = vi
+    .fn()
+    .mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          finish = resolve;
+        }),
+    )
+    .mockResolvedValueOnce({
+      state: "valid",
+      guest: {
+        name: "Synthetic guest",
+        partySize: 2,
+        admittedSoFar: 0,
+        tableNumber: null,
+        admissions: [],
+      },
+    });
+  render(<Scanner resolveRead={resolveRead} />);
+  await act(async () => fireEvent.click(screen.getByRole("button", { name: "Open camera" })));
+  const options = vi.mocked(startQrCamera).mock.calls[0]?.[0];
+  await act(async () => {
+    options?.onTorchAvailable(false);
+    options?.onCode("first");
+  });
+  await act(async () => options?.onCode("second"));
+  expect(screen.getByText("Synthetic guest")).toBeVisible();
+  await act(async () => finish?.({ state: "invalid" }));
+  expect(screen.getByRole("heading", { name: "Valid pass" })).toBeVisible();
+  await act(async () => fireEvent.click(screen.getByRole("button", { name: "Scan next pass" })));
+  expect(screen.queryByText("Synthetic guest")).toBeNull();
+});
+it("does not restore a result after camera pause while a lookup is in flight", async () => {
+  vi.mocked(startQrCamera).mockResolvedValue({ stop: vi.fn(), setTorch: async () => false });
+  let finish: ((value: { state: "invalid" }) => void) | undefined;
+  render(
+    <Scanner
+      resolveRead={() =>
+        new Promise((resolve) => {
+          finish = resolve;
+        })
+      }
+    />,
+  );
+  await act(async () => fireEvent.click(screen.getByRole("button", { name: "Open camera" })));
+  const options = vi.mocked(startQrCamera).mock.calls[0]?.[0];
+  act(() => {
+    options?.onTorchAvailable(false);
+    options?.onCode("private");
+  });
+  fireEvent.click(screen.getByRole("button", { name: "Pause camera" }));
+  await act(async () => finish?.({ state: "invalid" }));
+  expect(screen.queryByRole("heading", { name: "Invalid pass" })).toBeNull();
 });
