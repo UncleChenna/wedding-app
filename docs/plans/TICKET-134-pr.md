@@ -12,6 +12,7 @@ Separate feature tests did not prove the couple could complete setup in one auth
 - The browser uses real clipboard permissions and verifies the copied invitation path. It sends no WhatsApp/email invitation and does not claim delivery.
 - `scripts/test-admin-journey.ts` creates fresh synthetic admin addresses and an ephemeral staff session secret, delegates database identity to unchanged `assertDatabaseTarget`, adds Auth/PW identity checks before writes, migrates its own stack, and runs both browser projects serially. Run `pnpm exec tsx scripts/test-admin-journey.ts --build` in a managed worktree with its database running. Repeated runs get fresh fixtures; event date is thirty days ahead and the original settings are restored.
 - `scripts/admin-journey-ci.ts` refuses non-hosted execution, another workspace, linked checkouts or existing runtime configuration. A fresh GitHub-hosted checkout reuses `isolatedConfig` and the actual Auth template copier; generated local environment values explicitly override inherited CI defaults. Existing local Auth helper guards remain unchanged.
+- The existing verification job budget is25minutes: its prior20minute run passed1411unit tests and1023browser tests (16.3m) but was cancelled before the required scanner step. Every assertion, per-test timeout and existing gate remains unchanged.
 - A separate `admin journey (mobile + desktop)` CI job starts disposable Supabase Auth/mail/PostgreSQL, migrates, builds and tests. Existing gates remain intact. An always-run step stops only that job's stack.
 - OTP/TOTP/PIN browser traces, videos and screenshots are disabled. CI uploads only small sanitized outcome JSON, never browser reports, session captures or generated environment files.
 
@@ -20,6 +21,8 @@ Separate feature tests did not prove the couple could complete setup in one auth
 - [x] The admin journey passes in CI — [run42619092760, admin job129166376145](https://github.com/UncleChenna/wedding-app/actions/runs/42619092760/job/129166376145) passed both projects in15.6s at `ed331b82bd6a62a778a802b3afcd7569b7ceb59f`. Hosted setup, real Auth/mail, migrations, build, artifact upload and stack cleanup all passed.
 
 ## Verification
+
+- Final integrated run42631296431 at ce9dc68a passed five checks, including the hosted admin journey, but the full verification job exhausted its20minute budget immediately after all1023browser tests passed. Unit results were1411passed/156skipped. The remaining scanner step did not run, so this is explicitly not a complete CI pass. The job budget repair must pass a fresh final-head run.
 
 - Existing full verification on that run failed only the inherited scanner CI-parity expectation: 1390 unit tests passed,153 skipped,1 failed. The independently verified TICKET-221 repair is now integrated from develop `7250e483` without conflicts as `1d4ffefb`. All final-head gates must pass before merge.
 - Local production build passed on integrated product base `b1a15b64` (merge checkpoint `69f04a51`).

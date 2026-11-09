@@ -53,7 +53,8 @@ jobs:
   verify:
     name: pnpm verify
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # Full browser matrix measured 16.3m, plus setup/unit/build and scanner checks.
+    timeout-minutes: 25
     services:
       postgres:
         image: postgres:17
