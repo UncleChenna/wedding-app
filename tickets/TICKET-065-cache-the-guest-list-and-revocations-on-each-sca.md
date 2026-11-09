@@ -2,20 +2,20 @@
 id: TICKET-065
 title: Cache the guest list and revocations on each scanner
 epic: checkin
-status: todo
+status: in_progress
 priority: high
 estimate: L
 labels: [frontend, pwa]
 module: checkin
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-043, TICKET-061, TICKET-108]
 blocks: [TICKET-063, TICKET-066, TICKET-068, TICKET-184]
-branch: ""
+branch: TICKET-065
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-09
+started: 2026-11-09
 completed: ""
 reason: ""
 resume_to: ""
@@ -66,3 +66,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-09 — todo → claimed — divine (codex) — started ahead of TICKET-061 (in_progress)
+- 2026-11-09 — todo → in_progress — divine (codex) — started ahead of TICKET-061 (in_progress)
