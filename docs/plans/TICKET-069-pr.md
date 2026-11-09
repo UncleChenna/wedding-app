@@ -27,7 +27,8 @@ The gate team lacked a printable fallback guest list. Admin → Guests → Print
 - `pnpm exec tsx scripts/test-admin-gate-print.ts`: one production-browser test passed. Anonymous access redirects; response is no-store; all companions and confirmed rows appear; four themes have zero axe violations and no horizontal overflow; widths 375/600/768/1280 pass; keyboard Enter invokes printing, Tab reaches Back to guests, reduced-motion mode works, print hides navigation/controls.
 - `swift scripts/review-gate-print.swift docs/reviews/TICKET-069/desktop/gate-list.pdf docs/reviews/TICKET-069/desktop/expected-names.json docs/reviews/TICKET-069/desktop/pdf-preview`: passed, nine A4 pages.
 - `pnpm verify:quick`: passed lint, types and one related view test. The explicit focused suite passed all eight tests across three files. Full verification runs in required CI; no claim of a local full-suite run.
-- Integrated develop `ede359ca` with merge `fa00b3a6` before these checks. Owned database stopped with backup preserved after browser tests; other stacks untouched.
+- Initial full CI found the print route missing from the shared route inventory (1275 tests passed, one failed). Registered the route without changing the contract test. Integrated current develop `886c46cc`, retaining both Add an invitation and Print gate list actions, plus a regression for both links. The explicit route/export/navigation suite passes 14 tests; integration quick verification passes lint, types and related tests. No DB restart needed for these metadata/navigation changes. Earlier authenticated print/PDF evidence remains applicable; final CI will exercise the combined build.
+- Initial browser/PDF evidence used develop `ede359ca` with merge `fa00b3a6`. Owned database stopped with backup preserved after browser tests; other stacks untouched.
 
 # Risks and rollout
 

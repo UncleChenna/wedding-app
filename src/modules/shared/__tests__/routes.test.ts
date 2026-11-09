@@ -25,6 +25,8 @@ describe("application route contract", () => {
     expect(appRoutes.invitation.access).toBe("invitation");
     expect(appRoutes.pass.access).toBe("pass");
     expect(appRoutes.admin.access).toBe("admin");
+    expect(appRoutes.adminGuestNew.access).toBe("admin");
+    expect(appRoutes.adminGuestEdit.access).toBe("admin");
     expect(appRoutes.adminSignIn.access).toBe("public");
     for (const route of routeList.filter((route) => route.path.startsWith("/dev"))) {
       expect(route.audience).toBe("dev");
@@ -48,6 +50,7 @@ describe("application route contract", () => {
     expect(pageRouteSamples).toHaveLength(routeList.length);
     expect(pageRouteSamples).toContain("/i/invalid");
     expect(pageRouteSamples).toContain("/p/invalid");
+    expect(pageRouteSamples).toContain("/admin/guests/invalid/edit");
     expect(pageRouteSamples.some((path) => path.includes("["))).toBe(false);
     expect(pageRouteSamples).toContain(appRoutes.admin.path);
   });
