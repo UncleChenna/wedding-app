@@ -26,7 +26,7 @@ resume_to: ""
 ## Context
 
 TICKET-186 PR #4 and TICKET-187 PR #5 merged in October into intermediate branches,
-before the current develop-only workflow. Their changes are present in develop but
+before the current develop-only workflow. Their changes appear in later develop content but original merge ancestry is absent;
 their ledger states remain in_review. Existing completion/reconciliation requires
 the original PR base to be develop. See [ticket workflow](../docs/tickets.md).
 
@@ -36,7 +36,7 @@ the original PR base to be develop. See [ticket workflow](../docs/tickets.md).
 - Prove original merge ancestry into a separately tested, merged develop integration
   and fresh origin/develop; verify completed criteria and exact-head successful CI.
 - Preserve ownership, dependency, clean evidence and normal direct-merge checks.
-- Reconcile the two historical tickets only after the new path is verified and merged.
+- Verify the two historical tickets read-only; preserve refusal if ancestry is missing and track a separate provenance audit.
 
 ## Out of scope
 
@@ -45,11 +45,11 @@ the original PR base to be develop. See [ticket workflow](../docs/tickets.md).
 
 ## Acceptance criteria
 
-- [ ] Real Git regressions accept an owned historical stacked merge only when its merge commit is an ancestor of the independently tested integration and fresh develop, with complete original criteria.
-- [ ] Unmerged/unrelated PRs, missing ancestry, incomplete criteria, wrong owners, unfinished dependencies and stale/pending/failed CI refuse without changing the ledger.
-- [ ] Original and integration PR/head/CI/develop evidence is preserved in the ledger activity; original PR identity remains unchanged.
-- [ ] Existing direct completion and repair reconciliation continue to pass their regressions.
-- [ ] Documentation explains the explicit recovery command; TICKET-186 and TICKET-187 are reconciled through it only after verified merge, preserving historical worktrees.
+- [x] Real Git regressions accept an owned historical stacked merge only when its merge commit is an ancestor of the independently tested integration and fresh develop, with complete original criteria.
+- [x] Unmerged/unrelated PRs, missing ancestry, incomplete criteria, wrong owners, unfinished dependencies and stale/pending/failed CI refuse without changing the ledger.
+- [x] Original and integration PR/head/CI/develop evidence is preserved in the ledger activity; original PR identity remains unchanged.
+- [x] Existing direct completion and repair reconciliation continue to pass their regressions.
+- [x] Documentation explains the explicit recovery command and records actual TICKET-186/TICKET-187 refusal evidence; missing ancestry remains unresolved in a separate follow-up without status or worktree changes.
 
 ## Test plan
 
@@ -64,7 +64,11 @@ the original PR base to be develop. See [ticket workflow](../docs/tickets.md).
 
 ## Notes / decisions
 
-- 2026-11-09 — Read-only audit: #4 merged as77b76431 into divine/HARNESS-002-backlog-audit; #5 asb3aa2a54 into divine/TICKET-186-ticket-prefix. Both historical four-job CI runs succeeded. Current-base ancestry and a suitable tested integration still need verification; this is not authorization to fabricate completion evidence.
+- Scope correction after actual Git proof: neither historical merge is an ancestor of develop. This ticket delivers strict recovery tooling and honest refusal; TICKET-225 owns the unresolved provenance audit. TICKET-186/TICKET-187 remain in_review; no status change or worktree edits.
+
+- 2026-11-09 — Read-only audit: #4 merged as77b76431 into divine/HARNESS-002-backlog-audit; #5 asb3aa2a54 into divine/TICKET-186-ticket-prefix. Both historical four-job CI runs succeeded. Subsequent explicit Git checks proved neither original merge reaches current develop or candidate integration113; see docs/reviews/TICKET-224/historical-evidence.md.
+
+- 2026-11-09 — Final verify:quick passed lint, types and107 tests. Historical fixtures use distinct original head/no-ff merge; negative cases preserve ledger and ticket files. Independent source review clean. Real historical status recovery remains refused and tracked in TICKET-225.
 
 ## Activity log
 
