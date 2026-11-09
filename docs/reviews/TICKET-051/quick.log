@@ -1,0 +1,26 @@
+$ node scripts/verify-quick.mjs
+
+▶ lint
+$ eslint --cache --max-warnings=0 .
+
+▶ typecheck
+$ next typegen && tsc --noEmit
+Generating route types...
+✓ Types generated successfully
+
+▶ unit tests related to 5 changed file(s)
+
+ RUN  v5.0.5 /Users/chenna/Documents/codes/wedding/.worktrees/TICKET-051
+
+
+ Test Files  3 passed | 1 skipped (4)
+   Affected  4 of 169 test files (related to 5 files)
+      Tests  11 passed | 5 skipped (16)
+   Start at  10:00:49
+   Duration  740ms (environment 44%, import 29%, setup 14%, tests 12%, transform 1%, worker 1%)
+
+
+verify:quick summary
+  ✔ lint
+  ✔ typecheck
+  ✔ unit tests related to 5 changed file(s)

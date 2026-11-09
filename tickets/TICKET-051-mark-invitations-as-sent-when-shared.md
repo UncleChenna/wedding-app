@@ -2,20 +2,20 @@
 id: TICKET-051
 title: Mark invitations as sent when shared
 epic: sharing
-status: todo
+status: in_review
 priority: urgent
 estimate: S
 labels: [backend, frontend]
 module: admin
-owner: ""
-agent: ""
+owner: unclechenna
+agent: codex
 blocked_by: [TICKET-050, TICKET-089]
 blocks: [TICKET-053, TICKET-159, TICKET-176]
-branch: ""
-pr: ""
+branch: TICKET-051
+pr: https://github.com/UncleChenna/wedding-app/pull/116
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-09
+started: 2026-11-09
 completed: ""
 reason: ""
 resume_to: ""
@@ -40,10 +40,10 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-3).
 
 ## Acceptance criteria
 
-- [ ] Sharing through any channel sets status sent and sent_at once (unit).
-- [ ] The guest list filters by sent / not sent.
+- [x] Sharing through any channel sets status sent and sent_at once (unit).
+- [x] The guest list filters by sent / not sent.
 
-- [ ] First-send timestamp is separate from RSVP status. Re-sharing preserves yes/no responses and revocation; cancelling native share does not mark sent, and opening an external intent is not proof of delivery.
+- [x] First-send timestamp is separate from RSVP status. Re-sharing preserves yes/no responses and revocation; cancelling native share does not mark sent, and opening an external intent is not proof of delivery.
 
 ## Test plan
 
@@ -58,8 +58,11 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-3).
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-11-09 — Sharing/Undo implementation verified with policy/component tests, five isolated PostgreSQL cases and authenticated mobile/desktop journeys. Generated migration0020 and detailed evidence are in docs/plans/TICKET-051-pr.md. Native-device release QA remains unverified; PR stays draft pending prerequisite089 and final review.
 
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-09 — todo → claimed — unclechenna (codex) — started ahead of TICKET-089 (in_progress)
+- 2026-11-09 — todo → in_progress — unclechenna (codex) — started ahead of TICKET-089 (in_progress)
+- 2026-11-09 — in_progress → in_review — unclechenna (codex)

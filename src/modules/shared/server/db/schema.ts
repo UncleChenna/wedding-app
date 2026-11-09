@@ -239,6 +239,37 @@ export const invitations = pgTable(
   ],
 ).enableRLS();
 
+/** Minimal sharing-attempt history; never stores bearer links or recipient contacts. */
+export const invitationShareEvents = pgTable(
+  "invitation_share_events",
+  {
+    id: uuid("id").primaryKey(),
+    sequence: integer("sequence").generatedAlwaysAsIdentity().notNull(),
+    invitationId: uuid("invitation_id")
+      .notNull()
+      .references(() => invitations.id, { onDelete: "cascade" }),
+    actorId: uuid("actor_id").notNull(),
+    channel: text("channel").notNull(),
+    tokenVersion: integer("token_version").notNull(),
+    previousStatus: invitationStatus("previous_status").notNull(),
+    previousSentAt: timestamp("previous_sent_at", { withTimezone: true }),
+    createdAt: createdAt(),
+    undoneAt: timestamp("undone_at", { withTimezone: true }),
+  },
+  (t) => [
+    index("invitation_share_events_invitation_idx").on(t.invitationId, t.createdAt),
+    check(
+      "invitation_share_events_channel",
+      sql`${t.channel} in ('whatsapp', 'email', 'copy', 'native')`,
+    ),
+    check("invitation_share_events_version", sql`${t.tokenVersion} > 0`),
+    check(
+      "invitation_share_events_undo_time",
+      sql`${t.undoneAt} is null or ${t.undoneAt} >= ${t.createdAt}`,
+    ),
+  ],
+).enableRLS();
+
 export const tables = pgTable(
   "tables",
   {
