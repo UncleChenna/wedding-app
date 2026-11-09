@@ -51,6 +51,12 @@ export const appRoutes = {
     audience: "admin",
     access: "admin",
   },
+  adminGuestHistory: {
+    path: "/admin/guests/[id]/history",
+    label: "Reply history",
+    audience: "admin",
+    access: "admin",
+  },
   adminGuestEdit: {
     path: "/admin/guests/[id]/edit",
     label: "Edit invitation",
@@ -119,5 +125,7 @@ export const pageRouteSamples = routeList.map((route) => {
   if (route.path === appRoutes.invitation.path) return invitationHref("invalid");
   if (route.path === appRoutes.pass.path) return passHref("invalid");
   if (route.path === appRoutes.adminGuestEdit.path) return "/admin/guests/invalid/edit";
+  if (route.path === appRoutes.adminGuestHistory.path)
+    return "/admin/guests/00000000-0000-4000-8000-000000000000/history";
   return route.path;
 });
