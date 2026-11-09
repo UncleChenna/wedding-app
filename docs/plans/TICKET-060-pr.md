@@ -73,11 +73,13 @@ application is involved. Rollback is a code revert; no database rollback is need
 
 `docs/reviews/TICKET-060/{mobile,desktop}/`: six result states × four themes ×375/768/1280,
 plus camera ready/permission recovery. Every result is real signed-pass/DB output using
-synthetic data. Independent visual review is requested before readiness.
+synthetic data. Independent source and visual review is clean: all144 result screenshots were
+inspected across both projects, all states/themes/widths; no clipping, overlap or
+blocking source issue remains. The conflict-free048 integration changes no060 behavior.
 
 # UI checklist
 
-- Screenshots: PASS automated capture; independent visual disposition recorded in review.
+- Screenshots: PASS automated capture and independent inspection of all144 result images.
 - Tokens: PASS shared semantic badges, Card and Button; no new hard-coded palette.
 - Typography/restraint: PASS staff body18px+, large result/name/table and explicit status.
 - Mobile: PASS375/600/768/1280 bounds;44px targets; valid name/table in375×812 viewport.
@@ -91,4 +93,4 @@ synthetic data. Independent visual review is requested before readiness.
 - Sharing: N/A no guest sharing change. Physical feedback/camera checks remain unverified201.
 - QR output: N/A no generated QR output change; actual pixels decoded in browser fixtures.
 - Staff feedback: PASS optional rejected/unavailable feedback tests and fixed semantic states.
-- Verification: local full coverage/build pass; final quick passes; required full CI pending.
+- Verification: local full coverage/build pass; final quick passes; required full CI pending on the final published head.
