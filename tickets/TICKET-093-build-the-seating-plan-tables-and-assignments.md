@@ -2,20 +2,20 @@
 id: TICKET-093
 title: "Build the seating plan: tables and assignments"
 epic: admin
-status: todo
+status: in_review
 priority: high
 estimate: L
 labels: [frontend, backend]
 module: admin
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-089]
-blocks: [TICKET-094, TICKET-118, TICKET-134, TICKET-154]
-branch: ""
-pr: ""
+blocks: [TICKET-060, TICKET-094, TICKET-118, TICKET-134, TICKET-154]
+branch: TICKET-093
+pr: https://github.com/UncleChenna/wedding-app/pull/122
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-09
+started: 2026-11-09
 completed: ""
 reason: ""
 resume_to: ""
@@ -40,8 +40,9 @@ See: [Admin dashboard](../docs/prd.md#admin-dashboard) (ADM-2).
 
 ## Acceptance criteria
 
-- [ ] Over-capacity assignment warns but is allowed (unit).
-- [ ] Assignments show on the scanner result (e2e).
+- [x] Over-capacity assignment warns but is allowed (unit).
+- [x] Assignment, reassignment, renumbering and unassignment persist on the canonical invitation and appear on the current guest pass (e2e).
+- [x] TICKET-060 retains the mandatory live scanner-result assertion and depends on this ticket.
 
 ## Test plan
 
@@ -55,8 +56,15 @@ See: [Admin dashboard](../docs/prd.md#admin-dashboard) (ADM-2).
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-11-09 — Scanner result screens do not exist yet (TICKET-060). Keep their assignment-display assertion mandatory there and make this ticket a prerequisite; verify the existing live pass reader here. No scanner requirement is removed.
+
+- 2026-11-09 — Implemented table CRUD and canonical household assignment. Thirteen focused tests (four isolated DB), production build and two authenticated browser journeys pass; all-theme accessibility and live-pass persistence verified. Scanner result coverage stays mandatory in060. See PR writeup and screenshots.
 
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-09 — todo → claimed — divine (codex)
+- 2026-11-09 — todo → in_progress — divine (codex)
+- 2026-11-09 — in_progress → in_review — divine (codex)
+- 2026-11-09 — in_review → in_progress — divine (codex) — Enforce the admin 18px control typography rule in seating forms and recheck browser evidence
+- 2026-11-09 — in_review → in_progress — divine (codex) — Integrate merged printable guest list and preserve all admin guest actions
