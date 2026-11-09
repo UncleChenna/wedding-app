@@ -45,7 +45,24 @@ and final combined verification.
 - Quick lint/types passed ; 39 related tests passed, 29 database tests skipped.
 - Initial full V8 run: 1,382 passed, 153 skipped, three failures: known TICKET-221
   chromium/WebKit CI parity mismatch and two image timeouts under worker contention.
-  Final two-worker full-suite and actual SQL concurrency runs remain outstanding.
+  Final two-worker full-suite run remains outstanding.
+- Two-worker diagnostic on develop `1f619b05`: **1,407 passed, 156 skipped**;
+  image tests and all coverage thresholds passed. Two failures remained: the known
+  parity mismatch and a hook test observing the active local lockfile exception.
+  After the generated lockfile was committed, the consumed authorization was
+  archived unchanged and its active exception revoked. The unchanged hook suite
+  then passed **46 tests**. No test, hook or timeout was weakened; final integrated
+  full-suite confirmation is still required.
+- Actual order SQL regression: **22 passed** in 1.57s, including concurrent
+  submission/replay, mixed station limits, cooldown and item caps. Managed Supabase
+  startup failed auxiliary health checks before migrations; it was stopped with
+  backup preserved. A fresh, loopback-only native PostgreSQL **16.14** fallback on
+  the same guarded owned port started with zero public tables, applied unchanged
+  migrations and synthetic seed, then ran the suite. It is now stopped with logs
+  retained. This is not Supabase Auth/realtime or exact PostgreSQL 17 certification;
+  CI separately uses PostgreSQL 17. No collaborator service or data was touched.
+- Reviewable logs: `docs/reviews/TICKET-130/`. The negative-gate test now also proves
+  both aggregate metrics remain above 95% when each per-file failure is detected.
 - Independent review found no blocking issue in extraction semantics, threshold
   configuration, unimported-file coverage or real failure regressions.
 

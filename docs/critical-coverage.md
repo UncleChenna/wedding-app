@@ -26,6 +26,8 @@ contending with image-rendering tests; assertions and test timeouts are unchange
 on temporary fixtures. A fully covered fixture passes; a missed branch and an entirely
 unimported file each fail while their test assertions pass. This checks the failure
 behavior rather than merely asserting configuration text.
+The fixtures include a well-covered neighbor: aggregate lines and branches stay
+above 95% during these failures, proving that per-file enforcement prevents masking.
 
 Coverage is not a security proof. Database locks, cross-instance concurrency and
 SQL counting still require the existing opt-in database tests. The extracted policy

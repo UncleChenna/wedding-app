@@ -1,0 +1,29 @@
+
+ RUN  v5.0.5 /Users/chenna/Documents/codes/wedding/.worktrees/TICKET-130
+      Coverage enabled with v8
+
+
+ Test Files  14 passed (14)
+      Tests  132 passed (132)
+   Start at  13:24:37
+   Duration  4.54s (setup 33%, tests 30%, import 19%, environment 11%, worker 4%, transform 3%)
+
+    Isolate  14 workers spawned · ~675ms startup each (spawn + environment, per file)
+             at least ~375ms faster with isolate: false — reuses workers across files instead of one per file
+
+ % Coverage report from v8
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------|---------|----------|---------|---------|-------------------
+All files          |    98.8 |    99.27 |     100 |    98.5 |                   
+ checkin/lib       |   98.57 |    99.18 |     100 |   98.14 |                   
+  gate-print.ts    |     100 |    95.83 |     100 |     100 | 12                
+  gate-token.ts    |   96.77 |      100 |     100 |   96.15 | 50,136            
+-------------------|---------|----------|---------|---------|-------------------
+
+=============================== Coverage summary ===============================
+Statements   : 98.8% ( 165/167 )
+Branches     : 99.27% ( 136/137 )
+Functions    : 100% ( 40/40 )
+Lines        : 98.5% ( 132/134 )
+================================================================================
