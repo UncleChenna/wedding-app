@@ -4,14 +4,14 @@ Ticket: TICKET-128
 
 # Summary
 
-Private RSVP dietary notes must not reach gate or bar consumers. This draft publishes
+Private RSVP dietary notes must not reach gate or bar consumers. This change publishes
 an executable field projection contract and applies it to existing gate-print and
 station-alert consumers. It deliberately preserves ordinary order instructions
 sent to kitchen/bar by the existing form, including “no ice”.
 
-**Draft dependency:** TICKET-027 owns the RLS and station Broadcast policy. This
-branch started ahead and must not merge or be marked complete before that contract
-is integrated and independently verified.
+Integrated completed TICKET-027 RLS and TICKET-033 station broadcasts from develop
+`275c42b85e46d94823c8d55df905b98ca9612281` in integration commit `89a2bdef`.
+No policy change is introduced.
 
 # Changes
 
@@ -29,24 +29,36 @@ is integrated and independently verified.
 
 # Acceptance criteria and evidence
 
-- [ ] Gate/bar endpoint privacy: existing gate print/pass/snapshot consumers have
-      field/response regression coverage. Bar/kitchen boards are still entry
-      placeholders; TICKET-027 combined policy integration remains outstanding.
+- [x] Gate/bar endpoint privacy: existing gate print/pass/snapshot consumers have
+      field/response coverage; all three station publishers reject private/nested
+      and free-text fields. Real signed bar broadcasts contain only IDs/status,
+      while deliberate order instructions remain persisted. Direct browser table
+      access is denied for anon, authenticated and all staff-station claims.
+      Future kitchen/bar board readers remain requirements of TICKET-076/077,
+      rather than falsely certified nonexistent endpoints.
 - [x] Executable contract published and used by actual consumers, with a documented
       requirement for future queries, subscriptions and exports to reuse or test it.
 
 # Verification
 
-- Initial failing test confirmed the missing projection implementation.
-- Six focused suites: **44 passed** (role projection, gate print, pass SQL
-  selections, credential response, admin gate reader, station alerts).
-- `pnpm verify:quick`: lint and types passed; **45 related tests passed**, **29
-  database tests skipped**. No skipped test is represented as verified.
-- Full CI and TICKET-027 integration remain required. No database stack was started,
-  no direct-key/RLS tests run, no external alert or message sent.
-- Independent source review of `370eb171`: no blocking findings within this scope.
-  CI run `42623840951` passed ticket validation, PR text and migrations; full
-  verification and invitation browser checks were still pending at handoff.
+- Seven focused suites: **58 passed** covering projections, gate print/pass/credential
+  responses, admin gate reader, station alerts and actual station publisher boundaries.
+- Seeded managed Supabase `wedding-ce69fdd2f8ea`: **12 RLS and four live Realtime
+  tests passed**, including signed station tokens, forged/wrong-station rejection,
+  reconnect/refetch, strict bar payload and preserved operational instructions.
+- `pnpm db:check-rls`: all **23 public tables** retain RLS. Own stack stopped with
+  its backup preserved after verification. No production database touched.
+- Initial cold-service run: **14 passed, one failed** because first kitchen delivery
+  exceeded the existing two-second limit. The serial rerun passed **16/16**, including
+  the new bar test; no assertion or latency timeout was relaxed. This remains a local
+  startup/performance observation, not a device/network performance certification.
+- Final `pnpm verify:quick`: lint and types passed; **19 related tests passed,
+  16 opt-in tests skipped**. Those opt-in tests passed separately in the explicitly
+  enabled real Supabase run above.
+- Independent final source review: clean, including the merged RLS/broadcast
+  contracts and strengthened denial tests. Full exact-head CI remains required
+  before merge. No external
+  alert or guest message was sent. Future board/device/release checks are not certified.
 
 # Risks and rollout
 

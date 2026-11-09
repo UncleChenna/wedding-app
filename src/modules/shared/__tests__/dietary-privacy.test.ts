@@ -1,5 +1,7 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { projectGuestForRole, projectOrderInstructionForRole } from "../lib/dietary-privacy";
+
+import { publishToStation } from "../server/realtime-publish";
 
 const secret = "Private RSVP allergy marker";
 const guest = {
@@ -61,5 +63,50 @@ describe("order instructions are separate from private RSVP information", () => 
         history: [guest],
       }),
     ).toEqual({ table: 12, items: [] });
+  });
+});
+
+describe("station publish privacy boundary", () => {
+  const order = {
+    stationOrderId: "550e8400-e29b-41d4-a716-446655440000",
+    orderId: "550e8400-e29b-41d4-a716-446655440001",
+    status: "received" as const,
+  };
+  const extras = [
+    { dietaryNotes: secret },
+    { dietary_notes: secret },
+    { guests: [guest] },
+    { history: [{ before: guest }] },
+    { note: secret },
+    { notes: secret },
+  ];
+  it.each(["kitchen", "bar"] as const)(
+    "%s rejects private or free-text fields before any I/O",
+    async (station) => {
+      for (const extra of extras) {
+        const execute = vi.fn();
+        await expect(
+          publishToStation({ execute }, station, "order.changed", {
+            ...order,
+            ...extra,
+          }),
+        ).rejects.toThrow();
+        expect(execute).not.toHaveBeenCalled();
+      }
+    },
+  );
+  it("gate rejects private or free-text fields before any I/O", async () => {
+    for (const extra of extras) {
+      const execute = vi.fn();
+      await expect(
+        publishToStation({ execute }, "gate", "checkin.recorded", {
+          invitationId: order.orderId,
+          admitted: 1,
+          conflict: false,
+          ...extra,
+        }),
+      ).rejects.toThrow();
+      expect(execute).not.toHaveBeenCalled();
+    }
   });
 });

@@ -1,24 +1,17 @@
 # TICKET-128 handoff — 2026-11-09
 
-Owner divine, agent codex. Branch/worktree `TICKET-128`.
+Owner divine; branch/worktree TICKET-128; PR133.
 
-Draft PR: https://github.com/UncleChenna/wedding-app/pull/133. Product head
-`370eb171`. Independent source review found no blocking issue in the bounded
-projection scope. CI run `42623840951`: ticket validation, PR text and migrations
-passed; full verification and invitation browser journey were pending at handoff.
-Neither pending check is claimed as passed. No merge is authorized while the
-TICKET-027 dependency remains incomplete.
+Completed 027/033 dependencies integrated from develop 275c42b8 in 89a2bdef.
+Privacy implementation and live seeded Supabase verification are complete; see
+[the PR evidence](../plans/TICKET-128-pr.md). Twelve RLS and four actual signed
+Realtime tests passed. Initial cold delivery timeout is disclosed, unchanged
+serial rerun passed. All 23 public tables retain RLS. Own database stopped with
+backup preserved; no further database work scheduled.
 
-Started ahead of active TICKET-027, based on its proposed ADR 0023. No edits to its
-checkout, RLS, migrations or policies. Implementation and evidence are recorded in
-`docs/plans/TICKET-128-pr.md`; contract is `docs/dietary-privacy.md`.
+Independent final review is clean; final quick passed lint/types and 19 related
+tests (16 opt-in tests separately passed against Supabase).
 
-Local checks: 44 focused tests passed; quick lint/types and 45 related tests passed
-(29 database tests skipped). No stack started. No external messages sent.
-
-Remaining: full CI, integrate completed TICKET-027 and verify
-its actual role-policy contract before marking acceptance/ready. Keep PR draft.
-The bar/kitchen board payloads do not exist yet and must follow this contract in
-their own tickets. Do not remove existing operational order notes: the form and
-ORD-3/9 intentionally send them to kitchen/bar; private RSVP dietary fields are
-separate. No guest/history/import fields are mapped to those operational notes.
+Remaining: publish ready PR and
+all exact-head CI gates before verified merge. Future board readers retain their
+own privacy obligations; preserve deliberate operational order notes.

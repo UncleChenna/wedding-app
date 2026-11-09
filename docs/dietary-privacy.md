@@ -1,6 +1,6 @@
 # Dietary information and station projections
 
-TICKET-128 defines the server field contract alongside TICKET-027's proposed ADR 0023.
+TICKET-128 defines the server field contract alongside TICKET-027's accepted [ADR 0024](decisions/0024-rls-least-privilege.md).
 It does not grant database access or replace live session checks. The authenticated
 server chooses the role; never accept a role from a request parameter.
 
@@ -50,13 +50,24 @@ private kitchen-only order field would need an explicit UX/data contract change.
 - `/bar` and `/kitchen` currently contain sign-in/entry placeholders, not order or
   dietary response endpoints. TICKET-076/077 must use this contract when building
   board queries. Do not claim the future board has been tested today.
-- TICKET-033 subscriptions and future TICKET-065 scanner exports must reuse these
-  projections or test their own narrower allowlists. Never spread database rows
+- TICKET-033 private station broadcasts use stricter notification-only schemas:
+  order IDs/statuses or check-in IDs/counts, with no free text even for kitchen.
+  `publishToStation` rejects unexpected fields before database I/O; consumers
+  validate the same contract. Dietary details belong only in an authorized
+  kitchen/admin reader, not in notifications. Future TICKET-065 scanner exports
+  must reuse these projections or test their own narrower allowlists. Never spread database rows
   into a response, cache, broadcast, log or export. Scope rows by the live role and
   station before projecting; a field projection is not row authorization.
 - Admin RSVP/history/CSV exports retain their existing admin-only access. Do not
   reuse those rich records for gate/bar outputs.
 
-TICKET-027 owns RLS/Broadcast policies and direct-key role integration tests.
-TICKET-128 remains a draft until that dependency is merged and the combined
-contract is checked; unit projection tests alone are not proof of RLS isolation.
+TICKET-027 owns RLS/Broadcast policies. The combined contract was verified on
+TICKET-128's real, seeded Supabase stack: 12 role-policy tests plus four signed
+Realtime subscription tests passed. Dietary INSERT attempts must fail with
+SQLSTATE 42501, UPDATE sees no rows, and DELETE accepts only zero affected rows
+or explicit permission denial; arbitrary errors cannot count as isolation proof.
+All 23 public tables retained RLS. The bar broadcast regression also verifies
+that “No ice” remains persisted for its authorized reader but is absent from the
+ID/status notification. Unit tests independently reject nested or free-text
+private fields at the actual publisher before any I/O. See the PR evidence for
+the initial cold-start latency failure and successful unchanged-budget rerun.
