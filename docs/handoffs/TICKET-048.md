@@ -326,3 +326,14 @@ Chromium/WebKit scanner checks, migrations/repeat seed and both authenticated jo
 Before merge, develop advanced to5338f85d (verified223 regression tests/docs only).
 Integrated conflict-free at643769a; no product, schema or UI change. Normal commit
 quick hook passes. Combined final-head CI will be checked before merging PR103.
+
+## Final privacy-base integration — 2026-11-09
+
+The evidence commit initially stalled in its own GitHub transport during ticket
+validation after machine sleep. Terminated only that stalled transport; validation
+failed closed on unavailable reserved IDs. Normal unchanged retry under caffeinate
+passed all220 ticket definitions and committed d687773. No lock/hook was bypassed.
+
+Develop then advanced to verified9669c0ce (dietary privacy). Integrated conflict-free,
+with no migration or048 route/component overlap. Generated0025 and prior UI/DB proof
+remain unchanged. Final normal quick checks and combined CI follow before merge.

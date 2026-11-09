@@ -13,24 +13,44 @@ const at = (seconds: number) => new Date(Date.UTC(2026, 11, 19, 18, 0, seconds))
 describe("formatOrderAlert", () => {
   it("matches the PRD example", () => {
     expect(
-      formatOrderAlert({
-        table: 12,
-        items: [
-          { quantity: 2, name: "chicken" },
-          { quantity: 1, name: "water" },
-        ],
-        note: "no pepper",
-      }),
+      formatOrderAlert(
+        {
+          table: 12,
+          items: [
+            { quantity: 2, name: "chicken" },
+            { quantity: 1, name: "water" },
+          ],
+          note: "no pepper",
+        },
+        "kitchen",
+      ),
     ).toBe("Table 12: 2 x chicken, 1 x water. Note: no pepper.");
   });
   it("omits an empty note and keeps a note's own full stop", () => {
-    expect(formatOrderAlert({ table: 3, items: [{ quantity: 1, name: "rice" }], note: " " })).toBe(
-      "Table 3: 1 x rice.",
-    );
     expect(
-      formatOrderAlert({ table: 3, items: [{ quantity: 1, name: "rice" }], note: "Extra hot!" }),
+      formatOrderAlert({ table: 3, items: [{ quantity: 1, name: "rice" }], note: " " }, "kitchen"),
+    ).toBe("Table 3: 1 x rice.");
+    expect(
+      formatOrderAlert(
+        { table: 3, items: [{ quantity: 1, name: "rice" }], note: "Extra hot!" },
+        "kitchen",
+      ),
     ).toBe("Table 3: 1 x rice. Note: Extra hot!");
   });
+  it.each(["bar", "kitchen"] as const)(
+    "%s alert excludes private nested RSVP records but retains the submitted instruction",
+    (station) => {
+      const secret = "RSVP private allergy";
+      const record = {
+        table: 3,
+        items: [{ quantity: 1, name: "water", dietaryNotes: secret, guest: { notes: secret } }],
+        note: "No ice",
+        dietaryNotes: secret,
+        guests: [{ dietary_notes: secret }],
+      };
+      expect(formatOrderAlert(record, station)).toBe("Table 3: 1 x water. Note: No ice.");
+    },
+  );
 });
 
 describe("batching", () => {

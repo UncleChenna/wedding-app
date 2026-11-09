@@ -17,7 +17,7 @@ nothing is sent automatically.
 - AAL2-protected queue, conservative unique matching and pagination. Sharing uses
   the exact invitation ID/version and records the copy event through existing APIs.
 - Validation and retry responses preserve bounded input, including without JavaScript.
-- Integrated develop 5338f85d, preserving migrations0023/0024 and regenerating this
+- Integrated develop 9669c0ce, preserving migrations0023/0024 and regenerating this
   additive migration as0025. Corrected admin text to the required18px.
 
 # Acceptance criteria and evidence
@@ -44,7 +44,7 @@ nothing is sent automatically.
   passed after fixes. An intermediate capture correctly hit the10/minute limit;
   retry after actual expiry passed without resetting or weakening the budget.
 - Independent source/migration and mobile queue review found no blocker.
-- All six checks passed at8b09e7a8 (run42668969768). The later test-only PR143 base update is integrated; combined-head CI is pending. Old full gate results
+- All six checks passed at8b09e7a8 (run42668969768). Later verified PR143 coverage and PR133 dietary privacy updates are integrated; combined-head CI is pending. Old full gate results
   in the handoff are historical, not certification of this integrated head.
 
 # Risks and rollout
