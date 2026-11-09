@@ -42,7 +42,7 @@ See: [Privacy (UK GDPR)](../docs/prd.md#privacy-uk-gdpr).
 
 - [ ] Gate and bar responses contain no dietary fields (test per endpoint).
 
-- [ ] Publish an executable role/field projection contract early: only admin/kitchen receive dietary information. Every later query, subscription and export must reuse or test this contract.
+- [x] Publish an executable role/field projection contract early: only admin/kitchen receive dietary information. Every later query, subscription and export must reuse or test this contract.
 
 ## Test plan
 
@@ -58,6 +58,8 @@ See: [Privacy (UK GDPR)](../docs/prd.md#privacy-uk-gdpr).
 ## Notes / decisions
 
 _Agents append dated notes here while working._
+
+- 2026-11-09 — Started ahead of TICKET-027 using its proposed ADR 0023 contract; no policy or migration edits. Shared allowlisted role projections now back gate printing and station alert formatting. Private RSVP dietary/history/import fields are distinct from the existing deliberately submitted kitchen/bar order instruction; operational notes and existing queued alerts are preserved. See docs/dietary-privacy.md for consumer inventory and future requirements. Focused projection/reader/response tests: 44 passed; verify:quick lint/types passed and 45 related tests passed (29 DB tests skipped). No new database run or RLS integration is claimed. First criterion remains open pending TICKET-027 integration and final review; future bar/kitchen board endpoints do not yet exist.
 
 ## Activity log
 

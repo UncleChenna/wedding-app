@@ -177,7 +177,7 @@ export async function createOrder(
         return {
           stationOrderId,
           station,
-          message: formatOrderAlert({ table: order.table, items, note: order.note }),
+          message: formatOrderAlert({ table: order.table, items, note: order.note }, station),
         };
       }),
     );
