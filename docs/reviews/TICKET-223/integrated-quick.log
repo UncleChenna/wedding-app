@@ -1,0 +1,14 @@
+$ node scripts/verify-quick.mjs
+
+▶ lint
+$ eslint --cache --max-warnings=0 .
+
+▶ typecheck
+$ next typegen && tsc --noEmit
+Generating route types...
+✓ Types generated successfully
+
+verify:quick summary
+  ✔ lint
+  ✔ typecheck
+  ✔ unit tests (no changed source files)
