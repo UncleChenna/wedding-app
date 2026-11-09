@@ -2532,15 +2532,16 @@
         "- 2026-11-09 — blocked → in_progress — divine (codex) — Dependencies027 and033 merged; verify privacy against actual RLS and station broadcast contracts",
         "- 2026-11-09 — in_progress → in_review — divine (codex)",
         "- 2026-11-09 — in_review → in_progress — divine (codex) — Integrate shared scan-sync coverage repair before final CI",
-        "- 2026-11-09 — in_progress → in_review — divine (codex)"
+        "- 2026-11-09 — in_progress → in_review — divine (codex)",
+        "- 2026-11-09 — in_review → done — divine (codex)"
       ],
-      "status": "in_review",
+      "status": "done",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-128",
       "pr": "https://github.com/UncleChenna/wedding-app/pull/133",
       "started": "2026-11-09",
-      "completed": "",
+      "completed": "2026-11-09",
       "updated": "2026-11-09",
       "reason": "",
       "resume_to": ""
