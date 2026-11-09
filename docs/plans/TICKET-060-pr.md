@@ -38,9 +38,13 @@ cannot mistake this read-only foundation for TICKET-061's atomic admission flow.
 
 # Verification
 
-Verified against integrated develop d0231fadf959f64ad4da7a010436b84c9b5d60e4.
+Final full coverage is verified against develop a62da9ede750a1b03451c2702cceb4ec64d1b1af
+through conflict-free merge d0826a2. Browser/SQL evidence was recorded on d0231fad;
+048 integration did not change scanner source or its tables. Unchanged0025 migration
+files were byte-checked against develop and carried under the user’s standing
+authorization; the exact-path record was archived after the merge commit.
 
-- `pnpm test`: 1,615 passed,181 conditional skips,67.17s. Coverage98.27% lines,
+- `pnpm test`: 1,651 passed,185 conditional skips,70.81s. Coverage98.27% lines,
   98.46% branches; every critical file meets its unchanged95% threshold.
 - Cached browser:12/12 pass7.8s, including under1000ms for each actual scan.
 - `RUN_SCAN_READ_DB_TESTS=1 ... vitest`:1/1 pass. Real admission triggers record2+1;

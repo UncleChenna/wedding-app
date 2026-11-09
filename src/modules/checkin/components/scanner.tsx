@@ -30,7 +30,7 @@ const recovery: Record<CameraProblem, string> = {
   failed: "The camera stopped. Try again, or ask the gate lead for help.",
 };
 
-/** Camera capture only. A decoded QR is never an admission decision. */
+/** Camera capture and read-only pass check; never records or grants admission. */
 export function Scanner({ resolveRead = readLivePass }: { resolveRead?: ScanResolver }) {
   const video = useRef<HTMLVideoElement>(null);
   const resultRegion = useRef<HTMLDivElement>(null);
