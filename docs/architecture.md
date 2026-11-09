@@ -64,7 +64,7 @@ Dependency direction: `app → feature modules → theming/shared`. Never the re
 
 - Schema: `src/modules/shared/server/db/schema.ts` (Drizzle). Migrations: `drizzle/` via `pnpm db:generate` / `pnpm db:migrate`. See ADR 0003.
 - Tables: `invitations`, `guests`, `rsvps`, `check_ins`, `tables`, `menu_items`, `orders`, `order_items`, `staff`, `themes`.
-- Server code connects to Postgres directly with `DATABASE_URL`. Every table has RLS enabled with no policies, so the browser's publishable key cannot read or write data. Features that need direct browser access (e.g. Realtime on `orders`) must add a narrow policy and an ADR.
+- Server code connects to Postgres directly with `DATABASE_URL`. Every table has RLS enabled with no policies, so the browser's publishable key cannot read or write data. The one browser read path is a private Realtime Broadcast channel per staff station (`station:gate`, `station:kitchen`, `station:bar`), carrying server-built payloads ([ADR 0024](decisions/0024-rls-least-privilege.md)). Any other browser access needs a new ADR.
 - Offline check-in (planned): scans are queued on the device with a `client_event_id` (unique) so retries are idempotent.
 
 ## Cross-cutting
