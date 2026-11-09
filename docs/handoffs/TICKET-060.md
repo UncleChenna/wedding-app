@@ -62,3 +62,8 @@ Only subsequent scanner change is its documentation comment, not behavior.
 Independent final source/visual review clean at8c21dcc4: all144 result screenshots
 inspected; no blocker. Base integration changes no060 behavior. Proceeding normal
 t:pr with final exact-head CI required before merge;201 device gates unchanged.
+
+CI runner repair: six original jobs passed, scanner journey lacked ephemeral QR
+keys. Added only child-environment signing material; independent review clean.
+Exact CI scanner command now2/2 pass1.2m, quick passes, integrated build/migration
+passes. Own30821 stopped again retaining data; final CI republish required.

@@ -57,6 +57,19 @@ authorization; the exact-path record was archived after the merge commit.
   realtime or production. Database stopped with datadir and append-only synthetic
   evidence retained. No guards disabled or recorded arrivals deleted for cleanup.
 
+## CI scanner runner correction
+
+The first final-head CI run passed six jobs, including full verification, but the
+existing scanner journey lacked a QR-signing key. Its newly integrated reader
+correctly returned unavailable instead of the test's expected Invalid pass. The
+runner now generates an ephemeral Ed25519 pair and passes it only in the child
+process environment, matching the configured production verifier prerequisite.
+No production code, CI job, assertion or timeout changed. Independent review of
+this six-line configuration correction is clean. The exact CI command,
+`pnpm exec tsx scripts/test-scanner-journey.ts`, passes both projects (2/2,1.2m)
+after the integrated production build and current migrations; quick checks pass.
+Final-head CI must pass again before merge.
+
 # Risks and rollout
 
 This is a read-only pass check: no admission or scan event is written. TICKET-061 owns

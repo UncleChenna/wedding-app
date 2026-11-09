@@ -1,5 +1,6 @@
-import { randomBytes } from "node:crypto";
+import { generateKeyPairSync, randomBytes } from "node:crypto";
 import { spawnSync } from "node:child_process";
+const pair = generateKeyPairSync("ed25519");
 const result = spawnSync(
   "pnpm",
   [
@@ -17,6 +18,10 @@ const result = spawnSync(
       ...process.env,
       RUN_SCANNER_JOURNEY: "1",
       STAFF_SESSION_SECRET: randomBytes(32).toString("hex"),
+      GATE_SIGNING_KEY_ID: "scanner-journey-test",
+      GATE_SIGNING_PRIVATE_KEY: pair.privateKey
+        .export({ format: "der", type: "pkcs8" })
+        .toString("base64url"),
     },
   },
 );
