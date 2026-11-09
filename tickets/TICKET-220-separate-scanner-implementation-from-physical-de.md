@@ -39,9 +39,9 @@ The user requires staff accounts and roles to be managed in admin, rather than c
 
 ## Acceptance criteria
 
-- [ ] TICKET-057 can begin after completed TICKET-056 without waiting for TICKET-055; all edited tickets are unclaimed before editing.
-- [ ] Both physical verification criteria are preserved verbatim in TICKET-114; device/installation, guest WhatsApp, runbook, training and release dependencies remain mandatory and acyclic.
-- [ ] Ticket validation, rendering, dependency/workflow regression tests and quick verification pass; no human status or acceptance checkbox is marked complete.
+- [x] TICKET-057 can begin after completed TICKET-056 without waiting for TICKET-055; all edited tickets are unclaimed before editing.
+- [x] Both physical verification criteria are preserved verbatim in TICKET-114; device/installation, guest WhatsApp, runbook, training and release dependencies remain mandatory and acyclic.
+- [x] Ticket validation, rendering, dependency/workflow regression tests and quick verification pass; no human status or acceptance checkbox is marked complete.
 
 ## Test plan
 
