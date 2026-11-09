@@ -42,7 +42,7 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-1) · [Journey 2: check-
 ## Acceptance criteria
 
 - [ ] Decodes a test QR from a fake camera stream in Chromium and WebKit e2e.
-- [ ] Denied camera permission shows a recovery message and manual search link.
+- [ ] Denied camera permission shows a recovery message and keyboard-accessible manual check-in help; TICKET-063 must replace the interim help destination with authenticated name search before gate release.
 - [ ] Same QR held in view is processed once per 3 seconds.
 
 ## Test plan
@@ -58,7 +58,7 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-1) · [Journey 2: check-
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-11-09: Manual search remains mandatory under CHK-4 in TICKET-063. Its admission/cache prerequisites follow this camera foundation, so requiring completed search here would invert the build order. This ticket provides truthful interim help; it neither admits guests nor claims name search exists. TICKET-063 owns the final link and denied-camera search journey; physical two-phone checks remain release evidence, not a simulated-camera claim.
 
 ## Activity log
 

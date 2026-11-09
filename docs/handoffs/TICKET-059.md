@@ -66,3 +66,13 @@ TemporaryDB beingstopped withdatadirpreserved; path .harness/temporary-postgres-
 Remaining: literalmanualsearchcriterion depends063; preserveCHK4whenclarifying
 implementationorder. FullCI/finalcoverageonce130merges;057ledgerblockedawaits222
 reconciliation although131actualrepairismerged. Noacceptanceboxfalselyticked.
+
+2026-11-09 continuation: actual held-QR browser tests pass 4/4 in 20.7s,
+including two deliveries at least 3,000ms apart in Chromium/WebKit default and
+forced fallback. Quick lint/types pass (no related unit tests for browser-only delta).
+Added CI camera-pixel job and real-auth scanner journey after existing guest journey.
+Live TICKET-063 remains unowned/todo; its acceptance now explicitly carries the
+mandatory denied-camera search/admission destination. TICKET-059 exposes interim
+help honestly, avoiding the inverse dependency on 063. CHK-4 and release dependencies
+remain intact. Native PG is stopped with its synthetic data preserved.
+Independent delta review requested. Full CI and 057 ledger reconciliation still pending.

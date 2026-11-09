@@ -8,6 +8,7 @@ declare global {
     CameraReader: { startQrCamera: typeof startQrCamera };
     cameraResult: {
       codes: string[];
+      readTimes: number[];
       debug?: string[];
       problems: string[];
       stop?: () => void;
@@ -72,6 +73,7 @@ for (const fallback of [false, true]) {
       const controller = new AbortController();
       window.cameraResult = {
         codes: [],
+        readTimes: [],
         problems: [],
         debug: [],
         tracks: stream.getTracks(),
@@ -95,7 +97,10 @@ for (const fallback of [false, true]) {
         void window.CameraReader.startQrCamera({
           video,
           signal: controller.signal,
-          onCode: (code) => window.cameraResult.codes.push(code),
+          onCode: (code) => {
+            window.cameraResult.codes.push(code);
+            window.cameraResult.readTimes.push(performance.now());
+          },
           onProblem: (problem) => window.cameraResult.problems.push(problem),
           onTorchAvailable: () => {},
         });
@@ -115,6 +120,18 @@ for (const fallback of [false, true]) {
       .toEqual({ codes: 1, problems: [], debug: ["fake media granted"], ready: 4, width: 512 });
     expect(await page.evaluate(() => window.cameraResult.codes[0])).toBe("synthetic-camera-qr");
     expect(await page.evaluate(() => window.cameraResult.problems)).toEqual([]);
+    // Keep the same real QR pixels in view: decoding continues, but delivery
+    // must remain throttled across actual animation/video frames.
+    await expect.poll(() => page.evaluate(() => window.cameraResult.codes.length)).toBe(2);
+    const reads = await page.evaluate(() => window.cameraResult.readTimes);
+    expect(reads).toHaveLength(2);
+    const [first, second] = reads;
+    if (first === undefined || second === undefined) throw new Error("Two reads required");
+    expect(second - first).toBeGreaterThanOrEqual(3_000);
+    expect(await page.evaluate(() => window.cameraResult.codes)).toEqual([
+      "synthetic-camera-qr",
+      "synthetic-camera-qr",
+    ]);
     await page.evaluate(() => window.cameraResult.stop?.());
     expect(
       await page.evaluate(() =>
