@@ -33,9 +33,14 @@ The download remains private and prevents spreadsheet formulas from executing.
 
 # Verification
 
-Integrated develop `b91a0f0f14103a159619e4b60bd86339c5b12b63` without conflicts.
-The export implementation is byte-unchanged from the authenticated browser run;
-all 16 focused export/list tests pass again after integration.
+Integrated develop `ede359cace7afb253c66f3df79cb97f8478fbe97`. The single
+shared guest-list conflict retained both the CSV anchor and sent-tracking Undo;
+independent comparison to both parents confirms neither feature was dropped.
+After integration: production build passed; CSV browser 2/2 (8.6 seconds) and
+sharing browser 2/2 (13.1 seconds) passed. CSV covers 375px/1280px; sharing action
+captures use 375px in both browser projects. All 18 refreshed screenshots were
+reviewed. Integrated quick gate passes lint/types and 87 related tests; 94 opt-in
+tests were skipped, not claimed as database verification.
 
 - Production build passed.
 - Initial unit/route suite: 12 passed; a subsequent long-filter regression preserves
@@ -76,6 +81,9 @@ private download link. Physical-device testing is not newly certified; existing
 release gates remain. Final CI is required before merge.
 
 # Harness changes, if any
+
+Sharing regression screenshots can now target a ticket-owned folder; assertions
+are unchanged and existing TICKET-051 captures are preserved.
 
 An opt-in runner uses fresh synthetic admin identities, the guarded isolated
 database and one browser worker. Cleanup deletes only its exact fixture IDs.

@@ -12,11 +12,13 @@ actual file download and empty/declined households. Eight screenshots reviewed.
 
 Final quick gate passes lint/types and 16 related tests.
 
-Integrated develop b91a0f0f without conflicts; all 16 focused export/list tests
-pass afterward and product code is unchanged from the browser run. Remaining:
-normal t:pr readiness, final-head CI and verified merge. No production changes or
-additional approval required. Owned database wedding-172e2a543372 is stopped with
-backup:true (exit 0); TICKET-090 now owns the test slot.
+Integrated develop ede359ca (sent tracking), resolving the single guest-list
+conflict by retaining CSV + Undo. Independent parent comparison and all 18 images
+reviewed. Build, CSV browser2/2 (8.6s), sharing browser2/2 (13.1s), quick lint/types
+and87relatedtests pass;94opt-in skips retained. Sharing action captures are375px
+in both projects, CSV375/1280. Owned DB stopped backup:true again, slot released.
+Remaining: commit/push integration, refresh PR121 and await exact-head CI/merge.
+No production changes or approval blocker.
 
 The setup-generated one-line PR-template drift was restored to HEAD; no user
 changes were present in this fresh worktree. CLI status changes only.
