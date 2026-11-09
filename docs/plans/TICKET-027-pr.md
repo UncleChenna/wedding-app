@@ -54,7 +54,7 @@ This PR decides and enforces that in ADR 0024:
 # Verification
 
 - **`pnpm db:reset`** on this worktree's stack: migrations and seed are clean. `pnpm db:migrate` reruns with only
-  Postgres notices. `pnpm db:check-rls`: RLS is on for all 23 public tables (develop at `b1a15b64`).
+  Postgres notices. `pnpm db:check-rls`: RLS is on for all 23 public tables (develop at `7250e483`).
 - **`RUN_RLS_DB_TESTS=1 vitest run scripts/__tests__/rls-policies.integration.test.ts`: 11 passed.**
   - The first run caught a gap: a gate token could read rows on the other stations' topics. The policy now also
     matches each row's topic, and that test passes.
