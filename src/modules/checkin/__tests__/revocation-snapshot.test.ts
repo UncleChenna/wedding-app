@@ -15,6 +15,25 @@ const snapshot = {
 };
 
 describe("revocation snapshot contract", () => {
+  it("rejects malformed, draft, future-version and declined credentials distinctly", () => {
+    const payload = { v: 1 as const, kid: "test", inv: invitationId, ver: 3, iat: now / 1000 };
+    expect(snapshotCredentialState(payload, { ...snapshot, generatedAt: "not a timestamp" })).toBe(
+      "invalid",
+    );
+    expect(
+      snapshotCredentialState(payload, {
+        ...snapshot,
+        invitations: [{ invitationId, tokenVersion: 3, status: "draft" }],
+      }),
+    ).toBe("invalid");
+    expect(snapshotCredentialState({ ...payload, ver: 4 }, snapshot)).toBe("invalid");
+    expect(
+      snapshotCredentialState(payload, {
+        ...snapshot,
+        invitations: [{ invitationId, tokenVersion: 3, status: "rsvp_no" }],
+      }),
+    ).toBe("not-attending");
+  });
   it("keeps an old QR cryptographically valid but rejects it after a reissue refresh", async () => {
     const { privateKey } = generateKeyPairSync("ed25519");
     const keys = loadGateSigningKeys({
