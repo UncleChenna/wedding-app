@@ -1,5 +1,5 @@
 import { randomBytes, randomUUID, scryptSync } from "node:crypto";
-import { mkdirSync } from "node:fs";
+import { existsSync, mkdirSync } from "node:fs";
 import postgres, { type Sql } from "postgres";
 import QRCode from "qrcode";
 import { test, expect } from "@playwright/test";
@@ -20,7 +20,7 @@ test.describe("gate scanner route", () => {
   const barId = randomUUID();
   const venue = `scanner-${randomUUID()}`;
   test.beforeAll(async () => {
-    process.loadEnvFile(".env.local");
+    if (existsSync(".env.local")) process.loadEnvFile(".env.local");
     assertDatabaseTarget(process.env.DATABASE_URL ?? "", { localOnly: true });
     db = postgres(process.env.DATABASE_URL ?? "", { max: 1 });
     await db`insert into event_settings(id,venue,event_date,time_zone) values(1,${venue},'2099-12-19','Etc/UTC')`;

@@ -100,6 +100,7 @@ for (const fallback of [false, true]) {
           onCode: (code) => {
             window.cameraResult.codes.push(code);
             window.cameraResult.readTimes.push(performance.now());
+            if (window.cameraResult.codes.length === 2) window.cameraResult.stop?.();
           },
           onProblem: (problem) => window.cameraResult.problems.push(problem),
           onTorchAvailable: () => {},
