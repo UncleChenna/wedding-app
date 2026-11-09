@@ -1,11 +1,16 @@
 import { generateKeyPairSync, sign } from "node:crypto";
-import { expect, it } from "vitest";
+import { afterEach, expect, it, vi } from "vitest";
+import * as liveReader from "../lib/resolve-scan-read";
 import { encodeGatePassPayload } from "../lib/gate-token";
 import { resolveSnapshotRead } from "../lib/resolve-snapshot-read";
 import type { GuestSnapshot } from "../lib/guest-snapshot";
 const pair = generateKeyPairSync("ed25519");
 const origin = "https://wedding.example";
 const invitationId = "11111111-1111-4111-8111-111111111111";
+afterEach(() => {
+  vi.restoreAllMocks();
+  vi.useRealTimers();
+});
 function qr(version = 1) {
   const body = encodeGatePassPayload({
     v: 1,
@@ -96,5 +101,20 @@ it("never accepts altered signatures, foreign URLs or private extra fields", asy
   });
   expect(await resolveSnapshotRead(qr(), origin, { ...value, email: "private" }, value)).toEqual({
     state: "unavailable",
+  });
+});
+it("fails closed if verification fails unexpectedly or crosses the session deadline", async () => {
+  const value = snapshot();
+  vi.spyOn(liveReader, "resolveScanRead").mockRejectedValueOnce(
+    new Error("verification unavailable"),
+  );
+  expect(await resolveSnapshotRead(qr(), origin, value, value)).toEqual({ state: "unavailable" });
+  vi.useFakeTimers();
+  vi.mocked(liveReader.resolveScanRead).mockImplementationOnce(async () => {
+    vi.setSystemTime(value.expiresAt);
+    return { state: "unknown" };
+  });
+  expect(await resolveSnapshotRead(qr(), origin, value, value)).toEqual({
+    state: "session_expired",
   });
 });
