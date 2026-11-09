@@ -13,7 +13,14 @@ test.describe("admin shell", () => {
     await page.goto("/dev/admin");
     const nav = page.getByRole("navigation", { name: "Admin" });
     const links = nav.getByRole("link");
-    await expect(links).toHaveText(["Control room", "Sharing", "Menu", "Staff", "Settings"]);
+    await expect(links).toHaveText([
+      "Control room",
+      "Guests",
+      "Sharing",
+      "Menu",
+      "Staff",
+      "Settings",
+    ]);
     // On phones sign-out sits in the header, away from the section bar.
     await expect(
       page.getByRole("banner").getByRole("link", { name: "Sign out", exact: true }),
@@ -23,7 +30,7 @@ test.describe("admin shell", () => {
       "page",
     );
     const reached: string[] = [];
-    for (let i = 0; i < 20 && reached.length < 5; i++) {
+    for (let i = 0; i < 20 && reached.length < 6; i++) {
       await page.keyboard.press("Tab");
       const focused = await page.evaluate(() => {
         const el = document.activeElement;
@@ -41,10 +48,10 @@ test.describe("admin shell", () => {
         reached.push(focused.text ?? "");
       }
     }
-    expect(reached).toEqual(["Control room", "Sharing", "Menu", "Staff", "Settings"]);
+    expect(reached).toEqual(["Control room", "Guests", "Sharing", "Menu", "Staff", "Settings"]);
     await page.keyboard.press("Shift+Tab");
     await page.keyboard.press("Enter");
-    // The link opens /admin/sharing; without a session the proxy sends the browser to sign-in.
+    // Without a session the section route sends the browser to sign-in.
     await expect(page).toHaveURL(/\/admin\/sign-in$/);
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   });
@@ -80,7 +87,8 @@ test.describe("admin shell", () => {
           expect(box?.x).toBe(0);
           expect(box?.width).toBeLessThan(width / 2);
         }
-        const dir = "docs/reviews/TICKET-088/" + theme.id;
+        const dir =
+          (process.env.ADMIN_SHELL_SCREENSHOT_DIR ?? "docs/reviews/TICKET-088") + "/" + theme.id;
         mkdirSync(dir, { recursive: true });
         await page.screenshot({ path: dir + "/" + width + ".png" });
       }
