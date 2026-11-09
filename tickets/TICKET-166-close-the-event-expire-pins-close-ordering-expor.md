@@ -2,7 +2,7 @@
 id: TICKET-166
 title: "Close the event: expire PINs, close ordering, export memories"
 epic: launch
-status: blocked
+status: in_progress
 priority: medium
 estimate: M
 labels: [backend, docs]
@@ -14,11 +14,11 @@ blocks: [TICKET-154, TICKET-167, TICKET-168]
 branch: TICKET-166
 pr: ""
 created: 2026-10-21
-updated: 2026-11-06
+updated: 2026-11-09
 started: 2026-11-05
 completed: ""
-reason: "Automated database, browser and UI verification passed. Awaiting review-only exception for physical-phone keyboard/safe-area and downloads; retain release checks. No PR merge authorized."
-resume_to: in_progress
+reason: ""
+resume_to: ""
 ---
 
 # TICKET-166: Close the event: expire PINs, close ordering, export memories
@@ -91,3 +91,4 @@ tests and quick verification pass. No database/browser/device completion claimed
 - 2026-11-06 — blocked → in_progress — divine (codex)
 - 2026-11-06 — in_progress → blocked — divine (codex) — Closure-specific database and staff-session rehearsals require the isolated stack; Docker has only 537MB available. Awaiting permission to stop idle owned TICKET-048 with its backup preserved.
 - 2026-11-06 — in_progress → blocked — divine (codex) — Automated database, browser and UI verification passed. Awaiting review-only exception for physical-phone keyboard/safe-area and downloads; retain release checks. No PR merge authorized.
+- 2026-11-09 — blocked → in_progress — divine (codex) — Owner standing authorization permits preview progress while preserving explicit physical-device release gates; integrate latest develop and verify.
