@@ -2,20 +2,20 @@
 id: TICKET-027
 title: Write the RLS ADR and least-privilege policies
 epic: data-auth
-status: todo
+status: in_progress
 priority: urgent
 estimate: M
 labels: [security, db]
 module: shared
-owner: ""
-agent: ""
+owner: unclechenna
+agent: claude
 blocked_by: [TICKET-024, TICKET-025, TICKET-171, TICKET-172, TICKET-031]
 blocks: [TICKET-033, TICKET-128, TICKET-176]
-branch: ""
+branch: TICKET-027
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-09
+started: 2026-11-09
 completed: ""
 reason: ""
 resume_to: ""
@@ -67,3 +67,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-09 — todo → claimed — unclechenna (claude)
+- 2026-11-09 — todo → in_progress — unclechenna (claude)
