@@ -1,11 +1,24 @@
 import { describe, expect, it, vi } from "vitest";
-import { orderFingerprint, orderSubmissionSchema, type OrderResult } from "../lib/order";
+import {
+  cooldownMessage,
+  orderFingerprint,
+  orderSubmissionSchema,
+  type OrderResult,
+} from "../lib/order";
 import { newRequestId, RETRY_DELAYS_MS, submitOrder } from "../lib/submit-order";
 import { orderResponse } from "../server/order-response";
 
 const RICE = "00000000-0000-4000-8000-000000000001";
 const WINE = "00000000-0000-4000-8000-000000000002";
 const KEY = "00000000-0000-4000-8000-0000000000aa";
+it("states the cooldown wait with singular and plural seconds", () => {
+  expect(cooldownMessage(1)).toBe(
+    "Your table's last order went in a moment ago. You can send this one in a second.",
+  );
+  expect(cooldownMessage(2)).toBe(
+    "Your table's last order went in a moment ago. You can send this one in 2 seconds.",
+  );
+});
 const order = {
   clientRequestId: KEY,
   table: 7,

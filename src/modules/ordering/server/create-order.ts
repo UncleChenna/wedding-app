@@ -15,6 +15,7 @@ import {
 import { formatOrderAlert } from "../lib/alerts";
 import { orderFingerprint, type OrderResult, type OrderSubmission } from "../lib/order";
 import { splitByStation } from "../lib/stations";
+import { effectiveItemLimit, overLimitItemIds, rejectTableUsage } from "../lib/order-limits";
 
 type Tx = Parameters<Parameters<Db["transaction"]>[0]>[0];
 
@@ -85,15 +86,8 @@ export async function createOrder(
       })
       .from(orders)
       .where(eq(orders.tableId, table.id));
-    const sinceLast = usage?.sinceLast ?? null;
-    if (sinceLast !== null && sinceLast < settings.orderCooldownSeconds)
-      return {
-        status: "rejected",
-        reason: "cooldown",
-        retryAfterSeconds: Math.max(1, Math.ceil(settings.orderCooldownSeconds - sinceLast)),
-      };
-    if ((usage?.open ?? 0) >= settings.maxOpenOrdersPerTable)
-      return { status: "rejected", reason: "too-many-open" };
+    const tableRejection = rejectTableUsage(usage, settings);
+    if (tableRejection) return tableRejection;
 
     const ids = order.items.map((item) => item.menuItemId);
     const menu = await tx
@@ -111,15 +105,13 @@ export async function createOrder(
     const byId = new Map(
       menu.map((item) => [
         item.id,
-        { ...item, maxPerOrder: Math.min(item.maxPerOrder, settings.maxItemQuantity) },
+        { ...item, maxPerOrder: effectiveItemLimit(item.maxPerOrder, settings.maxItemQuantity) },
       ]),
     );
     if (byId.size !== ids.length) return { status: "rejected", reason: "invalid" };
     const soldOut = ids.filter((id) => !byId.get(id)?.available);
     if (soldOut.length) return { status: "rejected", reason: "sold-out", itemIds: soldOut };
-    const overLimit = order.items
-      .filter((item) => item.quantity > (byId.get(item.menuItemId)?.maxPerOrder ?? 0))
-      .map((item) => item.menuItemId);
+    const overLimit = overLimitItemIds(order.items, byId);
     if (overLimit.length) return { status: "rejected", reason: "over-limit", itemIds: overLimit };
 
     const [created] = await tx
