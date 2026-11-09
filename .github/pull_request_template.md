@@ -30,7 +30,7 @@ Ticket: TICKET-NNN <!-- required; the PR title must also start with the ticket i
 
 <!-- Generated from docs/ui-checklist.md by pnpm agents:link. Record evidence or justified N/A. -->
 
-- [ ] **Screenshots:** Playwright screenshots of affected routes at 375px, 768px, and 1280px in every registered theme (at least two). Record paths and inspect them; use `SCREENSHOT_ROUTES=/affected-route pnpm screenshots`.
+- [ ] **Screenshots:** Playwright screenshots of affected routes at 375px, 768px, and 1280px in every registered theme (at least two). For admin and staff screens: one theme at 375px. Record paths and inspect them; use `SCREENSHOT_ROUTES=/affected-route pnpm screenshots`.
 - [ ] **Tokens:** Search changed files for hard-coded colours, font families, radii, and shadows. Components use theme tokens; any new token is defined through the documented theming process.
 - [ ] **Restraint and typography:** One main idea per section, restrained palette and decoration, required spacing, font roles, body size, line height, and prose width.
 - [ ] **Mobile:** No horizontal page scroll at review or intermediate widths; all tap targets at least 44×44px; primary actions reachable and safe-area/keyboard handling checked.

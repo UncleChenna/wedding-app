@@ -2,20 +2,20 @@
 id: TICKET-120
 title: Set metadata and keep private pages out of search engines
 epic: quality
-status: todo
+status: in_review
 priority: urgent
 estimate: S
 labels: [frontend, security]
 module: shared
-owner: ""
-agent: ""
+owner: unclechenna
+agent: claude
 blocked_by: [TICKET-047]
 blocks: [TICKET-154, TICKET-176]
-branch: ""
-pr: ""
+branch: TICKET-120
+pr: https://github.com/UncleChenna/wedding-app/pull/111
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-08
+started: 2026-11-08
 completed: ""
 reason: ""
 resume_to: ""
@@ -39,8 +39,8 @@ See: [Design principles](../docs/prd.md#design-principles) · [Privacy (UK GDPR)
 
 ## Acceptance criteria
 
-- [ ] Every private route returns noindex (e2e header/meta check).
-- [ ] robots.txt disallows staff and admin.
+- [x] Every private route returns noindex (e2e header/meta check).
+- [x] robots.txt disallows staff and admin.
 
 ## Test plan
 
@@ -56,6 +56,14 @@ See: [Design principles](../docs/prd.md#design-principles) · [Privacy (UK GDPR)
 
 _Agents append dated notes here while working._
 
+- 2026-11-08 (unclechenna, claude):
+  - **robots.txt doesn't block `/i` or `/p`.** A block would stop link-preview crawlers reading the Open Graph tags
+    that TICKET-047 adds, so those pages use the noindex header instead.
+  - **Started ahead of TICKET-047,** which only touches invite-link previews.
+
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-08 — todo → claimed — unclechenna (claude) — started ahead of TICKET-047 (blocked)
+- 2026-11-08 — todo → in_progress — unclechenna (claude) — started ahead of TICKET-047 (blocked)
+- 2026-11-08 — in_progress → in_review — unclechenna (claude)

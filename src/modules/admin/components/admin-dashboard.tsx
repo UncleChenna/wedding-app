@@ -15,6 +15,16 @@ export async function AdminDashboard() {
       <ul className="mt-12 grid gap-8 sm:grid-cols-2">
         {[
           {
+            href: appRoutes.adminSeating.path,
+            name: "Seating",
+            text: "Arrange tables and keep households together.",
+          },
+          {
+            href: appRoutes.adminGuests.path,
+            name: "Guests",
+            text: "Find invitations, replies and seating details.",
+          },
+          {
             href: appRoutes.adminThemes.path,
             name: "Themes",
             text: "Preview your colours and fonts, then publish them.",
@@ -57,7 +67,7 @@ export async function AdminDashboard() {
             <p className="mt-3">{area.text}</p>
           </li>
         ))}
-        {["Guests", "Seating", "Live dashboard"].map((name) => (
+        {["Live dashboard"].map((name) => (
           <li key={name}>
             <h2 className="font-display text-3xl">{name}</h2>
             <p className="mt-3 text-muted-foreground">Coming soon</p>

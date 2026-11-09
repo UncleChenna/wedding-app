@@ -74,11 +74,20 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm exec playwright install --with-deps chromium webkit
       - run: pnpm agents:link && pnpm agents:check
       - name: Prepare the verification database
         run: pnpm db:migrate
       - run: pnpm verify
+      - name: Verify scanner credentials in Chromium and WebKit
+        run: pnpm test:gate
+      - name: Preserve scanner verification evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: gate-verification
+          path: artifacts/TICKET-057/
+          retention-days: 7
       - if: failure()
         uses: actions/upload-artifact@v7
         with:

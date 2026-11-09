@@ -9,7 +9,7 @@ labels: [frontend]
 module: checkin
 owner: ""
 agent: ""
-blocked_by: [TICKET-058, TICKET-059]
+blocked_by: [TICKET-058, TICKET-059, TICKET-093]
 blocks: [TICKET-061, TICKET-118]
 branch: ""
 pr: ""
@@ -43,6 +43,7 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-2) · [Journey 2: check-
 
 - [ ] Scan-to-result is <1s with a cached list (Playwright timing on fixture).
 - [ ] Each result has text + icon; meaning does not rely on colour.
+- [ ] A household assigned or reassigned in TICKET-093 shows its current table on the scanner result; an unassigned household shows a clear fallback (e2e).
 - [ ] Blocked audio/vibration never hides or delays the visual result (unit with stubbed APIs).
 
 ## Test plan
@@ -57,7 +58,7 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-2) · [Journey 2: check-
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-11-09 — Carries the scanner-display end-to-end requirement from TICKET-093. Seating is implemented first; this check remains mandatory before scanner completion.
 
 ## Activity log
 

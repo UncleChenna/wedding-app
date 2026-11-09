@@ -9,6 +9,12 @@ export async function AdminSharing() {
   return (
     <main className="mx-auto w-full max-w-3xl px-6 py-12 text-lg leading-relaxed">
       <h1 className="font-display text-4xl leading-tight md:text-5xl">Sharing</h1>
+      <Link
+        href="/admin/sharing/reminders"
+        className="mt-6 inline-flex min-h-11 items-center text-primary underline underline-offset-4"
+      >
+        Remind guests awaiting a reply
+      </Link>
       <p className="mt-6 max-w-prose">
         Choose an invitation to share. Each link belongs to its invited household; send it only to
         them.
@@ -23,7 +29,11 @@ export async function AdminSharing() {
             <li key={invitation.id} className="space-y-6">
               <h2 className="font-display text-3xl wrap-anywhere">{invitation.name}</h2>
               {invitation.share ? (
-                <ShareMenu invitation={invitation.share} />
+                <ShareMenu
+                  key={invitation.tokenVersion}
+                  invitation={invitation.share}
+                  tracking={invitation.tracking}
+                />
               ) : (
                 <p>{invitation.guidance}</p>
               )}
