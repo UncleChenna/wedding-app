@@ -1,5 +1,7 @@
 import type { createScannerShellRuntime } from "./scanner-shell-runtime";
 import type { createScannerShellStore } from "./scanner-shell-store";
+import type { createGuestSnapshotStore, SnapshotAuthority } from "./guest-snapshot-store";
+import type { createGuestSnapshotRuntime } from "./guest-snapshot-runtime";
 
 type Store = ReturnType<typeof createScannerShellStore>;
 type Runtime = ReturnType<typeof createScannerShellRuntime>;
@@ -38,6 +40,13 @@ interface Options {
   build: string;
   assets: readonly string[];
   fallback: () => Promise<Response>;
+  guests?: {
+    store: () => ReturnType<typeof createGuestSnapshotStore>;
+    runtime: (
+      authority: () => Promise<SnapshotAuthority | null>,
+      denied: () => Promise<void>,
+    ) => ReturnType<typeof createGuestSnapshotRuntime>;
+  };
 }
 
 /** Self-contained worker wiring. Only the server-issued grant may authorize offline use. */
@@ -50,6 +59,7 @@ export function installScannerShellWorker({
   build,
   assets,
   fallback,
+  guests,
 }: Options) {
   // Origin-wide lock also covers an old worker finishing work during activation.
   // Without it, failed IDB invalidation cannot safely race a pending publication.
@@ -59,6 +69,11 @@ export function installScannerShellWorker({
     return host.navigator.locks.request("wedding-scanner-shell-publication-v1", operation);
   }
   let storageInvalidationFailed = false;
+  async function settleInvalidations(operations: Promise<unknown>[]) {
+    const results = await Promise.allSettled(operations);
+    if (results.some((result) => result.status === "rejected"))
+      throw new Error("Scanner invalidation incomplete");
+  }
   const cacheName = "wedding-scanner-assets-v1-" + build;
   function scannerUrl(raw: string) {
     const url = new URL(raw, host.location.origin);
@@ -84,11 +99,16 @@ export function installScannerShellWorker({
   async function failedInvalidation() {
     storageInvalidationFailed = true;
     try {
+      await guests?.store().invalidate();
+    } catch {
+      /* Keep the latch closed; missing public readiness prevents restart access. */
+    }
+    try {
       const names = await storage.keys();
-      await Promise.all(
+      await settleInvalidations(
         names
           .filter((name) => name.startsWith("wedding-scanner-assets-v1-"))
-          .map((name) => storage.delete(name)),
+          .map(async (name) => storage.delete(name)),
       );
     } finally {
       await notify();
@@ -96,13 +116,38 @@ export function installScannerShellWorker({
   }
   async function invalidate() {
     try {
-      await store().invalidate();
+      await settleInvalidations([
+        Promise.resolve().then(() => store().invalidate()),
+        Promise.resolve().then(() => guests?.store().invalidate()),
+      ]);
       storageInvalidationFailed = false;
     } catch (error) {
       await failedInvalidation();
       throw error;
     } finally {
       await notify();
+    }
+  }
+  async function snapshotAuthority(): Promise<SnapshotAuthority | null> {
+    if (storageInvalidationFailed) return null;
+    const status = await runtime().status();
+    if (status.state === "ready") return { session: status.session, expiresAt: status.expiresAt };
+    try {
+      await guests?.store().invalidate();
+    } catch (error) {
+      await failedInvalidation();
+      throw error;
+    }
+    return null;
+  }
+  async function syncSnapshotAuthority(authority?: SnapshotAuthority) {
+    if (!guests) return;
+    try {
+      if (!authority || storageInvalidationFailed) await guests.store().invalidate();
+      if (authority) await guests.store().current(authority);
+    } catch (error) {
+      await failedInvalidation();
+      throw error;
     }
   }
   async function nativeSignOut(request: Request) {
@@ -130,8 +175,13 @@ export function installScannerShellWorker({
       authorized = identity;
     });
     if (result.state === "denial-storage-failed") await failedInvalidation();
-    else if (result.state === "denied") await notify();
-    else if (authorized) await notify(authorized);
+    else if (result.state === "denied") {
+      await syncSnapshotAuthority();
+      await notify();
+    } else if (authorized) {
+      await syncSnapshotAuthority(authorized);
+      await notify(authorized);
+    }
   }
   host.addEventListener("message", (event) => {
     const data = event.data;
@@ -139,7 +189,13 @@ export function installScannerShellWorker({
       typeof data !== "object" ||
       data === null ||
       !("type" in data) ||
-      !["SAVE_SCANNER", "SCANNER_STATUS", "INVALIDATE_SCANNER"].includes(String(data.type))
+      ![
+        "SAVE_SCANNER",
+        "SCANNER_STATUS",
+        "INVALIDATE_SCANNER",
+        "READ_GUEST_SNAPSHOT",
+        "REFRESH_GUEST_SNAPSHOT",
+      ].includes(String(data.type))
     )
       return;
     event.waitUntil(
@@ -149,23 +205,53 @@ export function installScannerShellWorker({
           // Resolve the real client, never trust a URL supplied in the message.
           if (!client || !scannerUrl(client.url)) return;
           let result: unknown;
-          if (data.type === "INVALIDATE_SCANNER") {
+          if (data.type === "READ_GUEST_SNAPSHOT" || data.type === "REFRESH_GUEST_SNAPSHOT") {
+            if (
+              !guests ||
+              !("session" in data) ||
+              typeof data.session !== "string" ||
+              !/^[a-f0-9]{64}$/.test(data.session)
+            ) {
+              result = { state: "unavailable" };
+            } else {
+              const guestRuntime = guests.runtime(snapshotAuthority, invalidate);
+              if (data.type === "READ_GUEST_SNAPSHOT") {
+                const snapshot = await guestRuntime.read(data.session);
+                result = snapshot ? { state: "ready", snapshot } : { state: "unavailable" };
+              } else {
+                const authority = await snapshotAuthority();
+                result =
+                  authority?.session === data.session
+                    ? await guestRuntime.refresh()
+                    : { state: "unavailable" };
+              }
+            }
+          } else if (data.type === "INVALIDATE_SCANNER") {
             await invalidate();
-            result = { state: "removed" };
+            result = { state: "removed", ...(guests ? { privateSnapshotRemoved: true } : {}) };
           } else if (data.type === "SCANNER_STATUS") {
             result = storageInvalidationFailed
               ? { state: "unavailable" }
               : await runtime().status();
+            if (!storageInvalidationFailed && guests) await snapshotAuthority();
           } else {
             let authorized: { session: string; build: string; expiresAt: number } | undefined;
             const prepared = await runtime().prepare((identity) => {
               authorized = identity;
             });
             result = prepared;
-            if (prepared.state === "ready") storageInvalidationFailed = false;
+            if (prepared.state === "ready") {
+              await syncSnapshotAuthority(authorized);
+              storageInvalidationFailed = false;
+            }
             if (prepared.state === "denial-storage-failed") await failedInvalidation();
-            else if (prepared.state === "denied") await notify();
-            else if (authorized) await notify(authorized);
+            else if (prepared.state === "denied") {
+              await syncSnapshotAuthority();
+              await notify();
+            } else if (authorized) {
+              await syncSnapshotAuthority(authorized);
+              await notify(authorized);
+            }
           }
           event.ports[0]?.postMessage(result);
         } catch {
@@ -181,6 +267,7 @@ export function installScannerShellWorker({
         try {
           const current = await store().current();
           if (current && current.build !== build) await invalidate();
+          else if (guests) await snapshotAuthority();
         } catch {
           // Storage unavailable: document/status remain fail-closed.
           await notify();
@@ -204,7 +291,7 @@ export function installScannerShellWorker({
       )
         return false;
       // A native/no-JavaScript sign-out redirects here. Choosing a staff role also
-      // relinquishes saved gate access, without touching guest snapshots or queues.
+      // relinquishes saved gate access and private snapshots, without touching queues.
       if (
         request.mode === "navigate" &&
         url.origin === host.location.origin &&

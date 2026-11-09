@@ -22,7 +22,11 @@ Foundation checks: strict snapshot parser 10 tests pass; bounded refresh runtime
 
 An isolated PostgreSQL16 database at this worktree's reserved port26721 started with zero public tables, received the existing migrations, and passed the explicit-column projection test. Synthetic fixtures include contact/dietary secrets and a revoked household with a real historical admission; only permitted fields are returned and the admission count remains available. The test rolls back all fixtures; the database process is stopped with its data directory retained. No production data operation occurred.
 
-Still pending: actual worker lock/latch integration, server route browser proof, offline resolution and UI, broader final coverage and CI. These foundation results do not certify the full offline feature.
+The worker lock/latch bridge now has 21 passing unit regressions; sign-out compatibility has three. Review reproduced two early-rejection races where a parallel erasure could outlive the publication lock. Both now await all settlements before releasing it and still reject any failed erasure. Older worker acknowledgements trigger locked two-store cleanup; only the new explicit private-erasure acknowledgement is trusted.
+
+The actual emitted worker and real IndexedDB suite passes 16/16 in Chromium and WebKit (12.9s), including offline reads, cross-tab delayed refresh versus logout, session replacement, expiry-triggered physical erasure, and full browser restart offline after injected private-erasure failure. This fixture uses synthetic HTTP grants, not production authentication. The pure offline adapter passes seven actual-signature tests for valid/used/revoked/replaced/unknown and expired/replaced sessions without mutating admission state.
+
+Still pending: authenticated product route browser proof, offline scanner UI integration, broader final coverage and CI. These foundation results do not certify the full offline feature.
 
 # Risks and rollout
 
