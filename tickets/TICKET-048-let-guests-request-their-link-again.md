@@ -2,7 +2,7 @@
 id: TICKET-048
 title: Let guests request their link again
 epic: invitations
-status: blocked
+status: in_progress
 priority: urgent
 estimate: M
 labels: [frontend, backend]
@@ -14,11 +14,11 @@ blocks: [TICKET-123, TICKET-176]
 branch: TICKET-048
 pr: ""
 created: 2026-10-21
-updated: 2026-11-06
+updated: 2026-11-09
 started: 2026-11-05
 completed: ""
-reason: "Local implementation, migration and full verification pass. Await physical-device preview exception retaining TICKET-201 release gates; PR #103 remains draft."
-resume_to: in_progress
+reason: ""
+resume_to: ""
 ---
 
 # TICKET-048: Let guests request their link again
@@ -71,3 +71,4 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-5).
 - 2026-11-06 — blocked → in_progress — divine (codex)
 - 2026-11-06 — in_progress → blocked — divine (codex) — Migration and 10/network/minute budget approved; isolated migration repeatability and 3 storage tests passed. Expanded 4-test suite repeatedly times out. Await stable database capacity; full browser journey and gate remain unverified.
 - 2026-11-06 — in_progress → blocked — divine (codex) — Local implementation, migration and full verification pass. Await physical-device preview exception retaining TICKET-201 release gates; PR #103 remains draft.
+- 2026-11-09 — blocked → in_progress — divine (codex) — Resume as sole current editor; preserve external integration, reconcile current migration history, retain TICKET-201 device release gates
