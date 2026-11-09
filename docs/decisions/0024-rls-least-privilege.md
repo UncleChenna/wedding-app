@@ -68,4 +68,5 @@ stack checks:
 - anon, missing-claim and unknown-station tokens receive nothing
 - a station can't send
 
-Not yet verified: a live Realtime subscription with a minted token (TICKET-033).
+A live subscription with a minted token is verified in TICKET-033:
+`RUN_REALTIME_DB_TESTS=1 vitest run scripts/__tests__/realtime-stations.integration.test.ts`.

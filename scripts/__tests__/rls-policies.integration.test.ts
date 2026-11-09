@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import postgres, { type Sql, type TransactionSql } from "postgres";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { assertDatabaseTarget } from "../database-target";
@@ -112,19 +113,21 @@ describe.runIf(process.env.RUN_RLS_DB_TESTS === "1")("browser access (RLS)", () 
   });
 
   it("lets a station receive only its own private broadcast channel", async () => {
+    // A per-run event name, so real messages left by Realtime use can't be mistaken for these.
+    const probe = "probe-" + randomUUID();
     await inRolledBack(async (tx) => {
       for (const station of stations)
         await tx`insert into realtime.messages (topic, extension, event, payload, private)
-          values (${"station:" + station}, 'broadcast', 'probe', ${tx.json({ station })}, true)`;
+          values (${"station:" + station}, 'broadcast', ${probe}, ${tx.json({ station })}, true)`;
       await tx`insert into realtime.messages (topic, extension, event, payload, private)
-        values ('station:kitchen', 'presence', 'probe', '{}'::jsonb, true)`;
+        values ('station:kitchen', 'presence', ${probe}, '{}'::jsonb, true)`;
 
       const visible = async (role: "anon" | "authenticated", claims: object, topic: string) => {
         await tx`savepoint probe`;
         await actAs(tx, role, claims);
         await tx`select set_config('realtime.topic', ${topic}, true)`;
         const rows = await tx<{ topic: string; extension: string }[]>`
-          select topic, extension from realtime.messages where event = 'probe'`;
+          select topic, extension from realtime.messages where event = ${probe}`;
         await tx`rollback to savepoint probe`;
         return rows.map((row) => `${row.topic}/${row.extension}`);
       };
