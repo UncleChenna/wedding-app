@@ -2,7 +2,7 @@
 id: TICKET-061
 title: Admit arriving guests with partial counts
 epic: checkin
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [frontend, backend]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/144
 created: 2026-10-21
 updated: 2026-11-09
 started: 2026-11-09
-completed: ""
+completed: 2026-11-09
 reason: ""
 resume_to: ""
 ---
@@ -70,3 +70,4 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-3) · [Journey 2: check-
 - 2026-11-09 — in_progress → in_review — divine (codex)
 - 2026-11-09 — in_review → in_progress — divine (codex) — Repair CI fixtures that incorrectly require a local environment file despite injected DATABASE_URL
 - 2026-11-09 — in_review → in_progress — divine (codex) — Integrate verified TICKET-123 and validate combined scanner/admission/ordering CI sequence
+- 2026-11-09 — in_review → done — divine (codex)
