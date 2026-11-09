@@ -2,7 +2,7 @@
 id: TICKET-026
 title: Rebuild deterministic seed data for the new schema
 epic: data-auth
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [db, test]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/112
 created: 2026-10-21
 updated: 2026-11-09
 started: 2026-11-08
-completed: ""
+completed: 2026-11-09
 reason: ""
 resume_to: ""
 ---
@@ -66,3 +66,4 @@ See: [Performance and reliability](../docs/prd.md#performance-and-reliability) �
 - 2026-11-08 — todo → claimed — divine (codex)
 - 2026-11-08 — todo → in_progress — divine (codex)
 - 2026-11-09 — in_progress → in_review — divine (codex)
+- 2026-11-09 — in_review → done — divine (codex)
