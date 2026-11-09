@@ -41,9 +41,9 @@ CHK-3/CHK-6 reconciliation safety while adding meaningful missing-path regressio
 
 ## Acceptance criteria
 
-- [ ] Missing reconciliation branches have behavioral tests, including defensive invalid counts and canonical refusal outcomes.
-- [ ] Full pnpm test passes unchanged per-file95% lines/branches thresholds, including scan-sync.ts.
-- [ ] verify:quick and final required CI pass; independent review confirms no weakened assertions or production policy changes.
+- [x] Missing reconciliation branches have behavioral tests, including defensive invalid counts and canonical refusal outcomes.
+- [x] Full pnpm test passes unchanged per-file95% lines/branches thresholds, including scan-sync.ts.
+- [x] verify:quick passes; independent review confirms no weakened assertions or production policy changes. Final required CI remains the mandatory merge gate.
 
 ## Test plan
 
@@ -59,6 +59,9 @@ CHK-3/CHK-6 reconciliation safety while adding meaningful missing-path regressio
 ## Notes / decisions
 
 2026-11-09: Assigned shared CI repair; TICKET-060 paused with draftPR139 preserved.
+Reproduced92.3%lines/83.33%branches;19focused regressions now100%both.
+Full unchanged suite:1483passed/178skipped,98.66%lines/99.31%branches in101.89s.
+Quick lint/types/19related tests pass; independent review clean. Final CI pending.
 
 ## Activity log
 

@@ -19,8 +19,9 @@ behavioral regressions without changing production code, thresholds or exclusion
 
 - Reproduced original scoped failure:92.3%lines/83.33%branches; uncovered line82.
 - Added tests pass19/19; scan-sync.ts now100%lines/branches/functions.
-- Full unchanged pnpm test and verify:quick are running/pending.
-- Independent review requested. Final hosted CI remains required before merge.
+- Full unchanged `caffeinate -is pnpm test`:1483passed,178opt-in skipped;184testfiles passed/36skipped in101.89s. Aggregate critical coverage98.66%lines/99.31%branches; every file passes95%, including scan-sync100%.
+- verify:quick: lint/types/19related tests pass.
+- Independent test-only review clean: invalid-count defense and refusal preservation verified; no production/config changes. Final hosted CI remains required before merge.
 
 ## Scope and limitations
 
@@ -35,3 +36,7 @@ Revert this test-only commit; doing so restores the failing coverage gate and do
 not alter application behavior or data.
 
 Ticket: tickets/TICKET-223-cover-scan-reconciliation-safety-boundaries.md
+
+## Screenshots and UI checklist
+
+N/A: tests only; no rendered interface, styling or browser behavior changed.
