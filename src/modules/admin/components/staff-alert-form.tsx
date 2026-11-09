@@ -20,21 +20,20 @@ export function StaffAlertForm({
     saveAlertContactAction,
     { status: "idle" },
   );
-  // Controlled, so a refused save keeps what was typed through React's form reset.
-  const [number, setNumber] = useState(savedNumber ?? "");
-  const [optIn, setOptIn] = useState(savedOptIn);
+  // React resets the form after every action, which unticks a box whose state didn't change.
+  // Remounting the fields per result with the right defaults keeps what was typed on a refusal.
   const [shown, setShown] = useState(state);
+  const [round, setRound] = useState(0);
   if (state !== shown) {
     setShown(state);
-    if (state.status === "error") {
-      setNumber(state.number);
-      setOptIn(state.optIn);
-    }
+    setRound(round + 1);
   }
+  const number = state.status === "error" ? state.number : (savedNumber ?? "");
+  const optIn = state.status === "error" ? state.optIn : savedOptIn;
   return (
     <form action={action} noValidate className="space-y-3 [&_label]:text-base">
       <input type="hidden" name="id" value={id} />
-      <div className="max-w-sm">
+      <div className="max-w-sm" key={`number-${round}`}>
         <Input
           id={`alert-number-${id}`}
           name="number"
@@ -43,17 +42,16 @@ export function StaffAlertForm({
           autoComplete="off"
           label={alertCopy.number}
           hint={alertCopy.numberHint}
-          value={number}
-          onChange={(event) => setNumber(event.target.value)}
+          defaultValue={number}
           error={state.status === "error" ? state.fieldMessage : undefined}
         />
       </div>
       <Checkbox
+        key={`opt-in-${round}`}
         id={`alert-opt-in-${id}`}
         name="optIn"
         label={alertCopy.optIn}
-        checked={optIn}
-        onChange={(event) => setOptIn(event.target.checked)}
+        defaultChecked={optIn}
       />
       <Button
         type="submit"

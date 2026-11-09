@@ -39,7 +39,7 @@ See: [ORD-9 WhatsApp order alerts](../docs/prd.md#ord-9--whatsapp-order-alerts-m
 
 ## Acceptance criteria
 
-- [ ] Only opted-in staff of the matching station are recipients (unit).
+- [x] Only opted-in staff of the matching station are recipients (unit).
 
 ## Test plan
 
