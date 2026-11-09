@@ -2,7 +2,7 @@
 id: TICKET-091
 title: Import guests from CSV with a validation preview
 epic: admin
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [frontend, backend]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/125
 created: 2026-10-21
 updated: 2026-11-09
 started: 2026-11-09
-completed: ""
+completed: 2026-11-09
 reason: ""
 resume_to: ""
 ---
@@ -68,3 +68,4 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-1).
 - 2026-11-09 — todo → claimed — divine (codex) — started ahead of TICKET-182 (in_progress)
 - 2026-11-09 — todo → in_progress — divine (codex) — started ahead of TICKET-182 (in_progress)
 - 2026-11-09 — in_progress → in_review — divine (codex)
+- 2026-11-09 — in_review → done — divine (codex)
