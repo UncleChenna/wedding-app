@@ -108,3 +108,14 @@ criticalcoverage97.9%lines98.2%branches, everyfile>=95. Failurelogs retained/tmp
 057is nowdone through222guarded reconciliation; normal059reviewtransition next.
 Root's temporary session sleepinhibitor73726 expires after1800seconds; no persistent
 power setting changed. No DB running. Physical-device release checks remainunverified.
+
+2026-11-09 current-base integration: externalPR141's verified scan-sync boundary
+test repaired the shared coverage gate on develop3e75175e. Integration is clean
+(no manual conflict resolution); package.json adds only upstream t:reconcile.
+The first full local run used direct vitest instead of the repository's two-worker
+pnpm test command and overlapped128/223 runs. It ended with1517passed/178skipped
+and2pass-image five-second timeouts; all per-file critical coverage passed
+(98.01%lines/98.25%branches aggregate). Failurelog retained at
+/tmp/TICKET-059-base3e75175e-coverage.log. Serial standard-command rerun is required
+before publishing; never raise timeout/assertions to conceal contention.
+Root108 foundation is pushed in draft142,c7f2286c/blocked488439fd until059merges.
