@@ -2,7 +2,7 @@
 
 TICKET-093 — Build the seating plan: tables and assignments.
 
-# Problem and result
+# Summary
 
 Admins could see table details but could not manage seating. The control room and
 Guests page now link to `/admin/guests/seating`, where admins can add/edit/delete
@@ -65,7 +65,7 @@ physical sharing/device checks and Lighthouse (admin-only UI; existing guest pas
 presentation is unchanged). Actual guest-device release checks remain mandatory in
 TICKET-201; this ticket does not certify them.
 
-# Risks and rollout / rollback
+# Risks and rollout
 
 No new schema, dependency or RLS policy. Standard application deployment; revert
 this ticket to remove management UI while preserving stored assignments. Existing
