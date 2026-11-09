@@ -21,7 +21,7 @@ export function createScannerShellStore(factory: Pick<IDBFactory, "open"> = inde
   const asset = (value: unknown): value is string =>
     typeof value === "string" &&
     !value.includes("..") &&
-    (/^\/scanner-assets\/scanner-[a-f0-9]{64}\.js$/.test(value) ||
+    (/^\/scanner-assets\/scanner-[a-f0-9]{64}\.(js|css|woff2)$/.test(value) ||
       /^\/_next\/static\/[A-Za-z0-9_./-]+\.(css|woff2?|ttf)$/.test(value));
   function validGrant(value: unknown): value is ScannerShellGrant {
     if (typeof value !== "object" || value === null) return false;

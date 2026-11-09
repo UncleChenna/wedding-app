@@ -450,3 +450,29 @@ for (const scenario of ["new-session-and-build", "shorter-deadline", "expired-de
     expect(result.assetRequests).toBe(scenario === "shorter-deadline" ? 1 : 0);
   });
 }
+
+test("accepts the complete immutable prebuild inventory but rejects unversioned scanner assets", async ({
+  page,
+}) => {
+  const result = await page.evaluate(async () => {
+    const store = window.ScannerStore.createScannerShellStore();
+    const grant = {
+      version: 1 as const,
+      session: "a".repeat(64),
+      build: "b".repeat(64),
+      preparedAt: Date.now(),
+      expiresAt: Date.now() + 60_000,
+      html: "<main>Scanner</main>",
+      headers: [] as [string, string][],
+      assets: ["js", "css", "woff2"].map(
+        (extension) => `/scanner-assets/scanner-${"b".repeat(64)}.${extension}`,
+      ),
+    };
+    const saved = await store.commit(await store.begin(), grant);
+    const unversioned = store.accepts({ ...grant, assets: ["/scanner-assets/scanner.css"] });
+    return { saved, unversioned, assets: (await store.current())?.assets };
+  });
+  expect(result.saved).toBe(true);
+  expect(result.unversioned).toBe(false);
+  expect(result.assets).toHaveLength(3);
+});

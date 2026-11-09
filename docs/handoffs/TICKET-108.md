@@ -103,3 +103,13 @@ No shippedworker/endpoint/bundlegeneratorwiredyet. Nextimplementdeployment-safe
 assetmanifest/generator thenauthorizedminimaldocument andworkerintegration. PRD
 usesVercel, so runtimegeneratedmanifestmustbetraced correctly; architecturepeer
 reviewrequestedbeforechoosingpostbuildfilehandling. Keep142draft.
+
+Prebuild generator nowimplemented scripts/scanner-assets.ts with3passingtests:
+closeddecoderbundle, deterministichashes/sharedCSS/fullfontassets, servermodule
+exclusion. Rootbuild/productionentrynotwiredyet. Storeallowscontenthashedscanner
+CSS/WOFF2; itsnewacceptancetestfirstfailed2thenfullsuite28/28passes. Quickpasses
+lint/types/relatedunit. Logs/tmp/TICKET-108-assets-{red,green,browser,quick}.log.
+Independentgeneratorreviewclean. Realentry/stylechecksandfail-fastrootbuildwiringremainrequired; keepwrappersourcedclassesdiscoverable. Architecturedecisioninownplan rejectsmutable
+postbuildmanifestdueNext/Vercelpackaging evidence; requiresimmutableprebuildassets
+andpackagedchecksumverification. NativeofflinefontCSSsharesonlinefontfiles/metrics;
+onlineNext/fontunchanged, actualUI/CLSchecksnotyetproved.
