@@ -2,20 +2,20 @@
 id: TICKET-089
 title: Build the guest list with RSVP status and filters
 epic: admin
-status: todo
+status: in_progress
 priority: urgent
 estimate: L
 labels: [frontend, backend]
 module: admin
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-023, TICKET-088, TICKET-043, TICKET-050]
 blocks: [TICKET-051, TICKET-053, TICKET-090, TICKET-092, TICKET-093, TICKET-097, TICKET-100]
-branch: ""
+branch: TICKET-089
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-09
+started: 2026-11-09
 completed: ""
 reason: ""
 resume_to: ""
@@ -62,3 +62,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-09 — todo → claimed — divine (codex) — started ahead of TICKET-043 (in_progress)
+- 2026-11-09 — todo → in_progress — divine (codex) — started ahead of TICKET-043 (in_progress)
