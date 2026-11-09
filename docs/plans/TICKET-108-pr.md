@@ -4,13 +4,13 @@ Ticket: TICKET-108
 
 # Summary
 
-Draft: prepare the scanner to survive an offline reload without extending staff authorization beyond its actual deadline. This branch currently implements the trusted expiry foundation and isolated browser storage contract; no offline-ready claim is made.
+Draft: prepare the scanner to survive an offline reload without extending staff authorization beyond its actual deadline. This branch currently implements the trusted expiry foundation and isolated browser storage and required-asset preparation contracts; no offline-ready claim is made.
 
 # Changes
 
 `authenticateStaffSession` retains the existing live role, credential-version, PIN and device-revocation checks and returns the earliest signed-cookie, current event and PIN deadline. Existing identity-only callers retain their exact result contract. `currentStaffDevice` also checks expiry after its device-name read. No session secret, raw cookie or browser-side signing capability is exposed.
 
-The dedicated IndexedDB store atomically invalidates pending saves on logout or newer preparation, makes preparation tokens single-use, validates persisted metadata and checks expiry again after database work. It is not yet connected to the service worker. Guest snapshots and unsynced queues are untouched.
+The dedicated IndexedDB store atomically invalidates pending saves on logout or newer preparation, makes preparation tokens single-use, validates persisted metadata and checks expiry again after database work. The runtime independently fetches the fixed server endpoint, requires every listed asset with valid status and MIME, reads the cache back before publication, and rechecks the complete grant after fallback asset checks. Session replacement clears the old shell before downloads; a stale denial cannot clear newer state. These contracts are not yet connected to the service worker. Guest snapshots and unsynced queues are untouched.
 
 # Acceptance criteria and evidence
 
@@ -18,7 +18,7 @@ Both ticket criteria remain unfinished: offline /checkin reload and a complete p
 
 # Verification
 
-Initial expiry tests failed on the missing API (six failed, one existing-contract test passed). After implementation and independent review, eight expiry tests plus four signed-session tests pass. The additional test crosses the deadline during database reads. Quick verification is run before publishing. Independent follow-up review is clean. The storage suite passes all 16 Chromium/WebKit cases, including a separate worker, expiry during database opening, logout races, single-use preparation, corrupt records and malformed database cleanup. Final quick verification passes lint and types; its related-unit selector finds no affected tests for these browser-only files. Real authenticated offline reload, asset eviction, shipped-worker integration and physical phones remain unverified.
+Initial expiry tests failed on the missing API (six failed, one existing-contract test passed). After implementation and independent review, eight expiry tests plus four signed-session tests pass. The additional test crosses the deadline during database reads. Quick verification is run before publishing. Independent follow-up review is clean. The storage suite passes all 20 Chromium/WebKit cases, including a separate worker, expiry during database opening, logout races, single-use preparation, corrupt records and malformed database cleanup. Final quick verification passes lint and types; its related-unit selector finds no affected tests for these browser-only files. Ten runtime unit tests also pass, including quota failure, required-asset eviction, sign-in HTML rejection and concurrent inventory replacement (the latter first reproduced a failure before its fix). Real authenticated offline reload, asset eviction, shipped-worker integration and physical phones remain unverified.
 
 # Risks and rollout
 

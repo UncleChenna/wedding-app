@@ -60,3 +60,25 @@ minimal standalone document and generated required-asset manifest, wire authoriz
 worker save/navigation/logout and prove actual offline decoding. Keep142 draft.
 
 Storage checkpoint committed and pushed as232d6d54 to draftPR142; all219 ticket definitions validate. Root remains active on108. Next integration is still gated on223 then059; no offline-ready acceptance criterion was ticked.
+
+## Required-asset runtime checkpoint — 2026-11-09
+
+Added scanner-shell-runtime.ts and ten unit regressions. Server-owned fixed endpoint
+and response marker precede validation/asset work. Every asset must have complete
+nonredirected response and expected MIME and survive cache readback before commit.
+Fallback checks full grant equality after checking its assets, preventing a newer
+inventory with identical session/timestamps from bypassing readiness. This race
+first failed (1failed/9passed), then passed after the equality check. Runtime is
+not wired into shipped worker yet and endpoint/bundle generator remain outstanding.
+
+Storage adds authorize and conditional discard. Both compare the preparation
+generation transactionally; replaced session loses the old shell before downloads;
+matching denial clears and consumes the token, stale denial leaves newer state.
+Independent incremental/runtime review clean; reviewer-requested MIME/eviction
+cases added. Browser suite20/20; runtime10/10. Logs /tmp/TICKET-108-store-final20.log,
+/tmp/TICKET-108-runtime-final.log, /tmp/TICKET-108-runtime-quick.log.
+
+ExternalPR141 verified merged develop3e75175e and independently fixes the shared
+critical coverage blocker.223 now retains both that narrow test and broader
+regressions, awaiting new combinedCI.128/048 editors integrating currentdevelop.
+Root next checkpoints108 then resumes059 integration/CI, which108 still requires.

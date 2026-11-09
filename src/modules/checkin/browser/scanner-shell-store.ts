@@ -140,11 +140,28 @@ export function createScannerShellStore(factory: Pick<IDBFactory, "open"> = inde
     });
   }
   return {
+    accepts: validGrant,
     // A newer preparation invalidates older in-flight writes but keeps a usable old copy.
     begin: () =>
       update((state) => {
         state.generation = crypto.randomUUID();
         return state.generation;
+      }),
+    // Call only with the fingerprint returned by the independent authorized server request.
+    // Clear a replaced session before downloading assets, but never let an older response
+    // invalidate a newer preparation. A failed same-session refresh can retain its old copy.
+    authorize: (generation: string, session: string) =>
+      update((state) => {
+        if (state.generation !== generation || !/^[a-f0-9]{64}$/.test(session)) return false;
+        if (state.grant && state.grant.session !== session) state.grant = null;
+        return true;
+      }),
+    discard: (generation: string) =>
+      update((state) => {
+        if (state.generation !== generation) return false;
+        state.generation = crypto.randomUUID();
+        state.grant = null;
+        return true;
       }),
     current: async (now?: number) => {
       const grant = await update((state) => state.grant, now);

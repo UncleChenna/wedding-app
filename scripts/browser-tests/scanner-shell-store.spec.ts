@@ -296,3 +296,94 @@ test("a separate worker reads the durable grant and invalidates a pending window
   expect(result.saved).toBe(false);
   expect(result.current).toBeNull();
 });
+
+test("an authorized replacement hides the old shell without letting stale preparations clear newer state", async ({
+  page,
+}) => {
+  const result = await page.evaluate(async () => {
+    const store = window.ScannerStore.createScannerShellStore();
+    const grant = {
+      version: 1 as const,
+      session: "a".repeat(64),
+      build: "b".repeat(64),
+      preparedAt: Date.now(),
+      expiresAt: Date.now() + 60_000,
+      html: "<main>Scanner</main>",
+      headers: [] as [string, string][],
+      assets: ["/scanner-assets/scanner-" + "b".repeat(64) + ".js"],
+    };
+    await store.commit(await store.begin(), grant);
+    const stale = await store.begin();
+    const same = await store.begin();
+    const retained = await store.authorize(same, grant.session);
+    const sameGrant = await store.current();
+    const rejected = await store.authorize(stale, "c".repeat(64));
+    const afterStale = await store.current();
+    const replacement = await store.begin();
+    const changed = await store.authorize(replacement, "c".repeat(64));
+    const hidden = await store.current();
+    const oldSave = await store.commit(same, grant);
+    const saved = await store.commit(replacement, { ...grant, session: "c".repeat(64) });
+    return {
+      retained,
+      sameSession: sameGrant?.session,
+      rejected,
+      afterStale: afterStale?.session,
+      changed,
+      hidden,
+      oldSave,
+      saved,
+      finalSession: (await store.current())?.session,
+    };
+  });
+  expect(result).toEqual({
+    retained: true,
+    sameSession: "a".repeat(64),
+    rejected: false,
+    afterStale: "a".repeat(64),
+    changed: true,
+    hidden: null,
+    oldSave: false,
+    saved: true,
+    finalSession: "c".repeat(64),
+  });
+});
+
+test("a delayed denial cannot erase a newer grant and a matching denial consumes its token", async ({
+  page,
+}) => {
+  const result = await page.evaluate(async () => {
+    const store = window.ScannerStore.createScannerShellStore();
+    const grant = {
+      version: 1 as const,
+      session: "a".repeat(64),
+      build: "b".repeat(64),
+      preparedAt: Date.now(),
+      expiresAt: Date.now() + 60_000,
+      html: "<main>Scanner</main>",
+      headers: [] as [string, string][],
+      assets: ["/scanner-assets/scanner-" + "b".repeat(64) + ".js"],
+    };
+    const stale = await store.begin();
+    await store.commit(await store.begin(), grant);
+    const discardedStale = await store.discard(stale);
+    const retained = await store.current();
+    const current = await store.begin();
+    const discardedCurrent = await store.discard(current);
+    const republished = await store.commit(current, grant);
+    return {
+      discardedStale,
+      retained: retained?.session,
+      discardedCurrent,
+      republished,
+      final: await store.current(),
+    };
+  });
+  expect(result).toEqual({
+    discardedStale: false,
+    retained: "a".repeat(64),
+    discardedCurrent: true,
+    republished: false,
+    final: null,
+  });
+});
