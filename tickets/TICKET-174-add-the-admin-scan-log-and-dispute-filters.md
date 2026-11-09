@@ -2,20 +2,20 @@
 id: TICKET-174
 title: Add the admin scan log and dispute filters
 epic: admin
-status: todo
+status: in_progress
 priority: medium
 estimate: M
 labels: [frontend, backend]
 module: admin
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-062, TICKET-088]
 blocks: [TICKET-154]
-branch: ""
+branch: TICKET-174
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-09
+started: 2026-11-09
 completed: ""
 reason: ""
 resume_to: ""
@@ -57,3 +57,5 @@ Backlog audit coverage: CHK-5, ADM-3. See [PRD](../docs/prd.md) and [audit](AUDI
 ## Activity log
 
 - 2026-10-21 — new → todo — divine
+- 2026-11-09 — todo → claimed — divine (codex) — started ahead of TICKET-062 (in_review)
+- 2026-11-09 — todo → in_progress — divine (codex) — started ahead of TICKET-062 (in_review)
