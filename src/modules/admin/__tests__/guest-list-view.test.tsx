@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { expect, it, vi } from "vitest";
+vi.mock("../server/share-tracking-actions", () => ({ undoShareAction: vi.fn() }));
 import { GuestList } from "../components/guest-list";
 import type { GuestListInvitation } from "../lib/guest-list";
 vi.mock("../components/invitation-lifecycle-controls", () => ({
@@ -10,8 +11,17 @@ vi.mock("../components/invitation-lifecycle-controls", () => ({
 }));
 
 vi.mock("../components/share-menu", () => ({
-  ShareMenu: ({ invitation }: { invitation: { url: string } }) => (
-    <a href={invitation.url}>Share invitation</a>
+  ShareMenu: ({
+    invitation,
+    onRecorded,
+  }: {
+    invitation: { url: string };
+    onRecorded?: (id: string) => void;
+  }) => (
+    <>
+      <a href={invitation.url}>Share invitation</a>
+      <button onClick={() => onRecorded?.("event")}>Record test share</button>
+    </>
   ),
 }));
 const invitations: GuestListInvitation[] = [
@@ -110,4 +120,17 @@ it("restores focus to results if a mutation removes the expanded row from its st
   );
   expect(screen.getByRole("status")).toHaveFocus();
   expect(screen.getByRole("status")).toHaveTextContent("0 of 2 invitations");
+});
+
+it("retains Undo when first sharing removes the row from the unsent filter, and clears it after reissue", () => {
+  const unsent = invitations.map((row) => (row.id === "one" ? { ...row, sentAt: null } : row));
+  const { rerender } = render(<GuestList invitations={unsent} />);
+  fireEvent.change(screen.getByLabelText("Sent"), { target: { value: "unsent" } });
+  fireEvent.click(screen.getByRole("button", { name: "Invitation actions for Ada household" }));
+  fireEvent.click(screen.getByRole("button", { name: "Record test share" }));
+  rerender(<GuestList invitations={invitations} />);
+  expect(screen.queryByRole("button", { name: "Invitation actions for Ada household" })).toBeNull();
+  expect(screen.getByRole("button", { name: "Undo sharing record" })).toBeVisible();
+  rerender(<GuestList invitations={invitations.map((row) => ({ ...row, tokenVersion: 2 }))} />);
+  expect(screen.queryByRole("button", { name: "Undo sharing record" })).toBeNull();
 });
