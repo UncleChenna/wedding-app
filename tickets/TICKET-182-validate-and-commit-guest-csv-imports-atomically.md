@@ -2,7 +2,7 @@
 id: TICKET-182
 title: Validate and commit guest CSV imports atomically
 epic: admin
-status: in_review
+status: in_progress
 priority: urgent
 estimate: M
 labels: [backend, test]
@@ -61,3 +61,4 @@ Backlog audit coverage: INV-1, ADM-1. See [PRD](../docs/prd.md) and [audit](AUDI
 - 2026-11-09 — todo → in_progress — divine (codex)
 - 2026-11-09 — Implemented create-only bounded CSV preview/commit, durable digest receipts and atomic retry protection. Parser/action/export tests: 18 passed; isolated database regressions: 5 passed; full unit suite: 1309 passed, 145 skipped. Repeat migrations and seeds preserve counts; all 23 public tables retain RLS. Independent read-only review found no blockers. See docs/guest-import.md and PR evidence for duplicate/expiry policy.
 - 2026-11-09 — in_progress → in_review — divine (codex)
+- 2026-11-09 — in_review → in_progress — divine (codex) — Review: recheck preview expiry after waiting for database locks
