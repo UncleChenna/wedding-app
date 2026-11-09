@@ -2,7 +2,7 @@
 id: TICKET-223
 title: Cover scan reconciliation safety boundaries
 epic: checkin
-status: in_progress
+status: in_review
 priority: urgent
 estimate: S
 labels: [test]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: []
 blocks: []
 branch: TICKET-223
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/143
 created: 2026-11-09
 updated: 2026-11-09
 started: 2026-11-09
@@ -68,3 +68,4 @@ Quick lint/types/19related tests pass; independent review clean. Final CI pendin
 - 2026-11-09 — new → todo — divine
 - 2026-11-09 — todo → claimed — divine (codex)
 - 2026-11-09 — todo → in_progress — divine (codex)
+- 2026-11-09 — in_progress → in_review — divine (codex)
