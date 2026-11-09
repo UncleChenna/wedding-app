@@ -25,8 +25,11 @@ selected verifier to succeed for the current HEAD in the current invocation.
 Four original regressions failed before implementation because the verifier never
 ran. The integrated suite now asserts the exact selected command as well as
 ledger outcomes, so quick-default behavior is preserved without accepting failures.
-The root's earlier independent review found no blocking issue; final integration
-review and required CI are pending before merge.
+Independent review of integration head `704c77a9` against `37e9202c` found no
+blocking issue. All five required checks passed on that head in
+[CI run 42590329424](https://github.com/UncleChenna/wedding-app/actions/runs/42590329424),
+including full verification, migrations/seed and the mobile/desktop invitation
+journey. Final-head CI remains mandatory before merge.
 
 # Verification
 
@@ -34,8 +37,8 @@ review and required CI are pending before merge.
 - `vitest run scripts/__tests__/tickets.test.ts scripts/__tests__/ticket-review.test.ts
 scripts/__tests__/verification.test.ts`: 61 passed, including 14 CLI scenarios.
 - Local quick gate: lint, types and all 136 related tests passed across eight files.
-- Prior head `2da7be90` passed all five required CI checks, including full verify,
-  migrations/seed and the invitation journey. New-head CI remains mandatory.
+- Integration head `704c77a9` passed all five required CI checks; full verify
+  completed in 18m10s. Final metadata-head CI remains mandatory before merge.
 - Historical local full run passed 1,105 unit tests (117 skipped) and build, but
   browser verification was incomplete because the isolated database failed to start:
   240 passed, four failed, five interrupted, 777 not run. It was not a full pass.

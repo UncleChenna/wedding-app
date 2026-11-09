@@ -49,7 +49,7 @@ tracks only the follow-up repair.
 - [x] A successful direct review advances the ledger only for the verified current HEAD.
 - [x] An inherited verification marker and a HEAD change during verification cannot bypass the gate.
 - [x] `t:pr` verifies once, reuses only its successful current invocation, and rejects HEAD changes.
-- [ ] Targeted regression suites and local quick verification pass; full CI and independent review are recorded before merge.
+- [x] Targeted regression suites and local quick verification pass; full CI and independent review are recorded before merge.
 
 ## Test plan
 
@@ -65,6 +65,11 @@ tracks only the follow-up repair.
 - Per-ticket plan, handoff and PR evidence.
 
 ## Notes / decisions
+
+- 2026-11-09 — Integration head `704c77a9` passed all five required CI checks
+  (run 42590329424), including full verification, migrations/seed and the
+  mobile/desktop invitation journey. Independent integration review found no
+  blocking issue. Final metadata-head CI remains required before merge.
 
 - 2026-11-09 — Integrated develop `37e9202c` and preserved TICKET-217/218's approved
   quick-default review workflow and explicit full options. Expanded real-CLI coverage

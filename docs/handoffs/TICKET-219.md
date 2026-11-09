@@ -1,13 +1,22 @@
 # TICKET-219 handoff
 
+2026-11-09 independent integration review — the root reviewed `704c77a9` against
+develop `37e9202c` and found no blocking issue. Quick/default/full selection,
+invocation-local HEAD evidence and all 14 CLI cases were checked. All five
+required checks passed on that head in CI run 42590329424, including full verify
+(18m10s). The final review publication still requires CI on its final metadata
+head before merge. No new database startup or broad local run was needed.
+
 2026-11-09 resumed — integrated develop `37e9202c` with TICKET-217/218's approved
 quick-default workflow. Prior head `2da7be90` passed all five required CI checks.
 Conflict resolution keeps invocation-local HEAD evidence, selected quick/full
 verification, draft readiness and new ticket startup behavior. All 61 targeted
 tests pass, including 14 CLI cases. The current quick gate passes lint, types
-and 136 related tests across eight files. Final integrated-head review/CI are pending. No database startup was requested for this harness repair.
+and 136 related tests across eight files. Integrated-head review and CI subsequently passed as recorded above. No database startup was requested for this harness repair.
 The historical local database blocker below is superseded by the approved local
 quick plus full-CI policy, not by claiming the incomplete run passed.
+
+Historical blocked-state record (superseded by the successful integration above):
 
 2026-11-08 — divine / codex — branch `TICKET-219`.
 Base: `407fb68db4dde004cf0868274a744ebd435dbbb2`.
@@ -49,6 +58,7 @@ requires an open PR. No review evidence was fabricated to force reconciliation;
 the parent will handle this through a suitable follow-up. Do not mark it done by
 editing ledger/file status manually.
 
-Next: run the full CI gate with its disposable database and repeat isolated local
-verification when capacity is available. Keep the PR draft and ticket blocked until
-the verification limitation is resolved. No assertions were weakened or skipped.
+The historical next step was a full CI run with its disposable database. This
+has now passed under the approved quick-local/full-CI workflow. Final publication
+uses `t:pr`; the parent will check final-head CI before merging. No assertions
+were weakened or skipped.
