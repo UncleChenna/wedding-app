@@ -6,6 +6,14 @@ Admission: `lib/admission.ts` decides a scan (valid, already used, invalid, revo
 admission. It's pure, so the server and the offline scanner share it. The database bound
 `admission_counters_bounded` backs it up.
 
+Offline sync (TICKET-173): `POST /api/checkin/sync` takes a gate device's batch (`lib/scan-sync.ts`).
+`server/reconcile-scans.ts` stores each scan in its own transaction, so an acknowledgement always means it's saved.
+
+- Every reported scan is kept in `scan_events`. The canonical count only takes what the allowance has left.
+- A report over the allowance, or one the server would have refused, is stored with `conflict` set (for TICKET-067).
+- A retried event id is a no-op; the same id with a different scan, or from another device, is rejected.
+- Database tests: `RUN_SCAN_SYNC_DB_TESTS=1 vitest run scripts/__tests__/scan-sync.integration.test.ts`.
+
 Gate passes (ADR 0020, ADR 0021):
 
 - `lib/gate-token.ts`: the format-1 pass encoding and WebCrypto verification with strict JavaScript fallback. It's shared with scanners, so it has

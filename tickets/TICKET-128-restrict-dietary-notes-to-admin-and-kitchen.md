@@ -2,20 +2,20 @@
 id: TICKET-128
 title: Restrict dietary notes to admin and kitchen
 epic: security
-status: todo
+status: in_review
 priority: urgent
 estimate: S
 labels: [security, backend]
 module: shared
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-027]
 blocks: [TICKET-076, TICKET-129, TICKET-176]
-branch: ""
-pr: ""
+branch: TICKET-128
+pr: https://github.com/UncleChenna/wedding-app/pull/133
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-09
+started: 2026-11-09
 completed: ""
 reason: ""
 resume_to: ""
@@ -40,9 +40,9 @@ See: [Privacy (UK GDPR)](../docs/prd.md#privacy-uk-gdpr).
 
 ## Acceptance criteria
 
-- [ ] Gate and bar responses contain no dietary fields (test per endpoint).
+- [x] Gate and bar responses contain no dietary fields (test per endpoint).
 
-- [ ] Publish an executable role/field projection contract early: only admin/kitchen receive dietary information. Every later query, subscription and export must reuse or test this contract.
+- [x] Publish an executable role/field projection contract early: only admin/kitchen receive dietary information. Every later query, subscription and export must reuse or test this contract.
 
 ## Test plan
 
@@ -59,6 +59,16 @@ See: [Privacy (UK GDPR)](../docs/prd.md#privacy-uk-gdpr).
 
 _Agents append dated notes here while working._
 
+- 2026-11-09 — Started ahead of TICKET-027 using its proposed ADR 0023 contract; no policy or migration edits. Shared allowlisted role projections now back gate printing and station alert formatting. Private RSVP dietary/history/import fields are distinct from the existing deliberately submitted kitchen/bar order instruction; operational notes and existing queued alerts are preserved. See docs/dietary-privacy.md for consumer inventory and future requirements. Focused projection/reader/response tests: 44 passed; verify:quick lint/types passed and 45 related tests passed (29 DB tests skipped). No new database run or RLS integration is claimed. First criterion remains open pending TICKET-027 integration and final review; future bar/kitchen board endpoints do not yet exist.
+
+- 2026-11-09 — Integrated completed 027/033 on develop 275c42b8; actual accepted policy is ADR 0024. All 23 tables retain RLS. Real seeded Supabase: 12 RLS + 4 signed Realtime tests passed; initial cold kitchen delivery exceeded 2s once and passed unchanged on serial rerun. Seven focused suites: 58 passed. Actual publisher rejects nested/private/free-text extras; bar notifications contain only IDs/status while deliberate order instructions persist. No policies, production data or future board implementations changed. See docs/plans/TICKET-128-pr.md.
+
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-09 — todo → claimed — divine (codex) — started ahead of TICKET-027 (in_progress)
+- 2026-11-09 — todo → in_progress — divine (codex) — started ahead of TICKET-027 (in_progress)
+- 2026-11-09 — in_progress → blocked — divine (codex) — Draft PR #133 https://github.com/UncleChenna/wedding-app/pull/133: independent review clean; waiting for TICKET-027 policy integration and final CI. Local projection checks pass; no RLS integration claimed.
+- 2026-11-09 — blocked → in_progress — divine (codex) — Dependencies027 and033 merged; verify privacy against actual RLS and station broadcast contracts
+- 2026-11-09 — in_progress → in_review — divine (codex)
+- 2026-11-09 — in_review → in_progress — divine (codex) — Integrate shared scan-sync coverage repair before final CI

@@ -53,7 +53,8 @@ jobs:
   verify:
     name: pnpm verify
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # Full browser matrix measured 16.3m, plus setup/unit/build and scanner checks.
+    timeout-minutes: 25
     services:
       postgres:
         image: postgres:17
@@ -154,6 +155,8 @@ jobs:
       - run: pnpm db:migrate
       - run: pnpm build
       - run: pnpm exec tsx scripts/test-guest-journey.ts
+      - name: Verify authenticated scanner recovery and camera lifecycle
+        run: pnpm exec tsx scripts/test-scanner-journey.ts
       - if: failure()
         uses: actions/upload-artifact@v7
         with:
@@ -162,3 +165,49 @@ jobs:
             playwright-report/
             test-results/
           retention-days: 7
+
+  camera-decoding:
+    name: camera QR pixels (Chromium + WebKit)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium webkit
+      - run: pnpm exec playwright test --config scripts/camera-verification.config.ts
+      - if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: camera-decoding-evidence
+          path: artifacts/TICKET-059/camera/
+          retention-days: 7
+
+  admin-journey:
+    name: admin journey (mobile + desktop)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - name: Isolated Auth, mail, database and admin journey
+        run: pnpm exec tsx scripts/test-admin-journey.ts --ci
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: admin-journey-evidence
+          path: artifacts/TICKET-134/
+          retention-days: 7
+      - name: Stop this job's isolated stack
+        if: always()
+        run: test ! -f .harness/worktree.json || pnpm db:stop

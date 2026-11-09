@@ -2,6 +2,7 @@ import "server-only";
 import { eq, inArray, sql } from "drizzle-orm";
 import type { Db } from "@/modules/shared/server/db/client";
 import { getEventSettings } from "@/modules/shared/server/settings";
+import { publishToStation } from "@/modules/shared/server/realtime-publish";
 import { staffEventExpiry } from "@/modules/shared/lib/staff-expiry";
 import {
   eventSettings,
@@ -169,10 +170,18 @@ export async function createOrder(
         return {
           stationOrderId,
           station,
-          message: formatOrderAlert({ table: order.table, items, note: order.note }),
+          message: formatOrderAlert({ table: order.table, items, note: order.note }, station),
         };
       }),
     );
+    // ADR 0024: each board hears about its own ticket once this transaction commits.
+    for (const row of rows) {
+      await publishToStation(tx, row.station, "order.changed", {
+        stationOrderId: row.id,
+        orderId: created.id,
+        status: "received",
+      });
+    }
     return { status: "created", orderId: created.id };
   });
 }

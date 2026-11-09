@@ -32,3 +32,24 @@ it("fails closed for malformed data and does not expose database errors", async 
     expect(response.headers.get("cache-control")).toBe("private, no-store");
   }
 });
+it.each(["dietaryNotes", "dietary_notes", "notes", "history"])(
+  "rejects nested %s at the gate response boundary",
+  async (field) => {
+    const response = await credentialSnapshotResponse({
+      authorize: async () => true,
+      load: async () => ({
+        ...snapshot,
+        invitations: [
+          {
+            invitationId: "00000000-0000-4000-8000-000000000001",
+            tokenVersion: 1,
+            status: "rsvp_yes",
+            [field]: { nested: "private dietary marker" },
+          },
+        ],
+      }),
+    });
+    expect(response.status).toBe(503);
+    expect(await response.text()).not.toContain("private dietary marker");
+  },
+);
