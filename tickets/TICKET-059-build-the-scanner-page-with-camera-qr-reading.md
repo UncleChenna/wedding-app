@@ -2,7 +2,7 @@
 id: TICKET-059
 title: Build the scanner page with camera QR reading
 epic: checkin
-status: in_review
+status: done
 priority: high
 estimate: L
 labels: [frontend]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/135
 created: 2026-10-21
 updated: 2026-11-09
 started: 2026-11-09
-completed: ""
+completed: 2026-11-09
 reason: ""
 resume_to: ""
 ---
@@ -68,3 +68,4 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-1) · [Journey 2: check-
 - 2026-11-09 — in_progress → in_review — divine (codex)
 - 2026-11-09 — in_review → blocked — divine (codex) — Final combined CI exposed merged TICKET-173 scan-sync coverage below the mandatory per-file gate; TICKET-223 adds the missing safety-boundary tests. Scanner, camera and authenticated browser jobs pass; hold merge until repair and final CI pass.
 - 2026-11-09 — blocked → in_review — divine (codex) — Verified develop PR141 repaired shared coverage; updated branch passes1519 tests with all critical coverage gates.
+- 2026-11-09 — in_review → done — divine (codex)
