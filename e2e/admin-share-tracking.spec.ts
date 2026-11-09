@@ -86,7 +86,9 @@ test.describe("authenticated sharing records", () => {
     await page.unroute("**/admin/guests");
     await row.getByRole("button", { name: "Share invitation", exact: true }).click();
     await page.setViewportSize({ width: 375, height: 812 });
-    await mkdir("docs/reviews/TICKET-051/screenshots", { recursive: true });
+    const screenshotDirectory =
+      process.env.SHARE_SCREENSHOT_DIR ?? "docs/reviews/TICKET-051/screenshots";
+    await mkdir(screenshotDirectory, { recursive: true });
     for (const theme of themes) {
       await applyTheme(page, theme);
       expect(await scanA11y(page)).toEqual([]);
@@ -94,7 +96,7 @@ test.describe("authenticated sharing records", () => {
         true,
       );
       await page.screenshot({
-        path: `docs/reviews/TICKET-051/screenshots/${info.project.name}-${theme.id}-share.png`,
+        path: `${screenshotDirectory}/${info.project.name}-${theme.id}-share.png`,
         fullPage: true,
       });
     }
@@ -117,7 +119,7 @@ test.describe("authenticated sharing records", () => {
       await undoButton.evaluate((button) => button.scrollIntoView({ block: "center" }));
       if (theme.id === "ivory-gold")
         await page.screenshot({
-          path: `docs/reviews/TICKET-051/screenshots/${info.project.name}-undo.png`,
+          path: `${screenshotDirectory}/${info.project.name}-undo.png`,
         });
     }
     await undoButton.focus();
