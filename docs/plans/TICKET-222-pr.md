@@ -14,7 +14,7 @@ The latest `ci.yml` pull-request run must match the repair head, complete succes
 
 # Acceptance criteria and evidence
 
-Initial focused regressions pass 74 tests including a real Git/shared-ledger matrix. Failure cases preserve the ledger and ticket file; successful cases record the exact evidence. Additional race cases reject a newer CI run and a different-repository PR. Quick verification passes lint, types and 76 related tests. The final same-run restart regression also passes in the 20-case CLI matrix.
+Initial focused regressions pass 74 tests including a real Git/shared-ledger matrix. Failure cases preserve the ledger and ticket file; successful cases record the exact evidence. Additional race cases reject a newer CI run and a different-repository PR. Quick verification passes lint, types and 76 related tests. The final same-run restart regression also passes in the 20-case CLI matrix; two additional cases prove local/offline ledgers are refused.
 
 Actual TICKET-057/054 reconciliation is a post-merge operation. Neither ticket has been manually changed by this implementation. Their original failed CI history remains truthful and their physical release gates remain mandatory.
 
@@ -23,7 +23,8 @@ Actual TICKET-057/054 reconciliation is a post-merge operation. Neither ticket h
 - Red: the initial CI-evidence tests failed before the new module existed (`/tmp/TICKET-222-red.log`).
 - Green: initial 74 focused tests passed in 58.14 seconds (`/tmp/TICKET-222-focused.log`).
 - Typecheck passed (`/tmp/TICKET-222-types.log`).
-- Quick verification: lint/types and 76 related tests passed (`/tmp/TICKET-222-quick.log`). Final same-run restart hardening: 20 CLI cases passed, 48 unrelated cases excluded by the focused filter (`/tmp/TICKET-222-races.log`); final typecheck passed. Full CI is required before merge.
+- Quick verification: lint/types and 76 related tests passed (`/tmp/TICKET-222-quick.log`). Final same-run restart hardening: 20 CLI cases passed, 48 unrelated cases excluded by the focused filter (`/tmp/TICKET-222-races.log`); final typecheck passed. Final complete-tree quick verification passes lint/types and all 70 related ticket tests (`/tmp/TICKET-222-final-quick.log`). Full CI is required before merge.
+- The first local/offline fixture run accidentally retained origin mode and failed its two refusal expectations. Correcting the explicit fixture environment produces 2/2 passes (`/tmp/TICKET-222-ledger-modes-green.log`); the refusal assertions were unchanged.
 - No database required or started by current tooling. The primary checkout's stale setup wrapper attempted startup and failed; resumed setup with current tooling, and the owned project has no containers.
 
 # Risks and rollout

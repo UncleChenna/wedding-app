@@ -681,7 +681,7 @@ function main(): number {
         throw new TransitionError(
           "Describe the original failure and verified repair with --reason (at least 20 characters).",
         );
-      if (state.mode === "off")
+      if (state.mode !== "origin")
         throw new TransitionError(
           "Reconciliation requires the shared ledger; offline status changes are not allowed.",
         );

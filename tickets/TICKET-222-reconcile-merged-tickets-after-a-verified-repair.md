@@ -40,10 +40,10 @@ TICKET-057 and TICKET-054 were merged while their verification was failing, then
 
 ## Acceptance criteria
 
-- [ ] Explicit reconciliation completes an eligible owned merged ticket only after fresh original/repair ancestry, original criteria, dependency and exact-head successful CI checks.
-- [ ] Open/unmerged/wrong-base/unreachable repair, failed/pending/missing checks, changed head, incomplete criteria, other ownership and fetch failure refuse without ledger mutation.
-- [ ] Existing normal transitions remain unchanged; evidence is recorded with both PRs and repair head.
-- [ ] Focused regressions and quick verification pass; eligible historical tickets are reconciled only after the fix is reviewed and merged.
+- [x] Explicit reconciliation completes an eligible owned merged ticket only after fresh original/repair ancestry, original criteria, dependency and exact-head successful CI checks.
+- [x] Open/unmerged/wrong-base/unreachable repair, failed/pending/missing checks, changed head, incomplete criteria, other ownership and fetch failure refuse without ledger mutation.
+- [x] Existing normal transitions remain unchanged; evidence is recorded with both PRs and repair head.
+- [x] Focused regressions and quick verification pass; eligible historical tickets are reconciled only after the fix is reviewed and merged.
 
 ## Test plan
 
@@ -65,3 +65,5 @@ TICKET-057 and TICKET-054 were merged while their verification was failing, then
 - 2026-11-09 — backlog → todo — divine
 - 2026-11-09 — todo → claimed — divine (codex)
 - 2026-11-09 — todo → in_progress — divine (codex)
+
+- 2026-11-09 — Initial 74 focused tests and quick lint/types/76 related tests passed. Final CLI race matrix passed 20 cases; two shared-ledger mode refusals also pass after correcting their test environment. TICKET-057/054 status reconciliation is intentionally post-merge; no direct/manual status mutation occurred. PR: https://github.com/UncleChenna/wedding-app/pull/137.

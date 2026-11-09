@@ -781,6 +781,8 @@ describe("explicit merged-ticket repair reconciliation", () => {
     "changed repair head",
     "newer CI run",
     "same run restarted",
+    "local ledger",
+    "offline ledger",
     "different repository",
     "unchecked criteria",
     "other owner",
@@ -857,7 +859,16 @@ console.log(JSON.stringify(result));
       const before = readFileSync(join(a, active.path), "utf8");
       const result = await tWithEnv(
         a,
-        { PATH: `${bin}:${process.env.PATH ?? ""}`, RECONCILE_FIXTURE: fixture },
+        {
+          PATH: `${bin}:${process.env.PATH ?? ""}`,
+          RECONCILE_FIXTURE: fixture,
+          TICKETS_LEDGER:
+            scenario === "local ledger"
+              ? "local"
+              : scenario === "offline ledger"
+                ? "off"
+                : "origin",
+        },
         "reconcile",
         "TICKET-001",
         "--repair-pr",
