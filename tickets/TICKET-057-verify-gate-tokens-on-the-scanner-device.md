@@ -2,7 +2,7 @@
 id: TICKET-057
 title: Verify gate tokens on the scanner device
 epic: checkin
-status: in_progress
+status: in_review
 priority: high
 estimate: M
 labels: [security, frontend]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-056]
 blocks: [TICKET-059, TICKET-114]
 branch: TICKET-057
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/127
 created: 2026-10-21
 updated: 2026-11-09
 started: 2026-11-09
@@ -68,5 +68,5 @@ See: [Security](../docs/prd.md#security) · [Gate check-in](../docs/prd.md#gate-
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-09 — todo → claimed — divine (codex)
 - 2026-11-09 — todo → in_progress — divine (codex)
-
 - 2026-11-09 — Implemented strict public-key fallback and trusted session-expiry wrapper; nine shared vectors pass in Node/Chromium/WebKit. Four browser scenarios pass, including forced fallback and bundle/cache scans. Automated timings recorded in docs/reviews/TICKET-057/automated-timings.json; physical certification remains TICKET-114 and camera rehearsal TICKET-163. PR: https://github.com/UncleChenna/wedding-app/pull/127. Full CI remains required before merge.
+- 2026-11-09 — in_progress → in_review — divine (codex)
