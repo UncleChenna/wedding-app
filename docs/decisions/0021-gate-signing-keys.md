@@ -44,9 +44,9 @@ signing key is created, stored, published and rotated.
 
 **Consequences.**
 
-- No new dependency is needed: Node 24 and current mobile browsers implement Ed25519 in WebCrypto.
-- Older scanner browsers without WebCrypto Ed25519 support can't verify. TICKET-057 must detect this and report
-  it, and TICKET-055 chooses the devices.
+- TICKET-057 adds exact `@noble/curves@2.4.0` for browsers without Ed25519 WebCrypto. Strict RFC 8032 verification (`zip215: false`) validates the unchanged signed bytes with only the published public key. A native false result is never retried through fallback. Malformed RFC 8410 key envelopes fail closed.
+- `verifyScannerToken` checks the trusted session/snapshot deadline before signature verification. There is no invented format-1 token expiry or snapshot hard-age cutoff. Admission/version/revocation checks remain separate.
+- TICKET-114 certifies physical devices and the <20ms Android target; Chromium/WebKit automated timings are not hardware certification.
 - `kid` lets an old and a new key overlap without breaking passes guests have already saved.
 
 **Validation.**

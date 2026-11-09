@@ -10,6 +10,12 @@ export interface AppRoute {
 
 /** Navigation metadata is not authorization; server readers still enforce access. */
 export const appRoutes = {
+  adminReminders: {
+    path: "/admin/sharing/reminders",
+    label: "Reminders",
+    audience: "admin",
+    access: "admin",
+  },
   home: { path: "/", label: "Our day", audience: "guest", access: "public" },
   invite: { path: "/invite", label: "Your invitation", audience: "guest", access: "public" },
   invitation: {
@@ -48,6 +54,12 @@ export const appRoutes = {
   adminGuestNew: {
     path: "/admin/guests/new",
     label: "Add an invitation",
+    audience: "admin",
+    access: "admin",
+  },
+  adminGuestHistory: {
+    path: "/admin/guests/[id]/history",
+    label: "Reply history",
     audience: "admin",
     access: "admin",
   },
@@ -119,5 +131,7 @@ export const pageRouteSamples = routeList.map((route) => {
   if (route.path === appRoutes.invitation.path) return invitationHref("invalid");
   if (route.path === appRoutes.pass.path) return passHref("invalid");
   if (route.path === appRoutes.adminGuestEdit.path) return "/admin/guests/invalid/edit";
+  if (route.path === appRoutes.adminGuestHistory.path)
+    return "/admin/guests/00000000-0000-4000-8000-000000000000/history";
   return route.path;
 });

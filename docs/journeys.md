@@ -22,32 +22,33 @@ Day-of navigation uses the configured venue's calendar date. With the owner's ti
 
 ## Current route inventory
 
-| Route                    | Audience / entry                            | Next step or return                                           | Feature owner               |
-| ------------------------ | ------------------------------------------- | ------------------------------------------------------------- | --------------------------- |
-| `/`                      | Public homepage                             | Your invitation → `/invite`                                   | 209; event settings101      |
-| `/invite`                | Guest without their link                    | Check messages; ask inviter to resend; back home              | 209; automated request048   |
-| `/i/[token]`             | Personal invitation                         | Reply/edit, reserved pass or closing, day-of order link, home | 036–044,209                 |
-| `/p/[pass]`              | Read-only external signed pass / QR         | Pass status and home; never RSVP editing                      | 183; issuance in IV044      |
-| `/order`                 | Table QR / day-of invitation                | Ask team until ordering lands; home                           | 070–075                     |
-| `/staff`                 | Staff bookmark                              | Gate, kitchen, bar; home                                      | 209                         |
-| `/checkin`               | Staff hub                                   | Gate lead while unavailable; Staff home                       | 059 onward                  |
-| `/kitchen`               | Staff hub                                   | Station lead while unavailable; Staff home                    | 076,078,079                 |
-| `/bar`                   | Staff hub                                   | Station lead while unavailable; Staff home                    | 077,078,079                 |
-| `/admin`                 | Admin bookmark or successful authentication | Sharing; sign out; home                                       | 088,209                     |
-| `/admin/sharing`         | Authenticated control room                  | Share published household invitation; back to control room    | 050,052,209; guest list089  |
-| `/admin/sign-in`         | Admin gate                                  | Email code → account status → admin/TOTP                      | 029,030                     |
-| `/admin/mfa`             | Signed-in account requiring second factor   | Enrol/challenge → control room; sign out                      | 030                         |
-| `/admin/sign-out`        | Admin account controls                      | Sign out → sign-in/home                                       | 029                         |
-| `/offline`               | Worker fallback                             | Retry the failed page or return home; no invented cached pass | 106; actual offline pass107 |
-| `/dev`                   | Development preview index                   | Every preview listed below; home                              | 209                         |
-| `/dev/theme`             | Preview index                               | Component/theme inspection; preview index                     | 013–016                     |
-| `/dev/invitation`        | Preview index                               | Hero/photo review; preview index / letter                     | 038 → personal IV037        |
-| `/dev/invitation/letter` | Preview index                               | Letter/envelope/details review                                | 037,039 → personal IV       |
-| `/dev/rsvp`              | Preview index                               | Local RSVP prototype review                                   | 040–043 → personal IV       |
-| `/dev/order`             | Preview index                               | Ordering prototype review                                     | 070–075 → `/order`          |
-| `/dev/pass`              | Preview index                               | Synthetic read-only pass; home                                | 183 → `/p/[pass]`           |
-| `/dev/admin`             | Preview index                               | Sample admin shell: Control room, Sharing, Sign out           | 088 → `/admin`              |
-| `/dev/share`             | Preview index                               | Synthetic share controls                                      | 050/052 → `/admin/sharing`  |
+| Route                      | Audience / entry                            | Next step or return                                                              | Feature owner               |
+| -------------------------- | ------------------------------------------- | -------------------------------------------------------------------------------- | --------------------------- |
+| `/`                        | Public homepage                             | Your invitation → `/invite`                                                      | 209; event settings101      |
+| `/invite`                  | Guest without their link                    | Check messages; ask inviter to resend; back home                                 | 209; automated request048   |
+| `/i/[token]`               | Personal invitation                         | Reply/edit, reserved pass or closing, day-of order link, home                    | 036–044,209                 |
+| `/p/[pass]`                | Read-only external signed pass / QR         | Pass status and home; never RSVP editing                                         | 183; issuance in IV044      |
+| `/order`                   | Table QR / day-of invitation                | Ask team until ordering lands; home                                              | 070–075                     |
+| `/staff`                   | Staff bookmark                              | Gate, kitchen, bar; home                                                         | 209                         |
+| `/checkin`                 | Staff hub                                   | Gate lead while unavailable; Staff home                                          | 059 onward                  |
+| `/kitchen`                 | Staff hub                                   | Station lead while unavailable; Staff home                                       | 076,078,079                 |
+| `/bar`                     | Staff hub                                   | Station lead while unavailable; Staff home                                       | 077,078,079                 |
+| `/admin`                   | Admin bookmark or successful authentication | Sharing; sign out; home                                                          | 088,209                     |
+| `/admin/sharing/reminders` | Sharing page                                | Sent households without replies → approved nudge → share attempt → optional Undo | 053                         |
+| `/admin/sharing`           | Authenticated control room                  | Share published household invitation; back to control room                       | 050,052,209; guest list089  |
+| `/admin/sign-in`           | Admin gate                                  | Email code → account status → admin/TOTP                                         | 029,030                     |
+| `/admin/mfa`               | Signed-in account requiring second factor   | Enrol/challenge → control room; sign out                                         | 030                         |
+| `/admin/sign-out`          | Admin account controls                      | Sign out → sign-in/home                                                          | 029                         |
+| `/offline`                 | Worker fallback                             | Retry the failed page or return home; no invented cached pass                    | 106; actual offline pass107 |
+| `/dev`                     | Development preview index                   | Every preview listed below; home                                                 | 209                         |
+| `/dev/theme`               | Preview index                               | Component/theme inspection; preview index                                        | 013–016                     |
+| `/dev/invitation`          | Preview index                               | Hero/photo review; preview index / letter                                        | 038 → personal IV037        |
+| `/dev/invitation/letter`   | Preview index                               | Letter/envelope/details review                                                   | 037,039 → personal IV       |
+| `/dev/rsvp`                | Preview index                               | Local RSVP prototype review                                                      | 040–043 → personal IV       |
+| `/dev/order`               | Preview index                               | Ordering prototype review                                                        | 070–075 → `/order`          |
+| `/dev/pass`                | Preview index                               | Synthetic read-only pass; home                                                   | 183 → `/p/[pass]`           |
+| `/dev/admin`               | Preview index                               | Sample admin shell: Control room, Sharing, Sign out                              | 088 → `/admin`              |
+| `/dev/share`               | Preview index                               | Synthetic share controls                                                         | 050/052 → `/admin/sharing`  |
 
 Production preview routes return404 by default. The negative orphan-route browser fixture and full authenticated production crawl pass. The live test covers email/TOTP sign-in, published invitation sharing, draft/revoked exclusion, rendered-link traversal and the actual offline fallback. Initial local Auth/Postgres failures recovered without changed timeouts or weakened assertions. Preview URLs must not become production navigation destinations. Full UI review is outstanding; this map does not certify release readiness.
 
@@ -78,3 +79,7 @@ Ordinary `pnpm start` does not expose `/dev` pages. For deliberate local visual 
 Public entry pages, social metadata and invitation-preview artwork read only the public projection of saved event settings. A failed or slow lookup (two-second bound) uses the approved draft names/date and unknown venue/time defaults, with a structured warning that contains no database error details. This allows database-free builds and public guidance during an outage. Public home, guidance, invitation and guest layout metadata revalidates after30s and expires after300s; image responses retain their existing60s cache policy. Private invitation lookup, RSVP and administrative settings keep their strict readers and do not use this fallback.
 
 Signed-pass entry is separate from the personal invitation: /p/[pass] carries no RSVP capability and retains no-store, no-referrer and noindex headers. The route registry encodes pass values as a single segment. The connected-route crawl uses /p/invalid as a neutral external entry and verifies its home return; valid-pass signing/database behavior remains covered by183/044/057, not claimed by this neutral sample. Both /p/[pass] and /dev/pass join the all-theme accessibility/overflow inventory; /dev/pass remains subject to the production preview guard.
+
+## Invitation reply history (TICKET-100)
+
+Admin → Guests → Invitation actions → Reply history opens `/admin/guests/[id]/history` for that household. The protected, read-only timeline shows every saved RSVP or admin correction newest first, before/after details and explicit UTC timestamps. Back to guests returns to the list. Missing invitations return404; no-record and temporary-load-failure states are distinct. Raw invitation credentials, contacts and actor identifiers are not part of the history display.
