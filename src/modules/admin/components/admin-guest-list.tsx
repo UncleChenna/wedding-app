@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { RetryButton } from "@/modules/shared/components/retry-button";
 import { getGuestList } from "../server/guest-list";
 import { GuestList } from "./guest-list";
@@ -10,6 +11,12 @@ export async function AdminGuestList() {
       <p className="mt-6 max-w-prose">
         Find your guests, check their replies and manage each invitation.
       </p>
+      <Link
+        href="/admin/guests/seating"
+        className="mt-6 inline-flex min-h-11 items-center text-primary underline underline-offset-4"
+      >
+        Seating plan
+      </Link>
       {result.ok ? (
         <GuestList invitations={result.invitations} />
       ) : (

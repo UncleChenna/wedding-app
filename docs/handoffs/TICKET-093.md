@@ -27,3 +27,7 @@ final verification, push and obtain independent review and exact-head CI.
 
 Fresh setup regenerated a one-line template checklist change; that known setup
 drift was restored before commit. No user edits existed here.
+
+## 2026-11-09 implementation checkpoint
+
+Added the seating page, table forms, household assignment sheets and authenticated server actions/repository. Independent backend review found concurrent capacity warnings could race; target assignments now serialize with a table row lock. Four isolated database tests pass (canonical guest/pass persistence, stale edits, deletion/order preservation, concurrent warnings). Nine pure/action tests pass. Quick verification passes lint, types and 115 related tests (5 opt-in skipped). Browser/theme/focus verification and current-develop integration remain outstanding; ticket remains in progress and PR122 stays draft. Own isolated database is running for upcoming browser tests. No migration or new dependency.
