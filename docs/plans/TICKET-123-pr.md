@@ -28,7 +28,9 @@ Order submissions now have a shared network budget before body parsing or databa
 - Atomic budget database suite: 6 passed, including shared-network concurrency. Generated migration applied twice; row/migration counts identical, all 24 public tables retain RLS.
 - Production build passed. Final local browser suite: 8 passed in 45.6s, proving real 429/cart preservation, unchanged retry body, three lost responses creating exactly one order, lookup spoof resistance and PIN cookie-reset resistance.
 - 24 screenshot/axe combinations: both browser projects × four themes × 375/768/1280. Independent reviewer inspected all 24 limited-state captures and found no clipping, overlap or material issue. Source/CI review also found no material issue.
-- Initial quick gate: lint/types passed; 154 tests passed, 133 conditional skips. Final combined-base quick gate and exact-head hosted CI are pending; no full CI pass claimed yet.
+- Initial quick gate: lint/types passed; 154 tests passed, 133 conditional skips. Combined-base quick lint/types passed. Final full unit suite passes with per-file coverage requirements unchanged (98.27% lines, 98.46% branches). Exact-head hosted CI remains pending; no full CI pass claimed yet.
+- CI run42709444892 exposed missing documentation for the new test flags and a fixture ordering conflict: ordering retains a closed settings row, while the existing offline scanner fixture inserts its own singleton. Both flags are now documented; ordering checks follow the original scanner sequence. The focused CI-parity regression passes2/2 and the full unit suite was rerun successfully. No test or timeout was weakened.
+- Local production/browser measurements preceded the scanner-only base integration; hosted CI verifies the combined source and new explicit reduced-motion/44px assertions.
 - Integrated develop 143b4d637b8bfc4597f8f990a5085f2722454967. The additive CI conflict was resolved by preserving both scanner and ordering steps.
 
 # Risks and rollout
