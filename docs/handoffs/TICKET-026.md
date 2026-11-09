@@ -52,3 +52,13 @@ several minutes during VM overload. Requested an owned026 stack stop with backup
 preserved to give098 sole active verification capacity; confirm stop log before
 restarting. Full gate is still pending. CI migration+seed and invitation journey
 passed on PR112's initial head; full CI remains pending.
+
+## 2026-11-09 — current workflow integration
+
+All five CI checks passed on9445fd75, including full pnpm verify (run42516779999).
+Integrated develop37e9202c without conflicts. New217/218 workflow explicitly uses
+quick local checks plus full CI; no local full-verification success is claimed.
+All three fixture criteria are supported by tests and checked. Next: commit the
+integration, normal `pnpm t:pr TICKET-026`, then recheck final CI and independent
+review before merge. Database remains stopped with backup preserved; no new seed
+or schema changes were introduced by the base integration.

@@ -21,7 +21,7 @@ profiles with complete household seating and explicit edge cases.
 - Repeated persisted row hashes match for every public table in both profiles (2 DB tests).
 - Exactly 350 guests on 30 tables and consistent household seating (unit tests).
 - All required edge cases present (unit tests); canonical partial counts verified in DB.
-- Full gate pending; draft until verification completes.
+- All three fixture criteria are proven; final-head CI remains required before merge.
 
 # Verification
 
@@ -32,9 +32,10 @@ including enabled-trigger and bounded-counter assertions. Independent review fou
 no blocking defects. See docs/handoffs/TICKET-026.md.
 
 The separate CLI default seed also passed (110 invitations/249 guests/28 tables).
-Full verification remains pending while local VM capacity is constrained. CI
-migration+seed and invitation journey passed on the initial PR head; final CI
-and the local full gate remain required. Base: develop407fb68.
+All five CI checks, including full `pnpm verify`, passed on head9445fd75
+(run42516779999). Integrated develop37e9202c with no conflicts. Its updated
+workflow runs quick local checks and full CI; no local full pass is claimed.
+The integrated final head must pass all five CI checks again before merge.
 
 # Risks and rollout
 
@@ -48,7 +49,7 @@ N/A: database fixtures and CLI only, no UI changes.
 
 # UI checklist
 
-N/A: no UI, theme or QR rendering changes. Full verification remains pending.
+N/A: no UI, theme or QR rendering changes. Final-head full CI remains required.
 
 # Harness changes, if any
 
