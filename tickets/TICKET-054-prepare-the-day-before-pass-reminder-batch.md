@@ -2,7 +2,7 @@
 id: TICKET-054
 title: Prepare the day-before pass reminder batch
 epic: sharing
-status: in_review
+status: blocked
 priority: low
 estimate: S
 labels: [frontend]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-11-09
 started: 2026-11-09
 completed: ""
-reason: ""
-resume_to: ""
+reason: "PR #132 merged by user at dd3c37ff; local acceptance passes, but its full CI failed known parity assertion. Await verified TICKET-221 integration on current develop before completion."
+resume_to: in_review
 ---
 
 # TICKET-054: Prepare the day-before pass reminder batch
@@ -60,3 +60,4 @@ See: [Invitation wording](../docs/prd.md#invitation-wording).
 - 2026-11-09 — todo → claimed — divine (codex) — started ahead of TICKET-053 (in_review)
 - 2026-11-09 — todo → in_progress — divine (codex) — started ahead of TICKET-053 (in_review)
 - 2026-11-09 — in_progress → in_review — divine (codex)
+- 2026-11-09 — in_review → blocked — divine (codex) — PR #132 merged by user at dd3c37ff; local acceptance passes, but its full CI failed known parity assertion. Await verified TICKET-221 integration on current develop before completion.
