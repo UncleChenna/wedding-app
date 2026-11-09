@@ -20,15 +20,20 @@ describe("CI parity", () => {
     }
   });
 
-  it("runs the single full local gate in the verify job", () => {
+  it("runs the full local gate and both scanner engines in the verify job", () => {
     const verifyJob = workflow.match(/^  verify:\n([\s\S]*?)(?=^  [a-z][\w-]*:|$(?![\s\S]))/m)?.[1];
     expect(verifyJob).toBeDefined();
-    const commands = [...(verifyJob ?? "").matchAll(/^\s+- run: (.+)$/gm)].map((match) => match[1]);
+    // Include named steps too: their run key has no list marker on the same line.
+    const commands = [...(verifyJob ?? "").matchAll(/^\s+(?:- )?run: (.+)$/gm)].map(
+      (match) => match[1],
+    );
     expect(commands).toEqual([
       "pnpm install --frozen-lockfile",
-      "pnpm exec playwright install --with-deps chromium",
+      "pnpm exec playwright install --with-deps chromium webkit",
       "pnpm agents:link && pnpm agents:check",
+      "pnpm db:migrate",
       "pnpm verify",
+      "pnpm test:gate",
     ]);
   });
 });
