@@ -2,52 +2,66 @@
 
 TICKET-061 — Admit arriving guests with partial counts.
 
-# Problem and result
+# Summary
 
-A valid pass check previously recorded no arrival. Staff can now select how many household members are here and explicitly admit them. Admitting2 of 4 leaves2available on the next scan. Only a committed receipt displays Welcome; retrying the same request displays a historical receipt and never grants a second admission.
+A valid QR check previously recorded no arrival. Staff now choose how many household members are here and explicitly admit them. Admitting 2 of 4 leaves 2 available on the next scan. Only a committed receipt shows the approved Welcome message; replaying the same request shows a historical receipt and never grants another admission.
 
 # Changes
 
-- Strict same-origin/auth-first POST validates the request and signed pass before reading guest data. Staff/device/credential and invitation locks, plus live reauthorization after waits and immediately before writing, protect the current allowance.
-- Immutable online events bind retries to actor, invitation and count. Existing database triggers update canonical counters exactly once. No schema/migration change.
-- Large count stepper defaults to remaining places. An uncertain response preserves the exact request and locks Scan next pass until retry resolves. Concurrently consumed places produce a clear refusal.
-- Camera start appears before the idle viewfinder. Receipt focus supports keyboard use. Scanner remains free of Next server-action imports for the separate offline shell.
-- Existing CI's disposable database job gains transaction concurrency and authenticated partial-admission browser checks; no check or timeout is weakened.
+- Same-origin, auth-first POST validates strict input and the actual signed pass before reading guest data. It locks the staff/device/credential and invitation, then reauthorizes after waits and immediately before writing.
+- An immutable online event binds replay to its actor, invitation, source and count. Existing database triggers update canonical counters exactly once. No migration or counter rewrite.
+- Count stepper defaults to remaining allowance. An eight-second timeout covers response headers and body; uncertain results preserve the exact request and prevent switching passes until retry resolves.
+- Phone visibility changes stop camera/audio while retaining the pending admission component and event ID. Duplicate receipts expressly prohibit admitting again. Invalid/revoked/conflict/session-expired refusals use fixed red problem semantics.
+- Initial Open camera appears above the idle viewfinder; receipts receive keyboard focus. Scanner stays free of Next server-action imports for the standalone offline bundle.
+- CI adds SQL concurrency and authenticated partial-admission browser checks using its existing disposable PostgreSQL. Both TICKET-108 offline checks and its production asset generator remain unchanged.
 
 # Acceptance criteria and evidence
 
-- Partial2 of 4 and second scan with2 remaining: actual production browser on mobile and desktop.
-- Idempotency: pure request binding tests, actual concurrent SQL transactions, and real committed-but-lost-response browser retry all preserve one event per intent.
-- Over-admit refusal: actual competing scanner database tests and browser stale-read/final-place case.
-- Independent backend review: no blocking finding. Independent UI/final review pending; draft retained.
+- **2 of 4 leaves 2 remaining:** actual production browser on mobile and desktop submits 2, checks the canonical database counter, rescans and sees a default count of 2.
+- **Idempotent request:** pure binding tests, concurrent SQL transactions and a browser response lost after actual commit prove exact replay creates no second event/increment. The browser also hides the phone before that lost response and proves retry keeps the same ID/count.
+- **Over-admit refusal:** competing scanners cannot exceed current allowance; a browser form whose final place was consumed after its read gets a clear refusal. Revocation after the read also refuses the write.
 
 # Verification
 
-Base develop:2df977c6a1445e01da27f11b43637dcae7dc6bba.
+Integrated base: **143b4d637b8bfc4597f8f990a5085f2722454967** (verified TICKET-108 merge), integration commit **08d3cea6**. Sole conflict was CI; all steps from both parents were retained. Independent backend/UI review is clean, including the visibility, transport and semantic repairs. The reviewer inspected the original 144 state screenshots and all eight new integrated offline screenshots; the admission UI itself did not change during integration.
 
-- Quick: lint/types pass;55 related unit tests pass,5 conditional database skips.
-- Isolated PostgreSQL16 database tests:5/5 pass, including real invitation lock wait and session expiry. Unchanged migrations applied to a proven empty owned cluster; synthetic append-only evidence preserved.
-- Production build passes.
-- New authenticated browser journey:2/2 pass33.0s, including receipt focus and reduced motion. Four themes×375/768/1280, axe0, no overflow,44px targets.
-- Full unit first run:1673pass,190conditional skips, one failure requiring documentation for the new CI flag. Documentation added; unchanged CI parity tests now2/2 pass. Coverage passed98.30%lines/98.51%branches with unchanged per-file95 thresholds. Final full rerun pending.
-- Existing camera regression and final integrated CI pending.
+- Quick lint/types/related tests pass.
+- Actual isolated PostgreSQL16 transaction suite: **5/5 pass** after integration,493ms. Tests include real invitation-lock waiting, post-wait expiry, concurrent replay and competing allowance. Synthetic append-only evidence retained; owned database stopped afterward.
+- Production standalone asset generation and Next build pass.
+- Integrated admission browser: **2/2 pass,34.3s**. First integrated mobile attempt timed out waiting for initial Valid pass; an unchanged serial rerun passes both projects. No timeout/assertion was relaxed.
+- Integrated authenticated offline scanner: **2/2 pass,37.3s**. Actual PIN, private endpoint, offline restore, refresh, sign-out, all-theme axe and exact-zero load CLS pass.
+- Existing camera recovery/lifecycle regression: **2/2 pass,1.2m** before integration; retained in final CI.
+- Final serial full unit/coverage: **1764 passed, 190 conditional skips, 121.53s**; **98.30% lines / 98.51% branches**, unchanged per-file95% gate. Earlier integrated run had1763 passing tests and one unchanged image-test five-second timeout; the unchanged serial rerun passes, with both results retained.
+- Final-head CI remains required before merge.
 
-# Screenshots and review
+# Risks and rollout
 
-144 synthetic screenshots under docs/reviews/TICKET-061/{mobile,desktop}/: choose-count,recorded,uncertain,duplicate,refused in every theme and three widths. Review the ivory375 count selector and green committed receipt, then amber duplicate and uncertain retry. No live guest tokens or private guest notes are captured.
+No production database application or migration. Online admission only: persistent guest snapshots/outbox remain separate tickets. An expired/closed page requires the normal gate-lead reconciliation process; this ticket does not claim a durable offline outbox. Physical iOS/Android camera and event-condition checks remain mandatory TICKET-201 release gates. Reverting this application change disables the new write endpoint; existing immutable admission evidence must remain intact.
 
-# Risks, limitations and rollback
+# Screenshots
 
-TICKET-108 must merge before final base integration. This implements online admission only; persistent offline snapshots/outbox remain separate tickets. Physical iOS/Android camera and event conditions remain TICKET-201 release gates, not certified here. No production database application. Reverting the application changes disables this new write endpoint; existing immutable scan events remain valid and must not be deleted.
+`docs/reviews/TICKET-061/{mobile,desktop}/`:144 screenshots, six states × four themes ×375/768/1280 × two projects. `offline-mobile/` and `offline-desktop/` retain eight integrated shell screenshots and timings; `camera-mobile/` and `camera-desktop/` retain four camera regression screenshots. All fixtures are synthetic; no live guest token or dietary note appears in captures.
 
-## Review repairs — 2026-11-09
+# UI checklist
 
-- A stalled transport is bounded to eight seconds, including response-body consumption. Headers/body stall regressions preserve the original intent for retry; unmount aborts transport and removes the timer.
-- Independent review reproduced a phone visibility bug: clearing the result could discard an unresolved admission ID. The scanner now stops capture/audio while keeping the admission component mounted. A scanner-level red/green regression and actual committed-then-lost-response browser case prove hidden/visible transitions preserve the same request.
-- Invalid, revoked, conflict and expired-session submit results use fixed danger colours and a cross icon; already-used and waiting cases remain amber. A revoked-after-check browser case covers every theme.
-- Final scoped quick passes lint/types and18 related tests. Actual production browser2/2 passes 33s. Existing unchanged camera regression2/2 passes 1.2m. The full unit rerun before the visibility repair passed 1677 tests with 190 conditional skips; coverage 98.30% lines / 98.51% branches. Final integrated suite remains required after TICKET-108.
-- Owned native PostgreSQL 36261 is stopped with its synthetic data directory preserved; the database slot was released to TICKET-123. No production operation.
+| Check                | Result                                                                                                               |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| Screenshots          | PASS; independently reviewed matrix and integrated offline screenshots, paths above.                                 |
+| Tokens               | PASS; existing semantic/theme classes, no new colours/fonts/radii/shadows.                                           |
+| Restraint/typography | PASS;18px staff body text, display headings and large count/receipt.                                                 |
+| Mobile               | PASS; no horizontal overflow at375/768/1280, visible targets≥44px, initial camera button in375×812 viewport.         |
+| Motion               | PASS; reduced-motion browser journey, no new animation or action delay.                                              |
+| Keyboard             | PASS; count submission and receipt focus; labels associated; uncertain next-pass disabled.                           |
+| Contrast             | PASS; axe0 in all themes/states; fixed green/amber/red with text/icons.                                              |
+| Load/images          | PASS integrated shell CLS=0 in both projects. No new image/font output.                                              |
+| Performance          | N/A guest Lighthouse target: staff-only screen under TICKET-217.                                                     |
+| Copy                 | PASS; approved Warm Welcome only after commit; historical duplicate explicitly prevents readmission.                 |
+| Shared components    | PASS; existing Card/Input/Button/StatusBadge; feature-specific workflow, no new general primitive.                   |
+| Sharing/devices      | No guest sharing changes. Physical scanner devices remain unverified release gates in TICKET-201.                    |
+| QR output            | N/A changed output; payload/signature/quiet zone unchanged. Real synthetic pixels tested, not physical cameras.      |
+| Staff feedback       | PASS; labelled pass-check feedback retained; immediate committed receipt and safe failed-network recovery.           |
+| Verification         | Local full unit/coverage and scoped production browser gates PASS; exact-head full CI remains required before merge. |
 
-## Independent final review
+# Harness changes
 
-2026-11-09: backend review and separate UI review are clean at source e26b9b16. The UI reviewer inspected all 144 state screenshots and confirmed the visibility/intent and fixed-status repairs. No remaining material source or visual finding. This does not certify physical devices; final TICKET-108 integration and final-head CI remain outstanding.
+Only additive CI test steps and documentation for the opt-in database-test flag. No threshold, hook, permission guard or existing test weakened.

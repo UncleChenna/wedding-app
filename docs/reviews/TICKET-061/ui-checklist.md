@@ -33,3 +33,13 @@ Independent backend review found no blocker. UI source review identified stalled
 ## Independent final review
 
 2026-11-09: backend review and separate UI review are clean at source e26b9b16. The UI reviewer inspected all 144 state screenshots and confirmed the visibility/intent and fixed-status repairs. No remaining material source or visual finding. This does not certify physical devices; final TICKET-108 integration and final-head CI remain outstanding.
+
+## Final integrated verification — 2026-11-09
+
+Verified TICKET-108 base143b4d637b8bfc4597f8f990a5085f2722454967 integrated as08d3cea6. SoleCI conflict resolved by retaining both admission steps and all offline checks/generator semantics. No product conflict. Independent bounded integration review is clean, including all eight new offline screenshots; prior full144admission-image review applies to unchanged UI.
+
+- Full unchanged serial unit/coverage:1764passed,190conditional skips,121.53s;98.30%lines/98.51%branches at unchanged per-file95% requirement. An earlier integrated run hit the existing pass-image5s timeout; recorded failure is retained and no assertion/timeout changed.
+- Integrated isolated SQL5/5pass493ms; production generator/build pass.
+- Integrated admission browser2/2pass34.3s; initial mobile decode wait timed out once, unchanged serial rerun passes. All144captures regenerated.
+- Integrated authenticated offline browser2/2pass37.3s, all-themeaxe and exact-zero loadCLS pass; eight screenshots/timings retained under offline-mobile/offline-desktop.
+- Owned database stopped with synthetic data retained; no heavy process remains. Final exact-headCI is required before merge.
