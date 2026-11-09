@@ -15,6 +15,12 @@ export async function AdminSharing() {
       >
         Remind guests awaiting a reply
       </Link>
+      <Link
+        href="/admin/sharing/pass-reminders"
+        className="mt-6 flex min-h-11 items-center text-primary underline underline-offset-4"
+      >
+        Prepare day-before pass reminders
+      </Link>
       <p className="mt-6 max-w-prose">
         Choose an invitation to share. Each link belongs to its invited household; send it only to
         them.
