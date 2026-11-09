@@ -21,15 +21,15 @@
     "test:e2e": "playwright test --project=mobile --project=desktop",
     "test:e2e:smoke": "playwright test --project=mobile --project=desktop --grep @smoke",
     "screenshots": "PW_SERVER=dev playwright test --project=visual",
-    "verify": "pnpm t:validate && pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm test:e2e:smoke",
+    "verify": "node scripts/verify.mjs",
     "verify:quick": "node scripts/verify-quick.mjs",
     "db:start": "node scripts/db-local.mjs start",
     "db:stop": "node scripts/db-local.mjs stop",
     "db:status": "node scripts/db-local.mjs status",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate",
-    "db:seed": "tsx scripts/seed.ts",
-    "db:reset": "node scripts/db-local.mjs reset",
+    "db:migrate": "node scripts/db-ensure.mjs && drizzle-kit migrate",
+    "db:seed": "node scripts/db-ensure.mjs && tsx scripts/seed.ts",
+    "db:reset": "node scripts/db-ensure.mjs && node scripts/db-local.mjs reset",
     "db:check-rls": "tsx scripts/db-check.ts rls",
     "db:counts": "tsx scripts/db-check.ts counts",
     "themes:schema": "tsx scripts/generate-theme-schema.ts",
@@ -59,7 +59,8 @@
     "check:pr-text": "node scripts/harness/commit-rules.mjs pr",
     "t:dashboard": "tsx scripts/tickets/dashboard-server.ts",
     "t:dashboard:snapshot": "tsx scripts/tickets.ts dashboard",
-    "alerts:schedule": "tsx scripts/alerts-schedule.ts"
+    "alerts:schedule": "tsx scripts/alerts-schedule.ts",
+    "t:start": "tsx scripts/tickets.ts start"
   },
   "dependencies": {
     "@react-pdf/renderer": "^4.9.0",
@@ -73,6 +74,7 @@
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "server-only": "^0.0.1",
+    "sharp": "0.35.5",
     "zod": "^4.6.7"
   },
   "devDependencies": {
