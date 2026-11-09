@@ -2,7 +2,7 @@
 id: TICKET-108
 title: Make the scanner app shell work fully offline
 epic: pwa
-status: in_progress
+status: in_review
 priority: high
 estimate: M
 labels: [pwa, frontend]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-059, TICKET-105, TICKET-169]
 blocks: [TICKET-065, TICKET-113, TICKET-136]
 branch: TICKET-108
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/142
 created: 2026-10-21
 updated: 2026-11-09
 started: 2026-11-09
@@ -72,3 +72,4 @@ _Agents append dated notes here while working._
 - 2026-11-09 — todo → in_progress — divine (codex) — started ahead of TICKET-059 (in_review)
 - 2026-11-09 — in_progress → blocked — divine (codex) — Offline document and decoder integration awaits verified TICKET-059 camera merge; storage/runtime foundation verified and pushed in draft PR142.
 - 2026-11-09 — blocked → in_progress — divine (codex) — Resume independent offline session review fixes while TICKET-059 is in final CI; keep PR142 draft until its camera dependency merges.; started ahead of TICKET-059 (in_review)
+- 2026-11-09 — in_progress → in_review — divine (codex)
