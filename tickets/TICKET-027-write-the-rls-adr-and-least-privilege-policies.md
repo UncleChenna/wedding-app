@@ -42,8 +42,8 @@ See: [Security](../docs/prd.md#security) · [Privacy (UK GDPR)](../docs/prd.md#p
 ## Acceptance criteria
 
 - [ ] ADR approved by an owner in the PR review.
-- [ ] Tests: anon/publishable key gets zero rows from every table; staff claim reads only permitted columns.
-- [ ] Dietary notes are not readable through any browser policy except kitchen staff.
+- [x] Tests: anon/publishable key gets zero rows from every table; staff claim reads only permitted columns.
+- [x] Dietary notes are not readable through any browser policy except kitchen staff.
 
 - [ ] RLS and Realtime grants must enforce role access, while server projections omit private columns. Gate/bar/anonymous queries and subscriptions never return dietary notes or other households.
 
@@ -63,6 +63,12 @@ See: [Security](../docs/prd.md#security) · [Privacy (UK GDPR)](../docs/prd.md#p
 ## Notes / decisions
 
 _Agents append dated notes here while working._
+
+- 2026-11-09 (unclechenna, claude):
+  - **Design:** no browser policy on any table; one receive-only Broadcast policy per station channel (ADR 0023).
+    Staff can therefore read no table columns at all, which is stricter than "only permitted columns".
+  - **Open criteria:** ADR approval is the owner's call in the PR review. The "server projections" half of the last
+    criterion lands with the broadcast payloads in TICKET-033; the RLS and Realtime half is tested here.
 
 ## Activity log
 
