@@ -2,7 +2,7 @@
 id: TICKET-086
 title: Manage alert opt-ins and recipients per station
 epic: alerts
-status: in_progress
+status: in_review
 priority: medium
 estimate: S
 labels: [frontend, backend]
@@ -12,9 +12,9 @@ agent: claude
 blocked_by: [TICKET-084, TICKET-096, TICKET-049]
 blocks: [TICKET-085]
 branch: TICKET-086
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/115
 created: 2026-10-21
-updated: 2026-11-06
+updated: 2026-11-09
 started: 2026-11-06
 completed: ""
 reason: ""
@@ -59,3 +59,4 @@ _Agents append dated notes here while working._
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-06 — todo → claimed — unclechenna (claude)
 - 2026-11-06 — todo → in_progress — unclechenna (claude)
+- 2026-11-09 — in_progress → in_review — unclechenna (claude)
