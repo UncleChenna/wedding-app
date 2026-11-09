@@ -286,6 +286,13 @@ export function GuestList({ invitations }: { invitations: GuestListInvitation[] 
                 >
                   Edit details
                 </Link>
+                <Link
+                  href={`/admin/guests/${invitation.id}/history`}
+                  className="inline-flex min-h-11 items-center text-primary underline underline-offset-4"
+                  aria-label={`Reply history for ${invitation.name}`}
+                >
+                  Reply history
+                </Link>
                 {expanded === invitation.id ? (
                   <InvitationLifecycleControls
                     invitationId={invitation.id}
