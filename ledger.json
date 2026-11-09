@@ -2582,9 +2582,10 @@
       "log": [
         "- 2026-11-09 — todo → claimed — divine (codex) — started ahead of TICKET-057 (blocked)",
         "- 2026-11-09 — todo → in_progress — divine (codex) — started ahead of TICKET-057 (blocked)",
-        "- 2026-11-09 — in_progress → in_review — divine (codex)"
+        "- 2026-11-09 — in_progress → in_review — divine (codex)",
+        "- 2026-11-09 — in_review → blocked — divine (codex) — Final combined CI exposed merged TICKET-173 scan-sync coverage below the mandatory per-file gate; TICKET-223 adds the missing safety-boundary tests. Scanner, camera and authenticated browser jobs pass; hold merge until repair and final CI pass."
       ],
-      "status": "in_review",
+      "status": "blocked",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-059",
@@ -2592,8 +2593,8 @@
       "started": "2026-11-09",
       "completed": "",
       "updated": "2026-11-09",
-      "reason": "",
-      "resume_to": ""
+      "reason": "Final combined CI exposed merged TICKET-173 scan-sync coverage below the mandatory per-file gate; TICKET-223 adds the missing safety-boundary tests. Scanner, camera and authenticated browser jobs pass; hold merge until repair and final CI pass.",
+      "resume_to": "in_review"
     },
     "WED-033": {
       "log": [
