@@ -23,6 +23,18 @@ export const appRoutes = {
     access: "admin",
   },
   home: { path: "/", label: "Our day", audience: "guest", access: "public" },
+  lostLink: {
+    path: "/lost-link",
+    label: "Find your invitation",
+    audience: "guest",
+    access: "public",
+  },
+  adminLinkRequests: {
+    path: "/admin/link-requests",
+    label: "Invitation requests",
+    audience: "admin",
+    access: "admin",
+  },
   invite: { path: "/invite", label: "Your invitation", audience: "guest", access: "public" },
   invitation: {
     path: "/i/[token]",

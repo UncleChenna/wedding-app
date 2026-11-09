@@ -22,10 +22,12 @@ export function InvitationGuide({ settings }: { settings: PublicEventDetails }) 
         <p className="mt-6 text-lg leading-relaxed">
           Can’t find your invitation? Ask the person who invited you to send your link again.
         </p>
-        <p className="mt-6 text-base leading-relaxed">
-          Online link requests aren’t available yet. Please contact{" "}
-          {settings.coupleNames.join(" or ")} directly.
-        </p>
+        <Link
+          href={appRoutes.lostLink.path}
+          className="mt-6 inline-flex min-h-11 items-center text-primary underline underline-offset-4"
+        >
+          Request your invitation link
+        </Link>
       </section>
       <Link
         prefetch={false}

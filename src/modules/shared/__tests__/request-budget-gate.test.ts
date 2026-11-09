@@ -58,3 +58,14 @@ describe("request budget boundary", () => {
     expect(requestBudgetResponse(result).status).toBe(503);
   });
 });
+
+it("isolates lost-link submissions from lookup/PIN budgets", async () => {
+  const consume = vi.fn().mockResolvedValue({ allowed: true, retryAfterSeconds: 0 });
+  expect(await checkRequestBudget(context, "lost_link", consume)).toEqual({ status: "allowed" });
+  expect(consume).toHaveBeenCalledWith({
+    identity: expect.stringMatching(/^[0-9a-f]{64}$/),
+    scope: "lost_link",
+    limit: 10,
+    windowSeconds: 60,
+  });
+});
