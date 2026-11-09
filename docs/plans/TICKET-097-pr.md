@@ -19,11 +19,11 @@ The control room’s “Live dashboard — Coming soon” placeholder is replace
 
 - **Correct totals:** two real PostgreSQL fixtures cover active/draft/revoked invitations, partial arrivals, split stations, cancellation, stale parent states and childless legacy orders. Fixtures roll back without disabling guards.
 - **Admission update under two seconds:** hosted real OTP/TOTP browser tests passed. On responsive source `6a313ab5`, insertion-start to visible arrival was **993.8ms mobile / 994.9ms desktop**, including the database round trip. Both initial authenticated loads measured **CLS 0**.
-- **Still required:** TICKET-061 merge, integration and final combined CI. This PR remains draft until those gates pass.
+- **Integration:** TICKET-061 is merged and done. This branch integrates develop `6abf4c0e`; final combined hosted CI remains required before merge.
 
 ## Verification
 
-- Quick gate: lint/types and 14 related tests pass after responsive changes.
+- Combined-base quick gate: lint/types and **232 related tests pass / 141 conditional skips**. The two database aggregate tests also pass separately against the integrated schema.
 - Full local unit suite: **1,745 passed / 187 conditional skips**; critical coverage 98.27% lines / 98.46% branches. This preceded the responsive-only refinement; final combined CI remains required.
 - Isolated native PostgreSQL aggregate tests: **2/2**, also passing in the real Auth CI job. CI harness/parity regression: **15/15**.
 - [Hosted run 42712187041](https://github.com/UncleChenna/wedding-app/actions/runs/42712187041): authenticated admin journey passed, including direct HTTP denial, aggregate projection, live updates, stale retention, real cookie-removal denial, keyboard refresh and all-theme axe checks. The subsequent [run42713917024](https://github.com/UncleChenna/wedding-app/actions/runs/42713917024) passed all seven CI jobs at `95aaf252`; combined-base verification remains outstanding.
@@ -47,7 +47,7 @@ The control room’s “Live dashboard — Coming soon” placeholder is replace
 | Sharing and devices      | N/A under admin-only checklist scope; guest sharing unchanged. Physical devices not tested or claimed.                                                       |
 | QR codes                 | N/A: no QR output or scanner changes.                                                                                                                        |
 | Staff feedback           | PASS: immediate refresh wording; expiry shows sign-in and failed reads show stale values.                                                                    |
-| Verification             | PENDING: final combined CI after TICKET-061 integration.                                                                                                     |
+| Verification             | PASS locally: combined lint/types/related tests and database aggregates. PENDING: final combined hosted CI before merge.                                     |
 
 ## Review, risks and rollback
 
@@ -55,4 +55,4 @@ Sign in at `/admin` with an allowed address and two-factor authentication. Check
 
 Polling reflects committed server data; unsynced offline admissions appear only after upload. The measured result is test evidence, not a guarantee during network outages. Failed reads never become zero. All aggregates remain admin-only.
 
-Base: develop `143b4d63`; TICKET-061 integration outstanding. No schema, RLS, production database, dependency or external-service change. Rollback reverts this ticket’s endpoint, presentation and tests; stored event data is unchanged.
+Verified integration base: develop `6abf4c0ea12e361a82b0475b29ec6df2a613c238`. The example environment-file conflict preserves both test-flag descriptions; CI retains all scanner/admission checks, ordering-last execution and both admin artifact steps. Migration0026 and its snapshot/journal match develop byte-for-byte; they introduce no dashboard migration. No RLS, production database, dependency or external-service change. Rollback reverts this ticket’s endpoint, presentation and tests; stored event data is unchanged.

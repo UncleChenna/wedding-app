@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/modules/shared/components/ui/button";
 import { startQrCamera, type CameraControls, type CameraProblem } from "../lib/camera-reader";
-import { ScanResultPanel } from "./scan-result-panel";
+import { AdmissionResult, type AdmissionSubmitter } from "./admission-result";
 import { scanReadResultSchema, type ScanReadResult } from "../lib/scan-read-result";
 import { requestScanFeedback } from "../lib/scan-feedback";
 
@@ -30,8 +30,14 @@ const recovery: Record<CameraProblem, string> = {
   failed: "The camera stopped. Try again, or ask the gate lead for help.",
 };
 
-/** Camera capture and read-only pass check; never records or grants admission. */
-export function Scanner({ resolveRead = readLivePass }: { resolveRead?: ScanResolver }) {
+/** Capture checks the pass; only an explicit confirmed count records admission. */
+export function Scanner({
+  resolveRead = readLivePass,
+  submitAdmission,
+}: {
+  resolveRead?: ScanResolver;
+  submitAdmission?: AdmissionSubmitter;
+}) {
   const video = useRef<HTMLVideoElement>(null);
   const resultRegion = useRef<HTMLDivElement>(null);
   const active = useRef<AbortController | null>(null);
@@ -46,6 +52,9 @@ export function Scanner({ resolveRead = readLivePass }: { resolveRead?: ScanReso
   const [torchFailed, setTorchFailed] = useState(false);
   const [readResult, setReadResult] = useState<ScanReadResult | null>(null);
   const [reading, setReading] = useState(false);
+  const [admissionBusy, setAdmissionBusy] = useState(false);
+  const [admissionCompleted, setAdmissionCompleted] = useState(false);
+  const [checkedQr, setCheckedQr] = useState<string | null>(null);
   const readController = useRef<AbortController | null>(null);
   const audio = useRef<AudioContext | null>(null);
 
@@ -54,6 +63,9 @@ export function Scanner({ resolveRead = readLivePass }: { resolveRead?: ScanReso
     readController.current = null;
     setReadResult(null);
     setReading(false);
+    setCheckedQr(null);
+    setAdmissionBusy(false);
+    setAdmissionCompleted(false);
     const previousAudio = audio.current;
     audio.current = null;
     if (previousAudio) void previousAudio.close().catch(() => {});
@@ -83,6 +95,7 @@ export function Scanner({ resolveRead = readLivePass }: { resolveRead?: ScanReso
     setTorchAvailable(false);
     setState("paused");
     setReadResult(result);
+    setCheckedQr(result.state === "valid" ? qr : null);
     setReading(false);
     if (result.state === "valid")
       requestScanFeedback({
@@ -113,8 +126,10 @@ export function Scanner({ resolveRead = readLivePass }: { resolveRead?: ScanReso
     if (readResult) resultRegion.current?.focus();
   }, [readResult]);
 
-  const stop = useCallback(() => {
-    clearRead();
+  const pauseCapture = useCallback(() => {
+    readController.current?.abort();
+    readController.current = null;
+    setReading(false);
     active.current?.abort();
     active.current = null;
     controls.current?.stop();
@@ -123,11 +138,21 @@ export function Scanner({ resolveRead = readLivePass }: { resolveRead?: ScanReso
     setTorchBusy(false);
     setTorchAvailable(false);
     setState("paused");
-  }, [clearRead]);
+    const previousAudio = audio.current;
+    audio.current = null;
+    if (previousAudio) void previousAudio.close().catch(() => {});
+  }, []);
+
+  const stop = useCallback(() => {
+    clearRead();
+    pauseCapture();
+  }, [clearRead, pauseCapture]);
 
   useEffect(() => {
     const onVisibility = () => {
-      if (document.hidden) stop();
+      // Hiding a phone stops its camera, not its unresolved transaction. Keep
+      // AdmissionResult mounted so a lost receipt retries the original event ID.
+      if (document.hidden) pauseCapture();
     };
     document.addEventListener("visibilitychange", onVisibility);
     return () => {
@@ -139,10 +164,10 @@ export function Scanner({ resolveRead = readLivePass }: { resolveRead?: ScanReso
       if (previousAudio) void previousAudio.close().catch(() => {});
       controls.current?.stop();
     };
-  }, [stop]);
+  }, [pauseCapture]);
 
   async function start() {
-    if (!video.current || active.current) return;
+    if (!video.current || active.current || admissionBusy) return;
     const controller = new AbortController();
     active.current = controller;
     setState("starting");
@@ -200,6 +225,13 @@ export function Scanner({ resolveRead = readLivePass }: { resolveRead?: ScanReso
 
   return (
     <section className="flex w-full flex-col gap-6 text-left" aria-label="QR camera">
+      {!readResult && state !== "scanning" && state !== "starting" && (
+        <div>
+          <Button size="lg" onClick={() => void start()}>
+            {state === "problem" ? "Retry camera" : "Open camera"}
+          </Button>
+        </div>
+      )}
       <div
         className={
           readResult
@@ -242,37 +274,51 @@ export function Scanner({ resolveRead = readLivePass }: { resolveRead?: ScanReso
           tabIndex={-1}
           className="focus-visible:outline-2 focus-visible:outline-ring"
         >
-          <ScanResultPanel
-            state={readResult.state}
-            guest={"guest" in readResult ? readResult.guest : undefined}
+          <AdmissionResult
+            result={readResult}
+            qr={checkedQr}
+            submit={submitAdmission}
+            onBusyChange={setAdmissionBusy}
+            onComplete={() => setAdmissionCompleted(true)}
           />
         </div>
       )}
-      <p className="text-lg leading-relaxed">
-        A short sound means the pass was checked, not that admission was recorded.
-      </p>
-      <div className="flex flex-wrap gap-3">
-        {state === "scanning" || state === "starting" ? (
-          <Button size="lg" variant="secondary" onClick={stop}>
-            Pause camera
-          </Button>
-        ) : (
-          <Button size="lg" onClick={() => void start()}>
-            {readResult ? "Scan next pass" : state === "problem" ? "Retry camera" : "Open camera"}
-          </Button>
-        )}
-        {torchAvailable && (
-          <Button
-            size="lg"
-            variant="secondary"
-            disabled={torchBusy}
-            aria-pressed={torchOn}
-            onClick={() => void toggleTorch()}
-          >
-            {torchOn ? "Light off" : "Light on"}
-          </Button>
-        )}
-      </div>
+      {!admissionCompleted && (
+        <p className="text-lg leading-relaxed">
+          A short sound means the pass was checked, not that admission was recorded.
+        </p>
+      )}
+      {(readResult || state === "scanning" || state === "starting") && (
+        <div className="flex flex-wrap gap-3">
+          {state === "scanning" || state === "starting" ? (
+            <Button size="lg" variant="secondary" onClick={stop}>
+              Pause camera
+            </Button>
+          ) : (
+            <Button
+              size="lg"
+              variant={
+                readResult?.state === "valid" && !admissionCompleted ? "secondary" : "primary"
+              }
+              disabled={admissionBusy}
+              onClick={() => void start()}
+            >
+              Scan next pass
+            </Button>
+          )}
+          {torchAvailable && (
+            <Button
+              size="lg"
+              variant="secondary"
+              disabled={torchBusy}
+              aria-pressed={torchOn}
+              onClick={() => void toggleTorch()}
+            >
+              {torchOn ? "Light off" : "Light on"}
+            </Button>
+          )}
+        </div>
+      )}
       {torchFailed && (
         <p role="status" className="text-lg leading-relaxed">
           The camera light is unavailable. Scanning can continue.

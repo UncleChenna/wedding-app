@@ -142,3 +142,23 @@ admin artifact steps, apply unchanged migration0026 to owned nativePG39021, run
 aggregate tests and quick verification, publish through t:pr, and await all final
 CI checks before merge/done. NativePG remains stopped with its datadir retained.
 Other editors own065 and224; never edit their worktrees.
+
+## Admission integrated — 23:34 UTC
+
+PR144 merged as `6abf4c0ea12e361a82b0475b29ec6df2a613c238`, and061 is done.
+Merged that develop into097, retaining both descriptions in the sole conflict
+(.env.example). CI automatically preserves all admission/scanner checks,
+ordering-last execution and both admin artifact uploads. Migration0026 SQL,
+snapshot and journal match develop exactly; no new migration was authored.
+
+Applied the unchanged migration through guarded Drizzle config to owned native
+PG39021, then aggregate fixtures passed2/2 (642ms). Database stopped with data
+retained. Combined quick gate passes lint/types/232 related tests, with141 opt-in
+skips; separate actual aggregate results are not inferred from those skips.
+Next: commit/push the integration, normal t:pr, independent review of the combined
+diff and final exact-head CI, then verified merge/done. No final hosted result yet.
+
+Command lesson: zsh aborts unmatched unquoted path globs before rg runs. Verified
+recovery is `rg --files scripts/harness` followed by exact paths, or quoted rg
+`-g` filters. Apply that search pattern consistently; a future harness-guidance
+update should show it explicitly rather than recommending shell filename globs.

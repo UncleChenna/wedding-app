@@ -101,7 +101,7 @@ export const requestBudgets = pgTable(
   (t) => [
     primaryKey({ columns: [t.scope, t.identity] }),
     index("request_budgets_expiry_idx").on(t.expiresAt),
-    check("request_budgets_scope", sql`${t.scope} in ('lookup', 'pin', 'lost_link')`),
+    check("request_budgets_scope", sql`${t.scope} in ('lookup', 'pin', 'lost_link', 'ordering')`),
     check("request_budgets_identity", sql`${t.identity} ~ '^[0-9a-f]{64}$'`),
     check("request_budgets_used", sql`${t.used} between 0 and 100000`),
   ],
