@@ -2,7 +2,7 @@
 id: TICKET-221
 title: Repair scanner CI parity and signature canonicality
 epic: foundations
-status: in_review
+status: done
 priority: high
 estimate: S
 labels: [test]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/131
 created: 2026-11-09
 updated: 2026-11-09
 started: 2026-11-09
-completed: ""
+completed: 2026-11-09
 reason: ""
 resume_to: ""
 ---
@@ -71,3 +71,4 @@ PR #127 added required Chromium/WebKit gate-token verification for [Gate check-i
 - 2026-11-09 — todo → in_progress — divine (codex)
 - 2026-11-09 — CI run 42623016949 passed all five checks at bfe75af5, including full verification and Linux Chromium/WebKit scanner vectors. Root independently reviewed the scalar guard and parity contract without blockers. Integrated develop 1f619b05 without conflicts; the combined final head must pass CI before merge.
 - 2026-11-09 — in_progress → in_review — divine (codex)
+- 2026-11-09 — in_review → done — divine (codex)
