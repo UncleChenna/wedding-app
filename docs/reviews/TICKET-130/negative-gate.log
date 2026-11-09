@@ -1,0 +1,9 @@
+
+ RUN  v5.0.5 /Users/chenna/Documents/codes/wedding/.worktrees/TICKET-130
+
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  13:38:24
+   Duration  3.40s (tests 75%, import 14%, setup 9%, transform 2%)
+
