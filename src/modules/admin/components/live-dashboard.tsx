@@ -112,12 +112,12 @@ export function LiveDashboard() {
           </Button>
         )}
       </div>
-      <dl className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <dl className="mt-6 grid grid-cols-2 gap-6 lg:grid-cols-3">
         {dashboardMetrics.map((metric) => (
-          <Card key={metric.key} className="p-6 shadow-none">
+          <Card key={metric.key} className="p-4 shadow-none sm:p-6">
             <dt className="text-lg font-medium">{metric.label}</dt>
             <dd
-              className="mt-3 font-display text-5xl leading-tight tabular-nums"
+              className="mt-3 font-display text-4xl leading-tight break-all tabular-nums sm:text-5xl"
               data-counter={metric.key}
             >
               {snapshot ? (
@@ -130,6 +130,9 @@ export function LiveDashboard() {
           </Card>
         ))}
       </dl>
+      <p className="mt-6 text-lg text-muted-foreground">
+        Orders count each guest submission once, including kitchen and bar items.
+      </p>
     </section>
   );
 }

@@ -114,6 +114,22 @@ test.describe("authenticated live dashboard", () => {
           page.getByRole("status").filter({ hasText: "Updating automatically" }),
         ).toBeVisible();
         await page.screenshot({ path: `${directory}/${theme.id}-${width}.png`, fullPage: true });
+        if (width === 375) {
+          for (const key of ["attending", "arrived"]) {
+            const counter = page.locator(`[data-counter="${key}"]`);
+            await counter.evaluate((element) => element.scrollIntoView({ block: "center" }));
+            const counterBox = await counter.boundingBox();
+            const navigationBox = await page
+              .getByRole("navigation", { name: "Admin", exact: true })
+              .boundingBox();
+            expect(counterBox).not.toBeNull();
+            expect(navigationBox).not.toBeNull();
+            expect((counterBox?.y ?? 0) + (counterBox?.height ?? 0)).toBeLessThan(
+              navigationBox?.y ?? 0,
+            );
+            await page.screenshot({ path: `${directory}/${theme.id}-${key}-375-viewport.png` });
+          }
+        }
       }
     writeFileSync(
       `${directory}/timing.json`,

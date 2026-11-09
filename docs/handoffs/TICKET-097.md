@@ -72,3 +72,32 @@ quick lint/types pass. Independent source/CI follow-up review is clean after the
 timer was moved before the insert. Actual hosted browser results are still pending.
 Local Docker has four other healthy Supabase stacks; none were touched and no
 additional full stack was started. Own native PostgreSQL remains stopped.
+
+## Browser evidence and responsive follow-up — 22:28 UTC
+
+Published `c5cc9980`, CI run42711031495. Its real authenticated admin journey
+passed in both browser projects, including the two database fixtures, OTP/TOTP,
+API denial/allowlisting, stale retention and cookie-removal clearing. Admission
+insert-start to visible count was 997.595ms mobile and 589.157ms desktop; both
+measured initial CLS0. All theme/width axe and keyboard checks passed. Downloaded
+26 screenshots and two timing JSON files to `/private/tmp/TICKET-097-hosted-evidence`;
+independent098 inspected every image with no product blocker. Mobile fixed nav
+obscures one card in the stitched full-page artifact, requiring scrolled evidence.
+
+Full local unit suite passed1745 tests/187 conditional skips in139.56s; critical
+coverage98.27%lines/98.46%branches. Log `/tmp/TICKET-097-full-unit.log`.
+No database or local browser server is running.
+
+Responsive follow-up makes the five counters two compact columns at375, shorter
+details and 36px numbers (desktop remains48px/three columns). It adds explicit
+375 scrolled viewport screenshots and assertions for RSVP/arrival readability
+above the fixed nav. This newer layout still needs hosted browser/visual review;
+do not treat the previous screenshots as proof of its rendering. Quick lint,
+types and14 related tests passed before the final static explanatory paragraph
+was moved below the cards. Publish the refinement and inspect its new artifacts.
+
+TICKET-061 readyPR144 repaired finalhead96a03e2b is monitoring CI42711548045;
+TICKET-123 readyPR145 finalheada07d30d0 monitors CI42710951859. Neither is merged
+yet. Keep097 draft until061 merges and final combined verification passes. When
+integrating their CI edits, keep guest/scanner/admission/offline fixtures before
+the ordering browser fixture, whose cleanup retains a closed settings singleton.
