@@ -2,7 +2,7 @@
 id: TICKET-069
 title: Export a printable gate guest list
 epic: checkin
-status: in_review
+status: done
 priority: high
 estimate: S
 labels: [frontend, backend]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/123
 created: 2026-10-21
 updated: 2026-11-09
 started: 2026-11-09
-completed: ""
+completed: 2026-11-09
 reason: ""
 resume_to: ""
 ---
@@ -64,3 +64,4 @@ See: [Performance and reliability](../docs/prd.md#performance-and-reliability).
 - 2026-11-09 — todo → in_progress — divine (codex)
 - 2026-11-09 — in_progress → in_review — divine (codex)
 - 2026-11-09 — in_review → in_progress — divine (codex) — Fix full CI failure and integrate current guest actions
+- 2026-11-09 — in_review → done — divine (codex)
