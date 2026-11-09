@@ -2,7 +2,7 @@
 id: TICKET-224
 title: Reconcile historical stacked ticket merges into develop
 epic: foundations
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [infra, test, docs]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/148
 created: 2026-11-09
 updated: 2026-11-09
 started: 2026-11-09
-completed: ""
+completed: 2026-11-09
 reason: ""
 resume_to: ""
 ---
@@ -76,3 +76,4 @@ the original PR base to be develop. See [ticket workflow](../docs/tickets.md).
 - 2026-11-09 — todo → claimed — divine (codex)
 - 2026-11-09 — todo → in_progress — divine (codex)
 - 2026-11-09 — in_progress → in_review — divine (codex)
+- 2026-11-09 — in_review → done — divine (codex)
