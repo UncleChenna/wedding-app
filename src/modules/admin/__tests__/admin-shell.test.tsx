@@ -23,6 +23,7 @@ it("names the event and offers every section plus sign-out in one labelled navig
   const links = within(nav).getAllByRole("link");
   expect(links.map((link) => [link.textContent, link.getAttribute("href")])).toEqual([
     ["Control room", "/admin"],
+    ["Guests", "/admin/guests"],
     ["Sharing", "/admin/sharing"],
     ["Menu", "/admin/menu"],
     ["Staff", "/admin/staff"],
@@ -46,5 +47,10 @@ it("marks only the current section, including on nested pages", () => {
   );
   expect(screen.getAllByRole("link", { name: "Control room" }).at(-1)).not.toHaveAttribute(
     "aria-current",
+  );
+  renderShell("/admin/guests");
+  expect(screen.getAllByRole("link", { name: "Guests" }).at(-1)).toHaveAttribute(
+    "aria-current",
+    "page",
   );
 });

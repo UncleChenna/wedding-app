@@ -42,6 +42,7 @@ it("uses the verified actor, ignores client actor claims and refreshes sharing o
   expect(mocks.change.mock.calls[0]?.[2]).toBe(actor);
   expect(mocks.change.mock.calls[0]?.[1]).not.toHaveProperty("actor");
   expect(mocks.revalidate).toHaveBeenCalledWith("/admin/sharing");
+  expect(mocks.revalidate).toHaveBeenCalledWith("/admin/guests");
   expect(result.status).toBe("saved");
   expect(JSON.stringify(result)).not.toContain("token");
 });
