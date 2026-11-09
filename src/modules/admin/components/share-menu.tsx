@@ -2,14 +2,67 @@
 
 import { useEffect, useRef, useState } from "react";
 
+import { recordShareAction, undoShareAction } from "../server/share-tracking-actions";
+import type { ShareChannel } from "../lib/share-tracking";
 import { buildShareLinks, type ShareInput } from "@/modules/invitations/lib/share";
 import { Button, Input, Sheet, useToast } from "@/modules/shared/components/ui";
 
 const linkStyle =
   "flex min-h-13 min-w-11 items-center rounded-md px-5 py-3 text-lg font-medium text-primary hover:bg-surface-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring";
 
-/** Caller supplies an authorized invitation and approved message; never writes sent status. */
-export function ShareMenu({ invitation }: { invitation: ShareInput }) {
+/** Preview callers omit tracking; real admin callers provide the authorized row identity. */
+export function ShareMenu({
+  invitation,
+  tracking,
+  onRecorded,
+  purpose = "invitation",
+}: {
+  invitation: ShareInput;
+  tracking?: { invitationId: string; expectedVersion: number };
+  onRecorded?: (eventId: string) => void;
+  purpose?: "invitation" | "reminder";
+}) {
+  const noticeRef = useRef<HTMLParagraphElement>(null);
+  const [eventId, setEventId] = useState<string | null>(null);
+  const [trackingMessage, setTrackingMessage] = useState("");
+  const [recording, setRecording] = useState(false);
+  async function record(channel: ShareChannel) {
+    if (!tracking) return;
+    setRecording(true);
+    try {
+      const recorded = await recordShareAction({
+        ...tracking,
+        channel,
+        purpose,
+        requestId: crypto.randomUUID(),
+      });
+      if (recorded.ok) {
+        setEventId(recorded.eventId);
+        onRecorded?.(recorded.eventId);
+        setTrackingMessage("Sharing attempt recorded. This does not confirm delivery.");
+      } else setTrackingMessage(recorded.message);
+    } catch {
+      setTrackingMessage("The sharing attempt wasn't recorded. Please try again.");
+    } finally {
+      setRecording(false);
+    }
+  }
+  async function undo() {
+    if (!tracking || !eventId) return;
+    setRecording(true);
+    try {
+      const undone = await undoShareAction({ invitationId: tracking.invitationId, eventId });
+      if (undone.ok) {
+        setEventId(null);
+        noticeRef.current?.focus();
+        setTrackingMessage("Sharing record undone. Messages already sent are not recalled.");
+      } else setTrackingMessage(undone.message);
+    } catch {
+      setTrackingMessage("The sharing record couldn't be undone. Please try again.");
+    } finally {
+      setRecording(false);
+    }
+  }
   const [open, setOpen] = useState(false);
   const [nativeAvailable, setNativeAvailable] = useState(false);
   const [manualCopy, setManualCopy] = useState(false);
@@ -82,6 +135,7 @@ export function ShareMenu({ invitation }: { invitation: ShareInput }) {
     }
     setBusy(false);
     if (copied) {
+      await record("copy");
       setOpen(false);
       setManualCopy(false);
       toast({
@@ -105,6 +159,7 @@ export function ShareMenu({ invitation }: { invitation: ShareInput }) {
         text: invitation.message,
         url: result.links.url,
       });
+      await record("native");
       setOpen(false);
     } catch (cause) {
       if (!(cause instanceof Error && cause.name === "AbortError")) {
@@ -117,17 +172,41 @@ export function ShareMenu({ invitation }: { invitation: ShareInput }) {
 
   return (
     <>
-      <Button size="lg" onClick={begin} aria-haspopup="dialog">
-        Share invitation
+      <Button size="lg" onClick={begin} disabled={recording} aria-haspopup="dialog">
+        {purpose === "reminder" ? "Share reminder" : "Share invitation"}
       </Button>
+      {tracking && (
+        <div className="space-y-3">
+          <p
+            ref={noticeRef}
+            tabIndex={-1}
+            className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+            role="status"
+          >
+            {recording ? "Updating sharing record…" : trackingMessage}
+          </p>
+          {eventId && !onRecorded && (
+            <Button size="lg" variant="ghost" disabled={recording} onClick={undo}>
+              Undo sharing record
+            </Button>
+          )}
+        </div>
+      )}
       <Sheet
         open={open}
         onOpenChange={setOpen}
-        title="Share invitation"
+        title={purpose === "reminder" ? "Share reminder" : "Share invitation"}
         className="max-h-[90dvh] overflow-y-auto [&_header_h2]:text-3xl"
       >
         <div ref={content} className="space-y-6">
-          <p className="text-lg leading-relaxed">Choose how to send this invitation.</p>
+          <p className="text-lg leading-relaxed">
+            {purpose === "reminder"
+              ? "Choose how to send this gentle reminder."
+              : "Choose how to send this invitation."}
+          </p>
+          {purpose === "reminder" && (
+            <p className="text-lg leading-relaxed wrap-anywhere">{invitation.message}</p>
+          )}
           {!result.ok ? (
             <p role="alert" className="text-lg leading-relaxed">
               {result.message}
@@ -137,13 +216,24 @@ export function ShareMenu({ invitation }: { invitation: ShareInput }) {
               <div className="flex flex-col gap-2">
                 <a
                   href={result.links.whatsapp}
+                  onClick={() => {
+                    setOpen(false);
+                    void record("whatsapp");
+                  }}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={linkStyle}
                 >
                   WhatsApp
                 </a>
-                <a href={result.links.email} className={linkStyle}>
+                <a
+                  href={result.links.email}
+                  className={linkStyle}
+                  onClick={() => {
+                    setOpen(false);
+                    void record("email");
+                  }}
+                >
                   Email
                 </a>
                 {nativeAvailable && (
@@ -185,6 +275,9 @@ export function ShareMenu({ invitation }: { invitation: ShareInput }) {
                     value={result.links.url}
                     readOnly
                     onFocus={(event) => event.target.select()}
+                    onCopy={() => {
+                      void record("copy");
+                    }}
                     className="text-lg"
                   />
                 </div>

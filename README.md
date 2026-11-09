@@ -16,7 +16,8 @@ Mobile-first wedding site: personal invitations with QR codes and RSVP, offline 
 pnpm install       # deps + git hooks
 pnpm db:start      # starts local Supabase in Docker; creates .env.local if missing
 pnpm db:migrate    # applies Drizzle migrations
-pnpm db:seed       # resets and seeds fake data (110 invitations, 245 guests)
+pnpm db:seed       # resets local fake data (110 invitations, 249 guests)
+pnpm db:seed --profile load # 350 named guests seated across 30 tables
 pnpm dev           # http://localhost:3000
 ```
 

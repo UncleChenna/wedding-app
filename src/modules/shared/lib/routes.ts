@@ -10,6 +10,12 @@ export interface AppRoute {
 
 /** Navigation metadata is not authorization; server readers still enforce access. */
 export const appRoutes = {
+  adminReminders: {
+    path: "/admin/sharing/reminders",
+    label: "Reminders",
+    audience: "admin",
+    access: "admin",
+  },
   home: { path: "/", label: "Our day", audience: "guest", access: "public" },
   lostLink: {
     path: "/lost-link",
@@ -38,9 +44,53 @@ export const appRoutes = {
   kitchen: { path: "/kitchen", label: "Kitchen board", audience: "staff", access: "public" },
   admin: { path: "/admin", label: "Wedding control room", audience: "admin", access: "admin" },
   adminSharing: { path: "/admin/sharing", label: "Sharing", audience: "admin", access: "admin" },
+  adminGuests: { path: "/admin/guests", label: "Guests", audience: "admin", access: "admin" },
+  adminSeating: {
+    path: "/admin/guests/seating",
+    label: "Seating",
+    audience: "admin",
+    access: "admin",
+  },
+  adminGatePrint: {
+    path: "/admin/guests/print",
+    label: "Print gate list",
+    audience: "admin",
+    access: "admin",
+  },
+  adminGuestImport: {
+    path: "/admin/guests/import",
+    label: "Import guests",
+    audience: "admin",
+    access: "admin",
+  },
+  adminGuestNew: {
+    path: "/admin/guests/new",
+    label: "Add an invitation",
+    audience: "admin",
+    access: "admin",
+  },
+  adminGuestHistory: {
+    path: "/admin/guests/[id]/history",
+    label: "Reply history",
+    audience: "admin",
+    access: "admin",
+  },
+  adminGuestEdit: {
+    path: "/admin/guests/[id]/edit",
+    label: "Edit invitation",
+    audience: "admin",
+    access: "admin",
+  },
   adminMenu: { path: "/admin/menu", label: "Menu", audience: "admin", access: "admin" },
+  adminThemes: { path: "/admin/themes", label: "Themes", audience: "admin", access: "admin" },
   adminSettings: { path: "/admin/settings", label: "Settings", audience: "admin", access: "admin" },
   adminStaff: { path: "/admin/staff", label: "Staff", audience: "admin", access: "admin" },
+  adminClosure: {
+    path: "/admin/event-closure",
+    label: "After the celebration",
+    audience: "admin",
+    access: "admin",
+  },
   adminSignIn: { path: "/admin/sign-in", label: "Sign in", audience: "admin", access: "public" },
   adminSignOut: { path: "/admin/sign-out", label: "Sign out", audience: "admin", access: "public" },
   adminMfa: {
@@ -92,5 +142,8 @@ export function passHref(pass: string): string {
 export const pageRouteSamples = routeList.map((route) => {
   if (route.path === appRoutes.invitation.path) return invitationHref("invalid");
   if (route.path === appRoutes.pass.path) return passHref("invalid");
+  if (route.path === appRoutes.adminGuestEdit.path) return "/admin/guests/invalid/edit";
+  if (route.path === appRoutes.adminGuestHistory.path)
+    return "/admin/guests/00000000-0000-4000-8000-000000000000/history";
   return route.path;
 });

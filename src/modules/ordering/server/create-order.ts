@@ -2,13 +2,17 @@ import "server-only";
 import { eq, inArray, sql } from "drizzle-orm";
 import type { Db } from "@/modules/shared/server/db/client";
 import { getEventSettings } from "@/modules/shared/server/settings";
+import { staffEventExpiry } from "@/modules/shared/lib/staff-expiry";
 import {
+  eventSettings,
   menuItems,
+  orderAlerts,
   orderItems,
   orders,
   stationOrders,
   tables,
 } from "@/modules/shared/server/db/schema";
+import { formatOrderAlert } from "../lib/alerts";
 import { orderFingerprint, type OrderResult, type OrderSubmission } from "../lib/order";
 import { splitByStation } from "../lib/stations";
 
@@ -40,7 +44,20 @@ export async function createOrder(
 
     // ORD-7: guests can only order while the couple has ordering open. A retry of an order made
     // before it closed is answered above, so closing never turns a sent order into a refusal.
+    // Event closure takes the matching update lock. Accepted submissions finish before
+    // closure returns; later submissions read the closed state, not an earlier snapshot.
+    await tx
+      .select({ id: eventSettings.id })
+      .from(eventSettings)
+      .where(eq(eventSettings.id, 1))
+      .for("share");
     const settings = await getEventSettings(tx);
+    // A staff request authorized before cutoff may have waited behind closure's lock.
+    // Recheck expiry here so its pause-ordering exception cannot reopen the closed event.
+    if (options.staffEntered) {
+      const expiresAt = staffEventExpiry(settings.eventDate, settings.timeZone);
+      if (!expiresAt || expiresAt <= new Date()) return { status: "rejected", reason: "closed" };
+    }
     if (!settings.orderingOpen && !options.staffEntered)
       return { status: "rejected", reason: "closed" };
 
@@ -82,6 +99,7 @@ export async function createOrder(
     const menu = await tx
       .select({
         id: menuItems.id,
+        name: menuItems.name,
         station: menuItems.station,
         available: menuItems.isAvailable,
         maxPerOrder: menuItems.maxPerOrder,
@@ -124,7 +142,12 @@ export async function createOrder(
       order.items.map((item) => {
         const menuItem = byId.get(item.menuItemId);
         if (!menuItem) throw new Error("Order item lost its menu row");
-        return { ...item, station: menuItem.station, quantityLimit: menuItem.maxPerOrder };
+        return {
+          ...item,
+          name: menuItem.name,
+          station: menuItem.station,
+          quantityLimit: menuItem.maxPerOrder,
+        };
       }),
     );
     const rows = await tx
@@ -143,6 +166,19 @@ export async function createOrder(
           quantity: item.quantity,
           quantityLimit: item.quantityLimit,
         }));
+      }),
+    );
+    // ADR 0022: the alert commits or rolls back with the order. Sending happens later in the
+    // drain, so a slow or failing provider can never hold up or refuse an order.
+    await tx.insert(orderAlerts).values(
+      tickets.map(({ station, items }) => {
+        const stationOrderId = stationRow.get(station);
+        if (!stationOrderId) throw new Error("Station ticket was not created");
+        return {
+          stationOrderId,
+          station,
+          message: formatOrderAlert({ table: order.table, items, note: order.note }),
+        };
       }),
     );
     return { status: "created", orderId: created.id };

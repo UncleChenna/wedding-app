@@ -21,6 +21,13 @@ export const serverEnvSchema = z.object({
       "STAFF_SESSION_SECRET must be 32 random bytes encoded as lowercase hex",
     )
     .default(""),
+  ALERT_DRAIN_SECRET: z
+    .string()
+    .regex(
+      /^(?:[0-9a-f]{64})?$/,
+      "ALERT_DRAIN_SECRET must be 32 random bytes encoded as lowercase hex",
+    )
+    .default(""),
 });
 
 export const clientEnvSchema = z.object({

@@ -5,7 +5,9 @@ import { dirname, relative, resolve, sep } from "node:path";
 import { spawnSync } from "node:child_process";
 import { pnpmRuntime } from "./pnpm-runtime.mjs";
 import { shellAccess } from "./shell-access.mjs";
-import { protectedPath } from "./core.mjs";
+import { tmpdir } from "node:os";
+import { unchangedDevelopArtifact } from "./develop-artifacts.mjs";
+import { destructiveSql, journalOnlyAppends, migrationPath, protectedPath } from "./core.mjs";
 import { git, isMain, root } from "./io.mjs";
 
 export function editPaths(input) {
@@ -19,6 +21,7 @@ export function editPaths(input) {
   return [...new Set(paths)];
 }
 function approved(cwd, path, staged = false) {
+  if (staged && unchangedDevelopArtifact(cwd, path)) return true;
   const file = resolve(cwd, ".harness/approved-writes.json");
   if (!existsSync(file)) return false;
   const approval = JSON.parse(readFileSync(file, "utf8"));
@@ -40,12 +43,83 @@ function resolvedPath(cwd, file) {
   path = resolve(realpathSync(parent), relative(parent, path));
   return path;
 }
+/** Throwaway locations an agent may write outside its checkout: /dev/null and temp folders. */
+function scratchPath(path) {
+  if (path === "/dev/null") return true;
+  const roots = [tmpdir(), "/tmp", "/private/tmp", "/var/folders", "/private/var/folders"]
+    .filter((dir) => existsSync(dir))
+    .map((dir) => realpathSync(dir));
+  return roots.some((dir) => path === dir || path.startsWith(dir + sep));
+}
+/** A checkout-relative path, or null for an allowed scratch path outside the checkout. */
 function normalized(cwd, file) {
   const path = resolvedPath(cwd, file);
   const rel = relative(realpathSync(cwd), path);
-  if (rel.startsWith(`..${sep}`) || rel === ".." || resolve(cwd, rel) !== path)
+  if (rel.startsWith(`..${sep}`) || rel === ".." || resolve(cwd, rel) !== path) {
+    if (scratchPath(path)) return null;
+    // Other checkouts (another person's worktree, the main repo) stay off limits.
     throw new Error("Edit outside this checkout denied.");
+  }
   return rel.replaceAll(sep, "/");
+}
+const inCheckout = (cwd, paths) => paths.map((path) => normalized(cwd, path)).filter(Boolean);
+/** The commit migrations are compared with: what has reached develop, else HEAD. */
+function migrationBase(cwd) {
+  for (const ref of ["origin/develop", "develop"]) {
+    try {
+      return git(["merge-base", "HEAD", ref], cwd);
+    } catch {
+      // Try the next reference.
+    }
+  }
+  try {
+    return git(["rev-parse", "HEAD"], cwd);
+  } catch {
+    return null;
+  }
+}
+function atBase(cwd, base, path) {
+  if (!base) return null;
+  try {
+    return git(["show", `${base}:${path}`], cwd);
+  } catch {
+    return null;
+  }
+}
+function current(cwd, path, staged) {
+  try {
+    return staged ? git(["show", `:${path}`], cwd) : readFileSync(resolve(cwd, path), "utf8");
+  } catch {
+    return null;
+  }
+}
+/**
+ * TICKET-217: `pnpm db:generate` output needs no approval. New migration and snapshot files pass,
+ * and the journal passes while it only appends. Anything already on develop stays locked, and
+ * destructive SQL still needs the owner (checked when committing).
+ */
+function generatedMigration(cwd, path, staged) {
+  if (!migrationPath(path)) return false;
+  const base = migrationBase(cwd);
+  const before = atBase(cwd, base, path);
+  const now = current(cwd, path, staged);
+  if (path === "drizzle/meta/_journal.json")
+    return (
+      now !== null &&
+      (() => {
+        try {
+          return journalOnlyAppends(before, now);
+        } catch {
+          return false;
+        }
+      })()
+    );
+  if (before !== null) return false;
+  if (staged && path.endsWith(".sql") && now !== null && destructiveSql(now))
+    throw new Error(
+      `Migration ${path} drops, retypes, renames or deletes data. Ask the owner first; with their yes, record it in .harness/approved-writes.json (see docs/collaboration.md).`,
+    );
+  return true;
 }
 function verifyRead(cwd, file) {
   // Check both the requested name and resolved target: aliases cannot expose secrets.
@@ -82,12 +156,23 @@ function command(cwd, args) {
       `pnpm ${args.join(" ")} failed:\n${(result.stdout ?? "").slice(-6000)}\n${(result.stderr ?? result.error?.message ?? "").slice(-6000)}`,
     );
 }
+function blockedPaths(cwd, paths, staged = false) {
+  return paths.filter(
+    (path) =>
+      protectedPath(path) && !approved(cwd, path, staged) && !generatedMigration(cwd, path, staged),
+  );
+}
+function protectedMessage(path) {
+  return `Protected file ${path}: get the owner's yes, then record it in .harness/approved-writes.json (see docs/collaboration.md).`;
+}
 function verifyProtected(cwd, paths, staged = false) {
-  for (const path of paths)
-    if (protectedPath(path) && !approved(cwd, path, staged))
-      throw new Error(
-        `Protected file ${path}: a human must record exact-path authorization in .harness/approved-writes.json (see docs/collaboration.md).`,
-      );
+  const [path] = blockedPaths(cwd, paths, staged);
+  if (path) throw new Error(protectedMessage(path));
+}
+/** Reports protected changes once without blocking; the commit hook is the enforcement point. */
+function warnProtected(cwd, paths) {
+  for (const path of blockedPaths(cwd, paths))
+    console.error(`Note: ${protectedMessage(path)} It will be refused at commit until then.`);
 }
 export async function main() {
   const [mode, adapter = "claude"] = process.argv.slice(2);
@@ -102,30 +187,23 @@ export async function main() {
       const paths = editPaths(input);
       const isRead = /^(Read|read_file)$/i.test(input.tool_name ?? "");
       if (isRead) paths.forEach((path) => verifyRead(cwd, path));
-      else
-        verifyProtected(
-          cwd,
-          paths.map((path) => normalized(cwd, path)),
-        );
+      else verifyProtected(cwd, inCheckout(cwd, paths));
       const tool = input.tool_input ?? input;
       const shell = tool.command ?? tool.cmd ?? "";
       if (/\bgit\b[^\n]*\bcommit\b/.test(shell) && isMain(git(["branch", "--show-current"], cwd)))
         throw new Error("No commits on main or develop. Create a task branch/worktree.");
       const access = shellAccess(shell, cwd);
       access.reads.forEach((path) => verifyRead(cwd, path));
-      verifyProtected(
-        cwd,
-        access.writes.map((path) => normalized(cwd, path)),
-      );
+      verifyProtected(cwd, inCheckout(cwd, access.writes));
     } else if (mode === "post") {
       if (!/edit|write|patch|bash|shell|exec/i.test(input.tool_name ?? "") && !input.file_path) {
         console.log("{}");
         return;
       }
-      const paths = [
-        ...new Set([...editPaths(input).map((p) => normalized(cwd, p)), ...changed(cwd)]),
-      ];
-      verifyProtected(cwd, paths);
+      const paths = [...new Set([...inCheckout(cwd, editPaths(input)), ...changed(cwd)])];
+      // Direct edits were already checked before the tool ran. Generator or shell output is
+      // reported here once rather than failing every later tool call (TICKET-217).
+      warnProtected(cwd, paths);
       for (const path of paths) {
         if (!existsSync(resolve(cwd, path)) || protectedPath(path)) continue;
         // Only regular files are formattable. Symlinks (e.g. the .claude/skills link that
@@ -156,7 +234,8 @@ export async function main() {
       )
         throw new Error("Direct pushes to main/develop are blocked. Use a reviewed PR.");
     } else if (mode === "stop") {
-      verifyProtected(cwd, changed(cwd));
+      // A file waiting on the owner must not trap the session; the commit hook still refuses it.
+      warnProtected(cwd, changed(cwd));
       command(cwd, ["verify:quick"]);
     } else throw new Error("Unknown hook mode.");
     if (["pre", "post", "stop"].includes(mode)) console.log("{}");

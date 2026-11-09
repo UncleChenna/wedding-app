@@ -1,4 +1,5 @@
 #!/usr/bin/env tsx
+import { reusableVerification } from "./harness/verification.mjs";
 /**
  * In-repo ticket system. Ticket files in tickets/ hold definitions and history;
  * the origin/ticket-ledger ref holds live claims and status so two developers
@@ -9,10 +10,12 @@ import { join } from "node:path";
 
 import { activity, criteria, parseTicket, serializeTicket } from "./tickets/format";
 import { dashboardHtml } from "./tickets/dashboard";
-import { REVIEW_BASE, reviewBodyProblems } from "./tickets/review";
+import { REVIEW_BASE, reviewBodyProblems, reviewVerifyScript } from "./tickets/review";
 import { mergedReviewEvidence } from "./tickets/merged-review";
 import type { ReviewPr } from "./tickets/merged-review";
-import { ready } from "./tickets/graph";
+import { ready, startableAhead } from "./tickets/graph";
+import { startCommands, startPlan } from "./tickets/start";
+import { warnIfStaleHarness } from "./harness/stale-harness.mjs";
 import {
   git,
   ledgerMode,
@@ -62,7 +65,9 @@ const USAGE = `Usage: pnpm t:<command>
   t:move <id> <status> [--reason text] [--push]
   t:new --title "Imperative title" --epic e --module m [--priority p] [--estimate S|M|L]
         [--labels a,b] [--blocked-by TICKET-001,TICKET-002] [--status backlog|todo]
-  t:pr <id>                       verify, push, open PR, move to in_review
+  t:pr <id> [--full] [--force-verify]
+                                  verify:quick (--full: full verify or reuse matching success;
+                                  --force-verify: fresh full run), push, open PR, move to in_review
   t:sync <id>                     sync only this branch’s ticket from the ledger
   t:validate                      schema, sections, ids, deps, cycles, consistency
   t:render                        generate ignored Markdown snapshots
@@ -251,13 +256,11 @@ function prFor(cwd: string, ref: string): ReviewPr | null {
   }
 }
 
-function gatherFacts(
-  state: State,
-  ticket: Ticket,
-  to: Status,
-  args: Args,
-  verify: boolean,
-): MoveFacts {
+// Only this invocation may certify a HEAD after running/reusing verification.
+// Inherited environment variables are not evidence of a successful check.
+let verifiedHead: string | undefined;
+
+function gatherFacts(state: State, ticket: Ticket, to: Status, args: Args): MoveFacts {
   const cwd = state.cwd;
   const statusOf = (x: string) => state.tickets.find((t) => t.meta.id === x)?.meta.status;
   const facts: MoveFacts = {
@@ -280,7 +283,7 @@ function gatherFacts(
     facts.pushed = tryGit(["rev-parse", `refs/remotes/origin/${currentBranch(cwd)}`], cwd) === head;
     const pr = prFor(cwd, currentBranch(cwd));
     facts.openPr = pr?.state === "OPEN" && pr.baseRefName === REVIEW_BASE ? pr.url : undefined;
-    facts.verified = process.env.TICKETS_VERIFIED_SHA === head || !verify;
+    facts.verified = verifiedHead === head;
   }
   if (to === "done") {
     const pr = prFor(cwd, ticket.meta.pr || ticket.meta.branch);
@@ -296,18 +299,19 @@ function gatherFacts(
 function doMove(state: State, id: string, to: Status, args: Args): Ticket {
   const ticket = find(state, id);
   // Cheap checks first; pnpm verify only runs once everything else is ready.
-  const dry = gatherFacts(state, ticket, to, args, false);
-  move(ticket.meta, to, dry);
+  const dry = gatherFacts(state, ticket, to, args);
+  // Ignore only verification for preflight; never use this override as evidence.
+  move(ticket.meta, to, { ...dry, verified: true });
   if (to === "in_review" && !dry.verified) {
     const head = git(["rev-parse", "HEAD"], state.cwd);
-    console.log("Running pnpm verify before review…");
-    if (!stream("pnpm", ["verify"], state.cwd))
-      throw new TransitionError("pnpm verify failed; fix it before review.");
-    process.env.TICKETS_VERIFIED_SHA = head;
+    const script = reviewVerifyScript(args.flags);
+    console.log(`Running pnpm ${script} before review (CI runs the full verify)…`);
+    if (!stream("pnpm", [script], state.cwd))
+      throw new TransitionError(`pnpm ${script} failed; fix it before review.`);
+    verifiedHead = head;
   }
   const result = commitChange(state, ticket.meta.id, (current, statusOf) => {
-    const facts = { ...gatherFacts(state, current, to, args, true), statusOf };
-    if (to === "in_review") Object.assign(facts, { verified: true });
+    const facts = { ...gatherFacts(state, current, to, args), statusOf };
     const change = move(current.meta, to, facts);
     return {
       meta: change,
@@ -466,6 +470,10 @@ function validate(): number {
 function main(): number {
   const [command = "help", ...rest] = process.argv.slice(2);
   const args = parseArgs(rest);
+  if (command !== "validate") {
+    const here = tryGit(["rev-parse", "--show-toplevel"], process.cwd());
+    if (here) warnIfStaleHarness(here);
+  }
   switch (command) {
     case "list": {
       const state = load(true);
@@ -525,16 +533,33 @@ function main(): number {
         onlyHuman: args.flags.human === true,
       });
       const pick = picks[0];
-      if (!pick) {
-        console.log("No ready ticket. Check pnpm t:board for blocked or in-flight work.");
+      // TICKET-218: also offer work whose blockers are already being done, so agents have more
+      // to pick from in parallel.
+      const ahead = startableAhead(metas, {
+        module: str(args, "module"),
+        onlyHuman: args.flags.human === true,
+      }).slice(0, 5);
+      if (args.flags.json) {
+        console.log(JSON.stringify(pick ?? ahead[0] ?? null, null, 2));
         return 0;
       }
-      if (args.flags.json) console.log(JSON.stringify(pick, null, 2));
-      else {
-        const t = state.tickets.find((x) => x.meta.id === pick.id);
+      const title = (id: string) => state.tickets.find((x) => x.meta.id === id);
+      if (pick) {
+        const t = title(pick.id);
         console.log(
-          `${pick.id} · ${pick.priority} · ${pick.estimate} · ${pick.module}\n${t?.meta.title}\n${t?.path}\n\nClaim it: pnpm t:claim ${pick.id} --owner <you> --agent <agent>`,
+          `${pick.id} · ${pick.priority} · ${pick.estimate} · ${pick.module}\n${t?.meta.title}\n${t?.path}\n\nStart it: pnpm t:start ${pick.id}`,
         );
+      } else console.log("No ready ticket. Check pnpm t:board for blocked or in-flight work.");
+      if (ahead.length) {
+        console.log(
+          `\nCan start ahead (blockers already in progress or review; pnpm t:start <id> --ahead):`,
+        );
+        for (const m of ahead) {
+          const open = m.blocked_by.filter((d) => metas.find((x) => x.id === d)?.status !== "done");
+          console.log(
+            `  ${m.id} · ${m.priority} · ${title(m.id)?.meta.title} (waits on ${open.join(", ")})`,
+          );
+        }
       }
       return 0;
     }
@@ -544,6 +569,41 @@ function main(): number {
       console.log(
         args.flags.json ? JSON.stringify({ ...t.meta, path: t.path }, null, 2) : serializeTicket(t),
       );
+      return 0;
+    }
+    case "start": {
+      // TICKET-218: claim, worktree, install and in_progress in one command. Each step reuses the
+      // existing command, so the rules (blockers, --ahead, ledger locking) stay in one place.
+      const state = load(false);
+      const ticket = find(state, args.positional[0] ?? "");
+      const id = ticket.meta.id;
+      const who = actor(args, state.cwd);
+      const agent = str(args, "agent") || process.env.TICKETS_AGENT || "";
+      const plan = startPlan(ticket.meta, who);
+      const primary = join(
+        git(["rev-parse", "--path-format=absolute", "--git-common-dir"], state.cwd),
+        "..",
+      );
+      const worktree = join(primary, ".worktrees", id);
+      const steps = startCommands({
+        id,
+        owner: who,
+        agent,
+        ahead: args.flags.ahead === true,
+        db: args.flags.db === true,
+      });
+      for (const step of plan) {
+        const { inWorktree, args: command } = steps[step];
+        const cwd = inWorktree ? worktree : state.cwd;
+        console.log(`→ pnpm ${command.join(" ")}`);
+        if (args.flags["dry-run"] === true) continue;
+        if (!stream("pnpm", [...command], cwd))
+          throw new Error(`pnpm ${command.join(" ")} failed.`);
+      }
+      if (args.flags["dry-run"] !== true)
+        console.log(
+          `\nStarted ${id}. Work in ${worktree}.\nThe database starts on first db:migrate/db:seed (or pnpm db:start).`,
+        );
       return 0;
     }
     case "claim": {
@@ -629,13 +689,30 @@ function main(): number {
       const currentPr = prFor(state.cwd, branch);
       if (currentPr && currentPr.baseRefName !== REVIEW_BASE)
         throw new Error(`Retarget this ticket PR to ${REVIEW_BASE} before continuing.`);
-      console.log("Running pnpm verify…");
-      if (!stream("pnpm", ["verify"], state.cwd)) throw new Error("pnpm verify failed.");
-      process.env.TICKETS_VERIFIED_SHA = git(["rev-parse", "HEAD"], state.cwd);
+      const reviewHead = git(["rev-parse", "HEAD"], state.cwd);
+      const force = args.flags["force-verify"] === true;
+      const script = force ? "verify" : reviewVerifyScript(args.flags);
+      if (script === "verify" && !force && reusableVerification(state.cwd)) {
+        console.log("Reusing matching successful verification (less than one hour old).");
+      } else {
+        console.log(`Running pnpm ${script} (CI runs the full verify)…`);
+        if (!stream("pnpm", [script], state.cwd)) throw new Error(`pnpm ${script} failed.`);
+      }
+      if (git(["rev-parse", "HEAD"], state.cwd) !== reviewHead)
+        throw new TransitionError("HEAD changed during pnpm verify; rerun review verification.");
+      verifiedHead = reviewHead;
       if (!stream("git", ["push", "-u", "origin", "HEAD"], state.cwd))
         throw new Error("Push failed.");
       const existing = prFor(state.cwd, branch);
-      if (existing) run("gh", ["pr", "edit", existing.url, "--body-file", body], state.cwd);
+      if (existing) {
+        run("gh", ["pr", "edit", existing.url, "--body-file", body], state.cwd);
+        // An earlier draft (from a blocked hand-off) is ready once t:pr succeeds.
+        try {
+          run("gh", ["pr", "ready", existing.url], state.cwd);
+        } catch {
+          // Already ready for review.
+        }
+      }
       if (!existing) {
         run(
           "gh",

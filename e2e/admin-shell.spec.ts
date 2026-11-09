@@ -15,6 +15,7 @@ test.describe("admin shell", () => {
     const links = nav.getByRole("link");
     const sections = [
       "Control room",
+      "Guests",
       "Invitation requests",
       "Sharing",
       "Menu",
@@ -52,7 +53,7 @@ test.describe("admin shell", () => {
     expect(reached).toEqual(sections);
     await page.keyboard.press("Shift+Tab");
     await page.keyboard.press("Enter");
-    // The link opens /admin/sharing; without a session the proxy sends the browser to sign-in.
+    // Without a session the section route sends the browser to sign-in.
     await expect(page).toHaveURL(/\/admin\/sign-in$/);
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   });
@@ -88,7 +89,8 @@ test.describe("admin shell", () => {
           expect(box?.x).toBe(0);
           expect(box?.width).toBeLessThan(width / 2);
         }
-        const dir = "docs/reviews/TICKET-088/" + theme.id;
+        const dir =
+          (process.env.ADMIN_SHELL_SCREENSHOT_DIR ?? "docs/reviews/TICKET-088") + "/" + theme.id;
         mkdirSync(dir, { recursive: true });
         await page.screenshot({ path: dir + "/" + width + ".png" });
       }

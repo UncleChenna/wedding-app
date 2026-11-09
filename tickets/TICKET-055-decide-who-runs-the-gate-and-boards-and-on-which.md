@@ -10,7 +10,7 @@ module: ops
 owner: ""
 agent: ""
 blocked_by: []
-blocks: [TICKET-057, TICKET-114, TICKET-138, TICKET-161, TICKET-162]
+blocks: [TICKET-114, TICKET-138, TICKET-161, TICKET-162]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -25,7 +25,7 @@ resume_to: ""
 
 ## Context
 
-Open question. Device models and browsers decide which camera API and install path we must test.
+Operational readiness remains open. Staff accounts and roles are managed in admin (TICKET-096), and devices can be registered through TICKET-064. Actual operator assignments and physical device/browser details are required for release testing and training, not for beginning scanner software implementation.
 
 See: [Open questions](../docs/prd.md#open-questions) · [Performance and reliability](../docs/prd.md#performance-and-reliability).
 
@@ -37,6 +37,7 @@ See: [Open questions](../docs/prd.md#open-questions) · [Performance and reliabi
 ## Out of scope
 
 - Training (TICKET-162).
+- Scanner implementation (TICKET-057 onward); use its documented browser targets without claiming physical-device certification.
 
 ## Acceptance criteria
 
@@ -54,6 +55,8 @@ See: [Open questions](../docs/prd.md#open-questions) · [Performance and reliabi
 - `docs/runbook.md`
 
 ## Notes / decisions
+
+- 2026-11-09 (TICKET-220): The owner requested account/role assignment through admin rather than a pre-coding roster. Retain this ticket as an incomplete operational readiness gate for TICKET-114, TICKET-138, TICKET-161 and TICKET-162. No actual device or staffing result is certified.
 
 - 2026-10-21: Needs a person (decision, account or physical task). Agents may prepare docs and record the outcome.
 

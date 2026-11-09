@@ -28,7 +28,15 @@ const titles: Record<Step, string> = {
   received: "On its way. Sit back, we've got this.",
   served: "Enjoy every bite.",
 };
-export function OrderPreview({ themes }: { themes: readonly Theme[] }) {
+export function OrderPreview({
+  themes,
+  embedded = false,
+}: {
+  themes: readonly Theme[];
+  embedded?: boolean;
+}) {
+  const Container = embedded ? "div" : "main";
+  const Heading = embedded ? "h3" : "h1";
   // "" follows the device light/dark setting, like the real site; a theme id pins the preview.
   const [themeId, setThemeId] = useState("");
   const [step, setStep] = useState<Step>("table");
@@ -40,11 +48,13 @@ export function OrderPreview({ themes }: { themes: readonly Theme[] }) {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const heading = useRef<HTMLHeadingElement>(null);
   const form = useRef<HTMLFormElement>(null);
+  const previousStep = useRef(step);
   const theme = themes.find((theme) => theme.id === themeId);
   const selected = SAMPLE_MENU.filter((item) => (quantities[item.id] ?? 0) > 0);
   useEffect(() => {
-    heading.current?.focus();
-  }, [step]);
+    if (!embedded || previousStep.current !== step) heading.current?.focus();
+    previousStep.current = step;
+  }, [step, embedded]);
   useEffect(() => {
     if (Object.keys(errors).length)
       form.current?.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
@@ -82,42 +92,44 @@ export function OrderPreview({ themes }: { themes: readonly Theme[] }) {
   return (
     <div
       style={theme && themeStyle(theme)}
-      className="min-h-dvh bg-background font-sans text-foreground [&_label]:text-base [&_p]:text-base"
+      className={`${embedded ? "" : "min-h-dvh"} bg-background font-sans text-foreground [&_label]:text-base [&_p]:text-base`}
     >
-      <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-between gap-6 px-6 py-6 md:px-12">
-        <Link
-          href={appRoutes.dev.path}
-          className="inline-flex min-h-11 items-center text-primary underline underline-offset-4"
-        >
-          Back to previews
-        </Link>
-        <div className="w-full max-w-xs">
-          <Select
-            id="order-preview-theme"
-            label="Preview theme"
-            value={themeId}
-            onChange={(event) => setThemeId(event.target.value)}
+      {!embedded && (
+        <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-between gap-6 px-6 py-6 md:px-12">
+          <Link
+            href={appRoutes.dev.path}
+            className="inline-flex min-h-11 items-center text-primary underline underline-offset-4"
           >
-            <option value="">Match my device</option>
-            {themes.map((theme) => (
-              <option key={theme.id} value={theme.id}>
-                {theme.name}
-              </option>
-            ))}
-          </Select>
+            Back to previews
+          </Link>
+          <div className="w-full max-w-xs">
+            <Select
+              id="order-preview-theme"
+              label="Preview theme"
+              value={themeId}
+              onChange={(event) => setThemeId(event.target.value)}
+            >
+              <option value="">Match my device</option>
+              {themes.map((theme) => (
+                <option key={theme.id} value={theme.id}>
+                  {theme.name}
+                </option>
+              ))}
+            </Select>
+          </div>
         </div>
-      </div>
-      <main className="mx-auto max-w-3xl px-6 pt-8 pb-16 md:px-12 md:pt-12">
+      )}
+      <Container className="mx-auto max-w-3xl px-6 pt-8 pb-16 md:px-12 md:pt-12">
         <p className="mb-6 tracking-widest text-primary uppercase">
           {step === "table" ? "Uchenna & Adaora" : `Table ${table}`}
         </p>
-        <h1
+        <Heading
           ref={heading}
           tabIndex={-1}
           className="font-display text-4xl leading-tight tracking-tight focus:outline-none md:text-5xl"
         >
           {titles[step]}
-        </h1>
+        </Heading>
         <p className="mt-6 leading-relaxed">
           Preview only. No orders are sent or saved. The tables, menu and service updates are
           samples.
@@ -225,6 +237,7 @@ export function OrderPreview({ themes }: { themes: readonly Theme[] }) {
                 )}
                 {/* The menu is long on a phone; keep the next step in thumb reach. */}
                 <ActionBar
+                  sticky={!embedded}
                   status={
                     selected.length === 0
                       ? "Your selection is empty. Choose something from the menu to continue."
@@ -256,7 +269,7 @@ export function OrderPreview({ themes }: { themes: readonly Theme[] }) {
             )}
           </form>
         )}
-      </main>
+      </Container>
     </div>
   );
 }

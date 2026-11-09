@@ -1,7 +1,9 @@
 import "server-only";
 import { cacheLife, cacheTag, revalidateTag } from "next/cache";
 import { logger } from "@/modules/shared/lib/logger";
-import { readStoredThemes, activateStoredThemes } from "./stored-themes";
+import { z } from "zod";
+import { validateThemePublication } from "./theme-publication";
+import { readStoredThemes, selectionSchema } from "./stored-themes";
 
 const THEME_TAG = "active-theme-pair";
 const log = logger.child({ module: "theming" });
@@ -16,7 +18,9 @@ export async function getStoredActiveThemes() {
       let timeout: ReturnType<typeof setTimeout> | undefined;
       try {
         return await Promise.race([
-          import("./theme-repository").then(({ loadThemeSelection }) => loadThemeSelection()),
+          import("./theme-repository").then(({ loadPublishedThemeSelection }) =>
+            loadPublishedThemeSelection(),
+          ),
           new Promise<never>((_, reject) => {
             timeout = setTimeout(() => reject(new Error("Theme read timed out")), 2000);
           }),
@@ -30,14 +34,15 @@ export async function getStoredActiveThemes() {
   return result.themes;
 }
 
-/** No public endpoint. Future admin actions must authorize before calling this service. */
+/** Internal only. Admin actions must authorize before calling this service. */
 export async function activateThemeSelection(input: unknown): Promise<void> {
-  await activateStoredThemes(
-    input,
-    async (selection) => {
-      const { saveThemeSelection } = await import("./theme-repository");
-      await saveThemeSelection(selection);
-    },
-    () => revalidateTag(THEME_TAG, { expire: 0 }),
-  );
+  const { reviewed, ...selection } = selectionSchema
+    .extend({
+      reviewed: z.object({ light: z.unknown(), dark: z.unknown() }).strict(),
+    })
+    .parse(input);
+  const expected = validateThemePublication(reviewed);
+  const { publishThemeDrafts } = await import("./theme-draft-repository");
+  await publishThemeDrafts(selection, undefined, expected);
+  revalidateTag(THEME_TAG, { expire: 0 });
 }

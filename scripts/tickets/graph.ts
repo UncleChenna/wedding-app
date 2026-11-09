@@ -147,6 +147,31 @@ export function ready<T extends Meta & { module?: string }>(
     .sort(pickOrder(metas));
 }
 
+/** Blocker states that `--ahead` may start beside (TICKET-214): someone is on it. */
+const AHEAD_OK = new Set(["done", "in_progress", "in_review", "blocked"]);
+
+/**
+ * Todo, unclaimed tickets that aren't ready but can start with `--ahead` (TICKET-218): every
+ * blocker is done or being worked on, and at least one isn't done yet. Same order as `ready`.
+ */
+export function startableAhead<T extends Meta & { module?: string }>(
+  metas: readonly T[],
+  options: PickOptions = {},
+): T[] {
+  const map = byId(metas);
+  return metas
+    .filter(
+      (m) =>
+        m.status === "todo" &&
+        !m.owner &&
+        matches(m, options) &&
+        m.blocked_by.length > 0 &&
+        m.blocked_by.every((d) => AHEAD_OK.has(map.get(d)?.status ?? "")) &&
+        m.blocked_by.some((d) => map.get(d)?.status !== "done"),
+    )
+    .sort(pickOrder(metas));
+}
+
 /**
  * Simulated pick order: assume in-flight work (and anything `skip` matches,
  * e.g. human tasks done in parallel) finishes, then repeatedly take the best
