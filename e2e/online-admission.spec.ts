@@ -27,7 +27,7 @@ test("online partial admission commits once and safely retries a lost receipt", 
     "Requires owned isolated synthetic database",
   );
   test.setTimeout(120000);
-  process.loadEnvFile(".env.local");
+  if (!process.env.DATABASE_URL) process.loadEnvFile(".env.local");
   const url = process.env.DATABASE_URL ?? "";
   assertDatabaseTarget(url, { localOnly: true });
   const db = postgres(url, { max: 1 });

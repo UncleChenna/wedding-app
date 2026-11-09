@@ -65,3 +65,9 @@ No production database application or migration. Online admission only: persiste
 # Harness changes
 
 Only additive CI test steps and documentation for the opt-in database-test flag. No threshold, hook, permission guard or existing test weakened.
+
+## Hosted CI fixture repair
+
+The first hosted invitation job failed because the two new fixtures unconditionally loaded `.env.local`, which is intentionally absent in CI. Both now use the injected `DATABASE_URL` directly and load the local file only when that variable is missing. Target identity guards and every assertion remain unchanged; no product code changed.
+
+A stricter local proof rejected every `process.loadEnvFile(".env.local")` call while providing the isolated database URL: SQL **5/5 passed (816ms)** and production browser **2/2 passed (50.1s)**. Identical-layout regenerated screenshots were retained as ignored local artifacts; the independently reviewed images remain unchanged. Owned database stopped with data retained. Final CI must run again on the repair commit.

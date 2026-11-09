@@ -13,7 +13,7 @@ describe.runIf(process.env.RUN_ONLINE_ADMISSION_DB_TESTS === "1")(
   () => {
     let client: Sql, db: Db;
     beforeAll(() => {
-      process.loadEnvFile(".env.local");
+      if (!process.env.DATABASE_URL) process.loadEnvFile(".env.local");
       const url = process.env.DATABASE_URL ?? "";
       assertDatabaseTarget(url, { localOnly: true });
       client = postgres(url, {

@@ -42,3 +42,9 @@ Verified TICKET-108 base143b4d637b8bfc4597f8f990a5085f2722454967 integrated as08
 - Integrated admission browser2/2pass34.3s; initial mobile decode wait timed out once, unchanged serial rerun passes. All144captures regenerated.
 - Integrated authenticated offline browser2/2pass37.3s, all-themeaxe and exact-zero loadCLS pass; eight screenshots/timings retained under offline-mobile/offline-desktop.
 - Owned database stopped with synthetic data retained; no heavy process remains. Final exact-headCI is required before merge.
+
+## Hosted CI fixture repair
+
+The first hosted invitation job failed because the two new fixtures unconditionally loaded `.env.local`, which is intentionally absent in CI. Both now use the injected `DATABASE_URL` directly and load the local file only when that variable is missing. Target identity guards and every assertion remain unchanged; no product code changed.
+
+A stricter local proof rejected every `process.loadEnvFile(".env.local")` call while providing the isolated database URL: SQL **5/5 passed (816ms)** and production browser **2/2 passed (50.1s)**. Identical-layout regenerated screenshots were retained as ignored local artifacts; the independently reviewed images remain unchanged. Owned database stopped with data retained. Final CI must run again on the repair commit.
