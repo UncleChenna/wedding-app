@@ -62,6 +62,43 @@ describe("reconcileScan", () => {
       expect(reconcileScan(report(), state)).toEqual({ result, admitted: 0, conflict: true });
   });
 
+  it.each([0, -1, 1.5, Number.NaN, Number.POSITIVE_INFINITY])(
+    "counts nobody if an internal caller bypasses schema validation with %s people",
+    (reportedPeople) => {
+      const event = report({ reportedPeople });
+      const state = { invitation: { ...invitation }, admittedSoFar: 1 };
+      expect(scanSyncBatchSchema.safeParse({ events: [event] }).success).toBe(false);
+      expect(reconcileScan(event, state)).toEqual({
+        result: "invalid",
+        admitted: 0,
+        conflict: true,
+      });
+      // Defensive reconciliation must not rewrite the physical report or canonical state.
+      expect(event.reportedPeople).toBe(reportedPeople);
+      expect(state).toEqual({ invitation, admittedSoFar: 1 });
+    },
+  );
+
+  it.each(["already_used", "invalid", "revoked", "not_rsvped"] as const)(
+    "preserves a device's %s refusal even when the server now sees an eligible invitation",
+    (reportedResult) => {
+      const event = report({ reportedResult, reportedPeople: 0 });
+      expect(scanSyncBatchSchema.safeParse({ events: [event] }).success).toBe(true);
+      expect(reconcileScan(event, { invitation, admittedSoFar: 0 })).toEqual({
+        result: reportedResult,
+        admitted: 0,
+        conflict: false,
+      });
+    },
+  );
+
+  it("counts nobody, and flags it, for a report that skipped the schema", () => {
+    // Defence in depth: a fractional count never reaches here through the route.
+    expect(
+      reconcileScan(report({ reportedPeople: 1.5 }), { invitation, admittedSoFar: 0 }),
+    ).toEqual({ result: "invalid", admitted: 0, conflict: true });
+  });
+
   it("keeps a refusal the device showed, without a conflict", () => {
     expect(
       reconcileScan(report({ reportedResult: "revoked", reportedPeople: 0 }), {
