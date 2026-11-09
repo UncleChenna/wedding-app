@@ -2,7 +2,7 @@
 id: TICKET-130
 title: Enforce coverage on critical logic
 epic: testing
-status: in_progress
+status: in_review
 priority: high
 estimate: M
 labels: [test]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-056, TICKET-058, TICKET-073]
 blocks: [TICKET-154]
 branch: TICKET-130
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/134
 created: 2026-10-21
 updated: 2026-11-09
 started: 2026-11-09
@@ -61,3 +61,4 @@ _Agents append dated notes here while working._
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-09 — todo → claimed — divine (codex)
 - 2026-11-09 — todo → in_progress — divine (codex)
+- 2026-11-09 — in_progress → in_review — divine (codex)
