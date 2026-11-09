@@ -2,7 +2,7 @@
 id: TICKET-069
 title: Export a printable gate guest list
 epic: checkin
-status: in_review
+status: in_progress
 priority: high
 estimate: S
 labels: [frontend, backend]
@@ -63,3 +63,4 @@ See: [Performance and reliability](../docs/prd.md#performance-and-reliability).
 - 2026-11-09 — todo → claimed — divine (codex)
 - 2026-11-09 — todo → in_progress — divine (codex)
 - 2026-11-09 — in_progress → in_review — divine (codex)
+- 2026-11-09 — in_review → in_progress — divine (codex) — Fix full CI failure and integrate current guest actions
