@@ -2,10 +2,13 @@
 
 ## Summary
 
-The merged scan-sync helper caused the unchanged per-file95% coverage gate to fail:
-92.3%lines and83.33%branches. The missing path was its defensive invalid-count
-fallback, used if an internal caller bypasses schema validation. This PR adds
-behavioral regressions without changing production code, thresholds or exclusions.
+The scan-sync helper's defensive fallback must admit nobody when an internal caller
+bypasses input validation. This PR extends the existing fractional-count regression
+with zero, negative, NaN and infinite counts, schema rejection, immutability and all
+four device refusal outcomes. Production code and coverage thresholds are unchanged.
+
+The narrow coverage repair from PR141 is already on develop and is retained
+verbatim. This PR supplies the broader safety regressions described below.
 
 ## Changes
 
@@ -19,7 +22,7 @@ behavioral regressions without changing production code, thresholds or exclusion
 
 - Reproduced original scoped failure:92.3%lines/83.33%branches; uncovered line82.
 - Added tests pass19/19; scan-sync.ts now100%lines/branches/functions.
-- Full unchanged `caffeinate -is pnpm test`:1483passed,178opt-in skipped;184testfiles passed/36skipped in101.89s. Aggregate critical coverage98.66%lines/99.31%branches; every file passes95%, including scan-sync100%.
+- Integrated develop `3e75175e`: full unchanged `caffeinate -is pnpm test` passes 1,484 tests, with 178 opt-in skips (184 test files passed, 36 skipped) in 147.96 seconds. Aggregate critical coverage98.66%lines/99.31%branches; every file passes95%, including scan-sync100%.
 - verify:quick: lint/types/19related tests pass.
 - Independent test-only review clean: invalid-count defense and refusal preservation verified; no production/config changes. Final hosted CI remains required before merge.
 
@@ -32,8 +35,8 @@ gates remain mandatory. TICKET-060 stays blocked with draftPR139 preserved.
 
 ## Rollback
 
-Revert this test-only commit; doing so restores the failing coverage gate and does
-not alter application behavior or data.
+Reverting removes the additional regressions only. The existing narrow coverage
+repair remains on develop; application behavior and data are unchanged.
 
 Ticket: tickets/TICKET-223-cover-scan-reconciliation-safety-boundaries.md
 
@@ -46,3 +49,7 @@ N/A: tests only; no rendered interface, styling or browser behavior changed.
 All missing defensive reconciliation cases have behavioral assertions. Fullcoverage
 and quick gates pass with unchanged thresholds; independent review is clean.
 Evidence logs are in docs/reviews/TICKET-223/. Final required CI is checked beforemerge.
+
+Integration review is clean: the sole conflict was resolved by retaining both sets
+of assertions. Earlier exact-head CI passed all six jobs; fresh final-head CI is
+required after this base update. Integrated logs are in docs/reviews/TICKET-223/.

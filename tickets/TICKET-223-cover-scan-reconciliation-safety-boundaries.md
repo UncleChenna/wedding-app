@@ -61,7 +61,10 @@ CHK-3/CHK-6 reconciliation safety while adding meaningful missing-path regressio
 2026-11-09: Assigned shared CI repair; TICKET-060 paused with draftPR139 preserved.
 Reproduced92.3%lines/83.33%branches;19focused regressions now100%both.
 Full unchanged suite:1483passed/178skipped,98.66%lines/99.31%branches in101.89s.
-Quick lint/types/19related tests pass; independent review clean. Final CI pending.
+Quick lint/types/19related tests pass; independent review clean. Initial final CI passed all six jobs. External PR141 then merged the narrow fix;
+integrated develop3e75175e retaining both assertions. Full1484passed/178skipped
+in147.96s, identical coverage and quick pass; independent resolution review clean.
+New final CI pending.
 
 ## Activity log
 
