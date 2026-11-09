@@ -2,7 +2,7 @@
 id: TICKET-053
 title: Show a reminder list and re-share nudges to non-responders
 epic: sharing
-status: in_progress
+status: in_review
 priority: medium
 estimate: M
 labels: [frontend, backend]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-051, TICKET-089, TICKET-052]
 blocks: [TICKET-054]
 branch: TICKET-053
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/129
 created: 2026-10-21
 updated: 2026-11-09
 started: 2026-11-09
@@ -64,3 +64,4 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-8) · [Inv
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-09 — todo → claimed — divine (codex)
 - 2026-11-09 — todo → in_progress — divine (codex)
+- 2026-11-09 — in_progress → in_review — divine (codex)
