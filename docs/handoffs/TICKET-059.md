@@ -119,3 +119,10 @@ and2pass-image five-second timeouts; all per-file critical coverage passed
 /tmp/TICKET-059-base3e75175e-coverage.log. Serial standard-command rerun is required
 before publishing; never raise timeout/assertions to conceal contention.
 Root108 foundation is pushed in draft142,c7f2286c/blocked488439fd until059merges.
+
+Serial current-base verification passes1,519tests/178optinskips in65.23s; every
+criticalfilepasses, aggregate98.01%lines/98.25%branches. Log
+/tmp/TICKET-059-base3e75175e-serial.log. Cleanintegrationcommitted e7ba75cc.
+CLIresume firstattempt hittransientoriginledgerfailure; retryunderway. No code
+changed between failed parallel run and successful standard serial run. Next:
+publishupdatedevidence, t:pr, exactfinalheadall7CI, coordinatedverifiedmerge.
