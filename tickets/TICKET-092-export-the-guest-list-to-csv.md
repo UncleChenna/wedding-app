@@ -2,7 +2,7 @@
 id: TICKET-092
 title: Export the guest list to CSV
 epic: admin
-status: in_review
+status: in_progress
 priority: urgent
 estimate: S
 labels: [backend]
@@ -62,3 +62,4 @@ See: [Admin dashboard](../docs/prd.md#admin-dashboard) (ADM-1).
 - 2026-11-09 — todo → claimed — divine (codex) — started ahead of TICKET-089 (in_review)
 - 2026-11-09 — todo → in_progress — divine (codex) — started ahead of TICKET-089 (in_review)
 - 2026-11-09 — in_progress → in_review — divine (codex)
+- 2026-11-09 — in_review → in_progress — divine (codex) — Resolve merged sent-tracking overlap and reverify CSV plus Undo
