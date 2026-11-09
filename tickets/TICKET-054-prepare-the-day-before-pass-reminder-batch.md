@@ -39,7 +39,7 @@ See: [Invitation wording](../docs/prd.md#invitation-wording).
 
 ## Acceptance criteria
 
-- [ ] The list includes every rsvp_yes invitation and uses the day-before template (unit).
+- [x] The list includes every rsvp_yes invitation and uses the day-before template (unit).
 
 ## Test plan
 
@@ -52,7 +52,7 @@ See: [Invitation wording](../docs/prd.md#invitation-wording).
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-11-09: Added protected Sharing → day-before pass reminders with the approved template and existing manual Share menu. Four unit tests, actual PostgreSQL status-selection test, production build and both real-auth browser projects pass (25.9s). Independent source/four-screenshot review clean. Generic sharing attempts/Undo preserve RSVP state; no automatic/external messages. See docs/plans/TICKET-054-pr.md. Full final-head CI remains required; shared baseline parity repair is TICKET-221/PR131.
 
 ## Activity log
 
