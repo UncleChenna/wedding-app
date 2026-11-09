@@ -2219,15 +2219,16 @@
       "log": [
         "- 2026-11-09 — todo → claimed — unclechenna (codex) — started ahead of TICKET-089 (in_progress)",
         "- 2026-11-09 — todo → in_progress — unclechenna (codex) — started ahead of TICKET-089 (in_progress)",
-        "- 2026-11-09 — in_progress → in_review — unclechenna (codex)"
+        "- 2026-11-09 — in_progress → in_review — unclechenna (codex)",
+        "- 2026-11-09 — in_review → done — unclechenna (codex)"
       ],
-      "status": "in_review",
+      "status": "done",
       "owner": "unclechenna",
       "agent": "codex",
       "branch": "TICKET-051",
       "pr": "https://github.com/UncleChenna/wedding-app/pull/116",
       "started": "2026-11-09",
-      "completed": "",
+      "completed": "2026-11-09",
       "updated": "2026-11-09",
       "reason": "",
       "resume_to": ""
