@@ -40,8 +40,8 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-6).
 
 ## Acceptance criteria
 
-- [ ] An offline reload of /checkin shows the scanner ready (e2e).
-- [ ] Decoder assets are precached (test lists them).
+- [x] An offline reload of /checkin shows the scanner ready (e2e).
+- [x] Decoder assets are precached (test lists them).
 
 ## Test plan
 
@@ -54,6 +54,8 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-6).
 - `src/modules/checkin/`
 
 ## Notes / decisions
+
+- 2026-11-09: Integrated verified develop2df977c6/TICKET-060.46 real browser/storage tests, production mobile+desktop auth/keyboard/axe/CLS0 journeys and1,733 unit tests pass. All32 screenshots reviewed; final CI/merge pending. Physical scanner QA stays release-blocking in TICKET-114.
 
 - 2026-11-09: Real worker/storage46tests and production PIN/offline/signout2tests pass;24 theme screenshots reviewed. Preparing integration of merged TICKET-060 before final review/CI; PR142 remains draft.
 

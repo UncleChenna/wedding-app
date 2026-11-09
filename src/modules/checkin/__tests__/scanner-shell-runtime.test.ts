@@ -236,4 +236,21 @@ describe("authorized scanner shell preparation", () => {
     });
     expect(f.store.commit).not.toHaveBeenCalled();
   });
+  it("does not preserve wire compression metadata on decoded cached asset bytes", async () => {
+    const f = fixture();
+    const original = f.fetcher.getMockImplementation();
+    if (!original) throw new Error("missing fixture fetcher");
+    f.fetcher.mockImplementation(async (url) => {
+      const response = await original(url);
+      response.headers.set("Content-Encoding", "gzip");
+      response.headers.set("Content-Length", "1");
+      return response;
+    });
+    expect(await f.runtime.prepare()).toMatchObject({ state: "ready" });
+    for (const [, response] of f.cache.put.mock.calls) {
+      expect(response.headers.has("Content-Encoding")).toBe(false);
+      expect(response.headers.has("Content-Length")).toBe(false);
+      expect(await response.clone().text()).toBe("public immutable asset");
+    }
+  });
 });

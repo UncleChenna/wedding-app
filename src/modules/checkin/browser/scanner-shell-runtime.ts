@@ -36,7 +36,10 @@ export function createScannerShellRuntime({ store, storage, fetcher, origin, bui
           // Consume the network body while the abort deadline is still active, so later
           // JSON parsing/cache.put cannot hold the publication lock on a stalled stream.
           const body = await response.arrayBuffer();
-          return new Response(body, { status: response.status, headers: response.headers });
+          const headers = new Headers(response.headers);
+          headers.delete("Content-Encoding");
+          headers.delete("Content-Length");
+          return new Response(body, { status: response.status, headers });
         })(),
         new Promise<never>((_resolve, reject) => {
           timer = setTimeout(

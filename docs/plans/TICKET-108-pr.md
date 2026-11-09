@@ -6,7 +6,7 @@ Ticket: TICKET-108
 
 A signed-in gate device can prepare the scanner camera, close the browser and reopen it without a network connection until its trusted session deadline. Offline preparation uses a minimal server-authorized document and complete immutable asset inventory. Signing out clears saved access and locks other scanner tabs.
 
-This PR remains draft while integrating the newly merged TICKET-060 result component and completing final verification. Offline guest snapshots/admission queues belong to TICKET-065/066/180; this change does not claim offline admission decisions.
+TICKET-060 is integrated from verified develop `2df977c6`. Local integrated verification and independent source/visual review pass; final PR-head CI remains the merge gate. Offline guest snapshots/admission queues belong to TICKET-065/066/180; this change does not claim offline admission decisions.
 
 # Changes
 
@@ -20,7 +20,7 @@ This PR remains draft while integrating the newly merged TICKET-060 result compo
 
 # Acceptance criteria and evidence
 
-The requested offline reload and complete decoder inventory have passing evidence on the pre-TICKET-060 integration checkpoint. Keep the ticket incomplete until the integrated scanner is verified and final CI passes.
+Both requested implementation criteria have passing integrated evidence. The ticket remains in review until the final PR-head CI passes and the PR is merged.
 
 - Real emitted worker plus generated camera bundle: offline reload and actual QR video-pixel decoding in Chromium and WebKit.
 - Session deadline: camera tracks end at expiry; a later reload receives the generic offline page.
@@ -30,19 +30,19 @@ The requested offline reload and complete decoder inventory have passing evidenc
 
 # Verification
 
-- Combined storage/worker suite:46 passes in36.4seconds.
-- Authenticated production journey:2 passes in4.1seconds after the explicit proxy denial fix. The initial run exposed the redirect bug; assertions were preserved.
-- Quick verification: lint/types/115 related tests pass. Final integrated verification remains pending.
-- Production builds pass. Final manifest and asset integrity were checked earlier; final integrated deployment/build verification remains required.
-- Independent source review found and verified fixes for stale generations, failed invalidation, pending publication, missed notifications and session replacement. All24 camera-off screenshots were inspected without visual blockers; files are under `docs/reviews/TICKET-108/{chromium,webkit}/`.
+- Combined storage/worker suite:46 passes in 42.4 seconds after TICKET-060 integration.
+- Authenticated production journey:2 passes after integration, including all-theme axe, measured initial CLS 0, keyboard refresh and keyboard sign-out. The initial run exposed the redirect bug; assertions were preserved.
+- Quick verification: lint/types/related tests pass. Full integrated unit run: 1,733 pass, 185 conditional skips, 69.09 seconds; critical coverage 98.27% lines / 98.46% branches.
+- Integrated production build passes. No live deployment is claimed.
+- Independent source review found and verified fixes for stale generations, failed invalidation, pending publication, missed notifications and session replacement. All 24 integrated offline camera-off screenshots and 8 production control screenshots were inspected without visual blockers; files are under `docs/reviews/TICKET-108/`.
 
 # UI evidence
 
-Four themes at375/768/1280 pass overflow and44px-target checks; each theme passes axe in both browser engines. Browser tests verify real expiry cleanup. The native offline document uses the same local font files/metrics as the shared theme; online pages retain Next font loading. Physical phones, WhatsApp, actual camera conditions and fresh performance/CLS measurements remain unverified release requirements, not passes.
+Four themes at 375/768/1280 pass overflow and 44px-target checks; each theme passes axe in both browser engines. Browser tests verify real expiry cleanup. The native offline document uses the same local font files/metrics as the shared theme; online pages retain Next font loading. Production initial CLS is 0 on mobile and desktop. Physical installed phones and actual camera conditions remain unverified release requirements, not passes. The staff-only route has no guest Lighthouse threshold; no fresh Lighthouse score is claimed. The full itemized checklist is [UI review](../reviews/TICKET-108/ui-review.md).
 
 # Risks and rollout
 
-Keep PR142 draft pending TICKET-060 integration and final review/CI. TICKET-201/114/138 retain applicable physical-device and performance release gates. Native PostgreSQL evidence does not certify Supabase Auth/Realtime. No database schema, production database application or new dependency is included.
+Merge PR142 only after all final-head CI checks pass. TICKET-201/114/138 retain applicable physical-device and performance release gates. Native PostgreSQL evidence does not certify Supabase Auth/Realtime. No database schema, production database application or new dependency is included.
 
 Missing/evicted assets, unavailable coordination or invalid grants fail offline use closed. If both durable storage channels fail, removal is not acknowledged and no restart-safe guarantee is claimed. Offline operation cannot instantly learn remote revocation; the trusted expiry and next online authorization remain the boundary.
 

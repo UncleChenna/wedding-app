@@ -16,6 +16,9 @@ let themeCss: string;
 declare global {
   interface Window {
     scannerFixtureTracks: MediaStreamTrack[];
+    scannerFixtureDecoded: string[];
+    scannerFixturePaintQr: boolean;
+    scannerFixtureBlank: boolean;
   }
 }
 
@@ -163,7 +166,7 @@ test("actual worker restores the complete scanner bundle offline and decodes QR 
   page,
   context,
 }) => {
-  expiresAt = Date.now() + 10_000;
+  expiresAt = Date.now() + 12_000;
   await prepare(page);
   await context.setOffline(true);
   await page.reload();
@@ -179,18 +182,51 @@ test("actual worker restores the complete scanner bundle offline and decodes QR 
     image.src = src;
     await image.decode();
     drawing.drawImage(image, 0, 0);
-    const stream = canvas.captureStream(15);
-    window.scannerFixtureTracks = stream.getTracks();
-    setInterval(() => drawing.drawImage(image, 0, 0), 100);
+    window.scannerFixturePaintQr = true;
+    window.scannerFixtureBlank = false;
+    window.scannerFixtureDecoded = [];
+    const networkFetch = window.fetch.bind(window);
+    window.fetch = (input, options) => {
+      if (String(input) === "/api/checkin/read" && typeof options?.body === "string") {
+        const body = JSON.parse(options.body) as { qr?: unknown };
+        if (typeof body.qr === "string") window.scannerFixtureDecoded.push(body.qr);
+      }
+      return networkFetch(input, options);
+    };
+    setInterval(() => {
+      if (window.scannerFixturePaintQr) drawing.drawImage(image, 0, 0);
+      else {
+        drawing.fillStyle = "white";
+        drawing.fillRect(0, 0, 512, 512);
+        window.scannerFixtureBlank = true;
+      }
+    }, 100);
     Object.defineProperty(navigator, "mediaDevices", {
       configurable: true,
-      value: { getUserMedia: async () => stream },
+      value: {
+        getUserMedia: async () => {
+          const stream = canvas.captureStream(15);
+          window.scannerFixtureTracks = stream.getTracks();
+          return stream;
+        },
+      },
     });
   }, qr);
   await page.getByRole("button", { name: "Open camera" }).click();
-  await expect(page.getByText("QR read", { exact: true })).toBeVisible();
-  await expect(page.getByText(/before admitting anyone/)).toBeVisible();
-  await expect(page.getByText("Scanner locked", { exact: true })).toBeVisible({ timeout: 12_000 });
+  await expect(page.getByText("Unable to check this pass", { exact: true })).toBeVisible();
+  expect(await page.evaluate(() => window.scannerFixtureDecoded)).toEqual([
+    "synthetic-offline-scanner-qr",
+  ]);
+  await expect(page.getByText("Valid pass", { exact: true })).toHaveCount(0);
+  // TICKET-060 stops capture after a read. Restart on blank frames to prove that
+  // session expiry, rather than a completed read, shuts down an active camera.
+  await page.evaluate(() => {
+    window.scannerFixturePaintQr = false;
+  });
+  await expect.poll(() => page.evaluate(() => window.scannerFixtureBlank)).toBe(true);
+  await page.getByRole("button", { name: "Scan next pass" }).click();
+  await expect(page.getByRole("button", { name: "Pause camera" })).toBeVisible();
+  await expect(page.getByText("Scanner locked", { exact: true })).toBeVisible({ timeout: 15_000 });
   expect(
     await page.evaluate(() =>
       window.scannerFixtureTracks.every((track) => track.readyState === "ended"),

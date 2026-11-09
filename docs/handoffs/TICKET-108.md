@@ -252,3 +252,48 @@ until integration proven. New Scanner includes live read-only resolver; persiste
 snapshots/admission still065/066/180, not108. The latest worker optional diagnostic-read
 removal is covered by emitted-worker tests but occurred after last authenticated Nextbuild;
 final build/auth run after integration is mandatory. Goal remains active, no blocker audit.
+
+## Integrated completion checkpoint — 2026-11-09 21:45 UTC
+
+TICKET-060 is done and merged as `2df977c6`. TICKET-108 integrated that base cleanly
+in `b2b6a7d`, after checkpoint `9ed03ec8`. Three unchanged 0025 migration files
+matched develop byte-for-byte. Standing authorization was recorded and archived
+as `.harness/approved-writes.consumed-2df977c6.json`. No new migration was created.
+
+The pixel test now proves the real TICKET-060 behavior: the exact decoded QR reaches
+the live POST, an offline read reports unavailable rather than admission, and a
+second capture on blank frames stops at session expiry. All 46 combined browser
+checks pass in 42.4 seconds. All 24 updated offline screenshots were copied and
+independently reviewed. A regression also verifies that decoded response bodies do
+not retain their wire compression/length headers.
+
+The integrated production build passes. The owned PostgreSQL fixture on 26801 was
+restarted and received unchanged migration 0025. Both production browser projects
+pass PIN authentication, preparation, offline reload and enhanced sign-out. Eight
+additional production screenshots, all-theme axe checks, initial CLS of zero,
+reduced motion, keyboard refresh and Tab/Enter sign-out were verified. All eight
+screenshots passed independent visual review. Recorded refresh took about 158 ms
+and sign-out about 27 ms once the page was ready; the longer fixture time occurs
+in earlier loading/theme checks. This is not a guest performance or physical-device
+claim. The database is stopped with its backup retained; see
+`/tmp/TICKET-108-final-stop.log`.
+
+Full `pnpm test`: 1,733 passed, 185 conditional skips, 69.09 seconds. Critical
+coverage is 98.27% lines and 98.46% branches. No checks were weakened. Source/CI
+review and all 32 image reviews are clean. `docs/pwa.md` and the itemized
+`docs/reviews/TICKET-108/ui-review.md` record the final behavior and limits.
+Acceptance criteria are checked on actual evidence; status must remain in review
+until final CI and merge. Physical installed scanner QA remains in TICKET-114.
+
+Logs: `/tmp/TICKET-108-integrated-{browser,build,auth,coverage,quick}.log`,
+`/tmp/TICKET-108-keyboard-auth.log` and `/tmp/TICKET-108-timed-auth.log`.
+Production timing JSON is retained with the review images.
+
+Next: finish quick verification, commit and push; use normal `t:pr` to ready
+existing PR #142 and record review status. Monitor all seven checks on its final
+head; merge only after they pass and the current base/conflicts are checked. Then
+record done through the CLI and continue the queue. The goal remains active.
+
+Agent024 now owns TICKET-061 / PR #144 and database port 36261. Its admission
+foundation passed early independent review; UI and final checks are still pending.
+Its final merge waits for TICKET-108. No TICKET-108 database is running.

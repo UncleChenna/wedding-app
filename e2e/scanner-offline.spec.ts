@@ -1,7 +1,10 @@
-import { existsSync } from "node:fs";
+import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { randomBytes, randomUUID, scryptSync } from "node:crypto";
 import postgres, { type Sql } from "postgres";
 import { expect, test } from "@playwright/test";
+import { scanA11y } from "./support/axe";
+import { applyTheme } from "./support/theme";
+import { themes } from "../src/modules/theming/themes";
 import { assertDatabaseTarget } from "../scripts/database-target";
 
 test.use({ trace: "off", screenshot: "off", video: "off" });
@@ -36,7 +39,23 @@ test.describe("authenticated offline scanner", () => {
   test("prepares after PIN sign-in, restores offline, then clears access on enhanced sign-out", async ({
     page,
     context,
-  }) => {
+  }, info) => {
+    const started = Date.now();
+    const timings: Record<string, number> = {};
+    const mark = (name: string) => {
+      timings[name] = Date.now() - started;
+    };
+    await page.addInitScript(() => {
+      const state = window as unknown as { offlineScannerCls: number };
+      state.offlineScannerCls = 0;
+      new PerformanceObserver((list) => {
+        for (const entry of list.getEntries()) {
+          const shift = entry as PerformanceEntry & { hadRecentInput: boolean; value: number };
+          if (!shift.hadRecentInput) state.offlineScannerCls += shift.value;
+        }
+      }).observe({ type: "layout-shift", buffered: true });
+    });
+    await page.setViewportSize({ width: info.project.name === "mobile" ? 375 : 1280, height: 900 });
     await page.goto("/checkin");
     expect((await page.request.get("/checkin/offline-shell")).status()).toBe(401);
     await page.getByLabel("Your six-digit PIN").fill("012345");
@@ -45,6 +64,22 @@ test.describe("authenticated offline scanner", () => {
     await expect(page.getByText(/Camera ready for an offline reload/)).toBeVisible({
       timeout: 20_000,
     });
+    await page.evaluate(() => document.fonts.ready);
+    await page.waitForLoadState("networkidle");
+    expect(
+      await page.evaluate(
+        () => (window as unknown as { offlineScannerCls: number }).offlineScannerCls,
+      ),
+    ).toBe(0);
+    const folder = `docs/reviews/TICKET-108/production-${info.project.name}`;
+    mkdirSync(folder, { recursive: true });
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    for (const theme of themes) {
+      await applyTheme(page, theme);
+      expect(await scanA11y(page)).toEqual([]);
+      await page.screenshot({ path: `${folder}/${theme.id}.png`, fullPage: true });
+    }
+    mark("themesComplete");
     const authorized = await page.request.get("/checkin/offline-shell");
     expect(authorized.status()).toBe(200);
     expect(authorized.headers()["cache-control"]).toContain("no-store");
@@ -60,8 +95,22 @@ test.describe("authenticated offline scanner", () => {
     await context.setOffline(false);
     await page.reload();
     await expect(page.getByRole("button", { name: "Sign out" })).toBeVisible();
-    await page.getByRole("button", { name: "Sign out" }).click();
+    mark("onlineRestored");
+    const refresh = page.getByRole("button", { name: "Refresh offline camera" });
+    await refresh.focus();
+    await expect(refresh).toBeFocused();
+    await refresh.press("Enter");
+    await expect(page.getByText(/Camera ready for an offline reload/)).toBeVisible();
+    mark("refreshReady");
+    const signOut = page.getByRole("button", { name: "Sign out" });
+    await refresh.focus();
+    await page.keyboard.press("Tab");
+    await expect(signOut).toBeFocused();
+    mark("signOutStarted");
+    await signOut.press("Enter");
     await expect(page).toHaveURL(/\/staff$/);
+    mark("signedOut");
+    writeFileSync(`${folder}/timings.json`, JSON.stringify(timings, null, 2) + "\n");
     expect((await page.request.get("/checkin/offline-shell")).status()).toBe(401);
     await context.setOffline(true);
     await page.goto("/checkin");
