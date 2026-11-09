@@ -1,4 +1,8 @@
 import "server-only";
+import { createScannerShellStore } from "@/modules/checkin/browser/scanner-shell-store";
+import { createScannerShellRuntime } from "@/modules/checkin/browser/scanner-shell-runtime";
+import { installScannerShellWorker } from "@/modules/checkin/browser/scanner-shell-worker";
+
 import { ownPassWorkerSource } from "@/modules/invitations/lib/offline-worker";
 
 import {
@@ -14,7 +18,9 @@ import {
  * exact rules in docs/pwa.md. No automatic skipWaiting: a new worker waits until every tab
  * using the old one closes (TICKET-111 adds the update prompt).
  */
-export function serviceWorkerSource(): string {
+export function serviceWorkerSource(
+  scanner: { build: string; assets: readonly string[] } | null = null,
+): string {
   return `"use strict";
 const SW_CACHE_PREFIX = ${JSON.stringify(SW_CACHE_PREFIX)};
 const SW_STATIC_CACHE = ${JSON.stringify(SW_STATIC_CACHE)};
@@ -57,6 +63,31 @@ async function precacheAsset(cache, path) {
 
 ${ownPassWorkerSource()}
 
+const scannerWorker = ${
+    scanner
+      ? `(() => {
+  const createStore = ${createScannerShellStore.toString()};
+  const createRuntime = ${createScannerShellRuntime.toString()};
+  const install = ${installScannerShellWorker.toString()};
+  let store;
+  let runtime;
+  const getStore = () => store || (store = createStore());
+  const getRuntime = () => runtime || (runtime = createRuntime({
+    store: getStore(), storage: caches, fetcher: fetch.bind(self),
+    origin: self.location.origin, build: ${JSON.stringify(scanner.build)}
+  }));
+  return install({ host: self, store: getStore, runtime: getRuntime,
+    storage: caches, fetcher: fetch.bind(self), build: ${JSON.stringify(scanner.build)},
+    assets: ${JSON.stringify(scanner.assets)},
+    fallback: async () => {
+      try { return await (await caches.open(SW_OFFLINE_CACHE)).match(SW_OFFLINE_URL) || Response.error(); }
+      catch { return Response.error(); }
+    }
+  });
+})()`
+      : "null"
+  };
+
 self.addEventListener("install", (event) => {
   // The offline page itself is required; its build assets are best-effort.
   // (Scanner shell: TICKET-108.)
@@ -77,6 +108,7 @@ self.addEventListener("install", (event) => {
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     (async () => {
+      if (scannerWorker) await scannerWorker.activate();
       const names = await caches.keys();
       await Promise.all(
         names
@@ -85,7 +117,8 @@ self.addEventListener("activate", (event) => {
               name.startsWith(SW_CACHE_PREFIX) &&
               name !== SW_STATIC_CACHE &&
               name !== SW_OFFLINE_CACHE &&
-              name !== OWN_PASS_CACHE,
+              name !== OWN_PASS_CACHE &&
+              name !== scannerWorker?.cacheName,
           )
           .map((name) => caches.delete(name)),
       );
@@ -95,6 +128,7 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
+  if (scannerWorker?.handleFetch(event)) return;
   const request = event.request;
   if (request.method === "GET" && request.mode === "navigate" && ownPassPath(request.url) && !request.headers.has("rsc") && !request.headers.has("next-router-prefetch")) {
     event.respondWith(ownPassNavigation(request));
@@ -150,8 +184,10 @@ self.addEventListener("fetch", (event) => {
 }
 
 /** /sw.js must never be cached itself, so updates are always noticed. */
-export function serviceWorkerResponse(): Response {
-  return new Response(serviceWorkerSource(), {
+export function serviceWorkerResponse(
+  scanner: { build: string; assets: readonly string[] } | null = null,
+): Response {
+  return new Response(serviceWorkerSource(scanner), {
     headers: {
       "Content-Type": "application/javascript; charset=utf-8",
       "Cache-Control": "no-cache, no-store, must-revalidate",

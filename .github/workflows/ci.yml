@@ -157,6 +157,8 @@ jobs:
       - run: pnpm exec tsx scripts/test-guest-journey.ts
       - name: Verify authenticated scanner recovery and camera lifecycle
         run: pnpm exec tsx scripts/test-scanner-journey.ts
+      - name: Verify authenticated offline scanner and sign-out
+        run: pnpm exec tsx scripts/test-offline-scanner.ts
       - if: failure()
         uses: actions/upload-artifact@v7
         with:
@@ -180,11 +182,15 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec playwright install --with-deps chromium webkit
       - run: pnpm exec playwright test --config scripts/camera-verification.config.ts
+      - name: Verify offline scanner storage, cold restart and camera expiry
+        run: pnpm exec playwright test --config scripts/scanner-shell.config.ts
       - if: failure()
         uses: actions/upload-artifact@v7
         with:
           name: camera-decoding-evidence
-          path: artifacts/TICKET-059/camera/
+          path: |
+            artifacts/TICKET-059/camera/
+            artifacts/TICKET-108/store/
           retention-days: 7
 
   admin-journey:

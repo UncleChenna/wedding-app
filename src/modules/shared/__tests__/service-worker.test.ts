@@ -306,3 +306,21 @@ describe("served worker script", () => {
     });
   });
 });
+
+it("embeds the scanner worker as executable self-contained JavaScript without touching storage eagerly", () => {
+  const addEventListener = vi.fn();
+  const open = vi.fn(() => {
+    throw new Error("must remain lazy");
+  });
+  runInNewContext(serviceWorkerSource({ build: "b".repeat(64), assets: [] }), {
+    self: { location: { origin: ORIGIN }, addEventListener },
+    caches: { open },
+    fetch: vi.fn(),
+    Response,
+    Request,
+    URL,
+  });
+  expect(addEventListener.mock.calls.filter(([type]) => type === "fetch")).toHaveLength(1);
+  expect(addEventListener.mock.calls.filter(([type]) => type === "message")).toHaveLength(2);
+  expect(open).not.toHaveBeenCalled();
+});

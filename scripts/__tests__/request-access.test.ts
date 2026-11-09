@@ -163,3 +163,14 @@ describe("request authorization matrix", () => {
     expect(await response.text()).not.toContain("provider down");
   });
 });
+
+it("returns an explicit offline-shell denial instead of redirecting a worker to sign-in HTML", async () => {
+  for (const cookie of ["", staffCookie("bar"), staffCookie("gate", true)]) {
+    const response = await proxy(request("/checkin/offline-shell", "GET", cookie));
+    expect(response.status).toBe(401);
+    expect(response.headers.get("location")).toBeNull();
+    expect(response.headers.get("cache-control")).toContain("no-store");
+  }
+  const allowed = await proxy(request("/checkin/offline-shell", "GET", staffCookie("gate")));
+  expect(allowed.headers.get("x-middleware-next")).toBe("1");
+});

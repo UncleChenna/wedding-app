@@ -8,7 +8,7 @@ Decision: [ADR 0014](decisions/0014-service-worker.md). This page records what t
 
 App identity, scope and start URL are all `/`, with `display: standalone`. Neither an invitation token nor a staff session is embedded in this public document. A guest opens their personal invitation from its original link; an installed launch does not magically identify that guest. TICKET-107 supplies the explicitly authorized offline pass described below.
 
-A separate scanner start URL was considered. For now there is one stable app identity and a public home launch; switching the same manifest between guest and scanner destinations would produce ambiguous install/update behavior. Any future separate staff install should have its own explicit identity/start URL and authentication boundary, not depend on cookies in this manifest. Scanner authorization and offline preparation remain TICKET-031/032/108.
+A separate scanner start URL was considered. For now there is one stable app identity and a public home launch; switching the same manifest between guest and scanner destinations would produce ambiguous install/update behavior. Any future separate staff install should have its own explicit identity/start URL and authentication boundary, not depend on cookies in this manifest. Scanner authorization and offline preparation are supplied by TICKET-031/032/108; the authorized scanner exception is described below.
 
 Names are read on each manifest request, with a two-second failure boundary and sanitized warning before using the approved default names. Theme reads retain the existing tagged cache: ordinary database changes become visible after its30-second revalidation; the authorized activation service expires its tag. Browser/OS refresh of an already-installed app is outside the server cache guarantee. No private-route failure is converted into authorization by these public-branding fallbacks.
 
@@ -20,10 +20,10 @@ TICKET-104 generates themed192/512 any/maskable PNGs, an180px Apple touch icon a
 - Registered at scope `/` with `updateViaCache: "none"` by `ServiceWorkerRegistration` in the root layout, **in production builds only**. Development never installs a worker.
 - The fetch rules are `cachePolicy` in `src/modules/shared/lib/sw-policy.ts`. `/sw.js` embeds that exact function, so unit tests and the browser run the same code.
 - **Install** precaches the offline page `/offline` into `wedding-offline-v1` (required: install fails and retries on the next visit if it cannot be fetched). It also precaches the build assets that page references, plus fonts referenced by its CSS, into `wedding-static-v1` (best-effort: a missing asset never fails the install).
-- **Offline fallback:** a same-origin page navigation goes to the network as normal. Only when the network fails does the worker answer with the precached offline page, at the URL the guest tried, with a "Try again" button that reloads it. The visited invitation document is never stored; the explicit minimal own-pass exception is described below. `fetch()` calls are not navigations, so private routes such as `/admin` still fail offline.
+- **Offline fallback:** a same-origin page navigation goes to the network as normal. Only when the network fails does the worker answer with the precached offline page, at the URL the guest tried, with a "Try again" button that reloads it. The visited invitation document is never stored; the explicit minimal own-pass and scanner exceptions are described below. `fetch()` calls are not navigations, so private routes such as `/admin` still fail offline.
 - No automatic `skipWaiting`: a new version waits until tabs using the old one close. TICKET-111 adds the update prompt.
-- Caching is best-effort: a hit is served from cache, otherwise the network response is returned immediately and a copy is stored in the background (`event.waitUntil`). Only complete `200` same-origin responses are stored (never `206` partial range responses), and any Cache Storage error (quota, private mode, eviction) falls back to the network instead of failing the request.
-- Caches are named `wedding-<kind>-v<SW_CACHE_VERSION>`. On activate, only obsolete public `wedding-` caches are deleted; the current explicitly authorized own-pass cache is retained; other caches and IndexedDB (offline queues) are never touched. Bump `SW_CACHE_VERSION` when cached content or layout changes.
+- Generic public-asset caching is best-effort: a hit is served from cache, otherwise the network response is returned immediately and a copy is stored in the background (`event.waitUntil`). Only complete `200` same-origin responses are stored (never `206` partial range responses), and any Cache Storage error (quota, private mode, eviction) falls back to the network instead of failing the request.
+- Caches are named `wedding-<kind>-v<SW_CACHE_VERSION>`. On activate, only obsolete public `wedding-` caches are deleted; the current explicitly authorized own-pass and scanner-build caches are retained. Scanner activation invalidates an incompatible saved scanner grant before deleting its old assets; guest snapshots and unsynced queues are never touched. Bump `SW_CACHE_VERSION` when cached content or layout changes.
 
 ## Strategy table
 
@@ -42,15 +42,15 @@ TICKET-104 generates themed192/512 any/maskable PNGs, an180px Apple touch icon a
 | Requests with a query string, or another origin                                          | Network-only                                  | Not part of the immutable asset set                                                                                        | unit                                             |
 | `/sw.js`                                                                                 | Network-only                                  | The worker must always be fresh                                                                                            | unit; e2e header check                           |
 
-"Network-only" means the worker does not call `respondWith`: the browser handles the request as if no worker existed, and nothing is stored.
+The generic "Network-only" policy leaves requests to the browser without storing them. The scanner sign-out navigation exception below passes its POST to the network exactly once, without caching or replaying its request or response.
 
 ## Planned extensions (not implemented here)
 
-| Content                                   | Ticket     |
-| ----------------------------------------- | ---------- |
-| Scanner shell and authorized scanner data | TICKET-108 |
-| Update-available prompt                   | TICKET-111 |
-| Expiry, logout cleanup, storage eviction  | TICKET-184 |
+| Content                                    | Ticket             |
+| ------------------------------------------ | ------------------ |
+| Authorized guest snapshots and scan outbox | TICKET-065/066/180 |
+| Update-available prompt                    | TICKET-111         |
+| Expiry, logout cleanup, storage eviction   | TICKET-184         |
 
 ## Authorized own-pass copies (TICKET-107)
 
@@ -65,3 +65,55 @@ The live saved hint appears only after Cache Storage accepts the write. Quota/st
 Existing installed workers still follow the no-auto-skipWaiting lifecycle: close old controlled tabs to activate this version. Until an old worker can answer the new save request, no saved-success claim is made. Physical iOS/Android WhatsApp, storage lifecycle and scanner checks remain release-gated; desktop offline emulation is not device certification.
 
 A changed token version invalidates the old saved QR before a replacement write is attempted, including when storage quota prevents the new save. If deletion fails, the worker attempts an empty durable tombstone. When both writes fail it reports unavailable and masks the known-invalid copy for that worker lifetime; durable cleanup under a completely unavailable storage API cannot be guaranteed. TICKET-184 must cover this lifecycle limitation before release.
+
+## Authorized scanner shell (TICKET-108)
+
+A live gate session at `/checkin` prepares a minimal scanner document through
+`/checkin/offline-shell`. The worker fetches it independently; window messages cannot
+supply a grant, HTML or expiry. Both the proxy and endpoint explicitly deny missing,
+wrong-role or expired access. Live server checks also cover revocation and credential
+version. The document contains no staff name, raw cookie, form action or Flight state.
+A domain-separated HMAC fingerprint is a comparison identity, not an authentication token.
+
+`pnpm build` first generates content-addressed scanner/decoder JS, shared CSS and local
+font files under ignored `public/scanner-assets/`. The final manifest is traced into
+both the endpoint and worker routes. Missing/invalid manifests make `/sw.js` unavailable
+rather than installing a mismatched worker. Deploy the complete generated output;
+never combine a worker from one build with another build's asset inventory.
+
+Only a query-free same-origin `/checkin` navigation receives this fallback. Required
+assets live in `wedding-scanner-assets-v1-<build>`; the private grant lives separately
+in IndexedDB `wedding-scanner-shell-v1`. Preparation validates every asset and reads
+all of them back before publishing readiness. A missing asset, invalid/expired grant
+or unavailable storage gives the generic offline page. RSC/prefetch and check-in API
+requests do not receive private HTML. The default read-only guest check still needs
+a network connection; this shell does not implement TICKET-065's guest snapshots or
+TICKET-066/180's admission outbox.
+
+The expiry is the earliest signed-cookie, current event and PIN deadline. Initial
+camera mounting reconciles durable session/build identity and clamps to the earlier
+deadline. Expiry and known invalidation stop camera tracks. A newly authorized session
+can remain usable online even when downloading its offline assets fails; stale sessions
+close. Nothing can extend a session from a timestamp supplied by the browser.
+
+Preparation, invalidation, activation and status/document reads share an origin-wide
+Web Lock across worker versions. Storage generation tokens prevent stale publication;
+network preparation has a ten-second deadline including response-body consumption.
+Unsupported coordination fails offline use closed. Ordinary public asset requests
+cannot publish authorization or repopulate scanner readiness on their own.
+
+Enhanced sign-out invalidates saved access before and after the server clears its
+cookie, closing the reauthorization gap with another tab. Native navigation POSTs
+to `/checkin` run once under the same lock and invalidate after their response (or
+bounded failure), so correctness does not depend on an additional redirect fetch.
+Navigating to `/staff` also relinquishes saved gate access. No mutation is cached or
+replayed. A failed IndexedDB invalidation locks current tabs and removes only scanner
+readiness caches across builds; guest passes and unsent scans remain untouched. If
+both durable storage channels fail, successful removal is not acknowledged and durable
+restart safety cannot be guaranteed.
+
+Checks include real emitted-worker/decoder tests in Chromium and WebKit, complete
+browser restarts with persistent profiles, injected storage failure/recovery, and an
+authenticated Next production journey. Physical installed iOS/Android scanner operation
+remains mandatory in TICKET-114; this does not certify remote revocation while a device
+is offline or physical camera conditions. See `docs/reviews/TICKET-108/` for evidence.

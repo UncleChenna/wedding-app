@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "node scripts/next-local.mjs dev",
-    "build": "next build",
+    "build": "tsx scripts/scanner-assets.ts && next build",
     "start": "node scripts/next-local.mjs start",
     "lint": "eslint --cache --max-warnings=0 .",
     "lint:fix": "eslint --cache --fix .",
