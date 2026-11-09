@@ -2,7 +2,7 @@
 id: TICKET-222
 title: Reconcile merged tickets after a verified repair
 epic: foundations
-status: in_progress
+status: in_review
 priority: high
 estimate: S
 labels: [test]
