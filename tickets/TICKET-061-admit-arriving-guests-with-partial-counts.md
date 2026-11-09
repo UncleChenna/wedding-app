@@ -2,7 +2,7 @@
 id: TICKET-061
 title: Admit arriving guests with partial counts
 epic: checkin
-status: in_progress
+status: in_review
 priority: high
 estimate: M
 labels: [frontend, backend]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-024, TICKET-060, TICKET-064, TICKET-032]
 blocks: [TICKET-062, TICKET-063, TICKET-065, TICKET-068, TICKET-097]
 branch: TICKET-061
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/144
 created: 2026-10-21
 updated: 2026-11-09
 started: 2026-11-09
@@ -65,7 +65,6 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-3) · [Journey 2: check-
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-09 — todo → claimed — divine (codex)
 - 2026-11-09 — todo → in_progress — divine (codex)
-
 - 2026-11-09 — Independent review found and verified repairs for hidden-phone intent loss and fixed danger semantics. Actual production browser2/2 and quick18related tests pass. Full pre-integration unit1677pass/190conditional skips; final108base integration and review/CI remain pending. Own isolated database stopped, data retained.
-
 - 2026-11-09 — Verified develop143b4d63 integrated; full serial suite1764pass/190conditional skips,98.30%lines/98.51%branches. Production build, integratedSQL5/5, admissionbrowser2/2 and offlinebrowser2/2 withCLS0 pass. Independent integration review clean. Final-headCI required beforemerge; physical release gates retained.
+- 2026-11-09 — in_progress → in_review — divine (codex)
