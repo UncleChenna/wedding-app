@@ -2246,14 +2246,15 @@
     },
     "WED-090": {
       "log": [
-        "- 2026-11-09 — todo → claimed — divine (codex) — started ahead of TICKET-089 (in_review)"
+        "- 2026-11-09 — todo → claimed — divine (codex) — started ahead of TICKET-089 (in_review)",
+        "- 2026-11-09 — todo → in_progress — divine (codex) — started ahead of TICKET-089 (in_review)"
       ],
-      "status": "todo",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-090",
       "pr": "",
-      "started": "",
+      "started": "2026-11-09",
       "completed": "",
       "updated": "2026-11-09",
       "reason": "",
