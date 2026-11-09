@@ -49,7 +49,7 @@ The control room’s “Live dashboard — Coming soon” placeholder is replace
 | Staff feedback           | PASS: immediate refresh wording; expiry shows sign-in and failed reads show stale values.                                                                    |
 | Verification             | PASS locally: combined lint/types/related tests and database aggregates. PENDING: final combined hosted CI before merge.                                     |
 
-## Review, risks and rollback
+## Risks and rollout
 
 Sign in at `/admin` with an allowed address and two-factor authentication. Check all five counts, record an admission and watch Arrived update without reloading. Disconnect for explicit stale values; reconnect or refresh. Sign out to verify counts disappear.
 
