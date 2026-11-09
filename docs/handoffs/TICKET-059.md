@@ -86,3 +86,13 @@ CI env-file guard now optional (workflow-provided env still target-validated).
 Held-QR callback stops its fixture aftersecondread; all4browsercases passagain.
 Canonical PRbody: docs/plans/TICKET-059-pr.md. Three scope criteria proved and
 checked;057ledger dependency and finalCI remain outstanding. No real-device claim.
+
+Hosted run42636492227: invitation+authenticated scanner journey passes, tickets,
+migrations and PR text pass; camera Chromium passes but LinuxWebKit exposes a
+fixture-observation race (two correct reads already completed before polling the
+transient first-read/live-video state). Recorded firstRead evidence at callback time
+instead, asserting count1, usable readyState>=2 and512px width. Exact decodedpayloads,
+
+> =3000ms spacing, no problems and endedtracks remain mandatory. Independent review
+> confirms this corrects the oracle, not production behavior. Local4/4pass21.0s;
+> new hosted verification still required. No timeout/decoder assertion removed.

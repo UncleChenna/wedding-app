@@ -9,6 +9,7 @@ declare global {
     cameraResult: {
       codes: string[];
       readTimes: number[];
+      firstRead?: { count: number; ready: number; width: number };
       debug?: string[];
       problems: string[];
       stop?: () => void;
@@ -100,6 +101,11 @@ for (const fallback of [false, true]) {
           onCode: (code) => {
             window.cameraResult.codes.push(code);
             window.cameraResult.readTimes.push(performance.now());
+            window.cameraResult.firstRead ??= {
+              count: window.cameraResult.codes.length,
+              ready: video.readyState,
+              width: video.videoWidth,
+            };
             if (window.cameraResult.codes.length === 2) window.cameraResult.stop?.();
           },
           onProblem: (problem) => window.cameraResult.problems.push(problem),
@@ -108,17 +114,14 @@ for (const fallback of [false, true]) {
       };
     }, data);
     await page.getByRole("button", { name: "Open camera" }).click();
-    await expect
-      .poll(() =>
-        page.evaluate(() => ({
-          codes: window.cameraResult.codes.length,
-          problems: window.cameraResult.problems,
-          debug: window.cameraResult.debug,
-          ready: document.querySelector("video")?.readyState,
-          width: document.querySelector("video")?.videoWidth,
-        })),
-      )
-      .toEqual({ codes: 1, problems: [], debug: ["fake media granted"], ready: 4, width: 512 });
+    await expect.poll(() => page.evaluate(() => window.cameraResult.firstRead)).toBeDefined();
+    const firstRead = await page.evaluate(() => window.cameraResult.firstRead);
+    expect(firstRead?.count).toBe(1);
+    // Live streams may report HAVE_CURRENT_DATA rather than HAVE_ENOUGH_DATA.
+    // Both provide a usable frame; record this at decoding, before stop clears it.
+    expect(firstRead?.ready).toBeGreaterThanOrEqual(2);
+    expect(firstRead?.width).toBe(512);
+    expect(await page.evaluate(() => window.cameraResult.debug)).toEqual(["fake media granted"]);
     expect(await page.evaluate(() => window.cameraResult.codes[0])).toBe("synthetic-camera-qr");
     expect(await page.evaluate(() => window.cameraResult.problems)).toEqual([]);
     // Keep the same real QR pixels in view: decoding continues, but delivery
