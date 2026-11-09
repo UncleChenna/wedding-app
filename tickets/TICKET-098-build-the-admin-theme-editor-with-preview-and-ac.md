@@ -2,7 +2,7 @@
 id: TICKET-098
 title: Build the admin theme editor with preview and activate
 epic: admin
-status: in_progress
+status: in_review
 priority: medium
 estimate: M
 labels: [frontend, design]
@@ -73,3 +73,4 @@ See: [How theming works](../docs/prd.md#how-theming-works) (THM-3, THM-6).
 - 2026-11-08 — blocked → in_progress — divine (codex) — Apply independent PR review fixes; retain release gates
 - 2026-11-08 — in_progress → in_review — divine (codex)
 - 2026-11-09 — in_review → in_progress — divine (codex) — Integrate develop37e9202 harness improvements and refresh verification
+- 2026-11-09 — in_progress → in_review — divine (codex)
