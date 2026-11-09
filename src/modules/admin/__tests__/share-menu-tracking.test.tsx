@@ -73,6 +73,7 @@ it("records successful copying and supports undo without claiming recall", async
   await waitFor(() =>
     expect(screen.getByText(/Messages already sent are not recalled/)).toBeVisible(),
   );
+  expect(screen.getByText(/Messages already sent are not recalled/)).toHaveFocus();
 });
 it("records successful native share separately from external delivery", async () => {
   Object.defineProperty(navigator, "share", {

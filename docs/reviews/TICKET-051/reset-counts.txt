@@ -1,0 +1,23 @@
+admission_counters 28
+check_ins 30
+event_settings 1
+guests 249
+invitation_lifecycle_events 0
+invitation_photos 0
+invitation_share_events 0
+invitations 110
+menu_items 16
+order_alerts 0
+order_items 35
+orders 18
+registered_devices 3
+request_budgets 0
+rsvp_changes 0
+rsvps 85
+scan_events 31
+staff 4
+staff_pin_attempts 0
+station_orders 28
+tables 28
+themes 4
+(drizzle migrations applied) 21

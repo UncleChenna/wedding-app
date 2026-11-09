@@ -20,6 +20,7 @@ export function ShareMenu({
   tracking?: { invitationId: string; expectedVersion: number };
   onRecorded?: (eventId: string) => void;
 }) {
+  const noticeRef = useRef<HTMLParagraphElement>(null);
   const [eventId, setEventId] = useState<string | null>(null);
   const [trackingMessage, setTrackingMessage] = useState("");
   const [recording, setRecording] = useState(false);
@@ -50,6 +51,7 @@ export function ShareMenu({
       const undone = await undoShareAction({ invitationId: tracking.invitationId, eventId });
       if (undone.ok) {
         setEventId(null);
+        noticeRef.current?.focus();
         setTrackingMessage("Sharing record undone. Messages already sent are not recalled.");
       } else setTrackingMessage(undone.message);
     } catch {
@@ -172,7 +174,14 @@ export function ShareMenu({
       </Button>
       {tracking && (
         <div className="space-y-3">
-          <p role="status">{recording ? "Updating sharing record…" : trackingMessage}</p>
+          <p
+            ref={noticeRef}
+            tabIndex={-1}
+            className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+            role="status"
+          >
+            {recording ? "Updating sharing record…" : trackingMessage}
+          </p>
           {eventId && !onRecorded && (
             <Button size="lg" variant="ghost" disabled={recording} onClick={undo}>
               Undo sharing record

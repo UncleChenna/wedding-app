@@ -106,8 +106,26 @@ test.describe("authenticated sharing records", () => {
     expect(
       (await db`select status, sent_at from invitations where id=${invitationId}`)[0]?.status,
     ).toBe("sent");
-    await page.getByRole("button", { name: "Undo sharing record", exact: true }).click();
+    const undoButton = page.getByRole("button", { name: "Undo sharing record", exact: true });
+    await undoButton.scrollIntoViewIfNeeded();
+    for (const theme of themes) {
+      await applyTheme(page, theme);
+      expect(await scanA11y(page)).toEqual([]);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+        true,
+      );
+      await undoButton.evaluate((button) => button.scrollIntoView({ block: "center" }));
+      if (theme.id === "ivory-gold")
+        await page.screenshot({
+          path: `docs/reviews/TICKET-051/screenshots/${info.project.name}-undo.png`,
+        });
+    }
+    await undoButton.focus();
+    await undoButton.press("Enter");
     await expect(row).toBeVisible();
+    await expect(
+      page.getByRole("status").filter({ hasText: /^1 of \d+ invitations$/ }),
+    ).toBeFocused();
     expect(
       (await db`select status, sent_at from invitations where id=${invitationId}`)[0],
     ).toMatchObject({ status: "draft", sent_at: null });

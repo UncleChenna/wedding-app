@@ -56,7 +56,10 @@ export function GuestList({ invitations }: { invitations: GuestListInvitation[] 
           ? "Sharing record undone. Messages already sent are not recalled."
           : result.message,
       );
-      if (result.ok) setUndoRecord(null);
+      if (result.ok) {
+        setUndoRecord(null);
+        resultCount.current?.focus();
+      }
     } catch {
       setUndoMessage("The sharing record couldn't be undone. Please try again.");
     } finally {

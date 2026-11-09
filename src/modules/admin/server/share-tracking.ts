@@ -1,5 +1,5 @@
 import "server-only";
-import { and, desc, eq } from "drizzle-orm";
+import { and, desc, eq, getTableColumns, sql } from "drizzle-orm";
 import { z } from "zod";
 import type { Db } from "@/modules/shared/server/db/client";
 import { invitations, invitationShareEvents } from "@/modules/shared/server/db/schema";
@@ -72,7 +72,10 @@ export async function undoInvitationShare(
       .for("update");
     if (!current) return rejected;
     const [event] = await tx
-      .select()
+      .select({
+        ...getTableColumns(invitationShareEvents),
+        expired: sql<boolean>`${invitationShareEvents.createdAt} < clock_timestamp() - interval '10 minutes'`,
+      })
       .from(invitationShareEvents)
       .where(
         and(
@@ -80,13 +83,7 @@ export async function undoInvitationShare(
           eq(invitationShareEvents.invitationId, current.id),
         ),
       );
-    if (
-      !event ||
-      event.actorId !== actorId ||
-      event.undoneAt ||
-      Date.now() - event.createdAt.getTime() > 600_000
-    )
-      return rejected;
+    if (!event || event.actorId !== actorId || event.undoneAt || event.expired) return rejected;
     const [latest] = await tx
       .select()
       .from(invitationShareEvents)
@@ -105,7 +102,7 @@ export async function undoInvitationShare(
     if (!plan.ok) return rejected;
     await tx
       .update(invitationShareEvents)
-      .set({ undoneAt: new Date() })
+      .set({ undoneAt: sql`greatest(clock_timestamp(), ${invitationShareEvents.createdAt})` })
       .where(eq(invitationShareEvents.id, event.id));
     await tx
       .update(invitations)

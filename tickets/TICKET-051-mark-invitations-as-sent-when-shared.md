@@ -40,10 +40,10 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-3).
 
 ## Acceptance criteria
 
-- [ ] Sharing through any channel sets status sent and sent_at once (unit).
-- [ ] The guest list filters by sent / not sent.
+- [x] Sharing through any channel sets status sent and sent_at once (unit).
+- [x] The guest list filters by sent / not sent.
 
-- [ ] First-send timestamp is separate from RSVP status. Re-sharing preserves yes/no responses and revocation; cancelling native share does not mark sent, and opening an external intent is not proof of delivery.
+- [x] First-send timestamp is separate from RSVP status. Re-sharing preserves yes/no responses and revocation; cancelling native share does not mark sent, and opening an external intent is not proof of delivery.
 
 ## Test plan
 
@@ -58,7 +58,7 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-3).
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-11-09 — Sharing/Undo implementation verified with policy/component tests, five isolated PostgreSQL cases and authenticated mobile/desktop journeys. Generated migration0020 and detailed evidence are in docs/plans/TICKET-051-pr.md. Native-device release QA remains unverified; PR stays draft pending prerequisite089 and final review.
 
 ## Activity log
 

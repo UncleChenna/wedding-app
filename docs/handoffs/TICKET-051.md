@@ -1,19 +1,13 @@
-# TICKET-051 — sharing attempts and Undo
+# TICKET-051 handoff
 
-2026-11-09. Worktree created from develop; TICKET-089 remains an unfinished dependency, so keep the PR draft. Database has not started (089 owns the current browser/DB slot).
+2026-11-09. Draft PR: https://github.com/UncleChenna/wedding-app/pull/116. Main evidence/write-up: `docs/plans/TICKET-051-pr.md`.
 
-The managed start used configured owner `unclechenna`, agent `codex`, on an unowned ticket. The same actual agent continues this claim under explicit parent coordination; use `AGENT_OWNER=unclechenna` only for this ticket. Future claims use `divine`. No collaborator claim was changed.
+Implementation and local verification complete. Generated0020migration applies twice with matching counts, all22tablesRLS, reset/reseedcounts match, five actualDBtests pass. Focused24unit/component tests pass; finalquick lint/types11relatedpass with5separatelyverifiedDBtests skipped. Production build and authenticated mobile/desktop browser pass;16axe/overflowchecks and10screenshots cover menu and Undo. Physical devices remain unverified in201.
 
-Implemented the pure transition policy and seven passing unit cases after a failing missing-module test. First share publishes draft and sets sent_at; repeats preserve first timestamp and RSVP; revoked/stale links reject; Undo cannot reverse newer share/lifecycle state and preserves later RSVP.
+Integrated develop360914b7 plus approved089finaldc5bd61. Parent reviewed final clock-based Undo, keyboard focus and migration with no new blockers; prerequisite089must merge before051readiness. Do not merge this PR: parent coordinates exact-head CI and merge. Source and generated migration review are complete; no fresh user permission is needed. No production migration performed.
 
-Remaining: authenticated transaction with invitation lock, durable channel events and idempotent request IDs, bounded same-actor Undo, generated RLS migration and isolated verification, ShareMenu tracking and draft-sharing integration, native AbortError regression, guest-list integration after089, browser/axe/UI evidence, quick gate, draft PR. Do not interpret unit policy tests as persisted evidence. No schema migration generated yet.
+Owned051stack `wedding-c42656159ca4` is stopped with backup:true; `/tmp/TICKET-051-stop.log`. Database slot released to parent. Do not restart without scheduling. No local test server left running.
 
-External intent/copy means a sharing attempt, never delivery. Opening the menu alone must not publish. Native cancellation must not record. Undo should restore timestamp only when its event remains latest; never roll back a newer token/revoke/RSVP.
+The managed start picked configured coordination owner `unclechenna` on an unclaimed ticket; parent explicitly authorized continuing that same claim. Use `AGENT_OWNER=unclechenna` for051only; future claims use divine. Never alter another claim.
 
-Update: integrated approved prerequisite089 head60cb0985 (includes043 migration0019); added persistence service/actions/schema and real ShareMenu/guest-list tracking with six passing component cases. Quick gate passed76related/87skipped before the final3componentcases. New persistence tests remain unrun. `db:generate` refused pre-bootstrap managed target, so no generated migration yet. DB slot order:089,166,then051; wait for parent coordination. PR write-up is `docs/plans/TICKET-051-pr.md`.
-
-Latest UI correction: guest-list Undo now lives above filtered rows so first-share removal from the unsent filter cannot hide it. Reissue/revoke invalidates that affordance, and the Sharing page remounts ShareMenu by token version. Ten focused guest-list/component tests pass. Latest pre-correction quick gate passed79related/87skipped; commit hook will verify final correction.
-
-Draft PR: https://github.com/UncleChenna/wedding-app/pull/116. Final focused suite24passed/5persistedskipped. Five opt-in DB cases now include concurrent request deduplication and Undo expiry. Pushed-head quick lint/types passed; clean-source unit step skipped. Migration and browser evidence remain outstanding.
-
-Authenticated browser harness now prepared in `e2e/admin-share-tracking.spec.ts` (not run). It covers native cancellation, intercepted recording failure after clipboard success, every-theme axe/screenshots at375px, actual unsent-filter removal and persistent Undo, and Sharing-page reissue clearing stale Undo/updating the link. Run with `RUN_ADMIN_SHARE_TRACKING_TESTS=1` and a fresh `ADMIN_TEST_EMAIL` also in the production test server's `ADMIN_EMAIL_ALLOWLIST`. Use existing local Auth helpers; no external email. Typecheck and targeted ESLint pass; this is test preparation, not browser evidence.
+Initial DB test run caught cross-clock undo-time violation (4pass/1fail); SQLclock expiry and greatest(clock_timestamp,created_at) fixed it, unchanged five tests then passed. Browser harness `pnpm exec tsx scripts/test-admin-share-tracking.ts` uses fresh local allowlisted identities and simulated native-share/clipboard APIs. Evidence is local functionality, not native-device delivery certification.
