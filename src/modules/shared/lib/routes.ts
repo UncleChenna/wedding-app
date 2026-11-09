@@ -39,6 +39,12 @@ export const appRoutes = {
     audience: "admin",
     access: "admin",
   },
+  adminGuestImport: {
+    path: "/admin/guests/import",
+    label: "Import guests",
+    audience: "admin",
+    access: "admin",
+  },
   adminGuestNew: {
     path: "/admin/guests/new",
     label: "Add an invitation",

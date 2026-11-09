@@ -78,6 +78,7 @@ test.describe("guest CSV upload", () => {
       0,
     );
     const upload = async (text: string) => {
+      await expect(page.getByLabel("Guest CSV file")).toBeEnabled();
       await page
         .getByLabel("Guest CSV file")
         .setInputFiles({ name: "guests.csv", mimeType: "text/csv", buffer: Buffer.from(text) });
@@ -90,7 +91,7 @@ test.describe("guest CSV upload", () => {
         >`select count(*)::int as count from invitations where household_name like ${`${tag}%`}`
       )[0]?.count;
     await upload(csv(300, true));
-    await expect(page.getByRole("alert")).toContainText("Row 151");
+    await expect(page.getByRole("main").getByRole("alert")).toContainText("Row 151");
     expect(await count()).toBe(1);
     await expect(page.getByRole("button", { name: "Import guests", exact: true })).toHaveCount(0);
     const folder = `docs/reviews/TICKET-091/screenshots/${info.project.name}`;
@@ -115,7 +116,7 @@ test.describe("guest CSV upload", () => {
       await page.screenshot({ path: `${folder}/${theme.id}-errors.png`, fullPage: true });
     }
     await upload(header + `${tag} Conflict,,${existingEmail},1,Family,,`);
-    await expect(page.getByRole("alert")).toContainText("contact already exists");
+    await expect(page.getByRole("main").getByRole("alert")).toContainText("contact already exists");
     expect(await count()).toBe(1);
     await upload(csv(2));
     await expect(page.getByRole("heading", { name: "Review your invitations" })).toBeFocused();
@@ -151,7 +152,7 @@ test.describe("guest CSV upload", () => {
     await commit.focus();
     await page.keyboard.press("Enter");
     await expect(page.getByText("300 draft invitations added.")).toBeVisible();
-    await expect(page.getByRole("status")).toBeFocused();
+    await expect(page.getByRole("main").getByRole("status")).toBeFocused();
     expect(await count()).toBe(301);
     expect(await db`select status from invitations where id = ${existingId}`).toEqual([
       { status: "rsvp_yes" },

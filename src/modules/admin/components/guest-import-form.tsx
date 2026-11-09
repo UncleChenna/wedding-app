@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore, useTransition } from "react";
 import { Button, Input } from "@/modules/shared/components/ui";
 import {
   GUEST_CSV_MAX_BYTES,
@@ -14,6 +14,9 @@ type Approved = Extract<ImportPreviewViewResult, { status: "preview" }>;
 type Failure = Extract<ImportPreviewViewResult, { status: "error" }>;
 const template =
   "name,phone,email,party size,side,table,household\r\nAda Example,,,2,Family,,Example household\r\n";
+const subscribeToHydration = () => () => {};
+const clientReady = () => true;
+const serverReady = () => false;
 
 export function GuestImportForm({
   previewAction,
@@ -24,6 +27,8 @@ export function GuestImportForm({
   commitAction: (input: { previewId: string; digest: string }) => Promise<ImportCommitViewResult>;
   readFile?: (file: File) => Promise<string>;
 }) {
+  // Native file selection before hydration would not reach the React change handler.
+  const hydrated = useSyncExternalStore(subscribeToHydration, clientReady, serverReady);
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<Approved | null>(null);
   const [failure, setFailure] = useState<Failure | null>(null);
@@ -145,7 +150,7 @@ export function GuestImportForm({
             type="file"
             label="Guest CSV file"
             accept=".csv,text/csv"
-            disabled={committing}
+            disabled={!hydrated || committing}
             onChange={(event) => {
               version.current++;
               setFile(event.target.files?.[0] ?? null);
@@ -199,8 +204,8 @@ export function GuestImportForm({
                 <h3 className="font-display text-2xl">{household.heading}</h3>
                 <p>{household.members.join(" · ")}</p>
                 <p>
-                  Up to {household.partyLimit} guests · {household.side || "Side not set"} ·{" "}
-                  {household.table || "Table not assigned"}
+                  Up to {household.partyLimit} {household.partyLimit === 1 ? "guest" : "guests"} ·{" "}
+                  {household.side || "Side not set"} · {household.table || "Table not assigned"}
                 </p>
               </li>
             ))}

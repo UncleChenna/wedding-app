@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
+import { renderToString } from "react-dom/server";
 import { GuestImportForm } from "../components/guest-import-form";
 import type { ImportPreviewViewResult } from "../lib/guest-import-view";
 
@@ -31,6 +32,14 @@ function pick(name = "guests.csv") {
     target: { files: [new File(["name,email"], name, { type: "text/csv" })] },
   });
 }
+it("keeps file selection disabled until its change handler is hydrated", () => {
+  const form = <GuestImportForm previewAction={async () => approved} commitAction={vi.fn()} />;
+  const shell = document.createElement("div");
+  shell.innerHTML = renderToString(form);
+  expect(shell.querySelector('input[type="file"]')).toBeDisabled();
+  render(form);
+  expect(screen.getByLabelText("Guest CSV file")).toBeEnabled();
+});
 it("shows row errors without an import action or writes", async () => {
   const commit = vi.fn();
   render(
