@@ -45,6 +45,7 @@ export async function changeInvitationLifecycleAction(
     if (!result.ok) return { status: "error", message: result.message };
     if (!result.value.ok) return { status: "error", message: messages[result.value.code] };
     revalidatePath(appRoutes.adminSharing.path);
+    revalidatePath(appRoutes.adminGuests.path);
     return {
       status: "saved",
       message:

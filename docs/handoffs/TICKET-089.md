@@ -1,6 +1,6 @@
 # TICKET-089 — 2026-11-09
 
-Owner divine; branch TICKET-089; base develop37e9202c. Started through
+Owner divine; branch TICKET-089; base develop9e9c2ca (integrated after initial37e9202c). Started through
 `t:start --ahead`; TICKET-043 is active and is the sole unfinished prerequisite.
 Keep this PR draft until043 merges. No database has been started for089 yet.
 
@@ -18,12 +18,14 @@ because adjacent text joined words; fixed explicit label, unchanged test passed.
 Early independent review found long side values needed wrapping; corrected before
 browser checks, with a long-side fixture still to add.
 
-Remaining: integrate dependency043 final31cbd8c0, add lifecycle controls and guest
-route invalidation, reconcile navigation with098, authenticated browser fixtures,
+Integrated dependency043 final31cbd8c0 and develop9e9c2ca; preserved both Guests
+and Themes dashboard links. Added lifecycle controls, guest-route invalidation,
+six-section mobile navigation and focus recovery when a revoked row is filtered
+away. Latest quick gate passes lint/types and eight related tests (three files).
+
+Remaining: authenticated browser fixtures,
 300-invitation initial-render/filter measurement (<200ms), mobile screenshots and
 all-theme axe/contrast, keyboard/reduced-motion/overflow checks, full CI and final
 independent review. No UI or performance acceptance is claimed complete.
 
-The managed setup regenerated one template screenshot sentence from the updated
-checklist. Restore only that known setup-generated template delta before committing
-feature files; no user-authored change existed in this fresh checkout.
+Setup-generated template drift was restored before the initial feature commit.

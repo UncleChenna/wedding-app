@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Button, Input, Select } from "@/modules/shared/components/ui";
 import {
   filterGuestList,
@@ -10,6 +10,7 @@ import {
   type GuestListStatus,
 } from "../lib/guest-list";
 import { ShareMenu } from "./share-menu";
+import { InvitationLifecycleControls } from "./invitation-lifecycle-controls";
 
 const labels: Record<GuestListStatus, string> = {
   draft: "Draft",
@@ -27,6 +28,21 @@ export function GuestList({ invitations }: { invitations: GuestListInvitation[] 
   const [filters, setFilters] = useState<GuestListFilters>({});
   const [expanded, setExpanded] = useState<string | null>(null);
   const visible = useMemo(() => filterGuestList(invitations, filters), [invitations, filters]);
+  const resultCount = useRef<HTMLParagraphElement>(null);
+  const wasExpandedVisible = useRef(false);
+  const expandedVisible = visible.some((row) => row.id === expanded);
+  useEffect(() => {
+    // A successful revoke can remove its row from the current status filter.
+    // Restore lost focus, but never steal it from someone typing in a filter.
+    if (
+      wasExpandedVisible.current &&
+      !expandedVisible &&
+      document.activeElement === document.body
+    ) {
+      resultCount.current?.focus();
+    }
+    wasExpandedVisible.current = expandedVisible;
+  }, [expandedVisible]);
   const sides = useMemo(
     () => [...new Set(invitations.flatMap((row) => (row.side === null ? [] : [row.side])))].sort(),
     [invitations],
@@ -130,7 +146,14 @@ export function GuestList({ invitations }: { invitations: GuestListInvitation[] 
           </Select>
         </div>
         <div className="flex flex-wrap items-center justify-between gap-4">
-          <p role="status" aria-live="polite" aria-atomic="true">
+          <p
+            ref={resultCount}
+            tabIndex={-1}
+            className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+          >
             {visible.length} of {invitations.length} invitations
           </p>
           <Button variant="ghost" size="lg" onClick={() => setFilters({})}>
@@ -194,6 +217,14 @@ export function GuestList({ invitations }: { invitations: GuestListInvitation[] 
                 className="mt-6 space-y-6"
                 hidden={expanded !== invitation.id}
               >
+                {expanded === invitation.id ? (
+                  <InvitationLifecycleControls
+                    invitationId={invitation.id}
+                    name={invitation.name}
+                    status={invitation.status}
+                    tokenVersion={invitation.tokenVersion}
+                  />
+                ) : null}
                 {expanded === invitation.id ? (
                   invitation.share ? (
                     <ShareMenu
