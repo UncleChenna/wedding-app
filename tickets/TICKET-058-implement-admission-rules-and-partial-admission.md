@@ -41,9 +41,9 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-2, CHK-3) · [Testing pl
 
 ## Acceptance criteria
 
-- [ ] Every result type and boundary (0, partial, exact, over-admit) has a unit test; branch coverage 100%.
-- [ ] Over-admission is impossible in the function and in the DB constraint.
-- [ ] Property test: any sequence of admissions never exceeds count_attending.
+- [x] Every result type and boundary (0, partial, exact, over-admit) has a unit test; branch coverage 100%.
+- [x] Over-admission is impossible in the function and in the DB constraint.
+- [x] Property test: any sequence of admissions never exceeds count_attending.
 
 ## Test plan
 
@@ -57,6 +57,12 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-2, CHK-3) · [Testing pl
 ## Notes / decisions
 
 _Agents append dated notes here while working._
+
+- 2026-11-09 (unclechenna, claude):
+  - **Pass versions:** an older pass (replaced by a reissue) is `revoked`; a newer one is `invalid`.
+  - **Counts:** asking for more people than remain admits nobody (`too_many`) instead of a silent partial admission.
+  - **Branch coverage:** checked by listing every branch in the tests by hand. No coverage tool is installed, and
+    adding one would change the lockfile.
 
 ## Activity log
 
