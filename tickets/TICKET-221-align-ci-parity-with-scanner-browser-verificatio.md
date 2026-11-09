@@ -39,8 +39,8 @@ PR #127 added required Chromium/WebKit gate-token verification for [Gate check-i
 
 ## Acceptance criteria
 
-- [ ] CI parity requires frozen install, Chromium and WebKit, agent checks, database migration, full verify and dedicated scanner verification in order.
-- [ ] The known failure is reproduced before repair and both parity tests pass after repair.
+- [x] CI parity requires frozen install, Chromium and WebKit, agent checks, database migration, full verify and dedicated scanner verification in order.
+- [x] The known failure is reproduced before repair and both parity tests pass after repair.
 - [ ] Quick verification and final required CI pass without weakening assertions or timeouts.
 
 ## Test plan
