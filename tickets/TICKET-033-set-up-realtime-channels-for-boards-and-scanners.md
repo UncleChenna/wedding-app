@@ -2,20 +2,20 @@
 id: TICKET-033
 title: Set up realtime channels for boards and scanners
 epic: data-auth
-status: todo
+status: in_progress
 priority: high
 estimate: M
 labels: [backend, security]
 module: shared
-owner: ""
-agent: ""
+owner: unclechenna
+agent: claude
 blocked_by: [TICKET-027, TICKET-031]
 blocks: [TICKET-067, TICKET-068, TICKET-075, TICKET-076, TICKET-097, TICKET-124]
-branch: ""
+branch: TICKET-033
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-09
+started: 2026-11-09
 completed: ""
 reason: ""
 resume_to: ""
@@ -63,3 +63,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-09 — todo → claimed — unclechenna (claude) — started ahead of TICKET-027 (in_review)
+- 2026-11-09 — todo → in_progress — unclechenna (claude) — started ahead of TICKET-027 (in_review)
