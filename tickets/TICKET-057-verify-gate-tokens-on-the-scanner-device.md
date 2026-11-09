@@ -2,20 +2,20 @@
 id: TICKET-057
 title: Verify gate tokens on the scanner device
 epic: checkin
-status: todo
+status: in_progress
 priority: high
 estimate: M
 labels: [security, frontend]
 module: checkin
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-056]
 blocks: [TICKET-059, TICKET-114]
-branch: ""
+branch: TICKET-057
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-09
+started: 2026-11-09
 completed: ""
 reason: ""
 resume_to: ""
@@ -66,3 +66,5 @@ See: [Security](../docs/prd.md#security) · [Gate check-in](../docs/prd.md#gate-
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-09 — todo → claimed — divine (codex)
+- 2026-11-09 — todo → in_progress — divine (codex)
