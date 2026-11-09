@@ -2,20 +2,20 @@
 id: TICKET-051
 title: Mark invitations as sent when shared
 epic: sharing
-status: todo
+status: in_progress
 priority: urgent
 estimate: S
 labels: [backend, frontend]
 module: admin
-owner: ""
-agent: ""
+owner: unclechenna
+agent: codex
 blocked_by: [TICKET-050, TICKET-089]
 blocks: [TICKET-053, TICKET-159, TICKET-176]
-branch: ""
+branch: TICKET-051
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-09
+started: 2026-11-09
 completed: ""
 reason: ""
 resume_to: ""
@@ -63,3 +63,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-09 — todo → claimed — unclechenna (codex) — started ahead of TICKET-089 (in_progress)
+- 2026-11-09 — todo → in_progress — unclechenna (codex) — started ahead of TICKET-089 (in_progress)
