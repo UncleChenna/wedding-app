@@ -45,7 +45,7 @@ sender (TICKET-085) will use it.
 
 # Verification
 
-- **On develop at `bd26c120` (includes TICKET-043's migration 0019):**
+- **On develop at `360914b7` (includes TICKET-043's migration 0019):**
   - `pnpm db:reset` (clean migrate and seed), then `pnpm db:migrate` again: only a Postgres notice ("schema drizzle
     already exists"), so it reruns safely.
   - `pnpm db:check-rls`: all 20 public tables have RLS.
