@@ -6,7 +6,7 @@ import {
   scryptSync,
   sign,
 } from "node:crypto";
-import { mkdirSync } from "node:fs";
+import { mkdirSync, writeFileSync } from "node:fs";
 import postgres from "postgres";
 import QRCode from "qrcode";
 import { test, expect } from "@playwright/test";
@@ -97,7 +97,63 @@ test("online partial admission commits once and safely retries a lost receipt", 
     await expect(page.getByRole("button", { name: "Open camera" })).toBeInViewport();
     await page.getByRole("button", { name: "Open camera" }).click();
     const valid = page.getByRole("heading", { name: "Valid pass", exact: true });
-    await expect(valid).toBeVisible();
+    try {
+      await expect(valid).toBeVisible();
+    } catch (error) {
+      try {
+        const folder = info.outputPath("synthetic-decode-diagnostics");
+        mkdirSync(folder, { recursive: true });
+        // Synthetic local-only pass; retained outside published review screenshots.
+        writeFileSync(`${folder}/fixture.png`, Buffer.from(qr.split(",")[1] ?? "", "base64"));
+        const captured = (await page.locator("video").count())
+          ? await page.locator("video").evaluate((element) => {
+              const video = element as HTMLVideoElement;
+              const canvas = document.createElement("canvas");
+              canvas.width = video.videoWidth;
+              canvas.height = video.videoHeight;
+              const context = canvas.getContext("2d");
+              const drawable =
+                context && canvas.width > 0 && canvas.height > 0 && video.readyState >= 2;
+              if (drawable) context.drawImage(video, 0, 0);
+              return {
+                frame: drawable ? canvas.toDataURL("image/png") : null,
+                width: video.videoWidth,
+                height: video.videoHeight,
+                ready: video.readyState,
+                paused: video.paused,
+                time: video.currentTime,
+                hidden: document.hidden,
+                decodedFrames: video.getVideoPlaybackQuality().totalVideoFrames,
+                nativeDetector: typeof (
+                  globalThis as typeof globalThis & { BarcodeDetector?: unknown }
+                ).BarcodeDetector,
+                assets: performance
+                  .getEntriesByType("resource")
+                  .map((entry) => ({
+                    name: new URL(entry.name).pathname,
+                    duration: entry.duration,
+                  }))
+                  .filter(
+                    (entry) =>
+                      entry.name.startsWith("/_next/") ||
+                      entry.name.startsWith("/scanner-assets/") ||
+                      entry.name === "/api/checkin/read",
+                  ),
+              };
+            })
+          : { frame: null, videoAbsent: true };
+        const { frame, ...details } = captured;
+        if (frame)
+          writeFileSync(
+            `${folder}/video-frame.png`,
+            Buffer.from(frame.split(",")[1] ?? "", "base64"),
+          );
+        writeFileSync(`${folder}/video.json`, JSON.stringify(details, null, 2));
+      } catch {
+        // Diagnostic failure must never replace the original assertion failure.
+      }
+      throw error;
+    }
     await expect(page.getByText(`Table ${number}`, { exact: true })).toBeInViewport();
     await expect(valid).toBeInViewport();
     await expect(page.getByText("Synthetic Guest", { exact: true })).toBeInViewport();

@@ -48,3 +48,14 @@ Verified TICKET-108 base143b4d637b8bfc4597f8f990a5085f2722454967 integrated as08
 The first hosted invitation job failed because the two new fixtures unconditionally loaded `.env.local`, which is intentionally absent in CI. Both now use the injected `DATABASE_URL` directly and load the local file only when that variable is missing. Target identity guards and every assertion remain unchanged; no product code changed.
 
 A stricter local proof rejected every `process.loadEnvFile(".env.local")` call while providing the isolated database URL: SQL **5/5 passed (816ms)** and production browser **2/2 passed (50.1s)**. Identical-layout regenerated screenshots were retained as ignored local artifacts; the independently reviewed images remain unchanged. Owned database stopped with data retained. Final CI must run again on the repair commit.
+
+## Combined ordering integration and decode diagnostics — 2026-11-09
+
+Final integrated base is `debc5b347a26b2f69f5ada2f69841bc66de6c858`, integrated as `f7ed299f`. The unchanged ordering migration is preserved, and its browser fixture remains last after all scanner/admission checks.
+
+- Full serial unit/coverage: **1777 passed, 191 conditional skips, 81.14s**; **98.30% lines / 98.51% branches**, unchanged per-file 95% thresholds. Production generator/build and final lint/types pass.
+- Isolated admission SQL **5/5 passed (477ms)**; shared request-budget SQL **6/6 passed (943ms)**. Authenticated offline scanner **2/2 passed (1.1m)**; ordering-last browser **2/2 passed (19.4s)**. Owned native database is stopped with its synthetic data directory retained.
+- Initial QR decoding remains intermittently flaky: the first local admission run after each of the last two integrations timed out at the unchanged five-second Valid pass assertion. Hosted integration run `42715749631` also reported a desktop first-attempt timeout that passed its retry. These are not unqualified first-attempt passes, and no product fix or root cause is claimed.
+- Added failure-only synthetic video-frame/resource diagnostics; the original assertion and error remain unchanged. Missing video or failed diagnostics cannot mask that error. No guest credentials, private keys or raw PINs are captured. Independent review of this delta is clean.
+- With diagnostics, three repeats per project passed **6/6 (1.5m)**; a fresh production build followed by admission browser passed **2/2 (31.0s)**. No failure artifact was produced because these attempts passed. Timeouts, retries and assertions were not relaxed.
+- Final diagnostic-head CI remains required before merge. Physical camera/device checks remain mandatory in TICKET-201; the intermittent synthetic decode behavior is disclosed for follow-up rather than represented as fixed.
