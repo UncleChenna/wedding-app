@@ -40,9 +40,9 @@ See: [Admin dashboard](../docs/prd.md#admin-dashboard) (ADM-2).
 
 ## Acceptance criteria
 
-- [ ] Over-capacity assignment warns but is allowed (unit).
-- [ ] Assignment, reassignment, renumbering and unassignment persist on the canonical invitation and appear on the current guest pass (e2e).
-- [ ] TICKET-060 retains the mandatory live scanner-result assertion and depends on this ticket.
+- [x] Over-capacity assignment warns but is allowed (unit).
+- [x] Assignment, reassignment, renumbering and unassignment persist on the canonical invitation and appear on the current guest pass (e2e).
+- [x] TICKET-060 retains the mandatory live scanner-result assertion and depends on this ticket.
 
 ## Test plan
 
@@ -57,6 +57,8 @@ See: [Admin dashboard](../docs/prd.md#admin-dashboard) (ADM-2).
 ## Notes / decisions
 
 - 2026-11-09 — Scanner result screens do not exist yet (TICKET-060). Keep their assignment-display assertion mandatory there and make this ticket a prerequisite; verify the existing live pass reader here. No scanner requirement is removed.
+
+- 2026-11-09 — Implemented table CRUD and canonical household assignment. Thirteen focused tests (four isolated DB), production build and two authenticated browser journeys pass; all-theme accessibility and live-pass persistence verified. Scanner result coverage stays mandatory in060. See PR writeup and screenshots.
 
 ## Activity log
 

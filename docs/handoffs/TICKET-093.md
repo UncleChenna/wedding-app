@@ -31,3 +31,7 @@ drift was restored before commit. No user edits existed here.
 ## 2026-11-09 implementation checkpoint
 
 Added the seating page, table forms, household assignment sheets and authenticated server actions/repository. Independent backend review found concurrent capacity warnings could race; target assignments now serialize with a table row lock. Four isolated database tests pass (canonical guest/pass persistence, stale edits, deletion/order preservation, concurrent warnings). Nine pure/action tests pass. Quick verification passes lint, types and 115 related tests (5 opt-in skipped). Browser/theme/focus verification and current-develop integration remain outstanding; ticket remains in progress and PR122 stays draft. Own isolated database is running for upcoming browser tests. No migration or new dependency.
+
+## 2026-11-09 browser verification
+
+Integrated develop886c46cc (051+090); preserved create-invitation links and all routes, moved seating into the protected admin frame. Build passes.13 focused tests pass including4isolatedDB. Browser2/2 passes21.6s,24axechecks,24screenshots, initialCLS0,375/600/768/1280overflow/targets. Fixed reviewed pending-dialog race and delete-confirmation focus; delayednetwork/keyboard regressions pass. Accessible button label corrected after realaxe failure. Finalvisual review and quick/CI pending. Current branch is sole093editor; ownDBrunning. Next: review screenshots, finalquick, commit/push and normalt:pr; merge onlycleanindependentreview +exactheadCIgreen.

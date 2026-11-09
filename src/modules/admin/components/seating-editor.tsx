@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition, type TransitionStartFunction } from "react";
 import { Button, Input, Select, Sheet } from "@/modules/shared/components/ui";
 import {
   seatingOccupancy,
@@ -15,14 +15,25 @@ import type { SeatingMutation } from "../server/seating-repository";
 function TableForm({
   table,
   done,
+  pending,
+  start,
 }: {
   table: SeatingTable | null;
   done: (message: string) => void;
+  pending: boolean;
+  start: TransitionStartFunction;
 }) {
-  const [pending, start] = useTransition();
   const [result, setResult] = useState<SeatingMutation | null>(null);
   const [confirm, setConfirm] = useState(false);
   const form = useRef<HTMLFormElement>(null);
+  const confirmationUsed = useRef(false);
+  useEffect(() => {
+    if (confirm) {
+      confirmationUsed.current = true;
+      form.current?.querySelector<HTMLButtonElement>("[data-confirm-delete]")?.focus();
+    } else if (confirmationUsed.current)
+      form.current?.querySelector<HTMLButtonElement>("[data-start-delete]")?.focus();
+  }, [confirm]);
   const error = useRef<HTMLParagraphElement>(null);
   const fields = result && !result.ok ? result.fields : undefined;
   useEffect(() => {
@@ -102,6 +113,7 @@ function TableForm({
                 <div className="flex flex-wrap gap-3">
                   <Button
                     variant="danger"
+                    data-confirm-delete
                     onClick={() =>
                       start(async () =>
                         finish(
@@ -121,7 +133,7 @@ function TableForm({
                 </div>
               </>
             ) : (
-              <Button variant="ghost" onClick={() => setConfirm(true)}>
+              <Button data-start-delete variant="ghost" onClick={() => setConfirm(true)}>
                 Delete table
               </Button>
             )}
@@ -136,13 +148,16 @@ function AssignmentForm({
   party,
   plan,
   done,
+  pending,
+  start,
 }: {
   party: SeatingParty;
   plan: SeatingPlan;
   done: (message: string) => void;
+  pending: boolean;
+  start: TransitionStartFunction;
 }) {
   const [target, setTarget] = useState(party.tableId ?? "");
-  const [pending, start] = useTransition();
   const [message, setMessage] = useState("");
   const error = useRef<HTMLParagraphElement>(null);
   const table = plan.tables.find((row) => row.id === target);
@@ -208,6 +223,7 @@ function AssignmentForm({
 }
 
 export function SeatingEditor({ plan }: { plan: SeatingPlan }) {
+  const [pending, start] = useTransition();
   const [editing, setEditing] = useState<
     { kind: "table"; table: SeatingTable | null } | { kind: "party"; party: SeatingParty } | null
   >(null);
@@ -321,7 +337,7 @@ export function SeatingEditor({ plan }: { plan: SeatingPlan }) {
                 </div>
                 <Button
                   variant="secondary"
-                  aria-label={`Assign ${party.name}`}
+                  aria-label={`Assign table for ${party.name}`}
                   onClick={() => open({ kind: "party", party })}
                 >
                   Assign table
@@ -334,7 +350,7 @@ export function SeatingEditor({ plan }: { plan: SeatingPlan }) {
       <Sheet
         open={editing !== null}
         onOpenChange={(value) => {
-          if (!value) setEditing(null);
+          if (!value && !pending) setEditing(null);
         }}
         title={
           editing?.kind === "party"
@@ -346,10 +362,23 @@ export function SeatingEditor({ plan }: { plan: SeatingPlan }) {
         className="max-h-[90dvh] overflow-y-auto"
       >
         {editing?.kind === "table" && (
-          <TableForm key={editing.table?.id ?? "new"} table={editing.table} done={done} />
+          <TableForm
+            key={editing.table?.id ?? "new"}
+            table={editing.table}
+            done={done}
+            pending={pending}
+            start={start}
+          />
         )}
         {editing?.kind === "party" && (
-          <AssignmentForm key={editing.party.id} party={editing.party} plan={plan} done={done} />
+          <AssignmentForm
+            key={editing.party.id}
+            party={editing.party}
+            plan={plan}
+            done={done}
+            pending={pending}
+            start={start}
+          />
         )}
       </Sheet>
     </div>
