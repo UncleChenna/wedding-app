@@ -2,7 +2,7 @@
 id: TICKET-108
 title: Make the scanner app shell work fully offline
 epic: pwa
-status: blocked
+status: in_progress
 priority: high
 estimate: M
 labels: [pwa, frontend]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-11-09
 started: 2026-11-09
 completed: ""
-reason: "Offline document and decoder integration awaits verified TICKET-059 camera merge; storage/runtime foundation verified and pushed in draft PR142."
-resume_to: in_progress
+reason: ""
+resume_to: ""
 ---
 
 # TICKET-108: Make the scanner app shell work fully offline
@@ -65,3 +65,4 @@ _Agents append dated notes here while working._
 - 2026-11-09 — todo → claimed — divine (codex) — started ahead of TICKET-059 (in_review)
 - 2026-11-09 — todo → in_progress — divine (codex) — started ahead of TICKET-059 (in_review)
 - 2026-11-09 — in_progress → blocked — divine (codex) — Offline document and decoder integration awaits verified TICKET-059 camera merge; storage/runtime foundation verified and pushed in draft PR142.
+- 2026-11-09 — blocked → in_progress — divine (codex) — Resume independent offline session review fixes while TICKET-059 is in final CI; keep PR142 draft until its camera dependency merges.; started ahead of TICKET-059 (in_review)
