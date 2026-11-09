@@ -55,6 +55,8 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-6).
 
 ## Notes / decisions
 
+- 2026-11-09: Added isolated scanner-shell authorization storage; 16 Chromium/WebKit storage tests and quick lint/types pass. Worker navigation, asset caching and real offline decoding remain unfinished in draft PR142; see the ticket handoff.
+
 _Agents append dated notes here while working._
 
 ## Activity log
