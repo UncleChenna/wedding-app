@@ -21,11 +21,11 @@ Separate feature tests did not prove the couple could complete setup in one auth
 
 ## Verification
 
-- Existing full verification on that run failed only the inherited scanner CI-parity expectation: 1390 unit tests passed,153 skipped,1 failed. The separately tracked parity repair must be integrated and all final-head gates rerun; this is not merge approval.
+- Existing full verification on that run failed only the inherited scanner CI-parity expectation: 1390 unit tests passed,153 skipped,1 failed. The independently verified TICKET-221 repair is now integrated from develop `7250e483` without conflicts as `1d4ffefb`. All final-head gates must pass before merge.
 - Local production build passed on integrated product base `b1a15b64` (merge checkpoint `69f04a51`).
 - Both real browser projects passed: mobile 10.0s, desktop 3.8s, total 17.1s; `/tmp/TICKET-134-browser-final.log`. Sanitized outputs: `artifacts/TICKET-134/mobile.json` and `desktop.json` (ignored locally, uploaded by CI).
 - Thirteen bootstrap/CI safety tests passed, including another local DB/Auth target, invalid hosted guards, existing-file preservation, template symlink rejection and environment override.
-- Quick verification passed lint, types and thirteen related unit tests; final publication gate is rerun after evidence edits.
+- Combined-base quick verification passed lint, types and related unit tests. Focused admin bootstrap and repaired CI-parity suites passed15/15 (`/tmp/TICKET-134-integration-tests.log`); normal `t:pr` repeats the publication quick gate.
 - Initial browser runs caught a stale newly integrated reminder migration and two selector issues. The runner now migrates locally too, and selectors use actual navigation and the visible assignment dialog. No functional assertions or existing gates were weakened.
 - Owned stack `wedding-5f0289a6a7a4` stopped successfully with `backup:true`; `/tmp/TICKET-134-db-stop.log`.
 
