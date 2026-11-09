@@ -156,4 +156,58 @@ describe.runIf(process.env.RUN_SHARE_TRACKING_DB_TESTS === "1")("sharing persist
         ).ok,
       ).toBe(false);
     }));
+  it("serializes concurrent retries into one event without losing first-send time", async () => {
+    const database = drizzle(client, { schema });
+    const [invitation] = await database
+      .insert(schema.invitations)
+      .values({ householdName: "Synthetic concurrent share" })
+      .returning();
+    if (!invitation) throw new Error("Missing concurrent fixture");
+    try {
+      const input = command(invitation.id);
+      const outcomes = await Promise.all([
+        recordInvitationShare(input, actor, database),
+        recordInvitationShare(input, actor, database),
+      ]);
+      expect(outcomes.every((result) => result.ok)).toBe(true);
+      expect(
+        await database
+          .select()
+          .from(schema.invitationShareEvents)
+          .where(eq(schema.invitationShareEvents.invitationId, invitation.id)),
+      ).toHaveLength(1);
+      const [current] = await database
+        .select()
+        .from(schema.invitations)
+        .where(eq(schema.invitations.id, invitation.id));
+      expect(current?.status).toBe("sent");
+      expect(current?.sentAt).toBeInstanceOf(Date);
+    } finally {
+      await database.delete(schema.invitations).where(eq(schema.invitations.id, invitation.id));
+    }
+  });
+  it("rejects Undo after its ten-minute window", async () =>
+    exercise(async (tx) => {
+      const invitation = await fixture(tx);
+      const input = command(invitation.id);
+      await recordInvitationShare(input, actor, tx);
+      await tx
+        .update(schema.invitationShareEvents)
+        .set({ createdAt: new Date(Date.now() - 601_000) })
+        .where(eq(schema.invitationShareEvents.id, input.requestId));
+      expect(
+        (
+          await undoInvitationShare(
+            { invitationId: invitation.id, eventId: input.requestId },
+            actor,
+            tx,
+          )
+        ).ok,
+      ).toBe(false);
+      const [current] = await tx
+        .select()
+        .from(schema.invitations)
+        .where(eq(schema.invitations.id, invitation.id));
+      expect(current?.sentAt).toBeInstanceOf(Date);
+    }));
 });

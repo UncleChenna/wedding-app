@@ -19,15 +19,17 @@ Sharing currently leaves the guest list's sent timestamp unchanged. This draft r
 - First/repeat sharing and RSVP preservation: seven pure policy tests pass. Persisted verification remains outstanding.
 - Sent filters: integrated prerequisite TICKET-089 at 60cb0985; its own browser evidence is still in progress. This PR stays draft until that prerequisite merges.
 - Native cancellation, successful copy/native sharing, external intent channels, recording failure and Undo feedback: six component tests pass.
+- Guest-list Undo survives first sharing removing its row from the unsent filter; reissue/revoke removes stale Undo state. Four guest-list component cases pass.
 - Generated migration, isolated database tests, authenticated browser journey and UI evidence remain incomplete. No acceptance checkbox is marked complete from mocked evidence alone.
 
 # Verification
 
+- Final focused suite: 24 passed, five persisted tests skipped because the managed database slot is not available. Latest pushed-head quick gate passed lint and types; its clean-source unit step skipped by design.
 - Initial policy test failed on the missing implementation; all seven now pass.
 - Focused policy/action/UI/helper suite: 16 passed before three additional UI cases; latest component suite six passed.
 - Service input validation test passes. Action tests verify authorization and both revalidation paths.
 - Quick gate passed lint, types and 76 related tests, with 87 opt-in tests skipped before the last three UI cases were added. A previous run failed because the service eagerly imported environment-dependent DB configuration; typed injection corrected it.
-- Three opt-in persisted tests are written but not run. No database started during another ticket's reserved slot.
+- Five opt-in persisted tests are written but not run, including concurrent retry deduplication and Undo expiry. No database started during another ticket's reserved slot.
 - `db:generate` refused the pre-bootstrap managed database target. No migration generated or applied yet; complete managed bootstrap in the allocated DB slot, generate, migrate twice, check counts and RLS.
 
 # Risks and rollout
