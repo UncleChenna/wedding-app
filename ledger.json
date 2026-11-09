@@ -2778,14 +2778,15 @@
     },
     "WED-065": {
       "log": [
-        "- 2026-11-09 — todo → claimed — divine (codex) — started ahead of TICKET-061 (in_progress)"
+        "- 2026-11-09 — todo → claimed — divine (codex) — started ahead of TICKET-061 (in_progress)",
+        "- 2026-11-09 — todo → in_progress — divine (codex) — started ahead of TICKET-061 (in_progress)"
       ],
-      "status": "todo",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-065",
       "pr": "",
-      "started": "",
+      "started": "2026-11-09",
       "completed": "",
       "updated": "2026-11-09",
       "reason": "",
