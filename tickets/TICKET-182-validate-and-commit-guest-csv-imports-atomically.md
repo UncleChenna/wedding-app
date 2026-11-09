@@ -33,13 +33,13 @@ Backlog audit coverage: INV-1, ADM-1. See [PRD](../docs/prd.md) and [audit](AUDI
 
 ## Out of scope
 
-- Work outside the stated contract; consuming screens and launch operations remain in their linked tickets. No product implementation is part of this audit.
+- Work outside the stated contract; consuming screens and launch operations remain in their linked tickets. The audit wording described the original backlog creation; this ticket now implements its authorized backend contract.
 
 ## Acceptance criteria
 
-- [ ] Validate headers, row bounds, contacts, grouping and per-invitation tag-along limits with row-specific errors; malformed CSV cannot partially write.
-- [ ] Document duplicate household/contact handling; repeated import uses a stable preview/commit identity and cannot create duplicate invitations.
-- [ ] Commit an approved preview atomically, reject changed/stale inputs, preserve existing RSVP state, and neutralize spreadsheet formulas in exported cells.
+- [x] Validate headers, row bounds, contacts, grouping and per-invitation tag-along limits with row-specific errors; malformed CSV cannot partially write.
+- [x] Document duplicate household/contact handling; repeated import uses a stable preview/commit identity and cannot create duplicate invitations.
+- [x] Commit an approved preview atomically, reject changed/stale inputs, preserve existing RSVP state, and neutralize spreadsheet formulas in exported cells.
 
 ## Test plan
 
@@ -59,3 +59,5 @@ Backlog audit coverage: INV-1, ADM-1. See [PRD](../docs/prd.md) and [audit](AUDI
 - 2026-10-21 — new → todo — divine
 - 2026-11-09 — todo → claimed — divine (codex)
 - 2026-11-09 — todo → in_progress — divine (codex)
+
+- 2026-11-09 — Implemented create-only bounded CSV preview/commit, durable digest receipts and atomic retry protection. Parser/action/export tests: 18 passed; isolated database regressions: 5 passed; full unit suite: 1309 passed, 145 skipped. Repeat migrations and seeds preserve counts; all 23 public tables retain RLS. Independent read-only review found no blockers. See docs/guest-import.md and PR evidence for duplicate/expiry policy.
