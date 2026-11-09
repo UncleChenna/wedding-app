@@ -65,6 +65,7 @@ const USAGE = `Usage: pnpm t:<command>
   t:release <id>                  give back a claimed todo ticket
   t:move <id> <status> [--reason text] [--push]
   t:reconcile <id> --repair-pr <number> --reason <failure and repair>
+  t:reconcile <id> --integration-pr <number> --reason <historical stack and integration>
                                   close an already-merged owned ticket using verified repair CI
   t:new --title "Imperative title" --epic e --module m [--priority p] [--estimate S|M|L]
         [--labels a,b] [--blocked-by TICKET-001,TICKET-002] [--status backlog|todo]
@@ -675,7 +676,11 @@ function main(): number {
       const state = load(false);
       const ticket = find(state, args.positional[0] ?? "");
       const who = actor(args, state.cwd);
-      const repair = str(args, "repair-pr") ?? "";
+      const integration = str(args, "integration-pr");
+      const historical = integration !== undefined;
+      if (historical && str(args, "repair-pr"))
+        throw new TransitionError("Choose --repair-pr or --integration-pr, not both.");
+      const repair = integration ?? str(args, "repair-pr") ?? "";
       const reason = str(args, "reason")?.trim();
       if (!reason || reason.length < 20)
         throw new TransitionError(
@@ -689,10 +694,18 @@ function main(): number {
         ticket.meta,
         who,
         (id) => state.tickets.find((entry) => entry.meta.id === id)?.meta.status,
+        historical,
       );
       const result = commitChange(state, ticket.meta.id, (current, statusOf) => {
-        reconciliationEligibility(current.meta, who, statusOf);
-        const proof = reconciliationEvidence(state.cwd, current.meta.pr, repair, current.path);
+        reconciliationEligibility(current.meta, who, statusOf, historical);
+        const proof = reconciliationEvidence(
+          state.cwd,
+          current.meta.pr,
+          repair,
+          current.path,
+          undefined,
+          historical,
+        );
         return {
           meta: { status: "done", updated: today(), completed: today(), reason: "", resume_to: "" },
           log: logLine(
@@ -701,7 +714,7 @@ function main(): number {
             "done",
             who,
             current.meta.agent,
-            `Reconciled original ${proof.original}; previous block: ${current.meta.reason || "none"}; ${reason}; verified repair ${proof.repair} head ${proof.head}; CI ${proof.run}; develop ${proof.develop}`,
+            `Reconciled original ${proof.original}${historical ? ` head ${proof.originalHead} merge ${proof.originalMerge} base ${proof.originalBase}; original CI ${proof.originalRun}; historical integration merge ${proof.integrationMerge}` : ""}; previous block: ${current.meta.reason || "none"}; ${reason}; verified repair ${proof.repair} head ${proof.head}; CI ${proof.run}; develop ${proof.develop}`,
           ),
         };
       });
