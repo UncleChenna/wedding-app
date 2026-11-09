@@ -46,7 +46,7 @@ export function parseGuestExportFilters(
   };
 }
 
-function cell(value: string | number): string {
+export function spreadsheetCell(value: string | number): string {
   let text = String(value);
   if (typeof value === "string" && (/^\s*[=+\-@]/.test(text) || /^[\t\r\n]/.test(text)))
     text = `'${text}`;
@@ -92,5 +92,5 @@ export function guestExportCsv(invitations: ExportInvitation[], filters: GuestLi
         guest?.dietaryNotes ?? "",
       ]);
   }
-  return rows.map((row) => row.map(cell).join(",")).join("\r\n") + "\r\n";
+  return rows.map((row) => row.map(spreadsheetCell).join(",")).join("\r\n") + "\r\n";
 }

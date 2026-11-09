@@ -148,6 +148,13 @@
       "when": 1794217995851,
       "tag": "0020_invitation-share-events",
       "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1794222298913,
+      "tag": "0021_guest-import-batches",
+      "breakpoints": true
     }
   ]
 }
