@@ -2614,9 +2614,10 @@
         "- 2026-11-09 — in_progress → in_review — divine (codex)",
         "- 2026-11-09 — in_review → in_progress — divine (codex) — Investigate unrelated guest-import asynchronous focus assertion failure in final CI before verified recovery merge",
         "- 2026-11-09 — in_progress → in_review — divine (codex)",
-        "- 2026-11-09 — in_review → in_progress — divine (codex) — Integrate verified coverage baseline and revalidate combined head"
+        "- 2026-11-09 — in_review → in_progress — divine (codex) — Integrate verified coverage baseline and revalidate combined head",
+        "- 2026-11-09 — in_progress → in_review — divine (codex)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-222",
