@@ -29,7 +29,10 @@ export function AdminShell({
 }) {
   return (
     <div className="flex min-h-dvh flex-col md:flex-row">
-      <header className="flex items-start justify-between gap-4 border-b border-border px-6 py-4 md:hidden">
+      <header
+        data-admin-chrome
+        className="flex items-start justify-between gap-4 border-b border-border px-6 py-4 md:hidden"
+      >
         <div className="min-w-0">
           <p className="type-label text-primary">Wedding control room</p>
           <p className="mt-1 font-display text-2xl leading-tight">{eventName}</p>
@@ -45,6 +48,7 @@ export function AdminShell({
         </div>
       </header>
       <nav
+        data-admin-chrome
         aria-label="Admin"
         className="fixed inset-x-0 bottom-0 z-20 border-t border-border bg-background px-2 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] md:sticky md:top-0 md:h-dvh md:w-64 md:shrink-0 md:border-t-0 md:border-r md:px-4 md:py-8"
       >

@@ -33,6 +33,12 @@ export const appRoutes = {
     audience: "admin",
     access: "admin",
   },
+  adminGatePrint: {
+    path: "/admin/guests/print",
+    label: "Print gate list",
+    audience: "admin",
+    access: "admin",
+  },
   adminGuestNew: {
     path: "/admin/guests/new",
     label: "Add an invitation",

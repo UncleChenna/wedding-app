@@ -43,3 +43,7 @@ Independent source/visual review clean at9665126d after all24screenshots inspect
 ## 2026-11-09 admin typography correction
 
 Reopened viaCLI to enforce the canonical18pxadmincontrolrule rather than shared16pxdefaults. Scoped editorstyles nowcoverbuttons/inputs/selects/labels/bodycopy. Added actualcomputedfont-size browser assertions alongside24axechecks; bothjourneyspass16.7s and build/quicklint/typespass.24screenshotsregenerated forvisualre-review. OwnDBstoppedagainbackuptrue(projectwedding-d67592a8d3bc), slotreleased182. Nootherownerstacks touched.
+
+## 2026-11-09 print-list integration
+
+Integrated develop716695ca after069 merged. Sole assigned integration editor resolved header/routes conflicts retaining all three Add/Print/Seating actions; navigation regression asserts each destination.23focusedtests andquicklint/types/118relatedpass(1opt-inskipped). No DB restart or seating/typography/screenshot changes. Push checkpoint for parent read-only review, then normal t:pr; parent coordinates final-head CI/merge.

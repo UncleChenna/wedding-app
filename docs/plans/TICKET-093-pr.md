@@ -76,3 +76,7 @@ named guests. Empty-only deletion intentionally preserves household/order histor
 # Harness changes
 
 TICKET-060 dependency/acceptance mapping only. No tests, checks or hooks weakened.
+
+## Latest develop integration
+
+Integrated develop `716695ca8d87fd46691b1142a07834f6affdb885` after TICKET-069 merged. Resolved only guest-header and route-inventory conflicts, retaining Add an invitation, Print gate list and Seating plan. Extended the navigation regression to assert all three destinations. Twenty-three focused route/navigation/seating/print tests pass; quick verification passes lint, types and 118 related tests (one opt-in skipped). No database restart or change to seating mutations, typography or previously reviewed screenshots. Existing real database/browser evidence above remains unchanged; final required CI verifies the combined head.

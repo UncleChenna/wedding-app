@@ -1,5 +1,6 @@
-import { RetryButton } from "@/modules/shared/components/retry-button";
 import Link from "next/link";
+import { appRoutes } from "@/modules/shared/lib/routes";
+import { RetryButton } from "@/modules/shared/components/retry-button";
 import { getGuestList } from "../server/guest-list";
 import { DraftDeletedNotice } from "./draft-deleted-notice";
 import { GuestList } from "./guest-list";
@@ -15,13 +16,19 @@ export async function AdminGuestList({ draftDeleted = false }: { draftDeleted?: 
       </p>
       <div className="mt-6 flex flex-wrap gap-6">
         <Link
-          href="/admin/guests/new"
+          href={appRoutes.adminGuestNew.path}
           className="inline-flex min-h-11 items-center text-primary underline underline-offset-4"
         >
           Add an invitation
         </Link>
         <Link
-          href="/admin/guests/seating"
+          href={appRoutes.adminGatePrint.path}
+          className="inline-flex min-h-11 items-center text-primary underline underline-offset-4"
+        >
+          Print gate list
+        </Link>
+        <Link
+          href={appRoutes.adminSeating.path}
           className="inline-flex min-h-11 items-center text-primary underline underline-offset-4"
         >
           Seating plan

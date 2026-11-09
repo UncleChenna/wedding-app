@@ -2,20 +2,20 @@
 id: TICKET-069
 title: Export a printable gate guest list
 epic: checkin
-status: todo
+status: in_review
 priority: high
 estimate: S
 labels: [frontend, backend]
 module: checkin
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-024, TICKET-088]
 blocks: [TICKET-161, TICKET-165]
-branch: ""
-pr: ""
+branch: TICKET-069
+pr: https://github.com/UncleChenna/wedding-app/pull/123
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-09
+started: 2026-11-09
 completed: ""
 reason: ""
 resume_to: ""
@@ -39,8 +39,8 @@ See: [Performance and reliability](../docs/prd.md#performance-and-reliability).
 
 ## Acceptance criteria
 
-- [ ] The export includes every rsvp_yes invitation and every tag-along name (unit).
-- [ ] Prints on A4 in black and white without cut-off columns (manual print preview).
+- [x] The export includes every rsvp_yes invitation and every tag-along name (unit).
+- [x] Prints on A4 in black and white without cut-off columns (manual print preview).
 
 ## Test plan
 
@@ -55,8 +55,12 @@ See: [Performance and reliability](../docs/prd.md#performance-and-reliability).
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-11-09: Added protected `/admin/guests/print` with a consistent confirmed-invitation snapshot, every companion, canonical party/admission totals and printable A4 output. Eight focused tests and authenticated browser/PDF checks prove both criteria. Free-form names use the primary guest’s final name word for sorting; this limitation is disclosed on the page. See `docs/plans/TICKET-069-pr.md` for evidence and remaining release checks.
 
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-09 — todo → claimed — divine (codex)
+- 2026-11-09 — todo → in_progress — divine (codex)
+- 2026-11-09 — in_progress → in_review — divine (codex)
+- 2026-11-09 — in_review → in_progress — divine (codex) — Fix full CI failure and integrate current guest actions
