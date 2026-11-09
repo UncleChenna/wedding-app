@@ -17,6 +17,7 @@ export function newRequestId(): string {
 
 export type SubmitOutcome =
   | { status: "sent"; orderId: string }
+  | { status: "limited"; retryAfterSeconds: number }
   | { status: "rejected"; result: Extract<OrderResult, { status: "rejected" }> }
   | { status: "failed" };
 
@@ -50,7 +51,12 @@ export async function submitOrder(
         cache: "no-store",
         signal: controller.signal,
       });
-      if (response.status >= 500 || response.status === 408 || response.status === 429) continue;
+      if (response.status === 429)
+        return {
+          status: "limited",
+          retryAfterSeconds: retryAfterSeconds(response.headers.get("Retry-After")),
+        };
+      if (response.status >= 500 || response.status === 408) continue;
       const parsed = orderResponseSchema.safeParse(await response.json());
       if (!parsed.success) continue;
       const result = parsed.data;
@@ -64,4 +70,11 @@ export async function submitOrder(
     }
   }
   return { status: "failed" };
+}
+
+/** Our API emits seconds; accept standard HTTP dates as well. Never retry malformed waits early. */
+export function retryAfterSeconds(value: string | null, now = Date.now()): number {
+  if (!value) return 60;
+  const seconds = /^\d+$/.test(value) ? Number(value) : (Date.parse(value) - now) / 1000;
+  return Number.isFinite(seconds) && seconds > 0 ? Math.min(86400, Math.ceil(seconds)) : 60;
 }

@@ -1,0 +1,2 @@
+ALTER TABLE "request_budgets" DROP CONSTRAINT "request_budgets_scope";--> statement-breakpoint
+ALTER TABLE "request_budgets" ADD CONSTRAINT "request_budgets_scope" CHECK ("request_budgets"."scope" in ('lookup', 'pin', 'lost_link', 'ordering'));

@@ -1,4 +1,5 @@
 import { randomBytes } from "node:crypto";
+import { existsSync } from "node:fs";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres, { type Sql } from "postgres";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
@@ -17,7 +18,7 @@ function identity() {
 
 describe.runIf(process.env.RUN_RATE_LIMIT_DB_TESTS === "1")("shared atomic request budgets", () => {
   beforeAll(() => {
-    process.loadEnvFile(".env.local");
+    if (existsSync(".env.local")) process.loadEnvFile(".env.local");
     const url = process.env.DATABASE_URL ?? "";
     assertDatabaseTarget(url, { localOnly: true });
     first = postgres(url, { max: 4, prepare: false });
@@ -91,6 +92,41 @@ describe.runIf(process.env.RUN_RATE_LIMIT_DB_TESTS === "1")("shared atomic reque
       await first`select policyname from pg_policies where schemaname = 'public' and tablename = 'request_budgets'`;
     expect(policies).toHaveLength(0);
   });
+
+  it("allows thirty tables four retries each, then denies only above the ordering budget", async () => {
+    const { consumeRequestBudget } = await import("../../src/modules/shared/server/request-budget");
+    const clients = [drizzle(first, { schema }), drizzle(second, { schema })] as const;
+    const budget = {
+      identity: identity(),
+      scope: "ordering" as const,
+      ...requestBudgetPolicies.ordering,
+    };
+    const results = await Promise.all(
+      Array.from({ length: 120 }, (_, index) =>
+        consumeRequestBudget(clients[index % 2] ?? clients[0], budget),
+      ),
+    );
+    expect(results.every((result) => result.allowed)).toBe(true);
+    const burst = await Promise.all(
+      Array.from({ length: 150 }, (_, index) =>
+        consumeRequestBudget(clients[index % 2] ?? clients[0], budget),
+      ),
+    );
+    expect(burst.filter((result) => result.allowed)).toHaveLength(120);
+    expect(burst.filter((result) => !result.allowed)).toHaveLength(30);
+    const [row] =
+      await first`select used from request_budgets where identity = ${budget.identity} and scope = 'ordering'`;
+    expect(row?.used).toBe(240);
+    expect(
+      (
+        await consumeRequestBudget(clients[0], {
+          ...budget,
+          scope: "lost_link",
+          ...requestBudgetPolicies.lost_link,
+        })
+      ).allowed,
+    ).toBe(true);
+  }, 30_000);
 
   it("allows 350 households sharing one network three lookup requests each", async () => {
     const { consumeRequestBudget } = await import("../../src/modules/shared/server/request-budget");

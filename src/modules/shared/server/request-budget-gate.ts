@@ -8,6 +8,7 @@ export const requestBudgetPolicies = {
   lookup: { limit: 1200, windowSeconds: 60 },
   lost_link: { limit: 10, windowSeconds: 60 },
   pin: { limit: 30, windowSeconds: 600 },
+  ordering: { limit: 240, windowSeconds: 60 },
 } as const;
 
 export type RequestBudgetDecision =
