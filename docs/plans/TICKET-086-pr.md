@@ -17,7 +17,7 @@ sender (TICKET-085) will use it.
 
 # Changes
 
-- **Schema and migration** (`drizzle/0020_cold_omega_flight.sql`, additive only):
+- **Schema and migration** (`drizzle/0023_little_lester.sql`, additive only):
   - `staff.whatsapp_number` (text, nullable)
   - `staff.alerts_opt_in` (boolean, default false)
   - checks `staff_whatsapp_number_e164`, and `staff_alerts_need_number`: opting in needs a number and the kitchen or
@@ -45,13 +45,12 @@ sender (TICKET-085) will use it.
 
 # Verification
 
-- **On develop at `360914b7` (includes TICKET-043's migration 0019):**
+- **On develop at `b1a15b64` (migration renumbered to 0023 after develop added 0020–0022):**
   - `pnpm db:reset` (clean migrate and seed), then `pnpm db:migrate` again: only a Postgres notice ("schema drizzle
     already exists"), so it reruns safely.
-  - `pnpm db:check-rls`: all 20 public tables have RLS.
+  - `pnpm db:check-rls`: all 23 public tables have RLS.
   - `pnpm db:seed`: fine.
-- **Unit and database tests:** `RUN_ALERT_RECIPIENT_DB_TESTS=1 vitest run scripts/__tests__/alert-recipients.integration.test.ts src/modules/admin`:
-  128 passed.
+- **Unit and database tests:** `RUN_ALERT_RECIPIENT_DB_TESTS=1 vitest run scripts/__tests__/alert-recipients.integration.test.ts src/modules/admin`: 310 passed (57 files).
 - **Browser tests** (`playwright test e2e/admin-staff.spec.ts --project=mobile`, with `RUN_ADMIN_STAFF_TESTS=1`, a
   fresh `ADMIN_TEST_EMAIL` on `ADMIN_EMAIL_ALLOWLIST`, and a random `STAFF_SESSION_SECRET`):
   - The new alerts case passed. It covers a refused opt-in that keeps the tick, a save of `0803 123 4567` stored as
