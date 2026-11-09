@@ -2,7 +2,7 @@
 id: TICKET-062
 title: Log every scan with time, device, staff and result
 epic: checkin
-status: in_review
+status: in_progress
 priority: high
 estimate: S
 labels: [backend]
@@ -63,3 +63,4 @@ _Agents append dated notes here while working._
 - 2026-11-09 — todo → in_progress — divine (codex)
 - 2026-11-09 — Implemented and verified zero-person observations; manual input is separate from transport (ADR0025). Evidence and remaining full CI gate: `docs/plans/TICKET-062-pr.md`, draft PR149.
 - 2026-11-09 — in_progress → in_review — divine (codex)
+- 2026-11-09 — in_review → in_progress — divine (codex) — Preserve append-only scan evidence in existing scanner fixture cleanup after CI FK failure
