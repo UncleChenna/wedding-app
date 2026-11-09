@@ -1,30 +1,30 @@
-.page {
+.gate-print-page {
   width: 100%;
 }
-.table {
+.gate-print-table {
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
 }
-.table th,
-.table td {
+.gate-print-table th,
+.gate-print-table td {
   padding: 0.75rem 0.4rem;
-  border-bottom: 1px solid var(--t-border);
+  border-bottom: 1px solid var(--t-color-border);
   text-align: left;
   vertical-align: top;
   overflow-wrap: anywhere;
 }
-.table th:first-child {
+.gate-print-table th:first-child {
   width: 43%;
 }
-.table th:nth-child(2),
-.table th:nth-child(3) {
+.gate-print-table th:nth-child(2),
+.gate-print-table th:nth-child(3) {
   width: 12%;
 }
-.table th:last-child {
+.gate-print-table th:last-child {
   width: 33%;
 }
-.box {
+.gate-print-box {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -36,18 +36,19 @@
   line-height: 1;
 }
 @media print {
-  @page {
+  @page gate-guest-list {
     size: A4 portrait;
     margin: 12mm;
   }
-  :global(body):has(.page) :global([data-admin-chrome]) {
+  body:has(.gate-print-page) [data-admin-chrome] {
     display: none !important;
   }
-  :global(body):has(.page) {
+  body:has(.gate-print-page) {
     color: #000 !important;
     background: #fff !important;
   }
-  .page {
+  .gate-print-page {
+    page: gate-guest-list;
     max-width: none !important;
     margin: 0 !important;
     padding: 0 !important;
@@ -56,27 +57,27 @@
     font-size: 10pt;
     line-height: 1.4;
   }
-  .page h1 {
+  .gate-print-page h1 {
     font-size: 22pt;
   }
-  .controls {
+  .gate-print-controls {
     display: none !important;
   }
-  .table {
+  .gate-print-table {
     font-size: 10pt;
   }
-  .table thead {
+  .gate-print-table thead {
     display: table-header-group;
   }
-  .table tr {
+  .gate-print-table tr {
     break-inside: avoid;
   }
-  .table th,
-  .table td {
+  .gate-print-table th,
+  .gate-print-table td {
     padding: 3mm 1.5mm;
     border-color: #000;
   }
-  .box {
+  .gate-print-box {
     width: 4mm;
     height: 4mm;
     font-size: 10pt;

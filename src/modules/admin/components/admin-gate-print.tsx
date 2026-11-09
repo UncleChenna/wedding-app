@@ -3,15 +3,15 @@ import { RetryButton } from "@/modules/shared/components/retry-button";
 import { getGatePrintList } from "../server/gate-print";
 import { GatePrintTable } from "./gate-print-table";
 import { PrintGateButton } from "./print-gate-button";
-import styles from "./gate-print.module.css";
+import "./gate-print.css";
 export async function AdminGatePrint() {
   const result = await getGatePrintList();
   return (
     <main
-      className={`${styles.page} mx-auto max-w-5xl px-4 py-10 text-base leading-relaxed md:px-8`}
+      className={`gate-print-page mx-auto max-w-5xl px-4 py-10 text-base leading-relaxed md:px-8`}
     >
       <h1 className="font-display text-4xl">Gate guest list</h1>
-      <div className={`${styles.controls} mt-6 flex flex-wrap items-center gap-6`}>
+      <div className={`gate-print-controls mt-6 flex flex-wrap items-center gap-6`}>
         {result.ok && result.rows.length > 0 ? <PrintGateButton /> : null}
         <Link
           href="/admin/guests"

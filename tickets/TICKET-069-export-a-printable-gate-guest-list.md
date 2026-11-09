@@ -39,8 +39,8 @@ See: [Performance and reliability](../docs/prd.md#performance-and-reliability).
 
 ## Acceptance criteria
 
-- [ ] The export includes every rsvp_yes invitation and every tag-along name (unit).
-- [ ] Prints on A4 in black and white without cut-off columns (manual print preview).
+- [x] The export includes every rsvp_yes invitation and every tag-along name (unit).
+- [x] Prints on A4 in black and white without cut-off columns (manual print preview).
 
 ## Test plan
 
@@ -55,7 +55,7 @@ See: [Performance and reliability](../docs/prd.md#performance-and-reliability).
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-11-09: Added protected `/admin/guests/print` with a consistent confirmed-invitation snapshot, every companion, canonical party/admission totals and printable A4 output. Eight focused tests and authenticated browser/PDF checks prove both criteria. Free-form names use the primary guest’s final name word for sorting; this limitation is disclosed on the page. See `docs/plans/TICKET-069-pr.md` for evidence and remaining release checks.
 
 ## Activity log
 

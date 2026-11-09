@@ -1,8 +1,8 @@
 import type { GatePrintRow } from "@/modules/checkin/lib/gate-print";
-import styles from "./gate-print.module.css";
+import "./gate-print.css";
 export function GatePrintTable({ rows }: { rows: readonly GatePrintRow[] }) {
   return (
-    <table className={styles.table}>
+    <table className="gate-print-table">
       <caption className="sr-only">Confirmed invitations and admission totals</caption>
       <thead>
         <tr>
@@ -14,7 +14,7 @@ export function GatePrintTable({ rows }: { rows: readonly GatePrintRow[] }) {
       </thead>
       <tbody>
         {rows.map((row) => (
-          <tr key={row.id}>
+          <tr key={row.id} data-print-invitation={row.id}>
             <td>
               <ul>
                 {row.names.map((name, index) => (
@@ -35,7 +35,7 @@ export function GatePrintTable({ rows }: { rows: readonly GatePrintRow[] }) {
                 <>
                   <div aria-hidden="true">
                     {row.marks.map((checked, index) => (
-                      <span key={index} className={styles.box}>
+                      <span key={index} className="gate-print-box">
                         {checked ? "✓" : ""}
                       </span>
                     ))}
