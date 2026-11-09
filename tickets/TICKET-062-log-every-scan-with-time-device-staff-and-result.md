@@ -2,20 +2,20 @@
 id: TICKET-062
 title: Log every scan with time, device, staff and result
 epic: checkin
-status: todo
+status: in_progress
 priority: high
 estimate: S
 labels: [backend]
 module: checkin
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-061, TICKET-064]
 blocks: [TICKET-063, TICKET-066, TICKET-132, TICKET-136, TICKET-174]
-branch: ""
+branch: TICKET-062
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-09
+started: 2026-11-09
 completed: ""
 reason: ""
 resume_to: ""
@@ -59,3 +59,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-09 — todo → claimed — divine (codex)
+- 2026-11-09 — todo → in_progress — divine (codex)
