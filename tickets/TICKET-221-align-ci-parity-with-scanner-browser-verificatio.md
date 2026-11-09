@@ -41,11 +41,11 @@ PR #127 added required Chromium/WebKit gate-token verification for [Gate check-i
 
 ## Acceptance criteria
 
-- [ ] Noncanonical high-S signatures fail before backend dispatch even when native WebCrypto would accept them; unchanged Chromium/WebKit vectors pass.
+- [x] Noncanonical high-S signatures fail before backend dispatch even when native WebCrypto would accept them; unchanged Chromium/WebKit vectors pass.
 
 - [x] CI parity requires frozen install, Chromium and WebKit, agent checks, database migration, full verify and dedicated scanner verification in order.
 - [x] The known failure is reproduced before repair and both parity tests pass after repair.
-- [ ] Quick verification and final required CI pass without weakening assertions or timeouts.
+- [x] Quick verification and final required CI pass without weakening assertions or timeouts.
 
 ## Test plan
 
@@ -69,3 +69,5 @@ PR #127 added required Chromium/WebKit gate-token verification for [Gate check-i
 - 2026-11-09 — backlog → todo — divine
 - 2026-11-09 — todo → claimed — divine (codex)
 - 2026-11-09 — todo → in_progress — divine (codex)
+
+- 2026-11-09 — CI run 42623016949 passed all five checks at bfe75af5, including full verification and Linux Chromium/WebKit scanner vectors. Root independently reviewed the scalar guard and parity contract without blockers. Integrated develop 1f619b05 without conflicts; the combined final head must pass CI before merge.
