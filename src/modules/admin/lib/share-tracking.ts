@@ -7,6 +7,7 @@ export const shareTrackingInputSchema = z.object({
   expectedVersion: z.number().int().positive(),
   channel: shareChannelSchema,
   requestId: z.uuid(),
+  purpose: z.enum(["invitation", "reminder"]).default("invitation"),
 });
 export type ShareTrackingState = {
   status: "draft" | "sent" | "rsvp_yes" | "rsvp_no" | "revoked";

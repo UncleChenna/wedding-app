@@ -271,6 +271,7 @@ export const invitationShareEvents = pgTable(
       .references(() => invitations.id, { onDelete: "cascade" }),
     actorId: uuid("actor_id").notNull(),
     channel: text("channel").notNull(),
+    purpose: text("purpose").notNull().default("invitation"),
     tokenVersion: integer("token_version").notNull(),
     previousStatus: invitationStatus("previous_status").notNull(),
     previousSentAt: timestamp("previous_sent_at", { withTimezone: true }),
@@ -284,6 +285,7 @@ export const invitationShareEvents = pgTable(
       sql`${t.channel} in ('whatsapp', 'email', 'copy', 'native')`,
     ),
     check("invitation_share_events_version", sql`${t.tokenVersion} > 0`),
+    check("invitation_share_events_purpose", sql`${t.purpose} in ('invitation', 'reminder')`),
     check(
       "invitation_share_events_undo_time",
       sql`${t.undoneAt} is null or ${t.undoneAt} >= ${t.createdAt}`,

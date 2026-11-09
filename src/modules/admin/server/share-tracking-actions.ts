@@ -13,6 +13,7 @@ export async function recordShareAction(input: unknown) {
     if (!result.ok) return result;
     if (result.value.ok) {
       revalidatePath("/admin/sharing");
+      revalidatePath("/admin/sharing/reminders");
       revalidatePath("/admin/guests");
     }
     return result.value;
@@ -31,6 +32,7 @@ export async function undoShareAction(input: unknown) {
     if (!result.ok) return result;
     if (result.value.ok) {
       revalidatePath("/admin/sharing");
+      revalidatePath("/admin/sharing/reminders");
       revalidatePath("/admin/guests");
     }
     return result.value;
