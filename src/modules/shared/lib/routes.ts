@@ -26,6 +26,7 @@ export const appRoutes = {
   kitchen: { path: "/kitchen", label: "Kitchen board", audience: "staff", access: "public" },
   admin: { path: "/admin", label: "Wedding control room", audience: "admin", access: "admin" },
   adminSharing: { path: "/admin/sharing", label: "Sharing", audience: "admin", access: "admin" },
+  adminGuests: { path: "/admin/guests", label: "Guests", audience: "admin", access: "admin" },
   adminMenu: { path: "/admin/menu", label: "Menu", audience: "admin", access: "admin" },
   adminSettings: { path: "/admin/settings", label: "Settings", audience: "admin", access: "admin" },
   adminStaff: { path: "/admin/staff", label: "Staff", audience: "admin", access: "admin" },

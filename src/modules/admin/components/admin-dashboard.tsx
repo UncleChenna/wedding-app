@@ -15,6 +15,11 @@ export async function AdminDashboard() {
       <ul className="mt-12 grid gap-8 sm:grid-cols-2">
         {[
           {
+            href: appRoutes.adminGuests.path,
+            name: "Guests",
+            text: "Find invitations, replies and seating details.",
+          },
+          {
             href: appRoutes.adminSharing.path,
             name: "Sharing",
             text: "Send a personal invitation or copy its link.",
@@ -47,7 +52,7 @@ export async function AdminDashboard() {
             <p className="mt-3">{area.text}</p>
           </li>
         ))}
-        {["Guests", "Seating", "Live dashboard"].map((name) => (
+        {["Seating", "Live dashboard"].map((name) => (
           <li key={name}>
             <h2 className="font-display text-3xl">{name}</h2>
             <p className="mt-3 text-muted-foreground">Coming soon</p>
