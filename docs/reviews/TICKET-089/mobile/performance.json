@@ -1,0 +1,52 @@
+{
+  "initial": {
+    "firstRow": 285.09999999403954,
+    "painted": 303.90000000596046,
+    "cls": 0
+  },
+  "initialRenderMs": 18.80000001192093,
+  "navigationToRowsMs": 303.90000000596046,
+  "totalInvitations": 303,
+  "timings": [
+    {
+      "operation": "filter-to-one",
+      "ms": 23.80000001192093
+    },
+    {
+      "operation": "render-300",
+      "ms": 31
+    },
+    {
+      "operation": "filter-to-one",
+      "ms": 30.30000001192093
+    },
+    {
+      "operation": "render-300",
+      "ms": 30.900000005960464
+    },
+    {
+      "operation": "filter-to-one",
+      "ms": 33
+    },
+    {
+      "operation": "render-300",
+      "ms": 49.20000001788139
+    },
+    {
+      "operation": "filter-to-one",
+      "ms": 18.599999994039536
+    },
+    {
+      "operation": "render-300",
+      "ms": 37.30000001192093
+    },
+    {
+      "operation": "filter-to-one",
+      "ms": 32.099999994039536
+    },
+    {
+      "operation": "render-300",
+      "ms": 30.599999994039536
+    }
+  ]
+}

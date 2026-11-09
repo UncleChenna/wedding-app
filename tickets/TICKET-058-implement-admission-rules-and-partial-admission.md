@@ -2,20 +2,20 @@
 id: TICKET-058
 title: Implement admission rules and partial admission
 epic: checkin
-status: todo
+status: in_review
 priority: high
 estimate: M
 labels: [backend, test]
 module: checkin
-owner: ""
-agent: ""
+owner: unclechenna
+agent: claude
 blocked_by: [TICKET-024]
 blocks: [TICKET-060, TICKET-130, TICKET-173]
-branch: ""
-pr: ""
+branch: TICKET-058
+pr: https://github.com/UncleChenna/wedding-app/pull/118
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-09
+started: 2026-11-09
 completed: ""
 reason: ""
 resume_to: ""
@@ -41,9 +41,9 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-2, CHK-3) · [Testing pl
 
 ## Acceptance criteria
 
-- [ ] Every result type and boundary (0, partial, exact, over-admit) has a unit test; branch coverage 100%.
-- [ ] Over-admission is impossible in the function and in the DB constraint.
-- [ ] Property test: any sequence of admissions never exceeds count_attending.
+- [x] Every result type and boundary (0, partial, exact, over-admit) has a unit test; branch coverage 100%.
+- [x] Over-admission is impossible in the function and in the DB constraint.
+- [x] Property test: any sequence of admissions never exceeds count_attending.
 
 ## Test plan
 
@@ -58,6 +58,15 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-2, CHK-3) · [Testing pl
 
 _Agents append dated notes here while working._
 
+- 2026-11-09 (unclechenna, claude):
+  - **Pass versions:** an older pass (replaced by a reissue) is `revoked`; a newer one is `invalid`.
+  - **Counts:** asking for more people than remain admits nobody (`too_many`) instead of a silent partial admission.
+  - **Branch coverage:** checked by listing every branch in the tests by hand. No coverage tool is installed, and
+    adding one would change the lockfile.
+
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-09 — todo → claimed — unclechenna (claude)
+- 2026-11-09 — todo → in_progress — unclechenna (claude)
+- 2026-11-09 — in_progress → in_review — unclechenna (claude)

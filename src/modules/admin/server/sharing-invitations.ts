@@ -15,6 +15,7 @@ export async function getSharingInvitations() {
     .select({
       id: invitations.id,
       token: invitations.token,
+      tokenVersion: invitations.tokenVersion,
       status: invitations.status,
       householdName: invitations.householdName,
     })
@@ -31,8 +32,8 @@ export async function getSharingInvitations() {
     existing.push(guest.name);
     grouped.set(guest.invitationId, existing);
   }
-  return rows.map((row) =>
-    prepareSharingInvitation(
+  return rows.map((row) => ({
+    ...prepareSharingInvitation(
       {
         ...row,
         name: row.householdName || grouped.get(row.id)?.join(" & ") || "Our dear guest",
@@ -40,5 +41,7 @@ export async function getSharingInvitations() {
       settings,
       clientEnv.NEXT_PUBLIC_SITE_URL,
     ),
-  );
+    status: row.status,
+    tokenVersion: row.tokenVersion,
+  }));
 }

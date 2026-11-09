@@ -2,20 +2,20 @@
 id: TICKET-026
 title: Rebuild deterministic seed data for the new schema
 epic: data-auth
-status: todo
+status: in_review
 priority: urgent
 estimate: M
 labels: [db, test]
 module: shared
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-024, TICKET-025, TICKET-171, TICKET-172]
 blocks: [TICKET-127, TICKET-137, TICKET-150]
-branch: ""
-pr: ""
+branch: TICKET-026
+pr: https://github.com/UncleChenna/wedding-app/pull/112
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-09
+started: 2026-11-08
 completed: ""
 reason: ""
 resume_to: ""
@@ -41,9 +41,9 @@ See: [Performance and reliability](../docs/prd.md#performance-and-reliability) �
 
 ## Acceptance criteria
 
-- [ ] Seeding twice yields identical rows (hash compared in a test).
-- [ ] Load profile produces exactly 350 guests across 30 tables.
-- [ ] Every edge case above exists in the default profile.
+- [x] Seeding twice yields identical rows (hash compared in a test).
+- [x] Load profile produces exactly 350 guests across 30 tables.
+- [x] Every edge case above exists in the default profile.
 
 ## Test plan
 
@@ -58,8 +58,11 @@ See: [Performance and reliability](../docs/prd.md#performance-and-reliability) �
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-11-08 — Default fixtures: 110 invitations/249 guests/28 tables. Load fixtures: 185 invitations/350 named, seated guests across all 30 tables. All required edge cases are explicit. Twenty fixture/CLI tests pass; two isolated PostgreSQL tests compare every public table row hash across repeat seeds for both profiles and check enabled guards/bounded admissions. Repeat migrations preserve 19 records; all20 tables have RLS. Independent review found no blocking defect. PR112 is draft; full local verification and final CI remain pending. This is not ticket completion. See docs/handoffs/TICKET-026.md.
 
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-08 — todo → claimed — divine (codex)
+- 2026-11-08 — todo → in_progress — divine (codex)
+- 2026-11-09 — in_progress → in_review — divine (codex)

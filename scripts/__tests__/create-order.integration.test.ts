@@ -341,11 +341,37 @@ describe.runIf(process.env.RUN_ORDER_SUBMIT_DB_TESTS === "1")("guest order submi
 
     it("still accepts an order staff enter for a table", async () => {
       await close();
+      const [saved] = await sql<
+        { event_date: string; time_zone: string | null }[]
+      >`select event_date::text, time_zone from event_settings where id=1`;
       try {
+        // Staff may bypass a temporary pause only during a known, unexpired event.
+        const future = new Date(Date.now() + 30 * 86400000).toISOString().slice(0, 10);
+        await sql`update event_settings set event_date=${future}, time_zone='Africa/Lagos' where id=1`;
         const order = submission();
         expect((await createOrder(database, order, { staffEntered: true })).status).toBe("created");
       } finally {
+        if (saved)
+          await sql`update event_settings set event_date=${saved.event_date}, time_zone=${saved.time_zone} where id=1`;
         await open();
+      }
+    });
+
+    it("refuses a staff request after event expiry even if authorized before waiting", async () => {
+      const [saved] = await sql<
+        { event_date: string; time_zone: string | null }[]
+      >`select event_date::text, time_zone from event_settings where id=1`;
+      try {
+        await sql`update event_settings set event_date='2000-01-01', time_zone='Africa/Lagos' where id=1`;
+        const order = submission();
+        expect(await createOrder(database, order, { staffEntered: true })).toEqual({
+          status: "rejected",
+          reason: "closed",
+        });
+        expect(await ordersFor(order.clientRequestId)).toHaveLength(0);
+      } finally {
+        if (saved)
+          await sql`update event_settings set event_date=${saved.event_date}, time_zone=${saved.time_zone} where id=1`;
       }
     });
 

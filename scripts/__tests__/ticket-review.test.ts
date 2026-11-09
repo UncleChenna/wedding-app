@@ -1,5 +1,15 @@
 import { describe, expect, it } from "vitest";
-import { REVIEW_BASE, REVIEW_SECTIONS, reviewBodyProblems } from "../tickets/review";
+import {
+  REVIEW_BASE,
+  REVIEW_SECTIONS,
+  reviewBodyProblems,
+  reviewVerifyScript,
+} from "../tickets/review";
+
+it("hands off with the quick check and leaves the full verify to CI unless --full", () => {
+  expect(reviewVerifyScript({})).toBe("verify:quick");
+  expect(reviewVerifyScript({ full: true })).toBe("verify");
+});
 
 describe("ticket review contract", () => {
   it("targets develop", () => expect(REVIEW_BASE).toBe("develop"));

@@ -9,7 +9,7 @@ labels: [human, pwa, test]
 module: ops
 owner: ""
 agent: ""
-blocked_by: [TICKET-113, TICKET-149, TICKET-055]
+blocked_by: [TICKET-113, TICKET-149, TICKET-055, TICKET-057]
 blocks: [TICKET-154, TICKET-163]
 branch: ""
 pr: ""
@@ -35,7 +35,7 @@ See: [Usability and accessibility](../docs/prd.md#usability-and-accessibility) Â
 
 ## Out of scope
 
-- Automated tests.
+- Automated implementation evidence (TICKET-057 and TICKET-113); it does not satisfy these physical-device checks.
 
 ## Acceptance criteria
 
@@ -43,6 +43,11 @@ See: [Usability and accessibility](../docs/prd.md#usability-and-accessibility) Â
 - [ ] Any failure has a linked fix-up ticket.
 
 - [ ] Run on the staging HTTPS deployment before full production release. Any required-device failure blocks sign-off until fixed and retested.
+
+- [ ] Verification of one token takes <20ms on a mid-range Android (manual timing).
+- [ ] Verify signatures and expiry using realistic payload lengths on the physical device set; no private signing key ships to a browser or cache.
+
+- [ ] Record physical device/model/OS/browser/build, realistic payload lengths, signature/expiry results and measured token timings. Test the actual scanner device set from TICKET-055, including a mid-range Android and an iPhone; failures or missing evidence block release sign-off.
 
 ## Test plan
 
@@ -56,6 +61,8 @@ See: [Usability and accessibility](../docs/prd.md#usability-and-accessibility) Â
 - `docs/runbook.md`
 
 ## Notes / decisions
+
+- 2026-11-09 (TICKET-220): The two physical token-verification criteria above are transferred verbatim from TICKET-057. The <20ms measurement remains a required hardware check, not a desktop timing claim. TICKET-055 remains a prerequisite; TICKET-154 and TICKET-163 remain blocked until these checks pass.
 
 - 2026-10-21: Needs a person (decision, account or physical task). Agents may prepare docs and record the outcome.
 
