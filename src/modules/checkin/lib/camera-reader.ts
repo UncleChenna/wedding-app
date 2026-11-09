@@ -26,6 +26,20 @@ export function cameraProblem(error: unknown): CameraProblem {
   return "failed";
 }
 
+async function withinNativeBudget<T>(operation: Promise<T>): Promise<T | null> {
+  let deadline: ReturnType<typeof setTimeout> | undefined;
+  try {
+    return await Promise.race([
+      operation,
+      new Promise<null>((resolve) => {
+        deadline = setTimeout(() => resolve(null), 200);
+      }),
+    ]);
+  } finally {
+    clearTimeout(deadline);
+  }
+}
+
 /** Native detection is optional; the fallback reads real video pixels, never QR URLs. */
 export async function createFrameReader(): Promise<FrameReader> {
   let native: NativeDetector | null = null;
@@ -35,7 +49,7 @@ export async function createFrameReader(): Promise<FrameReader> {
     }
   ).BarcodeDetector;
   try {
-    if (Detector && (await Detector.getSupportedFormats()).includes("qr_code"))
+    if (Detector && (await withinNativeBudget(Detector.getSupportedFormats()))?.includes("qr_code"))
       native = new Detector({ formats: ["qr_code"] });
   } catch {
     // Unsupported or broken native implementations use the same fallback as Safari.
@@ -44,13 +58,7 @@ export async function createFrameReader(): Promise<FrameReader> {
   return async (video) => {
     if (native) {
       try {
-        let deadline: ReturnType<typeof setTimeout> | undefined;
-        const result = await Promise.race([
-          native.detect(video).finally(() => clearTimeout(deadline)),
-          new Promise<null>((resolve) => {
-            deadline = setTimeout(() => resolve(null), 200);
-          }),
-        ]);
+        const result = await withinNativeBudget(native.detect(video));
         if (result === null) native = null;
         else if (result.length) return result.map((item) => item.rawValue);
       } catch {

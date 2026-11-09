@@ -69,3 +69,17 @@ it("propagates unexpected fallback failures to camera recovery", async () => {
   const read = await createFrameReader();
   await expect(read(document.createElement("video"))).rejects.toThrow("decode failure");
 });
+it("falls back when the native capability probe never settles", async () => {
+  vi.useFakeTimers();
+  vi.stubGlobal(
+    "BarcodeDetector",
+    class {
+      static getSupportedFormats = () => new Promise<string[]>(() => {});
+    },
+  );
+  decode.mockReturnValue({ getText: () => "fallback-code" });
+  const pending = createFrameReader();
+  await vi.advanceTimersByTimeAsync(200);
+  const read = await pending;
+  expect(await read(document.createElement("video"))).toEqual(["fallback-code"]);
+});

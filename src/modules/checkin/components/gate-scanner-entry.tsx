@@ -17,6 +17,12 @@ async function Content() {
       description="Read a guest’s QR with this device’s camera."
       backTo={appRoutes.staff}
     >
+      <p className="text-lg leading-relaxed">You’re signed in.</p>
+      {staff.device.name && (
+        <p className="text-lg leading-relaxed">
+          This device is <span className="font-medium">{staff.device.name}</span>.
+        </p>
+      )}
       <Scanner />
       <form action={staffSignOutAction}>
         <Button size="lg" variant="secondary" type="submit">

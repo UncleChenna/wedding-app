@@ -50,3 +50,24 @@ it("shows neutral reading feedback, never the private code or a grant of admissi
   expect(document.body.textContent).not.toContain("private-qr-marker");
   expect(screen.queryByRole("button", { name: "Light on" })).not.toBeInTheDocument();
 });
+it("restores torch controls when retrying after a camera failure during a light change", async () => {
+  let finish: ((result: boolean) => void) | undefined;
+  const pending = new Promise<boolean>((resolve) => {
+    finish = resolve;
+  });
+  vi.mocked(startQrCamera).mockResolvedValue({ stop: vi.fn(), setTorch: () => pending });
+  render(<Scanner />);
+  await act(async () => fireEvent.click(screen.getByRole("button", { name: "Open camera" })));
+  const first = vi.mocked(startQrCamera).mock.calls[0]?.[0];
+  act(() => first?.onTorchAvailable(true));
+  fireEvent.click(screen.getByRole("button", { name: "Light on" }));
+  expect(screen.getByRole("button", { name: "Light on" })).toBeDisabled();
+  act(() => first?.onProblem("missing"));
+  await act(async () => {
+    finish?.(false);
+  });
+  await act(async () => fireEvent.click(screen.getByRole("button", { name: "Retry camera" })));
+  const next = vi.mocked(startQrCamera).mock.calls[1]?.[0];
+  act(() => next?.onTorchAvailable(true));
+  expect(screen.getByRole("button", { name: "Light on" })).toBeEnabled();
+});

@@ -42,3 +42,14 @@ fallback; stalled-native unit regression passes. Camera UI uses explicit userges
 Route authentication/screenshot/axe and actualphone checks stilloutstanding. Manualsearch
 063notimplemented; helpanchor is explicitly interim and doesnotcertify literalsearchcriterion.
 221merged7250e483 allfiveCIgreen; integratefreshdevelop beforefinalverification.
+
+SecondUI review: torchBusy remainedtrue after failure during pendinglightchange.
+Regressionfailedthenfixed by clearingbusy/stalecontrols inonProblem. Nativecapability
+probe now shares200msbudget withdetect; hungprobe regressionpasses.30focused and
+4/4actualbrowserpixeltests passagain (/tmp/TICKET-059-camera-browser-budget.log).
+Signed-in/deviceidentity text preserved for existingstaffjourney assertions.
+NextDB: own059neverstartedSupabase; verify34381free and noowncontainer. NativePG16
+fallback recipe from130 usesfreshmktemp cluster,assertDatabaseTarget,process-only
+DATABASE_URL override,unchanged migrations; no.env edits. RootneedsrealstaffPIN
+route tests (doesnotrequireSupabaseAuth),screenshots/allthemeaxe. No DB createdyet.
+222harnessreconciliation awaitingrootread-onlyreview;134adminfinalCIrunning.

@@ -67,6 +67,8 @@ export function Scanner() {
         if (controller.signal.aborted) return;
         controller.abort();
         active.current = null;
+        controls.current = null;
+        setTorchBusy(false);
         setTorchAvailable(false);
         setTorchOn(false);
         setProblem(value);
