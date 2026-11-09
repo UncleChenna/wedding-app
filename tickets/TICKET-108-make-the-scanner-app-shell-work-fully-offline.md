@@ -2,20 +2,20 @@
 id: TICKET-108
 title: Make the scanner app shell work fully offline
 epic: pwa
-status: todo
+status: in_progress
 priority: high
 estimate: M
 labels: [pwa, frontend]
 module: checkin
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-059, TICKET-105, TICKET-169]
 blocks: [TICKET-065, TICKET-113, TICKET-136]
-branch: ""
+branch: TICKET-108
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-09
+started: 2026-11-09
 completed: ""
 reason: ""
 resume_to: ""
@@ -60,3 +60,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-09 — todo → claimed — divine (codex) — started ahead of TICKET-059 (in_review)
+- 2026-11-09 — todo → in_progress — divine (codex) — started ahead of TICKET-059 (in_review)
