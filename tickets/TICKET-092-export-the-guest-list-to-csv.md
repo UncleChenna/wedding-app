@@ -40,8 +40,8 @@ See: [Admin dashboard](../docs/prd.md#admin-dashboard) (ADM-1).
 
 ## Acceptance criteria
 
-- [ ] Cells starting with = + - @ are escaped (unit).
-- [ ] Export matches the filtered rows.
+- [x] Cells starting with = + - @ are escaped (unit).
+- [x] Export matches the filtered rows.
 
 ## Test plan
 
@@ -54,7 +54,7 @@ See: [Admin dashboard](../docs/prd.md#admin-dashboard) (ADM-1).
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-11-09 — Filtered private CSV, formula protection and actual download verified with unit tests and two authenticated browser journeys. All-theme accessibility and screenshots pass; final CI remains required.
 
 ## Activity log
 

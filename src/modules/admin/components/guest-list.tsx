@@ -11,6 +11,7 @@ import {
 } from "../lib/guest-list";
 import { ShareMenu } from "./share-menu";
 import { InvitationLifecycleControls } from "./invitation-lifecycle-controls";
+import { guestExportSearch } from "../lib/guest-export-query";
 
 const labels: Record<GuestListStatus, string> = {
   draft: "Draft",
@@ -161,6 +162,13 @@ export function GuestList({ invitations }: { invitations: GuestListInvitation[] 
           </Button>
         </div>
       </form>
+      <a
+        href={`/admin/guests/export?${guestExportSearch(filters)}`}
+        download
+        className="mt-6 inline-flex min-h-13 min-w-11 items-center rounded-md px-5 py-3 text-lg font-medium text-primary hover:bg-surface-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+      >
+        Download filtered guest list (CSV)
+      </a>
       {visible.length === 0 ? (
         <p className="mt-12 max-w-prose">
           {invitations.length
