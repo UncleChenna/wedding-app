@@ -37,10 +37,10 @@ Backlog audit coverage: CHK-5–7. See [PRD](../docs/prd.md) and [audit](AUDIT.m
 
 ## Acceptance criteria
 
-- [ ] Authorize staff/device event batches and merge them transactionally using a unique client event id; identical retry is a no-op and same id with different payload is rejected.
-- [ ] Persist every attempted scan and its reported time/result while keeping canonical admissions bounded by the invitation allowance.
-- [ ] When two offline devices each report four admissions for a party of four, retain all eight reported admissions as evidence, count only four canonical admissions, and flag the conflict for TICKET-067.
-- [ ] Concurrent requests and partial failures never lose events or acknowledge an uncommitted write; return per-event acknowledgements and conflicts.
+- [x] Authorize staff/device event batches and merge them transactionally using a unique client event id; identical retry is a no-op and same id with different payload is rejected.
+- [x] Persist every attempted scan and its reported time/result while keeping canonical admissions bounded by the invitation allowance.
+- [x] When two offline devices each report four admissions for a party of four, retain all eight reported admissions as evidence, count only four canonical admissions, and flag the conflict for TICKET-067.
+- [x] Concurrent requests and partial failures never lose events or acknowledge an uncommitted write; return per-event acknowledgements and conflicts.
 
 ## Test plan
 
@@ -54,6 +54,15 @@ Backlog audit coverage: CHK-5–7. See [PRD](../docs/prd.md) and [audit](AUDIT.m
 ## Notes / decisions
 
 - 2026-10-21 — Added by HARNESS-002. All criteria describe future work; no completion or human approval is implied.
+- 2026-11-09 (unclechenna, claude):
+  - **One transaction per event**, not per batch, so one bad event never discards the rest and every ack means a
+    commit. Unstored events are answered `retry` and stay on the device.
+  - **Over-allowance reports** count what remains (possibly 0) and are flagged `conflict`. A valid report the server
+    would refuse (revoked, unknown, not RSVP'd) counts 0 and is flagged too.
+  - **Replay identity:** device, invitation, reported time, result and people. The pass version isn't stored, so a
+    retry differing only in pass version counts as a duplicate.
+  - **No browser e2e yet:** there's no scanner UI until TICKET-059. The "end-to-end" replay runs at the HTTP layer
+    against the real database.
 
 ## Activity log
 
