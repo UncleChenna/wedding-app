@@ -2,7 +2,7 @@
 id: TICKET-128
 title: Restrict dietary notes to admin and kitchen
 epic: security
-status: blocked
+status: in_progress
 priority: urgent
 estimate: S
 labels: [security, backend]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-11-09
 started: 2026-11-09
 completed: ""
-reason: "Draft PR #133 https://github.com/UncleChenna/wedding-app/pull/133: independent review clean; waiting for TICKET-027 policy integration and final CI. Local projection checks pass; no RLS integration claimed."
-resume_to: in_progress
+reason: ""
+resume_to: ""
 ---
 
 # TICKET-128: Restrict dietary notes to admin and kitchen
@@ -67,3 +67,4 @@ _Agents append dated notes here while working._
 - 2026-11-09 — todo → claimed — divine (codex) — started ahead of TICKET-027 (in_progress)
 - 2026-11-09 — todo → in_progress — divine (codex) — started ahead of TICKET-027 (in_progress)
 - 2026-11-09 — in_progress → blocked — divine (codex) — Draft PR #133 https://github.com/UncleChenna/wedding-app/pull/133: independent review clean; waiting for TICKET-027 policy integration and final CI. Local projection checks pass; no RLS integration claimed.
+- 2026-11-09 — blocked → in_progress — divine (codex) — Dependencies027 and033 merged; verify privacy against actual RLS and station broadcast contracts
