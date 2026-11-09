@@ -256,13 +256,11 @@ function prFor(cwd: string, ref: string): ReviewPr | null {
   }
 }
 
-function gatherFacts(
-  state: State,
-  ticket: Ticket,
-  to: Status,
-  args: Args,
-  verify: boolean,
-): MoveFacts {
+// Only this invocation may certify a HEAD after running/reusing verification.
+// Inherited environment variables are not evidence of a successful check.
+let verifiedHead: string | undefined;
+
+function gatherFacts(state: State, ticket: Ticket, to: Status, args: Args): MoveFacts {
   const cwd = state.cwd;
   const statusOf = (x: string) => state.tickets.find((t) => t.meta.id === x)?.meta.status;
   const facts: MoveFacts = {
@@ -285,7 +283,7 @@ function gatherFacts(
     facts.pushed = tryGit(["rev-parse", `refs/remotes/origin/${currentBranch(cwd)}`], cwd) === head;
     const pr = prFor(cwd, currentBranch(cwd));
     facts.openPr = pr?.state === "OPEN" && pr.baseRefName === REVIEW_BASE ? pr.url : undefined;
-    facts.verified = process.env.TICKETS_VERIFIED_SHA === head || !verify;
+    facts.verified = verifiedHead === head;
   }
   if (to === "done") {
     const pr = prFor(cwd, ticket.meta.pr || ticket.meta.branch);
@@ -301,19 +299,19 @@ function gatherFacts(
 function doMove(state: State, id: string, to: Status, args: Args): Ticket {
   const ticket = find(state, id);
   // Cheap checks first; pnpm verify only runs once everything else is ready.
-  const dry = gatherFacts(state, ticket, to, args, false);
-  move(ticket.meta, to, dry);
+  const dry = gatherFacts(state, ticket, to, args);
+  // Ignore only verification for preflight; never use this override as evidence.
+  move(ticket.meta, to, { ...dry, verified: true });
   if (to === "in_review" && !dry.verified) {
     const head = git(["rev-parse", "HEAD"], state.cwd);
     const script = reviewVerifyScript(args.flags);
     console.log(`Running pnpm ${script} before review (CI runs the full verify)…`);
     if (!stream("pnpm", [script], state.cwd))
       throw new TransitionError(`pnpm ${script} failed; fix it before review.`);
-    process.env.TICKETS_VERIFIED_SHA = head;
+    verifiedHead = head;
   }
   const result = commitChange(state, ticket.meta.id, (current, statusOf) => {
-    const facts = { ...gatherFacts(state, current, to, args, true), statusOf };
-    if (to === "in_review") Object.assign(facts, { verified: true });
+    const facts = { ...gatherFacts(state, current, to, args), statusOf };
     const change = move(current.meta, to, facts);
     return {
       meta: change,
@@ -691,6 +689,7 @@ function main(): number {
       const currentPr = prFor(state.cwd, branch);
       if (currentPr && currentPr.baseRefName !== REVIEW_BASE)
         throw new Error(`Retarget this ticket PR to ${REVIEW_BASE} before continuing.`);
+      const reviewHead = git(["rev-parse", "HEAD"], state.cwd);
       const force = args.flags["force-verify"] === true;
       const script = force ? "verify" : reviewVerifyScript(args.flags);
       if (script === "verify" && !force && reusableVerification(state.cwd)) {
@@ -699,7 +698,9 @@ function main(): number {
         console.log(`Running pnpm ${script} (CI runs the full verify)…`);
         if (!stream("pnpm", [script], state.cwd)) throw new Error(`pnpm ${script} failed.`);
       }
-      process.env.TICKETS_VERIFIED_SHA = git(["rev-parse", "HEAD"], state.cwd);
+      if (git(["rev-parse", "HEAD"], state.cwd) !== reviewHead)
+        throw new TransitionError("HEAD changed during pnpm verify; rerun review verification.");
+      verifiedHead = reviewHead;
       if (!stream("git", ["push", "-u", "origin", "HEAD"], state.cwd))
         throw new Error("Push failed.");
       const existing = prFor(state.cwd, branch);
