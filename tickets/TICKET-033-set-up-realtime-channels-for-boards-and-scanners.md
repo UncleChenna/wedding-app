@@ -2,7 +2,7 @@
 id: TICKET-033
 title: Set up realtime channels for boards and scanners
 epic: data-auth
-status: in_progress
+status: in_review
 priority: high
 estimate: M
 labels: [backend, security]
@@ -12,7 +12,7 @@ agent: claude
 blocked_by: [TICKET-027, TICKET-031]
 blocks: [TICKET-067, TICKET-068, TICKET-075, TICKET-076, TICKET-097, TICKET-124]
 branch: TICKET-033
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/138
 created: 2026-10-21
 updated: 2026-11-09
 started: 2026-11-09
@@ -84,3 +84,4 @@ _Agents append dated notes here while working._
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-09 — todo → claimed — unclechenna (claude) — started ahead of TICKET-027 (in_review)
 - 2026-11-09 — todo → in_progress — unclechenna (claude) — started ahead of TICKET-027 (in_review)
+- 2026-11-09 — in_progress → in_review — unclechenna (claude)
