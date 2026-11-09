@@ -2,20 +2,20 @@
 id: TICKET-053
 title: Show a reminder list and re-share nudges to non-responders
 epic: sharing
-status: todo
+status: in_progress
 priority: medium
 estimate: M
 labels: [frontend, backend]
 module: admin
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-051, TICKET-089, TICKET-052]
 blocks: [TICKET-054]
-branch: ""
+branch: TICKET-053
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-09
+started: 2026-11-09
 completed: ""
 reason: ""
 resume_to: ""
@@ -60,3 +60,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-09 — todo → claimed — divine (codex)
+- 2026-11-09 — todo → in_progress — divine (codex)
