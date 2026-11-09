@@ -33,6 +33,10 @@ The download remains private and prevents spreadsheet formulas from executing.
 
 # Verification
 
+Integrated develop `b91a0f0f14103a159619e4b60bd86339c5b12b63` without conflicts.
+The export implementation is byte-unchanged from the authenticated browser run;
+all 16 focused export/list tests pass again after integration.
+
 - Production build passed.
 - Initial unit/route suite: 12 passed; a subsequent long-filter regression preserves
   parity with the unbounded list input. Final quick gate passes lint, strict types

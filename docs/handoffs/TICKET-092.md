@@ -12,10 +12,11 @@ actual file download and empty/declined households. Eight screenshots reviewed.
 
 Final quick gate passes lint/types and 16 related tests.
 
-Remaining: commit/push, integrate current develop merge metadata,
-open/readiness PR and wait for all required final-head CI before merging. No
-production changes or additional approval is required. The owned database is
-stopped (wedding-172e2a543372, backup:true, exit 0) to release the slot for TICKET-090.
+Integrated develop b91a0f0f without conflicts; all 16 focused export/list tests
+pass afterward and product code is unchanged from the browser run. Remaining:
+normal t:pr readiness, final-head CI and verified merge. No production changes or
+additional approval required. Owned database wedding-172e2a543372 is stopped with
+backup:true (exit 0); TICKET-090 now owns the test slot.
 
 The setup-generated one-line PR-template drift was restored to HEAD; no user
 changes were present in this fresh worktree. CLI status changes only.
