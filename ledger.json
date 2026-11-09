@@ -1859,16 +1859,17 @@
         "- 2026-11-04 — todo → claimed — divine (codex)",
         "- 2026-11-04 — todo → in_progress — divine (codex)",
         "- 2026-11-04 — in_progress → in_review — divine (codex)",
-        "- 2026-11-08 — in_review → in_progress — divine (codex) — Fix direct review transitions skipping verification"
+        "- 2026-11-08 — in_review → in_progress — divine (codex) — Fix direct review transitions skipping verification",
+        "- 2026-11-09 — in_progress → done — divine (codex) — Reconciled original https://github.com/UncleChenna/wedding-app/pull/97; previous block: none; PR97 merged the approval workflow; TICKET-219 PR113 separately fixed direct review verification and its regressions. The older dirty TICKET-215 checkout is preserved unchanged; reconcile only the verified merged work in the shared ledger.; verified repair https://github.com/UncleChenna/wedding-app/pull/113 head 89124bcba0f1a4e415a159a215aa59b8b5590526; CI https://github.com/UncleChenna/wedding-app/actions/runs/42592923916; develop debc5b347a26b2f69f5ada2f69841bc66de6c858"
       ],
-      "status": "in_progress",
+      "status": "done",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-215",
       "pr": "https://github.com/UncleChenna/wedding-app/pull/97",
       "started": "2026-11-04",
-      "completed": "",
-      "updated": "2026-11-08",
+      "completed": "2026-11-09",
+      "updated": "2026-11-09",
       "reason": "",
       "resume_to": ""
     },
