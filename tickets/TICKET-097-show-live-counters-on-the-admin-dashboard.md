@@ -2,7 +2,7 @@
 id: TICKET-097
 title: Show live counters on the admin dashboard
 epic: admin
-status: in_progress
+status: in_review
 priority: high
 estimate: M
 labels: [frontend, backend]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-033, TICKET-061, TICKET-072, TICKET-089]
 blocks: [TICKET-154]
 branch: TICKET-097
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/146
 created: 2026-10-21
 updated: 2026-11-09
 started: 2026-11-09
@@ -61,3 +61,4 @@ See: [Admin dashboard](../docs/prd.md#admin-dashboard) (ADM-3) · [Overview and 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-09 — todo → claimed — divine (codex) — started ahead of TICKET-061 (in_progress)
 - 2026-11-09 — todo → in_progress — divine (codex) — started ahead of TICKET-061 (in_progress)
+- 2026-11-09 — in_progress → in_review — divine (codex)
