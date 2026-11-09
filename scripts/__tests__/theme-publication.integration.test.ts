@@ -73,6 +73,28 @@ describe.runIf(process.env.RUN_THEME_PUBLICATION_DB_TESTS === "1")(
         expect(active.map((row) => row.id).sort()).toEqual([pair.light.id, pair.dark.id].sort());
       }));
 
+    it("rejects a stale editor snapshot without publishing or changing selection", () =>
+      isolated(async (database) => {
+        const { persistThemeDraft, publishThemeDrafts } =
+          await import("../../src/modules/theming/server/theme-draft-repository");
+        const { loadPublishedThemeSelection } =
+          await import("../../src/modules/theming/server/theme-repository");
+        const pair = fixture();
+        const ids = { light: pair.light.id, dark: pair.dark.id };
+        await persistThemeDraft(pair.light, database);
+        await persistThemeDraft(pair.dark, database);
+        await publishThemeDrafts(ids, database, pair);
+        const before = await loadPublishedThemeSelection(database);
+        const changed = { ...pair.light, name: "Other administrator's draft" };
+        await persistThemeDraft(changed, database);
+        await expect(publishThemeDrafts(ids, database, pair)).rejects.toThrow(/changed.*Reload/);
+        expect(await loadPublishedThemeSelection(database)).toEqual(before);
+        await publishThemeDrafts(ids, database, { ...pair, light: changed });
+        expect((await loadPublishedThemeSelection(database))?.published.light).toMatchObject({
+          name: changed.name,
+        });
+      }));
+
     it("preserves the selected pair when stored draft validation fails", () =>
       isolated(async (database) => {
         const { persistThemeDraft, publishThemeDrafts } =

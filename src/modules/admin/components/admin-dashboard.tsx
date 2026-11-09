@@ -20,6 +20,11 @@ export async function AdminDashboard() {
             text: "Find invitations, replies and seating details.",
           },
           {
+            href: appRoutes.adminThemes.path,
+            name: "Themes",
+            text: "Preview your colours and fonts, then publish them.",
+          },
+          {
             href: appRoutes.adminSharing.path,
             name: "Sharing",
             text: "Send a personal invitation or copy its link.",

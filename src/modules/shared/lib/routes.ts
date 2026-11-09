@@ -28,6 +28,7 @@ export const appRoutes = {
   adminSharing: { path: "/admin/sharing", label: "Sharing", audience: "admin", access: "admin" },
   adminGuests: { path: "/admin/guests", label: "Guests", audience: "admin", access: "admin" },
   adminMenu: { path: "/admin/menu", label: "Menu", audience: "admin", access: "admin" },
+  adminThemes: { path: "/admin/themes", label: "Themes", audience: "admin", access: "admin" },
   adminSettings: { path: "/admin/settings", label: "Settings", audience: "admin", access: "admin" },
   adminStaff: { path: "/admin/staff", label: "Staff", audience: "admin", access: "admin" },
   adminSignIn: { path: "/admin/sign-in", label: "Sign in", audience: "admin", access: "public" },

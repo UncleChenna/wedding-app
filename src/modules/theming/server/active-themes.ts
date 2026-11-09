@@ -1,6 +1,8 @@
 import "server-only";
 import { cacheLife, cacheTag, revalidateTag } from "next/cache";
 import { logger } from "@/modules/shared/lib/logger";
+import { z } from "zod";
+import { validateThemePublication } from "./theme-publication";
 import { readStoredThemes, selectionSchema } from "./stored-themes";
 
 const THEME_TAG = "active-theme-pair";
@@ -34,8 +36,13 @@ export async function getStoredActiveThemes() {
 
 /** Internal only. Admin actions must authorize before calling this service. */
 export async function activateThemeSelection(input: unknown): Promise<void> {
-  const selection = selectionSchema.parse(input);
+  const { reviewed, ...selection } = selectionSchema
+    .extend({
+      reviewed: z.object({ light: z.unknown(), dark: z.unknown() }).strict(),
+    })
+    .parse(input);
+  const expected = validateThemePublication(reviewed);
   const { publishThemeDrafts } = await import("./theme-draft-repository");
-  await publishThemeDrafts(selection);
+  await publishThemeDrafts(selection, undefined, expected);
   revalidateTag(THEME_TAG, { expire: 0 });
 }
