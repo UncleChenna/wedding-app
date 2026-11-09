@@ -2430,18 +2430,19 @@
         "- 2026-11-09 — todo → in_progress — divine (codex)",
         "- 2026-11-09 — in_progress → in_review — divine (codex)",
         "- 2026-11-09 — in_review → in_progress — divine (codex) — Fix CI parity assertion for required WebKit scanner verification and cover named command",
-        "- 2026-11-09 — in_progress → blocked — divine (codex) — Externally merged before parity CI repair; TICKET-221 must pass required CI before completion"
+        "- 2026-11-09 — in_progress → blocked — divine (codex) — Externally merged before parity CI repair; TICKET-221 must pass required CI before completion",
+        "- 2026-11-09 — blocked → done — divine (codex) — Reconciled original https://github.com/UncleChenna/wedding-app/pull/127; previous block: Externally merged before parity CI repair; TICKET-221 must pass required CI before completion; Original PR127 merged with failed CI parity; PR131 repaired parity and Linux signature canonicality and passed exact-head combined CI. Physical checks remain TICKET-114 and TICKET-163.; verified repair https://github.com/UncleChenna/wedding-app/pull/131 head c63f916edd6c6985b20dc3ae4e45cb13758bc90b; CI https://github.com/UncleChenna/wedding-app/actions/runs/42625827888; develop 275c42b85e46d94823c8d55df905b98ca9612281"
       ],
-      "status": "blocked",
+      "status": "done",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-057",
       "pr": "https://github.com/UncleChenna/wedding-app/pull/127",
       "started": "2026-11-09",
-      "completed": "",
+      "completed": "2026-11-09",
       "updated": "2026-11-09",
-      "reason": "Externally merged before parity CI repair; TICKET-221 must pass required CI before completion",
-      "resume_to": "in_progress"
+      "reason": "",
+      "resume_to": ""
     },
     "WED-053": {
       "log": [
