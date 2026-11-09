@@ -2,20 +2,20 @@
 id: TICKET-054
 title: Prepare the day-before pass reminder batch
 epic: sharing
-status: todo
+status: in_progress
 priority: low
 estimate: S
 labels: [frontend]
 module: admin
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-053, TICKET-052]
 blocks: []
-branch: ""
+branch: TICKET-054
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-09
+started: 2026-11-09
 completed: ""
 reason: ""
 resume_to: ""
@@ -57,3 +57,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-09 — todo → claimed — divine (codex) — started ahead of TICKET-053 (in_review)
+- 2026-11-09 — todo → in_progress — divine (codex) — started ahead of TICKET-053 (in_review)
