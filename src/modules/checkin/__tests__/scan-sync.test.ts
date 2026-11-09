@@ -92,6 +92,13 @@ describe("reconcileScan", () => {
     },
   );
 
+  it("counts nobody, and flags it, for a report that skipped the schema", () => {
+    // Defence in depth: a fractional count never reaches here through the route.
+    expect(
+      reconcileScan(report({ reportedPeople: 1.5 }), { invitation, admittedSoFar: 0 }),
+    ).toEqual({ result: "invalid", admitted: 0, conflict: true });
+  });
+
   it("keeps a refusal the device showed, without a conflict", () => {
     expect(
       reconcileScan(report({ reportedResult: "revoked", reportedPeople: 0 }), {
