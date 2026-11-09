@@ -54,3 +54,14 @@ including across worker versions. Missing coordination fails offline use closed 
 online navigation remains available. A deferred-publication regression verifies logout
 removes readiness after the pending publication finishes. Browser worker restart and
 storage-recovery proof still remain; no full offline-ready claim is made.
+
+Follow-up review added cross-build invalidation and bounded network work: failed
+invalidation removes only all `wedding-scanner-assets-v1-*` caches, preserving guest
+caches. Authorization plus required asset downloads share a ten-second deadline;
+response bodies are fully consumed while abort remains active, before JSON/cache
+publication. Never-resolving fetch and stalled-body regressions pass. Final quick
+lint/types/72 affected tests passes; all28 existing Chromium/WebKit real-IDB tests
+pass7.0seconds. Earlier worker checkpoint quick had83 affected tests; counts differ
+because its files are now committed. Logs: /tmp/TICKET-108-worker-bounded-quick.log
+and /tmp/TICKET-108-worker-store-browser.log. Real worker restart and offline camera
+reload remain next; this storage-suite result does not certify that end-to-end path.

@@ -24,6 +24,33 @@ export function createScannerShellRuntime({ store, storage, fetcher, origin, bui
     !response.redirected &&
     response.type !== "opaque" &&
     response.type !== "opaqueredirect";
+  async function boundedFetch(url: string, options: RequestInit, deadline: number) {
+    const controller = new AbortController();
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    try {
+      return await Promise.race([
+        (async () => {
+          const response = await fetcher(url, { ...options, signal: controller.signal });
+          if (!complete(response)) return response;
+          // Consume the network body while the abort deadline is still active, so later
+          // JSON parsing/cache.put cannot hold the publication lock on a stalled stream.
+          const body = await response.arrayBuffer();
+          return new Response(body, { status: response.status, headers: response.headers });
+        })(),
+        new Promise<never>((_resolve, reject) => {
+          timer = setTimeout(
+            () => {
+              controller.abort();
+              reject(new Error("Scanner preparation timed out"));
+            },
+            Math.max(0, deadline - Date.now()),
+          );
+        }),
+      ]);
+    } finally {
+      clearTimeout(timer);
+    }
+  }
   async function deny(generation: string) {
     try {
       return (await store.discard(generation))
@@ -33,13 +60,17 @@ export function createScannerShellRuntime({ store, storage, fetcher, origin, bui
       return { state: "denial-storage-failed" as const };
     }
   }
-  async function authorization() {
+  async function authorization(deadline: number) {
     const generation = await store.begin();
-    const response = await fetcher(new URL("/checkin/offline-shell", origin).href, {
-      credentials: "same-origin",
-      cache: "no-store",
-      redirect: "error",
-    });
+    const response = await boundedFetch(
+      new URL("/checkin/offline-shell", origin).href,
+      {
+        credentials: "same-origin",
+        cache: "no-store",
+        redirect: "error",
+      },
+      deadline,
+    );
     if (
       [401, 403, 404, 410].includes(response.status) ||
       (response.status === 200 && response.headers.get("X-Wedding-Scanner-Shell") !== "1")
@@ -72,7 +103,7 @@ export function createScannerShellRuntime({ store, storage, fetcher, origin, bui
   return {
     async revalidate() {
       try {
-        const result = await authorization();
+        const result = await authorization(Date.now() + 10_000);
         return { state: result.state };
       } catch {
         return { state: "unavailable" as const };
@@ -95,17 +126,22 @@ export function createScannerShellRuntime({ store, storage, fetcher, origin, bui
     },
     async prepare() {
       try {
-        const authorizationResult = await authorization();
+        const deadline = Date.now() + 10_000;
+        const authorizationResult = await authorization(deadline);
         if (authorizationResult.state !== "authorized") return authorizationResult;
         const { generation, grant } = authorizationResult;
         if (grant.build !== build) return { state: "unavailable" as const };
         const cache = await storage.open(cacheName);
         for (const path of grant.assets) {
-          const asset = await fetcher(new URL(path, origin).href, {
-            credentials: "same-origin",
-            cache: "reload",
-            redirect: "error",
-          });
+          const asset = await boundedFetch(
+            new URL(path, origin).href,
+            {
+              credentials: "same-origin",
+              cache: "reload",
+              redirect: "error",
+            },
+            deadline,
+          );
           if (!complete(asset)) return { state: "unavailable" as const };
           const mime = asset.headers.get("Content-Type")?.split(";")[0]?.trim().toLowerCase() ?? "";
           const expected = path.endsWith(".js")

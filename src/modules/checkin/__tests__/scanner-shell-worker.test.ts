@@ -14,6 +14,11 @@ function fixture() {
   vi.spyOn(store, "invalidate").mockResolvedValue(undefined);
   const cache = { match: vi.fn(async () => undefined), put: vi.fn() };
   const storage = {
+    keys: vi.fn(async () => [
+      "wedding-scanner-assets-v1-" + "b".repeat(64),
+      "wedding-scanner-assets-v1-newer",
+      "wedding-own-pass-v1",
+    ]),
     delete: vi.fn(async () => true),
     open: vi.fn(async () => cache as unknown as Cache),
   };
@@ -169,12 +174,16 @@ describe("scanner worker boundaries", () => {
     expect(await (await f.navigate()).response?.text()).toBe("offline fallback");
     expect(f.runtime.document).not.toHaveBeenCalled();
     expect(f.storage.delete).toHaveBeenCalledWith(f.worker.cacheName);
+    expect(f.storage.delete).toHaveBeenCalledWith("wedding-scanner-assets-v1-newer");
+    expect(f.storage.delete).not.toHaveBeenCalledWith("wedding-own-pass-v1");
   });
   it("removes offline readiness and notifies when known server denial cannot be persisted", async () => {
     const f = fixture();
     vi.mocked(f.runtime.revalidate).mockResolvedValue({ state: "denial-storage-failed" });
     await f.navigate();
     expect(f.storage.delete).toHaveBeenCalledWith(f.worker.cacheName);
+    expect(f.storage.delete).toHaveBeenCalledWith("wedding-scanner-assets-v1-newer");
+    expect(f.storage.delete).not.toHaveBeenCalledWith("wedding-own-pass-v1");
     expect(f.client.postMessage).toHaveBeenCalledWith({ type: "SCANNER_INVALIDATED" });
     expect(await f.send("SCANNER_STATUS")).toHaveBeenCalledWith({ state: "unavailable" });
   });
@@ -196,6 +205,8 @@ describe("scanner worker boundaries", () => {
     await saving;
     expect(await logout).toHaveBeenCalledWith({ state: "unavailable" });
     expect(f.storage.delete).toHaveBeenCalledWith(f.worker.cacheName);
+    expect(f.storage.delete).toHaveBeenCalledWith("wedding-scanner-assets-v1-newer");
+    expect(f.storage.delete).not.toHaveBeenCalledWith("wedding-own-pass-v1");
     expect(await f.send("SCANNER_STATUS")).toHaveBeenCalledWith({ state: "unavailable" });
   });
 });

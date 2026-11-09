@@ -33,7 +33,7 @@ interface Options {
   host: Host;
   store: () => Store;
   runtime: () => Runtime;
-  storage: Pick<CacheStorage, "open" | "delete">;
+  storage: Pick<CacheStorage, "open" | "delete" | "keys">;
   fetcher: typeof fetch;
   build: string;
   assets: readonly string[];
@@ -72,7 +72,12 @@ export function installScannerShellWorker({
   async function failedInvalidation() {
     storageInvalidationFailed = true;
     try {
-      await storage.delete(cacheName);
+      const names = await storage.keys();
+      await Promise.all(
+        names
+          .filter((name) => name.startsWith("wedding-scanner-assets-v1-"))
+          .map((name) => storage.delete(name)),
+      );
     } finally {
       await notify();
     }

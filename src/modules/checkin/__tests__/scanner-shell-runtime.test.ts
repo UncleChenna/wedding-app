@@ -15,7 +15,8 @@ function fixture() {
     assets: ["/scanner-assets/scanner-" + "b".repeat(64) + ".js", "/_next/static/font.woff2"],
   };
   const store = {
-    accepts: (value: unknown): value is ScannerShellGrant => value === grant,
+    accepts: (value: unknown): value is ScannerShellGrant =>
+      JSON.stringify(value) === JSON.stringify(grant),
     begin: vi.fn(async () => "generation"),
     authorize: vi.fn(async () => true),
     discard: vi.fn(async () => true),
@@ -32,7 +33,9 @@ function fixture() {
   const storage = { open: vi.fn(async () => cache) };
   const fetcher = vi.fn(async (input: string) => {
     if (input.endsWith("/checkin/offline-shell")) {
-      const response = new Response("{}", { headers: { "X-Wedding-Scanner-Shell": "1" } });
+      const response = new Response(JSON.stringify(grant), {
+        headers: { "X-Wedding-Scanner-Shell": "1" },
+      });
       response.json = async () => grant;
       return response;
     }
@@ -115,7 +118,9 @@ describe("authorized scanner shell preparation", () => {
     const f = fixture();
     f.fetcher
       .mockImplementationOnce(async () => {
-        const response = new Response("{}", { headers: { "X-Wedding-Scanner-Shell": "1" } });
+        const response = new Response(JSON.stringify(f.grant), {
+          headers: { "X-Wedding-Scanner-Shell": "1" },
+        });
         response.json = async () => f.grant;
         return response;
       })
@@ -187,5 +192,36 @@ describe("authorized scanner shell preparation", () => {
     f.store.discard.mockRejectedValue(new Error("storage failed"));
     expect(await f.runtime.revalidate()).toEqual({ state: "denial-storage-failed" });
     expect(await f.runtime.prepare()).toEqual({ state: "denial-storage-failed" });
+  });
+  it("bounds an unresponsive network request without discarding a prior valid grant", async () => {
+    vi.useFakeTimers();
+    try {
+      const f = fixture();
+      f.fetcher.mockReturnValue(new Promise(() => undefined));
+      const pending = f.runtime.prepare();
+      await vi.advanceTimersByTimeAsync(10_000);
+      expect(await pending).toEqual({ state: "unavailable" });
+      expect(f.store.discard).not.toHaveBeenCalled();
+      expect(f.store.commit).not.toHaveBeenCalled();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+  it("bounds a stalled response body before any cache publication", async () => {
+    vi.useFakeTimers();
+    try {
+      const f = fixture();
+      f.fetcher.mockResolvedValue(
+        new Response(new ReadableStream({ start() {} }), {
+          headers: { "X-Wedding-Scanner-Shell": "1" },
+        }),
+      );
+      const pending = f.runtime.prepare();
+      await vi.advanceTimersByTimeAsync(10_000);
+      expect(await pending).toEqual({ state: "unavailable" });
+      expect(f.store.commit).not.toHaveBeenCalled();
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });
