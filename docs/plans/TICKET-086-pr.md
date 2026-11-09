@@ -17,7 +17,7 @@ sender (TICKET-085) will use it.
 
 # Changes
 
-- **Schema and migration** (`drizzle/0019_oval_winter_soldier.sql`, additive only):
+- **Schema and migration** (`drizzle/0020_cold_omega_flight.sql`, additive only):
   - `staff.whatsapp_number` (text, nullable)
   - `staff.alerts_opt_in` (boolean, default false)
   - checks `staff_whatsapp_number_e164`, and `staff_alerts_need_number`: opting in needs a number and the kitchen or
@@ -45,7 +45,7 @@ sender (TICKET-085) will use it.
 
 # Verification
 
-- **On develop at `9bbe452e`:**
+- **On develop at `bd26c120` (includes TICKET-043's migration 0019):**
   - `pnpm db:reset` (clean migrate and seed), then `pnpm db:migrate` again: only a Postgres notice ("schema drizzle
     already exists"), so it reruns safely.
   - `pnpm db:check-rls`: all 20 public tables have RLS.
