@@ -32,4 +32,4 @@ Proposed: [0021 — Gate pass signing keys and rotation](0021-gate-signing-keys.
 
 Accepted: [0022 — Order alert outbox and scheduled drain](0022-order-alert-outbox.md) (TICKET-084; owner approved the migration 2026-11-06; the production scheduler follows the database host, TICKET-213).
 
-Proposed: [0023 — Row-level security: server-only tables and per-station broadcast channels](0023-rls-least-privilege.md) (TICKET-027; accepted when an owner approves the PR).
+Accepted: [0023 — Row-level security: server-only tables and per-station broadcast channels](0023-rls-least-privilege.md) (TICKET-027; owner approved 2026-11-09).

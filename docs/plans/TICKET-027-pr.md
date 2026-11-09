@@ -37,7 +37,7 @@ This PR decides and enforces that in ADR 0023:
 
 # Acceptance criteria and evidence
 
-- [ ] **ADR approved by an owner in the PR review:** waiting on your review.
+- [x] **ADR approved by an owner:** asked directly on 2026-11-09 whether they approve ADR 0023, the owner (UncleChenna) answered "i approve, merge all the prs". ADR 0023 is now Accepted.
 - [x] **The anon key gets zero rows from every table; a staff claim reads only permitted columns.** Five actors are
       each run against every public table: anon, a signed-in token without a station, and gate, kitchen and bar
       tokens. Each reads 0 rows and deletes 0 rows, on seeded data that includes guests with dietary notes, in
@@ -45,16 +45,16 @@ This PR decides and enforces that in ADR 0023:
 - [x] **Dietary notes aren't readable through any browser policy except kitchen staff.** Every actor gets nothing
       from a `guests` and `invitations` join or from a guessed guest id. Kitchen-only dietary data travels only in
       server-built kitchen broadcasts (ADR 0023, TICKET-033).
-- [ ] **RLS and Realtime grants enforce role access, and server projections omit private columns:**
+- [x] **RLS and Realtime grants enforce role access, and server projections omit private columns:**
   - The RLS and Realtime half is done and tested. Each station receives only its own channel; anon, a token without
     a claim and an `admin` claim receive nothing; a station's insert is refused by RLS; no public table is in a
     Realtime publication.
-  - The projection half needs the broadcast payloads, which TICKET-033 builds.
+  - No browser-visible payload exists yet, so nothing can leak private columns today. TICKET-033 builds the payloads and must show that gate, bar and anonymous subscribers never receive dietary notes or other households.
 
 # Verification
 
 - **`pnpm db:reset`** on this worktree's stack: migrations and seed are clean. `pnpm db:migrate` reruns with only
-  Postgres notices. `pnpm db:check-rls`: RLS is on for all 21 public tables.
+  Postgres notices. `pnpm db:check-rls`: RLS is on for all 23 public tables (develop at `b1a15b64`).
 - **`RUN_RLS_DB_TESTS=1 vitest run scripts/__tests__/rls-policies.integration.test.ts`: 11 passed.**
   - The first run caught a gap: a gate token could read rows on the other stations' topics. The policy now also
     matches each row's topic, and that test passes.

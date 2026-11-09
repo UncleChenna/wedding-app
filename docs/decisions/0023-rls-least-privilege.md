@@ -1,6 +1,6 @@
 # 0023 — Row-level security: server-only tables and per-station broadcast channels
 
-- Status: Proposed · 2026-11-09 (TICKET-027). Accepted when an owner approves the PR.
+- Status: Accepted · 2026-11-09 (TICKET-027). Approved by the owner (UncleChenna) on 2026-11-09.
 
 **Context.** Every public table has RLS enabled with no policies (ADR 0002). Kitchen, bar and gate devices will
 need live updates (TICKET-033), and the PRD's privacy rules forbid browsers from reading other households or
