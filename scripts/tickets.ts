@@ -11,6 +11,7 @@ import { join } from "node:path";
 import { activity, criteria, parseTicket, serializeTicket } from "./tickets/format";
 import { dashboardHtml } from "./tickets/dashboard";
 import { REVIEW_BASE, reviewBodyProblems, reviewVerifyScript } from "./tickets/review";
+import { reconciliationEligibility, reconciliationEvidence } from "./tickets/reconcile";
 import { mergedReviewEvidence } from "./tickets/merged-review";
 import type { ReviewPr } from "./tickets/merged-review";
 import { ready, startableAhead } from "./tickets/graph";
@@ -63,6 +64,8 @@ const USAGE = `Usage: pnpm t:<command>
   t:claim <id> --owner <name> --agent <name>
   t:release <id>                  give back a claimed todo ticket
   t:move <id> <status> [--reason text] [--push]
+  t:reconcile <id> --repair-pr <number> --reason <failure and repair>
+                                  close an already-merged owned ticket using verified repair CI
   t:new --title "Imperative title" --epic e --module m [--priority p] [--estimate S|M|L]
         [--labels a,b] [--blocked-by TICKET-001,TICKET-002] [--status backlog|todo]
   t:pr <id> [--full] [--force-verify]
@@ -666,6 +669,45 @@ function main(): number {
       if (!(STATUSES as readonly string[]).includes(to))
         throw new Error(`Status must be one of ${STATUSES.join(", ")}.`);
       doMove(load(false), id, to as Status, args);
+      return 0;
+    }
+    case "reconcile": {
+      const state = load(false);
+      const ticket = find(state, args.positional[0] ?? "");
+      const who = actor(args, state.cwd);
+      const repair = str(args, "repair-pr") ?? "";
+      const reason = str(args, "reason")?.trim();
+      if (!reason || reason.length < 20)
+        throw new TransitionError(
+          "Describe the original failure and verified repair with --reason (at least 20 characters).",
+        );
+      if (state.mode !== "origin")
+        throw new TransitionError(
+          "Reconciliation requires the shared ledger; offline status changes are not allowed.",
+        );
+      reconciliationEligibility(
+        ticket.meta,
+        who,
+        (id) => state.tickets.find((entry) => entry.meta.id === id)?.meta.status,
+      );
+      const result = commitChange(state, ticket.meta.id, (current, statusOf) => {
+        reconciliationEligibility(current.meta, who, statusOf);
+        const proof = reconciliationEvidence(state.cwd, current.meta.pr, repair, current.path);
+        return {
+          meta: { status: "done", updated: today(), completed: today(), reason: "", resume_to: "" },
+          log: logLine(
+            today(),
+            current.meta.status,
+            "done",
+            who,
+            current.meta.agent,
+            `Reconciled original ${proof.original}; previous block: ${current.meta.reason || "none"}; ${reason}; verified repair ${proof.repair} head ${proof.head}; CI ${proof.run}; develop ${proof.develop}`,
+          ),
+        };
+      });
+      console.log(
+        `${result.meta.id}: done (verified merged repair; original failure preserved in ledger history)`,
+      );
       return 0;
     }
     case "pr": {

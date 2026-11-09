@@ -763,3 +763,136 @@ describe("working ahead (TICKET-214)", () => {
     expect(move(review, "done", facts(merged))).toMatchObject({ status: "done" });
   });
 });
+
+describe("explicit merged-ticket repair reconciliation", () => {
+  it.each([
+    "passed",
+    "in-progress passed",
+    "open original",
+    "open repair",
+    "wrong base",
+    "unreachable",
+    "repair omits original",
+    "failed CI",
+    "pending CI",
+    "missing CI",
+    "optional only",
+    "stale CI head",
+    "changed repair head",
+    "newer CI run",
+    "same run restarted",
+    "local ledger",
+    "offline ledger",
+    "different repository",
+    "unchecked criteria",
+    "other owner",
+    "unfinished blocker",
+    "fetch failure",
+  ])(
+    "preserves the ledger unless complete immutable evidence passes: %s",
+    async (scenario) => {
+      const { a, dir, remote } = setup();
+      git(a, "checkout", "-qb", "develop");
+      const active = ticket(
+        "TICKET-001",
+        {
+          status: scenario === "in-progress passed" ? "in_progress" : "blocked",
+          owner: scenario === "other owner" ? "friend" : "divine",
+          agent: "codex",
+          branch: "TICKET-001",
+          pr: "https://github.com/example/repo/pull/1",
+          reason: "Original CI failed before external merge",
+          resume_to: "in_progress",
+          blocked_by: scenario === "unfinished blocker" ? ["TICKET-002"] : [],
+        },
+        scenario !== "unchecked criteria",
+      );
+      writeFileSync(join(a, active.path), serializeTicket(active));
+      git(a, "add", ".");
+      git(a, "commit", "-qm", "original merged work");
+      const original = git(a, "rev-parse", "HEAD");
+      git(a, "commit", "--allow-empty", "-qm", "repair tested head");
+      const head = git(a, "rev-parse", "HEAD");
+      git(a, "commit", "--allow-empty", "-qm", "repair merge");
+      const merge = git(a, "rev-parse", "HEAD");
+      git(a, "push", "-q", "origin", "develop");
+      const bin = join(dir, "reconcile-bin");
+      mkdirSync(bin);
+      const fixture = join(dir, "proof.json");
+      const jobNames = [
+        "tickets valid",
+        "no AI attribution in PR text",
+        "pnpm verify",
+        "migrations + seed",
+        "invitation journey (mobile + desktop)",
+      ];
+      writeFileSync(fixture, JSON.stringify({ scenario, original, head, merge, jobNames }));
+      writeFileSync(
+        join(bin, "gh"),
+        `#!${process.execPath}
+const fs = require("node:fs");
+const f = JSON.parse(fs.readFileSync(process.env.RECONCILE_FIXTURE, "utf8"));
+const args = process.argv.slice(2); const s = f.scenario; let result;
+if (args[0] === "pr") {
+  const original = args[2].endsWith("/1");
+  const countFile = process.env.RECONCILE_FIXTURE + ".reads";
+  const reads = fs.existsSync(countFile) ? Number(fs.readFileSync(countFile, "utf8")) : 0;
+  if (!original) fs.writeFileSync(countFile, String(reads + 1));
+  result = {url: (original && s === "different repository" ? "https://github.com/other/repo/pull/" : "https://github.com/example/repo/pull/") + (original ? "1" : "2"), state: s === (original ? "open original" : "open repair") ? "OPEN" : "MERGED", baseRefName: s === "wrong base" ? "main" : "develop", headRefOid: !original && s === "changed repair head" && reads > 0 ? f.merge : f.head, mergeCommit: {oid: original ? (s === "repair omits original" ? f.merge : f.original) : (s === "unreachable" ? "f".repeat(40) : f.merge)}};
+} else if(args[1] === "list") {
+  const listFile = process.env.RECONCILE_FIXTURE + ".lists";
+  const lists = fs.existsSync(listFile) ? Number(fs.readFileSync(listFile, "utf8")) : 0;
+  fs.writeFileSync(listFile, String(lists + 1));
+  result = s === "missing CI" ? [] : [{databaseId: s === "newer CI run" && lists > 0 ? 43 : 42}];
+}
+else {
+const viewFile = process.env.RECONCILE_FIXTURE + ".views";
+const views = fs.existsSync(viewFile) ? Number(fs.readFileSync(viewFile, "utf8")) : 0;
+fs.writeFileSync(viewFile, String(views + 1));
+result = {databaseId: 42, headSha: s === "stale CI head" ? f.original : f.head, status: (s === "pending CI" || (s === "same run restarted" && views > 0)) ? "in_progress" : "completed", conclusion: s === "failed CI" ? "failure" : "success", event: "pull_request", url: "https://github.com/example/repo/actions/runs/42", jobs: (s === "optional only" ? ["review"] : f.jobNames).map(name=>({name,status:"completed",conclusion:"success"}))};
+}
+console.log(JSON.stringify(result));
+`,
+        { mode: 0o755 },
+      );
+      if (scenario === "fetch failure") git(remote, "update-ref", "-d", "refs/heads/develop");
+      const before = readFileSync(join(a, active.path), "utf8");
+      const result = await tWithEnv(
+        a,
+        {
+          PATH: `${bin}:${process.env.PATH ?? ""}`,
+          RECONCILE_FIXTURE: fixture,
+          TICKETS_LEDGER:
+            scenario === "local ledger"
+              ? "local"
+              : scenario === "offline ledger"
+                ? "off"
+                : "origin",
+        },
+        "reconcile",
+        "TICKET-001",
+        "--repair-pr",
+        "2",
+        "--reason",
+        "Original parity failed; merged repair now passes all required CI",
+      );
+      expect(readFileSync(join(a, active.path), "utf8")).toBe(before);
+      if (scenario.endsWith("passed")) {
+        expect(result.code, result.out).toBe(0);
+        const ledger = JSON.parse(git(remote, "show", "ticket-ledger:ledger.json"));
+        expect(ledger.tickets["WED-001"].status).toBe("done");
+        expect(ledger.tickets["WED-001"].log.join("\n")).toContain(head);
+        expect(ledger.tickets["WED-001"].log.join("\n")).toContain(
+          "Original CI failed before external merge",
+        );
+        expect(ledger.tickets["WED-001"].pr).toBe(active.meta.pr);
+      } else {
+        expect(result.code, result.out).not.toBe(0);
+        expect(
+          git(remote, "for-each-ref", "--format=%(objectname)", "refs/heads/ticket-ledger"),
+        ).toBe("");
+      }
+    },
+    30000,
+  );
+});

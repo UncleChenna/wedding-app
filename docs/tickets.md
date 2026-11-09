@@ -193,3 +193,31 @@ New PRs still target `develop`. Completion checks fetch `origin/develop`, resolv
 ## Validate before reserving an ID
 
 `t:new` validates its owner and provisional ticket metadata before changing the ledger. Invalid estimates, priorities or creation statuses report allowed values without consuming an ID. New tickets start in `backlog` or `todo`; use `t:move` for later lifecycle states. A successful allocation remains permanent, including if a later filesystem write fails.
+
+## Recover an already-merged ticket after a verified repair
+
+When a ticket was merged while verification failed and honestly left `blocked` or
+`in_progress`, do not fabricate another open PR or edit its status by hand. Its
+owner can use:
+
+```bash
+pnpm t:reconcile TICKET-057 --repair-pr 131 --reason "Original parity CI failed; the merged repair fixes parity and signature canonicality"
+```
+
+This command records completion directly in the shared ledger only when both PRs
+are merged into freshly fetched `develop`, the tested repair head contains the
+original merge, and the original acceptance criteria are complete in both that
+head and current develop. Every blocker must already be done. The latest
+`ci.yml` pull-request run for the exact repair head must have completed
+successfully, including all five standard jobs and any additional jobs. Missing,
+pending, cancelled, skipped or failed evidence is refused. The repair metadata is
+read again before recording completion to reject a changed head. No offline or
+force mode is provided; normal `t:move` transitions remain unchanged. Recovery
+requires merge-commit ancestry; squash or rebase repairs that omit the tested
+head from the merged history are refused.
+
+The ledger activity retains the original PR and block reason, repair PR/head,
+CI run URL, fetched develop commit and the owner's explanation. The original PR
+link and CI history are not replaced. Other worktrees' ticket files are untouched;
+only the ticket's own branch may later sync its completion metadata. Physical
+release requirements remain separate and mandatory.

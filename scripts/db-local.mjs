@@ -78,6 +78,7 @@ cli(async () => {
       NEXT_PUBLIC_SUPABASE_URL: status.API_URL,
       NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: status.PUBLISHABLE_KEY ?? status.ANON_KEY,
       NEXT_PUBLIC_SITE_URL: `http://localhost:${meta?.devPort ?? 3000}`,
+      SUPABASE_JWT_SECRET: status.JWT_SECRET,
     };
     let output = text;
     for (const [key, value] of Object.entries(replacements)) {
