@@ -417,7 +417,22 @@ function tWithEnv(cwd: string, extraEnv: Record<string, string>, ...args: string
 }
 
 describe("ticket CLI with a shared remote", () => {
-  it.each(["failed", "passed", "forged marker", "changed head", "pr passed", "pr changed head"])(
+  it.each([
+    "failed",
+    "passed",
+    "forged marker",
+    "changed head",
+    "full failed",
+    "full passed",
+    "full changed head",
+    "pr failed",
+    "pr passed",
+    "pr changed head",
+    "pr full failed",
+    "pr full passed",
+    "pr full changed head",
+    "pr force failed",
+  ])(
     "review transition requires current successful verification: %s",
     async (scenario) => {
       const { a, dir, remote } = setup();
@@ -465,7 +480,7 @@ if (process.env.REVIEW_SCENARIO.endsWith("changed head")) {
   execFileSync("git", ["commit", "--allow-empty", "-qm", "TICKET-001: changed while checking"]);
   execFileSync("git", ["push", "-q", "origin", "HEAD"]);
 }
-process.exit(["failed", "forged marker"].includes(process.env.REVIEW_SCENARIO) ? 1 : 0);
+process.exit(process.env.REVIEW_SCENARIO.endsWith("failed") || process.env.REVIEW_SCENARIO === "forged marker" ? 1 : 0);
 `,
         { mode: 0o755 },
       );
@@ -480,6 +495,8 @@ process.exit(["failed", "forged marker"].includes(process.env.REVIEW_SCENARIO) ?
         scenario.startsWith("pr ") ? "pr" : "move",
         "TICKET-001",
         "in_review",
+        ...(scenario.includes("full") ? ["--full"] : []),
+        ...(scenario.includes("force") ? ["--force-verify"] : []),
       );
       expect(existsSync(calls), result.out).toBe(true);
       expect(
@@ -487,7 +504,9 @@ process.exit(["failed", "forged marker"].includes(process.env.REVIEW_SCENARIO) ?
           .trim()
           .split("\n")
           .map((line) => JSON.parse(line)),
-      ).toEqual([["verify"]]);
+      ).toEqual([
+        [scenario.includes("full") || scenario.includes("force") ? "verify" : "verify:quick"],
+      ]);
       if (scenario.endsWith("passed")) {
         expect(result.code, result.out).toBe(0);
         const ledger = JSON.parse(git(remote, "show", "ticket-ledger:ledger.json"));

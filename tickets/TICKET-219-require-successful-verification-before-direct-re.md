@@ -2,7 +2,7 @@
 id: TICKET-219
 title: Require successful verification before direct review transitions
 epic: foundations
-status: blocked
+status: in_progress
 priority: urgent
 estimate: S
 labels: [infra, test]
@@ -14,11 +14,11 @@ blocks: []
 branch: TICKET-219
 pr: ""
 created: 2026-11-08
-updated: 2026-11-08
+updated: 2026-11-09
 started: 2026-11-08
 completed: ""
-reason: "Full browser verification blocked by unavailable isolated database; 240 passed, 4 failed, 5 interrupted, 777 not run. Await CI and healthy isolated verification."
-resume_to: in_progress
+reason: ""
+resume_to: ""
 ---
 
 # TICKET-219: Require successful verification before direct review transitions
@@ -45,11 +45,11 @@ tracks only the follow-up repair.
 
 ## Acceptance criteria
 
-- [x] Direct review runs `pnpm verify`; failure leaves the shared ledger and ticket file unchanged.
+- [x] Direct review runs the selected verifier (`verify:quick` by default, `verify` with `--full`); failure leaves the shared ledger and ticket file unchanged.
 - [x] A successful direct review advances the ledger only for the verified current HEAD.
 - [x] An inherited verification marker and a HEAD change during verification cannot bypass the gate.
 - [x] `t:pr` verifies once, reuses only its successful current invocation, and rejects HEAD changes.
-- [ ] Targeted regression suites and quick/full verification pass; independent review is recorded.
+- [ ] Targeted regression suites and local quick verification pass; full CI and independent review are recorded before merge.
 
 ## Test plan
 
@@ -66,6 +66,11 @@ tracks only the follow-up repair.
 
 ## Notes / decisions
 
+- 2026-11-09 — Integrated develop `37e9202c` and preserved TICKET-217/218's approved
+  quick-default review workflow and explicit full options. Expanded real-CLI coverage
+  to 14 scenarios; all 61 targeted ticket/review/evidence tests pass. The prior
+  head `2da7be90` passed all five required CI checks, including full verification.
+  New-head quick verification, CI and independent review remain required.
 - 2026-11-08 — Fresh branch quick gate passed; full gate passed through 1,105 unit
   tests (117 skipped) and production build. Browser run was stopped after local
   database unavailability caused four failures: 240 passed, five interrupted,
@@ -81,3 +86,4 @@ tracks only the follow-up repair.
 - 2026-11-08 — todo → claimed — divine (codex)
 - 2026-11-08 — todo → in_progress — divine (codex)
 - 2026-11-08 — in_progress → blocked — divine (codex) — Full browser verification blocked by unavailable isolated database; 240 passed, 4 failed, 5 interrupted, 777 not run. Await CI and healthy isolated verification.
+- 2026-11-09 — blocked → in_progress — divine (codex) — Integrate approved quick-default workflow while preserving fail-closed review checks

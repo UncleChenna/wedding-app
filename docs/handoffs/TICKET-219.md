@@ -1,5 +1,14 @@
 # TICKET-219 handoff
 
+2026-11-09 resumed — integrated develop `37e9202c` with TICKET-217/218's approved
+quick-default workflow. Prior head `2da7be90` passed all five required CI checks.
+Conflict resolution keeps invocation-local HEAD evidence, selected quick/full
+verification, draft readiness and new ticket startup behavior. All 61 targeted
+tests pass, including 14 CLI cases. The current quick gate passes lint, types
+and 136 related tests across eight files. Final integrated-head review/CI are pending. No database startup was requested for this harness repair.
+The historical local database blocker below is superseded by the approved local
+quick plus full-CI policy, not by claiming the incomplete run passed.
+
 2026-11-08 — divine / codex — branch `TICKET-219`.
 Base: `407fb68db4dde004cf0868274a744ebd435dbbb2`.
 Draft PR: https://github.com/UncleChenna/wedding-app/pull/113.

@@ -4,66 +4,60 @@ TICKET-219 — Require successful verification before direct review transitions.
 
 # Summary
 
-Direct `t:move in_review` previously skipped `pnpm verify` because preflight set
-verification to true and the final ledger update forcibly accepted it. Review now
-requires successful verification for the current HEAD in the current invocation.
+Direct `t:move in_review` previously skipped verification: preflight reported a
+pass and the final ledger callback forcibly accepted it. Review now requires the
+selected verifier to succeed for the current HEAD in the current invocation.
 
 # Changes
 
-- Separate cheap preflight validation from real verification evidence.
-- Remove the forced final verification override and inherited environment marker.
-- Capture the PR verification HEAD before running/reusing checks; reject changes.
-- Cover both CLI entry points with real temporary Git repositories and isolated
-  verifier/GitHub fixtures. Existing ownership, branch, criteria, clean/pushed-tree
-  and open-PR requirements remain enforced.
+- Separate cheap preflight checks from actual successful verification evidence.
+- Remove inherited `TICKETS_VERIFIED_SHA` trust and the final forced-pass override.
+- Capture the PR verification HEAD before checks; reject changes during verification.
+- Preserve the approved quick-default workflow from TICKET-217/218: `verify:quick`
+  locally, `--full` for full local checks, and `t:pr --force-verify` for a fresh full run.
+- Preserve draft readiness, ticket startup and all other integrated harness behavior.
+- Add 14 real-Git CLI cases for direct/PR success, quick/full failures, forged
+  markers, changed HEAD and explicit forced full verification. Failure leaves the
+  ticket file and shared ledger unchanged; successful PR handoff verifies once.
 
 # Acceptance criteria and evidence
 
-The six CLI cases cover direct failure, direct success, forged environment marker,
-HEAD changes, one verification through `t:pr`, and changed HEAD through `t:pr`.
-Failure cases preserve the ticket file and shared ledger. Four direct cases failed
-before implementation because no verifier was invoked, then passed after repair.
-Independent read-only review found no blocking issue. Full verification remains
-incomplete because this ticket's isolated database could not start; the PR stays
-draft until the full gate passes in a working environment.
+Four original regressions failed before implementation because the verifier never
+ran. The integrated suite now asserts the exact selected command as well as
+ledger outcomes, so quick-default behavior is preserved without accepting failures.
+The root's earlier independent review found no blocking issue; final integration
+review and required CI are pending before merge.
 
 # Verification
 
-- Before transfer to this branch, on the same develop base: 50 targeted ticket,
-  evidence and protected-artifact tests passed; quick verification passed lint,
-  types and 40 related tests.
-- Current branch quick verification: lint, types and 40 related tests passed.
-- Full gate: ticket validation, formatting, lint, types, 1,105 unit tests and the
-  production build passed; 117 opt-in tests skipped.
-- Browser smoke was stopped after known database failures: 240 passed, four
-  failed, five interrupted and 777 did not run (command exit 130). The access
-  matrix received 503 instead of 404; gate-pass tests received the retry page
-  instead of the pass/not-found page because the local rate-limit store was
-  unavailable. No assertions were weakened. This is not a full-gate pass.
-- Log: `artifacts/TICKET-219/verify.log`; failure traces: `test-results/`.
-- Managed database startup failed. Verification used this ticket's reserved
-  loopback endpoints instead of borrowing another checkout's database.
-- Base: `407fb68db4dde004cf0868274a744ebd435dbbb2`.
+- Integrated develop: `37e9202cca611c0c9d68b5749340066ab4e2ce97`.
+- `vitest run scripts/__tests__/tickets.test.ts scripts/__tests__/ticket-review.test.ts
+scripts/__tests__/verification.test.ts`: 61 passed, including 14 CLI scenarios.
+- Local quick gate: lint, types and all 136 related tests passed across eight files.
+- Prior head `2da7be90` passed all five required CI checks, including full verify,
+  migrations/seed and the invitation journey. New-head CI remains mandatory.
+- Historical local full run passed 1,105 unit tests (117 skipped) and build, but
+  browser verification was incomplete because the isolated database failed to start:
+  240 passed, four failed, five interrupted, 777 not run. It was not a full pass.
+  The current approved workflow uses local quick checks plus full CI; no additional
+  database was started for this harness-only integration.
 
 # Risks and rollout
 
-No product code, schema migration or deployment steps. The corrected gate may
-surface failures that the previous bypass hid; those failures must be fixed.
-CI must complete its full gate with disposable PostgreSQL before review advances;
-repeat isolated local verification when database capacity is available.
-Verification reuse remains controlled by the existing fingerprint implementation.
-Revert only this ticket's code changes if necessary, understanding that this would
-restore the original verification bypass.
+No product, schema, dependency or production changes. A previously hidden
+verification failure now prevents review publication. Full CI remains the merge
+requirement; the quick gate is not represented as full verification.
 
 # Screenshots
 
-Not applicable: CLI-only change with no UI modifications.
+Not applicable: CLI-only change.
 
 # UI checklist
 
-Not applicable: no rendered routes, styles or user interaction changed.
+Not applicable: no rendered routes or interaction changed.
 
 # Harness changes, if any
 
-This follow-up is separate from merged TICKET-215/PR #97. It changes only review
-transition evidence and adds regressions; it does not weaken or skip any gate.
+This follow-up fixes the review-transition bypass while retaining the separately
+approved TICKET-217/218 workflow. Existing ownership, branch, acceptance criteria,
+clean/pushed-tree and open-PR checks remain enforced.
