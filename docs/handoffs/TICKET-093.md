@@ -35,3 +35,7 @@ Added the seating page, table forms, household assignment sheets and authenticat
 ## 2026-11-09 browser verification
 
 Integrated develop886c46cc (051+090); preserved create-invitation links and all routes, moved seating into the protected admin frame. Build passes.13 focused tests pass including4isolatedDB. Browser2/2 passes21.6s,24axechecks,24screenshots, initialCLS0,375/600/768/1280overflow/targets. Fixed reviewed pending-dialog race and delete-confirmation focus; delayednetwork/keyboard regressions pass. Accessible button label corrected after realaxe failure. Finalvisual review and quick/CI pending. Current branch is sole093editor; ownDBrunning. Next: review screenshots, finalquick, commit/push and normalt:pr; merge onlycleanindependentreview +exactheadCIgreen.
+
+## 2026-11-09 ready for CI
+
+Independent source/visual review clean at9665126d after all24screenshots inspected. Integrated CSV developb5fa06c9 without conflicts; focused route/export/seating tests rerun. Final quick lint/types pass (no affected tests selected for finalUI files); explicit prior13tests and2browserjourneys retained. Publish through normal t:pr, then wait exact-head fullCI before merge. No production operation.

@@ -45,7 +45,7 @@ immediately reads the current assignment, including renamed table numbers.
 
 `pnpm build` passes. Initial `pnpm verify:quick` passed lint/types and115 related
 unit tests (five opt-in skipped); final quick/full CI results are recorded by the
-normal PR workflow. Full CI must pass on the final head before merge.
+normal PR workflow. Latest integrated develop: `b5fa06c90bb4147932ce7367dc50318c38839d48` (CSV export); integration has no conflicting edits. Final quick lint/types pass; its changed-file test selection had no affected tests, so focused route/export/seating tests were run explicitly. Independent review of `9665126d` is clean after fixing concurrent warnings, pending-dialog and deletion-focus findings. Full CI must pass on the final head before merge.
 
 # Review steps
 
@@ -60,7 +60,7 @@ to delete an occupied or previously ordered table and confirm preservation.
 PASS: token-only styling, shared Button/Input/Select/Sheet, restrained serif headings
 and readable body text, mobile overflow/44px targets, keyboard/focus/pending states,
 reduced motion, all-theme axe/contrast, initial CLS zero, warm actionable copy.
-Screenshots are retained for visual review. N/A: new imagery/fonts, QR rendering,
+All24 screenshots were independently visually reviewed; no remaining findings. N/A: new imagery/fonts, QR rendering,
 physical sharing/device checks and Lighthouse (admin-only UI; existing guest pass
 presentation is unchanged). Actual guest-device release checks remain mandatory in
 TICKET-201; this ticket does not certify them.
