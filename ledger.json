@@ -2478,9 +2478,10 @@
       "log": [
         "- 2026-11-09 — todo → claimed — divine (codex) — started ahead of TICKET-053 (in_review)",
         "- 2026-11-09 — todo → in_progress — divine (codex) — started ahead of TICKET-053 (in_review)",
-        "- 2026-11-09 — in_progress → in_review — divine (codex)"
+        "- 2026-11-09 — in_progress → in_review — divine (codex)",
+        "- 2026-11-09 — in_review → blocked — divine (codex) — PR #132 merged by user at dd3c37ff; local acceptance passes, but its full CI failed known parity assertion. Await verified TICKET-221 integration on current develop before completion."
       ],
-      "status": "in_review",
+      "status": "blocked",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-054",
@@ -2488,8 +2489,8 @@
       "started": "2026-11-09",
       "completed": "",
       "updated": "2026-11-09",
-      "reason": "",
-      "resume_to": ""
+      "reason": "PR #132 merged by user at dd3c37ff; local acceptance passes, but its full CI failed known parity assertion. Await verified TICKET-221 integration on current develop before completion.",
+      "resume_to": "in_review"
     },
     "WED-221": {
       "log": [
