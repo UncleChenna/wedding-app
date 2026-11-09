@@ -42,6 +42,30 @@ beforeEach(() => {
   );
 });
 afterEach(() => vi.unstubAllGlobals());
+afterEach(() => vi.useRealTimers());
+
+it("keeps the cart and request identity through a network cooldown, without early retries", async () => {
+  vi.useFakeTimers();
+  const { send } = setup([
+    async () => new Response("Please wait", { status: 429, headers: { "Retry-After": "2" } }),
+    async () => Response.json({ status: "replayed", orderId: ORDER_ID }),
+  ]);
+  choose("Jollof rice");
+  await act(async () => fireEvent.click(sendButton()));
+  expect(screen.getByText(/Please wait 2 seconds/)).toBeVisible();
+  expect(sendButton()).toBeDisabled();
+  expect(screen.getByLabelText("Jollof rice quantity")).toHaveValue(1);
+  await act(async () => vi.advanceTimersByTime(1000));
+  expect(sendButton()).toBeDisabled();
+  expect(send).toHaveBeenCalledTimes(1);
+  await act(async () => vi.advanceTimersByTime(1000));
+  expect(sendButton()).toBeEnabled();
+  expect(screen.getByText("You can try again now. Your choices are still here.")).toBeVisible();
+  await act(async () => fireEvent.click(sendButton()));
+  expect(send).toHaveBeenCalledTimes(2);
+  expect(send.mock.calls[1]?.[1]?.body).toBe(send.mock.calls[0]?.[1]?.body);
+  expect(screen.getByRole("heading", { name: orderCopy.sent })).toHaveFocus();
+});
 
 function setup(responses: (() => Promise<Response>)[]) {
   const send = vi.fn(async (..._args: Parameters<typeof fetch>) => {

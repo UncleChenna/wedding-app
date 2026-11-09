@@ -1,4 +1,3 @@
-import { createHmac } from "node:crypto";
 import { mkdirSync, writeFileSync } from "node:fs";
 import postgres, { type Sql } from "postgres";
 import { test, expect } from "@playwright/test";
@@ -6,12 +5,11 @@ import { assertDatabaseTarget } from "../scripts/database-target";
 import { listThemes } from "../src/modules/theming";
 import { applyTheme } from "./support/theme";
 import { scanA11y } from "./support/axe";
+import { localBudgetIdentity } from "./support/local-budget-identity";
 
 // This suite deliberately fills this isolated app's local network bucket. Run serially,
 // alone, with RUN_RATE_LIMIT_BROWSER_TESTS=1; preserve any pre-existing counter exactly.
-const identity = createHmac("sha256", "local-shared-request-budget")
-  .update("rate-limit:v1:local-shared")
-  .digest("hex");
+const identity = localBudgetIdentity();
 type Counter = { scope: string; used: number; expires_at: Date };
 let db: Sql;
 let original: Counter[];

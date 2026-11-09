@@ -165,6 +165,14 @@ jobs:
         run: pnpm exec tsx scripts/test-online-admission.ts
       - name: Verify authenticated offline scanner and sign-out
         run: pnpm exec tsx scripts/test-offline-scanner.ts
+      - name: Verify atomic shared-network request budgets
+        run: pnpm exec vitest run scripts/__tests__/rate-limit.integration.test.ts
+        env:
+          RUN_RATE_LIMIT_DB_TESTS: "1"
+      - name: Verify ordering rate-limit recovery
+        run: pnpm exec playwright test e2e/order-submit.spec.ts --project=mobile --project=desktop --workers=1 --grep "network limit"
+        env:
+          RUN_ORDER_BROWSER_TESTS: "1"
       - if: failure()
         uses: actions/upload-artifact@v7
         with:

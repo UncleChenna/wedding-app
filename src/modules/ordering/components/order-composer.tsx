@@ -12,7 +12,7 @@ type Line = { id: string; name: string; quantity: number; station: Station };
 type Phase =
   | { kind: "editing"; notice?: string }
   | { kind: "sending"; attempt: number }
-  | { kind: "failed" }
+  | { kind: "failed"; limited?: true }
   | { kind: "sent"; lines: Line[]; note: string };
 
 const sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
@@ -35,6 +35,8 @@ export function OrderComposer({
   const [quantities, setQuantities] = useState<Record<string, number>>({});
   const [note, setNote] = useState("");
   const [phase, setPhase] = useState<Phase>({ kind: "editing" });
+  const [retryAt, setRetryAt] = useState(0);
+  const [waitSeconds, setWaitSeconds] = useState(0);
   // One id per submission. Automatic retries and "Try again" reuse it; any edit starts afresh.
   const requestId = useRef<string | null>(null);
   const sentHeading = useRef<HTMLHeadingElement>(null);
@@ -57,6 +59,18 @@ export function OrderComposer({
     if (phase.kind === "sent") sentHeading.current?.focus();
   }, [phase.kind]);
 
+  useEffect(() => {
+    if (!retryAt) return;
+    const update = () => {
+      const seconds = Math.max(0, Math.ceil((retryAt - Date.now()) / 1000));
+      setWaitSeconds(seconds);
+      if (!seconds) setRetryAt(0);
+    };
+    update();
+    const timer = setInterval(update, 1000);
+    return () => clearInterval(timer);
+  }, [retryAt]);
+
   const lines: Line[] = items
     .filter((item) => available[item.id] && (quantities[item.id] ?? 0) > 0)
     .map((item) => ({
@@ -75,7 +89,7 @@ export function OrderComposer({
   }
 
   async function send() {
-    if (sending || lines.length === 0) return;
+    if (sending || lines.length === 0 || Date.now() < retryAt) return;
     requestId.current ??= newRequestId();
     const snapshot = lines;
     const trimmedNote = note.trim();
@@ -100,6 +114,12 @@ export function OrderComposer({
     }
     if (outcome.status === "failed") {
       setPhase({ kind: "failed" });
+      return;
+    }
+    if (outcome.status === "limited") {
+      setWaitSeconds(outcome.retryAfterSeconds);
+      setRetryAt(Date.now() + outcome.retryAfterSeconds * 1000);
+      setPhase({ kind: "failed", limited: true });
       return;
     }
     requestId.current = null;
@@ -178,16 +198,20 @@ export function OrderComposer({
 
   const count = lines.reduce((total, line) => total + line.quantity, 0);
   const status =
-    phase.kind === "sending"
-      ? phase.attempt > 1
-        ? orderCopy.slow
-        : orderCopy.sending
-      : phase.kind === "failed"
-        ? orderCopy.failed
-        : (phase.notice ??
-          (count === 0
-            ? orderCopy.emptyCart
-            : `${count} ${count === 1 ? "item" : "items"} in your order.`));
+    waitSeconds > 0
+      ? `Please wait ${waitSeconds} ${waitSeconds === 1 ? "second" : "seconds"} before trying again. Your choices are still here.`
+      : phase.kind === "sending"
+        ? phase.attempt > 1
+          ? orderCopy.slow
+          : orderCopy.sending
+        : phase.kind === "failed"
+          ? phase.limited
+            ? "You can try again now. Your choices are still here."
+            : orderCopy.failed
+          : (phase.notice ??
+            (count === 0
+              ? orderCopy.emptyCart
+              : `${count} ${count === 1 ? "item" : "items"} in your order.`));
 
   return (
     <div>
@@ -222,7 +246,7 @@ export function OrderComposer({
         <Button
           size="lg"
           fullWidth
-          disabled={sending || lines.length === 0}
+          disabled={sending || lines.length === 0 || waitSeconds > 0}
           aria-busy={sending}
           onClick={() => void send()}
         >
