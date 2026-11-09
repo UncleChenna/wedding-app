@@ -42,3 +42,7 @@ N/A: no UI changes.
 # Harness changes, if any
 
 Adds the explicit recovery command and failure-case tests; retains all normal owner, dependency and transition guards. No hooks, tests or timeouts are weakened.
+
+# Independent review
+
+Independent read-only review found no blockers in the evidence helper or final CLI integration: ownership and dependencies are rechecked inside the atomic ledger callback; origin-only mode, criteria, exact-head CI and ancestry remain fail-closed. The reviewer also checked the real-ledger failure matrix and same-run restart guard. No physical release gates are waived.
