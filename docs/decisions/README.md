@@ -31,3 +31,5 @@ Accepted: [0020 — Gate pass credential and offline trust](0020-gate-pass-crede
 Proposed: [0021 — Gate pass signing keys and rotation](0021-gate-signing-keys.md) (TICKET-056).
 
 Accepted: [0022 — Order alert outbox and scheduled drain](0022-order-alert-outbox.md) (TICKET-084; owner approved the migration 2026-11-06; the production scheduler follows the database host, TICKET-213).
+
+Proposed: [0023 — Neon branches for worktree databases](0023-neon-worktree-databases.md) (TICKET-213; would supersede 0010; owner decision and Neon account pending).
