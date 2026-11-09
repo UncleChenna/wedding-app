@@ -2,7 +2,7 @@
 id: TICKET-027
 title: Write the RLS ADR and least-privilege policies
 epic: data-auth
-status: in_progress
+status: in_review
 priority: urgent
 estimate: M
 labels: [security, db]
@@ -12,7 +12,7 @@ agent: claude
 blocked_by: [TICKET-024, TICKET-025, TICKET-171, TICKET-172, TICKET-031]
 blocks: [TICKET-033, TICKET-128, TICKET-176]
 branch: TICKET-027
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/117
 created: 2026-10-21
 updated: 2026-11-09
 started: 2026-11-09
@@ -77,3 +77,4 @@ _Agents append dated notes here while working._
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-09 — todo → claimed — unclechenna (claude)
 - 2026-11-09 — todo → in_progress — unclechenna (claude)
+- 2026-11-09 — in_progress → in_review — unclechenna (claude)
