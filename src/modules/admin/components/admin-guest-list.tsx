@@ -27,6 +27,12 @@ export async function AdminGuestList({ draftDeleted = false }: { draftDeleted?: 
         >
           Print gate list
         </Link>
+        <Link
+          href={appRoutes.adminSeating.path}
+          className="inline-flex min-h-11 items-center text-primary underline underline-offset-4"
+        >
+          Seating plan
+        </Link>
       </div>
       {result.ok ? (
         <GuestList invitations={result.invitations} />

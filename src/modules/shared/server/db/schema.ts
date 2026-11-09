@@ -37,6 +37,27 @@ const updatedAt = () =>
     .defaultNow()
     .$onUpdate(() => new Date());
 
+/** Private expiring CSV previews; committed rows retain only digest and receipt IDs. */
+export const guestImportBatches = pgTable(
+  "guest_import_batches",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    digest: text("digest").notNull().unique(),
+    actorId: uuid("actor_id").notNull(),
+    csv: text("csv"),
+    tableSnapshot: jsonb("table_snapshot")
+      .$type<{ id: string; number: number; name: string | null; capacity: number }[]>()
+      .notNull(),
+    invitationIds: jsonb("invitation_ids").$type<string[] | null>(),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    createdAt: createdAt(),
+  },
+  (t) => [
+    check("guest_import_digest", sql`${t.digest} ~ '^[0-9a-f]{64}$'`),
+    check("guest_import_csv_bound", sql`${t.csv} is null or octet_length(${t.csv}) <= 262144`),
+  ],
+).enableRLS();
+
 const photoBytes = customType<{ data: Buffer; driverData: Buffer }>({
   dataType: () => "bytea",
 });
