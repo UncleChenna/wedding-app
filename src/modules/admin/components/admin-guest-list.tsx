@@ -16,6 +16,12 @@ export async function AdminGuestList({ draftDeleted = false }: { draftDeleted?: 
       </p>
       <div className="mt-6 flex flex-wrap gap-6">
         <Link
+          href={appRoutes.adminGuestImport.path}
+          className="inline-flex min-h-11 items-center text-primary underline underline-offset-4"
+        >
+          Import guests
+        </Link>
+        <Link
           href={appRoutes.adminGuestNew.path}
           className="inline-flex min-h-11 items-center text-primary underline underline-offset-4"
         >

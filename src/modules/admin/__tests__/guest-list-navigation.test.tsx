@@ -10,6 +10,10 @@ vi.mock("@/modules/shared/components/retry-button", () => ({ RetryButton: () => 
 import { AdminGuestList } from "../components/admin-guest-list";
 it("keeps guest creation, printable fallback and seating reachable together", async () => {
   render(await AdminGuestList());
+  expect(screen.getByRole("link", { name: "Import guests" })).toHaveAttribute(
+    "href",
+    "/admin/guests/import",
+  );
   expect(screen.getByRole("link", { name: "Add an invitation" })).toHaveAttribute(
     "href",
     "/admin/guests/new",
