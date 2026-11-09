@@ -7,6 +7,13 @@ import { useState } from "react";
 import { Select, ToastProvider } from "@/modules/shared/components/ui";
 import { themeStyle, type Theme } from "@/modules/theming";
 
+import { InvitationLifecycleControls } from "./invitation-lifecycle-controls";
+import {
+  invitationLifecycleCommandSchema,
+  planInvitationLifecycle,
+  type LifecycleCurrent,
+  type LifecycleFormState,
+} from "../lib/invitation-lifecycle";
 import { ShareMenu } from "./share-menu";
 
 export function SharePreview({
@@ -17,6 +24,34 @@ export function SharePreview({
   initialTheme: Theme;
 }) {
   const [themeId, setThemeId] = useState(initialTheme.id);
+  const [sample, setSample] = useState<LifecycleCurrent>({
+    status: "rsvp_yes",
+    tokenVersion: 3,
+    attending: true,
+  });
+  async function previewLifecycleAction(
+    _previous: LifecycleFormState,
+    form: FormData,
+  ): Promise<LifecycleFormState> {
+    const parsed = invitationLifecycleCommandSchema.safeParse({
+      invitationId: form.get("invitationId"),
+      operation: form.get("operation"),
+      expectedVersion: Number(form.get("expectedVersion")),
+      expectedStatus: form.get("expectedStatus"),
+      confirmation: form.get("confirmation"),
+    });
+    if (!parsed.success) return { status: "error", message: "Please check the sample invitation." };
+    const result = planInvitationLifecycle(sample, parsed.data);
+    if (!result.ok) return { status: "error", message: "The sample changed. Please try again." };
+    setSample({ ...sample, status: result.status, tokenVersion: result.tokenVersion });
+    return {
+      status: "saved",
+      message:
+        parsed.data.operation === "revoke"
+          ? "Sample invitation revoked. No real guest data changed."
+          : "Sample link reissued. No real guest data changed.",
+    };
+  }
   const theme = themes.find((item) => item.id === themeId) ?? initialTheme;
   return (
     <div style={themeStyle(theme)} className="min-h-dvh bg-background text-foreground">
@@ -77,6 +112,25 @@ export function SharePreview({
                 phone: "07700 900123",
                 email: "guest@example.com",
               }}
+            />
+          </section>
+          <section
+            aria-labelledby="sample-lifecycle"
+            className="space-y-6 border-t border-border pt-8"
+          >
+            <h2 id="sample-lifecycle" className="font-display text-3xl">
+              Manage this sample invitation
+            </h2>
+            <p className="max-w-prose text-lg leading-relaxed">
+              Try the confirmation steps for Alex Morgan. These sample controls do not change any
+              real invitation.
+            </p>
+            <InvitationLifecycleControls
+              invitationId="6f1c2a4e-8b3d-4c5a-9e7f-1a2b3c4d5e6f"
+              name="Alex Morgan"
+              status={sample.status}
+              tokenVersion={sample.tokenVersion}
+              submitAction={previewLifecycleAction}
             />
           </section>
         </main>

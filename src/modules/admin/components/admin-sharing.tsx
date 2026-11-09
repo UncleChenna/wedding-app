@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { appRoutes } from "@/modules/shared/lib/routes";
 import { getSharingInvitations } from "../server/sharing-invitations";
+import { InvitationLifecycleControls } from "./invitation-lifecycle-controls";
 import { ShareMenu } from "./share-menu";
 
 export async function AdminSharing() {
@@ -26,6 +27,12 @@ export async function AdminSharing() {
               ) : (
                 <p>{invitation.guidance}</p>
               )}
+              <InvitationLifecycleControls
+                invitationId={invitation.id}
+                name={invitation.name}
+                status={invitation.status}
+                tokenVersion={invitation.tokenVersion}
+              />
             </li>
           ))}
         </ul>
