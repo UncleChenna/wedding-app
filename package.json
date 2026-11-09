@@ -60,9 +60,11 @@
     "t:dashboard": "tsx scripts/tickets/dashboard-server.ts",
     "t:dashboard:snapshot": "tsx scripts/tickets.ts dashboard",
     "alerts:schedule": "tsx scripts/alerts-schedule.ts",
-    "t:start": "tsx scripts/tickets.ts start"
+    "t:start": "tsx scripts/tickets.ts start",
+    "test:gate": "playwright test --config scripts/gate-verification.config.ts"
   },
   "dependencies": {
+    "@noble/curves": "2.4.0",
     "@react-pdf/renderer": "^4.9.0",
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.118.0",
@@ -92,6 +94,7 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "drizzle-kit": "^0.31.11",
+    "esbuild": "0.28.2",
     "eslint": "^9.39.5",
     "eslint-config-next": "16.4.2",
     "eslint-config-prettier": "^10.1.8",

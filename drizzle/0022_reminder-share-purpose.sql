@@ -1,0 +1,2 @@
+ALTER TABLE "invitation_share_events" ADD COLUMN "purpose" text DEFAULT 'invitation' NOT NULL;--> statement-breakpoint
+ALTER TABLE "invitation_share_events" ADD CONSTRAINT "invitation_share_events_purpose" CHECK ("invitation_share_events"."purpose" in ('invitation', 'reminder'));

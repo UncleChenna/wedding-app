@@ -2,8 +2,9 @@ import "server-only";
 import { and, desc, eq, getTableColumns, sql } from "drizzle-orm";
 import { z } from "zod";
 import type { Db } from "@/modules/shared/server/db/client";
-import { invitations, invitationShareEvents } from "@/modules/shared/server/db/schema";
+import { invitations, invitationShareEvents, rsvps } from "@/modules/shared/server/db/schema";
 import { planShare, planShareUndo, shareTrackingInputSchema } from "../lib/share-tracking";
+import { reminderEligible } from "../lib/reminders";
 
 const undoSchema = z.object({ invitationId: z.uuid(), eventId: z.uuid() });
 const rejected = {
@@ -36,15 +37,25 @@ export async function recordInvitationShare(
       return existing.invitationId === current.id &&
         existing.actorId === actorId &&
         existing.channel === data.channel &&
+        existing.purpose === data.purpose &&
+        existing.tokenVersion === data.expectedVersion &&
         !existing.undoneAt
         ? ({ ok: true, eventId: existing.id } as const)
         : rejected;
+    }
+    if (data.purpose === "reminder") {
+      const [reply] = await tx
+        .select({ id: rsvps.id })
+        .from(rsvps)
+        .where(eq(rsvps.invitationId, current.id));
+      if (!reminderEligible(current.status, !!reply)) return rejected;
     }
     await tx.insert(invitationShareEvents).values({
       id: data.requestId,
       invitationId: current.id,
       actorId,
       channel: data.channel,
+      purpose: data.purpose,
       tokenVersion: current.tokenVersion,
       previousStatus: current.status,
       previousSentAt: current.sentAt,

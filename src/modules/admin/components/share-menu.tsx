@@ -15,10 +15,12 @@ export function ShareMenu({
   invitation,
   tracking,
   onRecorded,
+  purpose = "invitation",
 }: {
   invitation: ShareInput;
   tracking?: { invitationId: string; expectedVersion: number };
   onRecorded?: (eventId: string) => void;
+  purpose?: "invitation" | "reminder";
 }) {
   const noticeRef = useRef<HTMLParagraphElement>(null);
   const [eventId, setEventId] = useState<string | null>(null);
@@ -31,6 +33,7 @@ export function ShareMenu({
       const recorded = await recordShareAction({
         ...tracking,
         channel,
+        purpose,
         requestId: crypto.randomUUID(),
       });
       if (recorded.ok) {
@@ -170,7 +173,7 @@ export function ShareMenu({
   return (
     <>
       <Button size="lg" onClick={begin} disabled={recording} aria-haspopup="dialog">
-        Share invitation
+        {purpose === "reminder" ? "Share reminder" : "Share invitation"}
       </Button>
       {tracking && (
         <div className="space-y-3">
@@ -192,11 +195,18 @@ export function ShareMenu({
       <Sheet
         open={open}
         onOpenChange={setOpen}
-        title="Share invitation"
+        title={purpose === "reminder" ? "Share reminder" : "Share invitation"}
         className="max-h-[90dvh] overflow-y-auto [&_header_h2]:text-3xl"
       >
         <div ref={content} className="space-y-6">
-          <p className="text-lg leading-relaxed">Choose how to send this invitation.</p>
+          <p className="text-lg leading-relaxed">
+            {purpose === "reminder"
+              ? "Choose how to send this gentle reminder."
+              : "Choose how to send this invitation."}
+          </p>
+          {purpose === "reminder" && (
+            <p className="text-lg leading-relaxed wrap-anywhere">{invitation.message}</p>
+          )}
           {!result.ok ? (
             <p role="alert" className="text-lg leading-relaxed">
               {result.message}

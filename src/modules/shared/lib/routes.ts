@@ -10,6 +10,12 @@ export interface AppRoute {
 
 /** Navigation metadata is not authorization; server readers still enforce access. */
 export const appRoutes = {
+  adminReminders: {
+    path: "/admin/sharing/reminders",
+    label: "Reminders",
+    audience: "admin",
+    access: "admin",
+  },
   home: { path: "/", label: "Our day", audience: "guest", access: "public" },
   invite: { path: "/invite", label: "Your invitation", audience: "guest", access: "public" },
   invitation: {
