@@ -2651,9 +2651,10 @@
         "- 2026-11-09 — in_progress → blocked — divine (codex) — Awaiting TICKET-059 merge; its CI is blocked by newly merged scan-sync coverage. Draft PR139 foundation preserved; shared coverage repair takes priority.",
         "- 2026-11-09 — blocked → in_progress — divine (codex) — TICKET-059 verified merged; resume authorized scanner results and integration.",
         "- 2026-11-09 — in_progress → in_review — divine (codex)",
-        "- 2026-11-09 — in_review → in_progress — divine (codex) — CI scanner journey needs ephemeral QR signing configuration for the newly integrated read-only resolver."
+        "- 2026-11-09 — in_review → in_progress — divine (codex) — CI scanner journey needs ephemeral QR signing configuration for the newly integrated read-only resolver.",
+        "- 2026-11-09 — in_progress → in_review — divine (codex)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-060",
