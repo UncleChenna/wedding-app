@@ -1,7 +1,7 @@
 "use server";
 import "server-only";
 import { revalidatePath } from "next/cache";
-import { unstable_rethrow } from "next/navigation";
+import { redirect, unstable_rethrow } from "next/navigation";
 import { db } from "@/modules/shared/server/db/client";
 import { createLogger } from "@/modules/shared/lib/logger";
 import { parseInvitationEditorForm, type InvitationEditorState } from "../lib/invitation-editor";
@@ -16,6 +16,8 @@ const messages = {
   table_missing: "That table is no longer available. Choose another table.",
   capacity: "Keep enough tag-along places for the guests already named on this invitation.",
   admitted: "The party cannot be smaller than the number of people already admitted.",
+  historical_admission:
+    "A guest with a historical check-in cannot be removed. Keep the guest and correct their details instead.",
   not_draft:
     "Only an untouched draft can be deleted. Revoke this invitation instead to preserve its history.",
 };
@@ -74,7 +76,7 @@ export async function deleteInvitationDraftAction(
   _previous: InvitationEditorState,
   form: FormData,
 ): Promise<InvitationEditorState> {
-  return guarded(async () => {
+  const result = await guarded(async () => {
     const id = form.get("id");
     const snapshot = form.get("snapshot");
     if (
@@ -88,4 +90,6 @@ export async function deleteInvitationDraftAction(
       ? { status: "deleted", message: "Draft invitation deleted." }
       : { status: "error", message: messages[result.code] };
   });
+  if (result.status === "deleted") redirect("/admin/guests?notice=draft-deleted");
+  return result;
 }

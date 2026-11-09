@@ -40,8 +40,8 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-1).
 
 ## Acceptance criteria
 
-- [ ] Creating an invitation generates a token and draft status (unit).
-- [ ] Invalid phone/email show field errors (e2e).
+- [x] Creating an invitation generates a token and draft status (unit).
+- [x] Invalid phone/email show field errors (e2e).
 
 ## Test plan
 
@@ -55,7 +55,7 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-1).
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-11-09: Implemented authenticated household/member create/edit, stale-state and admission guards, admin-attributed RSVP corrections and historical check-in preservation. Draft deletion redirects to a focused guest-list confirmation. 19 focused unit tests, 6 isolated database tests, production build and 2 authenticated browser journeys pass; full evidence in docs/plans/TICKET-090-pr.md. PR #120; CI and final integration pending.
 
 ## Activity log
 

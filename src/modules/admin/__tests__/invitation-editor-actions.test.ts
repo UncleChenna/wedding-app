@@ -101,3 +101,15 @@ it("requires explicit draft removal confirmation", async () => {
   });
   expect(mocks.revalidate).not.toHaveBeenCalled();
 });
+
+it("redirects successful deletion away from the now-missing editor", async () => {
+  const data = form();
+  data.set("id", id);
+  data.set("snapshot", "a".repeat(64));
+  data.set("confirmation", "delete");
+  mocks.remove.mockResolvedValue({ ok: true });
+  await expect(deleteInvitationDraftAction({ status: "idle" }, data)).rejects.toMatchObject({
+    digest: expect.stringContaining("/admin/guests?notice=draft-deleted"),
+  });
+  expect(mocks.revalidate).toHaveBeenCalledWith("/admin/guests");
+});

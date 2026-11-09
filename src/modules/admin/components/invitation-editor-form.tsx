@@ -50,15 +50,20 @@ export function InvitationEditorForm({
   });
   const [confirmDelete, setConfirmDelete] = useState(false);
   const form = useRef<HTMLFormElement>(null);
+  const confirmation = useRef<HTMLParagraphElement>(null);
   const fields = state.status === "error" ? (state.fields ?? {}) : {};
   useEffect(() => {
     if (state.status === "error")
       form.current?.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
   }, [state]);
+  useEffect(() => {
+    if (deleted.status === "deleted" || (!invitation && state.status === "saved"))
+      confirmation.current?.focus();
+  }, [deleted.status, invitation, state.status]);
   if (deleted.status === "deleted" || (!invitation && state.status === "saved"))
     return (
       <div className="mt-8 space-y-6">
-        <p role="status">
+        <p ref={confirmation} role="status" tabIndex={-1}>
           {deleted.status === "deleted"
             ? deleted.message
             : state.status === "saved"

@@ -5,6 +5,7 @@ import { z } from "zod";
 import type { Db } from "@/modules/shared/server/db/client";
 import {
   admissionCounters,
+  checkIns,
   guests,
   invitations,
   invitationLifecycleEvents,
@@ -25,7 +26,14 @@ import {
 type Reader = Pick<Db, "select">;
 type Transaction = Parameters<Parameters<Db["transaction"]>[0]>[0];
 type Failure =
-  "missing" | "conflict" | "invalid" | "table_missing" | "capacity" | "admitted" | "not_draft";
+  | "missing"
+  | "conflict"
+  | "invalid"
+  | "table_missing"
+  | "capacity"
+  | "admitted"
+  | "not_draft"
+  | "historical_admission";
 export type EditorResult =
   | { ok: true; id: string; snapshot: string; values: InvitationEditorValues }
   | { ok: false; code: Failure };
@@ -161,6 +169,14 @@ export async function saveAdminInvitation(
     const removed = stored.members
       .filter((member) => !keep.has(member.id))
       .map((member) => member.id);
+    if (removed.length) {
+      const historical = await tx
+        .select({ id: checkIns.id })
+        .from(checkIns)
+        .where(inArray(checkIns.guestId, removed))
+        .limit(1);
+      if (historical.length) return { ok: false, code: "historical_admission" };
+    }
     if (removed.length)
       await tx
         .delete(guests)
@@ -228,6 +244,12 @@ export async function deleteAdminDraft(
     if (stored.invitation.status !== "draft" || stored.invitation.sentAt || stored.reply)
       return { ok: false, code: "not_draft" };
     const evidence = await Promise.all([
+      tx
+        .select({ id: checkIns.id })
+        .from(checkIns)
+        .innerJoin(guests, eq(guests.id, checkIns.guestId))
+        .where(eq(guests.invitationId, id))
+        .limit(1),
       tx
         .select({ id: rsvpChanges.id })
         .from(rsvpChanges)

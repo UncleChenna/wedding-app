@@ -282,5 +282,35 @@ describe.runIf(process.env.RUN_INVITATION_EDITOR_DB_TESTS === "1")(
         ).toEqual({ ok: false, code: "admitted" });
         expect((await details(tx, created.id)).values.members).toHaveLength(2);
       }));
+    it("preserves historical guest check-ins and explains why their guest cannot be removed", async () =>
+      exercise(async (tx) => {
+        const created = await create(tx);
+        let current = await details(tx, created.id);
+        await edit(tx, current, {
+          ...current.values,
+          members: [
+            ...current.values.members,
+            { id: "", name: "Second guest", email: "", phone: "" },
+          ],
+        });
+        current = await details(tx, created.id);
+        const guestId = current.values.members[0]?.id;
+        if (!guestId) throw new Error("Missing guest");
+        await tx
+          .insert(schema.checkIns)
+          .values({ guestId, checkedInAt: new Date(), clientEventId: randomUUID() });
+        expect(
+          await edit(tx, current, {
+            ...current.values,
+            members: current.values.members.filter((member) => member.id !== guestId),
+          }),
+        ).toEqual({ ok: false, code: "historical_admission" });
+        expect(
+          await tx.select().from(schema.checkIns).where(eq(schema.checkIns.guestId, guestId)),
+        ).toHaveLength(1);
+        expect(
+          await deleteAdminDraft(tx, created.id, (await details(tx, created.id)).snapshot),
+        ).toEqual({ ok: false, code: "not_draft" });
+      }));
   },
 );
