@@ -2,7 +2,7 @@
 id: TICKET-051
 title: Mark invitations as sent when shared
 epic: sharing
-status: in_progress
+status: in_review
 priority: urgent
 estimate: S
 labels: [backend, frontend]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-050, TICKET-089]
 blocks: [TICKET-053, TICKET-159, TICKET-176]
 branch: TICKET-051
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/116
 created: 2026-10-21
 updated: 2026-11-09
 started: 2026-11-09
@@ -65,3 +65,4 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-3).
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-09 — todo → claimed — unclechenna (codex) — started ahead of TICKET-089 (in_progress)
 - 2026-11-09 — todo → in_progress — unclechenna (codex) — started ahead of TICKET-089 (in_progress)
+- 2026-11-09 — in_progress → in_review — unclechenna (codex)
