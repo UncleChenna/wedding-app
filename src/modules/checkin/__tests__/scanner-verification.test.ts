@@ -24,6 +24,20 @@ function token(iat = payload.iat) {
 }
 afterEach(() => vi.unstubAllGlobals());
 describe("scanner fallback", () => {
+  it("rejects noncanonical high-S even if native crypto accepts it", async () => {
+    const nativeVerify = vi.fn().mockResolvedValue(true);
+    vi.stubGlobal("crypto", {
+      subtle: { importKey: vi.fn().mockResolvedValue({}), verify: nativeVerify },
+    });
+    const { keys, vectors } = gateVerificationVectors();
+    const vector = vectors.find((candidate) => candidate.label === "noncanonical high-S");
+    if (!vector) throw new Error("Missing high-S vector");
+    await expect(verifyGatePass(vector.token, keys, { now })).resolves.toEqual({
+      ok: false,
+      reason: "bad-signature",
+    });
+    expect(nativeVerify).not.toHaveBeenCalled();
+  });
   it("verifies without WebCrypto and preserves future-issued rejection", async () => {
     vi.stubGlobal("crypto", undefined);
     await expect(verifyGatePass(token(), ring, { now })).resolves.toEqual({ ok: true, payload });
