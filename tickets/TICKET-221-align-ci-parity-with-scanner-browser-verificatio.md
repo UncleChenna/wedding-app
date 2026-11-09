@@ -1,6 +1,6 @@
 ---
 id: TICKET-221
-title: Align CI parity with scanner browser verification
+title: Repair scanner CI parity and signature canonicality
 epic: foundations
 status: in_progress
 priority: high
@@ -21,7 +21,7 @@ reason: ""
 resume_to: ""
 ---
 
-# TICKET-221: Align CI parity with scanner browser verification
+# TICKET-221: Repair scanner CI parity and signature canonicality
 
 ## Context
 
@@ -29,15 +29,19 @@ PR #127 added required Chromium/WebKit gate-token verification for [Gate check-i
 
 ## Scope
 
+- Enforce RFC 8032 S < L before native or fallback signature verification; Linux WebKit accepted a high-S signature during the repaired CI run. Preserve the existing strict browser vector.
+
 - Update the parity contract to require both browser engines.
 - Include named run steps so database migration and the dedicated scanner suite cannot disappear unnoticed.
 - Preserve full verification, existing timeout budgets, and scanner/device release gates.
 
 ## Out of scope
 
-- Token implementation (TICKET-057), physical certification (TICKET-114), and unrelated hook fixture isolation.
+- Admission rules, physical certification (TICKET-114), and unrelated hook fixture isolation. The narrow TICKET-057 canonical-signature regression exposed by this integration is included.
 
 ## Acceptance criteria
+
+- [ ] Noncanonical high-S signatures fail before backend dispatch even when native WebCrypto would accept them; unchanged Chromium/WebKit vectors pass.
 
 - [x] CI parity requires frozen install, Chromium and WebKit, agent checks, database migration, full verify and dedicated scanner verification in order.
 - [x] The known failure is reproduced before repair and both parity tests pass after repair.
@@ -52,6 +56,7 @@ PR #127 added required Chromium/WebKit gate-token verification for [Gate check-i
 ## Files likely touched
 
 - `scripts/__tests__/ci-parity.test.ts`
+- `src/modules/checkin/lib/gate-token.ts` and its scanner regression tests
 - Ticket-specific evidence and PR description.
 
 ## Notes / decisions
