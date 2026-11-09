@@ -2,20 +2,20 @@
 id: TICKET-061
 title: Admit arriving guests with partial counts
 epic: checkin
-status: todo
+status: in_review
 priority: high
 estimate: M
 labels: [frontend, backend]
 module: checkin
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-024, TICKET-060, TICKET-064, TICKET-032]
 blocks: [TICKET-062, TICKET-063, TICKET-065, TICKET-068, TICKET-097]
-branch: ""
-pr: ""
+branch: TICKET-061
+pr: https://github.com/UncleChenna/wedding-app/pull/144
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-09
+started: 2026-11-09
 completed: ""
 reason: ""
 resume_to: ""
@@ -41,9 +41,9 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-3) · [Journey 2: check-
 
 ## Acceptance criteria
 
-- [ ] Admitting 2 of 4 leaves 2 remaining; a second scan shows Valid with 2 remaining (e2e).
-- [ ] Retrying the same client_event_id creates no duplicate (unit).
-- [ ] Over-admit is refused with a clear message.
+- [x] Admitting 2 of 4 leaves 2 remaining; a second scan shows Valid with 2 remaining (e2e).
+- [x] Retrying the same client_event_id creates no duplicate (unit).
+- [x] Over-admit is refused with a clear message.
 
 ## Test plan
 
@@ -57,8 +57,16 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-3) · [Journey 2: check-
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-11-09 — Implemented explicit partial admission with strict auth-first POST, signature validation, immutable actor/count replay binding, row locks and final reauthorization. Existing triggers maintain canonical counters; no migration or offline outbox work. UI distinguishes committed admission from read-only validation and historical duplicate receipts.
+- 2026-11-09 — Focused quick55pass, isolated database5/5pass and production browser2/2pass. Browser proves actual lost-response replay does not increment twice; all-theme axe/bounds/44px checks pass. Full coverage, final keyboard assertions and independent UI review are pending. Final base integration waits for TICKET-108; physical checks remain release-gated.
 
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-09 — todo → claimed — divine (codex)
+- 2026-11-09 — todo → in_progress — divine (codex)
+- 2026-11-09 — Independent review found and verified repairs for hidden-phone intent loss and fixed danger semantics. Actual production browser2/2 and quick18related tests pass. Full pre-integration unit1677pass/190conditional skips; final108base integration and review/CI remain pending. Own isolated database stopped, data retained.
+- 2026-11-09 — Verified develop143b4d63 integrated; full serial suite1764pass/190conditional skips,98.30%lines/98.51%branches. Production build, integratedSQL5/5, admissionbrowser2/2 and offlinebrowser2/2 withCLS0 pass. Independent integration review clean. Final-headCI required beforemerge; physical release gates retained.
+- 2026-11-09 — in_progress → in_review — divine (codex)
+- 2026-11-09 — in_review → in_progress — divine (codex) — Repair CI fixtures that incorrectly require a local environment file despite injected DATABASE_URL
+- 2026-11-09 — in_review → in_progress — divine (codex) — Integrate verified TICKET-123 and validate combined scanner/admission/ordering CI sequence
