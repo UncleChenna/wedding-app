@@ -1,4 +1,5 @@
 import type { Station } from "./stations";
+import { projectOrderInstructionForRole } from "@/modules/shared/lib/dietary-privacy";
 
 /**
  * Batching (current-state assumption 7, ADR 0022): a station's pending alerts are sent together once
@@ -13,15 +14,20 @@ export const ALERT_MAX_ATTEMPTS = 5;
 export type AlertLine = { quantity: number; name: string };
 
 /** "Table 12: 2 x chicken, 1 x water. Note: no pepper." (PRD ORD-9). */
-export function formatOrderAlert(order: {
-  table: number;
-  items: AlertLine[];
-  note?: string | null;
-}) {
-  const items = order.items.map((item) => `${item.quantity} x ${item.name}`).join(", ");
-  const note = order.note?.trim();
+export function formatOrderAlert(
+  order: {
+    table: number;
+    items: AlertLine[];
+    note?: string | null;
+  },
+  station: Station,
+) {
+  const projected = projectOrderInstructionForRole(station, order);
+  if (!projected) throw new Error("Unsupported alert station");
+  const items = projected.items.map((item) => `${item.quantity} x ${item.name}`).join(", ");
+  const note = projected.note?.trim();
   return (
-    `Table ${order.table}: ${items}.` +
+    `Table ${projected.table}: ${items}.` +
     (note ? ` Note: ${note}` + (/[.!?]$/.test(note) ? "" : ".") : "")
   );
 }

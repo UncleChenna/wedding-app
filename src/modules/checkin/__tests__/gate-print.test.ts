@@ -12,6 +12,21 @@ const base: GatePrintInvitation = {
     { name: "Uchenna Nwosu", isPrimary: false },
   ],
 };
+it("drops private dietary, history and nested notes from the gate export", () => {
+  const secret = "private dietary marker";
+  const input = {
+    ...base,
+    dietaryNotes: secret,
+    history: [{ notes: secret }],
+    guests: base.guests.map((guest) => ({
+      ...guest,
+      dietaryNotes: secret,
+      history: { notes: secret },
+    })),
+  };
+  expect(buildGatePrintRows([input])).toEqual(buildGatePrintRows([base]));
+  expect(JSON.stringify(buildGatePrintRows([input]))).not.toContain(secret);
+});
 it("includes every yes household and every named tag-along, sorted by surname", () => {
   const rows = buildGatePrintRows([
     base,
