@@ -24,32 +24,80 @@ export function createScannerShellRuntime({ store, storage, fetcher, origin, bui
     !response.redirected &&
     response.type !== "opaque" &&
     response.type !== "opaqueredirect";
+  async function deny(generation: string) {
+    try {
+      return (await store.discard(generation))
+        ? { state: "denied" as const }
+        : { state: "unavailable" as const };
+    } catch {
+      return { state: "denial-storage-failed" as const };
+    }
+  }
+  async function authorization() {
+    const generation = await store.begin();
+    const response = await fetcher(new URL("/checkin/offline-shell", origin).href, {
+      credentials: "same-origin",
+      cache: "no-store",
+      redirect: "error",
+    });
+    if (
+      [401, 403, 404, 410].includes(response.status) ||
+      (response.status === 200 && response.headers.get("X-Wedding-Scanner-Shell") !== "1")
+    ) {
+      return deny(generation);
+    }
+    if (!complete(response)) return { state: "unavailable" as const };
+    const grant: unknown = await response.json();
+    if (!store.accepts(grant)) return { state: "unavailable" as const };
+    if (grant.expiresAt <= Date.now()) return deny(generation);
+    // New authorization must replace older state even if this worker cannot use the build.
+    if (!(await store.authorize(generation, grant.session, grant.expiresAt)))
+      return { state: "unavailable" as const };
+    return { state: "authorized" as const, generation, grant };
+  }
+  async function usableGrant() {
+    const grant = await store.current();
+    if (!grant || grant.build !== build || grant.expiresAt <= Date.now()) return null;
+    const cache = await storage.open(cacheName);
+    for (const path of grant.assets) if (!(await cache.match(path))) return null;
+    const latest = await store.current();
+    if (
+      !latest ||
+      JSON.stringify(latest) !== JSON.stringify(grant) ||
+      latest.expiresAt <= Date.now()
+    )
+      return null;
+    return latest;
+  }
   return {
+    async revalidate() {
+      try {
+        const result = await authorization();
+        return { state: result.state };
+      } catch {
+        return { state: "unavailable" as const };
+      }
+    },
+    async status() {
+      try {
+        const grant = await usableGrant();
+        return grant
+          ? {
+              state: "ready" as const,
+              session: grant.session,
+              build: grant.build,
+              expiresAt: grant.expiresAt,
+            }
+          : { state: "unavailable" as const };
+      } catch {
+        return { state: "unavailable" as const };
+      }
+    },
     async prepare() {
       try {
-        const generation = await store.begin();
-        const response = await fetcher(new URL("/checkin/offline-shell", origin).href, {
-          credentials: "same-origin",
-          cache: "no-store",
-          redirect: "error",
-        });
-        if (
-          [401, 403, 404, 410].includes(response.status) ||
-          (response.status === 200 && response.headers.get("X-Wedding-Scanner-Shell") !== "1")
-        ) {
-          await store.discard(generation);
-          return { state: "denied" as const };
-        }
-        if (!complete(response)) return { state: "unavailable" as const };
-        const grant: unknown = await response.json();
-        if (!store.accepts(grant)) return { state: "unavailable" as const };
-        if (grant.expiresAt <= Date.now()) {
-          await store.discard(generation);
-          return { state: "denied" as const };
-        }
-        // New authorization must replace older state even if this worker cannot use the build.
-        if (!(await store.authorize(generation, grant.session, grant.expiresAt)))
-          return { state: "unavailable" as const };
+        const authorizationResult = await authorization();
+        if (authorizationResult.state !== "authorized") return authorizationResult;
+        const { generation, grant } = authorizationResult;
         if (grant.build !== build) return { state: "unavailable" as const };
         const cache = await storage.open(cacheName);
         for (const path of grant.assets) {
@@ -79,19 +127,8 @@ export function createScannerShellRuntime({ store, storage, fetcher, origin, bui
     },
     async document(): Promise<Response | null> {
       try {
-        const grant = await store.current();
-        if (!grant || grant.build !== build || grant.expiresAt <= Date.now()) return null;
-        const cache = await storage.open(cacheName);
-        for (const path of grant.assets) if (!(await cache.match(path))) return null;
-        const latest = await store.current();
-        if (
-          !latest ||
-          latest.session !== grant.session ||
-          latest.build !== grant.build ||
-          JSON.stringify(latest) !== JSON.stringify(grant) ||
-          latest.expiresAt <= Date.now()
-        )
-          return null;
+        const latest = await usableGrant();
+        if (!latest) return null;
         return new Response(latest.html, { headers: latest.headers });
       } catch {
         return null;

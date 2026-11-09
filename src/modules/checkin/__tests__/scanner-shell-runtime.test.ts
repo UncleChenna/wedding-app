@@ -130,4 +130,62 @@ describe("authorized scanner shell preparation", () => {
     expect(await f.runtime.prepare()).toEqual({ state: "unavailable" });
     expect(f.store.commit).not.toHaveBeenCalled();
   });
+  it("revalidates known authorization without downloading or publishing assets", async () => {
+    const f = fixture();
+    expect(await f.runtime.revalidate()).toEqual({ state: "authorized" });
+    expect(f.store.authorize).toHaveBeenCalledWith(
+      "generation",
+      f.grant.session,
+      f.grant.expiresAt,
+    );
+    expect(f.fetcher).toHaveBeenCalledTimes(1);
+    expect(f.cache.put).not.toHaveBeenCalled();
+    expect(f.store.commit).not.toHaveBeenCalled();
+  });
+  it("revalidation applies changed authorization even for a newer unsupported build", async () => {
+    const f = fixture();
+    f.grant.build = "c".repeat(64);
+    expect(await f.runtime.revalidate()).toEqual({ state: "authorized" });
+    expect(f.store.authorize).toHaveBeenCalledWith(
+      "generation",
+      f.grant.session,
+      f.grant.expiresAt,
+    );
+  });
+  it("revalidation discards known denial but retains authorization on transient server failure", async () => {
+    const f = fixture();
+    f.fetcher.mockResolvedValueOnce(new Response("unavailable", { status: 503 }));
+    expect(await f.runtime.revalidate()).toEqual({ state: "unavailable" });
+    expect(f.store.discard).not.toHaveBeenCalled();
+    f.fetcher.mockResolvedValueOnce(new Response("sign in"));
+    expect(await f.runtime.revalidate()).toEqual({ state: "denied" });
+    expect(f.store.discard).toHaveBeenCalledWith("generation");
+  });
+  it("status reveals only usable authorization identity, never the cached document", async () => {
+    const f = fixture();
+    expect(await f.runtime.status()).toEqual({ state: "unavailable" });
+    await f.runtime.prepare();
+    expect(await f.runtime.status()).toEqual({
+      state: "ready",
+      session: f.grant.session,
+      build: f.grant.build,
+      expiresAt: f.grant.expiresAt,
+    });
+    f.entries.delete(f.grant.assets[0] ?? "");
+    expect(await f.runtime.status()).toEqual({ state: "unavailable" });
+  });
+  it("does not report an authoritative denial when a newer generation already won", async () => {
+    const f = fixture();
+    f.fetcher.mockResolvedValue(new Response("denied", { status: 401 }));
+    f.store.discard.mockResolvedValue(false);
+    expect(await f.runtime.revalidate()).toEqual({ state: "unavailable" });
+    expect(await f.runtime.prepare()).toEqual({ state: "unavailable" });
+  });
+  it("preserves a known server denial when its durable tombstone write fails", async () => {
+    const f = fixture();
+    f.fetcher.mockResolvedValue(new Response("denied", { status: 401 }));
+    f.store.discard.mockRejectedValue(new Error("storage failed"));
+    expect(await f.runtime.revalidate()).toEqual({ state: "denial-storage-failed" });
+    expect(await f.runtime.prepare()).toEqual({ state: "denial-storage-failed" });
+  });
 });

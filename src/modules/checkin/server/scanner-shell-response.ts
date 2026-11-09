@@ -52,7 +52,7 @@ export async function scannerShellResponse(
         .filter(({ key }) => key === "Content-Security-Policy" || key === "Permissions-Policy")
         .map(({ key, value }): [string, string] => [key, value]),
     ];
-    const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="robots" content="noindex, noarchive"><title>Gate scanner</title><link rel="stylesheet" href="${assets.stylesheet}">${assets.fonts.map((path) => `<link rel="preload" as="font" type="font/woff2" href="${path}" crossorigin>`).join("")}<style>${css}</style></head><body><div id="scanner-shell" data-expires-at="${expiresAt}"></div><noscript>Turn on JavaScript to use the camera scanner.</noscript><script defer src="${assets.script}"></script></body></html>`;
+    const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="robots" content="noindex, noarchive"><title>Gate scanner</title><link rel="stylesheet" href="${assets.stylesheet}">${assets.fonts.map((path) => `<link rel="preload" as="font" type="font/woff2" href="${path}" crossorigin>`).join("")}<style>${css}</style></head><body><div id="scanner-shell" data-expires-at="${expiresAt}" data-session="${fingerprint}" data-build="${assets.build}"></div><noscript>Turn on JavaScript to use the camera scanner.</noscript><script defer src="${assets.script}"></script></body></html>`;
     const grant: ScannerShellGrant = {
       version: 1,
       session: fingerprint,

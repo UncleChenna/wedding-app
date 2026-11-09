@@ -168,3 +168,36 @@ add the online preparation/logout bridge; verify actual offline reload and expir
 with QR pixels, all themes and production endpoints. Keep PR142 draft. Agent024
 owns060 result code and a native PostgreSQL fixture on30821. Agent theme_fixes
 owns048 final CI42687100122, with the next merge slot reserved. Root uses no DB.
+
+## Worker checkpoint — 2026-11-09 20:17 UTC
+
+Root remains sole editor108/in_progress; PR142 stays draft. Added worker install function,
+canonical client message validation, network-first /checkin fallback, status identity checks,
+activation build invalidation and build-specific public cache. /sw.js route loads traced
+manifest; missing assets return503 instead of replacing a good worker. Exact non-null emitted
+worker source executes in VM. Runtime revalidate does no asset downloads and consumes known
+denials only when generation discard succeeds. Failed denial persistence has an explicit
+outcome; worker latches unavailable and deletes scanner readiness cache, then notifies tabs.
+No guest snapshot or queue deletion. If both durable channels fail, no successful removal
+acknowledgment or restart-safety claim is made.
+
+Offline entry adds session/build attributes and initial durable STATUS match before camera
+mount; incoming invalidation wins over pending replies, earlier deadline always wins. Six
+new lifecycle tests pass. Reviewer theme_fixes found missing notifications for null prior
+state/storage failure, plus failed-discard recovery; fixes and regressions included. Final
+followup review pending. Quick passed lint/types/82 related tests after fixing a forbidden
+inline import type in a test. Logs /tmp/TICKET-108-worker-{runtime-red,quick,quick-fixed,final-quick}.log.
+
+Next: online GateScannerEntry preparation/retry and awaited logout bridge; actual browser
+worker+bundle offline reload with QR pixels, IDB failure/cache fallback/restart tests; real
+production authenticated endpoint, themes/accessibility/screenshots/build/CI. Scanner.tsx
+still060-owned; do not edit. Latest060 final source/144screens independently clean, integrated
+base a62da9ed and1651unitpasses; final publication/CI pending. 048 merged PR103 a62da9ed,
+done metadata9df99903/evidence0093f1dd. No108database running;060nativePG stopped with backup.
+
+The follow-up review found a pending-save/failed-logout race. Scanner publication,
+invalidation, status/document reads and activation now share an origin-wide Web Lock,
+including across worker versions. Missing coordination fails offline use closed while
+online navigation remains available. A deferred-publication regression verifies logout
+removes readiness after the pending publication finishes. Browser worker restart and
+storage-recovery proof still remain; no full offline-ready claim is made.

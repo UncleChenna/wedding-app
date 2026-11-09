@@ -1,6 +1,6 @@
 import { createRoot } from "react-dom/client";
 import { Scanner } from "../components/scanner";
-import { ScannerSession } from "../components/scanner-session";
+import { OfflineScannerSession } from "../components/offline-scanner-session";
 
 const container = document.getElementById("scanner-shell");
 if (container) {
@@ -13,9 +13,13 @@ if (container) {
           Offline scanner loaded. Open the camera when you’re ready.
         </p>
       </header>
-      <ScannerSession expiresAt={expiresAt}>
+      <OfflineScannerSession
+        expiresAt={expiresAt}
+        session={container.dataset.session ?? ""}
+        build={container.dataset.build ?? ""}
+      >
         <Scanner />
-      </ScannerSession>
+      </OfflineScannerSession>
     </main>,
   );
 }
