@@ -19,7 +19,7 @@ This PR decides and enforces that in ADR 0023:
 
 # Changes
 
-- **`drizzle/0020_rls-station-broadcast.sql`** (custom migration): creates `staff_station_broadcast_receive` on
+- **`drizzle/0023_rls-station-broadcast.sql`** (custom migration): creates `staff_station_broadcast_receive` on
   `realtime.messages`, for `SELECT` by `authenticated` only. A row is visible only when all of these hold:
   - extension is `broadcast`
   - the `staff_station` claim is gate, kitchen or bar
