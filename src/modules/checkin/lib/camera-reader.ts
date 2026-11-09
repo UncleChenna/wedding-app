@@ -44,7 +44,15 @@ export async function createFrameReader(): Promise<FrameReader> {
   return async (video) => {
     if (native) {
       try {
-        return (await native.detect(video)).map((result) => result.rawValue);
+        let deadline: ReturnType<typeof setTimeout> | undefined;
+        const result = await Promise.race([
+          native.detect(video).finally(() => clearTimeout(deadline)),
+          new Promise<null>((resolve) => {
+            deadline = setTimeout(() => resolve(null), 200);
+          }),
+        ]);
+        if (result === null) native = null;
+        else if (result.length) return result.map((item) => item.rawValue);
       } catch {
         native = null;
       }

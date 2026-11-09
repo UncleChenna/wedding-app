@@ -30,3 +30,15 @@ Independent review found multi-code dispatch after first-result abort and pendin
 success after stop. Both reproduced RED (2failed/11passed), then fixed with per-result
 stop check and post-constraint stopped check.16focused tests nowpass. Native/fallback
 actual pixel decoding remains unverified; nextbrowser suite must cover it directly.
+
+UI and browser update: signed-in /checkin now calls GateScannerEntry/Scanner; camera
+start/pause,conditionaltorch,neutralQR-read feedback and real in-page help implemented.
+No admission claim and no raw decoded text rendered.28focused tests pass.
+Dedicated actual canvas.captureStream QR pixel suite passes4/4 Chromium/WebKit default
+andforcedfallback (5.2s), /tmp/TICKET-059-camera-browser-stable.log.
+WebKit fixture needed stable navigator.mediaDevices override; ephemeral method override
+was lost and triggered realpermission rejection. Native detection now has200ms bounded
+fallback; stalled-native unit regression passes. Camera UI uses explicit usergesture.
+Route authentication/screenshot/axe and actualphone checks stilloutstanding. Manualsearch
+063notimplemented; helpanchor is explicitly interim and doesnotcertify literalsearchcriterion.
+221merged7250e483 allfiveCIgreen; integratefreshdevelop beforefinalverification.
