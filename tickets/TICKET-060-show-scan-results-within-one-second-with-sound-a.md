@@ -2,7 +2,7 @@
 id: TICKET-060
 title: Show scan results within one second with sound and vibration
 epic: checkin
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [frontend]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/139
 created: 2026-10-21
 updated: 2026-11-09
 started: 2026-11-09
-completed: ""
+completed: 2026-11-09
 reason: ""
 resume_to: ""
 ---
@@ -69,3 +69,4 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-2) · [Journey 2: check-
 - 2026-11-09 — blocked → in_progress — divine (codex) — TICKET-059 verified merged; resume authorized scanner results and integration.
 - 2026-11-09 — in_progress → in_review — divine (codex)
 - 2026-11-09 — in_review → in_progress — divine (codex) — CI scanner journey needs ephemeral QR signing configuration for the newly integrated read-only resolver.
+- 2026-11-09 — in_review → done — divine (codex)
