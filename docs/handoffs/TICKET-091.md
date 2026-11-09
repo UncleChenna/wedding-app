@@ -29,9 +29,11 @@ have not run. They cover real admin OTP/TOTP, invalid middle row/contact conflic
 before writes, 300-row import, replay, existing RSVP preservation and all-theme
 preview/error/success evidence. The harness passes typechecking only so far.
 
-There is no production route or backend adapter yet. No TICKET-091 database has
-been started. TICKET-182 owns its isolated database verification; coordinate the
-single active database slot before starting this stack.
+There is no production route or backend adapter yet. TICKET-091’s isolated database
+was started successfully at 11:38 UTC to prepare integration; root owns the active
+database slot. TICKET-182 and TICKET-093 databases are stopped with backups.
+Coordinate before starting another owned stack. Current091schema migration and
+browser tests have not run yet.
 
 ## Next
 
@@ -40,3 +42,5 @@ After TICKET-182 passes final CI and merges, integrate fresh develop (including
 link, then add the thin backend-to-view adapter and protected import page. Run
 real browser/database tests, inspect screenshots, obtain independent review and
 use normal `t:pr`. Keep this PR draft until dependencies and acceptance pass.
+
+At 11:38 UTC, PR122 seating (418edc3d), PR124 importer (5ff7b279) and PR126 scanner dependency clarification (3a9aff5a) are independently reviewed and awaiting exact-head full CI. PR122/124 already passed their other four required checks. Root must recheck heads/conflicts/checks before each merge, then mark completion through CLI. Do not treat queued/running checks as passed.
