@@ -21,17 +21,29 @@ async function submitLive(
   input: AdmissionRequest,
   signal: AbortSignal,
 ): Promise<AdmissionResponse> {
-  const response = await fetch("/api/checkin/admit", {
-    method: "POST",
-    credentials: "same-origin",
-    cache: "no-store",
-    signal,
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(input),
-  });
-  if (response.status === 403) return { state: "session_expired" };
-  const parsed = admissionResponseSchema.safeParse(await response.json());
-  return parsed.success ? parsed.data : { state: "unavailable" };
+  const transport = new AbortController();
+  const abort = () => transport.abort();
+  signal.addEventListener("abort", abort, { once: true });
+  if (signal.aborted) abort();
+  // A transport timeout is uncertain, not proof that the transaction rolled back.
+  // Keep the component's intent alive so retry uses exactly the same event ID.
+  const timeout = setTimeout(abort, 8000);
+  try {
+    const response = await fetch("/api/checkin/admit", {
+      method: "POST",
+      credentials: "same-origin",
+      cache: "no-store",
+      signal: transport.signal,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(input),
+    });
+    if (response.status === 403) return { state: "session_expired" };
+    const parsed = admissionResponseSchema.safeParse(await response.json());
+    return parsed.success ? parsed.data : { state: "unavailable" };
+  } finally {
+    clearTimeout(timeout);
+    signal.removeEventListener("abort", abort);
+  }
 }
 
 const refusal = {
@@ -115,6 +127,7 @@ export function AdmissionResult({
   if (response && !uncertain) {
     const duplicate = response.state === "duplicate";
     const recorded = response.state === "recorded";
+    const problem = ["invalid", "revoked", "conflict", "session_expired"].includes(response.state);
     return (
       <div
         ref={receipt}
@@ -124,8 +137,8 @@ export function AdmissionResult({
         <Card role="status" aria-live="polite">
           <CardContent className="flex flex-col gap-6 text-lg leading-relaxed">
             <StatusBadge
-              tone={recorded ? "success" : "warning"}
-              icon={recorded ? "check" : "clock"}
+              tone={recorded ? "success" : problem ? "danger" : "warning"}
+              icon={recorded ? "check" : problem ? "cross" : "clock"}
             >
               {committed ? "Recorded receipt" : "Not admitted"}
             </StatusBadge>

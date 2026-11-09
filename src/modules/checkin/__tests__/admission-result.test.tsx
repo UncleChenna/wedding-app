@@ -6,7 +6,11 @@ const result = {
   state: "valid" as const,
   guest: { name: "Ada", partySize: 4, admittedSoFar: 0, tableNumber: 7, admissions: [] },
 };
-afterEach(() => cleanup());
+afterEach(() => {
+  cleanup();
+  vi.useRealTimers();
+  vi.unstubAllGlobals();
+});
 it("defaults to remaining and shows welcome only after the committed selected count", async () => {
   const submit = vi.fn<AdmissionSubmitter>(async () => ({
     state: "recorded" as const,
@@ -66,4 +70,101 @@ it("shows a clear over-admit refusal without a welcome or another submit button"
   expect(screen.getByText(/Only 1 place remains/)).toBeVisible();
   expect(screen.queryByRole("heading", { name: "Admission recorded" })).toBeNull();
   expect(screen.queryByRole("button", { name: /^Admit/ })).toBeNull();
+});
+
+it.each(["invalid", "revoked", "conflict", "session_expired"] as const)(
+  "uses the fixed danger status for a %s submission refusal",
+  async (state) => {
+    render(
+      <AdmissionResult
+        result={result}
+        qr="private QR"
+        submit={async () => ({ state })}
+        onBusyChange={() => {}}
+      />,
+    );
+    await act(async () => fireEvent.click(screen.getByRole("button", { name: "Admit 4 guests" })));
+    expect(screen.getByText("Not admitted", { exact: true })).toHaveClass("bg-danger");
+    expect(screen.queryByText(/Welcome,/)).toBeNull();
+  },
+);
+
+it.each(["headers", "body"])("bounds stalled %s and retries the exact intent", async (stage) => {
+  vi.useFakeTimers();
+  let firstBody: BodyInit | null | undefined;
+  const request = vi
+    .fn<typeof fetch>()
+    .mockImplementationOnce(async (_url, init) => {
+      firstBody = init?.body;
+      const stalled = () =>
+        new Promise<never>((_resolve, reject) => {
+          init?.signal?.addEventListener(
+            "abort",
+            () => reject(new DOMException("Aborted", "AbortError")),
+            { once: true },
+          );
+        });
+      if (stage === "headers") return stalled();
+      const response = new Response("{}");
+      vi.spyOn(response, "json").mockImplementation(stalled);
+      return response;
+    })
+    .mockImplementationOnce(async (_url, init) => {
+      expect(init?.body).toBe(firstBody);
+      return Response.json({
+        state: "duplicate",
+        people: 4,
+        recordedAt: "2026-12-19T12:00:00.000Z",
+      });
+    });
+  vi.stubGlobal("fetch", request);
+  const busy = vi.fn();
+  render(<AdmissionResult result={result} qr="private QR" onBusyChange={busy} />);
+  await act(async () => fireEvent.click(screen.getByRole("button", { name: "Admit 4 guests" })));
+  await act(async () => vi.advanceTimersByTimeAsync(7999));
+  expect(screen.getByRole("button", { name: "Confirming admission…" })).toBeDisabled();
+  await act(async () => vi.advanceTimersByTimeAsync(1));
+  expect(screen.getByRole("button", { name: "Retry this admission" })).toBeEnabled();
+  expect(busy).toHaveBeenLastCalledWith(true);
+  await act(async () =>
+    fireEvent.click(screen.getByRole("button", { name: "Retry this admission" })),
+  );
+  expect(screen.getByRole("heading", { name: "Already recorded" })).toBeVisible();
+  expect(request).toHaveBeenCalledTimes(2);
+  expect(busy).toHaveBeenLastCalledWith(false);
+});
+
+it("aborts the transport and removes its timer when the result unmounts", async () => {
+  vi.useFakeTimers();
+  const aborted = vi.fn();
+  vi.stubGlobal(
+    "fetch",
+    vi.fn<typeof fetch>(
+      async (_url, init) =>
+        new Promise<never>((_resolve, reject) => {
+          init?.signal?.addEventListener(
+            "abort",
+            () => {
+              aborted();
+              reject(new DOMException("Aborted", "AbortError"));
+            },
+            { once: true },
+          );
+        }),
+    ),
+  );
+  const complete = vi.fn();
+  const { unmount } = render(
+    <AdmissionResult
+      result={result}
+      qr="private QR"
+      onBusyChange={() => {}}
+      onComplete={complete}
+    />,
+  );
+  await act(async () => fireEvent.click(screen.getByRole("button", { name: "Admit 4 guests" })));
+  await act(async () => unmount());
+  expect(aborted).toHaveBeenCalledOnce();
+  expect(vi.getTimerCount()).toBe(0);
+  expect(complete).not.toHaveBeenCalled();
 });

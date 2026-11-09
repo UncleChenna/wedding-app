@@ -126,8 +126,10 @@ export function Scanner({
     if (readResult) resultRegion.current?.focus();
   }, [readResult]);
 
-  const stop = useCallback(() => {
-    clearRead();
+  const pauseCapture = useCallback(() => {
+    readController.current?.abort();
+    readController.current = null;
+    setReading(false);
     active.current?.abort();
     active.current = null;
     controls.current?.stop();
@@ -136,11 +138,21 @@ export function Scanner({
     setTorchBusy(false);
     setTorchAvailable(false);
     setState("paused");
-  }, [clearRead]);
+    const previousAudio = audio.current;
+    audio.current = null;
+    if (previousAudio) void previousAudio.close().catch(() => {});
+  }, []);
+
+  const stop = useCallback(() => {
+    clearRead();
+    pauseCapture();
+  }, [clearRead, pauseCapture]);
 
   useEffect(() => {
     const onVisibility = () => {
-      if (document.hidden) stop();
+      // Hiding a phone stops its camera, not its unresolved transaction. Keep
+      // AdmissionResult mounted so a lost receipt retries the original event ID.
+      if (document.hidden) pauseCapture();
     };
     document.addEventListener("visibilitychange", onVisibility);
     return () => {
@@ -152,7 +164,7 @@ export function Scanner({
       if (previousAudio) void previousAudio.close().catch(() => {});
       controls.current?.stop();
     };
-  }, [stop]);
+  }, [pauseCapture]);
 
   async function start() {
     if (!video.current || active.current || admissionBusy) return;

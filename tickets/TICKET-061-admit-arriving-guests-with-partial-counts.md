@@ -41,9 +41,9 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-3) · [Journey 2: check-
 
 ## Acceptance criteria
 
-- [ ] Admitting 2 of 4 leaves 2 remaining; a second scan shows Valid with 2 remaining (e2e).
-- [ ] Retrying the same client_event_id creates no duplicate (unit).
-- [ ] Over-admit is refused with a clear message.
+- [x] Admitting 2 of 4 leaves 2 remaining; a second scan shows Valid with 2 remaining (e2e).
+- [x] Retrying the same client_event_id creates no duplicate (unit).
+- [x] Over-admit is refused with a clear message.
 
 ## Test plan
 
@@ -65,3 +65,5 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-3) · [Journey 2: check-
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-09 — todo → claimed — divine (codex)
 - 2026-11-09 — todo → in_progress — divine (codex)
+
+- 2026-11-09 — Independent review found and verified repairs for hidden-phone intent loss and fixed danger semantics. Actual production browser2/2 and quick18related tests pass. Full pre-integration unit1677pass/190conditional skips; final108base integration and review/CI remain pending. Own isolated database stopped, data retained.

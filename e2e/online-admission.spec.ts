@@ -168,6 +168,10 @@ test("online partial admission commits once and safely retries a lost receipt", 
         original = input;
         const committed = await route.fetch();
         expect((await committed.json()).state).toBe("recorded");
+        await page.evaluate(() => {
+          Object.defineProperty(document, "hidden", { configurable: true, get: () => true });
+          document.dispatchEvent(new Event("visibilitychange"));
+        });
         await route.abort("failed");
       } else {
         expect(input).toEqual(original);
@@ -177,6 +181,10 @@ test("online partial admission commits once and safely retries a lost receipt", 
     await page.getByRole("button", { name: "One fewer guest" }).click();
     await page.getByRole("button", { name: "Admit 1 guest", exact: true }).click();
     await expect(page.getByRole("button", { name: "Retry this admission" })).toBeVisible();
+    await page.evaluate(() => {
+      Object.defineProperty(document, "hidden", { configurable: true, get: () => false });
+      document.dispatchEvent(new Event("visibilitychange"));
+    });
     await expect(page.getByRole("button", { name: "Scan next pass" })).toBeDisabled();
     await expect(page.getByLabel("How many are here?")).toBeDisabled();
     await capture("uncertain");
@@ -216,6 +224,20 @@ test("online partial admission commits once and safely retries a lost receipt", 
       )[0]?.admitted_people,
     ).toBe(4);
     await capture("refused");
+    // A previously checked pass can be revoked before the explicit admission.
+    await db`update rsvps set count_attending=5 where invitation_id=${invitation}`;
+    await page.getByRole("button", { name: "Scan next pass" }).click();
+    await expect(page.getByLabel("How many are here?")).toHaveValue("1");
+    await db`update invitations set status='revoked' where id=${invitation}`;
+    await page.getByRole("button", { name: "Admit 1 guest", exact: true }).click();
+    await expect(page.getByText(/This pass has been revoked or replaced/)).toBeVisible();
+    await expect(page.getByText("Not admitted", { exact: true })).toHaveClass(/bg-danger/);
+    expect(
+      (
+        await db`select admitted_people from admission_counters where invitation_id=${invitation}`
+      )[0]?.admitted_people,
+    ).toBe(4);
+    await capture("revoked");
   } finally {
     // Preserve immutable synthetic evidence in the isolated database.
     await db`delete from event_settings where id=1 and venue=${venue}`;

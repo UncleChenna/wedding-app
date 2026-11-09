@@ -6,8 +6,62 @@ import { startQrCamera } from "../lib/camera-reader";
 vi.mock("../lib/camera-reader", () => ({ startQrCamera: vi.fn() }));
 afterEach(() => {
   cleanup();
+  vi.restoreAllMocks();
   vi.clearAllMocks();
   vi.unstubAllGlobals();
+});
+it("preserves a pending and uncertain admission intent across phone visibility changes", async () => {
+  vi.mocked(startQrCamera).mockResolvedValue({ stop: vi.fn(), setTorch: async () => false });
+  let loseResponse: (() => void) | undefined;
+  const submit = vi
+    .fn()
+    .mockImplementationOnce(
+      () =>
+        new Promise((_resolve, reject) => {
+          loseResponse = () => reject(new Error("Response lost after commit"));
+        }),
+    )
+    .mockResolvedValueOnce({
+      state: "duplicate",
+      people: 2,
+      recordedAt: "2026-12-19T12:00:00.000Z",
+    });
+  render(
+    <Scanner
+      resolveRead={async () => ({
+        state: "valid",
+        guest: {
+          name: "Ada",
+          partySize: 4,
+          admittedSoFar: 0,
+          tableNumber: 7,
+          admissions: [],
+        },
+      })}
+      submitAdmission={submit}
+    />,
+  );
+  await act(async () => fireEvent.click(screen.getByRole("button", { name: "Open camera" })));
+  await act(async () => vi.mocked(startQrCamera).mock.calls[0]?.[0].onCode("private pass"));
+  fireEvent.change(screen.getByLabelText("How many are here?"), { target: { value: "2" } });
+  await act(async () => fireEvent.click(screen.getByRole("button", { name: "Admit 2 guests" })));
+  const hidden = vi.spyOn(document, "hidden", "get").mockReturnValue(true);
+  act(() => document.dispatchEvent(new Event("visibilitychange")));
+  await act(async () => loseResponse?.());
+  hidden.mockReturnValue(false);
+  act(() => document.dispatchEvent(new Event("visibilitychange")));
+  expect(screen.getByRole("button", { name: "Scan next pass" })).toBeDisabled();
+  expect(screen.getByRole("button", { name: "Retry this admission" })).toBeVisible();
+  hidden.mockReturnValue(true);
+  act(() => document.dispatchEvent(new Event("visibilitychange")));
+  hidden.mockReturnValue(false);
+  act(() => document.dispatchEvent(new Event("visibilitychange")));
+  await act(async () =>
+    fireEvent.click(screen.getByRole("button", { name: "Retry this admission" })),
+  );
+  expect(submit.mock.calls[1]?.[0]).toEqual(submit.mock.calls[0]?.[0]);
+  expect(screen.getByRole("heading", { name: "Already recorded" })).toBeVisible();
+  expect(startQrCamera).toHaveBeenCalledTimes(1);
 });
 it("shows sign-in expiry when the request proxy rejects an expired session", async () => {
   vi.stubGlobal(
