@@ -40,8 +40,8 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-8) · [Inv
 
 ## Acceptance criteria
 
-- [ ] The list shows exactly the invitations with status sent and no RSVP (unit query test).
-- [ ] Re-sharing records a reminder event.
+- [x] The list shows exactly the invitations with status sent and no RSVP (unit query test).
+- [x] Re-sharing records a reminder event.
 
 ## Test plan
 
@@ -55,7 +55,9 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-8) · [Inv
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-11-09 — Added authorized `/admin/sharing/reminders`, exact sent/no-RSVP query and approved Warm nudge via existing share menu. A reminder is a recorded user-triggered attempt, never confirmed delivery; Copy link remains link-only.
+- New additive migration0022 records purpose without recipient/body/link data. Invitation row locking rechecks eligibility and version, receipt replay is purpose-scoped, Undo preserves later replies and original sent time.
+- Verification: 8 isolated database tests (3 reminder +5 existing sharing), repeat migration/seed counts unchanged,23RLS checks,162 related unit tests, lint/types, production build and authenticated browser1/1 pass. Four-theme axe and375/600/768/1280 overflow pass; two375px screenshots inspected. Physical devices/external delivery remain release checks in TICKET-201. Full CI remains merge gate.
 
 ## Activity log
 
