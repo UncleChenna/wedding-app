@@ -2,7 +2,7 @@
 id: TICKET-100
 title: Show each invitation's RSVP change history
 epic: admin
-status: in_progress
+status: in_review
 priority: medium
 estimate: S
 labels: [frontend]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-042, TICKET-089]
 blocks: [TICKET-154]
 branch: TICKET-100
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/128
 created: 2026-10-21
 updated: 2026-11-09
 started: 2026-11-09
@@ -59,3 +59,4 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-6).
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-09 — todo → claimed — divine (codex)
 - 2026-11-09 — todo → in_progress — divine (codex)
+- 2026-11-09 — in_progress → in_review — divine (codex)
