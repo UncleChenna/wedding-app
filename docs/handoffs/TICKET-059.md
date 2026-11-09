@@ -25,3 +25,8 @@ Added camera-reader lifecycle/native detection/lazy ZXing fallback/torch/error m
 regressions caught cross-realm DOMException handling and remain unchanged afterfix.
 Actual browser decoding/UI/auth integration still outstanding; early independent review
 is assigned to review_ticket098. No camera route or completed acceptance claim yet.
+
+Independent review found multi-code dispatch after first-result abort and pending torch
+success after stop. Both reproduced RED (2failed/11passed), then fixed with per-result
+stop check and post-constraint stopped check.16focused tests nowpass. Native/fallback
+actual pixel decoding remains unverified; nextbrowser suite must cover it directly.

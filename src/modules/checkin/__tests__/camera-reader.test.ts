@@ -113,3 +113,25 @@ it.each([
 ])("maps %s to safe recovery copy", (name, result) => {
   expect(cameraProblem(new DOMException("private message", name))).toBe(result);
 });
+it("stops dispatching a multi-code frame when its first result aborts the camera", async () => {
+  const f = fixture();
+  f.onCode.mockImplementation(() => f.controller.abort());
+  await startQrCamera({ ...f.options, readFrame: async () => ["a", "b"] });
+  await Promise.resolve();
+  expect(f.onCode.mock.calls).toEqual([["a"]]);
+});
+it("does not report a pending torch change as successful after shutdown", async () => {
+  const f = fixture();
+  const controls = await startQrCamera({ ...f.options, readFrame: async () => [] });
+  let finish: (() => void) | undefined;
+  f.applyConstraints.mockImplementation(
+    () =>
+      new Promise<void>((resolve) => {
+        finish = resolve;
+      }),
+  );
+  const result = controls.setTorch(true);
+  f.controller.abort();
+  finish?.();
+  expect(await result).toBe(false);
+});

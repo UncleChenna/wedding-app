@@ -100,7 +100,7 @@ export async function startQrCamera(options: {
       if (stopped || !track) return false;
       try {
         await track.applyConstraints({ advanced: [{ torch: enabled } as MediaTrackConstraintSet] });
-        return true;
+        return !stopped;
       } catch {
         return false;
       }
@@ -151,6 +151,7 @@ export async function startQrCamera(options: {
           const codes = await read(video);
           if (stopped) return;
           for (const code of codes) {
+            if (stopped) return;
             if (accept(code, performance.now())) options.onCode(code);
           }
         }
