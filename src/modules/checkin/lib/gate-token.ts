@@ -111,6 +111,14 @@ export async function verifyGatePass(
     return { ok: false, reason: "unknown-key" };
   }
 
+  // RFC 8032 requires 0 <= S < L. Some WebCrypto backends accept noncanonical
+  // S (observed in Linux WebKit), allowing malleable
+  // signatures. Enforce the wire-format bound before either crypto backend.
+  const scalar = signature
+    .subarray(32)
+    .reduceRight((value, byte) => (value << 8n) | BigInt(byte), 0n);
+  if (scalar >= ed25519.Point.Fn.ORDER) return { ok: false, reason: "bad-signature" };
+
   let valid: boolean;
   try {
     const key = await crypto.subtle.importKey("spki", spki, { name: "Ed25519" }, false, ["verify"]);
