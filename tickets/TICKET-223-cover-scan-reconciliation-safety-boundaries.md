@@ -2,7 +2,7 @@
 id: TICKET-223
 title: Cover scan reconciliation safety boundaries
 epic: checkin
-status: in_review
+status: done
 priority: urgent
 estimate: S
 labels: [test]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/143
 created: 2026-11-09
 updated: 2026-11-09
 started: 2026-11-09
-completed: ""
+completed: 2026-11-09
 reason: ""
 resume_to: ""
 ---
@@ -73,3 +73,4 @@ New final CI pending.
 - 2026-11-09 — todo → in_progress — divine (codex)
 - 2026-11-09 — in_progress → in_review — divine (codex)
 - 2026-11-09 — in_review → in_progress — divine (codex) — Integrate verified external PR141 coverage assertion while retaining broader reconciliation regressions.
+- 2026-11-09 — in_review → done — divine (codex)
