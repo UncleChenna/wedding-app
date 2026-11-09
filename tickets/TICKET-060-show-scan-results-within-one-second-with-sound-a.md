@@ -2,7 +2,7 @@
 id: TICKET-060
 title: Show scan results within one second with sound and vibration
 epic: checkin
-status: in_review
+status: in_progress
 priority: high
 estimate: M
 labels: [frontend]
@@ -68,3 +68,4 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-2) · [Journey 2: check-
 - 2026-11-09 — in_progress → blocked — divine (codex) — Awaiting TICKET-059 merge; its CI is blocked by newly merged scan-sync coverage. Draft PR139 foundation preserved; shared coverage repair takes priority.
 - 2026-11-09 — blocked → in_progress — divine (codex) — TICKET-059 verified merged; resume authorized scanner results and integration.
 - 2026-11-09 — in_progress → in_review — divine (codex)
+- 2026-11-09 — in_review → in_progress — divine (codex) — CI scanner journey needs ephemeral QR signing configuration for the newly integrated read-only resolver.
