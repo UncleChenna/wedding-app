@@ -2,7 +2,7 @@
 id: TICKET-060
 title: Show scan results within one second with sound and vibration
 epic: checkin
-status: in_progress
+status: blocked
 priority: high
 estimate: M
 labels: [frontend]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-11-09
 started: 2026-11-09
 completed: ""
-reason: ""
-resume_to: ""
+reason: "Awaiting TICKET-059 merge; its CI is blocked by newly merged scan-sync coverage. Draft PR139 foundation preserved; shared coverage repair takes priority."
+resume_to: in_progress
 ---
 
 # TICKET-060: Show scan results within one second with sound and vibration
@@ -65,3 +65,4 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-2) · [Journey 2: check-
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-09 — todo → claimed — divine (codex) — started ahead of TICKET-059 (in_progress)
 - 2026-11-09 — todo → in_progress — divine (codex) — started ahead of TICKET-059 (in_progress)
+- 2026-11-09 — in_progress → blocked — divine (codex) — Awaiting TICKET-059 merge; its CI is blocked by newly merged scan-sync coverage. Draft PR139 foundation preserved; shared coverage repair takes priority.
