@@ -3,7 +3,7 @@ import { connection } from "next/server";
 import { StaffEntry } from "@/modules/shared/components/staff-entry";
 import { createLogger } from "@/modules/shared/lib/logger";
 import { db } from "@/modules/shared/server/db/client";
-import { currentStaff } from "@/modules/shared/server/staff-cookies";
+import { currentStaffDevice } from "@/modules/shared/server/staff-cookies";
 import { staffSignOutAction } from "@/modules/shared/server/staff-actions";
 import { Button } from "@/modules/shared/components/ui/button";
 import type { KitchenBoard as Board } from "../lib/station-board";
@@ -15,8 +15,11 @@ const log = createLogger({ module: "kitchen-board" });
 async function KitchenStationContent() {
   await connection();
   let signedIn = false;
+  let deviceName: string | null = null;
   try {
-    signedIn = (await currentStaff("kitchen")) !== null;
+    const current = await currentStaffDevice("kitchen");
+    signedIn = current !== null;
+    deviceName = current?.device.name ?? null;
   } catch {
     log.warn("staff session unavailable");
   }
@@ -38,6 +41,14 @@ async function KitchenStationContent() {
             Staff
           </p>
           <h1 className="font-display text-4xl leading-tight md:text-5xl">Kitchen board</h1>
+          <p className="mt-2 text-lg leading-relaxed" role="status">
+            You’re signed in.
+          </p>
+          {deviceName ? (
+            <p className="text-lg leading-relaxed">
+              This device is <span className="font-medium">{deviceName}</span>.
+            </p>
+          ) : null}
         </div>
         <form action={staffSignOutAction}>
           <Button type="submit" variant="ghost" size="lg">
