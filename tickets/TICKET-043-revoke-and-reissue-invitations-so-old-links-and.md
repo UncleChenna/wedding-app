@@ -2,7 +2,7 @@
 id: TICKET-043
 title: Revoke and reissue invitations so old links and QRs stop working
 epic: invitations
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [backend, security]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/99
 created: 2026-10-21
 updated: 2026-11-09
 started: 2026-11-04
-completed: ""
+completed: 2026-11-09
 reason: ""
 resume_to: ""
 ---
@@ -80,3 +80,4 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-7) · [Sec
 - 2026-11-08 — blocked → in_progress — divine (codex) — Owner authorizes completing integration and verified PR workflow; retain physical-device release gates.
 - 2026-11-05 — in_progress → blocked — divine (codex) — Local verification and visual review pass; physical iOS/Android WhatsApp and safe-area checks or requested preview exception remain outstanding. Draft PR99 contains evidence.
 - 2026-11-09 — in_progress → in_review — divine (codex)
+- 2026-11-09 — in_review → done — divine (codex)
