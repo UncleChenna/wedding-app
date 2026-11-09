@@ -2,20 +2,20 @@
 id: TICKET-225
 title: Audit rewritten historical ticket provenance
 epic: foundations
-status: backlog
+status: in_progress
 priority: medium
 estimate: M
 labels: [infra, test, docs]
 module: harness
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: []
 blocks: []
-branch: ""
+branch: TICKET-225
 pr: ""
 created: 2026-11-09
 updated: 2026-11-09
-started: ""
+started: 2026-11-09
 completed: ""
 reason: ""
 resume_to: ""
@@ -67,3 +67,6 @@ prove ancestry. See [ticket recovery](../docs/tickets.md#historical-stacked-merg
 ## Activity log
 
 - 2026-11-09 — new → todo — divine
+- 2026-11-09 — backlog → todo — divine
+- 2026-11-09 — todo → claimed — divine (codex)
+- 2026-11-09 — todo → in_progress — divine (codex)
