@@ -101,3 +101,22 @@ TICKET-123 readyPR145 finalheada07d30d0 monitors CI42710951859. Neither is merge
 yet. Keep097 draft until061 merges and final combined verification passes. When
 integrating their CI edits, keep guest/scanner/admission/offline fixtures before
 the ordering browser fixture, whose cleanup retains a closed settings singleton.
+
+## Responsive review complete — 22:38 UTC
+
+Responsive source `6a313ab50081650301a4df89d632e41b162f10a7` is published.
+CI42712187041 passed its actual authenticated admin browser job: mobile update
+993.8ms, desktop994.9ms, bothCLS0. All-theme accessibility, keyboard, 44px targets,
+stale retention and real expiry clearing pass. Every one of42new images was
+independently reviewed clean (24fullpages,16scrolledphoneviews,2stale). The
+scrolled captures prove RSVP/arrival totals are readable above fixed navigation.
+Evidence copied from `/private/tmp/TICKET-097-responsive-evidence` into
+`docs/reviews/TICKET-097/{mobile,desktop}`. These supersede the older single-column
+images. Canonical PR body now contains the complete UI checklist with remaining
+integration/CI gates explicit.
+
+TICKET-123 final CI42710951859 is now all7green at a07d30d0. Its editor is merging
+first after fresh checks; wait for actual merge confirmation. TICKET-061 editor
+will integrate123 and rerun combined checks before merging. Root097 then needs
+that combined base, preserving both admin and ordering/scanner CI additions.
+No production application is authorized or attempted; ownPG39021 stays stopped.
