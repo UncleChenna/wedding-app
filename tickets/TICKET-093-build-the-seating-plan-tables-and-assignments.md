@@ -2,7 +2,7 @@
 id: TICKET-093
 title: "Build the seating plan: tables and assignments"
 epic: admin
-status: in_progress
+status: in_review
 priority: high
 estimate: L
 labels: [frontend, backend]
