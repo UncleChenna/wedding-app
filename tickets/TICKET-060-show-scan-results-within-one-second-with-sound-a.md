@@ -41,10 +41,10 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-2) · [Journey 2: check-
 
 ## Acceptance criteria
 
-- [ ] Scan-to-result is <1s with a cached list (Playwright timing on fixture).
-- [ ] Each result has text + icon; meaning does not rely on colour.
-- [ ] A household assigned or reassigned in TICKET-093 shows its current table on the scanner result; an unassigned household shows a clear fallback (e2e).
-- [ ] Blocked audio/vibration never hides or delays the visual result (unit with stubbed APIs).
+- [x] Scan-to-result is <1s with a cached list (Playwright timing on fixture).
+- [x] Each result has text + icon; meaning does not rely on colour.
+- [x] A household assigned or reassigned in TICKET-093 shows its current table on the scanner result; an unassigned household shows a clear fallback (e2e).
+- [x] Blocked audio/vibration never hides or delays the visual result (unit with stubbed APIs).
 
 ## Test plan
 

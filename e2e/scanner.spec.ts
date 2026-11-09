@@ -111,7 +111,7 @@ test.describe("gate scanner route", () => {
         .map((element) => element.textContent),
     );
     expect(targets).toEqual([]);
-    const folder = `docs/reviews/TICKET-059/${info.project.name}`;
+    const folder = `docs/reviews/TICKET-060/${info.project.name}`;
     mkdirSync(folder, { recursive: true });
     await page.emulateMedia({ reducedMotion: "reduce" });
     for (const theme of themes) {
@@ -135,10 +135,9 @@ test.describe("gate scanner route", () => {
       (window as unknown as { scannerFixture: { denied: boolean } }).scannerFixture.denied = false;
     });
     await page.getByRole("button", { name: "Retry camera" }).click();
-    await expect(page.getByText("QR read", { exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Invalid pass", exact: true })).toBeVisible();
     expect(await page.content()).not.toContain("synthetic-route-qr");
-    await expect(page.getByText(/before admitting anyone/)).toBeVisible();
-    await page.getByRole("button", { name: "Pause camera" }).click();
+    await expect(page.getByRole("button", { name: "Scan next pass" })).toBeVisible();
     expect(
       await page.evaluate(() =>
         (

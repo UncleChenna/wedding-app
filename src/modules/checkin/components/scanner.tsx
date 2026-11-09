@@ -1,8 +1,26 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/modules/shared/components/ui/button";
 import { startQrCamera, type CameraControls, type CameraProblem } from "../lib/camera-reader";
+import { ScanResultPanel } from "./scan-result-panel";
+import { scanReadResultSchema, type ScanReadResult } from "../lib/scan-read-result";
+import { requestScanFeedback } from "../lib/scan-feedback";
+
+export type ScanResolver = (qr: string, signal: AbortSignal) => Promise<ScanReadResult>;
+async function readLivePass(qr: string, signal: AbortSignal): Promise<ScanReadResult> {
+  const response = await fetch("/api/checkin/read", {
+    method: "POST",
+    cache: "no-store",
+    credentials: "same-origin",
+    signal,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ qr }),
+  });
+  if (response.status === 403) return { state: "session_expired" };
+  const parsed = scanReadResultSchema.safeParse(await response.json());
+  return parsed.success ? parsed.data : { state: "unavailable" };
+}
 
 const recovery: Record<CameraProblem, string> = {
   denied: "Allow camera access in your browser’s site settings, then try again.",
@@ -13,8 +31,9 @@ const recovery: Record<CameraProblem, string> = {
 };
 
 /** Camera capture only. A decoded QR is never an admission decision. */
-export function Scanner() {
+export function Scanner({ resolveRead = readLivePass }: { resolveRead?: ScanResolver }) {
   const video = useRef<HTMLVideoElement>(null);
+  const resultRegion = useRef<HTMLDivElement>(null);
   const active = useRef<AbortController | null>(null);
   const controls = useRef<CameraControls | null>(null);
   const [state, setState] = useState<"idle" | "starting" | "scanning" | "paused" | "problem">(
@@ -25,9 +44,36 @@ export function Scanner() {
   const [torchOn, setTorchOn] = useState(false);
   const [torchBusy, setTorchBusy] = useState(false);
   const [torchFailed, setTorchFailed] = useState(false);
-  const [reads, setReads] = useState(0);
+  const [readResult, setReadResult] = useState<ScanReadResult | null>(null);
+  const [reading, setReading] = useState(false);
+  const readController = useRef<AbortController | null>(null);
+  const audio = useRef<AudioContext | null>(null);
 
-  function stop() {
+  const clearRead = useCallback(() => {
+    readController.current?.abort();
+    readController.current = null;
+    setReadResult(null);
+    setReading(false);
+    const previousAudio = audio.current;
+    audio.current = null;
+    if (previousAudio) void previousAudio.close().catch(() => {});
+  }, []);
+
+  async function check(qr: string, cameraSignal: AbortSignal) {
+    readController.current?.abort();
+    const request = new AbortController();
+    readController.current = request;
+    setReading(true);
+    setReadResult(null);
+    let result: ScanReadResult;
+    try {
+      result = await resolveRead(qr, request.signal);
+    } catch {
+      result = { state: "unavailable" };
+    }
+    if (cameraSignal.aborted || request.signal.aborted) return;
+    const parsed = scanReadResultSchema.safeParse(result);
+    result = parsed.success ? parsed.data : { state: "unavailable" };
     active.current?.abort();
     active.current = null;
     controls.current?.stop();
@@ -36,7 +82,48 @@ export function Scanner() {
     setTorchBusy(false);
     setTorchAvailable(false);
     setState("paused");
+    setReadResult(result);
+    setReading(false);
+    if (result.state === "valid")
+      requestScanFeedback({
+        play: () => {
+          const context = audio.current;
+          if (!context || context.state !== "running") return;
+          const oscillator = context.createOscillator();
+          const volume = context.createGain();
+          volume.gain.value = 0.08;
+          oscillator.frequency.value = 660;
+          oscillator.connect(volume);
+          volume.connect(context.destination);
+          oscillator.onended = () => {
+            oscillator.disconnect();
+            volume.disconnect();
+          };
+          oscillator.start();
+          oscillator.stop(context.currentTime + 0.08);
+        },
+        vibrate:
+          typeof navigator.vibrate === "function"
+            ? (duration) => navigator.vibrate(duration)
+            : undefined,
+      });
   }
+
+  useEffect(() => {
+    if (readResult) resultRegion.current?.focus();
+  }, [readResult]);
+
+  const stop = useCallback(() => {
+    clearRead();
+    active.current?.abort();
+    active.current = null;
+    controls.current?.stop();
+    controls.current = null;
+    setTorchOn(false);
+    setTorchBusy(false);
+    setTorchAvailable(false);
+    setState("paused");
+  }, [clearRead]);
 
   useEffect(() => {
     const onVisibility = () => {
@@ -46,22 +133,35 @@ export function Scanner() {
     return () => {
       document.removeEventListener("visibilitychange", onVisibility);
       active.current?.abort();
+      readController.current?.abort();
+      const previousAudio = audio.current;
+      audio.current = null;
+      if (previousAudio) void previousAudio.close().catch(() => {});
       controls.current?.stop();
     };
-  }, []);
+  }, [stop]);
 
   async function start() {
     if (!video.current || active.current) return;
     const controller = new AbortController();
     active.current = controller;
     setState("starting");
-    setReads(0);
+    clearRead();
+    try {
+      if (typeof AudioContext !== "undefined") {
+        const context = new AudioContext();
+        audio.current = context;
+        void context.resume().catch(() => {});
+      }
+    } catch {
+      /* Optional audio must not prevent opening the camera. */
+    }
     setTorchFailed(false);
     const next = await startQrCamera({
       video: video.current,
       signal: controller.signal,
-      onCode() {
-        if (!controller.signal.aborted) setReads((previous) => previous + 1);
+      onCode(qr) {
+        if (!controller.signal.aborted) void check(qr, controller.signal);
       },
       onProblem(value) {
         if (controller.signal.aborted) return;
@@ -71,6 +171,7 @@ export function Scanner() {
         setTorchBusy(false);
         setTorchAvailable(false);
         setTorchOn(false);
+        clearRead();
         setProblem(value);
         setState("problem");
       },
@@ -99,7 +200,13 @@ export function Scanner() {
 
   return (
     <section className="flex w-full flex-col gap-6 text-left" aria-label="QR camera">
-      <div className="relative aspect-square max-h-[min(42svh,22rem)] w-full overflow-hidden rounded-lg border border-border bg-surface-muted">
+      <div
+        className={
+          readResult
+            ? "hidden"
+            : "relative aspect-square max-h-[min(42svh,22rem)] w-full overflow-hidden rounded-lg border border-border bg-surface-muted"
+        }
+      >
         <video
           ref={video}
           muted
@@ -114,28 +221,36 @@ export function Scanner() {
         )}
       </div>
       <div
-        className="min-h-24 text-lg leading-relaxed"
+        className={readResult ? "sr-only" : "min-h-24 text-lg leading-relaxed"}
         role="status"
         aria-live="polite"
         aria-atomic="true"
       >
         {state === "idle" && <p>Open the camera and hold the guest’s QR inside the viewfinder.</p>}
         {state === "starting" && <p>Opening the camera…</p>}
-        {state === "paused" && <p>Camera paused. Open it again when you’re ready.</p>}
+        {state === "paused" && !readResult && (
+          <p>Camera paused. Open it again when you’re ready.</p>
+        )}
         {state === "problem" && <p>{recovery[problem]}</p>}
-        {state === "scanning" &&
-          (reads ? (
-            <>
-              <p className="text-3xl font-semibold">QR read</p>
-              <p>
-                Check-in confirmation is not available yet. Ask the gate lead before admitting
-                anyone.
-              </p>
-            </>
-          ) : (
-            <p>Camera ready. Hold the QR steady.</p>
-          ))}
+        {state === "scanning" && (
+          <p>{reading ? "Checking pass…" : "Camera ready. Hold the QR steady."}</p>
+        )}
       </div>
+      {readResult && (
+        <div
+          ref={resultRegion}
+          tabIndex={-1}
+          className="focus-visible:outline-2 focus-visible:outline-ring"
+        >
+          <ScanResultPanel
+            state={readResult.state}
+            guest={"guest" in readResult ? readResult.guest : undefined}
+          />
+        </div>
+      )}
+      <p className="text-lg leading-relaxed">
+        A short sound means the pass was checked, not that admission was recorded.
+      </p>
       <div className="flex flex-wrap gap-3">
         {state === "scanning" || state === "starting" ? (
           <Button size="lg" variant="secondary" onClick={stop}>
@@ -143,7 +258,7 @@ export function Scanner() {
           </Button>
         ) : (
           <Button size="lg" onClick={() => void start()}>
-            {state === "problem" ? "Retry camera" : "Open camera"}
+            {readResult ? "Scan next pass" : state === "problem" ? "Retry camera" : "Open camera"}
           </Button>
         )}
         {torchAvailable && (
