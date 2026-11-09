@@ -91,6 +91,24 @@ export function createGuestSnapshotStore(
     });
   }
   return {
+    authorize: (generation: string, authority: SnapshotAuthority) =>
+      update((state) => {
+        if (
+          state.generation !== generation ||
+          !/^[a-f0-9]{64}$/.test(authority.session) ||
+          !Number.isSafeInteger(authority.expiresAt)
+        )
+          return false;
+        if (!validAuthority(authority, Date.now())) {
+          state.generation = crypto.randomUUID();
+          state.snapshot = null;
+          return false;
+        }
+        if (state.snapshot && state.snapshot.session !== authority.session) state.snapshot = null;
+        if (state.snapshot && state.snapshot.expiresAt > authority.expiresAt)
+          state.snapshot = { ...state.snapshot, expiresAt: authority.expiresAt };
+        return true;
+      }),
     begin: () =>
       update((state) => {
         state.generation = crypto.randomUUID();
@@ -128,7 +146,7 @@ export function createGuestSnapshotStore(
         !snapshot ||
         !validAuthority(authority, Date.now()) ||
         snapshot.session !== authority.session ||
-        snapshot.generatedAt > Date.now()
+        snapshot.generatedAt > Date.now() + 600_000
       )
         return false;
       const bounded = { ...snapshot, expiresAt: Math.min(snapshot.expiresAt, authority.expiresAt) };

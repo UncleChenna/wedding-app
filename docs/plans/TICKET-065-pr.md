@@ -18,7 +18,11 @@ Pending tests for valid/used/revoked/replaced results, minimal fields, missing/c
 
 # Verification
 
-Pending regression-first unit tests, independent storage/privacy review, real IndexedDB/browser offline tests and final CI. No production data operation planned.
+Foundation checks: strict snapshot parser 10 tests pass; bounded refresh runtime 9 tests pass; authenticated response boundary 4 tests pass. Quick lint/types and related tests pass (the conditional database test is separately exercised below). Real IndexedDB tests pass 6/6 across Chromium and WebKit, including logout fencing, expiry, and an already-expired authoritative refresh replacing an older longer deadline. Independent review identified that last edge case; generation-scoped deadline authorization now prevents the stale copy surviving it.
+
+An isolated PostgreSQL16 database at this worktree's reserved port26721 started with zero public tables, received the existing migrations, and passed the explicit-column projection test. Synthetic fixtures include contact/dietary secrets and a revoked household with a real historical admission; only permitted fields are returned and the admission count remains available. The test rolls back all fixtures; the database process is stopped with its data directory retained. No production data operation occurred.
+
+Still pending: actual worker lock/latch integration, server route browser proof, offline resolution and UI, broader final coverage and CI. These foundation results do not certify the full offline feature.
 
 # Risks and rollout
 

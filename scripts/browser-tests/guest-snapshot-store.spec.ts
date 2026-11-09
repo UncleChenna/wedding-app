@@ -102,3 +102,40 @@ test("shorter authority and expiry erase only the private snapshot", async ({ pa
   expect(result.expired).toBeNull();
   expect(result.cold).toBeNull();
 });
+
+test("a trusted expired refresh erases the older copy but stale generations cannot erase a replacement", async ({
+  page,
+}) => {
+  const result = await page.evaluate(async () => {
+    const store = window.SnapshotStore.createGuestSnapshotStore(
+      window.SnapshotStore.parseGuestSnapshot,
+    );
+    const now = Date.now();
+    const authority = { session: "a".repeat(64), expiresAt: now + 60_000 };
+    const snapshot = {
+      version: 1 as const,
+      ...authority,
+      generatedAt: now,
+      keys: [{ kid: "test", alg: "Ed25519" as const, spki: "MCowBQYDK2VwAyEA" + "A".repeat(43) }],
+      invitations: [],
+    };
+    await store.commit(await store.begin(), snapshot, authority);
+    const stale = await store.begin();
+    const replacement = await store.begin();
+    const rejectedStale = await store.authorize(stale, { ...authority, expiresAt: now - 1 });
+    const retained = await store.current(authority);
+    const expired = await store.authorize(replacement, { ...authority, expiresAt: now - 1 });
+    return {
+      rejectedStale,
+      retained: retained?.session,
+      expired,
+      final: await store.current(authority),
+    };
+  });
+  expect(result).toEqual({
+    rejectedStale: false,
+    retained: "a".repeat(64),
+    expired: false,
+    final: null,
+  });
+});
