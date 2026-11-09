@@ -2,20 +2,20 @@
 id: TICKET-128
 title: Restrict dietary notes to admin and kitchen
 epic: security
-status: todo
+status: in_progress
 priority: urgent
 estimate: S
 labels: [security, backend]
 module: shared
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-027]
 blocks: [TICKET-076, TICKET-129, TICKET-176]
-branch: ""
+branch: TICKET-128
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-09
+started: 2026-11-09
 completed: ""
 reason: ""
 resume_to: ""
@@ -62,3 +62,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-09 — todo → claimed — divine (codex) — started ahead of TICKET-027 (in_progress)
+- 2026-11-09 — todo → in_progress — divine (codex) — started ahead of TICKET-027 (in_progress)
