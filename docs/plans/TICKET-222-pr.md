@@ -46,3 +46,9 @@ Adds the explicit recovery command and failure-case tests; retains all normal ow
 # Independent review
 
 Independent read-only review found no blockers in the evidence helper or final CLI integration: ownership and dependencies are rechecked inside the atomic ledger callback; origin-only mode, criteria, exact-head CI and ancestry remain fail-closed. The reviewer also checked the real-ledger failure matrix and same-run restart guard. No physical release gates are waived.
+
+# Integration failure and bounded repair
+
+Final run [42633880639](https://github.com/UncleChenna/wedding-app/actions/runs/42633880639) failed one existing guest-import test after 1,428 unit passes and 156 skips. Its `findByText` resolved with error content rendered but the asynchronous focus effect had not completed (submit still showed pending in the failure DOM). The test immediately asserted focus synchronously. The narrow authorized integration repair wraps that identical `toHaveFocus` assertion in the existing `waitFor`, preserving its default timeout and every no-write/no-import assertion. No component code, acceptance behavior, test timeout or CI gate changes. Original failure remains recorded; focused repetition and fresh final CI are required.
+
+Post-repair verification: five consecutive full guest-import component-suite runs passed 10/10 each (50 total), logs `/tmp/TICKET-222-focus-{1,2,3,4,5}.log`. Quick verification passed lint, types and all 10 related tests (`/tmp/TICKET-222-focus-quick.log`). Fresh required CI remains the merge gate.

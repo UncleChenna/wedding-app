@@ -58,7 +58,7 @@ it("shows row errors without an import action or writes", async () => {
   await screen.findByText("Row 3 · email: Enter a valid email.");
   expect(screen.queryByRole("button", { name: "Import guests" })).not.toBeInTheDocument();
   expect(commit).not.toHaveBeenCalled();
-  expect(screen.getByRole("alert")).toHaveFocus();
+  await waitFor(() => expect(screen.getByRole("alert")).toHaveFocus());
 });
 it("requires confirmation, sends only the approved identity, and reports a replay without duplicate claims", async () => {
   const commit = vi.fn().mockResolvedValue({ status: "committed", count: 1, replayed: true });
