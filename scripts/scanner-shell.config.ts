@@ -1,7 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 export default defineConfig({
   testDir: "./browser-tests",
-  testMatch: "scanner-shell-store.spec.ts",
+  testMatch: ["scanner-shell-store.spec.ts", "scanner-shell-worker.spec.ts"],
   outputDir: "../artifacts/TICKET-108/store",
   reporter: "list",
   workers: 1,

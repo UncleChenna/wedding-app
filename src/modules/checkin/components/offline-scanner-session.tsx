@@ -2,6 +2,7 @@
 
 import { useEffect, useState, type ReactNode } from "react";
 import { scannerReady, scannerWorkerMessage } from "../browser/scanner-worker-message";
+import { scannerInvalidated } from "../browser/scanner-invalidation";
 import { ScannerSession } from "./scanner-session";
 
 /** Reconcile durable authorization before mounting the camera, including a missed broadcast. */
@@ -32,15 +33,14 @@ export function OfflineScannerSession({
       else setDeadline(Math.min(expiresAt, result.expiresAt));
     };
     const message = (event: MessageEvent<unknown>) => {
-      if (
-        typeof event.data === "object" &&
-        event.data !== null &&
-        "type" in event.data &&
-        event.data.type === "SCANNER_INVALIDATED"
-      )
-        close();
+      if (scannerInvalidated(event.data, { session, build, expiresAt })) close();
     };
     navigator.serviceWorker?.addEventListener("message", message);
+    const channel =
+      typeof BroadcastChannel === "undefined"
+        ? null
+        : new BroadcastChannel("wedding-scanner-session-v1");
+    channel?.addEventListener("message", message);
     window.addEventListener("focus", check);
     window.addEventListener("pageshow", check);
     document.addEventListener("visibilitychange", check);
@@ -48,6 +48,7 @@ export function OfflineScannerSession({
     return () => {
       closed = true;
       navigator.serviceWorker?.removeEventListener("message", message);
+      channel?.close();
       window.removeEventListener("focus", check);
       window.removeEventListener("pageshow", check);
       document.removeEventListener("visibilitychange", check);
@@ -59,5 +60,9 @@ export function OfflineScannerSession({
         Checking saved scanner access…
       </p>
     );
-  return <ScannerSession expiresAt={deadline}>{children}</ScannerSession>;
+  return (
+    <ScannerSession expiresAt={deadline} session={session}>
+      {children}
+    </ScannerSession>
+  );
 }

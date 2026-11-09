@@ -8,6 +8,7 @@ interface AssetCache {
   put(path: string, response: Response): Promise<void>;
   match(path: string): Promise<Response | undefined>;
 }
+type AuthorizedIdentity = { session: string; build: string; expiresAt: number };
 interface Options {
   store: Store;
   storage: { open(name: string): Promise<AssetCache> };
@@ -101,9 +102,15 @@ export function createScannerShellRuntime({ store, storage, fetcher, origin, bui
     return latest;
   }
   return {
-    async revalidate() {
+    async revalidate(onAuthorized?: (identity: AuthorizedIdentity) => void) {
       try {
         const result = await authorization(Date.now() + 10_000);
+        if (result.state === "authorized")
+          onAuthorized?.({
+            session: result.grant.session,
+            build: result.grant.build,
+            expiresAt: result.grant.expiresAt,
+          });
         return { state: result.state };
       } catch {
         return { state: "unavailable" as const };
@@ -124,12 +131,13 @@ export function createScannerShellRuntime({ store, storage, fetcher, origin, bui
         return { state: "unavailable" as const };
       }
     },
-    async prepare() {
+    async prepare(onAuthorized?: (identity: AuthorizedIdentity) => void) {
       try {
         const deadline = Date.now() + 10_000;
         const authorizationResult = await authorization(deadline);
         if (authorizationResult.state !== "authorized") return authorizationResult;
         const { generation, grant } = authorizationResult;
+        onAuthorized?.({ session: grant.session, build: grant.build, expiresAt: grant.expiresAt });
         if (grant.build !== build) return { state: "unavailable" as const };
         const cache = await storage.open(cacheName);
         for (const path of grant.assets) {

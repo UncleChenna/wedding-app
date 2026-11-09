@@ -224,4 +224,16 @@ describe("authorized scanner shell preparation", () => {
       vi.useRealTimers();
     }
   });
+  it("reports trusted identity before asset failure without claiming offline readiness", async () => {
+    const f = fixture();
+    const authorized = vi.fn();
+    f.cache.put.mockRejectedValue(new Error("quota"));
+    expect(await f.runtime.prepare(authorized)).toEqual({ state: "unavailable" });
+    expect(authorized).toHaveBeenCalledWith({
+      session: f.grant.session,
+      build: f.grant.build,
+      expiresAt: f.grant.expiresAt,
+    });
+    expect(f.store.commit).not.toHaveBeenCalled();
+  });
 });

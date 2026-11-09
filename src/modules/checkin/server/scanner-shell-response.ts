@@ -1,15 +1,10 @@
 import "server-only";
-import { createHmac } from "node:crypto";
-import { cookies } from "next/headers";
 import { unstable_rethrow } from "next/navigation";
 import { logger } from "@/modules/shared/lib/logger";
 import { securityHeaders } from "@/modules/shared/lib/security-headers";
 import { serverEnv } from "@/modules/shared/server/env";
-import {
-  currentStaffDevice,
-  staffSigningKey,
-  STAFF_SESSION_COOKIE,
-} from "@/modules/shared/server/staff-cookies";
+import { currentStaffDevice } from "@/modules/shared/server/staff-cookies";
+import { scannerSessionFingerprint } from "./scanner-session-fingerprint";
 import { activeThemesToCssText } from "@/modules/theming/lib/css-vars";
 import type { ActiveThemes } from "@/modules/theming/lib/schema";
 import type { ScannerShellGrant } from "../browser/scanner-shell-store";
@@ -32,18 +27,13 @@ export async function scannerShellResponse(
     const expiresAt = session?.expiresAt.getTime();
     if (!session || !expiresAt || !Number.isSafeInteger(expiresAt) || expiresAt <= Date.now())
       return refuse(401);
-    const key = staffSigningKey();
-    const token = (await cookies()).get(STAFF_SESSION_COOKIE)?.value;
-    if (!key || !token) return refuse(401);
+    const fingerprint = await scannerSessionFingerprint();
+    if (!fingerprint) return refuse(401);
     const assets = await readScannerAssets();
     if (!assets) return refuse(503);
     const css = activeThemesToCssText(await loadThemes());
     const preparedAt = Date.now();
     if (expiresAt <= preparedAt) return refuse(401);
-    const fingerprint = createHmac("sha256", key)
-      .update("wedding-scanner-shell-v1\0")
-      .update(token)
-      .digest("hex");
     const documentHeaders: [string, string][] = [
       ["Content-Type", "text/html; charset=utf-8"],
       ["Cache-Control", headers["Cache-Control"]],

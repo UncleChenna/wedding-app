@@ -212,3 +212,43 @@ pass7.0seconds. Earlier worker checkpoint quick had83 affected tests; counts dif
 because its files are now committed. Logs: /tmp/TICKET-108-worker-bounded-quick.log
 and /tmp/TICKET-108-worker-store-browser.log. Real worker restart and offline camera
 reload remain next; this storage-suite result does not certify that end-to-end path.
+
+## Controls and real-browser checkpoint — 2026-11-09 21:25 UTC
+
+Root sole editor108/in_progress. Added online preparation/status/retry and enhanced signout,
+plus native POST worker invalidation. Shared clearStaffSessionAction preserves normal signout
+redirect behavior while enhanced scanner clears saved access after cookie deletion too.
+A shared server HMAC fingerprint binds online and offline identities. Replacement broadcasts
+carry only authorized identity/deadline and don't lock the matching new tab; failures while
+publishing assets still preserve that authoritative identity. Removed redundant post-operation
+storage reads that could suppress already-known denial/replacement notifications. StrictMode
+preparation and delayed signout regressions pass. Status text reserves height and keeps a refresh
+button to reduce layout movement; measured online CLS still needs verification.
+
+Actual Next production auth test exposed proxy redirect/signinHTML instead of denial for
+/checkin/offline-shell. Added exact-path401 denial without bypassing credential/role checks;
+regression failed then passed. Fresh build and real mobile/desktop PIN/preparation/offline
+reload/enhanced logout journeys pass2/2. Synthetic native PG used own verified26801, initialized
+empty, applied unchanged migrations, then stopped retaining .harness/temporary-postgres-path.
+No Supabase Auth/realtime claim. Logs /tmp/TICKET-108-native-{empty,migrate,stop}.log,
+/tmp/TICKET-108-auth-browser.log (initialfailure), -auth-browser-fixed.log (pass),
+/tmp/TICKET-108-proxy-build.log. No database running now.
+
+Real worker fixture runs exact emitted worker and generated Scanner bundle through loopback
+HTTP. All46 combined storage/worker Chromium/WebKit tests pass36.4s, including QR pixels,
+expiry/track shutdown, missing decoder, native POST, full persistent-profile browser restart,
+and injected IDBfailure->cachepurge->restart. Test-only failure injection is in the fixture;
+production worker has no fault-control channel. Four themes×3widths×2engines screenshots
+copied under docs/reviews/TICKET-108. Reviewer098 inspected all24 with no visual findings;
+reviewer theme_fixes source/CI review clean before tiny final reserved-height style.
+Final quick lint/types115relatedtests pass. CIproposal adds2existingjobsteps without
+removing checks/timeouts. Logs /tmp/TICKET-108-combined-browser.log and -controls-final-quick.log.
+
+Next authoritative state: TICKET-060 PR139 merged at21:24:19 as2df977c6 after all7checks at
+4b320aea. Agent024 is recordingdone/evidence. Commit this checkpoint, integrate develop
+2df977c6 into108, adapt real offline bundle tests to060 result semantics without dropping
+actual QR-decoding evidence, rerun final production/auth/visual checks andCI. Keep142draft
+until integration proven. New Scanner includes live read-only resolver; persistent offline
+snapshots/admission still065/066/180, not108. The latest worker optional diagnostic-read
+removal is covered by emitted-worker tests but occurred after last authenticated Nextbuild;
+final build/auth run after integration is mandatory. Goal remains active, no blocker audit.

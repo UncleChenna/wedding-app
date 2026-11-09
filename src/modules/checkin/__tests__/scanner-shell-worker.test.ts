@@ -96,7 +96,7 @@ describe("scanner worker boundaries", () => {
   it("fetches authorization independently of message-supplied grant fields", async () => {
     const f = fixture();
     expect(await f.send("SAVE_SCANNER")).toHaveBeenCalledWith({ state: "ready", expiresAt: 123 });
-    expect(f.runtime.prepare).toHaveBeenCalledWith();
+    expect(f.runtime.prepare).toHaveBeenCalledWith(expect.any(Function));
   });
   it("rejects messages without a real canonical same-origin scanner client", async () => {
     const f = fixture();
@@ -134,7 +134,7 @@ describe("scanner worker boundaries", () => {
     for (const [path, options] of [
       ["/checkin?x=1", {}],
       ["/checkin/offline-shell", {}],
-      ["/checkin", { method: "POST" }],
+      ["/checkin/read", { method: "POST" }],
       ["/checkin", { headers: { rsc: "1" } }],
       ["/checkin", { headers: { "next-router-prefetch": "1" } }],
     ] as const)
@@ -208,5 +208,83 @@ describe("scanner worker boundaries", () => {
     expect(f.storage.delete).toHaveBeenCalledWith("wedding-scanner-assets-v1-newer");
     expect(f.storage.delete).not.toHaveBeenCalledWith("wedding-own-pass-v1");
     expect(await f.send("SCANNER_STATUS")).toHaveBeenCalledWith({ state: "unavailable" });
+  });
+  it("clears saved gate access on the native sign-out destination without caching its document", async () => {
+    const f = fixture();
+    expect(await (await f.navigate("/staff")).response?.text()).toBe("online");
+    expect(f.store.invalidate).toHaveBeenCalledOnce();
+    expect(f.runtime.prepare).not.toHaveBeenCalled();
+  });
+  it("passes native sign-out POST through the network and invalidates only after its response", async () => {
+    const f = fixture();
+    let finish: (response: Response) => void = () => undefined;
+    f.fetcher.mockReturnValue(
+      new Promise((resolve) => {
+        finish = resolve;
+      }),
+    );
+    const pending = f.navigate("/checkin", { method: "POST" });
+    await vi.waitFor(() => expect(f.fetcher).toHaveBeenCalledOnce());
+    expect(f.store.invalidate).not.toHaveBeenCalled();
+    finish(new Response("signed out"));
+    expect(await (await pending).response?.text()).toBe("signed out");
+    expect(f.store.invalidate).toHaveBeenCalledOnce();
+    expect(f.runtime.prepare).not.toHaveBeenCalled();
+    expect(f.runtime.document).not.toHaveBeenCalled();
+    expect(
+      f.worker.handleFetch({
+        request: new Request("https://wedding.example/checkin", { method: "POST" }),
+        respondWith: vi.fn(),
+      }),
+    ).toBe(false);
+  });
+  it("releases a hung native sign-out lock after its deadline and clears saved access", async () => {
+    vi.useFakeTimers();
+    try {
+      const f = fixture();
+      f.fetcher.mockReturnValue(new Promise(() => undefined));
+      const navigation = f.navigate("/checkin", { method: "POST" });
+      const status = f.send("SCANNER_STATUS");
+      await vi.advanceTimersByTimeAsync(10_000);
+      expect((await navigation).response?.type).toBe("error");
+      expect(f.store.invalidate).toHaveBeenCalledOnce();
+      expect(await status).toHaveBeenCalledWith({ state: "unavailable" });
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+  it("keeps a new authorized online session identifiable when its asset preparation fails", async () => {
+    const f = fixture();
+    const current = {
+      session: "c".repeat(64),
+      build: "b".repeat(64),
+      expiresAt: Date.now() + 60_000,
+    };
+    vi.mocked(f.runtime.prepare).mockImplementation(async (authorized) => {
+      authorized?.(current);
+      return { state: "unavailable" };
+    });
+    await f.send("SAVE_SCANNER");
+    expect(f.client.postMessage).toHaveBeenCalledWith({ type: "SCANNER_INVALIDATED", current });
+    expect(f.client.postMessage).not.toHaveBeenCalledWith({ type: "SCANNER_INVALIDATED" });
+  });
+  it("does not depend on a second storage read to notify an already known denial or replacement", async () => {
+    const f = fixture();
+    vi.mocked(f.store.current).mockRejectedValue(new Error("diagnostic read failed"));
+    vi.mocked(f.runtime.revalidate).mockResolvedValue({ state: "denied" });
+    await f.navigate();
+    expect(f.client.postMessage).toHaveBeenCalledWith({ type: "SCANNER_INVALIDATED" });
+    const current = {
+      session: "c".repeat(64),
+      build: "b".repeat(64),
+      expiresAt: Date.now() + 60_000,
+    };
+    vi.mocked(f.runtime.prepare).mockImplementation(async (authorized) => {
+      authorized?.(current);
+      return { state: "unavailable" };
+    });
+    await f.send("SAVE_SCANNER");
+    expect(f.client.postMessage).toHaveBeenCalledWith({ type: "SCANNER_INVALIDATED", current });
+    expect(f.store.current).not.toHaveBeenCalled();
   });
 });

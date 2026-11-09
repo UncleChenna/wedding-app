@@ -64,10 +64,22 @@ export function installScannerShellWorker({
     const url = new URL(raw, host.location.origin);
     return url.origin === host.location.origin && url.pathname === "/checkin" && !url.search;
   }
-  async function notify() {
+  async function notify(current?: { session: string; build: string; expiresAt: number }) {
     const clients = await host.clients.matchAll({ type: "window", includeUncontrolled: true });
     for (const client of clients)
-      if (scannerUrl(client.url)) client.postMessage({ type: "SCANNER_INVALIDATED" });
+      if (scannerUrl(client.url))
+        client.postMessage({
+          type: "SCANNER_INVALIDATED",
+          ...(current
+            ? {
+                current: {
+                  session: current.session,
+                  build: current.build,
+                  expiresAt: current.expiresAt,
+                },
+              }
+            : {}),
+        });
   }
   async function failedInvalidation() {
     storageInvalidationFailed = true;
@@ -93,19 +105,33 @@ export function installScannerShellWorker({
       await notify();
     }
   }
-  async function reconcile() {
-    const before = await store().current();
-    const result = await runtime().revalidate();
-    if (result.state === "denial-storage-failed") {
-      await failedInvalidation();
-      return;
+  async function nativeSignOut(request: Request) {
+    const controller = new AbortController();
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    try {
+      return await Promise.race([
+        fetcher(request, { signal: controller.signal }),
+        new Promise<never>((_resolve, reject) => {
+          timer = setTimeout(() => {
+            controller.abort();
+            reject(new Error("Sign-out timed out"));
+          }, 10_000);
+        }),
+      ]);
+    } finally {
+      clearTimeout(timer);
+      // Even a failed/timed-out sign-out relinquishes this saved scanner access.
+      await invalidate();
     }
-    const after = await store().current();
-    if (
-      result.state === "denied" ||
-      (before && (!after || before.session !== after.session || after.expiresAt < before.expiresAt))
-    )
-      await notify();
+  }
+  async function reconcile() {
+    let authorized: { session: string; build: string; expiresAt: number } | undefined;
+    const result = await runtime().revalidate((identity) => {
+      authorized = identity;
+    });
+    if (result.state === "denial-storage-failed") await failedInvalidation();
+    else if (result.state === "denied") await notify();
+    else if (authorized) await notify(authorized);
   }
   host.addEventListener("message", (event) => {
     const data = event.data;
@@ -131,18 +157,15 @@ export function installScannerShellWorker({
               ? { state: "unavailable" }
               : await runtime().status();
           } else {
-            const before = await store().current();
-            const prepared = await runtime().prepare();
+            let authorized: { session: string; build: string; expiresAt: number } | undefined;
+            const prepared = await runtime().prepare((identity) => {
+              authorized = identity;
+            });
             result = prepared;
-            if (prepared.state === "denial-storage-failed") await failedInvalidation();
             if (prepared.state === "ready") storageInvalidationFailed = false;
-            const after = await store().current();
-            if (
-              prepared.state === "denied" ||
-              (before &&
-                (!after || before.session !== after.session || after.expiresAt < before.expiresAt))
-            )
-              await notify();
+            if (prepared.state === "denial-storage-failed") await failedInvalidation();
+            else if (prepared.state === "denied") await notify();
+            else if (authorized) await notify(authorized);
           }
           event.ports[0]?.postMessage(result);
         } catch {
@@ -167,12 +190,43 @@ export function installScannerShellWorker({
     handleFetch(event: FetchEvent) {
       const request = event.request;
       const url = new URL(request.url);
+      // Native sign-out submits a navigation POST. Hold publication until its
+      // cookie-changing response finishes, then clear access even if redirect
+      // following does not dispatch another fetch event. Never cache the response.
+      if (request.method === "POST" && request.mode === "navigate" && scannerUrl(request.url)) {
+        event.respondWith(serialized(() => nativeSignOut(request)).catch(() => Response.error()));
+        return true;
+      }
       if (
         request.method !== "GET" ||
         request.headers.has("rsc") ||
         request.headers.has("next-router-prefetch")
       )
         return false;
+      // A native/no-JavaScript sign-out redirects here. Choosing a staff role also
+      // relinquishes saved gate access, without touching guest snapshots or queues.
+      if (
+        request.mode === "navigate" &&
+        url.origin === host.location.origin &&
+        url.pathname === "/staff" &&
+        !url.search
+      ) {
+        event.respondWith(
+          (async () => {
+            try {
+              await serialized(invalidate);
+            } catch {
+              /* Online sign-out remains available. */
+            }
+            try {
+              return await fetcher(request);
+            } catch {
+              return fallback();
+            }
+          })(),
+        );
+        return true;
+      }
       if (request.mode === "navigate" && scannerUrl(request.url)) {
         event.respondWith(
           (async () => {

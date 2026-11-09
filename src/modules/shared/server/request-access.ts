@@ -14,6 +14,11 @@ export function privateResponse(response: NextResponse): NextResponse {
 }
 
 export function deniedRequest(request: NextRequest, signInPath: string): NextResponse {
+  // A worker must distinguish revoked/missing access from a temporary network failure.
+  // Redirect:error intentionally refuses sign-in HTML, so give this data endpoint a denial.
+  if (request.nextUrl.pathname === "/checkin/offline-shell") {
+    return privateResponse(NextResponse.json({ state: "denied" }, { status: 401 }));
+  }
   // Never redirect/replay mutation bodies or API requests onto authentication pages.
   if (!["GET", "HEAD"].includes(request.method) || request.nextUrl.pathname.startsWith("/api/")) {
     return privateResponse(NextResponse.json({ error: "Sign-in required." }, { status: 403 }));

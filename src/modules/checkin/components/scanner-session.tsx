@@ -2,8 +2,10 @@
 
 import { useMemo, useSyncExternalStore, type ReactNode } from "react";
 
+import { scannerInvalidated, type ScannerIdentity } from "../browser/scanner-invalidation";
+
 /** Browser timers may be suspended; event-time checks guard every camera interaction too. */
-function sessionClock(expiresAt: number) {
+function sessionClock(expiresAt: number, identity?: ScannerIdentity) {
   let closed = !Number.isSafeInteger(expiresAt) || expiresAt <= 0;
   const listeners = new Set<() => void>();
   const valid = () => {
@@ -26,12 +28,7 @@ function sessionClock(expiresAt: number) {
         else timer = setTimeout(check, Math.min(expiresAt - Date.now(), 60_000));
       };
       const message = (event: MessageEvent<unknown>) => {
-        if (
-          typeof event.data === "object" &&
-          event.data !== null &&
-          "type" in event.data &&
-          event.data.type === "SCANNER_INVALIDATED"
-        ) {
+        if (scannerInvalidated(event.data, identity)) {
           closed = true;
           check();
         }
@@ -40,6 +37,11 @@ function sessionClock(expiresAt: number) {
       window.addEventListener("pageshow", check);
       document.addEventListener("visibilitychange", check);
       navigator.serviceWorker?.addEventListener("message", message);
+      const channel =
+        typeof BroadcastChannel === "undefined"
+          ? null
+          : new BroadcastChannel("wedding-scanner-session-v1");
+      channel?.addEventListener("message", message);
       check();
       return () => {
         clearTimeout(timer);
@@ -48,6 +50,7 @@ function sessionClock(expiresAt: number) {
         window.removeEventListener("pageshow", check);
         document.removeEventListener("visibilitychange", check);
         navigator.serviceWorker?.removeEventListener("message", message);
+        channel?.close();
       };
     },
   };
@@ -56,12 +59,17 @@ function sessionClock(expiresAt: number) {
 /** Unmounting Scanner stops every camera track through its existing lifecycle cleanup. */
 export function ScannerSession({
   expiresAt,
+  session,
   children,
 }: {
   expiresAt: number;
+  session?: string;
   children: ReactNode;
 }) {
-  const clock = useMemo(() => sessionClock(expiresAt), [expiresAt]);
+  const clock = useMemo(
+    () => sessionClock(expiresAt, session ? { session, expiresAt } : undefined),
+    [expiresAt, session],
+  );
   const active = useSyncExternalStore(
     clock.subscribe,
     clock.valid,

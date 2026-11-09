@@ -101,3 +101,35 @@ it("stops camera tracks when the worker reports invalidation and ignores unrelat
     else Reflect.deleteProperty(navigator, "serviceWorker");
   }
 });
+
+it("locks the old session but retains a newly authenticated tab on replacement", () => {
+  const worker = new EventTarget();
+  Object.defineProperty(navigator, "serviceWorker", { configurable: true, value: worker });
+  const expiresAt = Date.now() + 60_000;
+  render(
+    <>
+      <ScannerSession expiresAt={expiresAt} session={"a".repeat(64)}>
+        <button>Old camera</button>
+      </ScannerSession>
+      <ScannerSession expiresAt={expiresAt} session={"b".repeat(64)}>
+        <button>New camera</button>
+      </ScannerSession>
+    </>,
+  );
+  act(() =>
+    worker.dispatchEvent(
+      new MessageEvent("message", {
+        data: {
+          type: "SCANNER_INVALIDATED",
+          current: { session: "b".repeat(64), build: "c".repeat(64), expiresAt },
+        },
+      }),
+    ),
+  );
+  expect(screen.queryByRole("button", { name: "Old camera" })).toBeNull();
+  expect(screen.getByRole("button", { name: "New camera" })).toBeInTheDocument();
+  act(() =>
+    worker.dispatchEvent(new MessageEvent("message", { data: { type: "SCANNER_INVALIDATED" } })),
+  );
+  expect(screen.queryByRole("button", { name: "New camera" })).toBeNull();
+});

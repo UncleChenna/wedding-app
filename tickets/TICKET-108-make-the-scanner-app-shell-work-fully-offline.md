@@ -55,6 +55,8 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-6).
 
 ## Notes / decisions
 
+- 2026-11-09: Real worker/storage46tests and production PIN/offline/signout2tests pass;24 theme screenshots reviewed. Preparing integration of merged TICKET-060 before final review/CI; PR142 remains draft.
+
 - 2026-11-09: Worker routing and durable offline session reconciliation implemented; quick lint/types/82 related tests pass. Online preparation/logout and real offline-browser proof remain unfinished in draft PR142.
 
 - 2026-11-09: Added isolated scanner-shell authorization storage; 16 Chromium/WebKit storage tests and quick lint/types pass. Worker navigation, asset caching and real offline decoding remain unfinished in draft PR142; see the ticket handoff.

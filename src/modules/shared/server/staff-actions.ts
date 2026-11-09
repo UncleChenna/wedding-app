@@ -62,9 +62,14 @@ export async function staffSignInAction(
   redirect(destinations[role]);
 }
 
-export async function staffSignOutAction(): Promise<void> {
+/** Enhanced scanner logout clears offline access again after this response applies the cookie. */
+export async function clearStaffSessionAction(): Promise<void> {
   const jar = await cookies();
   jar.delete(STAFF_SESSION_COOKIE);
   // Keep the device identity and its attempt counter: sign-out must not reset lockout.
+}
+
+export async function staffSignOutAction(): Promise<void> {
+  await clearStaffSessionAction();
   redirect("/staff");
 }
