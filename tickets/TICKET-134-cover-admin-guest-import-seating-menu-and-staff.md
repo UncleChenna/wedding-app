@@ -2,7 +2,7 @@
 id: TICKET-134
 title: Cover admin guest import, seating, menu and staff end to end
 epic: testing
-status: in_review
+status: in_progress
 priority: high
 estimate: M
 labels: [test]
@@ -60,3 +60,4 @@ _Agents append dated notes here while working._
 - 2026-11-09 — todo → claimed — divine (codex)
 - 2026-11-09 — todo → in_progress — divine (codex)
 - 2026-11-09 — in_progress → in_review — divine (codex)
+- 2026-11-09 — in_review → in_progress — divine (codex) — Full CI exhausted its job budget after all 1023 browser tests passed; allow unchanged remaining gates to execute
