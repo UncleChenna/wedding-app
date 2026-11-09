@@ -19,7 +19,7 @@ Sharing an invitation now records the attempt and updates the guest list's first
 - **PASS — first/repeat sharing:** policy and persisted tests verify draft publication, first timestamp, repeated requests, RSVP preservation and revoked/stale rejection. Component tests cover all four channels.
 - **PASS — sent filtering:** authenticated mobile/desktop tests share from the unsent filter, observe the row disappear, use Undo with the keyboard and observe it return.
 - **PASS — cancellation/delivery semantics:** native AbortError leaves the persisted draft untouched with no event. An intercepted record failure after successful copying shows the failure without claiming sent status. External intents are described as attempts, never confirmed delivery.
-- Integrated prerequisite TICKET-089 at `dc5bd61fc445d073a761f23112ac13396ba06b0b` over develop `360914b7`. This PR remains draft until that prerequisite merges and final review completes.
+- Prerequisite TICKET-089 is merged. Integrated develop `9a66f05fb27571df75a308c3713afd0483668e21`; this merge changes no product, migration or browser-test code from locally verified `ae8e4284`. Independent source and migration review found no blockers. Required final-head CI remains the merge gate.
 
 # Verification
 
