@@ -41,9 +41,9 @@ See: [Admin dashboard](../docs/prd.md#admin-dashboard) (ADM-1).
 
 ## Acceptance criteria
 
-- [ ] Filters combine and match a query unit test.
-- [ ] 300 invitations render and filter in <200ms (measured).
-- [ ] Rows are usable at 375px.
+- [x] Filters combine and match a query unit test.
+- [x] 300 invitations render and filter in <200ms (measured).
+- [x] Rows are usable at 375px.
 
 ## Test plan
 
@@ -57,7 +57,13 @@ See: [Admin dashboard](../docs/prd.md#admin-dashboard) (ADM-1).
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-11-09 — Authenticated mobile/desktop journey2/2 and existing dialogue/shell
+regressions80/80 pass. All-theme axe, long-side wrapping and bottom-navigation
+clearance pass. Five300-row remount/filter samples per viewport stay below200ms
+(max49.2ms mobile,32.3ms desktop); navigation timing is recorded separately.
+Shared Sheet Escape/reopen race reproduced, regression-tested and fixed; independent
+review found no blocker. Quick lint/types/103related tests pass; final CI pending.
+See docs/plans/TICKET-089-pr.md and docs/reviews/TICKET-089/.
 
 ## Activity log
 
