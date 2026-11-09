@@ -2,7 +2,7 @@
 id: TICKET-166
 title: "Close the event: expire PINs, close ordering, export memories"
 epic: launch
-status: in_review
+status: done
 priority: medium
 estimate: M
 labels: [backend, docs]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/105
 created: 2026-10-21
 updated: 2026-11-09
 started: 2026-11-05
-completed: ""
+completed: 2026-11-09
 reason: ""
 resume_to: ""
 ---
@@ -97,3 +97,4 @@ tests and quick verification pass. No database/browser/device completion claimed
 - 2026-11-06 — in_progress → blocked — divine (codex) — Automated database, browser and UI verification passed. Awaiting review-only exception for physical-phone keyboard/safe-area and downloads; retain release checks. No PR merge authorized.
 - 2026-11-09 — blocked → in_progress — divine (codex) — Owner standing authorization permits preview progress while preserving explicit physical-device release gates; integrate latest develop and verify.
 - 2026-11-09 — in_progress → in_review — divine (codex)
+- 2026-11-09 — in_review → done — divine (codex)
