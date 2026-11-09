@@ -12,6 +12,10 @@ backup preserved; no further database work scheduled.
 Independent final review is clean; final quick passed lint/types and 19 related
 tests (16 opt-in tests separately passed against Supabase).
 
+Fresh develop3e75175e integrated in c2b6ad87. Full localcoverage passed thresholds;
+1500tests passed,180skipped,two unchanged pass-image tests timedout under overlap.
+Quiet targetedrerun2/2passed826ms; combinedquicklint/types passed. No newDBrun.
+
 Remaining: publish ready PR and
 all exact-head CI gates before verified merge. Future board readers retain their
 own privacy obligations; preserve deliberate operational order notes.

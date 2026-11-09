@@ -11,7 +11,9 @@ sent to kitchen/bar by the existing form, including “no ice”.
 
 Integrated completed TICKET-027 RLS and TICKET-033 station broadcasts from develop
 `275c42b85e46d94823c8d55df905b98ca9612281` in integration commit `89a2bdef`.
-No policy change is introduced.
+No policy change is introduced. Final integration commit `c2b6ad87` also includes
+develop `3e75175ed67fbc49a20569e93a52f6e04b629239`, including the shared scan-sync
+coverage repair; privacy, RLS and broadcast code is unchanged by that integration.
 
 # Changes
 
@@ -55,6 +57,13 @@ No policy change is introduced.
 - Final `pnpm verify:quick`: lint and types passed; **19 related tests passed,
   16 opt-in tests skipped**. Those opt-in tests passed separately in the explicitly
   enabled real Supabase run above.
+- Combined-base `pnpm test`: **1,500 passed, 180 skipped, two failed**. Both failures
+  were the unchanged pass-image tests exceeding their five-second limits while other
+  worktrees ran coverage concurrently. Coverage thresholds passed (98.67% lines,
+  99.31% branches overall). Quiet targeted rerun: **2/2 passed in 826 ms** without
+  changing tests/timeouts. This is not presented as a fully green local suite.
+- Post-integration `pnpm verify:quick`: lint and types passed; no changed source
+  required related tests. Full CI against the final combined head remains mandatory.
 - Independent final source review: clean, including the merged RLS/broadcast
   contracts and strengthened denial tests. Full exact-head CI remains required
   before merge. No external
