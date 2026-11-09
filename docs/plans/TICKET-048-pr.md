@@ -44,7 +44,7 @@ nothing is sent automatically.
   passed after fixes. An intermediate capture correctly hit the10/minute limit;
   retry after actual expiry passed without resetting or weakening the budget.
 - Independent source/migration and mobile queue review found no blocker.
-- All six checks passed at8b09e7a8 (run42668969768). Six checks also passed at069989b0 (run42683310697). The newly verified camera base d0231fad is integrated; its additional seventh CI check and combined-head results are pending. Old full gate results
+- All six checks passed at8b09e7a8 (run42668969768). Six checks also passed at069989b0 (run42683310697). The newly verified camera base d0231fad is integrated; all seven final checks passed at97788f78 in run42687100122. Old full gate results
   in the handoff are historical, not certification of this integrated head.
 
 # Risks and rollout
@@ -85,7 +85,7 @@ Four themes ×375/768/1280 × form/invalid/received/admin queue, plus four scrol
 - [ ] Sharing and devices: real phones/WhatsApp remain TICKET-201 release gates.
 - [x] QR codes: N/A, QR output unchanged.
 - [x] Staff feedback: N/A, no scanner/station feedback changes.
-- [ ] Verification: current full CI pending; no pass claimed.
+- [x] Verification: all seven final CI checks pass at97788f78, run42687100122 (1591 unit passes,1081 browser passes, four credential-browser checks).
 
 # Harness changes, if any
 
@@ -93,3 +93,5 @@ No harness change. Browser fixtures use fresh synthetic admin prefixes and disti
 artifact directories; no assertions, hooks, coverage thresholds or timeouts weakened.
 Detailed current and historical results: docs/handoffs/TICKET-048.md and
 docs/reviews/TICKET-048/ui-review.md.
+
+Merged2026-11-09 at20:11UTC as a62da9ed after exact-head/base/conflict recheck. TICKET-048 is done through the CLI; device release gates remain mandatory.
