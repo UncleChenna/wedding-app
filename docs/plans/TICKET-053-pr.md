@@ -20,7 +20,7 @@ Administrators can now open **Sharing → Remind guests awaiting a reply** to se
 
 # Verification
 
-Base: develop14d04bb2. `pnpm verify:quick`: lint/types pass,162related tests pass/114database tests skipped by normal gate. Explicit isolated runs:8tests pass (3reminder+5existing sharing). Production build passes. `pnpm exec tsx scripts/test-admin-reminders.ts`:1/1passes(9.3s test), actual local Auth/TOTP and database, no external messages. Four themes:axe0 and menu/list overflow0;375/600/768/1280 widths; keyboard Enter/Escape/focus, reduced-motion setting, unauthorized redirect and no-store checked.
+Implementation verified on develop14d04bb2; integrated develop530bb67b (merged guest import UI) without conflicts or changes to reminder source/migration. `pnpm verify:quick`: lint/types pass,162related tests pass/114database tests skipped by normal gate. Explicit isolated runs:8tests pass (3reminder+5existing sharing). Production build passes. `pnpm exec tsx scripts/test-admin-reminders.ts`:1/1passes(9.3s test), actual local Auth/TOTP and database, no external messages. Four themes:axe0 and menu/list overflow0;375/600/768/1280 widths; keyboard Enter/Escape/focus, reduced-motion setting, unauthorized redirect and no-store checked.
 
 Migration0022applied twice; `/tmp/TICKET-053-counts-{first,second}.json` identical. Seed applied twice; `/tmp/TICKET-053-seed-{first,second}.json` identical. All23public tables retain RLS. Initial database test import failure was fixed by splitting the environment-free repository from the authorized page reader; final tests pass without changed assertions/timeouts.
 
@@ -41,3 +41,5 @@ Inspected `docs/reviews/TICKET-053/reminders.png` and `reminder-menu.png`:375px 
 - N/A guest Lighthouse, QR changes and staff scan feedback:admin list/share UI only.
 - NOT VERIFIED physical OS share/WhatsApp delivery:existing release gate201; simulated browser native cancellation and clipboard only.
 - PASS local quick/build/targeted browser/database gates; fullCI pending.
+
+Independent review found no blocker. Added requested first-trigger Enter/Escape/return-focus and long-sheet Copy focus/in-viewport assertions; final authenticated browser still1/1passed(9.3s). The first added-test run failed due to a test variable declaration order, corrected without weakening assertions.
