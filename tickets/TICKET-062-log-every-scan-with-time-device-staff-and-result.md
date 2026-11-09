@@ -2,7 +2,7 @@
 id: TICKET-062
 title: Log every scan with time, device, staff and result
 epic: checkin
-status: in_progress
+status: in_review
 priority: high
 estimate: S
 labels: [backend]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-061, TICKET-064]
 blocks: [TICKET-063, TICKET-066, TICKET-132, TICKET-136, TICKET-174]
 branch: TICKET-062
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/149
 created: 2026-10-21
 updated: 2026-11-09
 started: 2026-11-09
@@ -61,5 +61,5 @@ _Agents append dated notes here while working._
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-09 — todo → claimed — divine (codex)
 - 2026-11-09 — todo → in_progress — divine (codex)
-
 - 2026-11-09 — Implemented and verified zero-person observations; manual input is separate from transport (ADR0025). Evidence and remaining full CI gate: `docs/plans/TICKET-062-pr.md`, draft PR149.
+- 2026-11-09 — in_progress → in_review — divine (codex)
