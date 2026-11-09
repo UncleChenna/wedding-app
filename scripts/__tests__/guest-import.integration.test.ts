@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { eq, inArray } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres, { type Sql } from "postgres";
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { assertDatabaseTarget } from "../database-target";
 import * as schema from "../../src/modules/shared/server/db/schema";
 import type { Db } from "../../src/modules/shared/server/db/client";
@@ -124,6 +124,28 @@ describe.runIf(process.env.RUN_GUEST_IMPORT_DB_TESTS === "1")(
         const before = await tx.select().from(schema.rsvps);
         expect((await commitGuestImport(tx, renewed, actor)).status).toBe("error");
         expect(await tx.select().from(schema.rsvps)).toEqual(before);
+      }));
+    it("rejects approval expiring while the commit waits for writer locks", async () =>
+      exercise(async (tx) => {
+        const request = key(await previewGuestImport(tx, csv(randomUUID()), actor));
+        const before = await tx.select({ id: schema.invitations.id }).from(schema.invitations);
+        const current = Date.now();
+        const clock = vi
+          .fn()
+          .mockReturnValueOnce(current)
+          .mockReturnValue(current + 31 * 60 * 1000);
+        expect((await commitGuestImport(tx, request, actor, undefined, clock)).status).toBe(
+          "error",
+        );
+        expect(clock).toHaveBeenCalledTimes(2);
+        expect(await tx.select({ id: schema.invitations.id }).from(schema.invitations)).toEqual(
+          before,
+        );
+        const [batch] = await tx
+          .select()
+          .from(schema.guestImportBatches)
+          .where(eq(schema.guestImportBatches.id, request.previewId));
+        expect(batch?.invitationIds).toBeNull();
       }));
     it("rejects table changes after the approved preview", async () =>
       exercise(async (tx) => {

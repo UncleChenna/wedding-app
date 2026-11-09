@@ -157,6 +157,7 @@ export async function commitGuestImport(
   input: unknown,
   actorId: string,
   token = generateInvitationToken,
+  now: () => number = Date.now,
 ): Promise<ImportCommitResult> {
   const parsed = importCommitSchema.safeParse(input);
   const stale: ImportCommitResult = {
@@ -180,7 +181,7 @@ export async function commitGuestImport(
         count: batch.invitationIds.length,
         replayed: true,
       };
-    if (!batch.csv || batch.expiresAt.getTime() <= Date.now()) return stale;
+    if (!batch.csv || batch.expiresAt.getTime() <= now()) return stale;
     const data = parseGuestImportCsv(batch.csv);
     if (!data.ok || digestOf(data.households) !== batch.digest) return stale;
     // Serialize against all guest-list writers, including non-import admin edits. This
@@ -192,6 +193,8 @@ export async function commitGuestImport(
       JSON.stringify(checked.snapshot) !== JSON.stringify(batch.tableSnapshot)
     )
       return stale;
+    // A writer or conflict recheck may outlast the approved preview's deadline.
+    if (batch.expiresAt.getTime() <= now()) return stale;
     const invitationIds: string[] = [];
     for (const household of data.households) {
       const tableId = checked.snapshot.find((t) => t.number === household.tableNumber)?.id ?? null;
