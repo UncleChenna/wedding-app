@@ -39,9 +39,9 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-5).
 
 ## Acceptance criteria
 
-- [ ] Each of the five online results creates a log row, including unknown tokens with no invitation id.
-- [ ] Manual lookup is recorded as the source while preserving the result vocabulary.
-- [ ] Staff identifiers are recorded without raw PINs, pass tokens or dietary notes; unauthorized log reads fail.
+- [x] Each of the five online results creates a log row, including unknown tokens with no invitation id.
+- [x] Manual lookup is recorded as the source while preserving the result vocabulary.
+- [x] Staff identifiers are recorded without raw PINs, pass tokens or dietary notes; unauthorized log reads fail.
 
 ## Test plan
 
@@ -61,3 +61,5 @@ _Agents append dated notes here while working._
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-09 — todo → claimed — divine (codex)
 - 2026-11-09 — todo → in_progress — divine (codex)
+
+- 2026-11-09 — Implemented and verified zero-person observations; manual input is separate from transport (ADR0025). Evidence and remaining full CI gate: `docs/plans/TICKET-062-pr.md`, draft PR149.

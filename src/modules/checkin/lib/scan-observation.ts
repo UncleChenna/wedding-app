@@ -9,7 +9,7 @@ export const observationInputSchema = z.strictObject({
 });
 export type ScanObservation = z.infer<typeof observationInputSchema>;
 
-/** Technical failures are not guest verdicts. Unknown signatures share the invalid vocabulary. */
+/** Technical failures are not guest verdicts. Unknown invitation identities share the invalid vocabulary. */
 export function observationResult(
   state: ScanReadResult["state"],
 ): ScanObservation["result"] | null {
