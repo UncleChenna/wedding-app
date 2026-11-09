@@ -41,9 +41,8 @@ export async function recordRsvpChange(
   invitationId: string,
   before: Awaited<ReturnType<typeof readRsvpSnapshot>>,
   changedAt: Date,
+  actor = "guest",
 ) {
   const after = await readRsvpSnapshot(database, invitationId);
-  await database
-    .insert(rsvpChanges)
-    .values({ invitationId, before, after, actor: "guest", changedAt });
+  await database.insert(rsvpChanges).values({ invitationId, before, after, actor, changedAt });
 }

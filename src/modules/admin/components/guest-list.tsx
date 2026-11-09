@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
 import { Button, Input, Select } from "@/modules/shared/components/ui";
 import {
   filterGuestList,
@@ -217,6 +218,13 @@ export function GuestList({ invitations }: { invitations: GuestListInvitation[] 
                 className="mt-6 space-y-6"
                 hidden={expanded !== invitation.id}
               >
+                <Link
+                  href={`/admin/guests/${invitation.id}/edit`}
+                  className="inline-flex min-h-11 items-center text-primary underline underline-offset-4"
+                  aria-label={`Edit invitation for ${invitation.name}`}
+                >
+                  Edit details
+                </Link>
                 {expanded === invitation.id ? (
                   <InvitationLifecycleControls
                     invitationId={invitation.id}
