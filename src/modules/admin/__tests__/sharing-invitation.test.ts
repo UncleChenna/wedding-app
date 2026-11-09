@@ -10,7 +10,7 @@ it("uses the configured host and approved voice for a published household", () =
   expect(result.share?.message).toContain("Hi Amina");
   expect(result).not.toHaveProperty("token");
 });
-it.each(["draft", "revoked"])("never exposes a usable URL for %s", (status) => {
+it.each(["revoked"])("never exposes a usable URL for %s", (status) => {
   const result = prepareSharingInvitation({ ...row, status }, settings, "https://wedding.example/");
   expect(result.share).toBeUndefined();
   expect(JSON.stringify(result)).not.toContain(row.token);
@@ -21,4 +21,14 @@ it("keeps invalid message fields out of share actions", () => {
     prepareSharingInvitation({ ...row, name: "{GuestName}" }, settings, "https://wedding.example/")
       .share,
   ).toBeUndefined();
+});
+
+it("offers draft sharing to the authenticated administrator with version tracking", () => {
+  const result = prepareSharingInvitation(
+    { ...row, status: "draft", tokenVersion: 2 },
+    settings,
+    "https://wedding.example/",
+  );
+  expect(result.share?.url).toContain(row.token);
+  expect(result.tracking).toEqual({ invitationId: row.id, expectedVersion: 2 });
 });

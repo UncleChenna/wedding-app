@@ -44,6 +44,11 @@ export async function AdminDashboard() {
             name: "Staff",
             text: "PINs for the gate, kitchen and bar.",
           },
+          {
+            href: appRoutes.adminClosure.path,
+            name: "After the celebration",
+            text: "Save your memories and close the event when the day is over.",
+          },
         ].map((area) => (
           <li key={area.name}>
             <h2 className="font-display text-3xl">
