@@ -44,6 +44,9 @@ is integrated and independently verified.
   database tests skipped**. No skipped test is represented as verified.
 - Full CI and TICKET-027 integration remain required. No database stack was started,
   no direct-key/RLS tests run, no external alert or message sent.
+- Independent source review of `370eb171`: no blocking findings within this scope.
+  CI run `42623840951` passed ticket validation, PR text and migrations; full
+  verification and invitation browser checks were still pending at handoff.
 
 # Risks and rollout
 
