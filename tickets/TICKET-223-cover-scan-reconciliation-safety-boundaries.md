@@ -2,7 +2,7 @@
 id: TICKET-223
 title: Cover scan reconciliation safety boundaries
 epic: checkin
-status: in_review
+status: in_progress
 priority: urgent
 estimate: S
 labels: [test]
@@ -69,3 +69,4 @@ Quick lint/types/19related tests pass; independent review clean. Final CI pendin
 - 2026-11-09 — todo → claimed — divine (codex)
 - 2026-11-09 — todo → in_progress — divine (codex)
 - 2026-11-09 — in_progress → in_review — divine (codex)
+- 2026-11-09 — in_review → in_progress — divine (codex) — Integrate verified external PR141 coverage assertion while retaining broader reconciliation regressions.
