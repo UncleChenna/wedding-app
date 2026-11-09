@@ -19,3 +19,9 @@ PR: https://github.com/UncleChenna/wedding-app/pull/120. Independent review foun
 Database slot released: wedding-30686dddb521 stopped backup:true, exit0, /tmp/TICKET-090-stop.log. No further DB needed unless integration changes behavior. Next: commit/push final evidence, integrate freshly fetched develop, run quick validation, ready PR through CLI, obtain final independent source review and full green CI. Do not mark done before merge.
 
 Verified lessons: scope status locators to the intended confirmation because global/lifecycle live regions coexist; use visible role locators because Next retains hidden previous routes. Avoid rendering a deleted editor after revalidation: redirect to a surviving authenticated destination.
+
+## 2026-11-09 — develop integration
+
+Integrated develop ede359cace7afb253c66f3df79cb97f8478fbe97 (sharing history and event closure) cleanly, preserving Edit details and lifted sharing Undo. The integrated route-inventory test exposed missing editor metadata; both authenticated routes and a neutral dynamic sample are now registered, and all five route tests pass. Merge commit dc56b57e completed normal precommit verification. Database/browser evidence above predates this integration; the editor/repository is unchanged except route inventory, and no new database run is claimed. Final CI remains required.
+
+Repeated local shell lesson: elevated Git invocations need the installed pnpm directory explicitly on PATH before hooks run; preserve hooks and rerun instead of bypassing. Use `export PATH="/Users/chenna/.npm-global/bin:$PATH"` in every such invocation.

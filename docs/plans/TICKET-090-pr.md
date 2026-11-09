@@ -30,6 +30,7 @@ Administrators can now create and correct invitation households from Guests. The
 - `pnpm exec tsx scripts/test-invitation-editor.ts`: **2 passed in 14.2s**, mobile and desktop (`/tmp/TICKET-090-browser.log`). Sixteen axe scans cover invalid and saved states across four palettes; no violations.
 - `pnpm verify:quick`: **passed**, lint/types and 12 related tests; six opt-in database cases are separately executed above (`/tmp/TICKET-090-quick.log`). Full CI remains required before merge.
 - Regression evidence: editor-route invalidation failed before its fix; historical guest removal failed before the preservation check; the browser reproduced a post-delete 404 before redirect/focus was added. Early browser harness attempts also corrected ambiguous global/lifecycle status locators, a retained hidden route's Side label, and a required synthetic fixture token. Assertions were retained.
+- Integrated develop `ede359cace7afb253c66f3df79cb97f8478fbe97` (sharing/event closure) cleanly. Existing route-inventory regression exposed omitted editor metadata; both admin routes and a neutral dynamic sample are registered, and all five route tests pass. Normal merge precommit verification passes. Database/browser evidence predates this metadata-only editor integration; no fresh post-integration database run is claimed.
 - Owned local database `wedding-30686dddb521` stopped with `backup:true` after verification; no other stacks touched.
 
 # Risks and rollout
@@ -42,8 +43,8 @@ Physical-device release QA remains tracked separately. Admin-only lighter UI evi
 
 `docs/reviews/TICKET-090/screenshots/` contains invalid and saved editor states for all four palettes, mobile 375px and desktop 1280px. Mobile screenshots include the entire form and bottom navigation; overflow assertions also pass at 768px. The screenshots are synthetic and contain no real guest data.
 
-![Mobile invalid contacts](../blob/TICKET-090/docs/reviews/TICKET-090/screenshots/mobile-ivory-gold-errors.png)
-![Mobile saved editor](../blob/TICKET-090/docs/reviews/TICKET-090/screenshots/mobile-ivory-gold-edit.png)
+![Mobile invalid contacts](https://github.com/UncleChenna/wedding-app/blob/TICKET-090/docs/reviews/TICKET-090/screenshots/mobile-ivory-gold-errors.png)
+![Mobile saved editor](https://github.com/UncleChenna/wedding-app/blob/TICKET-090/docs/reviews/TICKET-090/screenshots/mobile-ivory-gold-edit.png)
 
 # UI checklist
 
