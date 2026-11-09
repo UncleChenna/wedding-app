@@ -15,9 +15,23 @@ const snapshot = z.object({
 });
 export type HistorySnapshot = z.infer<typeof snapshot>;
 /** Strip everything outside the audit display contract, including unknown legacy fields. */
-export function historySnapshot(value: unknown): HistorySnapshot | null {
+export function historySnapshot(
+  value: unknown,
+  meals: ReadonlyMap<string, string> = new Map(),
+): HistorySnapshot | null {
   const parsed = snapshot.safeParse(value);
-  return parsed.success ? parsed.data : null;
+  if (!parsed.success) return null;
+  return {
+    ...parsed.data,
+    people: parsed.data.people.map((person) => {
+      if (!person.mealChoice || !z.uuid().safeParse(person.mealChoice).success) return person;
+      const name = meals.get(person.mealChoice);
+      return {
+        ...person,
+        mealChoice: name ? `${name} (current menu name)` : "Recorded meal; menu item unavailable",
+      };
+    }),
+  };
 }
 export function historyActor(actor: string): string {
   return actor === "guest" ? "Guest" : actor.startsWith("admin:") ? "Admin" : "Recorded update";

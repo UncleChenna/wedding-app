@@ -28,7 +28,11 @@ it("reads a consistent authorized snapshot and retains every history entry witho
     .fn()
     .mockResolvedValueOnce([{ householdName: "Household" }])
     .mockReturnValueOnce({ orderBy: order });
-  const select = vi.fn().mockReturnValue({ from: () => ({ where }) });
+  const select = vi
+    .fn()
+    .mockReturnValueOnce({ from: () => ({ where }) })
+    .mockReturnValueOnce({ from: () => ({ where }) })
+    .mockReturnValueOnce({ from: async () => [] });
   mocks.transaction.mockImplementation(
     async (run: (tx: { select: typeof select }) => Promise<unknown>) => run({ select }),
   );

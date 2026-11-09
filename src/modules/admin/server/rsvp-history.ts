@@ -2,7 +2,7 @@ import "server-only";
 import { desc, eq } from "drizzle-orm";
 import { z } from "zod";
 import { db } from "@/modules/shared/server/db/client";
-import { invitations, rsvpChanges } from "@/modules/shared/server/db/schema";
+import { invitations, menuItems, rsvpChanges } from "@/modules/shared/server/db/schema";
 import { createLogger } from "@/modules/shared/lib/logger";
 import { historyActor, historySnapshot, type RsvpHistoryEntry } from "../lib/rsvp-history-view";
 import { requireAdminPageAccess } from "./current-admin-access";
@@ -32,6 +32,10 @@ export async function getRsvpHistory(id: string): Promise<RsvpHistoryResult> {
           .from(rsvpChanges)
           .where(eq(rsvpChanges.invitationId, id))
           .orderBy(desc(rsvpChanges.changedAt), desc(rsvpChanges.id));
+        const menu = rows.length
+          ? await tx.select({ id: menuItems.id, name: menuItems.name }).from(menuItems)
+          : [];
+        const meals = new Map(menu.map((item) => [item.id, item.name]));
         return {
           status: "ready",
           name: invitation.householdName || "Invitation",
@@ -39,8 +43,8 @@ export async function getRsvpHistory(id: string): Promise<RsvpHistoryResult> {
             id: row.id,
             changedAt: row.changedAt.toISOString(),
             actor: historyActor(row.actor),
-            before: historySnapshot(row.before),
-            after: historySnapshot(row.after),
+            before: historySnapshot(row.before, meals),
+            after: historySnapshot(row.after, meals),
           })),
         };
       },

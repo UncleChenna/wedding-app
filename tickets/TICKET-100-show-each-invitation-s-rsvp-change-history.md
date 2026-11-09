@@ -39,7 +39,7 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-6).
 
 ## Acceptance criteria
 
-- [ ] Every change for a seeded invitation is listed newest first with time (e2e).
+- [x] Every change for a seeded invitation is listed newest first with time (e2e).
 
 ## Test plan
 
@@ -52,7 +52,7 @@ See: [Invitations and RSVP](../docs/prd.md#invitations-and-rsvp) (INV-6).
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-11-09: Added the protected per-invitation timeline with guest-list entry and return links. Real isolated browser evidence proves all three deliberately out-of-order seeded records appear newest first with UTC timestamps. Independent review corrected meal UUID display: current menu labels are identified explicitly, missing menu records remain honest. See docs/plans/TICKET-100-pr.md for privacy, accessibility, tests and limitations.
 
 ## Activity log
 

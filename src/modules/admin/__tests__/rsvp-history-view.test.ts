@@ -36,3 +36,18 @@ it("labels actors without exposing stored identifiers", () => {
   expect(historyActor("admin:private-id")).toBe("Admin");
   expect(historyActor("private@example.test")).toBe("Recorded update");
 });
+
+it("resolves stored meal UUIDs without inventing historical menu labels", () => {
+  const meal = "00000000-0000-4000-8000-000000000002";
+  const value = {
+    status: "rsvp_yes",
+    rsvp: null,
+    people: [{ name: "Ada", isPrimary: true, mealChoice: meal, dietaryNotes: null }],
+  };
+  expect(historySnapshot(value, new Map([[meal, "Jollof rice"]]))?.people[0]?.mealChoice).toBe(
+    "Jollof rice (current menu name)",
+  );
+  expect(historySnapshot(value)?.people[0]?.mealChoice).toBe(
+    "Recorded meal; menu item unavailable",
+  );
+});

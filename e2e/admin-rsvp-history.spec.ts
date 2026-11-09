@@ -17,6 +17,7 @@ test.describe("admin RSVP history", () => {
   let db: Sql;
   const ids: string[] = [];
   const changes: string[] = [];
+  let mealLabel = "";
   const suffix = randomBytes(4).toString("hex");
   const name = `History household ${suffix}`;
   const secret = `private-marker-${suffix}`;
@@ -33,6 +34,11 @@ test.describe("admin RSVP history", () => {
     }
     const invitationId = ids[0];
     if (!invitationId) throw new Error("Missing invitation fixture");
+    const [meal] = await db<
+      { id: string; name: string }[]
+    >`select id,name from menu_items order by id limit 1`;
+    if (!meal) throw new Error("Missing seeded menu item");
+    mealLabel = `${meal.name} (current menu name)`;
     const snapshot = {
       status: "rsvp_yes",
       rsvp: { attending: true, countAttending: 2, respondedAt: "2026-10-01T10:00:00Z" },
@@ -41,7 +47,7 @@ test.describe("admin RSVP history", () => {
           id: secret,
           name: `Ada ${"LongName".repeat(15)}`,
           isPrimary: true,
-          mealChoice: "Rice",
+          mealChoice: meal.id,
           dietaryNotes: "No nuts",
         },
       ],
@@ -110,6 +116,7 @@ test.describe("admin RSVP history", () => {
         .evaluateAll((times) => times.map((time) => time.getAttribute("datetime"))),
     ).toEqual(["2026-11-01T10:00:00.000Z", "2026-10-15T10:00:00.000Z", "2026-10-01T10:00:00.000Z"]);
     await expect(page.getByText("Admin update", { exact: true })).toBeVisible();
+    await expect(page.getByText(`Meal: ${mealLabel}`, { exact: true }).first()).toBeVisible();
     await page.setViewportSize({ width: 375, height: 812 });
     await page.emulateMedia({ reducedMotion: "reduce" });
     await mkdir(`docs/reviews/TICKET-100/${info.project.name}`, { recursive: true });
