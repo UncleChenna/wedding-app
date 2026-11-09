@@ -2,7 +2,7 @@
 id: TICKET-061
 title: Admit arriving guests with partial counts
 epic: checkin
-status: in_progress
+status: in_review
 priority: high
 estimate: M
 labels: [frontend, backend]
@@ -70,5 +70,3 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-3) · [Journey 2: check-
 - 2026-11-09 — in_progress → in_review — divine (codex)
 - 2026-11-09 — in_review → in_progress — divine (codex) — Repair CI fixtures that incorrectly require a local environment file despite injected DATABASE_URL
 - 2026-11-09 — in_review → in_progress — divine (codex) — Integrate verified TICKET-123 and validate combined scanner/admission/ordering CI sequence
-
-Final combined-base verification and unresolved initial-decode flake are recorded in `docs/plans/TICKET-061-pr.md`. Diagnostic-only changes preserve all assertions; final exact-head CI is required.
