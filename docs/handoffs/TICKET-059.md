@@ -53,3 +53,16 @@ fallback recipe from130 usesfreshmktemp cluster,assertDatabaseTarget,process-onl
 DATABASE_URL override,unchanged migrations; no.env edits. RootneedsrealstaffPIN
 route tests (doesnotrequireSupabaseAuth),screenshots/allthemeaxe. No DB createdyet.
 222harnessreconciliation awaitingrootread-onlyreview;134adminfinalCIrunning.
+
+Actualrouteverification: freshnativePostgreSQL16.14 at34381,0publictables before
+unchangedmigrations; process-onlyDATABASE_URL override retainedtargetguard. Production
+build passes after221integration42bf1083. RealPINgate login,anonymous/wrongrole/revoked
+session denial,deniedcamera/retry,actualQRpixels,trackcleanup,16theme/stateaxe scans,
+375/600/768/1280overflow,44pxtargets andhardreloadCLS0 bothprojects pass. Latestbrowser
+2/2pass1.2m (/tmp/TICKET-059-layout-cls.log); previous12.2s runwithoutcoldreload.
+Screenshots4 in docs/reviews/TICKET-059 independentlyreviewedclean afterrootfixed
+excessiveplaceholderwhitespace. NoSupabaseAuth/realtime/PG17orphysicalcamera claim.
+TemporaryDB beingstopped withdatadirpreserved; path .harness/temporary-postgres-path.
+Remaining: literalmanualsearchcriterion depends063; preserveCHK4whenclarifying
+implementationorder. FullCI/finalcoverageonce130merges;057ledgerblockedawaits222
+reconciliation although131actualrepairismerged. Noacceptanceboxfalselyticked.

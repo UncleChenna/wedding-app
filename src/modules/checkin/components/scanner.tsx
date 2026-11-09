@@ -99,7 +99,7 @@ export function Scanner() {
 
   return (
     <section className="flex w-full flex-col gap-6 text-left" aria-label="QR camera">
-      <div className="aspect-square w-full overflow-hidden rounded-lg bg-surface-muted">
+      <div className="relative aspect-square max-h-[min(42svh,22rem)] w-full overflow-hidden rounded-lg border border-border bg-surface-muted">
         <video
           ref={video}
           muted
@@ -107,6 +107,11 @@ export function Scanner() {
           aria-label="Camera viewfinder"
           className="h-full w-full object-cover"
         />
+        {state !== "scanning" && state !== "starting" && (
+          <p className="absolute inset-0 flex items-center justify-center px-6 text-center text-lg text-muted-foreground">
+            Camera is off
+          </p>
+        )}
       </div>
       <div
         className="min-h-24 text-lg leading-relaxed"

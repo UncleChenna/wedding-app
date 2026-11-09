@@ -11,25 +11,29 @@ async function Content() {
   const staff = await currentStaffDevice("gate");
   if (!staff) return <StaffEntry role="gate" />;
   return (
-    <PagePlaceholder
-      eyebrow="Staff"
-      title="Gate check-in"
-      description="Read a guest’s QR with this device’s camera."
-      backTo={appRoutes.staff}
-    >
-      <p className="text-lg leading-relaxed">You’re signed in.</p>
-      {staff.device.name && (
-        <p className="text-lg leading-relaxed">
-          This device is <span className="font-medium">{staff.device.name}</span>.
+    <main className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-6 px-6 py-6">
+      <header className="flex flex-col gap-3">
+        <h1 className="font-display text-4xl leading-tight">Gate check-in</h1>
+        <p className="text-lg leading-relaxed text-muted-foreground">
+          Read a guest’s QR with this device’s camera.
         </p>
-      )}
+        <p className="text-lg leading-relaxed">
+          <span>You’re signed in.</span>
+          {staff.device.name && (
+            <>
+              {" "}
+              Device: <span className="font-medium">{staff.device.name}</span>.
+            </>
+          )}
+        </p>
+      </header>
       <Scanner />
       <form action={staffSignOutAction}>
         <Button size="lg" variant="secondary" type="submit">
           Sign out
         </Button>
       </form>
-    </PagePlaceholder>
+    </main>
   );
 }
 
