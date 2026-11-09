@@ -2,7 +2,7 @@
 id: TICKET-222
 title: Reconcile merged tickets after a verified repair
 epic: foundations
-status: in_progress
+status: in_review
 priority: high
 estimate: S
 labels: [test]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: []
 blocks: []
 branch: TICKET-222
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/137
 created: 2026-11-09
 updated: 2026-11-09
 started: 2026-11-09
@@ -65,5 +65,5 @@ TICKET-057 and TICKET-054 were merged while their verification was failing, then
 - 2026-11-09 — backlog → todo — divine
 - 2026-11-09 — todo → claimed — divine (codex)
 - 2026-11-09 — todo → in_progress — divine (codex)
-
 - 2026-11-09 — Initial 74 focused tests and quick lint/types/76 related tests passed. Final CLI race matrix passed 20 cases; two shared-ledger mode refusals also pass after correcting their test environment. TICKET-057/054 status reconciliation is intentionally post-merge; no direct/manual status mutation occurred. PR: https://github.com/UncleChenna/wedding-app/pull/137.
+- 2026-11-09 — in_progress → in_review — divine (codex)
