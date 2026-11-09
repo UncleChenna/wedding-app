@@ -41,9 +41,10 @@ See: [Tech stack and architecture](../docs/prd.md#tech-stack-and-architecture) Â
 
 ## Acceptance criteria
 
-- [ ] A write appears on a subscribed client within 2s locally (e2e timing assertion).
-- [ ] Guests cannot subscribe to staff channels (tested).
-- [ ] After a dropped connection the client refetches and shows no gaps.
+- [x] A write appears on a subscribed client within 2s locally (e2e timing assertion).
+- [x] Guests cannot subscribe to staff channels (tested).
+- [x] After a dropped connection the client refetches and shows no gaps.
+- [x] Gate, bar and anonymous subscribers never receive dietary notes or other households (ADR 0024, from TICKET-027).
 
 ## Test plan
 
@@ -59,6 +60,24 @@ See: [Tech stack and architecture](../docs/prd.md#tech-stack-and-architecture) Â
 ## Notes / decisions
 
 _Agents append dated notes here while working._
+
+- 2026-11-09 (unclechenna, claude):
+  - **Notifications, not data.** Messages carry ids and statuses only (`order.changed`: station order id, order id,
+    status; `checkin.recorded`: invitation id, admitted, conflict). Strict schemas refuse any other field when
+    publishing and receiving, so names and dietary notes can't travel on a channel. Boards refetch details from
+    their own REST endpoint, which applies the station projection (TICKET-128).
+  - **Published in the write's transaction** with `realtime.send`, so a rolled-back order publishes nothing. Plain
+    Postgres (CI) has no Realtime, and publishing is a no-op there.
+  - **Tokens:** 10-minute HS256 tokens signed with the new optional `SUPABASE_JWT_SECRET`. Each refresh rechecks
+    the live staff session, so a revoked device stops receiving within 10 minutes. Without the secret, the token
+    route answers 503 and screens keep refetching on a timer.
+  - **Station client:** `createStationClient` uses supabase-js's `accessToken` option. Without it, a plain client's
+    Auth module reset the Realtime token to the publishable key, and joins failed under vitest.
+  - **"End-to-end":** the timing and two-subscriber tests run two real Realtime clients (Node WebSocket) through
+    the same helper the browser uses, against the local stack. There's no board UI yet (out of scope), so there's
+    no browser-context test; the board tickets (TICKET-075, TICKET-076) add one.
+  - **Check-in events:** `checkin.recorded` is defined and allowed, but nothing publishes it yet. The gate write
+    paths (TICKET-061, TICKET-173) call `publishToStation` when they land.
 
 ## Activity log
 
