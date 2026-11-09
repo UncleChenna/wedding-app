@@ -1,11 +1,15 @@
-# TICKET-043: revoke and reissue invitations
+# Ticket
+
+TICKET-043: revoke and reissue invitations.
+
+# Summary
 
 Administrators can revoke an invitation or replace its link from Admin Sharing,
 with confirmation. The old link stops working online, saved replies remain intact,
 and every successful change records the authenticated actor and time. Disconnected
 scanners learn the change after refreshing; the UI explicitly explains this limit.
 
-## Changes and acceptance evidence
+## Changes
 
 - Live administrator authentication and strict expected-status/version commands
   protect the action. A row lock serializes it with RSVP changes; audit insertion
@@ -22,6 +26,13 @@ scanners learn the change after refreshing; the UI explicitly explains this limi
   Initial rendering, cancellation and reissue do not arm this fallback.
 - Audit records contain actor/time and transition details, without capabilities,
   guest contacts, IP addresses or PINs.
+
+## Acceptance criteria and evidence
+
+1. Old invitation links return neutral 404 after reissue; replacement links work: authenticated mobile/desktop journey passes.
+2. Old signatures remain verifiable but old versions are classified as replaced: signed snapshot contract test passes.
+3. Every successful revoke/reissue stores actor and time atomically: database rollback/concurrency tests and real authenticated actor assertions pass.
+4. Online old links and versions are rejected; snapshot freshness and honest disconnected-device wording are tested. Real offline scanner refresh remains in dependent TICKET-065.
 
 ## Verification
 
@@ -66,7 +77,7 @@ focus lands on Reissue, the link fails, and the reply/audit history remain.
 
 ![Mobile confirmation](../raw/TICKET-043/docs/reviews/TICKET-043/screenshots/admin-ivory-gold-375-revoke.png)
 
-## Migration, rollback and remaining release gates
+## Risks and rollout
 
 Generated `0019_invitation-lifecycle.sql` adds one RLS-enabled audit table; its SQL
 is byte-identical to this branch's formerly reviewed 0013 migration. Develop's
