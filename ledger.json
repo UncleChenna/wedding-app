@@ -2119,9 +2119,10 @@
         "- 2026-11-08 — in_progress → blocked — divine (codex) — PR #110 published; awaiting UI review exception for physical-device and fresh Lighthouse/CLS checks retained in TICKET-201. CI pending.",
         "- 2026-11-08 — blocked → in_progress — divine (codex) — Apply independent PR review fixes; retain release gates",
         "- 2026-11-08 — in_progress → in_review — divine (codex)",
-        "- 2026-11-09 — in_review → in_progress — divine (codex) — Integrate develop37e9202 harness improvements and refresh verification"
+        "- 2026-11-09 — in_review → in_progress — divine (codex) — Integrate develop37e9202 harness improvements and refresh verification",
+        "- 2026-11-09 — in_progress → in_review — divine (codex)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-098",
