@@ -15,6 +15,11 @@ export async function AdminDashboard() {
       <ul className="mt-12 grid gap-8 sm:grid-cols-2">
         {[
           {
+            href: appRoutes.adminThemes.path,
+            name: "Themes",
+            text: "Preview your colours and fonts, then publish them.",
+          },
+          {
             href: appRoutes.adminSharing.path,
             name: "Sharing",
             text: "Send a personal invitation or copy its link.",

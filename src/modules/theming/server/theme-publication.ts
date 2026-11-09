@@ -1,4 +1,5 @@
 import "server-only";
+import { isDeepStrictEqual } from "node:util";
 import { z } from "zod";
 import { loadTheme, ThemeValidationError } from "../lib/load-theme";
 import type { ActiveThemes } from "../lib/schema";
@@ -16,4 +17,16 @@ export function validateThemePublication(input: unknown): ActiveThemes {
     );
   }
   return { light, dark };
+}
+
+/** Compare normalized tokens, never property ordering, while draft rows are locked. */
+export function assertThemeDraftsUnchanged(current: unknown, reviewed: unknown): void {
+  // JSON persistence omits optional properties whose value is undefined.
+  const normalize = (input: unknown): unknown =>
+    JSON.parse(JSON.stringify(validateThemePublication(input)));
+  if (!isDeepStrictEqual(normalize(current), normalize(reviewed))) {
+    throw new ThemeValidationError(
+      "The saved drafts changed in another editor. Reload to review them before activating.",
+    );
+  }
 }

@@ -1,10 +1,14 @@
-# TICKET-166: event closure and anonymous memories
+# Ticket
+
+TICKET-166: event closure and anonymous memories.
+
+# Summary
 
 After the event, an authenticated administrator can close ordering, revoke staff
 and devices, and download anonymous counts/menu statistics as CSV or themed PDF.
 This draft preserves admission evidence and excludes data deletion.
 
-## Implementation
+## Changes
 
 - Protected `/admin/event-closure` page linked from the control room, with typed
   confirmation and an initially unchecked scanner-evidence acknowledgment.
@@ -16,7 +20,15 @@ This draft preserves admission evidence and excludes data deletion.
   contacts, guest names and dietary notes; downloads use private no-store headers.
 - Existing schema only; no new migration or production operation.
 
+## Acceptance criteria and evidence
+
+- Existing gate/kitchen/bar sessions are rejected after closure, even after restoring a future synthetic date to distinguish revocation from expiry: real authenticated rehearsal passed.
+- CSV/PDF exports exclude names, contacts and dietary notes: aggregate/storage, serialization, native PDF and private-download tests passed.
+- Premature closure is refused; repeated closure is idempotent and concurrent accepted orders are preserved. No admission evidence is deleted. Production timing and operator confirmation remain mandatory.
+
 ## Verification
+
+Current 2026-11-09 integration: merged develop `fffe7b8d` without conflicts, preserving current admin navigation and ordering logic. All eight focused non-database suites / 53 tests pass. The quick gate passes lint, types and 324 related tests (89 skipped). New-head CI remains pending. Database and browser reruns are queued until the shared verification slot is available; the prior results below are explicitly historical evidence. No database was started or mutated during this integration.
 
 - Full local gate: lint/types/format/build pass;1076 unit tests pass (99 conditional
   skips),851 browser checks pass (195 skips). Skips are not claimed as evidence.
@@ -31,17 +43,17 @@ This draft preserves admission evidence and excludes data deletion.
 - Quick verification passes after the concurrency test. Full-gate evidence predates
   that test-only addition; required CI must be rechecked on the final review head.
 
-## Remaining before review
+## Remaining integration work
 
 Keyboard/focus,44px targets, focused controls above mobile navigation, reduced motion
 and exactly0 cold-load CLS at all three widths pass. All seven long PDF pages were
 visually inspected. Physical-phone keyboard/safe-area and download checks remain;
-the requested review-only exception retaining release checks is unanswered.
+the owner authorizes preview progress while these remain explicitly tracked in TICKET-201. No physical-device result is claimed.
 See `docs/reviews/TICKET-166/ui-review.md` and the ticket handoff for exact evidence.
 
-## Review and rollout
+## Risks and rollout
 
-Base: develop c9c9e66010ee773189477139d4f8b0d30cf481e1. Review with the owned isolated
+Current integration base: develop `fffe7b8d`. Review with the owned isolated
 stack only: `pnpm exec tsx scripts/test-event-closure.ts` refuses existing staff or
 devices, creates synthetic identities, and restores its exact fixtures/settings.
 

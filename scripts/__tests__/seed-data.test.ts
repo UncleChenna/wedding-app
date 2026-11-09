@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { describe, expect, it } from "vitest";
 
 import { buildSeedData } from "../seed-data";
@@ -17,6 +18,53 @@ describe("buildSeedData", () => {
 
   it("is deterministic", () => {
     expect(buildSeedData()).toEqual(data);
+  });
+
+  it("repeats every row hash for both profiles", () => {
+    const hash = (rows: unknown) => createHash("sha256").update(JSON.stringify(rows)).digest("hex");
+    for (const profile of ["default", "load"] as const) {
+      const first = buildSeedData(20261021, profile);
+      expect(hash(buildSeedData(20261021, profile))).toBe(hash(first));
+      expect(hash(buildSeedData(42, profile))).not.toBe(hash(first));
+    }
+  });
+
+  it("provides exactly 350 named guests and 30 usable tables for load tests", () => {
+    const load = buildSeedData(20261021, "load");
+    expect(load.guests).toHaveLength(350);
+    expect(load.tables).toHaveLength(30);
+    expect(new Set(load.guests.map((guest) => guest.tableId)).size).toBe(30);
+    expect(load.guests.every((guest) => guest.tableId)).toBe(true);
+    expect(new Set(load.tables.map((table) => table.number)).size).toBe(30);
+    expect(load.menuItems).toHaveLength(16);
+    expect(load.tables.reduce((sum, table) => sum + table.capacity, 0)).toBeGreaterThanOrEqual(350);
+  });
+
+  it("has explicit revoked, declined, partially admitted and sold-out examples", () => {
+    expect(data.invitations.some((invitation) => invitation.status === "revoked")).toBe(true);
+    expect(data.rsvps.some((rsvp) => !rsvp.attending)).toBe(true);
+    expect(data.menuItems.some((item) => item.isAvailable === false)).toBe(true);
+    expect(
+      data.scanEvents.some((event) => {
+        const rsvp = data.rsvps.find((item) => item.invitationId === event.invitationId);
+        return event.admittedPeople > 0 && event.admittedPeople < (rsvp?.countAttending ?? 0);
+      }),
+    ).toBe(true);
+  });
+
+  it("seats complete households on the invitation's table", () => {
+    for (const profile of ["default", "load"] as const) {
+      const fixtures = buildSeedData(20261021, profile);
+      for (const invitation of fixtures.invitations) {
+        const guests = fixtures.guests.filter((guest) => guest.invitationId === invitation.id);
+        for (const guest of guests) expect(guest.tableId ?? null).toBe(invitation.tableId ?? null);
+      }
+      for (const table of fixtures.tables) {
+        expect(
+          fixtures.guests.filter((guest) => guest.tableId === table.id).length,
+        ).toBeLessThanOrEqual(table.capacity);
+      }
+    }
   });
 
   it("produces a realistic 200-300 guest wedding", () => {

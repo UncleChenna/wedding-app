@@ -84,10 +84,11 @@ the coordination checkout stays clean.
 | `pnpm t:board`                                                                                    | Terminal kanban (live)                                                                                                                 |
 | `pnpm t:next [--module m] [--human] [--json]`                                                     | Best `todo` ticket with every blocker done. Skips `human` tickets unless `--human`                                                     |
 | `pnpm t:show <id> [--json]`                                                                       | One ticket (live)                                                                                                                      |
+| `pnpm t:start <id> [--ahead] [--db] [--dry-run]`                                                  | Backlog→todo if needed, claim, `wt:new`, then `in_progress` with a push from the new worktree; resumes your own ticket                 |
 | `pnpm t:claim <id> --owner <name> --agent <name> [--ahead]`                                       | Atomic claim; fails if claimed or blocked (`--ahead`: allowed while blockers are in progress or review)                                |
 | `pnpm t:release <id>`                                                                             | Owner gives back a claimed `todo` ticket                                                                                               |
 | `pnpm t:move <id> <status> [--reason text] [--push]`                                              | Enforced transition; `--push` commits only the assigned ticket as `TICKET-NNN: move to <status>` and pushes                            |
-| `pnpm t:pr <id>`                                                                                  | Verify, push, open the PR (title `TICKET-NNN: <title>`, body from `docs/plans/TICKET-NNN-pr.md`), move to `in_review`, push            |
+| `pnpm t:pr <id> [--full]`                                                                         | `verify:quick` (`--full`: whole suite), push, open or ready the PR (body from `docs/plans/TICKET-NNN-pr.md`), move to `in_review`      |
 | `pnpm t:new --title … --epic … --module … [--priority --estimate --labels --blocked-by --status]` | Scaffold the next id                                                                                                                   |
 | `pnpm t:sync <id>`                                                                                | Sync the named ticket only, on its own branch                                                                                          |
 | `pnpm t:validate`                                                                                 | Schema, sections, unique and contiguous ids (ledger-reserved gaps allowed), real dependencies, no cycles, status/branch/PR consistency |
@@ -143,7 +144,29 @@ Every new ticket uses its exact ID as its branch, such as `TICKET-188`. Push to 
 Keep the ticket ID in the Markdown filename, commit subjects and PR title (`TICKET-188: task title`).
 One ticket produces one branch and PR; additional scope needs its own ticket. All PRs target `develop`.
 Agents push progress and open a draft PR for unfinished handoffs; finished work must have a ready review PR.
-Only the human reviews and merges, and agents never enable auto-merge or push directly to integration branches.
+CI's full `pnpm verify` is the merge gate. Once every required check is green, the ticket owner's agent merges its
+own PR into `develop`, unless the owner asked to review first. Agents never merge another owner's PR, never merge on
+red or pending checks, never enable auto-merge, and never push directly to integration branches. Only the owner
+merges into `main`.
+
+The PR body (`docs/plans/TICKET-NNN-pr.md`) is the single write-up for finished work. A plan file, review file and
+handoff are optional; write `docs/handoffs/TICKET-NNN.md` only for unfinished or handed-over work.
+
+## Light lane
+
+Small fixes may skip the ticket file (TICKET-217) when they:
+
+- change about 50 lines or fewer,
+- touch no schema, migration, RLS, CI workflow or dependency, and
+- add no new feature or user-facing flow.
+
+For a light-lane fix:
+
+1. Use a `chore/<slug>` (or `fix/<slug>`, `docs/<slug>`) branch from freshly fetched `origin/develop`.
+2. Make a Conventional Commit (`fix: …`, `docs: …`, `chore: …`).
+3. Open a PR to `develop` with a short description: what changed, why, and the checks run.
+
+The same merge rule applies. Anything larger, or anything you're unsure about, gets a ticket.
 
 `pnpm t:pr` requires nonempty Summary, Changes, Acceptance criteria and evidence, Verification, and Risks and
 rollout sections. Explain the before/after result, implementation details relevant to review, evidence for each

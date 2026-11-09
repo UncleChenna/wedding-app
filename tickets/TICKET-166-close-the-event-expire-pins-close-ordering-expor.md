@@ -59,6 +59,8 @@ See: [Security](../docs/prd.md#security) · [Privacy (UK GDPR)](../docs/prd.md#p
 
 ## Notes / decisions
 
+2026-11-09: Owner standing authorization resolves the preview-only permission blocker; physical keyboard, safe-area and memories-download checks remain unchecked in release-blocking TICKET-201. Integrated develop fffe7b8d cleanly; eight focused non-database suites / 53 tests pass. Current quick checks pass lint, types and 324 related tests (89 skipped); final-head CI remains pending. Prior full/database/browser evidence is retained in the handoff; no new database was started or production closure attempted.
+
 2026-11-06: Added internal anonymous PDF renderer alongside the CSV foundation.
 Six PDF tests and verify:quick pass; native ivory PDF text/raster inspected.
 Database integration, authenticated download, closure/revocation and full review

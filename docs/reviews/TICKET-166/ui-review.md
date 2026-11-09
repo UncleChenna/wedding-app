@@ -1,7 +1,7 @@
-# TICKET-166 UI review — incomplete
+# TICKET-166 UI review — preview release gates retained
 
 2026-11-06. Routes: /admin, /admin/event-closure; downloadable memories PDFs.
-Disposition: CHANGES REQUESTED until the outstanding verification below is complete.
+Historical automated evidence follows. Current disposition (2026-11-09): the owner authorizes preview progress while physical-phone keyboard, safe-area and PDF/CSV download checks stay unchecked in release-blocking TICKET-201. Current integration quick checks pass lint, types and 324 related tests (89 skipped); new-head CI and any required focused integration reruns remain pending. No device result is claimed.
 
 - PASS (component tests): control-room navigation reaches the closure page; page
   authorization precedes settings reads. PDF and CSV are native download links
@@ -24,8 +24,7 @@ Disposition: CHANGES REQUESTED until the outstanding verification below is compl
   inspected. Reduced-motion interaction passes. Three fresh authenticated browser
   contexts measure exactly0 CLS after fonts and network settle at375/768/1280.
 - NOT VERIFIED: physical-phone on-screen keyboard/safe-area and download behavior.
-  Requested a review-only exception retaining those release checks; unanswered.
-  No final UI approval.
+  Owner standing authorization resolves the preview-only approval blocker; the exact physical checks remain mandatory in TICKET-201.
 - N/A: page photography, QR codes and staff scanner feedback; none changed here.
   No new animation; reduced-motion browser interaction passes.
 - PASS: full gate (1076 unit passes/99 conditional skips,851 browser passes/195
@@ -39,6 +38,6 @@ Disposition: CHANGES REQUESTED until the outstanding verification below is compl
   quick gate pass. The long-menu rows and page numbers remain readable without clipping;
   authenticated browser downloads now pass; device downloads remain unverified.
 
-The managed database is now healthy after the user-approved backup-preserving stop
-of TICKET-048. All database/browser evidence uses this ticket's isolated environment.
+The earlier managed database rehearsal completed after the user-approved backup-preserving stop
+of TICKET-048. The database is not being started for the current integration until the shared slot is available. All database/browser evidence uses this ticket's isolated environment.
 No production event closure or real-device verification is claimed.

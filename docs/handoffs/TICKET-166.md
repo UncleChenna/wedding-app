@@ -1,3 +1,24 @@
+# 2026-11-09 resumed integration checkpoint
+
+Resumed the existing divine claim through the CLI under the owner's standing
+project authorization. Integrated develop `fffe7b8d` without conflicts; no new
+migration or closure implementation change. Admin navigation retains both the
+current theme/settings destinations and event closure. Eight focused non-database
+suites / 53 tests pass (log `/tmp/TICKET-166-integrated-focused.log`).
+
+Physical-phone keyboard, safe-area and PDF/CSV download checks remain unverified,
+now explicitly listed in release-blocking TICKET-201. This resolves only the old
+preview-permission blocker, not production release readiness or event closure.
+No database or browser process was started. Database/browser integration checks
+must be coordinated after TICKET-089 releases capacity. Prior verified results
+below remain historical evidence, not a claim about current-base reruns.
+
+Current quick gate passes lint, types and 324 related tests (89 skipped), log
+`/tmp/TICKET-166-integrated-quick.log`.
+
+Next: commit/push draft PR105, independent review, then required
+focused integration checks and final-head CI. Do not merge this checkpoint.
+
 # TICKET-166 handoff
 
 2026-11-05. Owner divine/codex. Branch TICKET-166, base develop

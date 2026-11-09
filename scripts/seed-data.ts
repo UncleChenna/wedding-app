@@ -16,6 +16,7 @@ export interface SeedData {
   guests: Insert<typeof schema.guests>[];
   rsvps: Insert<typeof schema.rsvps>[];
   checkIns: Insert<typeof schema.checkIns>[];
+  scanEvents: Insert<typeof schema.scanEvents>[];
   menuItems: Insert<typeof schema.menuItems>[];
   orders: Insert<typeof schema.orders>[];
   stationOrders: Insert<typeof schema.stationOrders>[];
@@ -106,11 +107,14 @@ const MENU: Array<Omit<Insert<typeof schema.menuItems>, "id" | "sortOrder">> = [
   },
 ];
 
-/** Build a deterministic fake data set: same seed, same data. */
-export function buildSeedData(seed = 20261021): SeedData {
+export type SeedProfile = "default" | "load";
+export const SEED_TIME = new Date("2026-10-21T12:00:00Z");
+
+/** Build synthetic local fixtures; never use deterministic tokens in production. */
+export function buildSeedData(seed = 20261021, profile: SeedProfile = "default"): SeedData {
   const faker = new Faker({ locale: [en] });
   faker.seed(seed);
-  const now = new Date("2026-10-21T12:00:00Z");
+  const now = new Date(SEED_TIME);
   const token = (length: number) => faker.string.alphanumeric({ length, casing: "mixed" });
 
   const themes = listThemes().map((theme) => ({
@@ -146,27 +150,33 @@ export function buildSeedData(seed = 20261021): SeedData {
     { id: "bar-tablet-1", name: "Bar tablet", role: "bar", registeredAt: now },
   ];
 
-  const tables: SeedData["tables"] = Array.from({ length: 28 }, (_, i) => ({
-    id: faker.string.uuid(),
-    number: i + 1,
-    name: i === 0 ? "Top table" : null,
-    capacity: 10,
-  }));
+  const tables: SeedData["tables"] = Array.from(
+    { length: profile === "load" ? 30 : 28 },
+    (_, i) => ({
+      id: faker.string.uuid(),
+      number: i + 1,
+      name: i === 0 ? "Top table" : null,
+      capacity: profile === "load" ? 12 : 10,
+    }),
+  );
 
   const invitations: SeedData["invitations"] = [];
   const guests: SeedData["guests"] = [];
   const rsvps: SeedData["rsvps"] = [];
 
-  for (let i = 0; i < 110; i++) {
+  for (let i = 0; profile === "load" ? guests.length < 350 : i < 110; i++) {
     const invitationId = faker.string.uuid();
     const lastName = faker.person.lastName();
-    const householdSize = faker.helpers.weightedArrayElement([
+    const generatedSize = faker.helpers.weightedArrayElement([
       { weight: 35, value: 1 },
       { weight: 40, value: 2 },
       { weight: 15, value: 3 },
       { weight: 10, value: 4 },
     ]);
-    const tagAlongSeats = faker.helpers.maybe(() => 1, { probability: 0.3 }) ?? 0;
+    const householdSize =
+      profile === "load" ? Math.min(generatedSize, 350 - guests.length) : generatedSize;
+    const tagAlongSeats =
+      profile === "load" ? 0 : (faker.helpers.maybe(() => 1, { probability: 0.3 }) ?? 0);
     invitations.push({
       id: invitationId,
       token: token(43),
@@ -179,21 +189,30 @@ export function buildSeedData(seed = 20261021): SeedData {
         }) ?? null,
     });
 
-    const status = faker.helpers.weightedArrayElement([
-      { weight: 70, value: "attending" as const },
-      { weight: 12, value: "declined" as const },
-      { weight: 18, value: "pending" as const },
-    ]);
+    const status =
+      profile === "load"
+        ? "attending"
+        : i === 0
+          ? "pending"
+          : i === 1
+            ? "declined"
+            : faker.helpers.weightedArrayElement([
+                { weight: 70, value: "attending" as const },
+                { weight: 12, value: "declined" as const },
+                { weight: 18, value: "pending" as const },
+              ]);
     const currentInvitation = invitations[invitations.length - 1];
     if (currentInvitation)
       currentInvitation.status =
-        status === "attending"
-          ? "rsvp_yes"
-          : status === "declined"
-            ? "rsvp_no"
-            : currentInvitation.sentAt
-              ? "sent"
-              : "draft";
+        profile === "default" && i === 0
+          ? "revoked"
+          : status === "attending"
+            ? "rsvp_yes"
+            : status === "declined"
+              ? "rsvp_no"
+              : currentInvitation.sentAt
+                ? "sent"
+                : "draft";
     if (status !== "pending")
       rsvps.push({
         id: faker.string.uuid(),
@@ -247,20 +266,27 @@ export function buildSeedData(seed = 20261021): SeedData {
   // Seat attending guests, filling tables in order (household stays together).
   const attending = new Set(rsvps.filter((r) => r.attending).map((r) => r.invitationId));
   const seated = new Map<string, number>();
-  let tableIndex = 1; // table 1 is the top table, left empty for the couple
-  for (const guest of guests) {
-    if (!attending.has(guest.invitationId)) continue;
-    let table = tables[tableIndex];
-    if (table && (seated.get(table.id!) ?? 0) >= table.capacity) table = tables[++tableIndex];
-    if (!table) break;
-    guest.tableId = table.id!;
-    seated.set(table.id!, (seated.get(table.id!) ?? 0) + 1);
+  for (const invitation of invitations) {
+    if (!invitation.id) throw new Error("Seed invitation requires an ID");
+    if (!attending.has(invitation.id)) continue;
+    const household = guests.filter((guest) => guest.invitationId === invitation.id);
+    const table = tables.find(
+      (candidate) =>
+        candidate.id && candidate.capacity - (seated.get(candidate.id) ?? 0) >= household.length,
+    );
+    if (!table?.id) throw new Error("Seed capacity cannot seat a complete household");
+    invitation.tableId = table.id;
+    for (const guest of household) guest.tableId = table.id;
+    seated.set(table.id, (seated.get(table.id) ?? 0) + household.length);
   }
 
   const gate = staff.find((s) => s.role === "gate")!;
+  const partial = rsvps.find((rsvp) => rsvp.attending && rsvp.countAttending > 1);
+  if (!partial || !gate.id)
+    throw new Error("Seed requires a partial-admission household and gate staff");
   const checkIns: SeedData["checkIns"] = faker.helpers
     .arrayElements(
-      guests.filter((g) => g.tableId),
+      guests.filter((g) => g.tableId && g.invitationId !== partial.invitationId),
       30,
     )
     .map((guest) => ({
@@ -277,6 +303,7 @@ export function buildSeedData(seed = 20261021): SeedData {
     id: faker.string.uuid(),
     sortOrder: i,
     maxPerOrder: 5,
+    isAvailable: i !== MENU.length - 1,
     description:
       faker.helpers.maybe(() => faker.lorem.sentence({ min: 4, max: 9 }), {
         probability: 0.6,
@@ -295,7 +322,7 @@ export function buildSeedData(seed = 20261021): SeedData {
     const status = faker.helpers.arrayElement([
       "received",
       "preparing",
-      "ready",
+      "cancelled",
       "served",
     ] as const);
     const submittedAt = faker.date.recent({ days: 1, refDate: now });
@@ -321,7 +348,7 @@ export function buildSeedData(seed = 20261021): SeedData {
           id: childId,
           orderId,
           station: item.station,
-          status: status === "ready" ? "preparing" : status,
+          status,
           createdAt: submittedAt,
         });
       }
@@ -338,19 +365,68 @@ export function buildSeedData(seed = 20261021): SeedData {
     }
   }
 
+  const scanEvents: SeedData["scanEvents"] = [
+    ...checkIns.map((checkIn) => {
+      const guest = guests.find((candidate) => candidate.id === checkIn.guestId);
+      if (!guest) throw new Error("Seed archive has no named guest");
+      return {
+        id: faker.string.uuid(),
+        clientEventId: checkIn.clientEventId,
+        invitationId: guest.invitationId,
+        staffId: gate.id,
+        deviceId: "gate-phone-1",
+        reportedAt: checkIn.checkedInAt,
+        receivedAt: now,
+        reportedResult: "valid" as const,
+        result: "valid" as const,
+        reportedPeople: 1,
+        admittedPeople: 1,
+        conflict: false,
+        source: "legacy",
+        legacyCheckInId: checkIn.id,
+      };
+    }),
+    {
+      id: faker.string.uuid(),
+      clientEventId: faker.string.uuid(),
+      invitationId: partial.invitationId,
+      staffId: gate.id,
+      deviceId: "gate-phone-1",
+      reportedAt: now,
+      receivedAt: now,
+      reportedResult: "valid",
+      result: "valid",
+      reportedPeople: 1,
+      admittedPeople: 1,
+      conflict: false,
+      source: "online",
+    },
+  ];
+  // Explicit timestamps avoid database defaultNow() changing persisted row hashes.
+  const timestamps = <T extends object>(rows: T[]) =>
+    rows.map((row) => ({
+      createdAt: now,
+      ...row,
+      updatedAt: now,
+    }));
   return {
-    eventSettings: { ...defaultEventSettings, coupleNames: [...defaultEventSettings.coupleNames] },
-    themes,
-    staff,
-    registeredDevices,
-    tables,
-    invitations,
-    guests,
-    rsvps,
-    checkIns,
-    menuItems,
-    orders,
-    stationOrders,
-    orderItems,
+    eventSettings: {
+      ...defaultEventSettings,
+      coupleNames: [...defaultEventSettings.coupleNames],
+      updatedAt: now,
+    },
+    themes: timestamps(themes),
+    staff: timestamps(staff),
+    registeredDevices: registeredDevices.map((row) => ({ ...row, updatedAt: now })),
+    tables: timestamps(tables),
+    invitations: timestamps(invitations),
+    guests: timestamps(guests),
+    rsvps: timestamps(rsvps),
+    checkIns: checkIns.map((row) => ({ ...row, createdAt: now })),
+    scanEvents,
+    menuItems: timestamps(menuItems),
+    orders: timestamps(orders),
+    stationOrders: timestamps(stationOrders),
+    orderItems: timestamps(orderItems),
   };
 }
