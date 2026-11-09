@@ -65,9 +65,9 @@ See: [Security](../docs/prd.md#security) · [Privacy (UK GDPR)](../docs/prd.md#p
 _Agents append dated notes here while working._
 
 - 2026-11-09 (unclechenna, claude):
-  - **Design:** no browser policy on any table; one receive-only Broadcast policy per station channel (ADR 0023).
+  - **Design:** no browser policy on any table; one receive-only Broadcast policy per station channel (ADR 0024).
     Staff can therefore read no table columns at all, which is stricter than "only permitted columns".
-  - **Owner approval:** asked directly on 2026-11-09 whether they approve ADR 0023, the owner (UncleChenna) answered "i approve, merge all the prs". ADR 0023 is now Accepted.
+  - **Owner approval:** asked directly on 2026-11-09 whether they approve the RLS ADR (then numbered 0023), the owner (UncleChenna) answered "i approve, merge all the prs". ADR 0024 is now Accepted.
   - **Server projections:** no browser-visible payload exists yet, so nothing can leak private columns today. The
     payloads arrive in TICKET-033, which must show that gate, bar and anonymous subscribers never receive dietary
     notes or other households (TICKET-128 publishes the field contract). The RLS and Realtime half is tested here.

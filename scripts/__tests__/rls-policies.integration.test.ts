@@ -2,7 +2,7 @@ import postgres, { type Sql, type TransactionSql } from "postgres";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { assertDatabaseTarget } from "../database-target";
 
-// TICKET-027 / ADR 0023. Runs against this worktree's seeded local Supabase stack:
+// TICKET-027 / ADR 0024. Runs against this worktree's seeded local Supabase stack:
 // RUN_RLS_DB_TESTS=1 pnpm vitest run scripts/__tests__/rls-policies.integration.test.ts
 const stations = ["gate", "kitchen", "bar"] as const;
 let client: Sql;

@@ -1,4 +1,4 @@
-# 0023 — Row-level security: server-only tables and per-station broadcast channels
+# 0024 — Row-level security: server-only tables and per-station broadcast channels
 
 - Status: Accepted · 2026-11-09 (TICKET-027). Approved by the owner (UncleChenna) on 2026-11-09.
 

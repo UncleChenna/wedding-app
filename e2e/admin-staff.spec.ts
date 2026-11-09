@@ -166,4 +166,52 @@ test.describe("admin staff PINs", () => {
       await kitchen.close();
     }
   });
+
+  test("TICKET-086: a kitchen person opts in to order alerts with a WhatsApp number", async ({
+    page,
+    request,
+  }, info) => {
+    await signInAdmin(page, request, adminTestEmail(info.project.name, "alerts"));
+    await page.goto("/admin/staff");
+    const name = tag + " Bisi";
+    const add = page.getByRole("region", { name: "Add a person" });
+    await add.getByLabel("Name").fill(name);
+    await add.getByLabel("Works at").selectOption("bar");
+    await add.getByRole("button", { name: "Add a person" }).click();
+    await expect(page.getByRole("heading", { name, level: 3 })).toBeVisible();
+
+    const save = page.getByRole("button", { name: `Save: ${name}'s alerts` });
+    const form = page.locator("form").filter({ has: save });
+    // Opting in with no number is refused, and what was ticked survives.
+    await form.getByLabel("Send them order alerts").check();
+    await save.click();
+    await expect(form.getByText("Please check the number.").first()).toBeVisible();
+    await expect(form.getByLabel("Send them order alerts")).toBeChecked();
+
+    await form.getByLabel("WhatsApp number").fill("0803 123 4567");
+    await save.click();
+    await expect(form.getByRole("status")).toHaveText(
+      "Saved. They'll get order alerts on WhatsApp.",
+    );
+    const [stored] = await db<
+      { number: string | null; optIn: boolean }[]
+    >`select whatsapp_number as number, alerts_opt_in as "optIn" from staff where name = ${name}`;
+    expect(stored).toEqual({ number: "+2348031234567", optIn: true });
+
+    await page.setViewportSize({ width: 375, height: 900 });
+    for (const theme of themes) {
+      await applyTheme(page, theme);
+      expect(await scanA11y(page), theme.id).toEqual([]);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+        true,
+      );
+    }
+    const dir = "docs/reviews/TICKET-086";
+    mkdirSync(dir, { recursive: true });
+    const [first] = themes;
+    expect(first).toBeDefined();
+    if (first) await applyTheme(page, first);
+    await form.scrollIntoViewIfNeeded();
+    await page.screenshot({ path: dir + "/375-alert-opt-in.png" });
+  });
 });

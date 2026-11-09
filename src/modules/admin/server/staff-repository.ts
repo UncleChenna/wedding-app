@@ -1,5 +1,5 @@
 import "server-only";
-import { and, asc, eq, isNotNull, isNull, ne, sql } from "drizzle-orm";
+import { and, asc, eq, inArray, isNotNull, isNull, ne, sql } from "drizzle-orm";
 import { staffEventExpiry } from "@/modules/shared/lib/staff-expiry";
 import type { Db } from "@/modules/shared/server/db/client";
 import { staff } from "@/modules/shared/server/db/schema";
@@ -16,6 +16,8 @@ export type StaffMember = {
   revoked: boolean;
   /** Has a PIN that still works now. */
   pinActive: boolean;
+  whatsappNumber: string | null;
+  alertsOptIn: boolean;
 };
 
 export async function listStaff(
@@ -29,6 +31,8 @@ export async function listStaff(
       role: staff.role,
       pinExpiresAt: staff.pinExpiresAt,
       revokedAt: staff.revokedAt,
+      whatsappNumber: staff.whatsappNumber,
+      alertsOptIn: staff.alertsOptIn,
     })
     .from(staff)
     .where(ne(staff.role, "admin"))
@@ -114,6 +118,24 @@ export async function revokeStaff(database: Pick<Db, "update">, staffId: string,
       updatedAt: now,
     })
     .where(and(eq(staff.id, staffId), ne(staff.role, "admin")))
+    .returning({ id: staff.id });
+  return rows.length > 0;
+}
+
+/**
+ * Saves a kitchen or bar person's WhatsApp number and alert choice (TICKET-086). Returns false
+ * when nobody at a station matches, so gate staff and admins can't be opted in.
+ */
+export async function setAlertContact(
+  database: Pick<Db, "update">,
+  staffId: string,
+  contact: { number: string | null; optIn: boolean },
+  now = new Date(),
+) {
+  const rows = await database
+    .update(staff)
+    .set({ whatsappNumber: contact.number, alertsOptIn: contact.optIn, updatedAt: now })
+    .where(and(eq(staff.id, staffId), inArray(staff.role, ["kitchen", "bar"])))
     .returning({ id: staff.id });
   return rows.length > 0;
 }

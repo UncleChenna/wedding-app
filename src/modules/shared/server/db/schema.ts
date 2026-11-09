@@ -173,11 +173,23 @@ export const staff = pgTable(
     pinExpiresAt: timestamp("pin_expires_at", { withTimezone: true }),
     credentialVersion: integer("credential_version").notNull().default(1),
     revokedAt: timestamp("revoked_at", { withTimezone: true }),
+    /** E.164, e.g. +2348031234567. Used only for kitchen and bar order alerts (TICKET-086). */
+    whatsappNumber: text("whatsapp_number"),
+    /** Only opted-in kitchen and bar staff receive order alerts (PRD ORD-9). */
+    alertsOptIn: boolean("alerts_opt_in").notNull().default(false),
     createdAt: createdAt(),
     updatedAt: updatedAt(),
   },
   (t) => [
     check("staff_credential_version_positive", sql`${t.credentialVersion} > 0`),
+    check(
+      "staff_whatsapp_number_e164",
+      sql`${t.whatsappNumber} is null or ${t.whatsappNumber} ~ '^[+][1-9][0-9]{7,14}$'`,
+    ),
+    check(
+      "staff_alerts_need_number",
+      sql`not ${t.alertsOptIn} or (${t.whatsappNumber} is not null and ${t.role} in ('kitchen', 'bar'))`,
+    ),
     check(
       "staff_pin_credential_complete",
       sql`
