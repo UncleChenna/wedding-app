@@ -33,6 +33,18 @@ export const appRoutes = {
     audience: "admin",
     access: "admin",
   },
+  adminGuestNew: {
+    path: "/admin/guests/new",
+    label: "Add an invitation",
+    audience: "admin",
+    access: "admin",
+  },
+  adminGuestEdit: {
+    path: "/admin/guests/[id]/edit",
+    label: "Edit invitation",
+    audience: "admin",
+    access: "admin",
+  },
   adminMenu: { path: "/admin/menu", label: "Menu", audience: "admin", access: "admin" },
   adminThemes: { path: "/admin/themes", label: "Themes", audience: "admin", access: "admin" },
   adminSettings: { path: "/admin/settings", label: "Settings", audience: "admin", access: "admin" },
@@ -94,5 +106,6 @@ export function passHref(pass: string): string {
 export const pageRouteSamples = routeList.map((route) => {
   if (route.path === appRoutes.invitation.path) return invitationHref("invalid");
   if (route.path === appRoutes.pass.path) return passHref("invalid");
+  if (route.path === appRoutes.adminGuestEdit.path) return "/admin/guests/invalid/edit";
   return route.path;
 });

@@ -23,7 +23,11 @@ export async function AdminSharing() {
             <li key={invitation.id} className="space-y-6">
               <h2 className="font-display text-3xl wrap-anywhere">{invitation.name}</h2>
               {invitation.share ? (
-                <ShareMenu invitation={invitation.share} />
+                <ShareMenu
+                  key={invitation.tokenVersion}
+                  invitation={invitation.share}
+                  tracking={invitation.tracking}
+                />
               ) : (
                 <p>{invitation.guidance}</p>
               )}

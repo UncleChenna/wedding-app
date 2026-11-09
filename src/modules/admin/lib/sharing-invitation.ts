@@ -8,15 +8,16 @@ export interface SharingInvitation {
   name: string;
   status: string;
   share?: ShareInput;
+  tracking?: { invitationId: string; expectedVersion: number };
   guidance?: string;
 }
 export function prepareSharingInvitation(
-  row: { id: string; token: string; status: string; name: string },
+  row: { id: string; token: string; status: string; name: string; tokenVersion?: number },
   settings: Pick<EventSettings, "coupleNames" | "invitationVoice">,
   siteUrl: string,
 ): SharingInvitation {
   const base = { id: row.id, name: row.name, status: row.status };
-  if (!["sent", "rsvp_yes", "rsvp_no"].includes(row.status)) {
+  if (!["draft", "sent", "rsvp_yes", "rsvp_no"].includes(row.status)) {
     return {
       ...base,
       guidance:
@@ -30,6 +31,9 @@ export function prepareSharingInvitation(
   if (!result.ok) return { ...base, guidance: result.message };
   return {
     ...base,
+    tracking: row.tokenVersion
+      ? { invitationId: row.id, expectedVersion: row.tokenVersion }
+      : undefined,
     share: { url, subject: result.messages.email.subject, message: result.messages.whatsapp },
   };
 }
