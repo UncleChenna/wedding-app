@@ -2312,15 +2312,16 @@
         "- 2026-11-09 — in_review → in_progress — divine (codex) — Enforce the admin 18px control typography rule in seating forms and recheck browser evidence",
         "- 2026-11-09 — in_progress → in_review — divine (codex)",
         "- 2026-11-09 — in_review → in_progress — divine (codex) — Integrate merged printable guest list and preserve all admin guest actions",
-        "- 2026-11-09 — in_progress → in_review — divine (codex)"
+        "- 2026-11-09 — in_progress → in_review — divine (codex)",
+        "- 2026-11-09 — in_review → done — divine (codex)"
       ],
-      "status": "in_review",
+      "status": "done",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-093",
       "pr": "https://github.com/UncleChenna/wedding-app/pull/122",
       "started": "2026-11-09",
-      "completed": "",
+      "completed": "2026-11-09",
       "updated": "2026-11-09",
       "reason": "",
       "resume_to": ""
