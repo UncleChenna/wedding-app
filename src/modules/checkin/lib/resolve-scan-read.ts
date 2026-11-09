@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { decideAdmission } from "./admission";
-import { verifyGatePass, type GatePublicKey, GATE_PASS_MAX_LENGTH } from "./gate-token";
+import { verifyGatePass, type GatePublicKey } from "./gate-token";
+import { signedPassToken } from "./signed-pass-url";
 import type { ScanReadResult } from "./scan-read-result";
 
 const count = z.number().int().min(0).max(2147483647);
@@ -33,24 +34,8 @@ export async function resolveScanRead(
   keys: readonly GatePublicKey[],
   load: (invitationId: string) => Promise<unknown>,
 ): Promise<ScanReadResult> {
-  let token: string;
-  try {
-    const url = new URL(qr);
-    if (
-      url.origin !== origin ||
-      url.username ||
-      url.password ||
-      url.search ||
-      url.hash ||
-      !url.pathname.startsWith("/p/")
-    )
-      return { state: "invalid" };
-    token = url.pathname.slice(3);
-    if (!token || token.length > GATE_PASS_MAX_LENGTH || token.includes("/"))
-      return { state: "invalid" };
-  } catch {
-    return { state: "invalid" };
-  }
+  const token = signedPassToken(qr, origin);
+  if (!token) return { state: "invalid" };
   const verified = await verifyGatePass(token, keys, { now: Date.now() });
   if (!verified.ok) return { state: "invalid" };
   const input = await load(verified.payload.inv);
