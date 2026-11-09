@@ -2,7 +2,7 @@
 id: TICKET-220
 title: Separate scanner implementation from physical-device release approval
 epic: foundations
-status: in_progress
+status: in_review
 priority: high
 estimate: S
 labels: [docs]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: []
 blocks: []
 branch: TICKET-220
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/126
 created: 2026-11-09
 updated: 2026-11-09
 started: 2026-11-09
@@ -63,3 +63,4 @@ The user requires staff accounts and roles to be managed in admin, rather than c
 - 2026-11-09 — new → todo — divine (codex)
 - 2026-11-09 — todo → claimed — divine (codex)
 - 2026-11-09 — todo → in_progress — divine (codex)
+- 2026-11-09 — in_progress → in_review — divine (codex)
