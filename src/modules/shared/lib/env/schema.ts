@@ -21,6 +21,13 @@ export const serverEnvSchema = z.object({
       "STAFF_SESSION_SECRET must be 32 random bytes encoded as lowercase hex",
     )
     .default(""),
+  /** Signs short-lived station Realtime tokens (ADR 0024, TICKET-033). Empty turns live updates off. */
+  SUPABASE_JWT_SECRET: z
+    .string()
+    .refine((value) => value === "" || value.length >= 32, {
+      message: "SUPABASE_JWT_SECRET must be at least 32 characters",
+    })
+    .default(""),
   ALERT_DRAIN_SECRET: z
     .string()
     .regex(
