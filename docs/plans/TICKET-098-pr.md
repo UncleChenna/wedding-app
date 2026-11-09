@@ -53,3 +53,14 @@ fetched develop exactly. Applied only to TICKET-098's isolated database: both
 migration runs succeeded, post-run row counts match exactly, and all 20 public
 tables have RLS enabled. No reset or new migration was introduced. The final
 review gate passed against this integrated base; earlier outage evidence is retained.
+
+## 2026-11-09 workflow integration
+
+Integrated develop `37e9202cca611c0c9d68b5749340066ab4e2ce97` without conflicts.
+This adds the reviewed TICKET-217/218 harness improvements; application source
+is unchanged from the independently reviewed, fully verified implementation.
+The updated workflow requires local quick verification and full CI for this
+routine integration. Local quick verification passed (lint, types and related
+tests), and all 20 focused publication/action regressions passed. Earlier full local, database and browser evidence above
+is retained with its original base; no fresh database startup or device claim
+is made. All five checks on the new final head are still required before merge.

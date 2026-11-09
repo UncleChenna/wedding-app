@@ -1,5 +1,15 @@
 # TICKET-098 handoff — 2026-11-08
 
+## 2026-11-09 — resumed integration
+
+Integrated develop `37e9202cca611c0c9d68b5749340066ab4e2ce97` without conflicts;
+no application source changed. Read the updated TICKET-217/218 workflows: normal `t:pr`
+now requires quick verification with full CI. Quick checks and 20 focused theme/
+action regressions pass; TICKET-098’s database remains stopped, so TICKET-043 keeps the database slot.
+Current PR evidence is `docs/plans/TICKET-098-pr.md`. Root will check the final
+head and all five CI checks before merge. Earlier full local evidence below
+remains tied to its original base; no new device/Lighthouse/CLS claim is made.
+
 ## Final review gate — 2026-11-08
 
 The forced PR workflow passed on integrated develop
