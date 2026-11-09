@@ -2,7 +2,7 @@
 id: TICKET-054
 title: Prepare the day-before pass reminder batch
 epic: sharing
-status: in_progress
+status: in_review
 priority: low
 estimate: S
 labels: [frontend]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-053, TICKET-052]
 blocks: []
 branch: TICKET-054
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/132
 created: 2026-10-21
 updated: 2026-11-09
 started: 2026-11-09
@@ -59,3 +59,4 @@ See: [Invitation wording](../docs/prd.md#invitation-wording).
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-09 — todo → claimed — divine (codex) — started ahead of TICKET-053 (in_review)
 - 2026-11-09 — todo → in_progress — divine (codex) — started ahead of TICKET-053 (in_review)
+- 2026-11-09 — in_progress → in_review — divine (codex)
