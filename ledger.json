@@ -2892,12 +2892,13 @@
     },
     "WED-226": {
       "log": [
-        "- 2026-11-10 — backlog → todo — divine"
+        "- 2026-11-10 — backlog → todo — divine",
+        "- 2026-11-10 — todo → claimed — divine (codex)"
       ],
       "status": "todo",
-      "owner": "",
-      "agent": "",
-      "branch": "",
+      "owner": "divine",
+      "agent": "codex",
+      "branch": "TICKET-226",
       "pr": "",
       "started": "",
       "completed": "",
