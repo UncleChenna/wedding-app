@@ -2894,13 +2894,14 @@
       "log": [
         "- 2026-11-10 — backlog → todo — divine",
         "- 2026-11-10 — todo → claimed — divine (codex)",
-        "- 2026-11-10 — todo → in_progress — divine (codex)"
+        "- 2026-11-10 — todo → in_progress — divine (codex)",
+        "- 2026-11-10 — in_progress → in_review — divine (codex)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-226",
-      "pr": "",
+      "pr": "https://github.com/UncleChenna/wedding-app/pull/153",
       "started": "2026-11-10",
       "completed": "",
       "updated": "2026-11-10",
