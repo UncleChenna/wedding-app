@@ -23,6 +23,22 @@ const changed = [
     ...(git(["ls-files", "--others", "--exclude-standard"]) ?? []),
   ]),
 ];
+// Workflow/environment reads are dynamic dependencies, invisible to Vitest's import graph.
+// Also inspect committed branch changes: t:pr normally runs after source is committed.
+const hasBase = hasHead && git(["rev-parse", "--verify", "refs/remotes/origin/develop"]) !== null;
+const branchChanges = hasBase
+  ? git(["diff", "--name-only", "--no-renames", "origin/develop...HEAD"])
+  : [];
+const parityTest = "scripts/__tests__/ci-parity.test.ts";
+const needsParity =
+  hasHead &&
+  // A present but unusable base (e.g. shallow history) must not silently omit this check.
+  (branchChanges === null ||
+    [
+      ...changed,
+      ...(hasHead ? (git(["diff", "--name-only", "--no-renames", "HEAD"]) ?? []) : []),
+      ...(branchChanges ?? []),
+    ].some((path) => path === ".env.example" || path.startsWith(".github/workflows/")));
 const testable = changed.filter((f) => /^(src|scripts)\/.*\.([cm]?[jt]sx?|json)$/.test(f));
 
 const steps = [
@@ -33,9 +49,25 @@ const steps = [
     : testable.length > 0
       ? [
           `unit tests related to ${testable.length} changed file(s)`,
-          ["pnpm", "-s", "exec", "vitest", "related", "--run", "--passWithNoTests", ...testable],
+          [
+            "pnpm",
+            "-s",
+            "exec",
+            "vitest",
+            "related",
+            "--run",
+            "--passWithNoTests",
+            ...(needsParity ? [`--exclude=${parityTest}`] : []),
+            ...testable,
+          ],
         ]
       : null,
+  needsParity
+    ? [
+        "CI parity for workflow/environment changes",
+        ["pnpm", "-s", "exec", "vitest", "run", parityTest],
+      ]
+    : null,
 ].filter(Boolean);
 
 const results = [];
@@ -44,7 +76,8 @@ for (const [name, [cmd, ...args]] of steps) {
   const { status } = spawnSync(cmd, args, { stdio: "inherit" });
   results.push([name, status === 0]);
 }
-if (hasHead && testable.length === 0) results.push(["unit tests (no changed source files)", true]);
+if (hasHead && testable.length === 0 && !needsParity)
+  results.push(["unit tests (no changed source files)", true]);
 
 console.log("\nverify:quick summary");
 for (const [name, ok] of results) console.log(`  ${ok ? "✔" : "✖"} ${name}`);
