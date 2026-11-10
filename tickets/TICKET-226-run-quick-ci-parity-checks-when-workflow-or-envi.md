@@ -2,7 +2,7 @@
 id: TICKET-226
 title: Run quick CI parity checks when workflow or environment files change
 epic: foundations
-status: in_progress
+status: in_review
 priority: high
 estimate: S
 labels: [infra, test]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: []
 blocks: []
 branch: TICKET-226
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/153
 created: 2026-11-09
 updated: 2026-11-10
 started: 2026-11-10
@@ -70,5 +70,5 @@ TICKET-123 and TICKET-062 added CI environment flags without immediately documen
 - 2026-11-10 — backlog → todo — divine
 - 2026-11-10 — todo → claimed — divine (codex)
 - 2026-11-10 — todo → in_progress — divine (codex)
-
 - 2026-11-10 — Thirteen focused command/parity tests pass after seven initial failing regressions. Full1860-test suite and quick verification pass; independent review clean. Final CI and PR evidence: `docs/plans/TICKET-226-pr.md`, PR153.
+- 2026-11-10 — in_progress → in_review — divine (codex)
