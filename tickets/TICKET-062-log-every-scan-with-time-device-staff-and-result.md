@@ -2,7 +2,7 @@
 id: TICKET-062
 title: Log every scan with time, device, staff and result
 epic: checkin
-status: in_review
+status: done
 priority: high
 estimate: S
 labels: [backend]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/149
 created: 2026-10-21
 updated: 2026-11-10
 started: 2026-11-09
-completed: ""
+completed: 2026-11-10
 reason: ""
 resume_to: ""
 ---
@@ -65,3 +65,4 @@ _Agents append dated notes here while working._
 - 2026-11-09 — in_progress → in_review — divine (codex)
 - 2026-11-09 — in_review → in_progress — divine (codex) — Preserve append-only scan evidence in existing scanner fixture cleanup after CI FK failure
 - 2026-11-10 — in_progress → in_review — divine (codex)
+- 2026-11-10 — in_review → done — divine (codex)
