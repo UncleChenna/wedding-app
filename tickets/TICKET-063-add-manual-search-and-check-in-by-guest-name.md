@@ -2,20 +2,20 @@
 id: TICKET-063
 title: Add manual search and check-in by guest name
 epic: checkin
-status: todo
+status: in_progress
 priority: high
 estimate: M
 labels: [frontend, backend]
 module: checkin
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-061, TICKET-065, TICKET-062]
 blocks: [TICKET-132, TICKET-136]
-branch: ""
+branch: TICKET-063
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-10
+started: 2026-11-10
 completed: ""
 reason: ""
 resume_to: ""
@@ -62,3 +62,5 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-4) · [Journey 2: check-
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-10 — todo → claimed — divine (codex) — started ahead of TICKET-065 (in_review), TICKET-062 (in_review)
+- 2026-11-10 — todo → in_progress — divine (codex) — started ahead of TICKET-065 (in_review), TICKET-062 (in_review)
