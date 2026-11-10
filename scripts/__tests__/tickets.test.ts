@@ -768,6 +768,17 @@ describe("explicit merged-ticket repair reconciliation", () => {
   it.each([
     "passed",
     "historical passed",
+    "historical source passed",
+    "historical source tested head passed",
+    "historical source abbreviated source",
+    "historical source tree object",
+    "historical source one-file difference",
+    "historical source sibling identical tree",
+    "historical source not reachable",
+    "historical source original changed",
+    "historical source original criteria incomplete",
+    "historical source failed CI",
+    "historical source other owner",
     "historical wrong base",
     "historical open original",
     "historical other owner",
@@ -815,11 +826,17 @@ describe("explicit merged-ticket repair reconciliation", () => {
     "other owner",
     "unfinished blocker",
     "fetch failure",
+    "source on repair",
   ])(
     "preserves the ledger unless complete immutable evidence passes: %s",
     async (entry) => {
       const historical = entry.startsWith("historical ");
-      const scenario = historical ? entry.slice("historical ".length) : entry;
+      const sourceMode = entry.startsWith("historical source ");
+      const scenario = sourceMode
+        ? entry.slice("historical source ".length)
+        : historical
+          ? entry.slice("historical ".length)
+          : entry;
       const { a, dir, remote } = setup();
       git(a, "checkout", "-qb", "develop");
       const active = ticket(
@@ -843,13 +860,35 @@ describe("explicit merged-ticket repair reconciliation", () => {
       writeFileSync(join(a, active.path), serializeTicket(active));
       git(a, "add", ".");
       git(a, "commit", "-qm", "original merged work");
-      const originalHead = git(a, "rev-parse", "HEAD");
+      let originalHead = git(a, "rev-parse", "HEAD");
+      let sourceCommit = originalHead;
       if (historical) {
         git(a, "checkout", "-qb", "historical-stack-base", "HEAD^");
         git(a, "merge", "--no-ff", "develop", "-m", "historical original merge");
         git(a, "checkout", "-B", "develop");
       }
-      const original = git(a, "rev-parse", "HEAD");
+      let original = git(a, "rev-parse", "HEAD");
+      if (sourceMode) {
+        originalHead = original;
+        git(a, "commit", "--allow-empty", "-qm", "original final merge");
+        original = git(a, "rev-parse", "HEAD");
+        if (scenario === "tested head passed") sourceCommit = originalHead;
+        if (scenario === "one-file difference")
+          sourceCommit = git(a, "rev-parse", `${sourceCommit}^`);
+        if (scenario === "sibling identical tree") {
+          git(a, "checkout", "-qb", "unrelated-source", `${sourceCommit}^`);
+          git(a, "read-tree", "--reset", "-u", sourceCommit);
+          git(a, "commit", "--allow-empty", "-qm", "unrelated identical tree");
+          sourceCommit = git(a, "rev-parse", "HEAD");
+        }
+        git(
+          a,
+          "checkout",
+          "-B",
+          "develop",
+          scenario === "not reachable" ? `${sourceCommit}^` : sourceCommit,
+        );
+      }
       if (scenario === "original criteria incomplete") {
         active.sections["Acceptance criteria"] = "- [x] It works when tested.";
         writeFileSync(join(a, active.path), serializeTicket(active));
@@ -923,6 +962,16 @@ console.log(JSON.stringify(result));
         historical ? "--integration-pr" : "--repair-pr",
         "2",
         ...(scenario === "mixed flags" ? ["--repair-pr", "2"] : []),
+        ...(sourceMode || scenario === "source on repair"
+          ? [
+              "--source-commit",
+              scenario === "abbreviated source"
+                ? sourceCommit.slice(0, 8)
+                : scenario === "tree object"
+                  ? git(a, "rev-parse", `${sourceCommit}^{tree}`)
+                  : sourceCommit,
+            ]
+          : []),
         "--reason",
         "Original parity failed; merged repair now passes all required CI",
       );
@@ -941,6 +990,10 @@ console.log(JSON.stringify(result));
           expect(log).toContain(`head ${originalHead} merge ${original} base legacy-stack`);
           expect(log).toContain("original CI https://github.com/example/repo/actions/runs/99");
           expect(log).toContain(`historical integration merge ${merge}`);
+          if (sourceMode) {
+            expect(log).toContain(`source ${sourceCommit}`);
+            expect(log).toContain(`tree ${git(a, "rev-parse", `${originalHead}^{tree}`)}`);
+          }
         }
       } else {
         expect(result.code, result.out).not.toBe(0);
