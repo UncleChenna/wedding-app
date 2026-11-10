@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /**
  * Fast feedback gate: lint, typecheck, and the unit tests related to changed
- * files (vs HEAD, plus untracked). Runs every step even if one fails, then
+ * files (vs HEAD, plus untracked), with explicit CI parity for dynamic inputs.
+ * Runs every step even if one fails, then
  * exits non-zero if any failed. Used by the Claude Code Stop hook.
  */
 import { execFileSync, spawnSync } from "node:child_process";

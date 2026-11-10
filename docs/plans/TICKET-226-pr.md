@@ -22,7 +22,7 @@ Workflow-only changes could pass quick verification without running the existing
 
 # Verification
 
-Focused command and existing parity tests **13/13 pass (7.98s)**. Quick, full unit and exact-head CI evidence are still being completed; this draft is not completion approval.
+Focused command and existing parity tests **13/13 pass (7.98s)**. Quick lint/types/related tests pass. Full unchanged serial unit/coverage passes **1860 tests,197 conditional skips,183.74s**, with **98.33% critical lines /98.56% branches** at unchanged per-file thresholds. Independent source/regression review is clean. Final exact-head CI remains required before merge.
 
 # Risks and rollout
 

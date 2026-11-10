@@ -41,11 +41,11 @@ TICKET-123 and TICKET-062 added CI environment flags without immediately documen
 
 ## Acceptance criteria
 
-- [ ] A red regression demonstrates that a workflow-only change currently omits parity; the fix invokes it.
-- [ ] Changing `.env.example` invokes parity even when no source import graph changes.
-- [ ] A temporary undocumented CI flag causes quick verification to fail through the existing parity assertion.
-- [ ] Unrelated source-only changes retain existing related-test behavior and do not duplicate parity execution.
-- [ ] The full CI parity test and quick-verification command tests pass without weakened checks.
+- [x] A red regression demonstrates that a workflow-only change currently omits parity; the fix invokes it.
+- [x] Changing `.env.example` invokes parity even when no source import graph changes.
+- [x] A temporary undocumented CI flag causes quick verification to fail through the existing parity assertion.
+- [x] Unrelated source-only changes retain existing related-test behavior and do not duplicate parity execution.
+- [x] The full CI parity test and quick-verification command tests pass without weakened checks.
 
 ## Test plan
 
@@ -70,3 +70,5 @@ TICKET-123 and TICKET-062 added CI environment flags without immediately documen
 - 2026-11-10 — backlog → todo — divine
 - 2026-11-10 — todo → claimed — divine (codex)
 - 2026-11-10 — todo → in_progress — divine (codex)
+
+- 2026-11-10 — Thirteen focused command/parity tests pass after seven initial failing regressions. Full1860-test suite and quick verification pass; independent review clean. Final CI and PR evidence: `docs/plans/TICKET-226-pr.md`, PR153.
