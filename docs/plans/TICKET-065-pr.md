@@ -22,14 +22,18 @@ The policy follows TICKET-169: five-minute refresh, immediate refresh after know
 
 # Verification
 
-- Production build passed.
+- Production build passed, including the integrated TICKET-062/TICKET-225 base7533201c.
 - Authenticated snapshot journey: **2/2 passed**, mobile and desktop, 42.2 seconds. All six states were checked in four themes at 375/768/1280; axe reported zero violations, controls met 44px and pages had no horizontal overflow.
 - Existing online admission integration: **2/2 passed**, 31.3 seconds, preserving actual partial admission, immutable uncertain retry, duplicate receipt and concurrent refusal assertions.
 - Existing authenticated offline shell integration: **2/2 passed**, 37.4 seconds, including exact zero initial CLS, keyboard refresh/sign-out and offline denial after logout.
 - Exact generated-worker/real IndexedDB suite: **24/24 passed**, Chromium and WebKit, 15.0 seconds. Includes old-worker acknowledgement fallback, concurrent refresh/logout, shortened deadlines, missing authority cleanup, failed private erasure and full browser restart offline.
 - Actual isolated PostgreSQL projection: **1/1 passed**. Private fields excluded; large named households retain all names with a bounded display label; revoked households preserve historical admitted counts. The transaction rolls back its fixtures.
 - Focused admission/worker/wrapper tests: **38 passed**, including uncertain intent preservation when switching to read-only mode. Hook tests include the reproduced initial preparation-notification race. Pure parser/response/resolver targeted coverage reached 100% for the three new pure modules.
-- Full combined unit/coverage gate: **1,873 passed / 194 conditional skips**, 108.25 seconds; critical lines98.59%, branches98.89%, every per-file threshold passed. Final combined quick passed lint, types and28 related tests; the earlier broader quick passed114. Exact-head CI remains pending.
+- Full unit/coverage gate on the reviewed checkpoint: **1,873 passed / 194 conditional skips**, 108.25 seconds; critical lines98.59%, branches98.89%, every per-file threshold passed. Quick passed lint, types and28 related tests; the earlier broader quick passed114. Checkpoint b9a511d6 passed all seven required CI checks in run42726899105. The later TICKET-062/TICKET-225 integration passed normal merge verification hooks; fresh exact-head CI remains pending.
+
+After integrating scan logging and recovery fixes from develop7533201c, the authenticated snapshot journey passed **2/2 in59.3s**, and all144 regenerated screenshots matched the reviewed files byte-for-byte. Combined private-projection/scan-observation database tests passed **5/5 in1.25s** against the owned synthetic PostgreSQL. Inherited migration0027 and its snapshot/journal are byte-identical to develop; standing user authorization covers their integration and ignored exact-path record. No new migration is introduced by this ticket.
+
+The combined live admission/logging browser also passed **2/2 in58.4s**, proving all authenticated verdict observations, partial admission, lost-response retry and concurrent refusal together with the snapshot wrapper. Native PostgreSQL26721 was then stopped with its data retained; no production or collaborator database was changed.
 
 The existing shell/decoder fixture also passes **46/46** Chromium/WebKit cases (43.1 seconds). The first checkpoint CI exposed its obsolete assertion that offline QR checks make a live POST. The fixture now uses an actual signed QR and private snapshot and proves exact household/table/party, no admission form and zero POST, retaining all expiry/track/restart assertions.
 
@@ -51,4 +55,4 @@ Rollback by reverting this ticket's application/worker changes. Do not erase uns
 
 # Harness changes, if any
 
-Three additive CI steps reuse existing disposable PostgreSQL and installed Chromium/WebKit jobs. Existing gates and timeouts are unchanged. See `docs/reviews/TICKET-065/ci-proposal.md`. The final verified source base is develop `5cedfab9` (dashboard097 and ticket-recovery224), merged in `9a6a41de`. Independent source and all144-frame visual review found no blocker; the24 updated stale frames were reviewed again.
+Three additive CI steps reuse existing disposable PostgreSQL and installed Chromium/WebKit jobs. Existing gates and timeouts are unchanged. See `docs/reviews/TICKET-065/ci-proposal.md`. The current source base is develop `7533201c` (including scan logging062 and recovery225), merged in `eb37685c`. Scanner timestamp/oversized-QR handling, immutable observation evidence, and all offline wrapper props remain intact. Independent source and all144-frame visual review found no blocker; the24 updated stale frames were reviewed again.

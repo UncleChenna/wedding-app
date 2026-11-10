@@ -61,7 +61,7 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-6) · [Connectivity plan
 
 ## Notes / decisions
 
-2026-11-10: Functional criteria verified with actual authenticated offline browser2/2, real worker24/24, isolated PostgreSQL1/1, and existing admission/offline-shell integrations2/2 each. Quick gate passes114 tests. Full coverage and final CI remain pending; PR147 remains draft. Private snapshots never record admissions or touch queues. Physical release checks remain114/163/201.
+2026-11-10: Functional criteria verified with authenticated offline browser2/2, real worker24/24, isolated PostgreSQL projection and existing admission/offline-shell integrations. Full coverage1873pass; checkpoint b9a511d6 all seven CI checks passed. Integrated develop7533201c adds verified062/225: combined build, SQL5/5, snapshot2/2 and admission/logging2/2 pass; all144 screenshots unchanged. Fresh combined CI remains pending. Private snapshots never record admissions or touch queues. Physical release checks remain114/163/201.
 
 ## Activity log
 
