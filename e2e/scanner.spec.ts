@@ -31,8 +31,15 @@ test.describe("gate scanner route", () => {
   test.afterAll(async () => {
     if (!db) return;
     try {
-      await db`delete from registered_devices where registered_by_staff_id in (${gateId},${barId})`;
-      await db`delete from staff where id in (${gateId},${barId})`;
+      // Invalid scans now retain immutable evidence referencing this synthetic actor/device.
+      // Retire credentials instead of deleting their FK targets or disabling audit guards.
+      const evidence =
+        await db`select id from scan_events where staff_id in (${gateId},${barId}) order by id`;
+      await db`update registered_devices set revoked_at=now() where registered_by_staff_id in (${gateId},${barId})`;
+      await db`update staff set revoked_at=now(),pin_hash=null,pin_issued_at=null,pin_expires_at=null where id in (${gateId},${barId})`;
+      expect(
+        await db`select id from scan_events where staff_id in (${gateId},${barId}) order by id`,
+      ).toEqual(evidence);
       await db`delete from event_settings where id=1 and venue=${venue}`;
     } finally {
       await db.end();
@@ -111,7 +118,7 @@ test.describe("gate scanner route", () => {
         .map((element) => element.textContent),
     );
     expect(targets).toEqual([]);
-    const folder = `docs/reviews/TICKET-060/${info.project.name}`;
+    const folder = `docs/reviews/TICKET-062/scanner-${info.project.name}`;
     mkdirSync(folder, { recursive: true });
     await page.emulateMedia({ reducedMotion: "reduce" });
     for (const theme of themes) {

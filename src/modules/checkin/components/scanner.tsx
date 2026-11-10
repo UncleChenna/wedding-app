@@ -15,7 +15,10 @@ async function readLivePass(qr: string, signal: AbortSignal): Promise<ScanReadRe
     credentials: "same-origin",
     signal,
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ qr }),
+    body: JSON.stringify({
+      qr: qr.length > 4096 ? "invalid:oversized-qr" : qr,
+      reportedAt: new Date().toISOString(),
+    }),
   });
   if (response.status === 403) return { state: "session_expired" };
   const parsed = scanReadResultSchema.safeParse(await response.json());

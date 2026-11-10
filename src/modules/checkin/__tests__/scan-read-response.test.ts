@@ -4,7 +4,7 @@ const request = (body: unknown) =>
   new Request("https://wedding.example/api/checkin/read", {
     method: "POST",
     body: JSON.stringify(body),
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", Origin: "https://wedding.example" },
   });
 it("checks live gate authorization before parsing a scanned value or loading a guest", async () => {
   const read = vi.fn();
@@ -42,7 +42,11 @@ it("rejects malformed JSON and the byte-size limit before guest lookup", async (
   const read = vi.fn();
   for (const body of ["not json", " ".repeat(8193)]) {
     const response = await scanReadResponse(
-      new Request("https://wedding.example/api/checkin/read", { method: "POST", body }),
+      new Request("https://wedding.example/api/checkin/read", {
+        method: "POST",
+        body,
+        headers: { Origin: "https://wedding.example" },
+      }),
       { authorize: async () => true, read },
     );
     expect(response.status).toBe(400);
@@ -58,4 +62,51 @@ it("hides read failures and does not relabel unavailable storage as an invalid g
   });
   expect(response.status).toBe(503);
   expect(await response.json()).toEqual({ state: "unavailable" });
+});
+it("rejects missing or foreign origins before writing authenticated evidence", async () => {
+  const read = vi.fn();
+  for (const origin of [null, "https://other.example"]) {
+    const headers = new Headers({ "Content-Type": "application/json" });
+    if (origin) headers.set("Origin", origin);
+    const response = await scanReadResponse(
+      new Request("https://wedding.example/api/checkin/read", {
+        method: "POST",
+        headers,
+        body: JSON.stringify({ qr: "value" }),
+      }),
+      { authorize: async () => true, read },
+    );
+    expect(response.status).toBe(403);
+  }
+  expect(read).not.toHaveBeenCalled();
+});
+it("bounds untrusted browser time and excludes fabricated actor or manual source", async () => {
+  const read = vi.fn(async () => ({ state: "invalid" as const }));
+  for (const extra of [
+    { reportedAt: new Date(Date.now() - 86_400_001).toISOString() },
+    { reportedAt: new Date(Date.now() + 600_000).toISOString() },
+    { reportedAt: "not a date" },
+    { staffId: "forged" },
+    { inputMethod: "manual" },
+    { source: "offline" },
+  ])
+    expect(
+      (
+        await scanReadResponse(request({ qr: "x", ...extra }), {
+          authorize: async () => true,
+          read,
+        })
+      ).status,
+    ).toBe(400);
+  expect(read).not.toHaveBeenCalled();
+  const observed = new Date(Date.now() - 1_000);
+  expect(
+    (
+      await scanReadResponse(request({ qr: "x", reportedAt: observed.toISOString() }), {
+        authorize: async () => true,
+        read,
+      })
+    ).status,
+  ).toBe(200);
+  expect(read).toHaveBeenCalledWith("x", "https://wedding.example", observed);
 });

@@ -1,0 +1,2 @@
+ALTER TABLE "scan_events" ADD COLUMN "input_method" text;--> statement-breakpoint
+ALTER TABLE "scan_events" ADD CONSTRAINT "scan_events_input_method" CHECK ("scan_events"."input_method" is null or "scan_events"."input_method" in ('qr', 'manual'));

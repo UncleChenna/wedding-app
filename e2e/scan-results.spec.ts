@@ -100,7 +100,12 @@ test("live gate result uses current seating and accepted history without admitti
     await expect(valid).toBeInViewport();
     await expect(page.getByText("Synthetic Guest", { exact: true })).toBeInViewport();
     await expect(page.getByText(/No admission has been recorded/)).toBeVisible();
-    expect(await db`select id from scan_events where invitation_id=${invitation}`).toHaveLength(0);
+    expect(
+      await db`select id from scan_events where invitation_id=${invitation} and admitted_people > 0`,
+    ).toHaveLength(0);
+    expect(
+      await db`select result,input_method from scan_events where invitation_id=${invitation} and reported_people = 0`,
+    ).toEqual([{ result: "valid", input_method: "qr" }]);
     expect(await page.content()).not.toMatch(/PRIVATE DIETARY MARKER|PRIVATE RSVP MARKER/);
     // Moving the household to a different table does not require a new signed QR.
     const reassignedTable = randomUUID();
@@ -112,7 +117,7 @@ test("live gate result uses current seating and accepted history without admitti
     await db`update invitations set table_id=null where id=${invitation}`;
     await page.getByRole("button", { name: "Scan next pass" }).click();
     await expect(page.getByText("Table not assigned", { exact: true })).toBeVisible();
-    const folder = `docs/reviews/TICKET-060/${info.project.name}`;
+    const folder = `docs/reviews/TICKET-062/read-results-${info.project.name}`;
     mkdirSync(folder, { recursive: true });
     const states = [
       "Valid pass",
@@ -170,10 +175,29 @@ test("live gate result uses current seating and accepted history without admitti
       }
     }
     const response = await context.request.post("/api/checkin/read", {
+      headers: { Origin: new URL(baseURL ?? "").origin },
       data: { qr: `${baseURL}/p/${token}` },
     });
     expect(response.headers()["cache-control"]).toBe("private, no-store");
-    expect(await db`select id from scan_events where invitation_id=${invitation}`).toHaveLength(1);
+    expect(response.status()).toBe(200);
+    expect(
+      await db`select id from scan_events where invitation_id=${invitation} and admitted_people > 0`,
+    ).toHaveLength(1);
+    const observations =
+      await db`select result,input_method,admitted_people from scan_events where invitation_id=${invitation} and reported_people = 0`;
+    expect(observations.map((row) => row.result).sort()).toEqual([
+      "already_used",
+      "invalid",
+      "invalid",
+      "not_rsvped",
+      "revoked",
+      "revoked",
+      "valid",
+      "valid",
+      "valid", // Initial table, reassigned table and unassigned table each require a new scan.
+    ]);
+    for (const observation of observations)
+      expect(observation).toMatchObject({ input_method: "qr", admitted_people: 0 });
   } finally {
     // Append-only synthetic scan evidence remains in this isolated database;
     // no guard is disabled and no recorded arrival is deleted for test cleanup.
