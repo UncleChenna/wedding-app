@@ -2,7 +2,7 @@
 id: TICKET-225
 title: Audit rewritten historical ticket provenance
 epic: foundations
-status: in_review
+status: done
 priority: medium
 estimate: M
 labels: [infra, test, docs]
@@ -14,9 +14,9 @@ blocks: []
 branch: TICKET-225
 pr: https://github.com/UncleChenna/wedding-app/pull/150
 created: 2026-11-09
-updated: 2026-11-09
+updated: 2026-11-10
 started: 2026-11-09
-completed: ""
+completed: 2026-11-10
 reason: ""
 resume_to: ""
 ---
@@ -72,3 +72,4 @@ prove ancestry. See [ticket recovery](../docs/tickets.md#historical-stacked-merg
 - 2026-11-09 — todo → claimed — divine (codex)
 - 2026-11-09 — todo → in_progress — divine (codex)
 - 2026-11-09 — in_progress → in_review — divine (codex)
+- 2026-11-10 — in_review → done — divine (codex)
