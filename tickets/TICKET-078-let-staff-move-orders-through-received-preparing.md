@@ -2,20 +2,20 @@
 id: TICKET-078
 title: Let staff move orders through received, preparing and served
 epic: ordering
-status: todo
+status: in_progress
 priority: high
 estimate: M
 labels: [frontend, backend]
 module: ordering
-owner: ""
-agent: ""
+owner: unclechenna
+agent: claude
 blocked_by: [TICKET-076]
 blocks: [TICKET-075, TICKET-079, TICKET-082, TICKET-118, TICKET-129, TICKET-133]
-branch: ""
+branch: TICKET-078
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-10
+started: 2026-11-10
 completed: ""
 reason: ""
 resume_to: ""
@@ -62,3 +62,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-10 — todo → claimed — unclechenna (claude) — started ahead of TICKET-076 (in_progress)
+- 2026-11-10 — todo → in_progress — unclechenna (claude) — started ahead of TICKET-076 (in_progress)
