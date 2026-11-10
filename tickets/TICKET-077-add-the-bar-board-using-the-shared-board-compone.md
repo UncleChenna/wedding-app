@@ -2,20 +2,20 @@
 id: TICKET-077
 title: Add the bar board using the shared board component
 epic: ordering
-status: todo
+status: in_progress
 priority: high
 estimate: S
 labels: [frontend]
 module: ordering
-owner: ""
-agent: ""
+owner: unclechenna
+agent: claude
 blocked_by: [TICKET-076]
 blocks: [TICKET-133]
-branch: ""
+branch: TICKET-077
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-10
+started: 2026-11-10
 completed: ""
 reason: ""
 resume_to: ""
@@ -59,3 +59,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-10 — todo → claimed — unclechenna (claude) — started ahead of TICKET-076 (in_progress)
+- 2026-11-10 — todo → in_progress — unclechenna (claude) — started ahead of TICKET-076 (in_progress)
