@@ -4,6 +4,16 @@ import { afterEach, expect, it } from "vitest";
 import { ScanLogView } from "../components/scan-log-view";
 import type { ScanLogEntry } from "../lib/scan-log";
 afterEach(cleanup);
+it("clears visible filter controls when navigation clears the applied filters", () => {
+  const props = { entries: [], options, hasMore: false, renderNote: () => null };
+  const view = render(
+    <ScanLogView {...props} filters={{ page: 1, result: "revoked", source: "offline" }} />,
+  );
+  expect(screen.getByLabelText("Result")).toHaveValue("revoked");
+  view.rerender(<ScanLogView {...props} filters={{ page: 1 }} />);
+  expect(screen.getByLabelText("Result")).toHaveValue("");
+  expect(screen.getByLabelText("Connection")).toHaveValue("");
+});
 const row: ScanLogEntry = {
   id: "event-one",
   invitationId: null,

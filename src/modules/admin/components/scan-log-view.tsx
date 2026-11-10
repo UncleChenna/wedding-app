@@ -54,6 +54,7 @@ export function ScanLogView({
         </p>
       </header>
       <form
+        key={scanLogSearch(filters)}
         method="get"
         action="/admin/scans"
         aria-label="Filter scans"
@@ -203,6 +204,9 @@ export function ScanLogView({
                 className="space-y-4 border-t border-border pt-6"
               >
                 <h4 className="font-display text-2xl">Resolution notes</h4>
+                <p className="text-muted-foreground">
+                  Latest 20 notes, newest first. Earlier notes remain in the audit record.
+                </p>
                 {entry.notes.length ? (
                   <ol className="space-y-4">
                     {entry.notes.map((note) => (

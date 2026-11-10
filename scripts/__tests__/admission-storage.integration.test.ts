@@ -35,6 +35,13 @@ async function installProposal(
   await options.beforeBackfill?.(tx);
   await applyProposal(tx, namespace, "drizzle/0017_admission-backfill.sql");
   await applyProposal(tx, namespace, "drizzle/0018_admission-guards.sql");
+  // The current local seed reset also covers the later scan-note audit table.
+  // Install its real generated migrations for the historical reset rehearsal.
+  for (const migration of journal.entries.filter((entry) =>
+    /_scan-resolution-(notes|guards)$/.test(entry.tag),
+  )) {
+    await applyProposal(tx, namespace, `drizzle/${migration.tag}.sql`);
+  }
 }
 async function storageTransaction<T>(
   run: (tx: TransactionSql, namespace: string) => Promise<T>,

@@ -234,6 +234,13 @@ jobs:
           name: admin-dashboard-evidence
           path: artifacts/TICKET-097/
           retention-days: 7
+      - name: Preserve scan log evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: admin-scan-log-evidence
+          path: artifacts/TICKET-174/
+          retention-days: 7
       - name: Stop this job's isolated stack
         if: always()
         run: test ! -f .harness/worktree.json || pnpm db:stop
