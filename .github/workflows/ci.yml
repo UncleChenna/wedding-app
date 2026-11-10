@@ -158,9 +158,10 @@ jobs:
       - name: Verify authenticated scanner recovery and camera lifecycle
         run: pnpm exec tsx scripts/test-scanner-journey.ts
       - name: Verify atomic partial admission and concurrent retries
-        run: pnpm exec vitest run scripts/__tests__/online-admission.integration.test.ts
+        run: pnpm exec vitest run scripts/__tests__/online-admission.integration.test.ts scripts/__tests__/scan-observation.integration.test.ts
         env:
           RUN_ONLINE_ADMISSION_DB_TESTS: "1"
+          RUN_SCAN_OBSERVATION_DB_TESTS: "1"
       - name: Verify partial admission and lost-response recovery in browsers
         run: pnpm exec tsx scripts/test-online-admission.ts
       - name: Verify authenticated offline scanner and sign-out

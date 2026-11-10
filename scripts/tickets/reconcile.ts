@@ -86,7 +86,11 @@ export function reconciliationEvidence(
   ticketPath: string,
   dependencies: Dependencies = defaults,
   historical = false,
+  suppliedSource?: string,
 ) {
+  if (suppliedSource !== undefined && !historical)
+    throw new TransitionError("--source-commit requires --integration-pr historical recovery.");
+  const source = suppliedSource === undefined ? undefined : oid.parse(suppliedSource);
   if (!/^[1-9]\d*$/.test(repairNumber))
     throw new TransitionError("--repair-pr must be a repository PR number.");
   const fields = "url,state,baseRefName,headRefOid,mergeCommit";
@@ -109,12 +113,24 @@ export function reconciliationEvidence(
   if (git(["fetch", "--quiet", "origin", `refs/heads/${REVIEW_BASE}`]) === null)
     throw new TransitionError("Cannot fetch fresh develop evidence.");
   const develop = oid.parse(git(["rev-parse", "--verify", "FETCH_HEAD^{commit}"]));
+  // A source is explicit whole-tree evidence, never a patch similarity override.
+  // Resolve commit objects only; refs/abbreviations and non-commit objects cannot certify it.
+  let sourceTree: string | undefined;
+  if (source) {
+    if (git(["rev-parse", "--verify", `${source}^{commit}`]) !== source)
+      throw new TransitionError("Historical source must identify an exact commit object.");
+    sourceTree = oid.parse(git(["rev-parse", "--verify", `${source}^{tree}`]));
+    if (sourceTree !== git(["rev-parse", "--verify", `${original.headRefOid}^{tree}`]))
+      throw new TransitionError("Historical source must have the original tested head's exact whole tree.");
+  }
+  const integratedOriginal = source ?? original.mergeCommit.oid;
   for (const [ancestor, descendant] of [
     ...(historical ? [[original.headRefOid, original.mergeCommit.oid]] : []),
-    [original.mergeCommit.oid, repair.headRefOid],
+    ...(source ? [[source, original.headRefOid]] : []),
+    [integratedOriginal, repair.headRefOid],
     [repair.headRefOid, repair.mergeCommit.oid],
     [repair.mergeCommit.oid, develop],
-    [original.mergeCommit.oid, develop],
+    [integratedOriginal, develop],
   ]) {
     if (
       !ancestor ||
@@ -122,7 +138,7 @@ export function reconciliationEvidence(
       git(["merge-base", "--is-ancestor", ancestor, descendant]) === null
     )
       throw new TransitionError(
-        "Repair must contain the original merge and both must be reachable from fresh develop.",
+        "Repair must contain the original merge or explicitly verified source, with all required ancestry reachable from fresh develop.",
       );
   }
   // Criteria must already be complete in the tested repair, not added later on develop.
@@ -155,6 +171,8 @@ export function reconciliationEvidence(
     originalMerge: original.mergeCommit.oid,
     originalBase: original.baseRefName,
     originalRun,
+    source,
+    sourceTree,
     integrationMerge: repair.mergeCommit.oid,
     repair: repair.url,
     head: repair.headRefOid,

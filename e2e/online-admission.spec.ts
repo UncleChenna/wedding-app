@@ -95,6 +95,14 @@ test("online partial admission commits once and safely retries a lost receipt", 
     await page.getByLabel("Your six-digit PIN").fill(pin);
     await page.getByRole("button", { name: "Sign in", exact: true }).click();
     await expect(page.getByRole("button", { name: "Open camera" })).toBeInViewport();
+    const browserDevice = (await context.cookies())
+      .find((cookie) => cookie.name === "wedding-staff-device")
+      ?.value.split(".")[0];
+    if (!browserDevice || !/^[a-f0-9]{64}$/.test(browserDevice))
+      throw new Error("Missing registered browser device");
+    expect(await db`select role from registered_devices where id=${browserDevice}`).toEqual([
+      { role: "gate" },
+    ]);
     await page.getByRole("button", { name: "Open camera" }).click();
     const valid = page.getByRole("heading", { name: "Valid pass", exact: true });
     try {
@@ -158,9 +166,72 @@ test("online partial admission commits once and safely retries a lost receipt", 
     await expect(valid).toBeInViewport();
     await expect(page.getByText("Synthetic Guest", { exact: true })).toBeInViewport();
     await expect(page.getByText(/No admission has been recorded/)).toBeVisible();
-    expect(await db`select id from scan_events where invitation_id=${invitation}`).toHaveLength(0);
+    expect(
+      await db`select id from scan_events where invitation_id=${invitation} and admitted_people > 0`,
+    ).toHaveLength(0);
+    expect(
+      await db`select result,input_method,source,reported_people,admitted_people,staff_id,device_id from scan_events where invitation_id=${invitation}`,
+    ).toEqual([
+      {
+        result: "valid",
+        input_method: "qr",
+        source: "online",
+        reported_people: 0,
+        admitted_people: 0,
+        staff_id: staff,
+        device_id: browserDevice,
+      },
+    ]);
+    // Exercise the real authenticated HTTP pipeline, not a preselected repository verdict.
+    for (const result of ["already_used", "revoked", "not_rsvped"] as const) {
+      const id = randomUUID();
+      await db`insert into invitations(id,token,status) values(${id},${randomUUID().replaceAll("-", "")},${result === "revoked" ? "revoked" : result === "not_rsvped" ? "sent" : "rsvp_yes"})`;
+      await db`insert into guests(invitation_id,name,is_primary) values(${id},'Synthetic observation case',true)`;
+      if (result !== "not_rsvped")
+        await db`insert into rsvps(invitation_id,attending,count_attending) values(${id},true,1)`;
+      if (result === "already_used")
+        await db`insert into scan_events(client_event_id,invitation_id,staff_id,device_id,reported_at,reported_result,result,reported_people,admitted_people,source) values(${randomUUID()},${id},${staff},${device},now(),'valid','valid',1,1,'online')`;
+      const encoded = encodeGatePassPayload({ v: 1, kid: "scan-test", inv: id, ver: 1, iat: 0 });
+      const signed = `${encoded}.${sign(null, Buffer.from(encoded), key).toString("base64url")}`;
+      const response = await page.request.post(`${baseURL}/api/checkin/read`, {
+        headers: { Origin: new URL(baseURL ?? "").origin },
+        data: { qr: `${baseURL}/p/${signed}`, reportedAt: new Date().toISOString() },
+      });
+      expect(response.status()).toBe(200);
+      expect((await response.json()).state).toBe(result);
+      expect(
+        await db`select result,input_method,admitted_people from scan_events where invitation_id=${id} and reported_people=0`,
+      ).toEqual([{ result, input_method: "qr", admitted_people: 0 }]);
+    }
+    const unknown = encodeGatePassPayload({
+      v: 1,
+      kid: "scan-test",
+      inv: randomUUID(),
+      ver: 1,
+      iat: 0,
+    });
+    for (const [qrInput, expected] of [
+      ["not a signed pass", "invalid"],
+      [
+        `${baseURL}/p/${unknown}.${sign(null, Buffer.from(unknown), key).toString("base64url")}`,
+        "unknown",
+      ],
+    ]) {
+      const response = await page.request.post(`${baseURL}/api/checkin/read`, {
+        headers: { Origin: new URL(baseURL ?? "").origin },
+        data: { qr: qrInput },
+      });
+      expect(response.status()).toBe(200);
+      expect((await response.json()).state).toBe(expected);
+    }
+    expect(
+      await db`select result,input_method,admitted_people from scan_events where staff_id=${staff} and invitation_id is null`,
+    ).toEqual([
+      { result: "invalid", input_method: "qr", admitted_people: 0 },
+      { result: "invalid", input_method: "qr", admitted_people: 0 },
+    ]);
     expect(await page.content()).not.toMatch(/PRIVATE DIETARY MARKER|PRIVATE RSVP MARKER/);
-    const folder = `${process.env.SCANNER_REVIEW_DIR ?? "docs/reviews/TICKET-061"}/${info.project.name}`;
+    const folder = `${process.env.SCANNER_REVIEW_DIR ?? "docs/reviews/TICKET-062"}/${info.project.name}`;
     mkdirSync(folder, { recursive: true });
     async function capture(state: string) {
       for (const theme of themes) {
@@ -262,7 +333,9 @@ test("online partial admission commits once and safely retries a lost receipt", 
         await db`select admitted_people from admission_counters where invitation_id=${invitation}`
       )[0]?.admitted_people,
     ).toBe(3);
-    expect(await db`select id from scan_events where invitation_id=${invitation}`).toHaveLength(2);
+    expect(
+      await db`select id from scan_events where invitation_id=${invitation} and admitted_people > 0`,
+    ).toHaveLength(2);
     await capture("duplicate");
     await page.unroute("**/api/checkin/admit");
     await page.getByRole("button", { name: "Scan next pass" }).click();
