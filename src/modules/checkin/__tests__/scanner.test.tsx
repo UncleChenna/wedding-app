@@ -198,3 +198,19 @@ it("does not restore a result after camera pause while a lookup is in flight", a
   await act(async () => finish?.({ state: "invalid" }));
   expect(screen.queryByRole("heading", { name: "Invalid pass" })).toBeNull();
 });
+it("reports an oversized decoded QR as bounded invalid evidence without sending its raw contents", async () => {
+  const fetcher = vi.fn(async () => new Response(JSON.stringify({ state: "invalid" })));
+  vi.stubGlobal("fetch", fetcher);
+  vi.mocked(startQrCamera).mockResolvedValue({ stop: vi.fn(), setTorch: async () => false });
+  render(<Scanner />);
+  await act(async () => fireEvent.click(screen.getByRole("button", { name: "Open camera" })));
+  await act(async () => vi.mocked(startQrCamera).mock.calls[0]?.[0].onCode("PRIVATE".repeat(2000)));
+  expect(fetcher).toHaveBeenCalledWith(
+    "/api/checkin/read",
+    expect.objectContaining({
+      body: expect.stringContaining('"qr":"invalid:oversized-qr"'),
+    }),
+  );
+  expect(JSON.stringify(fetcher.mock.calls)).not.toContain("PRIVATE");
+  expect(screen.getByRole("heading", { name: "Invalid pass" })).toBeVisible();
+});

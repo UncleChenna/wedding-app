@@ -2,20 +2,20 @@
 id: TICKET-062
 title: Log every scan with time, device, staff and result
 epic: checkin
-status: todo
+status: in_review
 priority: high
 estimate: S
 labels: [backend]
 module: checkin
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-061, TICKET-064]
 blocks: [TICKET-063, TICKET-066, TICKET-132, TICKET-136, TICKET-174]
-branch: ""
-pr: ""
+branch: TICKET-062
+pr: https://github.com/UncleChenna/wedding-app/pull/149
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-10
+started: 2026-11-09
 completed: ""
 reason: ""
 resume_to: ""
@@ -39,9 +39,9 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-5).
 
 ## Acceptance criteria
 
-- [ ] Each of the five online results creates a log row, including unknown tokens with no invitation id.
-- [ ] Manual lookup is recorded as the source while preserving the result vocabulary.
-- [ ] Staff identifiers are recorded without raw PINs, pass tokens or dietary notes; unauthorized log reads fail.
+- [x] Each of the five online results creates a log row, including unknown tokens with no invitation id.
+- [x] Manual lookup is recorded as the source while preserving the result vocabulary.
+- [x] Staff identifiers are recorded without raw PINs, pass tokens or dietary notes; unauthorized log reads fail.
 
 ## Test plan
 
@@ -59,3 +59,9 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-09 — todo → claimed — divine (codex)
+- 2026-11-09 — todo → in_progress — divine (codex)
+- 2026-11-09 — Implemented and verified zero-person observations; manual input is separate from transport (ADR0025). Evidence and remaining full CI gate: `docs/plans/TICKET-062-pr.md`, draft PR149.
+- 2026-11-09 — in_progress → in_review — divine (codex)
+- 2026-11-09 — in_review → in_progress — divine (codex) — Preserve append-only scan evidence in existing scanner fixture cleanup after CI FK failure
+- 2026-11-10 — in_progress → in_review — divine (codex)

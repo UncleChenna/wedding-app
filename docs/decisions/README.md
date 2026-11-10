@@ -35,3 +35,5 @@ Accepted: [0022 — Order alert outbox and scheduled drain](0022-order-alert-out
 Proposed: [0023 — Neon branches for worktree databases](0023-neon-worktree-databases.md) (TICKET-213; would supersede 0010; owner decision and Neon account pending).
 
 Accepted: [0024 — Row-level security: server-only tables and per-station broadcast channels](0024-rls-least-privilege.md) (TICKET-027; owner approved 2026-11-09).
+
+Accepted: [0025 — Scan observation input method is separate from transport](0025-scan-observation-input-method.md) (TICKET-062; zero-person observations preserve admission replay and private evidence).
