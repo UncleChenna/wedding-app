@@ -115,7 +115,7 @@ function snapshotState(session: string, expiresAt: number) {
           "type" in data &&
           data.type === "SCANNER_INVALIDATED"
         )
-          void refresh();
+          void refresh(true);
       };
       const background = setInterval(() => {
         if (!document.hidden) void refresh();

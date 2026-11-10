@@ -41,11 +41,11 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-6) · [Connectivity plan
 
 ## Acceptance criteria
 
-- [ ] With the network disabled after sign-in, scans of valid, used and revoked codes give correct results (e2e offline).
-- [ ] The cache contains no email, phone or dietary data (test).
-- [ ] Signing out clears the cache.
+- [x] With the network disabled after sign-in, scans of valid, used and revoked codes give correct results (e2e offline).
+- [x] The cache contains no email, phone or dietary data (test).
+- [x] Signing out clears the cache.
 
-- [ ] Show snapshot age and apply TICKET-169 maximum freshness, expiry and changed-party policy. Do not claim disconnected revocations are immediate.
+- [x] Show snapshot age and apply TICKET-169 maximum freshness, expiry and changed-party policy. Do not claim disconnected revocations are immediate.
 
 ## Test plan
 
@@ -61,7 +61,7 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-6) · [Connectivity plan
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-11-10: Functional criteria verified with actual authenticated offline browser2/2, real worker24/24, isolated PostgreSQL1/1, and existing admission/offline-shell integrations2/2 each. Quick gate passes114 tests. Full coverage and final CI remain pending; PR147 remains draft. Private snapshots never record admissions or touch queues. Physical release checks remain114/163/201.
 
 ## Activity log
 

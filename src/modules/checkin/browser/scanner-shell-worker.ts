@@ -131,7 +131,11 @@ export function installScannerShellWorker({
   async function snapshotAuthority(): Promise<SnapshotAuthority | null> {
     if (storageInvalidationFailed) return null;
     const status = await runtime().status();
-    if (status.state === "ready") return { session: status.session, expiresAt: status.expiresAt };
+    if (status.state === "ready") {
+      const authority = { session: status.session, expiresAt: status.expiresAt };
+      await syncSnapshotAuthority(authority);
+      return authority;
+    }
     try {
       await guests?.store().invalidate();
     } catch (error) {
@@ -195,6 +199,8 @@ export function installScannerShellWorker({
         "INVALIDATE_SCANNER",
         "READ_GUEST_SNAPSHOT",
         "REFRESH_GUEST_SNAPSHOT",
+        "DENY_SCANNER_SESSION",
+        "INVALIDATE_GUEST_SNAPSHOT",
       ].includes(String(data.type))
     )
       return;
@@ -205,7 +211,32 @@ export function installScannerShellWorker({
           // Resolve the real client, never trust a URL supplied in the message.
           if (!client || !scannerUrl(client.url)) return;
           let result: unknown;
-          if (data.type === "READ_GUEST_SNAPSHOT" || data.type === "REFRESH_GUEST_SNAPSHOT") {
+          if (data.type === "INVALIDATE_GUEST_SNAPSHOT") {
+            const current = await store().current();
+            if (guests && (!current || ("session" in data && current.session === data.session))) {
+              try {
+                await guests.store().invalidate();
+              } catch (error) {
+                await failedInvalidation();
+                throw error;
+              }
+              result = { state: "removed", privateSnapshotRemoved: true };
+            } else result = { state: "unavailable" };
+          } else if (data.type === "DENY_SCANNER_SESSION") {
+            const current = await store().current();
+            if (current && "session" in data && current.session === data.session) {
+              await invalidate();
+              result = { state: "removed", ...(guests ? { privateSnapshotRemoved: true } : {}) };
+            } else {
+              // Absent authority cannot own a private snapshot. A different live
+              // session, however, must remain untouched by a stale tab's denial.
+              if (!current) await syncSnapshotAuthority();
+              result = { state: "unavailable" };
+            }
+          } else if (
+            data.type === "READ_GUEST_SNAPSHOT" ||
+            data.type === "REFRESH_GUEST_SNAPSHOT"
+          ) {
             if (
               !guests ||
               !("session" in data) ||

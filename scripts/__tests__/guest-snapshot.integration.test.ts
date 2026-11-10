@@ -57,6 +57,17 @@ describe.runIf(process.env.RUN_GUEST_SNAPSHOT_DB_TESTS === "1")(
             tableNumber: null,
           });
           expect(JSON.stringify(row)).not.toContain("private@example");
+          await tx.insert(schema.guests).values([
+            { invitationId: id, name: "A".repeat(200), isPrimary: true },
+            { invitationId: id, name: "B".repeat(200), isPrimary: true },
+            { invitationId: id, name: "C".repeat(200), isPrimary: true },
+          ]);
+          const large = (await readGuestSnapshotRows(tx)).find(
+            (value) => value.invitationId === id,
+          );
+          expect(large?.name.length).toBeLessThanOrEqual(512);
+          expect(large?.name).toContain(" & household");
+          expect(large?.names).toHaveLength(4);
           const staffId = randomUUID(),
             deviceId = randomUUID();
           await tx

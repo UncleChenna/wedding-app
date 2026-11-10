@@ -160,7 +160,7 @@ test("online partial admission commits once and safely retries a lost receipt", 
     await expect(page.getByText(/No admission has been recorded/)).toBeVisible();
     expect(await db`select id from scan_events where invitation_id=${invitation}`).toHaveLength(0);
     expect(await page.content()).not.toMatch(/PRIVATE DIETARY MARKER|PRIVATE RSVP MARKER/);
-    const folder = `docs/reviews/TICKET-061/${info.project.name}`;
+    const folder = `${process.env.SCANNER_REVIEW_DIR ?? "docs/reviews/TICKET-061"}/${info.project.name}`;
     mkdirSync(folder, { recursive: true });
     async function capture(state: string) {
       for (const theme of themes) {

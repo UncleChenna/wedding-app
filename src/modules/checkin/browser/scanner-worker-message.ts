@@ -3,7 +3,9 @@ export type ScannerMessage =
   | "SCANNER_STATUS"
   | "INVALIDATE_SCANNER"
   | "READ_GUEST_SNAPSHOT"
-  | "REFRESH_GUEST_SNAPSHOT";
+  | "REFRESH_GUEST_SNAPSHOT"
+  | "INVALIDATE_GUEST_SNAPSHOT"
+  | "DENY_SCANNER_SESSION";
 
 /** Bounded, request-local channel; never send authorization or guest data from the window. */
 export function scannerWorkerMessage(type: ScannerMessage, session?: string): Promise<unknown> {

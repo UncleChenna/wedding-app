@@ -91,6 +91,13 @@ export function createGuestSnapshotStore(
     });
   }
   return {
+    discard: (generation: string) =>
+      update((state) => {
+        if (state.generation !== generation) return false;
+        state.generation = crypto.randomUUID();
+        state.snapshot = null;
+        return true;
+      }),
     authorize: (generation: string, authority: SnapshotAuthority) =>
       update((state) => {
         if (

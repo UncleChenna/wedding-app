@@ -9,8 +9,11 @@ import { expect, test, chromium, webkit, type Page } from "@playwright/test";
 let server: Server;
 let origin: string;
 let worker: string;
+let signOutBundle: string;
+let legacyWorker = false;
 let session: string;
 let expiresAt: number;
+let snapshotDeadline: number | null = null;
 let holdRefresh = false;
 let releaseRefresh: (() => void) | undefined;
 const buildId = "b".repeat(64);
@@ -19,7 +22,7 @@ const snapshot = () => ({
   version: 1,
   session,
   generatedAt: Date.now(),
-  expiresAt,
+  expiresAt: snapshotDeadline ?? expiresAt,
   keys: [{ kid: "test", alg: "Ed25519", spki: "MCowBQYDK2VwAyEA" + "A".repeat(43) }],
   invitations: [
     {
@@ -36,6 +39,15 @@ const snapshot = () => ({
   ],
 });
 test.beforeAll(async () => {
+  const signOut = await build({
+    entryPoints: ["src/modules/checkin/browser/scanner-sign-out.ts"],
+    bundle: true,
+    platform: "browser",
+    format: "iife",
+    globalName: "SyntheticSignOut",
+    write: false,
+  });
+  signOutBundle = signOut.outputFiles[0]?.text ?? "";
   const compiled = await build({
     entryPoints: ["src/modules/shared/server/service-worker.ts"],
     bundle: true,
@@ -72,7 +84,11 @@ test.beforeAll(async () => {
       response.setHeader("Cache-Control", "no-store");
       if (path === "/sw.js") {
         response.setHeader("Content-Type", "application/javascript");
-        response.end(worker);
+        response.end(
+          legacyWorker
+            ? `self.addEventListener('install',()=>self.skipWaiting()); self.addEventListener('activate',event=>event.waitUntil(self.clients.claim())); self.addEventListener('message',event=>{if(event.data?.type==='INVALIDATE_SCANNER')event.ports[0]?.postMessage({state:'removed'});});`
+            : worker,
+        );
       } else if (path === asset) {
         response.setHeader("Content-Type", "application/javascript");
         response.end("/* immutable public fixture */");
@@ -118,8 +134,10 @@ test.afterAll(async () => {
   await new Promise<void>((resolve) => server.close(() => resolve()));
 });
 test.beforeEach(() => {
+  legacyWorker = false;
   session = "a".repeat(64);
   expiresAt = Date.now() + 120_000;
+  snapshotDeadline = null;
   holdRefresh = false;
   releaseRefresh = undefined;
 });
@@ -193,6 +211,52 @@ test("exact emitted worker reads private snapshot offline and erases it on logou
   expect(await message(page, "READ_GUEST_SNAPSHOT")).toEqual({ state: "unavailable" });
   expect(await privateState(page)).toBeNull();
 });
+test("known guest changes clear only private data even when the next refresh fails", async ({
+  page,
+  context,
+}) => {
+  await setup(page);
+  expect(await message(page, "REFRESH_GUEST_SNAPSHOT")).toEqual({ state: "ready" });
+  await context.setOffline(true);
+  expect(await message(page, "INVALIDATE_GUEST_SNAPSHOT")).toEqual({
+    state: "removed",
+    privateSnapshotRemoved: true,
+  });
+  expect(await message(page, "REFRESH_GUEST_SNAPSHOT")).toEqual({ state: "unavailable" });
+  expect(await message(page, "READ_GUEST_SNAPSHOT")).toEqual({ state: "unavailable" });
+  expect(await privateState(page)).toBeNull();
+  expect(await message(page, "SCANNER_STATUS")).toMatchObject({ state: "ready" });
+});
+test("an old worker's generic sign-out acknowledgement still triggers physical private cleanup", async ({
+  page,
+}) => {
+  await setup(page);
+  expect(await message(page, "REFRESH_GUEST_SNAPSHOT")).toEqual({ state: "ready" });
+  expect(await privateState(page)).not.toBeNull();
+  legacyWorker = true;
+  await page.evaluate(async () => {
+    const registration = await navigator.serviceWorker.getRegistration();
+    if (!registration) throw new Error("Missing fixture registration");
+    const changed = new Promise<void>((resolve) =>
+      navigator.serviceWorker.addEventListener("controllerchange", () => resolve(), { once: true }),
+    );
+    await registration.update();
+    await changed;
+  });
+  expect(await message(page, "INVALIDATE_SCANNER")).toEqual({ state: "removed" });
+  expect(await privateState(page)).not.toBeNull();
+  await page.addScriptTag({ content: signOutBundle });
+  expect(
+    await page.evaluate(() =>
+      (
+        window as unknown as {
+          SyntheticSignOut: { clearScannerForSignOut: () => Promise<boolean> };
+        }
+      ).SyntheticSignOut.clearScannerForSignOut(),
+    ),
+  ).toBe(true);
+  expect(await privateState(page)).toBeNull();
+});
 test("another tab's logout waits for refresh then prevents stale resurrection", async ({
   page,
   context,
@@ -235,28 +299,61 @@ test("session expiry physically clears private data before returning a status", 
   expect(await privateState(page)).toBeNull();
 });
 
-test("failed private erasure stays inaccessible across a full browser restart offline", async ({
-  browserName,
+test("a shorter trusted server deadline invalidates the old shell and private identity", async ({
+  page,
 }) => {
-  const profile = await mkdtemp(resolve(tmpdir(), "TICKET-065-browser-"));
-  const launcher = browserName === "webkit" ? webkit : chromium;
-  let context = await launcher.launchPersistentContext(profile, { headless: true });
-  try {
-    let page = await context.newPage();
-    await setup(page);
-    expect(await message(page, "REFRESH_GUEST_SNAPSHOT")).toEqual({ state: "ready" });
-    expect(await message(page, "FIXTURE_FAIL_PRIVATE")).toEqual({ state: "fault-injected" });
-    expect(await message(page, "INVALIDATE_SCANNER")).toEqual({ state: "unavailable" });
-    expect(await message(page, "READ_GUEST_SNAPSHOT")).toEqual({ state: "unavailable" });
-    await context.close();
-    context = await launcher.launchPersistentContext(profile, { headless: true });
-    await context.setOffline(true);
-    page = await context.newPage();
-    await page.goto(origin + "/checkin");
-    expect(await message(page, "READ_GUEST_SNAPSHOT")).toEqual({ state: "unavailable" });
-    expect(await privateState(page)).toBeNull();
-  } finally {
-    await context.close();
-    await rm(profile, { recursive: true, force: true });
-  }
+  await setup(page);
+  expect(await message(page, "REFRESH_GUEST_SNAPSHOT")).toEqual({ state: "ready" });
+  await page.evaluate(() => {
+    document.documentElement.dataset.scannerInvalidated = "false";
+    navigator.serviceWorker.addEventListener("message", (event) => {
+      if (event.data?.type === "SCANNER_INVALIDATED" && !event.data.current)
+        document.documentElement.dataset.scannerInvalidated = "true";
+    });
+  });
+  snapshotDeadline = expiresAt - 60_000;
+  expect(await message(page, "REFRESH_GUEST_SNAPSHOT")).toEqual({ state: "denied" });
+  expect(await message(page, "SCANNER_STATUS")).toEqual({ state: "unavailable" });
+  expect(await privateState(page)).toBeNull();
+  await expect(page.locator("html")).toHaveAttribute("data-scanner-invalidated", "true");
 });
+
+for (const invalidation of ["INVALIDATE_SCANNER", "INVALIDATE_GUEST_SNAPSHOT"]) {
+  test(`failed ${invalidation} stays inaccessible across a full browser restart offline`, async ({
+    browserName,
+  }) => {
+    const profile = await mkdtemp(resolve(tmpdir(), "TICKET-065-browser-"));
+    const launcher = browserName === "webkit" ? webkit : chromium;
+    let context = await launcher.launchPersistentContext(profile, { headless: true });
+    try {
+      let page = await context.newPage();
+      await setup(page);
+      expect(await message(page, "REFRESH_GUEST_SNAPSHOT")).toEqual({ state: "ready" });
+      expect(await message(page, "FIXTURE_FAIL_PRIVATE")).toEqual({ state: "fault-injected" });
+      expect(await message(page, invalidation)).toEqual({ state: "unavailable" });
+      expect(await message(page, "REFRESH_GUEST_SNAPSHOT")).toEqual({ state: "unavailable" });
+      expect(await message(page, "READ_GUEST_SNAPSHOT")).toEqual({ state: "unavailable" });
+      await context.close();
+      context = await launcher.launchPersistentContext(profile, { headless: true });
+      await context.setOffline(true);
+      page = await context.newPage();
+      await page.goto(origin + "/checkin");
+      if (invalidation === "INVALIDATE_SCANNER") {
+        expect(await message(page, "DENY_SCANNER_SESSION")).toEqual({ state: "unavailable" });
+      } else {
+        // Private-only failure retains the shell record, but removed readiness
+        // must prevent use of that record after the worker's memory latch resets.
+        expect(await message(page, "READ_GUEST_SNAPSHOT")).toEqual({ state: "unavailable" });
+        expect(await message(page, "DENY_SCANNER_SESSION")).toEqual({
+          state: "removed",
+          privateSnapshotRemoved: true,
+        });
+      }
+      expect(await privateState(page)).toBeNull();
+      expect(await message(page, "READ_GUEST_SNAPSHOT")).toEqual({ state: "unavailable" });
+    } finally {
+      await context.close();
+      await rm(profile, { recursive: true, force: true });
+    }
+  });
+}

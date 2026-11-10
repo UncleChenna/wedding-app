@@ -16,6 +16,7 @@ function fixture() {
     expiresAt: snapshot.expiresAt,
   }));
   const store = {
+    discard: vi.fn(async () => true),
     authorize: vi.fn(async () => true),
     begin: vi.fn(async () => "generation"),
     current: vi.fn(async () => snapshot),
@@ -66,11 +67,9 @@ describe("worker-owned snapshot refresh", () => {
       }),
     );
     f.store.authorize.mockResolvedValue(false);
-    expect(await f.runtime.refresh()).toEqual({ state: "unavailable" });
-    expect(f.store.authorize).toHaveBeenCalledWith("generation", {
-      session: shorter.session,
-      expiresAt: shorter.expiresAt,
-    });
+    expect(await f.runtime.refresh()).toEqual({ state: "denied" });
+    expect(f.store.discard).toHaveBeenCalledWith("generation");
+    expect(f.denied).toHaveBeenCalledOnce();
     expect(f.store.commit).not.toHaveBeenCalled();
   });
   it("treats server authentication denial as authoritative and invokes durable invalidation", async () => {

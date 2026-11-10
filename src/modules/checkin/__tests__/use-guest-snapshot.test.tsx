@@ -65,6 +65,33 @@ it("drops a late refresh reply after logout notification", async () => {
   expect(result.current.summary).toBeNull();
   expect(result.current.refreshing).toBe(false);
 });
+it("retries once when shell preparation completes during the initial unavailable refresh", async () => {
+  let release: ((value: null) => void) | undefined;
+  vi.mocked(readGuestSnapshot).mockImplementationOnce(
+    () =>
+      new Promise((resolve) => {
+        release = resolve;
+      }),
+  );
+  const deadline = Date.now() + 60_000;
+  const { result } = renderHook(() => useGuestSnapshot({ session, expiresAt: deadline }));
+  await waitFor(() => expect(readGuestSnapshot).toHaveBeenCalledOnce());
+  act(() =>
+    navigator.serviceWorker.dispatchEvent(
+      new MessageEvent("message", {
+        data: {
+          type: "SCANNER_INVALIDATED",
+          current: { session, expiresAt: deadline, build: "b".repeat(64) },
+        },
+      }),
+    ),
+  );
+  await act(async () => {
+    release?.(null);
+  });
+  await waitFor(() => expect(result.current.summary).not.toBeNull());
+  expect(readGuestSnapshot).toHaveBeenCalledTimes(2);
+});
 it("retains same-session cached metadata when offline without claiming a successful refresh", async () => {
   Object.defineProperty(navigator, "onLine", { configurable: true, value: false });
   const deadline = Date.now() + 60_000;

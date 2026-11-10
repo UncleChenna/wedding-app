@@ -61,12 +61,14 @@ export function AdmissionResult({
   submit = submitLive,
   onBusyChange,
   onComplete,
+  allowAdmission = true,
 }: {
   result: ScanReadResult;
   qr: string | null;
   submit?: AdmissionSubmitter;
   onBusyChange: (busy: boolean) => void;
   onComplete?: () => void;
+  allowAdmission?: boolean;
 }) {
   const remaining =
     result.state === "valid" ? result.guest.partySize - result.guest.admittedSoFar : 0;
@@ -88,7 +90,13 @@ export function AdmissionResult({
   useEffect(() => () => controller.current?.abort(), []);
 
   async function admit() {
-    if (controller.current || !qr || result.state !== "valid") return;
+    if (
+      controller.current ||
+      !qr ||
+      result.state !== "valid" ||
+      (!allowAdmission && !intent.current)
+    )
+      return;
     const selected = Number(people);
     if (!Number.isSafeInteger(selected) || selected < 1 || selected > remaining) {
       setValidation(`Choose between 1 and ${remaining} guests.`);
@@ -196,7 +204,7 @@ export function AdmissionResult({
       </div>
     );
   }
-  if (result.state !== "valid" || !qr)
+  if (result.state !== "valid" || !qr || (!allowAdmission && !response && !pending))
     return (
       <ScanResultPanel state={result.state} guest={"guest" in result ? result.guest : undefined} />
     );

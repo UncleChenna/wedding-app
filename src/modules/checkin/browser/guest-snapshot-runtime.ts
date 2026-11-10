@@ -84,6 +84,13 @@ export function createGuestSnapshotRuntime(options: {
         const current = await options.authority();
         if (!active(current) || current.session !== authority.session)
           return { state: "unavailable" };
+        if (snapshot.expiresAt < authority.expiresAt) {
+          // The old shell embeds its previous deadline. Never keep its camera
+          // authority after the live endpoint reveals a shorter session policy.
+          if (!(await options.store.discard(generation))) return { state: "unavailable" };
+          await options.denied();
+          return { state: "denied" };
+        }
         const boundedAuthority = {
           session: current.session,
           expiresAt: Math.min(authority.expiresAt, current.expiresAt, snapshot.expiresAt),

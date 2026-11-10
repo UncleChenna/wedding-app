@@ -59,6 +59,9 @@ export async function readGuestSnapshotRows(
   return rows.map((row) => {
     const group = grouped.get(row.invitationId) ?? [];
     const primary = group.filter((member) => member.isPrimary).map((member) => member.name);
+    // Keep the arm's-length display label bounded even for many named invitees;
+    // every member name remains available in the separate search projection.
+    const label = primary.slice(0, 2).join(" & ") + (primary.length > 2 ? " & household" : "");
     return {
       invitationId: row.invitationId,
       tokenVersion: row.tokenVersion,
@@ -67,7 +70,7 @@ export async function readGuestSnapshotRows(
       partySize: row.allowance ?? row.countAttending ?? 0,
       admittedSoFar: row.admittedSoFar ?? 0,
       tableNumber: row.tableNumber,
-      name: primary.join(" & ") || row.householdName || "Guest household",
+      name: label || row.householdName || "Guest household",
       names: group.map((member) => member.name),
     };
   });

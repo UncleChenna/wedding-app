@@ -138,6 +138,31 @@ function fixture(withGuests = false) {
   };
 }
 describe("private snapshot worker coordination", () => {
+  it("purges retained private data on a denial after shell authority is absent", async () => {
+    const f = fixture(true);
+    expect(await f.send("DENY_SCANNER_SESSION")).toHaveBeenCalledWith({ state: "unavailable" });
+    expect(f.guestStore.invalidate).toHaveBeenCalledOnce();
+  });
+  it("does not let a stale tab's denial erase a replacement session", async () => {
+    const f = fixture(true);
+    vi.mocked(f.store.current).mockResolvedValue({
+      version: 1,
+      session: "c".repeat(64),
+      build: "b".repeat(64),
+      preparedAt: Date.now(),
+      expiresAt: Date.now() + 60_000,
+      html: "<main>Scanner</main>",
+      headers: [],
+      assets: [],
+    });
+    expect(await f.send("DENY_SCANNER_SESSION")).toHaveBeenCalledWith({ state: "unavailable" });
+    expect(f.store.invalidate).not.toHaveBeenCalled();
+    expect(f.guestStore.invalidate).not.toHaveBeenCalled();
+    expect(await f.send("INVALIDATE_GUEST_SNAPSHOT")).toHaveBeenCalledWith({
+      state: "unavailable",
+    });
+    expect(f.guestStore.invalidate).not.toHaveBeenCalled();
+  });
   it("keeps delayed readiness-cache deletions inside the lock after another deletion fails", async () => {
     const f = fixture();
     let release: ((value: boolean) => void) | undefined;

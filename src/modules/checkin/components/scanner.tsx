@@ -8,7 +8,7 @@ import { scanReadResultSchema, type ScanReadResult } from "../lib/scan-read-resu
 import { requestScanFeedback } from "../lib/scan-feedback";
 
 export type ScanResolver = (qr: string, signal: AbortSignal) => Promise<ScanReadResult>;
-async function readLivePass(qr: string, signal: AbortSignal): Promise<ScanReadResult> {
+export async function readLivePass(qr: string, signal: AbortSignal): Promise<ScanReadResult> {
   const response = await fetch("/api/checkin/read", {
     method: "POST",
     cache: "no-store",
@@ -34,9 +34,13 @@ const recovery: Record<CameraProblem, string> = {
 export function Scanner({
   resolveRead = readLivePass,
   submitAdmission,
+  allowAdmission = true,
+  onAdmissionRecorded,
 }: {
   resolveRead?: ScanResolver;
   submitAdmission?: AdmissionSubmitter;
+  allowAdmission?: boolean;
+  onAdmissionRecorded?: () => void;
 }) {
   const video = useRef<HTMLVideoElement>(null);
   const resultRegion = useRef<HTMLDivElement>(null);
@@ -278,8 +282,12 @@ export function Scanner({
             result={readResult}
             qr={checkedQr}
             submit={submitAdmission}
+            allowAdmission={allowAdmission}
             onBusyChange={setAdmissionBusy}
-            onComplete={() => setAdmissionCompleted(true)}
+            onComplete={() => {
+              setAdmissionCompleted(true);
+              onAdmissionRecorded?.();
+            }}
           />
         </div>
       )}
