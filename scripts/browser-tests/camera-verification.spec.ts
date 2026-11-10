@@ -2,6 +2,8 @@ import { test, expect } from "@playwright/test";
 import { build } from "esbuild";
 import QRCode from "qrcode";
 import type { startQrCamera } from "../../src/modules/checkin/lib/camera-reader";
+import { readFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
 
 declare global {
   interface Window {
@@ -17,8 +19,15 @@ declare global {
     };
   }
 }
-for (const fallback of [false, true]) {
-  test(`actual video pixels decode with default/fallback=${fallback}`, async ({ page }) => {
+for (const { fallback, dense } of [
+  { fallback: false, dense: false },
+  { fallback: true, dense: false },
+  { fallback: false, dense: true },
+  { fallback: true, dense: true },
+]) {
+  test(`actual video pixels decode with default/fallback=${fallback}, dense=${dense}`, async ({
+    page,
+  }) => {
     const bundle = await build({
       entryPoints: ["src/modules/checkin/lib/camera-reader.ts"],
       bundle: true,
@@ -30,7 +39,14 @@ for (const fallback of [false, true]) {
     });
     const script = bundle.outputFiles[0];
     if (!script) throw new Error("Camera bundle missing");
-    const data = await QRCode.toDataURL("synthetic-camera-qr", { width: 512, margin: 4 });
+    // Retained synthetic signed-pass pixels reproduced scale-sensitive finder
+    // detection failure. No signing key or real guest data is present.
+    const data = dense
+      ? `data:image/png;base64,${(await readFile("scripts/browser-tests/fixtures/dense-signed-pass.png")).toString("base64")}`
+      : await QRCode.toDataURL("synthetic-camera-qr", { width: 512, margin: 4 });
+    const expectedHash = dense
+      ? "9f1fb2db123433911c2e216afaa8e281670b35ade0039185e32e3344adc6b082"
+      : createHash("sha256").update("synthetic-camera-qr").digest("hex");
     await page.route("http://localhost:32918/**", (route) =>
       route.fulfill({
         contentType: "text/html",
@@ -122,7 +138,12 @@ for (const fallback of [false, true]) {
     expect(firstRead?.ready).toBeGreaterThanOrEqual(2);
     expect(firstRead?.width).toBe(512);
     expect(await page.evaluate(() => window.cameraResult.debug)).toEqual(["fake media granted"]);
-    expect(await page.evaluate(() => window.cameraResult.codes[0])).toBe("synthetic-camera-qr");
+    const decoded = await page.evaluate(() => window.cameraResult.codes[0]);
+    expect(
+      createHash("sha256")
+        .update(decoded ?? "")
+        .digest("hex"),
+    ).toBe(expectedHash);
     expect(await page.evaluate(() => window.cameraResult.problems)).toEqual([]);
     // Keep the same real QR pixels in view: decoding continues, but delivery
     // must remain throttled across actual animation/video frames.
@@ -132,10 +153,7 @@ for (const fallback of [false, true]) {
     const [first, second] = reads;
     if (first === undefined || second === undefined) throw new Error("Two reads required");
     expect(second - first).toBeGreaterThanOrEqual(3_000);
-    expect(await page.evaluate(() => window.cameraResult.codes)).toEqual([
-      "synthetic-camera-qr",
-      "synthetic-camera-qr",
-    ]);
+    expect(await page.evaluate(() => window.cameraResult.codes)).toEqual([decoded, decoded]);
     await page.evaluate(() => window.cameraResult.stop?.());
     expect(
       await page.evaluate(() =>

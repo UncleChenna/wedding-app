@@ -18,6 +18,15 @@ function exceptionName(error: unknown): string {
     : "";
 }
 
+function decodeException(error: unknown): string {
+  return typeof error === "object" &&
+    error !== null &&
+    "getKind" in error &&
+    typeof error.getKind === "function"
+    ? error.getKind()
+    : exceptionName(error);
+}
+
 export function cameraProblem(error: unknown): CameraProblem {
   const name = exceptionName(error);
   if (name === "NotAllowedError" || name === "SecurityError") return "denied";
@@ -68,17 +77,42 @@ export async function createFrameReader(): Promise<FrameReader> {
     if (!fallback) {
       const { BrowserQRCodeReader } = await import("@zxing/browser");
       const reader = new BrowserQRCodeReader();
+      let smaller: HTMLCanvasElement | undefined;
       fallback = async (source) => {
         try {
           return [reader.decode(source).getText()];
         } catch (error) {
-          const name =
-            typeof error === "object" &&
-            error !== null &&
-            "getKind" in error &&
-            typeof error.getKind === "function"
-              ? error.getKind()
-              : exceptionName(error);
+          const name = decodeException(error);
+          // Finder-pattern detection can miss a valid dense QR at one pixel
+          // scale. Retry this same frame once at half size, keeping >=160px in
+          // each dimension. Native/full-size success never pays this cost.
+          if (
+            name === "NotFoundException" &&
+            source.videoWidth >= 320 &&
+            source.videoHeight >= 320
+          ) {
+            smaller ??= document.createElement("canvas");
+            const width = Math.floor(source.videoWidth / 2);
+            const height = Math.floor(source.videoHeight / 2);
+            if (smaller.width !== width) smaller.width = width;
+            if (smaller.height !== height) smaller.height = height;
+            const context = smaller.getContext("2d");
+            if (context) {
+              context.imageSmoothingEnabled = false;
+              context.drawImage(source, 0, 0, width, height);
+              try {
+                return [reader.decodeFromCanvas(smaller).getText()];
+              } catch (scaledError) {
+                if (
+                  !["NotFoundException", "ChecksumException", "FormatException"].includes(
+                    decodeException(scaledError),
+                  )
+                )
+                  throw scaledError;
+              }
+            }
+            return [];
+          }
           if (["NotFoundException", "ChecksumException", "FormatException"].includes(name))
             return [];
           throw error;

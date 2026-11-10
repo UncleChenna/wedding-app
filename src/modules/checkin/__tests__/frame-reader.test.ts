@@ -1,16 +1,113 @@
 // @vitest-environment jsdom
 import { afterEach, expect, it, vi } from "vitest";
 import { createFrameReader } from "../lib/camera-reader";
-const { decode } = vi.hoisted(() => ({ decode: vi.fn() }));
+const { decode, decodeFromCanvas } = vi.hoisted(() => ({
+  decode: vi.fn(),
+  decodeFromCanvas: vi.fn(),
+}));
 vi.mock("@zxing/browser", () => ({
   BrowserQRCodeReader: class {
     decode = decode;
+    decodeFromCanvas = decodeFromCanvas;
   },
 }));
 afterEach(() => {
   vi.unstubAllGlobals();
   vi.clearAllMocks();
+  vi.restoreAllMocks();
   vi.useRealTimers();
+});
+function sizedVideo(width: number, height: number) {
+  const video = document.createElement("video");
+  Object.defineProperties(video, { videoWidth: { value: width }, videoHeight: { value: height } });
+  return video;
+}
+it("retries one smaller copy of a not-found frame and reuses the bounded canvas", async () => {
+  vi.stubGlobal("BarcodeDetector", undefined);
+  decode.mockImplementation(() => {
+    throw { name: "NotFoundException" };
+  });
+  decodeFromCanvas.mockReturnValue({ getText: () => "recovered" });
+  const drawing = { drawImage: vi.fn(), imageSmoothingEnabled: true };
+  vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue(
+    drawing as unknown as CanvasRenderingContext2D,
+  );
+  const video = sizedVideo(512, 512);
+  const read = await createFrameReader();
+  expect(await read(video)).toEqual(["recovered"]);
+  expect(await read(video)).toEqual(["recovered"]);
+  expect(decode).toHaveBeenCalledTimes(2);
+  expect(decodeFromCanvas).toHaveBeenCalledTimes(2);
+  expect(decodeFromCanvas.mock.calls[0]?.[0]).toBe(decodeFromCanvas.mock.calls[1]?.[0]);
+  expect(decodeFromCanvas.mock.calls[0]?.[0]).toMatchObject({ width: 256, height: 256 });
+  expect(drawing.drawImage.mock.calls).toEqual([
+    [video, 0, 0, 256, 256],
+    [video, 0, 0, 256, 256],
+  ]);
+  expect(drawing.imageSmoothingEnabled).toBe(false);
+});
+it.each([
+  [512, 319],
+  [319, 512],
+])("does not shrink a %s×%s frame below the minimum dimension", async (width, height) => {
+  vi.stubGlobal("BarcodeDetector", undefined);
+  decode.mockImplementation(() => {
+    throw { name: "NotFoundException" };
+  });
+  const read = await createFrameReader();
+  expect(await read(sizedVideo(width, height))).toEqual([]);
+  expect(decodeFromCanvas).not.toHaveBeenCalled();
+});
+it.each(["NotFoundException", "ChecksumException", "FormatException"])(
+  "keeps scanning when the bounded smaller frame reports %s",
+  async (name) => {
+    vi.stubGlobal("BarcodeDetector", undefined);
+    decode.mockImplementation(() => {
+      throw { name: "NotFoundException" };
+    });
+    decodeFromCanvas.mockImplementation(() => {
+      throw { name };
+    });
+    vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue({
+      drawImage: vi.fn(),
+    } as unknown as CanvasRenderingContext2D);
+    const read = await createFrameReader();
+    expect(await read(sizedVideo(512, 512))).toEqual([]);
+    expect(decodeFromCanvas).toHaveBeenCalledTimes(1);
+  },
+);
+it("keeps full-size scanning available if a smaller canvas context cannot be created", async () => {
+  vi.stubGlobal("BarcodeDetector", undefined);
+  decode.mockImplementation(() => {
+    throw { name: "NotFoundException" };
+  });
+  vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue(null);
+  const read = await createFrameReader();
+  expect(await read(sizedVideo(512, 512))).toEqual([]);
+  expect(decodeFromCanvas).not.toHaveBeenCalled();
+});
+it.each(["ChecksumException", "FormatException"])("does not rescale a %s frame", async (name) => {
+  vi.stubGlobal("BarcodeDetector", undefined);
+  decode.mockImplementation(() => {
+    throw { name };
+  });
+  const read = await createFrameReader();
+  expect(await read(sizedVideo(512, 512))).toEqual([]);
+  expect(decodeFromCanvas).not.toHaveBeenCalled();
+});
+it("propagates an unexpected smaller-frame decoder failure instead of masking it", async () => {
+  vi.stubGlobal("BarcodeDetector", undefined);
+  decode.mockImplementation(() => {
+    throw { name: "NotFoundException" };
+  });
+  decodeFromCanvas.mockImplementation(() => {
+    throw new Error("scaled decoder failure");
+  });
+  vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue({
+    drawImage: vi.fn(),
+  } as unknown as CanvasRenderingContext2D);
+  const read = await createFrameReader();
+  await expect(read(sizedVideo(512, 512))).rejects.toThrow("scaled decoder failure");
 });
 function native(detect: () => Promise<{ rawValue: string }[]>) {
   vi.stubGlobal(
