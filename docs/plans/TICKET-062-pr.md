@@ -63,3 +63,9 @@ No visual markup/style change; the browser change only adds bounded request meta
 Only an additive SQL test command/flag in existing CI. No thresholds, retries, guards, hooks or assertions weakened. Synthetic test roles receive SELECT in the guarded disposable database solely to prove RLS denies reads rather than relying on missing privileges.
 
 Independent review caught the missing test-only `.env.example` declaration; fixed and verified. Definition-only TICKET-226 tracks explicitly running parity on workflow/environment changes during quick verification. No unrelated harness implementation is included.
+
+## Hosted scanner fixture repair — 2026-11-10
+
+The first hosted journey failed because its old scanner teardown tried to delete devices/staff now referenced by immutable invalid-scan observations. The FK rejection correctly preserved evidence, but prevented settings cleanup and caused later retry collisions. The fixture now retires only its own synthetic device/staff credentials, clears the complete PIN credential tuple, asserts the same event IDs remain, and removes only its own temporary event settings. No audit guard, assertion, product code or migration was changed.
+
+The first local repair attempt exposed the existing complete-credential constraint when only the PIN hash was cleared; all three credential fields now clear together. The exact hosted scanner command then passed **2/2 (1.3m)**, including successive mobile/desktop fixed-PIN fixtures. The owned database is stopped with all synthetic audit evidence retained. Screenshots are stored under `docs/reviews/TICKET-062/scanner-{mobile,desktop}/`. Independent review of this bounded repair is clean. Fresh final-head CI remains required.
