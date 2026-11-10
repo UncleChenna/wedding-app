@@ -9,7 +9,7 @@ const oid = z.string().regex(/^[a-f0-9]{40,64}$/i);
 const prSchema = z.object({
   url: z.string().url(),
   state: z.literal("MERGED"),
-  baseRefName: z.literal(REVIEW_BASE),
+  baseRefName: z.string().min(1),
   headRefOid: oid,
   mergeCommit: z.object({ oid }),
 });
@@ -37,11 +37,13 @@ const requiredJobs = [
 ];
 
 /** Optional review success cannot stand in for the repository's full CI workflow. */
-export function verifyRepairRun(value: unknown, expectedHead: string): string {
+export function verifyRepairRun(value: unknown, expectedHead: string, historical = false): string {
   const checked = runSchema.parse(value);
   if (
     checked.headSha !== expectedHead ||
-    requiredJobs.some((name) => !checked.jobs.some((job) => job.name === name))
+    (historical ? requiredJobs.slice(0, 4) : requiredJobs).some(
+      (name) => !checked.jobs.some((job) => job.name === name),
+    )
   )
     throw new TransitionError("Repair CI must pass every required job on its exact merged head.");
   return checked.url;
@@ -51,12 +53,15 @@ export function reconciliationEligibility(
   meta: Frontmatter,
   actor: string,
   statusOf: (id: string) => Status | undefined,
+  historical = false,
 ): void {
   if (!meta.owner || meta.owner !== actor)
     throw new TransitionError("Only the ticket owner can reconcile it.");
-  if (!["blocked", "in_progress"].includes(meta.status))
+  if (!(historical ? ["in_review"] : ["blocked", "in_progress"]).includes(meta.status))
     throw new TransitionError(
-      "Reconciliation only recovers blocked or in-progress merged tickets.",
+      historical
+        ? "Historical reconciliation only recovers in-review stacked tickets."
+        : "Reconciliation only recovers blocked or in-progress merged tickets.",
     );
   const pending = meta.blocked_by.filter((id) => statusOf(id) !== "done");
   if (pending.length) throw new TransitionError(`Reconciliation waits for ${pending.join(", ")}.`);
@@ -80,7 +85,8 @@ export function reconciliationEvidence(
   repairNumber: string,
   ticketPath: string,
   dependencies: Dependencies = defaults,
-): { original: string; repair: string; head: string; develop: string; run: string } {
+  historical = false,
+) {
   if (!/^[1-9]\d*$/.test(repairNumber))
     throw new TransitionError("--repair-pr must be a repository PR number.");
   const fields = "url,state,baseRefName,headRefOid,mergeCommit";
@@ -88,6 +94,13 @@ export function reconciliationEvidence(
     prSchema.parse(dependencies.gh(["pr", "view", ref, "--json", fields], cwd));
   const original = readPr(originalRef);
   const repair = readPr(repairNumber);
+  if (
+    repair.baseRefName !== REVIEW_BASE ||
+    (historical ? original.baseRefName === REVIEW_BASE : original.baseRefName !== REVIEW_BASE)
+  )
+    throw new TransitionError(
+      "Recovery requires a develop integration and the expected original PR base.",
+    );
   if (original.url.split("/pull/")[0] !== repair.url.split("/pull/")[0])
     throw new TransitionError("Original and repair PRs must belong to the same repository.");
   if (original.url === repair.url)
@@ -97,6 +110,7 @@ export function reconciliationEvidence(
     throw new TransitionError("Cannot fetch fresh develop evidence.");
   const develop = oid.parse(git(["rev-parse", "--verify", "FETCH_HEAD^{commit}"]));
   for (const [ancestor, descendant] of [
+    ...(historical ? [[original.headRefOid, original.mergeCommit.oid]] : []),
     [original.mergeCommit.oid, repair.headRefOid],
     [repair.headRefOid, repair.mergeCommit.oid],
     [repair.mergeCommit.oid, develop],
@@ -112,7 +126,7 @@ export function reconciliationEvidence(
       );
   }
   // Criteria must already be complete in the tested repair, not added later on develop.
-  for (const commit of [repair.headRefOid, develop]) {
+  for (const commit of [...(historical ? [original.headRefOid] : []), repair.headRefOid, develop]) {
     const text = git(["show", `${commit}:${ticketPath}`]);
     const checked = text ? criteria(parseTicket(text, ticketPath)) : [];
     if (!checked.length || checked.some((criterion) => !criterion.checked))
@@ -120,6 +134,36 @@ export function reconciliationEvidence(
         "The tested repair and current develop must contain completed original acceptance criteria.",
       );
   }
+  const originalRun = historical ? verifiedRun(cwd, original.headRefOid, dependencies, true) : null;
+  const runUrl = verifiedRun(cwd, repair.headRefOid, dependencies, false);
+  if (historical && verifiedRun(cwd, original.headRefOid, dependencies, true) !== originalRun)
+    throw new TransitionError("Original CI changed while verifying the integration.");
+  if (historical && verifiedRun(cwd, repair.headRefOid, dependencies, false) !== runUrl)
+    throw new TransitionError("Integration CI changed during historical reconciliation.");
+  // Reject changed metadata for either PR, including original stacked identity.
+  for (const [ref, previous] of [
+    [originalRef, original],
+    [repairNumber, repair],
+  ] as const) {
+    const again = readPr(ref);
+    if (JSON.stringify(again) !== JSON.stringify(previous))
+      throw new TransitionError("PR evidence changed during reconciliation; retry.");
+  }
+  return {
+    original: original.url,
+    originalHead: original.headRefOid,
+    originalMerge: original.mergeCommit.oid,
+    originalBase: original.baseRefName,
+    originalRun,
+    integrationMerge: repair.mergeCommit.oid,
+    repair: repair.url,
+    head: repair.headRefOid,
+    develop,
+    run: runUrl,
+  };
+}
+
+function verifiedRun(cwd: string, head: string, dependencies: Dependencies, historical: boolean) {
   const runs = z
     .array(z.object({ databaseId: z.number().int().positive() }))
     .parse(
@@ -130,7 +174,7 @@ export function reconciliationEvidence(
           "--workflow",
           "ci.yml",
           "--commit",
-          repair.headRefOid,
+          head,
           "--event",
           "pull_request",
           "--limit",
@@ -153,19 +197,9 @@ export function reconciliationEvidence(
     ],
     cwd,
   );
-  const runUrl = verifyRepairRun(evidence, repair.headRefOid);
+  const runUrl = verifyRepairRun(evidence, head, historical);
   if (runSchema.parse(evidence).databaseId !== latest.databaseId)
     throw new TransitionError("CI run identity changed while reading evidence.");
-  // Fail if metadata changes during the evidence read; never combine two heads.
-  const again = readPr(repairNumber);
-  if (
-    again.headRefOid !== repair.headRefOid ||
-    again.mergeCommit.oid !== repair.mergeCommit.oid ||
-    again.url !== repair.url
-  )
-    throw new TransitionError(
-      "Repair PR changed while checking evidence; retry with fresh evidence.",
-    );
   const currentRuns = z
     .array(z.object({ databaseId: z.number().int().positive() }))
     .parse(
@@ -176,7 +210,7 @@ export function reconciliationEvidence(
           "--workflow",
           "ci.yml",
           "--commit",
-          repair.headRefOid,
+          head,
           "--event",
           "pull_request",
           "--limit",
@@ -201,15 +235,9 @@ export function reconciliationEvidence(
     cwd,
   );
   if (
-    verifyRepairRun(finalRun, repair.headRefOid) !== runUrl ||
+    verifyRepairRun(finalRun, head, historical) !== runUrl ||
     runSchema.parse(finalRun).databaseId !== latest.databaseId
   )
     throw new TransitionError("Repair CI evidence changed during reconciliation.");
-  return {
-    original: original.url,
-    repair: repair.url,
-    head: repair.headRefOid,
-    develop,
-    run: runUrl,
-  };
+  return runUrl;
 }
