@@ -8,6 +8,28 @@ const rows = [
   { invitationId: "c", name: "Other", names: ["Bola Lawal"] },
 ] as const;
 describe("manual guest name search", () => {
+  it("uses readable household fallbacks and concise labels for ordinary families", () => {
+    expect(manualHouseholdName([], "  Okafor family  ")).toBe("Okafor family");
+    expect(manualHouseholdName([], null)).toBe("Guest household");
+    expect(manualHouseholdName([], "  ")).toBe("Guest household");
+    expect(manualHouseholdName(["Ada", "Chidi"], null)).toBe("Ada & Chidi");
+    expect(manualHouseholdName(["Ada", "Chidi", "Ife"], null)).toBe("Ada & Chidi & household");
+  });
+  it("ranks exact names before prefixes and one-edit typos, without duplicate households", () => {
+    const candidates = [
+      { invitationId: "prefix", name: "Bola family", names: ["Adalena"] },
+      { invitationId: "exact", name: "Ada family", names: ["Ada"] },
+      { invitationId: "exact", name: "Repeated row", names: ["Ada"] },
+    ];
+    expect(searchGuestNames(candidates, "ada").matches.map((match) => match.invitationId)).toEqual([
+      "exact",
+      "prefix",
+    ]);
+    for (const query of ["adebayoa", "adebaayo", "adebaxo"])
+      expect(searchGuestNames(rows, query).matches[0]?.invitationId).toBe("a");
+    expect(searchGuestNames(rows, "axebaxo").matches).toEqual([]);
+    expect(searchGuestNames(rows, "Ada\u200b").matches).toEqual([]);
+  });
   it("bounds long household display labels while preserving all primary names for matching", () => {
     const names = ["Ada " + "x".repeat(250), "Chidi " + "y".repeat(250), "Ife Okafor"];
     const name = manualHouseholdName(names, null);

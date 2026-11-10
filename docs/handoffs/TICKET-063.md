@@ -14,6 +14,13 @@ responses are discarded, and uncertain manual admission keeps the exact intent.
 Focused tests, scoped ESLint and TypeScript pass; no actual SQL/browser proof yet.
 Reviewer found oversized household labels: now bounded first-two-primary labels
 retain all full names for matching, with a long-name regression.
+The scoped search coverage first found 87.5% branches; meaningful ranking,
+duplicate-row, typo and fallback cases now prove 100% lines/branches (12 tests).
+Three UI tests include blocking navigation during uncertain admission and exact
+receipt retry. The real SQL extension and e2e/manual-checkin.spec.ts are prepared
+but UNRUN. Do not claim their results or wire the browser runner before scanner
+integration is complete. The fixture uses unique household names and preserves
+append-only synthetic evidence; settings cleanup is limited to its own marker.
 
 Next: integrate065 only after its verified merge. Use065's existing private-cache
 authority/unsafeCache/denial boundary; do not bypass it with independent window

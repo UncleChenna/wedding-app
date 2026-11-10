@@ -11,7 +11,61 @@ const matches = {
   },
   cached: false,
 };
-afterEach(cleanup);
+afterEach(() => {
+  cleanup();
+  vi.unstubAllGlobals();
+});
+it("preserves an uncertain manual intent and blocks changing household until the receipt is recovered", async () => {
+  const lookup = vi
+    .fn<ManualLookup>()
+    .mockResolvedValueOnce(matches)
+    .mockResolvedValueOnce({
+      cached: false,
+      response: {
+        state: "selection",
+        invitationId: id,
+        version: 1,
+        result: {
+          state: "valid",
+          guest: {
+            name: "Ada & Chidi",
+            partySize: 3,
+            admittedSoFar: 1,
+            tableNumber: 7,
+            admissions: [],
+          },
+        },
+      },
+    });
+  const transport = vi
+    .fn<typeof fetch>()
+    .mockRejectedValueOnce(new Error("lost response"))
+    .mockResolvedValueOnce(
+      Response.json({ state: "duplicate", people: 2, recordedAt: "2026-12-19T12:00:00.000Z" }),
+    );
+  vi.stubGlobal("fetch", transport);
+  const close = vi.fn();
+  render(<ManualGuestSearch lookup={lookup} onClose={close} onAdmissionRecorded={() => {}} />);
+  fireEvent.change(screen.getByLabelText("Guest name"), { target: { value: "Ife" } });
+  await act(async () => fireEvent.click(screen.getByRole("button", { name: "Find guest" })));
+  await act(async () => fireEvent.click(screen.getByRole("button", { name: /Ada & Chidi/ })));
+  await act(async () => fireEvent.click(screen.getByRole("button", { name: "Admit 2 guests" })));
+  expect(screen.getByLabelText("Guest name").hasAttribute("disabled")).toBe(true);
+  expect(screen.getByRole("button", { name: "Back to camera" }).hasAttribute("disabled")).toBe(
+    true,
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Back to camera" }));
+  expect(close).not.toHaveBeenCalled();
+  await act(async () => document.dispatchEvent(new Event("visibilitychange")));
+  await act(async () =>
+    fireEvent.click(screen.getByRole("button", { name: "Retry this admission" })),
+  );
+  expect(transport.mock.calls[1]?.[1]?.body).toBe(transport.mock.calls[0]?.[1]?.body);
+  expect(screen.getByRole("heading", { name: "Already recorded" })).toBeTruthy();
+  expect(screen.getByRole("button", { name: "Back to camera" }).hasAttribute("disabled")).toBe(
+    false,
+  );
+});
 it("searches tag-along names and keeps cached selection read-only after connectivity returns", async () => {
   const lookup = vi
     .fn<ManualLookup>()

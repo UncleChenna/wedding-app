@@ -25,7 +25,8 @@ flow and isolated search UI; scanner/offline integration remains unfinished.
 
 # Acceptance criteria and evidence
 
-- Search normalization, primary/tag-along matching and bounded long labels: ten unit tests pass.
+- Search normalization, primary/tag-along matching, ranking and bounded long labels:
+  twelve unit tests pass, with 100% lines and branches for the pure search module.
 - Auth/privacy/request boundary: four unit tests pass.
 - Still required: actual manual observation/admission database evidence, camera
   recovery integration, authorized offline search, browser/UI matrix and final gates.
@@ -41,6 +42,10 @@ binding, shared eligibility, authenticated adapter, late-response fencing and
 read-body timeout. Scoped lint and strict types pass. The follow-up independent
 review found and verified the long-household-label correction. No database or
 browser validation yet.
+The real SQL and authenticated browser fixtures are prepared but unrun. They
+must prove observation/admission counts, concurrent retries, camera-denied
+recovery, lost-response retry, replaced-pass refusal and all-theme layouts before
+this draft advances.
 
 # Risks and rollout
 
