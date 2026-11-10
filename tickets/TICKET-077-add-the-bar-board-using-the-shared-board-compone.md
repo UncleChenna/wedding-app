@@ -40,8 +40,8 @@ See: [Table ordering](../docs/prd.md#table-ordering) (ORD-4).
 
 ## Acceptance criteria
 
-- [ ] Drink orders appear only on /bar; food only on /kitchen (e2e).
-- [ ] PIN separation tested.
+- [x] Drink orders appear only on /bar; food only on /kitchen (e2e).
+- [x] PIN separation tested.
 
 ## Test plan
 
@@ -55,6 +55,13 @@ See: [Table ordering](../docs/prd.md#table-ordering) (ORD-4).
 ## Notes / decisions
 
 _Agents append dated notes here while working._
+
+- 2026-11-10 (unclechenna, claude):
+  - **One shared board:** the TICKET-076 kitchen board became `StationBoard` and `StationScreen` with a `station`
+    prop. Each station reads `GET /api/<station>/board` and listens on its own channel.
+  - **Bar projection:** the bar query never reads guests, and its response schema has no dietary field, so dietary
+    notes can't reach the bar even if a query returned them (unit-tested).
+  - **Stacked on TICKET-076 (#140):** merge that first.
 
 ## Activity log
 
