@@ -37,9 +37,9 @@ Backlog audit coverage: CHK-5, ADM-3. See [PRD](../docs/prd.md) and [audit](AUDI
 
 ## Acceptance criteria
 
-- [ ] Admin can filter scan attempts by invitation, time, staff, device and all five results, including unknown-token attempts.
-- [ ] Manual entry is a source field, not a sixth scan result; online and reconciled offline attempts appear with separate reported/received timestamps.
-- [ ] Dispute annotations preserve immutable original evidence and never expose PINs, tokens or dietary notes; unauthorized roles cannot read the log.
+- [x] Admin can filter scan attempts by invitation, time, staff, device and all five results, including unknown-token attempts.
+- [x] Manual entry is a source field, not a sixth scan result; online and reconciled offline attempts appear with separate reported/received timestamps.
+- [x] Dispute annotations preserve immutable original evidence and never expose PINs, tokens or dietary notes; unauthorized roles cannot read the log.
 
 ## Test plan
 
@@ -52,7 +52,7 @@ Backlog audit coverage: CHK-5, ADM-3. See [PRD](../docs/prd.md) and [audit](AUDI
 
 ## Notes / decisions
 
-- 2026-11-10: Additive scan-log migrations and 19 real database/seed checks pass; retry review fixes are verified. PR #151 remains draft pending authenticated browser evidence and final combined CI. See the ticket handoff.
+- 2026-11-10: Additive scan-log migrations and 19 real database/seed checks pass; retry review fixes are verified. Authenticated CI now passes all six browser cases and seven scan-log SQL tests, including explicit all-theme axe/target checks. Final-head full CI remains required. See the ticket handoff.
 
 - 2026-10-21 — Added by HARNESS-002. All criteria describe future work; no completion or human approval is implied.
 

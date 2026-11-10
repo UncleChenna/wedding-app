@@ -58,3 +58,11 @@ articles. The locator now targets the invitation combobox. Retry identities use 
 allowlisted synthetic email addresses so an already enrolled TOTP account cannot block retry.
 The first screenshot set was reviewed across all four themes at three widths; final updated
 CI, explicit axe assertion and navigation/header target measurements remain pending.
+
+## Latest checkpoint
+
+Head114931ae authenticated CI admin job129553524682 passed six browser cases without
+retry and seven scan-log SQL tests. Final24screens downloaded to
+`/tmp/TICKET-174-final-screens`, parentmobile review clean, independent desktop review
+requested. Full CI watch66301/run42732398647 remains live; all acceptance criteria
+are now proven, final whole-suite gate still pending. See final PR write-up for UI evidence.
