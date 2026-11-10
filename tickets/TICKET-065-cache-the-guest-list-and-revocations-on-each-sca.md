@@ -2,7 +2,7 @@
 id: TICKET-065
 title: Cache the guest list and revocations on each scanner
 epic: checkin
-status: in_review
+status: in_progress
 priority: high
 estimate: L
 labels: [frontend, pwa]
@@ -71,3 +71,4 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-6) · [Connectivity plan
 - 2026-11-10 — in_progress → in_review — divine (codex)
 - 2026-11-10 — in_review → in_progress — divine (codex) — Integrate verified TICKET-062 scan logging and TICKET-225 harness fixes before final combined verification
 - 2026-11-10 — in_review → in_progress — divine (codex) — Fix reviewed admission-refusal cache invalidation gap before merge
+- 2026-11-10 — in_review → in_progress — divine (codex) — Diagnose final CI WebKit signed QR decode failure without weakening camera checks
