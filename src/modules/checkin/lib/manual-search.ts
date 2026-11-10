@@ -9,6 +9,17 @@ export interface GuestNameMatch {
   matchedName: string;
 }
 
+/** Display only; the search projection retains every full name separately. */
+export function manualHouseholdName(
+  primary: readonly string[],
+  householdName: string | null,
+): string {
+  const suffix = primary.length > 2 ? " & household" : "";
+  const label = primary.slice(0, 2).join(" & ") || householdName?.trim() || "Guest household";
+  const budget = 512 - suffix.length;
+  return (label.length > budget ? label.slice(0, budget - 1) + "…" : label) + suffix;
+}
+
 function normalized(value: string): string {
   return value
     .normalize("NFKD")

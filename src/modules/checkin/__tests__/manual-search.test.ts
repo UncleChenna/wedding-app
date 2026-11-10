@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { searchGuestNames } from "../lib/manual-search";
+import { manualHouseholdName, searchGuestNames } from "../lib/manual-search";
+import { manualMatchesSchema } from "../lib/manual-checkin";
 
 const rows = [
   { invitationId: "a", name: "Adébayo household", names: ["Ada Adébayo", "Chidi Okafor"] },
@@ -7,6 +8,17 @@ const rows = [
   { invitationId: "c", name: "Other", names: ["Bola Lawal"] },
 ] as const;
 describe("manual guest name search", () => {
+  it("bounds long household display labels while preserving all primary names for matching", () => {
+    const names = ["Ada " + "x".repeat(250), "Chidi " + "y".repeat(250), "Ife Okafor"];
+    const name = manualHouseholdName(names, null);
+    const result = searchGuestNames(
+      [{ invitationId: "550e8400-e29b-41d4-a716-446655440000", name, names }],
+      "Ife",
+    );
+    expect(result.matches[0]?.matchedName).toBe("Ife Okafor");
+    expect(name.length).toBeLessThanOrEqual(512);
+    expect(manualMatchesSchema.safeParse({ state: "matches", ...result }).success).toBe(true);
+  });
   it.each(["Adebayo", "adebayo", "Adébayo", "Adebayo Ada", "adebyo"])(
     "finds the same primary guest for %s",
     (query) =>

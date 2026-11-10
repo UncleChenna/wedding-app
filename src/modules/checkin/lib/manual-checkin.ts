@@ -53,3 +53,8 @@ export const manualResponseSchema = z.union([
   manualSelectionSchema,
   admissionResponseSchema,
 ]);
+export type ManualResponse = z.infer<typeof manualResponseSchema>;
+export type ManualLookupRequest = Exclude<
+  z.infer<typeof manualRequestSchema>,
+  ManualAdmissionRequest
+>;
