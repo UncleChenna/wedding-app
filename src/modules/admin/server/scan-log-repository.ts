@@ -55,8 +55,7 @@ export async function readScanLogPage(
           admittedPeople: scanEvents.admittedPeople,
           conflict: scanEvents.conflict,
           source: scanEvents.source,
-          // TICKET-062 owns this additive column; integrate its schema before final verification.
-          inputMethod: sql<"qr" | "manual" | null>`"scan_events"."input_method"`,
+          inputMethod: scanEvents.inputMethod,
         })
         .from(scanEvents)
         .leftJoin(invitations, eq(invitations.id, scanEvents.invitationId))
@@ -106,8 +105,11 @@ export async function readScanLogPage(
       for (const row of rows.slice(0, scanPageSize)) {
         if (!["online", "offline", "legacy"].includes(row.source))
           throw new Error("Unexpected scan transport");
+        if (row.inputMethod !== null && row.inputMethod !== "qr" && row.inputMethod !== "manual")
+          throw new Error("Unexpected scan input method");
         entries.push({
           ...row,
+          inputMethod: row.inputMethod,
           source: row.source as ScanLogEntry["source"],
           reportedAt: row.reportedAt.toISOString(),
           receivedAt: row.receivedAt.toISOString(),

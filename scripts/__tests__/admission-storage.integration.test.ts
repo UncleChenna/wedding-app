@@ -35,10 +35,12 @@ async function installProposal(
   await options.beforeBackfill?.(tx);
   await applyProposal(tx, namespace, "drizzle/0017_admission-backfill.sql");
   await applyProposal(tx, namespace, "drizzle/0018_admission-guards.sql");
-  // The current local seed reset also covers the later scan-note audit table.
+  // The current local seed reset also covers later import and scan-note tables.
   // Install its real generated migrations for the historical reset rehearsal.
-  for (const migration of journal.entries.filter((entry) =>
-    /_scan-resolution-(notes|guards)$/.test(entry.tag),
+  for (const migration of journal.entries.filter(
+    (entry) =>
+      entry.tag === "0021_guest-import-batches" ||
+      /_scan-resolution-(notes|guards)$/.test(entry.tag),
   )) {
     await applyProposal(tx, namespace, `drizzle/${migration.tag}.sql`);
   }
