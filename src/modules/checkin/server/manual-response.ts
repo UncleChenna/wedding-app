@@ -74,14 +74,19 @@ export async function manualResponse(request: Request, ports: ManualPorts): Prom
         : input.operation === "read"
           ? await ports.read(input, actor)
           : await ports.admit(input, actor);
-    const current = await ports.authorize();
-    if (
-      !current ||
-      current.staffId !== actor.staffId ||
-      current.deviceId !== actor.deviceId ||
-      current.credentialVersion !== actor.credentialVersion
-    )
-      return respond({ state: "session_expired" }, 403);
+    // Admission reauthorizes under its database locks before writing, just like
+    // QR admission. A later expiry must not turn its committed receipt into a
+    // misleading "not admitted" response. Private reads still recheck here.
+    if (input.operation !== "admit") {
+      const current = await ports.authorize();
+      if (
+        !current ||
+        current.staffId !== actor.staffId ||
+        current.deviceId !== actor.deviceId ||
+        current.credentialVersion !== actor.credentialVersion
+      )
+        return respond({ state: "session_expired" }, 403);
+    }
     const output = manualResponseSchema.safeParse(result);
     if (output.success) return respond(output.data);
   } catch (error) {

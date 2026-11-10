@@ -21,6 +21,11 @@ receipt retry. The real SQL extension and e2e/manual-checkin.spec.ts are prepare
 but UNRUN. Do not claim their results or wire the browser runner before scanner
 integration is complete. The fixture uses unique household names and preserves
 append-only synthetic evidence; settings cleanup is limited to its own marker.
+Follow-up receipt regression reproduced a post-commit expiry turning a receipt
+into403. Fixed: search/read still reauthorize after I/O; admissions use the shared
+locked transaction's pre-write checks and return its receipt unchanged, matching
+QR behavior. Eight auth/boundary tests pass. Prepared lock-wait database test now
+covers both QR and manual input; both database variants remain unrun locally.
 
 Next: integrate065 only after its verified merge. Use065's existing private-cache
 authority/unsafeCache/denial boundary; do not bypass it with independent window

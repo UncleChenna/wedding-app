@@ -97,3 +97,20 @@ it("dispatches selections and manual admissions only with authenticated identity
   expect(p.admit).toHaveBeenCalledWith(intent, actor);
   expect((await result.json()).state).toBe("duplicate");
 });
+it("does not replace an already committed transaction receipt with a later session denial", async () => {
+  const p = ports();
+  p.authorize = vi.fn().mockResolvedValueOnce(actor).mockResolvedValueOnce(null);
+  const result = await manualResponse(
+    request({ operation: "admit", invitationId: id, version: 1, clientEventId: id, people: 1 }),
+    p,
+  );
+  expect(result.status).toBe(200);
+  expect(await result.json()).toEqual({
+    state: "duplicate",
+    people: 1,
+    recordedAt: "2026-12-19T12:00:00.000Z",
+  });
+  // The actual admission adapter reauthorizes inside the locked transaction,
+  // before a write. Read operations still recheck before returning private names.
+  expect(p.authorize).toHaveBeenCalledTimes(1);
+});

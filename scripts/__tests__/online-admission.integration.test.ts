@@ -182,41 +182,45 @@ describe.runIf(process.env.RUN_ONLINE_ADMISSION_DB_TESTS === "1")(
       expect(await counter(intent.invitationId)).toBe(0);
       expect(await events(intent.invitationId)).toHaveLength(0);
     });
-    it("rechecks session authorization after actually waiting for the invitation lock", async () => {
-      const { actor, intent } = await party();
-      const locked = Promise.withResolvers<void>(),
-        release = Promise.withResolvers<void>();
-      let authorized = true;
-      const holder = db.transaction(async (tx) => {
-        await tx
-          .select({ id: schema.invitations.id })
-          .from(schema.invitations)
-          .where(eq(schema.invitations.id, intent.invitationId))
-          .for("update");
-        locked.resolve();
-        await release.promise;
-      });
-      void holder.catch(locked.reject);
-      await locked.promise;
-      const attempt = admitVerifiedPass(db, actor, intent, async () => authorized);
-      try {
-        await expect
-          .poll(async () => {
-            const rows = await db.execute(
-              sql`select count(*)::int as waiting from pg_stat_activity where application_name='TICKET-061-admission-tests' and wait_event_type='Lock'`,
-            );
-            return Number(rows[0]?.waiting ?? 0);
-          })
-          .toBeGreaterThan(0);
-        authorized = false;
-        release.resolve();
-        await holder;
-        expect(await attempt).toEqual({ state: "session_expired" });
-        expect(await events(intent.invitationId)).toHaveLength(0);
-      } finally {
-        release.resolve();
-        await Promise.allSettled([holder, attempt]);
-      }
-    });
+    it.each(["qr", "manual"] as const)(
+      "rechecks %s session authorization after actually waiting for the invitation lock",
+      async (inputMethod) => {
+        const { actor, intent: initialIntent } = await party();
+        const intent = { ...initialIntent, inputMethod };
+        const locked = Promise.withResolvers<void>(),
+          release = Promise.withResolvers<void>();
+        let authorized = true;
+        const holder = db.transaction(async (tx) => {
+          await tx
+            .select({ id: schema.invitations.id })
+            .from(schema.invitations)
+            .where(eq(schema.invitations.id, intent.invitationId))
+            .for("update");
+          locked.resolve();
+          await release.promise;
+        });
+        void holder.catch(locked.reject);
+        await locked.promise;
+        const attempt = admitVerifiedPass(db, actor, intent, async () => authorized);
+        try {
+          await expect
+            .poll(async () => {
+              const rows = await db.execute(
+                sql`select count(*)::int as waiting from pg_stat_activity where application_name='TICKET-061-admission-tests' and wait_event_type='Lock'`,
+              );
+              return Number(rows[0]?.waiting ?? 0);
+            })
+            .toBeGreaterThan(0);
+          authorized = false;
+          release.resolve();
+          await holder;
+          expect(await attempt).toEqual({ state: "session_expired" });
+          expect(await events(intent.invitationId)).toHaveLength(0);
+        } finally {
+          release.resolve();
+          await Promise.allSettled([holder, attempt]);
+        }
+      },
+    );
   },
 );
