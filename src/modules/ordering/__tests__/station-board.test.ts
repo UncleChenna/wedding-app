@@ -62,7 +62,11 @@ describe("station projections", () => {
 });
 
 describe("kitchenBoardResponse", () => {
-  const board: KitchenBoard = { generatedAt: "2026-11-21T15:00:00.000Z", tickets: [ticket()] };
+  const board: KitchenBoard = {
+    generatedAt: "2026-11-21T15:00:00.000Z",
+    tickets: [ticket()],
+    recent: [],
+  };
 
   it("refuses anyone without a live kitchen session", async () => {
     const response = await kitchenBoardResponse({
@@ -121,7 +125,7 @@ describe("bar board response", () => {
   it("asks for bar sign-in, not kitchen", async () => {
     const response = await stationBoardResponse("bar", {
       authorize: async () => false,
-      load: async () => ({ generatedAt: "2026-11-21T15:00:00.000Z", tickets: [] }),
+      load: async () => ({ generatedAt: "2026-11-21T15:00:00.000Z", tickets: [], recent: [] }),
     });
     expect(response.status).toBe(403);
     expect(await response.json()).toEqual({ error: "Bar sign-in required." });

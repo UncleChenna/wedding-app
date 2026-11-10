@@ -538,6 +538,31 @@ export const stationOrders = pgTable(
   ],
 ).enableRLS();
 
+/** Every status move a board makes, with who, which device and when (ORD-5, TICKET-078). */
+export const stationOrderEvents = pgTable(
+  "station_order_events",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    stationOrderId: uuid("station_order_id")
+      .notNull()
+      .references(() => stationOrders.id, { onDelete: "cascade" }),
+    fromStatus: stationOrderStatus("from_status").notNull(),
+    toStatus: stationOrderStatus("to_status").notNull(),
+    reason: text("reason"),
+    staffId: uuid("staff_id").references(() => staff.id, { onDelete: "set null" }),
+    deviceId: text("device_id").references(() => registeredDevices.id, { onDelete: "set null" }),
+    createdAt: createdAt(),
+  },
+  (t) => [
+    index("station_order_events_order_idx").on(t.stationOrderId, t.createdAt),
+    check(
+      "station_order_events_cancel_reason",
+      sql`${t.toStatus} <> 'cancelled' or length(trim(coalesce(${t.reason}, ''))) > 0`,
+    ),
+    check("station_order_events_moves", sql`${t.fromStatus} <> ${t.toStatus}`),
+  ],
+).enableRLS();
+
 export const orderItems = pgTable(
   "order_items",
   {
