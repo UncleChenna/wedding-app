@@ -15,9 +15,13 @@ it("keeps cached valid checks read-only without an admission form or receipt", (
       submit={submit}
       onBusyChange={() => {}}
       allowAdmission={false}
+      readOnlyNotice="List not refreshed for 31 min. New changes may not show."
     />,
   );
   expect(screen.getByRole("heading", { name: "Valid pass" })).toBeVisible();
+  expect(
+    screen.getByText("List not refreshed for 31 min. New changes may not show."),
+  ).toBeVisible();
   expect(screen.queryByLabelText("How many are here?")).toBeNull();
   expect(screen.queryByRole("button", { name: /Admit/ })).toBeNull();
   expect(screen.getByText(/No admission has been recorded by this check/)).toBeVisible();

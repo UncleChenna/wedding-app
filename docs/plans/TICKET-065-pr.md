@@ -23,13 +23,15 @@ The policy follows TICKET-169: five-minute refresh, immediate refresh after know
 # Verification
 
 - Production build passed.
-- Authenticated snapshot journey: **2/2 passed**, mobile and desktop, 41.4 seconds. All six states were checked in four themes at 375/768/1280; axe reported zero violations, controls met 44px and pages had no horizontal overflow.
+- Authenticated snapshot journey: **2/2 passed**, mobile and desktop, 42.2 seconds. All six states were checked in four themes at 375/768/1280; axe reported zero violations, controls met 44px and pages had no horizontal overflow.
 - Existing online admission integration: **2/2 passed**, 31.3 seconds, preserving actual partial admission, immutable uncertain retry, duplicate receipt and concurrent refusal assertions.
 - Existing authenticated offline shell integration: **2/2 passed**, 37.4 seconds, including exact zero initial CLS, keyboard refresh/sign-out and offline denial after logout.
 - Exact generated-worker/real IndexedDB suite: **24/24 passed**, Chromium and WebKit, 15.0 seconds. Includes old-worker acknowledgement fallback, concurrent refresh/logout, shortened deadlines, missing authority cleanup, failed private erasure and full browser restart offline.
 - Actual isolated PostgreSQL projection: **1/1 passed**. Private fields excluded; large named households retain all names with a bounded display label; revoked households preserve historical admitted counts. The transaction rolls back its fixtures.
 - Focused admission/worker/wrapper tests: **38 passed**, including uncertain intent preservation when switching to read-only mode. Hook tests include the reproduced initial preparation-notification race. Pure parser/response/resolver targeted coverage reached 100% for the three new pure modules.
-- Final quick gate passed lint, types and 114 related tests (one conditional database skip, separately exercised above). Full coverage and exact-head CI remain pending.
+- Full combined unit/coverage gate: **1,873 passed / 194 conditional skips**, 108.25 seconds; critical lines98.59%, branches98.89%, every per-file threshold passed. Final combined quick passed lint, types and28 related tests; the earlier broader quick passed114. Exact-head CI remains pending.
+
+The existing shell/decoder fixture also passes **46/46** Chromium/WebKit cases (43.1 seconds). The first checkpoint CI exposed its obsolete assertion that offline QR checks make a live POST. The fixture now uses an actual signed QR and private snapshot and proves exact household/table/party, no admission form and zero POST, retaining all expiry/track/restart assertions.
 
 Initial production evidence failed because a shell-ready notification arrived during an unavailable initial refresh and was coalesced away. A deferred regression reproduced it; one bounded follow-up refresh fixes the race. Review also reproduced early-rejection erasure races and a failed known-change erase path. The final tests retain those failure cases without relaxing deadlines or assertions.
 
@@ -39,7 +41,7 @@ Initial production evidence failed because a shell-ready notification arrived du
 
 # UI checklist
 
-PASS: staff screenshot/axe requirements, token-only styling, 18px staff body/control text, clear status icons/copy, all-theme contrast, 44px targets, overflow checks, reduced motion, keyboard sign-out and existing keyboard refresh, zero initial CLS, shared Button/result components. Existing camera feedback remains unchanged and online admission integration passes. No new photographic asset, QR output or reusable general component was added; those checklist items are N/A. Guest-page Lighthouse/WhatsApp requirements are N/A to this staff-only change. Physical camera/device/offline release certification remains unverified in TICKET-114/TICKET-163/TICKET-201; no automated result is represented as physical-device QA. Full CI verification remains pending.
+PASS: staff screenshot/axe requirements, token-only styling, 18px staff body/control text, clear status icons/copy, all-theme contrast, 44px targets, overflow checks, reduced motion, keyboard sign-out and existing keyboard refresh, zero initial CLS, shared Button/result components. Existing camera feedback remains unchanged and online admission integration passes. No new photographic asset, QR output or reusable general component was added; those checklist items are N/A. Guest-page Lighthouse/WhatsApp requirements are N/A to this staff-only change. Physical camera/device/offline release certification remains unverified in TICKET-114/TICKET-163/TICKET-201; no automated result is represented as physical-device QA. Full CI verification remains pending. The updated stale notice is also rendered inside the pass result as ADR0020 requires.
 
 # Risks and rollout
 
@@ -49,4 +51,4 @@ Rollback by reverting this ticket's application/worker changes. Do not erase uns
 
 # Harness changes, if any
 
-Three additive CI steps reuse existing disposable PostgreSQL and installed Chromium/WebKit jobs. Existing gates and timeouts are unchanged. See `docs/reviews/TICKET-065/ci-proposal.md`. The verified source base is develop `6abf4c0ea12e361a82b0475b29ec6df2a613c238`; later integration will be reported explicitly.
+Three additive CI steps reuse existing disposable PostgreSQL and installed Chromium/WebKit jobs. Existing gates and timeouts are unchanged. See `docs/reviews/TICKET-065/ci-proposal.md`. The final verified source base is develop `5cedfab9` (dashboard097 and ticket-recovery224), merged in `9a6a41de`. Independent source and all144-frame visual review found no blocker; the24 updated stale frames were reviewed again.

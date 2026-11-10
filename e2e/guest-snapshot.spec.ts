@@ -138,6 +138,9 @@ test("authenticated private snapshot supports offline reads and erases on sign-o
       page.getByText("This list is over 30 minutes old. Refresh when connected."),
     ).toBeVisible();
     await expect(page.getByRole("heading", { name: "Valid pass", exact: true })).toBeVisible();
+    await expect(
+      page.getByText("List not refreshed for 31 min. New changes may not show."),
+    ).toBeVisible();
     await capture("stale");
     await page.clock.setFixedTime(new Date());
     const device = randomUUID();

@@ -62,6 +62,7 @@ export function AdmissionResult({
   onBusyChange,
   onComplete,
   allowAdmission = true,
+  readOnlyNotice,
 }: {
   result: ScanReadResult;
   qr: string | null;
@@ -69,6 +70,7 @@ export function AdmissionResult({
   onBusyChange: (busy: boolean) => void;
   onComplete?: () => void;
   allowAdmission?: boolean;
+  readOnlyNotice?: string;
 }) {
   const remaining =
     result.state === "valid" ? result.guest.partySize - result.guest.admittedSoFar : 0;
@@ -206,7 +208,11 @@ export function AdmissionResult({
   }
   if (result.state !== "valid" || !qr || (!allowAdmission && !response && !pending))
     return (
-      <ScanResultPanel state={result.state} guest={"guest" in result ? result.guest : undefined} />
+      <ScanResultPanel
+        state={result.state}
+        guest={"guest" in result ? result.guest : undefined}
+        notice={readOnlyNotice}
+      />
     );
   return (
     <Card>

@@ -86,6 +86,9 @@ export function GuestSnapshotScanner({
         {null}
       </ScannerSession>
     );
+  const age = freshness.summary
+    ? Math.max(0, Math.floor((freshness.now - freshness.summary.generatedAt) / 60_000))
+    : 0;
   return (
     <>
       {cached && (
@@ -98,6 +101,11 @@ export function GuestSnapshotScanner({
         key={session}
         resolveRead={resolveRead}
         allowAdmission={!cached}
+        readOnlyNotice={
+          cached && age >= 30
+            ? `List not refreshed for ${age} min. New changes may not show.`
+            : undefined
+        }
         onAdmissionRecorded={() => {
           void changed();
         }}

@@ -36,11 +36,13 @@ export function Scanner({
   submitAdmission,
   allowAdmission = true,
   onAdmissionRecorded,
+  readOnlyNotice,
 }: {
   resolveRead?: ScanResolver;
   submitAdmission?: AdmissionSubmitter;
   allowAdmission?: boolean;
   onAdmissionRecorded?: () => void;
+  readOnlyNotice?: string;
 }) {
   const video = useRef<HTMLVideoElement>(null);
   const resultRegion = useRef<HTMLDivElement>(null);
@@ -283,6 +285,7 @@ export function Scanner({
             qr={checkedQr}
             submit={submitAdmission}
             allowAdmission={allowAdmission}
+            readOnlyNotice={readOnlyNotice}
             onBusyChange={setAdmissionBusy}
             onComplete={() => {
               setAdmissionCompleted(true);

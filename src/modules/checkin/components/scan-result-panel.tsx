@@ -10,9 +10,11 @@ import {
 export function ScanResultPanel({
   state,
   guest,
+  notice,
 }: {
   state: ScanReadState;
   guest?: ScanGuestDisplay;
+  notice?: string;
 }) {
   const result = scanResultPresentation(state);
   const visibleGuest = state === "valid" || state === "already_used" ? guest : undefined;
@@ -25,6 +27,11 @@ export function ScanResultPanel({
           </StatusBadge>
           <h2 className="font-display text-4xl leading-tight wrap-anywhere">{result.title}</h2>
           <p>{result.description}</p>
+          {notice && (
+            <p className="rounded-md bg-warning-subtle p-3 text-warning-subtle-foreground">
+              {notice}
+            </p>
+          )}
         </div>
         {visibleGuest && (
           <div className="flex flex-col gap-3">
