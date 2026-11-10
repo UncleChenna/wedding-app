@@ -47,7 +47,7 @@ test.describe("authenticated scan log", () => {
     await signInAdmin(
       page,
       request,
-      `${process.env.ADMIN_JOURNEY_PREFIX}-scans-${info.project.name}@example.test`,
+      `${process.env.ADMIN_JOURNEY_PREFIX}-scans-${info.project.name}-${info.retry}@example.test`,
     );
     await page
       .getByRole("navigation", { name: "Admin", exact: true })
@@ -83,7 +83,7 @@ test.describe("authenticated scan log", () => {
       if (result === "invalid") await expect(entry).toHaveAccessibleName("Unknown invitation");
     }
     await page.getByLabel("Result", { exact: true }).selectOption("already_used");
-    await page.getByLabel("Invitation", { exact: true }).selectOption(invitation);
+    await page.getByRole("combobox", { name: "Invitation", exact: true }).selectOption(invitation);
     await page.getByRole("button", { name: "Apply filters", exact: true }).click();
     const eventId = eventIds.get("already_used");
     if (!eventId) throw new Error("Missing synthetic conflict event");
@@ -117,8 +117,8 @@ test.describe("authenticated scan log", () => {
         expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
           true,
         );
-        const small = await page.locator("main").evaluate((main) =>
-          [...main.querySelectorAll("button,select,input:not([type=hidden]),a")]
+        const small = await page.locator("body").evaluate((body) =>
+          [...body.querySelectorAll("button,select,input:not([type=hidden]),a")]
             .filter((element) => {
               const bounds = element.getBoundingClientRect();
               return bounds.width > 0 && (bounds.width < 44 || bounds.height < 44);
@@ -126,7 +126,7 @@ test.describe("authenticated scan log", () => {
             .map((element) => element.textContent),
         );
         expect(small).toEqual([]);
-        await scanA11y(page);
+        expect(await scanA11y(page)).toEqual([]);
         if (width === 375) {
           await page.evaluate(() => scrollTo(0, document.documentElement.scrollHeight));
           const clear = await page.getByRole("navigation", { name: "Scan pages" }).boundingBox();
@@ -145,10 +145,10 @@ test.describe("authenticated scan log", () => {
       }
     await page.getByRole("link", { name: "Clear filters", exact: true }).click();
     await expect(page.getByLabel("Result", { exact: true })).toHaveValue("");
-    await expect(page.getByLabel("Invitation", { exact: true })).toHaveValue("");
+    await expect(page.getByRole("combobox", { name: "Invitation", exact: true })).toHaveValue("");
     await page.getByLabel("Staff", { exact: true }).selectOption(staff);
     await page.getByLabel("Result", { exact: true }).selectOption("invalid");
-    await page.getByLabel("Invitation", { exact: true }).selectOption("unknown");
+    await page.getByRole("combobox", { name: "Invitation", exact: true }).selectOption("unknown");
     await page.getByRole("button", { name: "Apply filters", exact: true }).focus();
     await page.keyboard.press("Enter");
     await expect(page.getByRole("article", { name: "Unknown invitation" })).toHaveCount(1);

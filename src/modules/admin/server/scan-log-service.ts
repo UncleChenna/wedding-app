@@ -30,7 +30,7 @@ export type ScanLogResult =
   | ({ status: "ready"; filters: ScanLogFilters } & ScanLogPage)
   | { status: "denied" }
   | { status: "invalid" | "error"; message: string };
-export type ScanNoteResult = { ok: boolean; message: string };
+export type ScanNoteResult = { ok: boolean; message: string; uncertain?: true };
 
 export async function readScanLog(
   input: Record<string, string | string[] | undefined>,
@@ -66,6 +66,10 @@ export async function recordScanNote(input: unknown, ports: ScanLogPorts): Promi
   } catch (error) {
     unstable_rethrow(error);
     ports.warn("Scan note unavailable");
-    return { ok: false, message: "Your note couldn't be saved. Please try again." };
+    return {
+      ok: false,
+      uncertain: true,
+      message: "We couldn't confirm your note was saved. Please try again.",
+    };
   }
 }

@@ -29,7 +29,8 @@ try {
       .flatMap((project) => [
         `${prefix}-${project}@example.test`,
         `${prefix}-counters-${project}@example.test`,
-        `${prefix}-scans-${project}@example.test`,
+        `${prefix}-scans-${project}-0@example.test`,
+        `${prefix}-scans-${project}-1@example.test`,
       ])
       .join(","),
     STAFF_SESSION_SECRET: randomBytes(32).toString("hex"),

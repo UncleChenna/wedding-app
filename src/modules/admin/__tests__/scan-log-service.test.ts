@@ -60,7 +60,9 @@ describe("admin scan log boundary", () => {
     p.read.mockRejectedValue(new Error("PIN 123456 private-token"));
     p.append.mockRejectedValue(new Error("dietary details private"));
     expect(JSON.stringify(await readScanLog({}, p))).not.toMatch(/123456|private-token/);
-    expect(JSON.stringify(await recordScanNote(input, p))).not.toMatch(/dietary|private/);
+    const result = await recordScanNote(input, p);
+    expect(result).toMatchObject({ ok: false, uncertain: true });
+    expect(JSON.stringify(result)).not.toMatch(/dietary|private/);
     expect(JSON.stringify(p.warn.mock.calls)).not.toMatch(/123456|private|dietary/);
   });
 });

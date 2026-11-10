@@ -52,6 +52,8 @@ Backlog audit coverage: CHK-5, ADM-3. See [PRD](../docs/prd.md) and [audit](AUDI
 
 ## Notes / decisions
 
+- 2026-11-10: Additive scan-log migrations and 19 real database/seed checks pass; retry review fixes are verified. PR #151 remains draft pending authenticated browser evidence and final combined CI. See the ticket handoff.
+
 - 2026-10-21 — Added by HARNESS-002. All criteria describe future work; no completion or human approval is implied.
 
 ## Activity log

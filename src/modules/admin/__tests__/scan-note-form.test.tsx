@@ -19,7 +19,19 @@ it("keeps a network failure recoverable with the original request identity", asy
   });
   expect(screen.getByRole("alert")).toHaveTextContent("Please try again");
   expect(screen.getByLabelText("Resolution note")).toHaveValue("reviewed");
+  expect(screen.getByLabelText("Resolution note")).toBeDisabled();
+  view.rerender(<ScanNoteForm eventId="event-id" requestId="fresh-server-request" />);
   expect(new FormData(form).get("requestId")).toBe("request-id");
+  expect(new FormData(form).get("resolution")).toBe("reviewed");
+  action.mockResolvedValue({ ok: true, message: "Note saved." });
+  await act(async () => {
+    fireEvent.submit(form);
+  });
+  const retried = action.mock.calls[1]?.[1] as FormData;
+  expect(retried.get("requestId")).toBe("request-id");
+  expect(retried.get("resolution")).toBe("reviewed");
+  expect(screen.getByLabelText("Resolution note")).toBeEnabled();
+  expect(new FormData(form).get("requestId")).not.toBe("request-id");
 });
 
 it("keeps the same retry identity and chosen note after a recoverable error", async () => {
@@ -63,4 +75,6 @@ it("disables repeated submission while pending and reports successful persistenc
   });
   expect(screen.getByRole("status")).toHaveTextContent("Original scan evidence is unchanged");
   expect(screen.getByRole("button", { name: "Add note" })).toBeEnabled();
+  expect(new FormData(form).get("requestId")).not.toBe("request-id");
+  expect(new FormData(form).get("requestId")).toMatch(/^[0-9a-f-]{36}$/);
 });

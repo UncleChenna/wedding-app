@@ -30,7 +30,11 @@ authenticated browser screenshots and final combined CI remain pending.
 - Generated migrations 0028/0029 applied twice with identical row/migration counts;
   all 25 public tables retain RLS. Twelve seed/admission tests pass, including
   rollback and successful reset restoration of the new audit guard.
-- Full verification, authenticated browser evidence and final independent review pending.
+- Independent review found uncertain retries could change the note payload. The form
+  now freezes both request identity and resolution until acknowledgement, including
+  across server refreshes; focused form/service tests pass (12), and review is clean.
+- Browser axe results are explicitly asserted, not merely collected.
+- Full verification and authenticated browser evidence remain pending.
 
 # Risks and rollout
 
@@ -56,3 +60,14 @@ restores it before inserting fixtures. The historical rehearsal now installs the
 current import/annotation table prerequisites rather than referring to absent tables.
 No hook, test gate or existing CI job is removed. The admin CI runner additionally
 verifies scan-log SQL and authenticated browser behavior and retains sanitized images.
+
+## Verification update — 2026-11-10
+
+Elevated serial full unit suite: 1,883 passed, 204 conditional skips, 235.38 seconds;
+critical coverage 98.33% lines / 98.56% branches / 100% functions.
+Authenticated CI produced all 24 synthetic screenshots and passed filters/note persistence,
+but failed the final clear-filter assertion because a label locator also matched named
+articles. The locator now targets the invitation combobox. Retry identities use separate
+allowlisted synthetic email addresses so an already enrolled TOTP account cannot block retry.
+The first screenshot set was reviewed across all four themes at three widths; final updated
+CI, explicit axe assertion and navigation/header target measurements remain pending.
