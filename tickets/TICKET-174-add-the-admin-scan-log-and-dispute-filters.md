@@ -33,7 +33,7 @@ Backlog audit coverage: CHK-5, ADM-3. See [PRD](../docs/prd.md) and [audit](AUDI
 
 ## Out of scope
 
-- Work outside the stated contract; consuming screens and launch operations remain in their linked tickets. No product implementation is part of this audit.
+- Changing original scan evidence or admission counts, offline queue/sync implementation, and launch operations remain in their linked tickets.
 
 ## Acceptance criteria
 
