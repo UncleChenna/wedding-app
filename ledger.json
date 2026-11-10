@@ -2951,13 +2951,14 @@
     "WED-078": {
       "log": [
         "- 2026-11-10 — todo → claimed — unclechenna (claude) — started ahead of TICKET-076 (in_progress)",
-        "- 2026-11-10 — todo → in_progress — unclechenna (claude) — started ahead of TICKET-076 (in_progress)"
+        "- 2026-11-10 — todo → in_progress — unclechenna (claude) — started ahead of TICKET-076 (in_progress)",
+        "- 2026-11-10 — in_progress → in_review — unclechenna (claude)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "unclechenna",
       "agent": "claude",
       "branch": "TICKET-078",
-      "pr": "",
+      "pr": "https://github.com/UncleChenna/wedding-app/pull/156",
       "started": "2026-11-10",
       "completed": "",
       "updated": "2026-11-10",
