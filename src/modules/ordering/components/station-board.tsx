@@ -8,11 +8,12 @@ import { cn } from "@/modules/shared/lib/cn";
 import { subscribeStation, type StationChannelStatus } from "@/modules/shared/lib/station-channel";
 import { createStationClient } from "@/modules/shared/lib/station-client";
 import {
-  kitchenBoardSchema,
+  boardSchemas,
   newTicketIds,
   ticketAge,
-  type KitchenBoard as Board,
-  type KitchenTicket,
+  type BoardStation,
+  type StationBoard as Board,
+  type StationTicket,
 } from "../lib/station-board";
 
 const FLASH_MS = 4_000;
@@ -77,14 +78,16 @@ const liveLabels: Record<StationChannelStatus, string> = {
   "signed-out": "Signed out",
 };
 
-export function KitchenBoard({ initial }: { initial: Board }) {
-  const [tickets, setTickets] = useState(initial.tickets);
+const headings = { kitchen: "kitchen-orders", bar: "bar-orders" } as const;
+
+export function StationBoard({ station, initial }: { station: BoardStation; initial: Board }) {
+  const [tickets, setTickets] = useState<StationTicket[]>(initial.tickets);
   const [flashing, setFlashing] = useState<ReadonlySet<string>>(new Set());
   const [live, setLive] = useState<StationChannelStatus>("connecting");
   const [signedOut, setSignedOut] = useState(false);
   const [soundOn, setSoundOn] = useState(false);
   const audio = useRef<AudioContext | null>(null);
-  const known = useRef(initial.tickets);
+  const known = useRef<StationTicket[]>(initial.tickets);
   const now = useNow(30_000);
   useWakeLock();
 
@@ -99,12 +102,12 @@ export function KitchenBoard({ initial }: { initial: Board }) {
 
   const refetch = useCallback(async () => {
     try {
-      const response = await fetch("/api/kitchen/board", { cache: "no-store" });
+      const response = await fetch(`/api/${station}/board`, { cache: "no-store" });
       if (response.status === 403) {
         setSignedOut(true);
         return;
       }
-      const parsed = kitchenBoardSchema.safeParse(response.ok ? await response.json() : null);
+      const parsed = boardSchemas[station].safeParse(response.ok ? await response.json() : null);
       if (!parsed.success) return;
       announce(newTicketIds(known.current, parsed.data.tickets));
       known.current = parsed.data.tickets;
@@ -112,7 +115,7 @@ export function KitchenBoard({ initial }: { initial: Board }) {
     } catch {
       // Offline for a moment: keep showing the last board; the channel retries and refetches.
     }
-  }, [announce]);
+  }, [announce, station]);
 
   useEffect(() => {
     const client = createStationClient(
@@ -120,7 +123,7 @@ export function KitchenBoard({ initial }: { initial: Board }) {
       clientEnv.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
     );
     const stop = subscribeStation({
-      station: "kitchen",
+      station,
       client,
       onEvent: () => void refetch(),
       onResync: () => void refetch(),
@@ -133,7 +136,7 @@ export function KitchenBoard({ initial }: { initial: Board }) {
       stop();
       client.disconnect();
     };
-  }, [refetch]);
+  }, [refetch, station]);
 
   const turnOnSound = async () => {
     try {
@@ -155,9 +158,9 @@ export function KitchenBoard({ initial }: { initial: Board }) {
   }
 
   return (
-    <section aria-labelledby="kitchen-orders" className="flex flex-col gap-6">
+    <section aria-labelledby={headings[station]} className="flex flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <h2 id="kitchen-orders" className="font-display text-3xl leading-tight md:text-4xl">
+        <h2 id={headings[station]} className="font-display text-3xl leading-tight md:text-4xl">
           {tickets.length === 0
             ? "No orders waiting"
             : `${tickets.length} ${tickets.length === 1 ? "order" : "orders"} waiting`}
@@ -206,7 +209,7 @@ function TicketCard({
   now,
   isNew,
 }: {
-  ticket: KitchenTicket;
+  ticket: StationTicket;
   now: number;
   isNew: boolean;
 }) {
@@ -248,7 +251,7 @@ function TicketCard({
             <span className="block">{ticket.note}</span>
           </p>
         ) : null}
-        {ticket.dietary.length > 0 ? (
+        {"dietary" in ticket && ticket.dietary.length > 0 ? (
           <div className="rounded-md border border-warning bg-warning-subtle p-4 text-warning-subtle-foreground">
             <p className="text-sm font-medium tracking-widest uppercase">Dietary at this table</p>
             <ul className="mt-2 flex flex-col gap-1">

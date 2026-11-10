@@ -1,5 +1,5 @@
-import { getKitchenBoardResponse } from "@/modules/ordering/server/kitchen-board";
+import { getStationBoardResponse } from "@/modules/ordering/server/station-board-route";
 
 export async function GET() {
-  return getKitchenBoardResponse();
+  return getStationBoardResponse("kitchen");
 }

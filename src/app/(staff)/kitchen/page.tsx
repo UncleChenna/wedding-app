@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { KitchenStation } from "@/modules/ordering/components/kitchen-station";
+import { StationScreen } from "@/modules/ordering/components/station-screen";
 
 export const metadata: Metadata = { title: "Kitchen board", robots: { index: false } };
 
 export default function Page() {
-  return <KitchenStation />;
+  return <StationScreen station="kitchen" />;
 }

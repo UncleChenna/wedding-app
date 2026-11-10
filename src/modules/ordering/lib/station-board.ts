@@ -26,8 +26,19 @@ export const kitchenBoardSchema = z.strictObject({
   generatedAt: z.iso.datetime({ offset: true }),
   tickets: z.array(kitchenTicketSchema),
 });
+export const barBoardSchema = z.strictObject({
+  generatedAt: z.iso.datetime({ offset: true }),
+  tickets: z.array(barTicketSchema),
+});
 export type KitchenTicket = z.infer<typeof kitchenTicketSchema>;
 export type KitchenBoard = z.infer<typeof kitchenBoardSchema>;
+export type BarBoard = z.infer<typeof barBoardSchema>;
+
+/** The boards that show orders. The gate has its own screen. */
+export type BoardStation = "kitchen" | "bar";
+export type StationBoard = KitchenBoard | BarBoard;
+export type StationTicket = KitchenTicket | BarBoard["tickets"][number];
+export const boardSchemas = { kitchen: kitchenBoardSchema, bar: barBoardSchema } as const;
 
 /** "Just now", "4 min", "1 h 5 min": short enough to read across a kitchen. */
 export function ticketAge(createdAt: string, now: number): string {

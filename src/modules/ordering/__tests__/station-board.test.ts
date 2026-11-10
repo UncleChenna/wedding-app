@@ -7,7 +7,7 @@ import {
   ticketAge,
   type KitchenBoard,
 } from "../lib/station-board";
-import { kitchenBoardResponse } from "../server/station-board-response";
+import { kitchenBoardResponse, stationBoardResponse } from "../server/station-board-response";
 
 const ticket = (overrides: Partial<KitchenBoard["tickets"][number]> = {}) => ({
   id: randomUUID(),
@@ -101,5 +101,29 @@ describe("kitchenBoardResponse", () => {
     });
     expect(failing.status).toBe(503);
     expect(JSON.stringify(await failing.json())).not.toContain("10.0.0.1");
+  });
+});
+
+describe("bar board response", () => {
+  it("never sends dietary notes to the bar, even if a query returned them", async () => {
+    const withDietary: unknown = {
+      generatedAt: "2026-11-21T15:00:00.000Z",
+      tickets: [ticket()],
+    };
+    const response = await stationBoardResponse("bar", {
+      authorize: async () => true,
+      load: async () => withDietary as KitchenBoard,
+    });
+    expect(response.status).toBe(503);
+    expect(JSON.stringify(await response.json())).not.toContain("Nut allergy");
+  });
+
+  it("asks for bar sign-in, not kitchen", async () => {
+    const response = await stationBoardResponse("bar", {
+      authorize: async () => false,
+      load: async () => ({ generatedAt: "2026-11-21T15:00:00.000Z", tickets: [] }),
+    });
+    expect(response.status).toBe(403);
+    expect(await response.json()).toEqual({ error: "Bar sign-in required." });
   });
 });
