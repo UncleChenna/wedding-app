@@ -2790,9 +2790,10 @@
         "- 2026-11-10 — in_progress → in_review — divine (codex)",
         "- 2026-11-10 — in_review → in_progress — divine (codex) — Integrate verified TICKET-062 scan logging and TICKET-225 harness fixes before final combined verification",
         "- 2026-11-10 — in_progress → in_review — divine (codex)",
-        "- 2026-11-10 — in_review → in_progress — divine (codex) — Fix reviewed admission-refusal cache invalidation gap before merge"
+        "- 2026-11-10 — in_review → in_progress — divine (codex) — Fix reviewed admission-refusal cache invalidation gap before merge",
+        "- 2026-11-10 — in_progress → in_review — divine (codex)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-065",
