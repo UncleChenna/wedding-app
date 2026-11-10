@@ -2879,9 +2879,10 @@
     "WED-063": {
       "log": [
         "- 2026-11-10 — todo → claimed — divine (codex) — started ahead of TICKET-065 (in_review), TICKET-062 (in_review)",
-        "- 2026-11-10 — todo → in_progress — divine (codex) — started ahead of TICKET-065 (in_review), TICKET-062 (in_review)"
+        "- 2026-11-10 — todo → in_progress — divine (codex) — started ahead of TICKET-065 (in_review), TICKET-062 (in_review)",
+        "- 2026-11-10 — in_progress → blocked — divine (codex) — Awaiting verified TICKET-065 merge and its authoritative-outcome cache boundary before scanner/offline integration and actual browser verification; server and isolated UI checkpoint pushed in draft PR152."
       ],
-      "status": "in_progress",
+      "status": "blocked",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-063",
@@ -2889,8 +2890,8 @@
       "started": "2026-11-10",
       "completed": "",
       "updated": "2026-11-10",
-      "reason": "",
-      "resume_to": ""
+      "reason": "Awaiting verified TICKET-065 merge and its authoritative-outcome cache boundary before scanner/offline integration and actual browser verification; server and isolated UI checkpoint pushed in draft PR152.",
+      "resume_to": "in_progress"
     },
     "WED-226": {
       "log": [
