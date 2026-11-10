@@ -2,7 +2,7 @@
 id: TICKET-174
 title: Add the admin scan log and dispute filters
 epic: admin
-status: in_progress
+status: in_review
 priority: medium
 estimate: M
 labels: [frontend, backend]
@@ -12,9 +12,9 @@ agent: codex
 blocked_by: [TICKET-062, TICKET-088]
 blocks: [TICKET-154]
 branch: TICKET-174
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/151
 created: 2026-10-21
-updated: 2026-11-09
+updated: 2026-11-10
 started: 2026-11-09
 completed: ""
 reason: ""
@@ -61,3 +61,4 @@ Backlog audit coverage: CHK-5, ADM-3. See [PRD](../docs/prd.md) and [audit](AUDI
 - 2026-10-21 — new → todo — divine
 - 2026-11-09 — todo → claimed — divine (codex) — started ahead of TICKET-062 (in_review)
 - 2026-11-09 — todo → in_progress — divine (codex) — started ahead of TICKET-062 (in_review)
+- 2026-11-10 — in_progress → in_review — divine (codex)
