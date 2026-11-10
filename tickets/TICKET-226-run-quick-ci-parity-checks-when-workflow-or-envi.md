@@ -2,20 +2,20 @@
 id: TICKET-226
 title: Run quick CI parity checks when workflow or environment files change
 epic: foundations
-status: backlog
+status: in_progress
 priority: high
 estimate: S
 labels: [infra, test]
 module: harness
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: []
 blocks: []
-branch: ""
+branch: TICKET-226
 pr: ""
 created: 2026-11-09
-updated: 2026-11-09
-started: ""
+updated: 2026-11-10
+started: 2026-11-10
 completed: ""
 reason: ""
 resume_to: ""
@@ -67,3 +67,6 @@ TICKET-123 and TICKET-062 added CI environment flags without immediately documen
 ## Activity log
 
 - 2026-11-09 — new → backlog — divine
+- 2026-11-10 — backlog → todo — divine
+- 2026-11-10 — todo → claimed — divine (codex)
+- 2026-11-10 — todo → in_progress — divine (codex)
