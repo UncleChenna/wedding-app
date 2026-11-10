@@ -229,6 +229,12 @@ jobs:
           name: admin-journey-evidence
           path: artifacts/TICKET-134/
           retention-days: 7
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: admin-dashboard-evidence
+          path: artifacts/TICKET-097/
+          retention-days: 7
       - name: Stop this job's isolated stack
         if: always()
         run: test ! -f .harness/worktree.json || pnpm db:stop
