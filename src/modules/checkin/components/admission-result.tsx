@@ -61,6 +61,7 @@ export function AdmissionResult({
   submit = submitLive,
   onBusyChange,
   onComplete,
+  onOutcome,
   allowAdmission = true,
   readOnlyNotice,
 }: {
@@ -69,6 +70,7 @@ export function AdmissionResult({
   submit?: AdmissionSubmitter;
   onBusyChange: (busy: boolean) => void;
   onComplete?: () => void;
+  onOutcome?: (response: AdmissionResponse) => void;
   allowAdmission?: boolean;
   readOnlyNotice?: string;
 }) {
@@ -124,7 +126,10 @@ export function AdmissionResult({
     setPending(false);
     setResponse(next);
     onBusyChange(next.state === "unavailable");
-    if (next.state !== "unavailable") intent.current = null;
+    if (next.state !== "unavailable") {
+      intent.current = null;
+      onOutcome?.(next);
+    }
     if (next.state === "recorded" || next.state === "duplicate") onComplete?.();
   }
   function adjust(delta: number) {

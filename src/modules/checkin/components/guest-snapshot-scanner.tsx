@@ -19,12 +19,15 @@ export function GuestSnapshotScanner({
   const freshness = useGuestSnapshot({ session, expiresAt });
   const refresh = freshness.refresh;
   const unsafeCache = useRef(false);
+  const invalidationGeneration = useRef(0);
   const changed = useCallback(async () => {
     // Never fall back to a copy already contradicted by an authoritative read or
     // receipt. Only invalidate our session's private copy; preserve shell/queues.
     unsafeCache.current = true;
+    const generation = ++invalidationGeneration.current;
     const cleared = await scannerWorkerMessage("INVALIDATE_GUEST_SNAPSHOT", session);
     if (
+      generation === invalidationGeneration.current &&
       typeof cleared === "object" &&
       cleared !== null &&
       "privateSnapshotRemoved" in cleared &&
@@ -49,6 +52,8 @@ export function GuestSnapshotScanner({
           const live = await readLivePass(qr, transport.signal);
           if (live.state === "session_expired") {
             if (signal.aborted) return live;
+            invalidationGeneration.current++;
+            unsafeCache.current = true;
             setDeniedSession(session);
             await scannerWorkerMessage("DENY_SCANNER_SESSION", session);
             return live;
@@ -106,8 +111,17 @@ export function GuestSnapshotScanner({
             ? `List not refreshed for ${age} min. New changes may not show.`
             : undefined
         }
-        onAdmissionRecorded={() => {
-          void changed();
+        onAdmissionOutcome={(outcome) => {
+          // A refusal is just as authoritative as a receipt: the cached allowance,
+          // RSVP or revocation state may have changed after the initial live read.
+          if (outcome.state === "session_expired") {
+            invalidationGeneration.current++;
+            unsafeCache.current = true;
+            setDeniedSession(session);
+            void scannerWorkerMessage("DENY_SCANNER_SESSION", session);
+          } else {
+            void changed();
+          }
         }}
       />
       <GuestSnapshotStatus

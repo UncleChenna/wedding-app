@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/modules/shared/components/ui/button";
 import { startQrCamera, type CameraControls, type CameraProblem } from "../lib/camera-reader";
 import { AdmissionResult, type AdmissionSubmitter } from "./admission-result";
+import type { AdmissionResponse } from "../lib/online-admission";
 import { scanReadResultSchema, type ScanReadResult } from "../lib/scan-read-result";
 import { requestScanFeedback } from "../lib/scan-feedback";
 
@@ -39,12 +40,14 @@ export function Scanner({
   submitAdmission,
   allowAdmission = true,
   onAdmissionRecorded,
+  onAdmissionOutcome,
   readOnlyNotice,
 }: {
   resolveRead?: ScanResolver;
   submitAdmission?: AdmissionSubmitter;
   allowAdmission?: boolean;
   onAdmissionRecorded?: () => void;
+  onAdmissionOutcome?: (response: AdmissionResponse) => void;
   readOnlyNotice?: string;
 }) {
   const video = useRef<HTMLVideoElement>(null);
@@ -290,6 +293,7 @@ export function Scanner({
             allowAdmission={allowAdmission}
             readOnlyNotice={readOnlyNotice}
             onBusyChange={setAdmissionBusy}
+            onOutcome={onAdmissionOutcome}
             onComplete={() => {
               setAdmissionCompleted(true);
               onAdmissionRecorded?.();

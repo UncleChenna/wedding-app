@@ -177,6 +177,61 @@ test("authenticated private snapshot supports offline reads and erases on sign-o
     await expect(page.getByRole("heading", { name: "Revoked pass", exact: true })).toBeVisible();
     await capture("cached-revoked");
     await context.setOffline(false);
+    // A refusal after the initial valid check is new authoritative evidence.
+    // Preserve historical admissions, give this synthetic party one remaining
+    // place, then revoke after a fresh copy was genuinely saved on the device.
+    await db`update invitations set status='rsvp_yes',token_version=1 where id=${invitation}`;
+    await db`update rsvps set count_attending=3 where invitation_id=${invitation}`;
+    await page.reload();
+    await page.getByRole("button", { name: "Open camera" }).click();
+    await expect(page.getByRole("button", { name: "Admit 1 guest", exact: true })).toBeVisible();
+    const cachedStatus = () =>
+      page.evaluate(async (id) => {
+        const database = await new Promise<IDBDatabase>((resolve, reject) => {
+          const request = indexedDB.open("wedding-scanner-guests-v1");
+          request.onsuccess = () => resolve(request.result);
+          request.onerror = () => reject(request.error);
+        });
+        try {
+          return await new Promise<string | null>((resolve, reject) => {
+            const request = database.transaction("snapshot").objectStore("snapshot").get("current");
+            request.onsuccess = () => {
+              const saved = request.result as
+                | {
+                    snapshot?: {
+                      invitations: { invitationId: string; status: string; partySize: number }[];
+                    };
+                  }
+                | undefined;
+              const row = saved?.snapshot?.invitations.find((entry) => entry.invitationId === id);
+              resolve(row ? `${row.status}:${row.partySize}` : null);
+            };
+            request.onerror = () => reject(request.error);
+          });
+        } finally {
+          database.close();
+        }
+      }, invitation);
+    await expect.poll(cachedStatus).toBe("rsvp_yes:3");
+    await context.route("**/api/checkin/guest-snapshot", (route) =>
+      route.fulfill({ status: 503, body: "unavailable" }),
+    );
+    await db`update invitations set status='revoked' where id=${invitation}`;
+    await page.getByRole("button", { name: "Admit 1 guest", exact: true }).click();
+    await expect(
+      page.getByText("This pass has been revoked or replaced. Ask the gate lead to check."),
+    ).toBeVisible();
+    await expect.poll(cachedStatus).toBeNull();
+    await context.setOffline(true);
+    await page.getByRole("button", { name: "Scan next pass", exact: true }).click();
+    await expect(
+      page.getByRole("heading", { name: "Unable to check this pass", exact: true }),
+    ).toBeVisible();
+    expect(
+      await db`select id from scan_events where invitation_id=${invitation} and admitted_people > 0`,
+    ).toHaveLength(1);
+    await context.unroute("**/api/checkin/guest-snapshot");
+    await context.setOffline(false);
     await page.reload();
     const signOut = page.getByRole("button", { name: "Sign out", exact: true });
     await signOut.focus();

@@ -6,6 +6,62 @@ const result = {
   state: "valid" as const,
   guest: { name: "Ada", partySize: 4, admittedSoFar: 0, tableNumber: 7, admissions: [] },
 };
+it.each([
+  "revoked",
+  "not_rsvped",
+  "already_used",
+  "session_expired",
+  "invalid",
+  "conflict",
+] as const)(
+  "reports authoritative %s outcomes without claiming a recorded admission",
+  async (state) => {
+    const outcome = vi.fn();
+    const complete = vi.fn();
+    render(
+      <AdmissionResult
+        result={result}
+        qr="private QR"
+        submit={async () => ({ state })}
+        onBusyChange={() => {}}
+        onOutcome={outcome}
+        onComplete={complete}
+      />,
+    );
+    await act(async () => fireEvent.click(screen.getByRole("button", { name: "Admit 4 guests" })));
+    expect(outcome).toHaveBeenCalledExactlyOnceWith({ state });
+    expect(complete).not.toHaveBeenCalled();
+  },
+);
+it("does not treat an uncertain transport result as authoritative cache evidence", async () => {
+  const outcome = vi.fn();
+  render(
+    <AdmissionResult
+      result={result}
+      qr="private QR"
+      submit={async () => ({ state: "unavailable" })}
+      onBusyChange={() => {}}
+      onOutcome={outcome}
+    />,
+  );
+  await act(async () => fireEvent.click(screen.getByRole("button", { name: "Admit 4 guests" })));
+  expect(outcome).not.toHaveBeenCalled();
+  expect(screen.getByRole("button", { name: "Retry this admission" })).toBeVisible();
+});
+it("reports a changed remaining allowance so the saved copy cannot remain authoritative", async () => {
+  const outcome = vi.fn();
+  render(
+    <AdmissionResult
+      result={result}
+      qr="private QR"
+      submit={async () => ({ state: "too_many", remaining: 1 })}
+      onBusyChange={() => {}}
+      onOutcome={outcome}
+    />,
+  );
+  await act(async () => fireEvent.click(screen.getByRole("button", { name: "Admit 4 guests" })));
+  expect(outcome).toHaveBeenCalledExactlyOnceWith({ state: "too_many", remaining: 1 });
+});
 it("keeps cached valid checks read-only without an admission form or receipt", () => {
   const submit = vi.fn<AdmissionSubmitter>();
   render(
