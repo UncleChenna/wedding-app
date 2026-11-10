@@ -2,7 +2,7 @@
 id: TICKET-077
 title: Add the bar board using the shared board component
 epic: ordering
-status: in_progress
+status: in_review
 priority: high
 estimate: S
 labels: [frontend]
@@ -12,7 +12,7 @@ agent: claude
 blocked_by: [TICKET-076]
 blocks: [TICKET-133]
 branch: TICKET-077
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/155
 created: 2026-10-21
 updated: 2026-11-10
 started: 2026-11-10
@@ -68,3 +68,4 @@ _Agents append dated notes here while working._
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-10 — todo → claimed — unclechenna (claude) — started ahead of TICKET-076 (in_progress)
 - 2026-11-10 — todo → in_progress — unclechenna (claude) — started ahead of TICKET-076 (in_progress)
+- 2026-11-10 — in_progress → in_review — unclechenna (claude)
