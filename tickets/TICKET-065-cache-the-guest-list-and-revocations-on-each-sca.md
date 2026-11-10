@@ -2,7 +2,7 @@
 id: TICKET-065
 title: Cache the guest list and revocations on each scanner
 epic: checkin
-status: in_progress
+status: in_review
 priority: high
 estimate: L
 labels: [frontend, pwa]
