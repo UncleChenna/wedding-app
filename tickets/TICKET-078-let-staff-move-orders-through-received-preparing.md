@@ -41,9 +41,9 @@ See: [Table ordering](../docs/prd.md#table-ordering) (ORD-5).
 
 ## Acceptance criteria
 
-- [ ] Only legal status moves are accepted server-side (unit).
-- [ ] A failed update reverts the card and shows an error (e2e with forced failure).
-- [ ] Every move is timestamped.
+- [x] Only legal status moves are accepted server-side (unit).
+- [x] A failed update reverts the card and shows an error (e2e with forced failure).
+- [x] Every move is timestamped.
 
 ## Test plan
 
@@ -58,6 +58,16 @@ See: [Table ordering](../docs/prd.md#table-ordering) (ORD-5).
 ## Notes / decisions
 
 _Agents append dated notes here while working._
+
+- 2026-11-10 (unclechenna, claude):
+  - **Moves:** received → preparing → served, or cancelled before served. Received → served is allowed for quick
+    drinks. Served and cancelled are final.
+  - **History:** every move is a row in `station_order_events` (migration 0028, additive) with the from and to
+    status, staff, device and time. The database refuses a cancel without a reason.
+  - **Two tablets:** each move names the status the board showed. A move from an out-of-date status is refused as
+    `stale`, so racing tablets can't both win.
+  - **Order status** follows its tickets, so the table's open-order limit frees up once everything is served.
+  - **Stacked on TICKET-077 (#155)**, which is stacked on TICKET-076 (#140).
 
 ## Activity log
 
