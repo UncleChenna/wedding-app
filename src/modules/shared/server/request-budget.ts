@@ -7,7 +7,7 @@ import { requestBudgets } from "./db/schema";
 
 const budgetSchema = z.object({
   identity: z.string().regex(/^[0-9a-f]{64}$/),
-  scope: z.enum(["lookup", "pin"]),
+  scope: z.enum(["lookup", "pin", "lost_link", "ordering"]),
   limit: z.number().int().min(1).max(100000),
   windowSeconds: z.number().int().min(1).max(86400),
 });

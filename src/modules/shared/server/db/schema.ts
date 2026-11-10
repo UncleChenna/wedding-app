@@ -101,7 +101,7 @@ export const requestBudgets = pgTable(
   (t) => [
     primaryKey({ columns: [t.scope, t.identity] }),
     index("request_budgets_expiry_idx").on(t.expiresAt),
-    check("request_budgets_scope", sql`${t.scope} in ('lookup', 'pin')`),
+    check("request_budgets_scope", sql`${t.scope} in ('lookup', 'pin', 'lost_link', 'ordering')`),
     check("request_budgets_identity", sql`${t.identity} ~ '^[0-9a-f]{64}$'`),
     check("request_budgets_used", sql`${t.used} between 0 and 100000`),
   ],
@@ -409,6 +409,7 @@ export const scanEvents = pgTable(
     admittedPeople: integer("admitted_people").notNull(),
     conflict: boolean("conflict").notNull().default(false),
     source: text("source").notNull(),
+    inputMethod: text("input_method"),
     legacyCheckInId: uuid("legacy_check_in_id").references(() => checkIns.id, {
       onDelete: "restrict",
     }),
@@ -419,6 +420,10 @@ export const scanEvents = pgTable(
     index("scan_events_invitation_received_idx").on(t.invitationId, t.receivedAt),
     index("scan_events_device_received_idx").on(t.deviceId, t.receivedAt),
     index("scan_events_staff_received_idx").on(t.staffId, t.receivedAt),
+    check(
+      "scan_events_input_method",
+      sql`${t.inputMethod} is null or ${t.inputMethod} in ('qr', 'manual')`,
+    ),
     check("scan_events_source", sql`${t.source} in ('online', 'offline', 'legacy')`),
     check(
       "scan_events_counts",
@@ -704,5 +709,23 @@ export const invitationLifecycleEvents = pgTable(
       "invitation_lifecycle_transition",
       sql`(${t.operation} = 'revoke' and ${t.afterStatus} = 'revoked' and ${t.afterVersion} = ${t.beforeVersion}) or (${t.operation} = 'reissue' and ${t.afterStatus} in ('sent', 'rsvp_yes', 'rsvp_no') and ${t.afterVersion}::bigint = ${t.beforeVersion}::bigint + 1)`,
     ),
+  ],
+).enableRLS();
+
+/** Public recovery requests; only the authenticated server admin queue reads them. */
+export const invitationLinkRequests = pgTable(
+  "invitation_link_requests",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    name: text("name").notNull(),
+    contact: text("contact").notNull(),
+    contactKind: text("contact_kind").notNull(),
+    createdAt: createdAt(),
+  },
+  (t) => [
+    index("invitation_link_requests_created_idx").on(t.createdAt, t.id),
+    check("invitation_link_requests_name", sql`length(trim(${t.name})) between 1 and 200`),
+    check("invitation_link_requests_contact", sql`length(trim(${t.contact})) between 1 and 254`),
+    check("invitation_link_requests_kind", sql`${t.contactKind} in ('email', 'phone')`),
   ],
 ).enableRLS();

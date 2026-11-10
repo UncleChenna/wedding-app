@@ -221,3 +221,44 @@ CI run URL, fetched develop commit and the owner's explanation. The original PR
 link and CI history are not replaced. Other worktrees' ticket files are untouched;
 only the ticket's own branch may later sync its completion metadata. Physical
 release requirements remain separate and mandatory.
+
+### Historical stacked merges
+
+For an owned `in_review` ticket whose original PR merged into an intermediate
+branch rather than `develop`, use the separate, explicit historical mode:
+
+```bash
+pnpm t:reconcile TICKET-NNN --integration-pr 123 --reason "Historical stacked merge reached develop through this tested integration"
+```
+
+The original PR must be merged to a non-develop branch; the separate integration
+must be merged to develop in the same repository. Real Git ancestry must prove
+original head → original merge → tested integration head → integration merge →
+freshly fetched develop. Complete original criteria must already exist at the
+original tested head, integration head and current develop. Owner and completed
+dependency checks still apply; offline recovery and mixed repair/integration flags
+are refused. No ticket file or historical worktree needs to be modified.
+
+Original CI must pass its four historical baseline jobs (tickets, PR attribution,
+full verification, migrations/seed). The integration additionally requires the
+invitation journey job. Every returned job must succeed: skipped, pending, failed,
+or cancelled jobs cannot certify recovery. Exact head, latest run ID, run status
+and PR metadata are rechecked; the ledger keeps original/integration heads, merge
+commits, base, CI URLs and audited develop alongside the explanation. The original
+PR link remains unchanged. This does not relax ordinary completion or repair mode.
+
+When the original merge is absent but its exact tested source survives, an
+independently reviewed audit may identify an explicit `--source-commit <full-oid>`
+alongside `--integration-pr`. The source must be a commit ancestor of the original
+tested head, have that head's **identical whole Git tree**, and be an ancestor of
+the tested integration head and fresh develop. Abbreviations, tree objects,
+identical-tree siblings, partial copies and source commits outside integration
+history are refused. All original metadata, criteria and CI checks remain in force.
+The activity records the source/tree and states that original merge ancestry is
+not asserted; the original PR identity stays unchanged. This flag is forbidden
+with ordinary `--repair-pr` mode.
+
+Similar patches or selected files alone never qualify. TICKET-225's
+[provenance audit](reviews/TICKET-225/provenance.md) documents the exact retained
+source for TICKET-186/#4 and TICKET-187/#5. Their statuses remain unchanged until
+the guarded mechanism is independently reviewed, merged and applied through CLI.

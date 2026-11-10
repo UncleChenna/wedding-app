@@ -767,6 +767,44 @@ describe("working ahead (TICKET-214)", () => {
 describe("explicit merged-ticket repair reconciliation", () => {
   it.each([
     "passed",
+    "historical passed",
+    "historical source passed",
+    "historical source tested head passed",
+    "historical source abbreviated source",
+    "historical source tree object",
+    "historical source one-file difference",
+    "historical source sibling identical tree",
+    "historical source not reachable",
+    "historical source original changed",
+    "historical source original criteria incomplete",
+    "historical source failed CI",
+    "historical source other owner",
+    "historical wrong base",
+    "historical open original",
+    "historical other owner",
+    "historical unfinished blocker",
+    "historical unchecked criteria",
+    "historical repair omits original",
+    "historical failed CI",
+    "historical pending CI",
+    "historical stale CI head",
+    "historical newer CI run",
+    "historical same run restarted",
+    "historical changed repair head",
+    "historical different repository",
+    "historical local ledger",
+    "historical original head missing",
+    "historical original CI failed",
+    "historical original changed",
+    "historical original criteria incomplete",
+    "historical original CI restarted late",
+    "historical open repair",
+    "historical unreachable",
+    "historical missing CI",
+    "historical optional only",
+    "historical offline ledger",
+    "historical fetch failure",
+    "historical mixed flags",
     "in-progress passed",
     "open original",
     "open repair",
@@ -788,15 +826,27 @@ describe("explicit merged-ticket repair reconciliation", () => {
     "other owner",
     "unfinished blocker",
     "fetch failure",
+    "source on repair",
   ])(
     "preserves the ledger unless complete immutable evidence passes: %s",
-    async (scenario) => {
+    async (entry) => {
+      const historical = entry.startsWith("historical ");
+      const sourceMode = entry.startsWith("historical source ");
+      const scenario = sourceMode
+        ? entry.slice("historical source ".length)
+        : historical
+          ? entry.slice("historical ".length)
+          : entry;
       const { a, dir, remote } = setup();
       git(a, "checkout", "-qb", "develop");
       const active = ticket(
         "TICKET-001",
         {
-          status: scenario === "in-progress passed" ? "in_progress" : "blocked",
+          status: historical
+            ? "in_review"
+            : scenario === "in-progress passed"
+              ? "in_progress"
+              : "blocked",
           owner: scenario === "other owner" ? "friend" : "divine",
           agent: "codex",
           branch: "TICKET-001",
@@ -805,12 +855,45 @@ describe("explicit merged-ticket repair reconciliation", () => {
           resume_to: "in_progress",
           blocked_by: scenario === "unfinished blocker" ? ["TICKET-002"] : [],
         },
-        scenario !== "unchecked criteria",
+        scenario !== "unchecked criteria" && scenario !== "original criteria incomplete",
       );
       writeFileSync(join(a, active.path), serializeTicket(active));
       git(a, "add", ".");
       git(a, "commit", "-qm", "original merged work");
-      const original = git(a, "rev-parse", "HEAD");
+      let originalHead = git(a, "rev-parse", "HEAD");
+      let sourceCommit = originalHead;
+      if (historical) {
+        git(a, "checkout", "-qb", "historical-stack-base", "HEAD^");
+        git(a, "merge", "--no-ff", "develop", "-m", "historical original merge");
+        git(a, "checkout", "-B", "develop");
+      }
+      let original = git(a, "rev-parse", "HEAD");
+      if (sourceMode) {
+        originalHead = original;
+        git(a, "commit", "--allow-empty", "-qm", "original final merge");
+        original = git(a, "rev-parse", "HEAD");
+        if (scenario === "tested head passed") sourceCommit = originalHead;
+        if (scenario === "one-file difference")
+          sourceCommit = git(a, "rev-parse", `${sourceCommit}^`);
+        if (scenario === "sibling identical tree") {
+          git(a, "checkout", "-qb", "unrelated-source", `${sourceCommit}^`);
+          git(a, "read-tree", "--reset", "-u", sourceCommit);
+          git(a, "commit", "--allow-empty", "-qm", "unrelated identical tree");
+          sourceCommit = git(a, "rev-parse", "HEAD");
+        }
+        git(
+          a,
+          "checkout",
+          "-B",
+          "develop",
+          scenario === "not reachable" ? `${sourceCommit}^` : sourceCommit,
+        );
+      }
+      if (scenario === "original criteria incomplete") {
+        active.sections["Acceptance criteria"] = "- [x] It works when tested.";
+        writeFileSync(join(a, active.path), serializeTicket(active));
+        git(a, "add", ".");
+      }
       git(a, "commit", "--allow-empty", "-qm", "repair tested head");
       const head = git(a, "rev-parse", "HEAD");
       git(a, "commit", "--allow-empty", "-qm", "repair merge");
@@ -826,7 +909,10 @@ describe("explicit merged-ticket repair reconciliation", () => {
         "migrations + seed",
         "invitation journey (mobile + desktop)",
       ];
-      writeFileSync(fixture, JSON.stringify({ scenario, original, head, merge, jobNames }));
+      writeFileSync(
+        fixture,
+        JSON.stringify({ scenario, historical, originalHead, original, head, merge, jobNames }),
+      );
       writeFileSync(
         join(bin, "gh"),
         `#!${process.execPath}
@@ -835,21 +921,23 @@ const f = JSON.parse(fs.readFileSync(process.env.RECONCILE_FIXTURE, "utf8"));
 const args = process.argv.slice(2); const s = f.scenario; let result;
 if (args[0] === "pr") {
   const original = args[2].endsWith("/1");
-  const countFile = process.env.RECONCILE_FIXTURE + ".reads";
+  const countFile = process.env.RECONCILE_FIXTURE + (original ? ".original-reads" : ".reads");
   const reads = fs.existsSync(countFile) ? Number(fs.readFileSync(countFile, "utf8")) : 0;
-  if (!original) fs.writeFileSync(countFile, String(reads + 1));
-  result = {url: (original && s === "different repository" ? "https://github.com/other/repo/pull/" : "https://github.com/example/repo/pull/") + (original ? "1" : "2"), state: s === (original ? "open original" : "open repair") ? "OPEN" : "MERGED", baseRefName: s === "wrong base" ? "main" : "develop", headRefOid: !original && s === "changed repair head" && reads > 0 ? f.merge : f.head, mergeCommit: {oid: original ? (s === "repair omits original" ? f.merge : f.original) : (s === "unreachable" ? "f".repeat(40) : f.merge)}};
+  fs.writeFileSync(countFile, String(reads + 1));
+  result = {url: (original && s === "different repository" ? "https://github.com/other/repo/pull/" : "https://github.com/example/repo/pull/") + (original ? "1" : "2"), state: s === (original ? "open original" : "open repair") ? "OPEN" : "MERGED", baseRefName: s === "wrong base" ? "main" : original && f.historical ? "legacy-stack" : "develop", headRefOid: original && f.historical ? ((s === "original head missing" || (s === "original changed" && reads > 0)) ? f.merge : f.originalHead) : !original && s === "changed repair head" && reads > 0 ? f.merge : f.head, mergeCommit: {oid: original ? (s === "repair omits original" ? f.merge : f.original) : (s === "unreachable" ? "f".repeat(40) : f.merge)}};
 } else if(args[1] === "list") {
-  const listFile = process.env.RECONCILE_FIXTURE + ".lists";
+  const originalRun = f.historical && args[args.indexOf("--commit") + 1] === f.originalHead;
+  const listFile = process.env.RECONCILE_FIXTURE + (originalRun ? ".original-lists" : ".lists");
   const lists = fs.existsSync(listFile) ? Number(fs.readFileSync(listFile, "utf8")) : 0;
   fs.writeFileSync(listFile, String(lists + 1));
-  result = s === "missing CI" ? [] : [{databaseId: s === "newer CI run" && lists > 0 ? 43 : 42}];
+  result = s === "missing CI" ? [] : [{databaseId: originalRun ? 99 : s === "newer CI run" && lists > 0 ? 43 : 42}];
 }
 else {
-const viewFile = process.env.RECONCILE_FIXTURE + ".views";
+const originalRun = args[2] === "99";
+const viewFile = process.env.RECONCILE_FIXTURE + (originalRun ? ".original-views" : ".views");
 const views = fs.existsSync(viewFile) ? Number(fs.readFileSync(viewFile, "utf8")) : 0;
 fs.writeFileSync(viewFile, String(views + 1));
-result = {databaseId: 42, headSha: s === "stale CI head" ? f.original : f.head, status: (s === "pending CI" || (s === "same run restarted" && views > 0)) ? "in_progress" : "completed", conclusion: s === "failed CI" ? "failure" : "success", event: "pull_request", url: "https://github.com/example/repo/actions/runs/42", jobs: (s === "optional only" ? ["review"] : f.jobNames).map(name=>({name,status:"completed",conclusion:"success"}))};
+result = {databaseId: originalRun ? 99 : 42, headSha: originalRun ? f.originalHead : s === "stale CI head" ? f.original : f.head, status: (s === "pending CI" || (s === "same run restarted" && views > 0) || (originalRun && s === "original CI restarted late" && views > 1)) ? "in_progress" : "completed", conclusion: (s === "failed CI" || (originalRun && s === "original CI failed")) ? "failure" : "success", event: "pull_request", url: "https://github.com/example/repo/actions/runs/" + (originalRun ? 99 : 42), jobs: (s === "optional only" ? ["review"] : originalRun ? f.jobNames.slice(0,4) : f.jobNames).map(name=>({name,status:"completed",conclusion:"success"}))};
 }
 console.log(JSON.stringify(result));
 `,
@@ -871,8 +959,19 @@ console.log(JSON.stringify(result));
         },
         "reconcile",
         "TICKET-001",
-        "--repair-pr",
+        historical ? "--integration-pr" : "--repair-pr",
         "2",
+        ...(scenario === "mixed flags" ? ["--repair-pr", "2"] : []),
+        ...(sourceMode || scenario === "source on repair"
+          ? [
+              "--source-commit",
+              scenario === "abbreviated source"
+                ? sourceCommit.slice(0, 8)
+                : scenario === "tree object"
+                  ? git(a, "rev-parse", `${sourceCommit}^{tree}`)
+                  : sourceCommit,
+            ]
+          : []),
         "--reason",
         "Original parity failed; merged repair now passes all required CI",
       );
@@ -886,6 +985,16 @@ console.log(JSON.stringify(result));
           "Original CI failed before external merge",
         );
         expect(ledger.tickets["WED-001"].pr).toBe(active.meta.pr);
+        if (historical) {
+          const log = ledger.tickets["WED-001"].log.join("\n");
+          expect(log).toContain(`head ${originalHead} merge ${original} base legacy-stack`);
+          expect(log).toContain("original CI https://github.com/example/repo/actions/runs/99");
+          expect(log).toContain(`historical integration merge ${merge}`);
+          if (sourceMode) {
+            expect(log).toContain(`source ${sourceCommit}`);
+            expect(log).toContain(`tree ${git(a, "rev-parse", `${originalHead}^{tree}`)}`);
+          }
+        }
       } else {
         expect(result.code, result.out).not.toBe(0);
         expect(

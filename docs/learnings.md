@@ -23,3 +23,16 @@
 - 2026-11-02 (TICKET-209): Long local test timeouts can reflect macOS Maintenance Sleep. Confirm timestamps with pmset before changing tests; process-scoped caffeinate -is preserved the unchanged journey assertions (5.8s pass after sleep-interrupted15–16min failures). Keep assertions/timeouts intact and ensure fixture cleanup does not depend on an open browser. No persistent power settings changed.
 - 2026-11-06 (TICKET-217): A failing stop hook on a file that only the owner could approve trapped a session for hours (TICKET-084's generated migration). Enforcement belongs at commit; post and stop hooks now report protected files instead of failing, and new `db:generate` output needs no approval (`scripts/__tests__/hooks-migrations.test.ts`).
 - 2026-11-07 (TICKET-218): `wt:new` run from a main checkout on an old branch used old harness code and skipped the auth-template copy, so new worktree databases failed to start (it looked like Docker overload). `t:*`/`wt:*` now warn when their checkout's tooling is behind `origin/develop`, and worktrees start the database only on first use.
+
+### 2026-11-09 — Sleep can invalidate local timing evidence
+
+When unrelated Git-fixture tests take hundreds of seconds and fail different timeout
+assertions, inspect `pmset -g log` before changing test budgets. TICKET-059 power logs
+confirmed maintenance sleep during two failed runs; the unchanged full suite passed
+1,477 tests in 52.57s under `caffeinate -is pnpm test`. Use a command-scoped inhibitor
+for long local verification on macOS, preserve the failed logs, and keep CI as an
+independent check. Do not weaken assertions or permanently alter power settings.
+
+## Quick verification must include dynamically read CI inputs (TICKET-226)
+
+TICKET-123 and TICKET-062 both added test-only CI flags before documenting them in `.env.example`. Vitest's related-test import graph cannot infer that `ci-parity.test.ts` reads workflow/environment files through `readFileSync`. Quick verification now explicitly runs that unchanged test when `.github/workflows/**` or `.env.example` changes, including committed branch changes against local `origin/develop`. It excludes parity from the related invocation only when the explicit invocation will run, so neither checks nor coverage are skipped. Real throwaway-Git command tests prove the missing-flag assertion fails and passes after documentation; no actual repository environment or hook is disabled.

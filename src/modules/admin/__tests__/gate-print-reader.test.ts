@@ -49,6 +49,8 @@ it("takes one read-only snapshot, exports all members and omits contacts and bea
     expect(projection).not.toHaveProperty("email");
     expect(projection).not.toHaveProperty("phone");
     expect(projection).not.toHaveProperty("notes");
+    expect(projection).not.toHaveProperty("dietaryNotes");
+    expect(projection).not.toHaveProperty("dietary_notes");
   }
 });
 it("shows an actionable failure instead of a falsely empty printable list", async () => {

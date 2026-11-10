@@ -58,6 +58,18 @@ describe("verified repair CI", () => {
       ),
     ).toThrow();
   });
+  it("permits the historical four-job workflow only for original evidence", () => {
+    const historicalRun = { ...run, jobs: jobs.slice(0, 4) };
+    expect(verifyRepairRun(historicalRun, head, true)).toBe(run.url);
+    expect(() => verifyRepairRun(historicalRun, head)).toThrow();
+    for (const state of ["skipped", "failure", "pending"]) {
+      const broken = {
+        ...run,
+        jobs: jobs.map((job, index) => (index === 4 ? { ...job, conclusion: state } : job)),
+      };
+      expect(() => verifyRepairRun(broken, head)).toThrow();
+    }
+  });
   it("rejects malformed remote metadata", () => {
     expect(() => verifyRepairRun(null, head)).toThrow();
     expect(() => verifyRepairRun({ ...run, jobs: undefined }, head)).toThrow();

@@ -1,3 +1,5 @@
+import { gateGuestProjectionSchema } from "@/modules/shared/lib/dietary-privacy";
+
 export interface GatePrintInvitation {
   id: string;
   status: string;
@@ -14,13 +16,14 @@ export function buildGatePrintRows(invitations: readonly GatePrintInvitation[]) 
   return invitations
     .filter((invitation) => invitation.status === "rsvp_yes")
     .map((invitation) => {
+      const members = invitation.guests.map((guest) => gateGuestProjectionSchema.parse(guest));
       const primary =
-        invitation.guests.find((guest) => guest.isPrimary)?.name ??
-        invitation.guests[0]?.name ??
+        members.find((guest) => guest.isPrimary)?.name ??
+        members[0]?.name ??
         invitation.householdName ??
         "Name not recorded";
-      const names = invitation.guests.length
-        ? invitation.guests.map((guest) => guest.name.trim() || "Name not recorded")
+      const names = members.length
+        ? members.map((guest) => guest.name.trim() || "Name not recorded")
         : [invitation.householdName?.trim() || "Name not recorded"];
       const admittedPeople = invitation.admittedPeople ?? 0;
       const partySize = invitation.countAttending;

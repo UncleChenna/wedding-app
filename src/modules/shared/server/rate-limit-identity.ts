@@ -41,5 +41,9 @@ export function rateLimitIdentity(
       return null;
     }
   }
-  return createHmac("sha256", key).update(`rate-limit:v1:${network}`).digest("hex");
+  // UTC epochs are server-owned and identical across instances. Rotation also resets
+  // a network's budget at the boundary; it does not make shared-network abuse impossible.
+  const epoch = Math.floor(Date.now() / 86_400_000);
+  const dailyKey = createHmac("sha256", key).update(`rate-limit:salt:v2:${epoch}`).digest();
+  return createHmac("sha256", dailyKey).update(`rate-limit:identity:v2:${network}`).digest("hex");
 }
