@@ -201,8 +201,15 @@
     {
       "idx": 28,
       "version": "7",
-      "when": 1794340105522,
-      "tag": "0028_station-order-events",
+      "when": 1794270796324,
+      "tag": "0028_scan-resolution-notes",
+      "breakpoints": true
+    },
+    {
+      "idx": 29,
+      "version": "7",
+      "when": 1794270796977,
+      "tag": "0029_scan-resolution-guards",
       "breakpoints": true
     }
   ]

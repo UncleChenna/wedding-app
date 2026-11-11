@@ -4,6 +4,7 @@ export async function resetSeedTables(execute: (statement: string) => Promise<un
   const guards = [
     ["rsvp_changes", "rsvp_history_append_only"],
     ["scan_events", "scan_events_append_only"],
+    ["scan_resolution_notes", "scan_resolution_notes_append_only"],
     ["admission_counters", "admission_counters_no_removal"],
     ["rsvps", "rsvp_admission_no_truncate"],
     ["guests", "guest_admission_no_truncate"],

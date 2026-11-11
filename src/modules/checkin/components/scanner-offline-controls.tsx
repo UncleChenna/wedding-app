@@ -109,7 +109,7 @@ export function ScannerOfflineControls({
         >
           <p role="status" className="min-h-24">
             {state === "ready"
-              ? "Camera ready for an offline reload. Guest checks still need a connection."
+              ? "Camera ready for an offline reload. Saved guest checks do not record entry."
               : state === "preparing"
                 ? "Preparing the camera for offline use…"
                 : "Offline camera not ready. Keep this page connected while you prepare it."}

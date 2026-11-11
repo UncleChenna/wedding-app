@@ -2,6 +2,9 @@ import "server-only";
 import { createScannerShellStore } from "@/modules/checkin/browser/scanner-shell-store";
 import { createScannerShellRuntime } from "@/modules/checkin/browser/scanner-shell-runtime";
 import { installScannerShellWorker } from "@/modules/checkin/browser/scanner-shell-worker";
+import { createGuestSnapshotStore } from "@/modules/checkin/browser/guest-snapshot-store";
+import { createGuestSnapshotRuntime } from "@/modules/checkin/browser/guest-snapshot-runtime";
+import { parseGuestSnapshot } from "@/modules/checkin/lib/guest-snapshot";
 
 import { ownPassWorkerSource } from "@/modules/invitations/lib/offline-worker";
 
@@ -69,14 +72,23 @@ const scannerWorker = ${
   const createStore = ${createScannerShellStore.toString()};
   const createRuntime = ${createScannerShellRuntime.toString()};
   const install = ${installScannerShellWorker.toString()};
+  const parseGuestSnapshot = ${parseGuestSnapshot.toString()};
+  const createGuestStore = ${createGuestSnapshotStore.toString()};
+  const createGuestRuntime = ${createGuestSnapshotRuntime.toString()};
   let store;
   let runtime;
+  let guestStore;
+  const getGuestStore = () => guestStore || (guestStore = createGuestStore(parseGuestSnapshot));
   const getStore = () => store || (store = createStore());
   const getRuntime = () => runtime || (runtime = createRuntime({
     store: getStore(), storage: caches, fetcher: fetch.bind(self),
     origin: self.location.origin, build: ${JSON.stringify(scanner.build)}
   }));
   return install({ host: self, store: getStore, runtime: getRuntime,
+    guests: { store: getGuestStore, runtime: (authority, denied) => createGuestRuntime({
+      store: getGuestStore(), authority, denied, parse: parseGuestSnapshot,
+      fetcher: fetch.bind(self), origin: self.location.origin
+    }) },
     storage: caches, fetcher: fetch.bind(self), build: ${JSON.stringify(scanner.build)},
     assets: ${JSON.stringify(scanner.assets)},
     fallback: async () => {

@@ -1,5 +1,5 @@
 {
-  "id": "614e29c9-11ef-4e2b-bf5f-f1852f38280d",
+  "id": "52b57b5f-9759-4838-a4e5-309e645d9637",
   "prevId": "3d737345-71d6-44a8-888d-c79da1f98e40",
   "version": "7",
   "dialect": "postgresql",
@@ -2317,6 +2317,106 @@
       },
       "isRLSEnabled": true
     },
+    "public.scan_resolution_notes": {
+      "name": "scan_resolution_notes",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "event_id": {
+          "name": "event_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "request_id": {
+          "name": "request_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "admin_id": {
+          "name": "admin_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "resolution": {
+          "name": "resolution",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "recorded_at": {
+          "name": "recorded_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "scan_resolution_notes_event_time_idx": {
+          "name": "scan_resolution_notes_event_time_idx",
+          "columns": [
+            {
+              "expression": "event_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "recorded_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "scan_resolution_notes_event_id_scan_events_id_fk": {
+          "name": "scan_resolution_notes_event_id_scan_events_id_fk",
+          "tableFrom": "scan_resolution_notes",
+          "tableTo": "scan_events",
+          "columnsFrom": [
+            "event_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "scan_resolution_notes_request_id_unique": {
+          "name": "scan_resolution_notes_request_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "request_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "scan_resolution_notes_resolution": {
+          "name": "scan_resolution_notes_resolution",
+          "value": "\"scan_resolution_notes\".\"resolution\" in ('reviewed', 'escalated', 'explained', 'follow_up')"
+        }
+      },
+      "isRLSEnabled": true
+    },
     "public.staff": {
       "name": "staff",
       "schema": "",
@@ -2505,142 +2605,6 @@
         "staff_pin_attempts_failures_range": {
           "name": "staff_pin_attempts_failures_range",
           "value": "\"staff_pin_attempts\".\"failures\" between 0 and 5"
-        }
-      },
-      "isRLSEnabled": true
-    },
-    "public.station_order_events": {
-      "name": "station_order_events",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "station_order_id": {
-          "name": "station_order_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "from_status": {
-          "name": "from_status",
-          "type": "station_order_status",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "to_status": {
-          "name": "to_status",
-          "type": "station_order_status",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "reason": {
-          "name": "reason",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "staff_id": {
-          "name": "staff_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "device_id": {
-          "name": "device_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {
-        "station_order_events_order_idx": {
-          "name": "station_order_events_order_idx",
-          "columns": [
-            {
-              "expression": "station_order_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "created_at",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {
-        "station_order_events_station_order_id_station_orders_id_fk": {
-          "name": "station_order_events_station_order_id_station_orders_id_fk",
-          "tableFrom": "station_order_events",
-          "tableTo": "station_orders",
-          "columnsFrom": [
-            "station_order_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "station_order_events_staff_id_staff_id_fk": {
-          "name": "station_order_events_staff_id_staff_id_fk",
-          "tableFrom": "station_order_events",
-          "tableTo": "staff",
-          "columnsFrom": [
-            "staff_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "set null",
-          "onUpdate": "no action"
-        },
-        "station_order_events_device_id_registered_devices_id_fk": {
-          "name": "station_order_events_device_id_registered_devices_id_fk",
-          "tableFrom": "station_order_events",
-          "tableTo": "registered_devices",
-          "columnsFrom": [
-            "device_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "set null",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {
-        "station_order_events_cancel_reason": {
-          "name": "station_order_events_cancel_reason",
-          "value": "\"station_order_events\".\"to_status\" <> 'cancelled' or length(trim(coalesce(\"station_order_events\".\"reason\", ''))) > 0"
-        },
-        "station_order_events_moves": {
-          "name": "station_order_events_moves",
-          "value": "\"station_order_events\".\"from_status\" <> \"station_order_events\".\"to_status\""
         }
       },
       "isRLSEnabled": true

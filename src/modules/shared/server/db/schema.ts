@@ -452,6 +452,30 @@ export const scanEvents = pgTable(
   ],
 ).enableRLS();
 
+/** Separate append-only admin resolutions; no arbitrary text or scan evidence mutation. */
+export const scanResolutionNotes = pgTable(
+  "scan_resolution_notes",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    eventId: uuid("event_id")
+      .notNull()
+      .references(() => scanEvents.id, { onDelete: "restrict" }),
+    requestId: uuid("request_id").notNull().unique(),
+    adminId: uuid("admin_id").notNull(),
+    resolution: text("resolution")
+      .$type<"reviewed" | "escalated" | "explained" | "follow_up">()
+      .notNull(),
+    recordedAt: timestamp("recorded_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("scan_resolution_notes_event_time_idx").on(t.eventId, t.recordedAt),
+    check(
+      "scan_resolution_notes_resolution",
+      sql`${t.resolution} in ('reviewed', 'escalated', 'explained', 'follow_up')`,
+    ),
+  ],
+).enableRLS();
+
 /** Historical guest-level archive, retained unchanged during invitation-level migration. */
 export const checkIns = pgTable(
   "check_ins",

@@ -71,7 +71,7 @@ test.describe("authenticated offline scanner", () => {
         () => (window as unknown as { offlineScannerCls: number }).offlineScannerCls,
       ),
     ).toBe(0);
-    const folder = `docs/reviews/TICKET-108/production-${info.project.name}`;
+    const folder = `${process.env.SCANNER_REVIEW_DIR ?? "docs/reviews/TICKET-108"}/production-${info.project.name}`;
     mkdirSync(folder, { recursive: true });
     await page.emulateMedia({ reducedMotion: "reduce" });
     for (const theme of themes) {

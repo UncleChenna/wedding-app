@@ -166,6 +166,12 @@ jobs:
         run: pnpm exec tsx scripts/test-online-admission.ts
       - name: Verify authenticated offline scanner and sign-out
         run: pnpm exec tsx scripts/test-offline-scanner.ts
+      - name: Verify minimal private scanner projection
+        run: pnpm exec vitest run scripts/__tests__/guest-snapshot.integration.test.ts
+        env:
+          RUN_GUEST_SNAPSHOT_DB_TESTS: "1"
+      - name: Verify authenticated cached scanner reads and revocation refresh
+        run: pnpm exec tsx scripts/test-guest-snapshot.ts
       - name: Verify atomic shared-network request budgets
         run: pnpm exec vitest run scripts/__tests__/rate-limit.integration.test.ts
         env:
@@ -199,6 +205,8 @@ jobs:
       - run: pnpm exec playwright test --config scripts/camera-verification.config.ts
       - name: Verify offline scanner storage, cold restart and camera expiry
         run: pnpm exec playwright test --config scripts/scanner-shell.config.ts
+      - name: Verify private snapshot lifecycle and worker upgrades
+        run: pnpm exec playwright test --config scripts/guest-snapshot.config.ts
       - if: failure()
         uses: actions/upload-artifact@v7
         with:
@@ -206,6 +214,7 @@ jobs:
           path: |
             artifacts/TICKET-059/camera/
             artifacts/TICKET-108/store/
+            artifacts/TICKET-065/store/
           retention-days: 7
 
   admin-journey:
@@ -234,6 +243,13 @@ jobs:
         with:
           name: admin-dashboard-evidence
           path: artifacts/TICKET-097/
+          retention-days: 7
+      - name: Preserve scan log evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: admin-scan-log-evidence
+          path: artifacts/TICKET-174/
           retention-days: 7
       - name: Stop this job's isolated stack
         if: always()
