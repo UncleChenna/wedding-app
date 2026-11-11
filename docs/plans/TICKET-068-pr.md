@@ -4,39 +4,43 @@ TICKET-068
 
 # Summary
 
-Keep each gate scanner current after another device records an admission, using the private station broadcast contract and authoritative snapshot refresh. Polling remains independent of WebSocket/token retry state.
+A gate scanner now refreshes its displayed pass when another scanner records an arrival. Private Broadcast notifications invalidate the saved guest list and fetch authoritative state; independent five-second polling continues when Realtime is unavailable. An unresolved admission keeps its original request ID and receipt workflow throughout refreshes.
 
 # Changes
 
-- Initial independent controller: gate-only subscription, known-change invalidation callback, five-second fallback polling, refusal cleanup and late-callback fencing.
-- Online admission and offline reconciliation now publish the existing minimal gate notification only after a new scan-event insert, inside the same transaction. Replayed event IDs never publish again.
-- TICKET-065 is still a prerequisite. Its private snapshot, worker/session safety barriers and pending admission intents will be preserved during integration.
+- Publish the existing minimal gate notification inside the admission/reconciliation transaction, after a new evidence insert. Replays do not publish; rollback removes the notification and evidence together.
+- Integrate the existing snapshot invalidation acknowledgement and session-denial barriers. Notification counts never become canonical local counts.
+- Refresh the current displayed result without rescanning, fencing stale QR/revision responses. Pending or uncertain admissions show a changed-state notice and preserve exact retry identity.
+- Pass only public Realtime configuration into the standalone offline scanner shell; old shells retain polling fallback.
+- Extend the existing isolated Supabase CI job with transaction publication and actual two-context scanner tests.
 
 # Acceptance criteria and evidence
 
-- [ ] A committed admission on device A is reflected on device B within two seconds in two real browser contexts.
-- [ ] With Realtime blocked, polling updates the authoritative cache within fifteen seconds.
+- [x] Device A admission updates device B's visible pass within two seconds without rescanning: real private WebSockets, both browser projects.
+- [x] Blocking device B's WebSockets still updates within fifteen seconds: actual five-second polling, both projects.
+- Additional lost-response regression commits the admission, loses its receipt, receives the broadcast and retries the identical event ID; exactly one positive admission persists.
 
 # Verification
 
-- Six controller behavior tests failed against the initial stub, then passed after implementation (1.19s).
-- Expanded controller lifecycle suite: nine passed.
-- Actual isolated Supabase: two missing-broadcast tests failed before implementation, then fifteen admission/reconciliation/broadcast tests passed, including rollback, replay and concurrency. Existing private-channel authorization/WebSocket suite: four passed.
-- Scanner visible-refresh seam: fourteen existing/new tests pass, including no-rescan updates, late old-QR/revision fencing and exact request reuse across a pending/uncertain admission. This is unit evidence, not the required browser timing proof.
-- Parent independent review of this transaction/controller foundation found no blockers. Actual snapshot/UI integration, production browser timing and final combined verification/review remain pending.
+- Actual Supabase:15 admission/reconciliation/publication tests and4 existing private-channel authorization tests passed. Broadcast tests reproduced missing messages before implementation; replay and rollback assertions remain.
+- Actual production browser:6/6 passed across mobile and desktop, all four themes axe-zero, no horizontal overflow375/768/1280.24 screenshots inspected without clipping or overlap.
+- Production build passed. Focused boundary/controller/scanner tests passed.
+- Full unit/coverage:1991 passed,207 conditional database skips,100.03s. Critical coverage98.71% lines/98.96% branches.
+- Quick verification passed lint, types, related tests and workflow/environment CI parity.
+- Final enhanced browser6/6 passed33.2s, including keyboard Enter retry,44px buttons and actual standalone offline reload/reconnect. Live updates measured120/70ms, polling2863/3360ms, uncertain notices125/123ms (mobile/desktop); exact JSON saved beside screenshots. Exact final-head CI and independent integration review remain required; this PR stays draft.
 
 # Risks and rollout
 
-Draft ahead of TICKET-065. No production database changes or messages have been sent. Notification payloads must remain identifiers/counts only and must never be treated as canonical admission data. Pending admission intents must survive cache changes. Physical-device and venue-network release checks remain unverified.
+No migration, policy, production application or external guest message. Broadcast availability requires the existing private station policies and configured public Supabase endpoint. A failed refresh preserves explicit snapshot/session safety restrictions rather than inventing admission counts. Physical phones, venue-network timing, fresh Lighthouse and CLS are unverified release checks; this browser evidence does not replace them. Existing TICKET-065 decoder and TICKET-174 navigation follow-ups must be integrated before final publication.
 
 # Screenshots
 
-Pending the integrated scanner UI checks.
+`docs/reviews/TICKET-068/{mobile,desktop}/`: realtime, polling and uncertain-response states in ivory-gold, emerald-night, blush-sage and midnight-champagne.
 
 # UI checklist
 
-Pending; this foundation is not UI completion.
+PASS: all-theme automated accessibility, responsive overflow checks, visual inspection and reduced-motion browser setting. PASS: keyboard retry and44px button bounds. Physical-device checks and fresh performance/CLS measurements remain release-gated, not certified complete.
 
 # Harness changes, if any
 
-None.
+The existing real-Supabase admin CI job additionally runs the two gate-publication SQL tests and six scanner browser tests, then uploads screenshot/timing evidence. No test, timeout, security policy or threshold was weakened.

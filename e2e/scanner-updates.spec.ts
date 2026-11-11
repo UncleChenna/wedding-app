@@ -122,6 +122,16 @@ for (const mode of ["realtime", "polling", "uncertain"] as const) {
         await expect(target.getByText("Guest list saved just now.")).toBeVisible({
           timeout: 20_000,
         });
+        if (target === other && mode === "realtime") {
+          await expect(target.getByText(/Camera ready for an offline reload/)).toBeVisible();
+          joined = false;
+          await otherContext.setOffline(true);
+          await target.reload();
+          await expect(
+            target.getByRole("heading", { name: "Gate check-in", exact: true }),
+          ).toBeVisible();
+          await otherContext.setOffline(false);
+        }
         await target.getByRole("button", { name: "Open camera" }).click();
         await expect(
           target.getByRole("heading", { name: "Valid pass", exact: true }),
