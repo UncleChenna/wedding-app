@@ -32,3 +32,7 @@ confirmed maintenance sleep during two failed runs; the unchanged full suite pas
 1,477 tests in 52.57s under `caffeinate -is pnpm test`. Use a command-scoped inhibitor
 for long local verification on macOS, preserve the failed logs, and keep CI as an
 independent check. Do not weaken assertions or permanently alter power settings.
+
+## Quick verification must include dynamically read CI inputs (TICKET-226)
+
+TICKET-123 and TICKET-062 both added test-only CI flags before documenting them in `.env.example`. Vitest's related-test import graph cannot infer that `ci-parity.test.ts` reads workflow/environment files through `readFileSync`. Quick verification now explicitly runs that unchanged test when `.github/workflows/**` or `.env.example` changes, including committed branch changes against local `origin/develop`. It excludes parity from the related invocation only when the explicit invocation will run, so neither checks nor coverage are skipped. Real throwaway-Git command tests prove the missing-flag assertion fails and passes after documentation; no actual repository environment or hook is disabled.

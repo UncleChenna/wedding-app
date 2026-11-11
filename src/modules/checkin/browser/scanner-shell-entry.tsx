@@ -1,5 +1,5 @@
 import { createRoot } from "react-dom/client";
-import { Scanner } from "../components/scanner";
+import { GuestSnapshotScanner } from "../components/guest-snapshot-scanner";
 import { OfflineScannerSession } from "../components/offline-scanner-session";
 
 const container = document.getElementById("scanner-shell");
@@ -18,7 +18,7 @@ if (container) {
         session={container.dataset.session ?? ""}
         build={container.dataset.build ?? ""}
       >
-        <Scanner />
+        <GuestSnapshotScanner session={container.dataset.session ?? ""} expiresAt={expiresAt} />
       </OfflineScannerSession>
     </main>,
   );

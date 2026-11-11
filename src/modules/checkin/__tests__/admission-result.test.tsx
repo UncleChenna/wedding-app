@@ -6,6 +6,83 @@ const result = {
   state: "valid" as const,
   guest: { name: "Ada", partySize: 4, admittedSoFar: 0, tableNumber: 7, admissions: [] },
 };
+it.each([
+  "revoked",
+  "not_rsvped",
+  "already_used",
+  "session_expired",
+  "invalid",
+  "conflict",
+] as const)(
+  "reports authoritative %s outcomes without claiming a recorded admission",
+  async (state) => {
+    const outcome = vi.fn();
+    const complete = vi.fn();
+    render(
+      <AdmissionResult
+        result={result}
+        qr="private QR"
+        submit={async () => ({ state })}
+        onBusyChange={() => {}}
+        onOutcome={outcome}
+        onComplete={complete}
+      />,
+    );
+    await act(async () => fireEvent.click(screen.getByRole("button", { name: "Admit 4 guests" })));
+    expect(outcome).toHaveBeenCalledExactlyOnceWith({ state });
+    expect(complete).not.toHaveBeenCalled();
+  },
+);
+it("does not treat an uncertain transport result as authoritative cache evidence", async () => {
+  const outcome = vi.fn();
+  render(
+    <AdmissionResult
+      result={result}
+      qr="private QR"
+      submit={async () => ({ state: "unavailable" })}
+      onBusyChange={() => {}}
+      onOutcome={outcome}
+    />,
+  );
+  await act(async () => fireEvent.click(screen.getByRole("button", { name: "Admit 4 guests" })));
+  expect(outcome).not.toHaveBeenCalled();
+  expect(screen.getByRole("button", { name: "Retry this admission" })).toBeVisible();
+});
+it("reports a changed remaining allowance so the saved copy cannot remain authoritative", async () => {
+  const outcome = vi.fn();
+  render(
+    <AdmissionResult
+      result={result}
+      qr="private QR"
+      submit={async () => ({ state: "too_many", remaining: 1 })}
+      onBusyChange={() => {}}
+      onOutcome={outcome}
+    />,
+  );
+  await act(async () => fireEvent.click(screen.getByRole("button", { name: "Admit 4 guests" })));
+  expect(outcome).toHaveBeenCalledExactlyOnceWith({ state: "too_many", remaining: 1 });
+});
+it("keeps cached valid checks read-only without an admission form or receipt", () => {
+  const submit = vi.fn<AdmissionSubmitter>();
+  render(
+    <AdmissionResult
+      result={result}
+      qr="private QR"
+      submit={submit}
+      onBusyChange={() => {}}
+      allowAdmission={false}
+      readOnlyNotice="List not refreshed for 31 min. New changes may not show."
+    />,
+  );
+  expect(screen.getByRole("heading", { name: "Valid pass" })).toBeVisible();
+  expect(
+    screen.getByText("List not refreshed for 31 min. New changes may not show."),
+  ).toBeVisible();
+  expect(screen.queryByLabelText("How many are here?")).toBeNull();
+  expect(screen.queryByRole("button", { name: /Admit/ })).toBeNull();
+  expect(screen.getByText(/No admission has been recorded by this check/)).toBeVisible();
+  expect(submit).not.toHaveBeenCalled();
+});
 afterEach(() => {
   cleanup();
   vi.useRealTimers();
@@ -70,8 +147,19 @@ it("keeps the exact request for uncertain retry and labels duplicate as historic
     recordedAt: "2026-12-19T12:00:00.000Z",
   });
   const busy = vi.fn();
-  render(<AdmissionResult result={result} qr="private QR" submit={submit} onBusyChange={busy} />);
+  const { rerender } = render(
+    <AdmissionResult result={result} qr="private QR" submit={submit} onBusyChange={busy} />,
+  );
   await act(async () => fireEvent.click(screen.getByRole("button", { name: "Admit 4 guests" })));
+  rerender(
+    <AdmissionResult
+      result={result}
+      qr="private QR"
+      submit={submit}
+      onBusyChange={busy}
+      allowAdmission={false}
+    />,
+  );
   expect(screen.getByLabelText("How many are here?")).toBeDisabled();
   expect(busy).toHaveBeenLastCalledWith(true);
   await act(async () =>

@@ -51,6 +51,7 @@ export const appRoutes = {
   admin: { path: "/admin", label: "Wedding control room", audience: "admin", access: "admin" },
   adminSharing: { path: "/admin/sharing", label: "Sharing", audience: "admin", access: "admin" },
   adminGuests: { path: "/admin/guests", label: "Guests", audience: "admin", access: "admin" },
+  adminScans: { path: "/admin/scans", label: "Scan log", audience: "admin", access: "admin" },
   adminSeating: {
     path: "/admin/guests/seating",
     label: "Seating",

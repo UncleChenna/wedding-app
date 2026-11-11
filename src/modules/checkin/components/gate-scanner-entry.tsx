@@ -6,7 +6,7 @@ import { PagePlaceholder } from "@/modules/shared/components/page-placeholder";
 import { ScannerOfflineControls } from "./scanner-offline-controls";
 import { appRoutes } from "@/modules/shared/lib/routes";
 import { scannerSessionFingerprint } from "../server/scanner-session-fingerprint";
-import { Scanner } from "./scanner";
+import { GuestSnapshotScanner } from "./guest-snapshot-scanner";
 
 async function Content() {
   const staff = await currentStaffDevice("gate");
@@ -35,7 +35,7 @@ async function Content() {
         signOut={staffSignOutAction}
         clearSession={clearStaffSessionAction}
       >
-        <Scanner />
+        <GuestSnapshotScanner session={session} expiresAt={staff.expiresAt.getTime()} />
       </ScannerOfflineControls>
     </main>
   );

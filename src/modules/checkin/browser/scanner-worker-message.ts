@@ -1,7 +1,14 @@
-export type ScannerMessage = "SAVE_SCANNER" | "SCANNER_STATUS" | "INVALIDATE_SCANNER";
+export type ScannerMessage =
+  | "SAVE_SCANNER"
+  | "SCANNER_STATUS"
+  | "INVALIDATE_SCANNER"
+  | "READ_GUEST_SNAPSHOT"
+  | "REFRESH_GUEST_SNAPSHOT"
+  | "INVALIDATE_GUEST_SNAPSHOT"
+  | "DENY_SCANNER_SESSION";
 
 /** Bounded, request-local channel; never send authorization or guest data from the window. */
-export function scannerWorkerMessage(type: ScannerMessage): Promise<unknown> {
+export function scannerWorkerMessage(type: ScannerMessage, session?: string): Promise<unknown> {
   return new Promise((resolve) => {
     const controller = navigator.serviceWorker?.controller;
     if (!controller) return resolve({ state: "unavailable" });
@@ -19,7 +26,7 @@ export function scannerWorkerMessage(type: ScannerMessage): Promise<unknown> {
     channel.port1.onmessage = (event: MessageEvent<unknown>) => finish(event.data);
     channel.port1.onmessageerror = () => finish({ state: "unavailable" });
     try {
-      controller.postMessage({ type }, [channel.port2]);
+      controller.postMessage({ type, ...(session ? { session } : {}) }, [channel.port2]);
     } catch {
       finish({ state: "unavailable" });
     }

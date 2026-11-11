@@ -29,6 +29,8 @@ try {
       .flatMap((project) => [
         `${prefix}-${project}@example.test`,
         `${prefix}-counters-${project}@example.test`,
+        `${prefix}-scans-${project}-0@example.test`,
+        `${prefix}-scans-${project}-1@example.test`,
       ])
       .join(","),
     STAFF_SESSION_SECRET: randomBytes(32).toString("hex"),
@@ -42,6 +44,13 @@ try {
       RUN_DASHBOARD_DB_TESTS: "1",
     },
   );
+  run(
+    ["exec", "vitest", "run", "scripts/__tests__/scan-log.integration.test.ts", "--maxWorkers=1"],
+    {
+      ...env,
+      RUN_SCAN_LOG_DB_TESTS: "1",
+    },
+  );
   if (hosted || process.argv.includes("--build")) run(["build"], env);
   run(
     [
@@ -50,6 +59,7 @@ try {
       "test",
       "e2e/admin.spec.ts",
       "e2e/admin-dashboard.spec.ts",
+      "e2e/admin-scan-log.spec.ts",
       "--project=mobile",
       "--project=desktop",
       "--workers=1",
