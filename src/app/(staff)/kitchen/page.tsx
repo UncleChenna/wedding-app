@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { StaffEntry } from "@/modules/shared/components/staff-entry";
+import { StationScreen } from "@/modules/ordering/components/station-screen";
 
 export const metadata: Metadata = { title: "Kitchen board", robots: { index: false } };
 
 export default function Page() {
-  return <StaffEntry role="kitchen" />;
+  return <StationScreen station="kitchen" />;
 }
