@@ -66,3 +66,10 @@ retry and seven scan-log SQL tests. Final24screens downloaded to
 `/tmp/TICKET-174-final-screens`, parentmobile review clean, independent desktop review
 requested. Full CI watch66301/run42732398647 remains live; all acceptance criteria
 are now proven, final whole-suite gate still pending. See final PR write-up for UI evidence.
+
+## 2026-11-11 — merged ticket verification repair
+
+PR151 merged44ec5173 with failedfullverification; notdone. ResumedviaCLI, integrated
+develop3b6c04e7, addedScanlogtoexactadmin-shellnavigationexpectation. Productionbuild
+passes; originalfailingkeyboardcasepasses2/2mobile/desktop3.1s. Independentreviewclean.
+Follow-upPRandfinalCIrequired beforecompletion. No runtime/migrationchanges.
