@@ -4,17 +4,16 @@ Ticket: TICKET-065
 
 # Summary
 
-Scanners now save a minimal, session-bound guest list after PIN sign-in and can check signed passes after an offline reload. Cached checks show valid, used, revoked and replaced results without recording admission. Live admission and uncertain retries remain unchanged; offline admission queueing belongs to TICKET-066.
+A valid dense signed QR could leave the offline scanner at “Ready to scan” because the fallback decoder failed to find the code at its original pixel scale. This follow-up adds one bounded half-size retry after a normal NotFound result, preserving native/full-size decoding, verification, delivery throttling and camera cleanup.
+
+PR147 merged `f3fbb6b1` into `15227feb` while its full verification was cancelled. The reviewed decoder repair `e3a68467` was not included. This PR carries that repair and fresh integrated verification; cancelled checks are not treated as successful completion.
 
 # Changes
 
-- An authenticated, no-store endpoint projects only names, invitation/version/status, RSVP allowance, admitted count, table and public verification keys. It rechecks the same live session after a consistent database read and bounds the response to 2 MiB.
-- A separate worker-owned IndexedDB store shares the existing origin-wide publication lock with scanner authorization. Generations fence late writes; sign-out, replacement and expiry erase private data without touching admission queues.
-- Refresh occurs at sign-in, every five minutes, on resume/reconnect and after known changes. A known authoritative change clears the matching private copy before refresh, so failed refresh cannot knowingly resurrect an older valid result. Failed erasure locks offline access and removes scanner readiness, including after browser restart.
-- The UI shows snapshot age, a thirty-minute warning, refresh status and explicit read-only wording. Thirty minutes is a warning, not an invented hard expiry. The earliest trusted session/PIN/event deadline remains authoritative.
-- Older worker acknowledgements trigger locked fallback cleanup. All parallel erasures settle before releasing the lock. A shorter newly authorized deadline invalidates the old embedded scanner identity.
-- Authoritative admission refusals invalidate the saved copy as well as successful receipts; uncertain retries retain their original intent. Generation fencing prevents an older erase acknowledgement overriding a newer failure.
-- A retained valid dense QR exposed scale-sensitive finder detection in the fallback decoder. One bounded half-size retry after NotFound fixes the reproduced case while preserving native/full-size success, error recovery, delivery throttling and track cleanup.
+- Keep native and full-size decoding first. Only after NotFound, retry once using a reusable half-size nearest-neighbor canvas when both original dimensions are at least320px; never retry below160px.
+- Retain a synthetic failing PNG and assert its exact decoded SHA256 in Chromium/WebKit, alongside repeated delivery timing and stopped camera tracks.
+- Cover expected/unexpected errors, dimension bounds and canvas reuse in unit tests.
+- Capture failure-only synthetic camera pixels and playback state in the existing CI artifact directory without changing assertions or timeouts.
 
 # Acceptance criteria and evidence
 
@@ -23,6 +22,8 @@ All functional criteria are demonstrated by the authenticated browser suite and 
 The policy follows TICKET-169: five-minute refresh, immediate refresh after known changes, thirty-minute warning and session expiry. Disconnected changes on another scanner remain unknown until refresh. No email, phone, notes, credentials or signed bearer token is cached. Names are private local device data, not a public asset.
 
 # Verification
+
+Fresh follow-up base: develop `3b6c04e7`, integrated as `a827fad4`. Focused frame-reader tests24/24 pass on11November. Fresh camera browser8/8 passes39.8s on11November, including Chromium/WebKit and exact retained dense QR bytes. Quick/final CI are pending; the results below are retained historical implementation evidence, not a claim that this new head passed full verification.
 
 - Production build passed, including the integrated TICKET-062/TICKET-225 base7533201c.
 - Authenticated snapshot journey: **2/2 passed**, mobile and desktop, 42.2 seconds. All six states were checked in four themes at 375/768/1280; axe reported zero violations, controls met 44px and pages had no horizontal overflow.
