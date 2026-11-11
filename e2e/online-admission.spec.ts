@@ -231,7 +231,7 @@ test("online partial admission commits once and safely retries a lost receipt", 
       { result: "invalid", input_method: "qr", admitted_people: 0 },
     ]);
     expect(await page.content()).not.toMatch(/PRIVATE DIETARY MARKER|PRIVATE RSVP MARKER/);
-    const folder = `docs/reviews/TICKET-062/${info.project.name}`;
+    const folder = `${process.env.SCANNER_REVIEW_DIR ?? "docs/reviews/TICKET-062"}/${info.project.name}`;
     mkdirSync(folder, { recursive: true });
     async function capture(state: string) {
       for (const theme of themes) {

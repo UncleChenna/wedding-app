@@ -2,20 +2,20 @@
 id: TICKET-174
 title: Add the admin scan log and dispute filters
 epic: admin
-status: todo
+status: in_review
 priority: medium
 estimate: M
 labels: [frontend, backend]
 module: admin
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-062, TICKET-088]
 blocks: [TICKET-154]
-branch: ""
-pr: ""
+branch: TICKET-174
+pr: https://github.com/UncleChenna/wedding-app/pull/151
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-10
+started: 2026-11-09
 completed: ""
 reason: ""
 resume_to: ""
@@ -33,13 +33,13 @@ Backlog audit coverage: CHK-5, ADM-3. See [PRD](../docs/prd.md) and [audit](AUDI
 
 ## Out of scope
 
-- Work outside the stated contract; consuming screens and launch operations remain in their linked tickets. No product implementation is part of this audit.
+- Changing original scan evidence or admission counts, offline queue/sync implementation, and launch operations remain in their linked tickets.
 
 ## Acceptance criteria
 
-- [ ] Admin can filter scan attempts by invitation, time, staff, device and all five results, including unknown-token attempts.
-- [ ] Manual entry is a source field, not a sixth scan result; online and reconciled offline attempts appear with separate reported/received timestamps.
-- [ ] Dispute annotations preserve immutable original evidence and never expose PINs, tokens or dietary notes; unauthorized roles cannot read the log.
+- [x] Admin can filter scan attempts by invitation, time, staff, device and all five results, including unknown-token attempts.
+- [x] Manual entry is a source field, not a sixth scan result; online and reconciled offline attempts appear with separate reported/received timestamps.
+- [x] Dispute annotations preserve immutable original evidence and never expose PINs, tokens or dietary notes; unauthorized roles cannot read the log.
 
 ## Test plan
 
@@ -52,8 +52,13 @@ Backlog audit coverage: CHK-5, ADM-3. See [PRD](../docs/prd.md) and [audit](AUDI
 
 ## Notes / decisions
 
+- 2026-11-10: Additive scan-log migrations and 19 real database/seed checks pass; retry review fixes are verified. Authenticated CI now passes all six browser cases and seven scan-log SQL tests, including explicit all-theme axe/target checks. Final-head full CI remains required. See the ticket handoff.
+
 - 2026-10-21 — Added by HARNESS-002. All criteria describe future work; no completion or human approval is implied.
 
 ## Activity log
 
 - 2026-10-21 — new → todo — divine
+- 2026-11-09 — todo → claimed — divine (codex) — started ahead of TICKET-062 (in_review)
+- 2026-11-09 — todo → in_progress — divine (codex) — started ahead of TICKET-062 (in_review)
+- 2026-11-10 — in_progress → in_review — divine (codex)

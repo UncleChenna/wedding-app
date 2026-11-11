@@ -23,7 +23,7 @@ TICKET-104 generates themed192/512 any/maskable PNGs, an180px Apple touch icon a
 - **Offline fallback:** a same-origin page navigation goes to the network as normal. Only when the network fails does the worker answer with the precached offline page, at the URL the guest tried, with a "Try again" button that reloads it. The visited invitation document is never stored; the explicit minimal own-pass and scanner exceptions are described below. `fetch()` calls are not navigations, so private routes such as `/admin` still fail offline.
 - No automatic `skipWaiting`: a new version waits until tabs using the old one close. TICKET-111 adds the update prompt.
 - Generic public-asset caching is best-effort: a hit is served from cache, otherwise the network response is returned immediately and a copy is stored in the background (`event.waitUntil`). Only complete `200` same-origin responses are stored (never `206` partial range responses), and any Cache Storage error (quota, private mode, eviction) falls back to the network instead of failing the request.
-- Caches are named `wedding-<kind>-v<SW_CACHE_VERSION>`. On activate, only obsolete public `wedding-` caches are deleted; the current explicitly authorized own-pass and scanner-build caches are retained. Scanner activation invalidates an incompatible saved scanner grant before deleting its old assets; guest snapshots and unsynced queues are never touched. Bump `SW_CACHE_VERSION` when cached content or layout changes.
+- Caches are named `wedding-<kind>-v<SW_CACHE_VERSION>`. On activate, only obsolete public `wedding-` caches are deleted; the current explicitly authorized own-pass and scanner-build caches are retained. Scanner activation invalidates an incompatible saved scanner grant before deleting its old assets; private guest snapshots are erased with incompatible scanner authority, while unsynced queues are never touched. Bump `SW_CACHE_VERSION` when cached content or layout changes.
 
 ## Strategy table
 
@@ -46,11 +46,11 @@ The generic "Network-only" policy leaves requests to the browser without storing
 
 ## Planned extensions (not implemented here)
 
-| Content                                    | Ticket             |
-| ------------------------------------------ | ------------------ |
-| Authorized guest snapshots and scan outbox | TICKET-065/066/180 |
-| Update-available prompt                    | TICKET-111         |
-| Expiry, logout cleanup, storage eviction   | TICKET-184         |
+| Content                                  | Ticket         |
+| ---------------------------------------- | -------------- |
+| Admission outbox and unsynced retention  | TICKET-066/180 |
+| Update-available prompt                  | TICKET-111     |
+| Expiry, logout cleanup, storage eviction | TICKET-184     |
 
 ## Authorized own-pass copies (TICKET-107)
 
@@ -86,9 +86,8 @@ assets live in `wedding-scanner-assets-v1-<build>`; the private grant lives sepa
 in IndexedDB `wedding-scanner-shell-v1`. Preparation validates every asset and reads
 all of them back before publishing readiness. A missing asset, invalid/expired grant
 or unavailable storage gives the generic offline page. RSC/prefetch and check-in API
-requests do not receive private HTML. The default read-only guest check still needs
-a network connection; this shell does not implement TICKET-065's guest snapshots or
-TICKET-066/180's admission outbox.
+requests do not receive private HTML. TICKET-065 adds the separately authorized private guest snapshot described below.
+The shell does not implement TICKET-066/180's admission outbox.
 
 The expiry is the earliest signed-cookie, current event and PIN deadline. Initial
 camera mounting reconciles durable session/build identity and clamps to the earlier
@@ -117,3 +116,15 @@ browser restarts with persistent profiles, injected storage failure/recovery, an
 authenticated Next production journey. Physical installed iOS/Android scanner operation
 remains mandatory in TICKET-114; this does not certify remote revocation while a device
 is offline or physical camera conditions. See `docs/reviews/TICKET-108/` for evidence.
+
+## Private scanner guest snapshots (TICKET-065)
+
+After sign-in, the worker fetches `/api/checkin/guest-snapshot` with the current staff cookie. The endpoint validates gate access before and after a repeatable-read projection and returns a bounded, no-store document. Only names, invitation ID/version/status, RSVP allowance, admitted count, table and public verification keys are included. Contacts, dietary/RSVP notes, credentials and signed bearer links are excluded.
+
+The private `wedding-scanner-guests-v1` IndexedDB store is separate from public assets and admission queues. Every read/refresh/erase shares the scanner publication Web Lock and reconciles current shell identity, readiness and deadline. Generation checks defeat late writes. Sign-out, expiry, session replacement and newly shortened authority erase the private copy. Failed erasure locks offline access and removes scanner readiness across builds; all parallel erasures settle before the lock is released. Older workers' generic removal replies require locked direct cleanup.
+
+The list refreshes every five minutes, on resume/reconnect and after known authoritative guest changes or admission receipts. Known changes invalidate only the matching private copy before refresh; a failed refresh cannot return a copy already contradicted by the server. Unknown remote changes remain unknown offline. At thirty minutes the UI shows an amber age warning and a stale-result notice; scanning continues until the trusted session deadline. There is no invented maximum snapshot age.
+
+Offline signed QR checks show valid, used, revoked, replaced or unknown results without recording entry. Reconnection never turns an already displayed cached result into an admission form. Existing uncertain live admission retries preserve their exact intent. A new online scan is required to authorize a new admission; TICKET-066 owns offline queued admission.
+
+Evidence: `docs/reviews/TICKET-065/`, the actual authenticated snapshot browser runner and the generated-worker Chromium/WebKit suite. Automated tests include full browser restart after storage failure and physical private-data erasure; physical installed-device certification remains in TICKET-114/TICKET-163/TICKET-201.

@@ -61,12 +61,18 @@ export function AdmissionResult({
   submit = submitLive,
   onBusyChange,
   onComplete,
+  onOutcome,
+  allowAdmission = true,
+  readOnlyNotice,
 }: {
   result: ScanReadResult;
   qr: string | null;
   submit?: AdmissionSubmitter;
   onBusyChange: (busy: boolean) => void;
   onComplete?: () => void;
+  onOutcome?: (response: AdmissionResponse) => void;
+  allowAdmission?: boolean;
+  readOnlyNotice?: string;
 }) {
   const remaining =
     result.state === "valid" ? result.guest.partySize - result.guest.admittedSoFar : 0;
@@ -88,7 +94,13 @@ export function AdmissionResult({
   useEffect(() => () => controller.current?.abort(), []);
 
   async function admit() {
-    if (controller.current || !qr || result.state !== "valid") return;
+    if (
+      controller.current ||
+      !qr ||
+      result.state !== "valid" ||
+      (!allowAdmission && !intent.current)
+    )
+      return;
     const selected = Number(people);
     if (!Number.isSafeInteger(selected) || selected < 1 || selected > remaining) {
       setValidation(`Choose between 1 and ${remaining} guests.`);
@@ -114,7 +126,10 @@ export function AdmissionResult({
     setPending(false);
     setResponse(next);
     onBusyChange(next.state === "unavailable");
-    if (next.state !== "unavailable") intent.current = null;
+    if (next.state !== "unavailable") {
+      intent.current = null;
+      onOutcome?.(next);
+    }
     if (next.state === "recorded" || next.state === "duplicate") onComplete?.();
   }
   function adjust(delta: number) {
@@ -196,9 +211,13 @@ export function AdmissionResult({
       </div>
     );
   }
-  if (result.state !== "valid" || !qr)
+  if (result.state !== "valid" || !qr || (!allowAdmission && !response && !pending))
     return (
-      <ScanResultPanel state={result.state} guest={"guest" in result ? result.guest : undefined} />
+      <ScanResultPanel
+        state={result.state}
+        guest={"guest" in result ? result.guest : undefined}
+        notice={readOnlyNotice}
+      />
     );
   return (
     <Card>
