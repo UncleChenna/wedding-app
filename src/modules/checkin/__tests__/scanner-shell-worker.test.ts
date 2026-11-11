@@ -2,9 +2,12 @@ import { describe, expect, it, vi } from "vitest";
 import { installScannerShellWorker } from "../browser/scanner-shell-worker";
 import { createScannerShellStore } from "../browser/scanner-shell-store";
 import { createScannerShellRuntime } from "../browser/scanner-shell-runtime";
+import { createGuestSnapshotStore } from "../browser/guest-snapshot-store";
+import { createGuestSnapshotRuntime } from "../browser/guest-snapshot-runtime";
+import { parseGuestSnapshot } from "../lib/guest-snapshot";
 
 type Host = Parameters<typeof installScannerShellWorker>[0]["host"];
-function fixture() {
+function fixture(withGuests = false) {
   const store = createScannerShellStore({
     open: () => {
       throw new Error("unused");
@@ -54,6 +57,13 @@ function fixture() {
     },
   };
   const fallback = vi.fn(async () => new Response("offline fallback"));
+  const guestStore = createGuestSnapshotStore(parseGuestSnapshot, {
+    open: () => {
+      throw new Error("unused");
+    },
+  });
+  vi.spyOn(guestStore, "invalidate").mockResolvedValue(undefined);
+  vi.spyOn(guestStore, "current").mockResolvedValue(null);
   const worker = installScannerShellWorker({
     host,
     store: () => store,
@@ -63,12 +73,35 @@ function fixture() {
     build: "b".repeat(64),
     assets: ["/scanner-assets/scanner-" + "b".repeat(64) + ".js"],
     fallback,
+    ...(withGuests
+      ? {
+          guests: {
+            store: () => guestStore,
+            runtime: (
+              authority: Parameters<typeof createGuestSnapshotRuntime>[0]["authority"],
+              denied: () => Promise<void>,
+            ) =>
+              createGuestSnapshotRuntime({
+                store: guestStore,
+                authority,
+                denied,
+                parse: parseGuestSnapshot,
+                fetcher,
+                origin: host.location.origin,
+              }),
+          },
+        }
+      : {}),
   });
-  async function send(type: string, source: { id: string } | null = { id: "scanner" }) {
+  async function send(
+    type: string,
+    source: { id: string } | null = { id: "scanner" },
+    session = "a".repeat(64),
+  ) {
     const reply = vi.fn();
     let completion = Promise.resolve<unknown>(undefined);
     message({
-      data: { type, expiresAt: 9999999999999, html: "untrusted" },
+      data: { type, session, expiresAt: 9999999999999, html: "untrusted" },
       source,
       ports: [{ postMessage: reply }],
       waitUntil: (promise) => {
@@ -90,8 +123,130 @@ function fixture() {
     });
     return { handled, response: await response };
   }
-  return { store, runtime, fetcher, fallback, worker, client, host, send, navigate, storage };
+  return {
+    store,
+    runtime,
+    guestStore,
+    fetcher,
+    fallback,
+    worker,
+    client,
+    host,
+    send,
+    navigate,
+    storage,
+  };
 }
+describe("private snapshot worker coordination", () => {
+  it("purges retained private data on a denial after shell authority is absent", async () => {
+    const f = fixture(true);
+    expect(await f.send("DENY_SCANNER_SESSION")).toHaveBeenCalledWith({ state: "unavailable" });
+    expect(f.guestStore.invalidate).toHaveBeenCalledOnce();
+  });
+  it("does not let a stale tab's denial erase a replacement session", async () => {
+    const f = fixture(true);
+    vi.mocked(f.store.current).mockResolvedValue({
+      version: 1,
+      session: "c".repeat(64),
+      build: "b".repeat(64),
+      preparedAt: Date.now(),
+      expiresAt: Date.now() + 60_000,
+      html: "<main>Scanner</main>",
+      headers: [],
+      assets: [],
+    });
+    expect(await f.send("DENY_SCANNER_SESSION")).toHaveBeenCalledWith({ state: "unavailable" });
+    expect(f.store.invalidate).not.toHaveBeenCalled();
+    expect(f.guestStore.invalidate).not.toHaveBeenCalled();
+    expect(await f.send("INVALIDATE_GUEST_SNAPSHOT")).toHaveBeenCalledWith({
+      state: "unavailable",
+    });
+    expect(f.guestStore.invalidate).not.toHaveBeenCalled();
+  });
+  it("keeps delayed readiness-cache deletions inside the lock after another deletion fails", async () => {
+    const f = fixture();
+    let release: ((value: boolean) => void) | undefined;
+    vi.mocked(f.store.invalidate).mockRejectedValue(new Error("storage unavailable"));
+    f.storage.delete
+      .mockImplementationOnce(async () => {
+        throw new Error("cache unavailable");
+      })
+      .mockImplementationOnce(
+        () =>
+          new Promise<boolean>((resolve) => {
+            release = resolve;
+          }),
+      );
+    let finished = false;
+    const logout = f.send("INVALIDATE_SCANNER").then((reply) => {
+      finished = true;
+      return reply;
+    });
+    const prepare = f.send("SAVE_SCANNER");
+    await vi.waitFor(() => expect(f.storage.delete).toHaveBeenCalledTimes(2));
+    await Promise.resolve();
+    expect(finished).toBe(false);
+    expect(f.runtime.prepare).not.toHaveBeenCalled();
+    release?.(true);
+    expect(await logout).toHaveBeenCalledWith({ state: "unavailable" });
+    await prepare;
+    expect(f.runtime.prepare).toHaveBeenCalledOnce();
+  });
+  it("holds the publication lock until both invalidation attempts settle after either fails", async () => {
+    const f = fixture(true);
+    let release: (() => void) | undefined;
+    vi.mocked(f.store.invalidate).mockImplementation(
+      () =>
+        new Promise<void>((resolve) => {
+          release = resolve;
+        }),
+    );
+    vi.mocked(f.guestStore.invalidate).mockRejectedValue(new Error("storage unavailable"));
+    let finished = false;
+    const logout = f.send("INVALIDATE_SCANNER").then((reply) => {
+      finished = true;
+      return reply;
+    });
+    const prepare = f.send("SAVE_SCANNER");
+    await vi.waitFor(() => expect(f.store.invalidate).toHaveBeenCalledOnce());
+    await Promise.resolve();
+    expect(finished).toBe(false);
+    expect(f.runtime.prepare).not.toHaveBeenCalled();
+    release?.();
+    expect(await logout).toHaveBeenCalledWith({ state: "unavailable" });
+    await prepare;
+    expect(f.runtime.prepare).toHaveBeenCalledOnce();
+  });
+  it("purges private data on expired/missing shell authority", async () => {
+    const f = fixture(true);
+    expect(await f.send("READ_GUEST_SNAPSHOT")).toHaveBeenCalledWith({ state: "unavailable" });
+    expect(f.guestStore.invalidate).toHaveBeenCalledOnce();
+    expect(f.guestStore.current).not.toHaveBeenCalled();
+  });
+  it("invalidates both stores before acknowledging sign-out", async () => {
+    const f = fixture(true);
+    expect(await f.send("INVALIDATE_SCANNER")).toHaveBeenCalledWith({
+      state: "removed",
+      privateSnapshotRemoved: true,
+    });
+    expect(f.guestStore.invalidate).toHaveBeenCalledOnce();
+    expect(f.store.invalidate).toHaveBeenCalledOnce();
+  });
+  it("latches failed private erasure and refuses subsequent reads despite a ready shell", async () => {
+    const f = fixture(true);
+    vi.mocked(f.guestStore.invalidate).mockRejectedValue(new Error("storage blocked"));
+    expect(await f.send("INVALIDATE_SCANNER")).toHaveBeenCalledWith({ state: "unavailable" });
+    vi.mocked(f.runtime.status).mockResolvedValue({
+      state: "ready",
+      session: "a".repeat(64),
+      build: "b".repeat(64),
+      expiresAt: Date.now() + 60_000,
+    });
+    expect(await f.send("READ_GUEST_SNAPSHOT")).toHaveBeenCalledWith({ state: "unavailable" });
+    expect(f.guestStore.current).not.toHaveBeenCalled();
+    expect(f.storage.delete).toHaveBeenCalledWith("wedding-scanner-assets-v1-" + "b".repeat(64));
+  });
+});
 describe("scanner worker boundaries", () => {
   it("fetches authorization independently of message-supplied grant fields", async () => {
     const f = fixture();

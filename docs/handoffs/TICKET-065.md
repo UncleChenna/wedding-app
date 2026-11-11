@@ -1,0 +1,23 @@
+# TICKET-065 handoff
+
+2026-11-10 — divine / codex — branch `TICKET-065`, PR147 (draft).
+
+Minimal private guest snapshots, generation-fenced IndexedDB, shared worker locking, lifecycle cleanup, freshness UI and read-only offline scanner integration are implemented. Base `6abf4c0ea12e361a82b0475b29ec6df2a613c238` includes verified TICKET-061. Parent and independent reviewer have reviewed foundation and lifecycle changes; final known-change/CI delta review remains requested.
+
+Evidence and failure history are maintained in `docs/plans/TICKET-065-pr.md`. Latest actual results: production snapshot2/2 (six states/four themes/three widths), existing admission2/2, existing offline shell2/2 (CLS0), worker Chromium/WebKit24/24, isolated projection1/1, focused admission/worker/wrapper38pass. All144 screenshots inspected. Physical device release checks remain114/163/201.
+
+Only this worktree's native PostgreSQL26721 was used. It is stopped with data retained at the ignored `.harness/temporary-postgres-path`; no other database or production data was touched. Browser/build processes are finished. Agent024 owns the next brief DB/browser slot for062 cleanup proof; wait for release before broad coverage.
+
+Next: finish quick/full-unit coverage, review final source/CI delta, integrate current develop (coordinate062 Scanner reportedAt payload and preserve SCANNER_REVIEW_DIR paths), run necessary combined evidence, publish all work and update PR147. Only then `t:pr`, monitor exact-head CI, coordinate verified merge. No acceptance/status should claim CI success before it is observed.
+
+Lessons: preparation notifications during a pending first refresh need one bounded follow-up; successful Promise.all rejection is not full settlement, so storage mutation lifetimes must remain within the origin lock; known authoritative guest changes must invalidate old private snapshots even when the refresh fails. Conditional invalidation must preserve a replacement session and any unsynced admission queues.
+
+Final combined checkpoint: develop5cedfab9 integrated as9a6a41de; full unit1873pass/194conditional skips,108.25s, critical lines98.59%/branches98.89% with every per-file gate passing. Actual snapshot browser2/2 refreshed144screenshots; only24stale frames changed and were re-reviewed. Existing worker suite46/46 now proves actual signed local resolution and zero live POST, correcting the sole observed checkpoint CI failure. Exact-head CI must still pass before merge. Own PG26721 stopped again, data retained.
+
+2026-11-10 follow-up integration: checkpoint b9a511d6 passed all seven required checks in run42726899105. Verified TICKET-062 and TICKET-225 are now integrated from develop7533201c in eb37685c. The Scanner keeps its shared exported live reader, timestamp/oversized-QR handling and offline read-only props. Both environment flag sets and screenshot override/default062 were preserved. Normal merge hooks and production build pass; native PostgreSQL projection/observation tests5/5 pass. Combined browser and fresh CI remain pending.
+
+Native database reminder: use `pnpm exec drizzle-kit migrate` with the explicit owned loopback DATABASE_URL. `pnpm db:migrate` invokes managed Supabase bootstrap even when the native URL is set. An attempted wrapper was stopped before tests; the owned Supabase project was absent from running containers, and no collaborator stack was changed. Only native26721 is active for the combined checks; retain its data directory when stopping.
+
+Combined verification finished: snapshot browser2/2 in59.3s (all144 images unchanged), admission/logging browser2/2 in58.4s, SQL5/5 in1.25s, productionbuild and normal mergehooks passed. Native26721 is stopped with data retained. Next publish this evidence, run normal t:pr quick and wait for all seven checks on the final combined head; coordinate merge with parent. Physical release gates remain114/163/201.
+
+Pre-merge review caught authoritative admission refusals leaving a previously refreshed snapshot eligible. Eight red regressions reproduced it; terminal outcome callbacks now invalidate private data or deny the session, while uncertain receipt retries remain unchanged. A second red test exposed out-of-order erase acknowledgements; monotonic generation fencing prevents an older success overriding a later failure.35 relatedtests pass; production build and actual authenticated refusal/cache-erasure browser2/2 pass44.5s. All144 screenshots unchanged. Native26721 stopped/dataretained again. Parent and098 independently reviewed both bounded source fixes clean. Await final quick/commit/t:pr and new exact-head CI; do not merge the superseded pre-fix checkpoint.

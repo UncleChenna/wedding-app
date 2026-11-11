@@ -4,11 +4,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/modules/shared/components/ui/button";
 import { startQrCamera, type CameraControls, type CameraProblem } from "../lib/camera-reader";
 import { AdmissionResult, type AdmissionSubmitter } from "./admission-result";
+import type { AdmissionResponse } from "../lib/online-admission";
 import { scanReadResultSchema, type ScanReadResult } from "../lib/scan-read-result";
 import { requestScanFeedback } from "../lib/scan-feedback";
 
 export type ScanResolver = (qr: string, signal: AbortSignal) => Promise<ScanReadResult>;
-async function readLivePass(qr: string, signal: AbortSignal): Promise<ScanReadResult> {
+export async function readLivePass(qr: string, signal: AbortSignal): Promise<ScanReadResult> {
   const response = await fetch("/api/checkin/read", {
     method: "POST",
     cache: "no-store",
@@ -37,9 +38,17 @@ const recovery: Record<CameraProblem, string> = {
 export function Scanner({
   resolveRead = readLivePass,
   submitAdmission,
+  allowAdmission = true,
+  onAdmissionRecorded,
+  onAdmissionOutcome,
+  readOnlyNotice,
 }: {
   resolveRead?: ScanResolver;
   submitAdmission?: AdmissionSubmitter;
+  allowAdmission?: boolean;
+  onAdmissionRecorded?: () => void;
+  onAdmissionOutcome?: (response: AdmissionResponse) => void;
+  readOnlyNotice?: string;
 }) {
   const video = useRef<HTMLVideoElement>(null);
   const resultRegion = useRef<HTMLDivElement>(null);
@@ -281,8 +290,14 @@ export function Scanner({
             result={readResult}
             qr={checkedQr}
             submit={submitAdmission}
+            allowAdmission={allowAdmission}
+            readOnlyNotice={readOnlyNotice}
             onBusyChange={setAdmissionBusy}
-            onComplete={() => setAdmissionCompleted(true)}
+            onOutcome={onAdmissionOutcome}
+            onComplete={() => {
+              setAdmissionCompleted(true);
+              onAdmissionRecorded?.();
+            }}
           />
         </div>
       )}

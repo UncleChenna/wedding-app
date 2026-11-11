@@ -1,4 +1,5 @@
 import { createServer, type Server } from "node:http";
+import { generateKeyPairSync, randomUUID, sign } from "node:crypto";
 import { readFile, mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { resolve, join } from "node:path";
@@ -11,6 +12,7 @@ import { generateScannerAssets, type ScannerAssetManifest } from "../scanner-ass
 import type { ScannerShellGrant } from "../../src/modules/checkin/browser/scanner-shell-store";
 import { themeToCssText } from "../../src/modules/theming/lib/css-vars";
 import { themeSchema } from "../../src/modules/theming/lib/schema";
+import { encodeGatePassPayload } from "../../src/modules/checkin/lib/gate-token";
 let themeCss: string;
 
 declare global {
@@ -29,6 +31,8 @@ let worker: string;
 let denied = false;
 let expiresAt = 0;
 const session = "a".repeat(64);
+const snapshotInvitation = randomUUID();
+const snapshotKeys = generateKeyPairSync("ed25519");
 function grant(): ScannerShellGrant {
   const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Gate scanner</title><link rel="stylesheet" href="${manifest.stylesheet}"><style>${themeCss}</style></head><body><div id="scanner-shell" data-expires-at="${expiresAt}" data-session="${session}" data-build="${manifest.build}"></div><script defer src="${manifest.script}"></script></body></html>`;
   return {
@@ -97,6 +101,39 @@ test.beforeAll(async () => {
         response.setHeader("Content-Type", "application/json");
         response.setHeader("X-Wedding-Scanner-Shell", "1");
         response.end(JSON.stringify(grant()));
+      } else if (path === "/api/checkin/guest-snapshot") {
+        response.setHeader("Content-Type", "application/json");
+        response.setHeader("X-Wedding-Guest-Snapshot", "1");
+        response.end(
+          JSON.stringify({
+            version: 1,
+            session,
+            generatedAt: Date.now(),
+            expiresAt,
+            keys: [
+              {
+                kid: "shell-fixture",
+                alg: "Ed25519",
+                spki: snapshotKeys.publicKey
+                  .export({ type: "spki", format: "der" })
+                  .toString("base64url"),
+              },
+            ],
+            invitations: [
+              {
+                invitationId: snapshotInvitation,
+                tokenVersion: 1,
+                status: "rsvp_yes",
+                attending: true,
+                partySize: 2,
+                admittedSoFar: 0,
+                name: "Synthetic offline household",
+                names: ["Synthetic offline guest"],
+                tableNumber: 9,
+              },
+            ],
+          }),
+        );
       } else if (manifest.assets.includes(path)) {
         response.setHeader(
           "Content-Type",
@@ -146,7 +183,9 @@ async function message(page: Page, type: string) {
           resolve(event.data);
         };
         if (!navigator.serviceWorker.controller) throw new Error("uncontrolled fixture");
-        navigator.serviceWorker.controller.postMessage({ type }, [channel.port2]);
+        navigator.serviceWorker.controller.postMessage({ type, session: "a".repeat(64) }, [
+          channel.port2,
+        ]);
       }),
     type,
   );
@@ -168,10 +207,19 @@ test("actual worker restores the complete scanner bundle offline and decodes QR 
 }) => {
   expiresAt = Date.now() + 12_000;
   await prepare(page);
+  expect(await message(page, "REFRESH_GUEST_SNAPSHOT")).toEqual({ state: "ready" });
   await context.setOffline(true);
   await page.reload();
   await expect(page.getByRole("button", { name: "Open camera" })).toBeVisible();
-  const qr = await QRCode.toDataURL("synthetic-offline-scanner-qr", { width: 512, margin: 4 });
+  const body = encodeGatePassPayload({
+    v: 1,
+    kid: "shell-fixture",
+    inv: snapshotInvitation,
+    ver: 1,
+    iat: 0,
+  });
+  const signed = `${body}.${sign(null, Buffer.from(body), snapshotKeys.privateKey).toString("base64url")}`;
+  const qr = await QRCode.toDataURL(`${origin}/p/${signed}`, { width: 512, margin: 4 });
   await page.evaluate(async (src) => {
     Object.defineProperty(window, "BarcodeDetector", { configurable: true, value: undefined });
     const canvas = document.createElement("canvas");
@@ -213,11 +261,15 @@ test("actual worker restores the complete scanner bundle offline and decodes QR 
     });
   }, qr);
   await page.getByRole("button", { name: "Open camera" }).click();
-  await expect(page.getByText("Unable to check this pass", { exact: true })).toBeVisible();
-  expect(await page.evaluate(() => window.scannerFixtureDecoded)).toEqual([
-    "synthetic-offline-scanner-qr",
-  ]);
-  await expect(page.getByText("Valid pass", { exact: true })).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "Valid pass", exact: true })).toBeVisible();
+  await expect(page.getByText("Synthetic offline household", { exact: true })).toBeVisible();
+  await expect(page.getByText("Party of 2 · 0 admitted so far", { exact: true })).toBeVisible();
+  await expect(page.getByText("Table 9", { exact: true })).toBeVisible();
+  await expect(page.getByRole("spinbutton")).toHaveCount(0);
+  await expect(page.getByText(/No entry is recorded by an offline check/)).toBeVisible();
+  // The signature/household proves the actual QR pixels reached local resolution.
+  // Offline checks must not route the QR to a live admission/read endpoint.
+  expect(await page.evaluate(() => window.scannerFixtureDecoded)).toEqual([]);
   // TICKET-060 stops capture after a read. Restart on blank frames to prove that
   // session expiry, rather than a completed read, shuts down an active camera.
   await page.evaluate(() => {
