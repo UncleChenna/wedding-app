@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/modules/shared/components/ui/button";
 import { Card } from "@/modules/shared/components/ui/card";
+import { Sheet } from "@/modules/shared/components/ui/sheet";
+import { Textarea } from "@/modules/shared/components/ui/textarea";
 import { clientEnv } from "@/modules/shared/lib/env/client";
 import { cn } from "@/modules/shared/lib/cn";
 import { subscribeStation, type StationChannelStatus } from "@/modules/shared/lib/station-channel";
@@ -12,9 +14,11 @@ import {
   newTicketIds,
   ticketAge,
   type BoardStation,
+  type RecentTicket,
   type StationBoard as Board,
   type StationTicket,
 } from "../lib/station-board";
+import { MAX_CANCEL_REASON, type TicketStatus } from "../lib/ticket-status";
 
 const FLASH_MS = 4_000;
 
@@ -82,6 +86,11 @@ const headings = { kitchen: "kitchen-orders", bar: "bar-orders" } as const;
 
 export function StationBoard({ station, initial }: { station: BoardStation; initial: Board }) {
   const [tickets, setTickets] = useState<StationTicket[]>(initial.tickets);
+  const [recent, setRecent] = useState<RecentTicket[]>(initial.recent);
+  const [problem, setProblem] = useState<string | null>(null);
+  const [cancelling, setCancelling] = useState<StationTicket | null>(null);
+  const [reason, setReason] = useState("");
+  const [reasonError, setReasonError] = useState<string | null>(null);
   const [flashing, setFlashing] = useState<ReadonlySet<string>>(new Set());
   const [live, setLive] = useState<StationChannelStatus>("connecting");
   const [signedOut, setSignedOut] = useState(false);
@@ -112,6 +121,7 @@ export function StationBoard({ station, initial }: { station: BoardStation; init
       announce(newTicketIds(known.current, parsed.data.tickets));
       known.current = parsed.data.tickets;
       setTickets(parsed.data.tickets);
+      setRecent(parsed.data.recent);
     } catch {
       // Offline for a moment: keep showing the last board; the channel retries and refetches.
     }
@@ -137,6 +147,47 @@ export function StationBoard({ station, initial }: { station: BoardStation; init
       client.disconnect();
     };
   }, [refetch, station]);
+
+  /**
+   * Shows the move at once, then saves it. If the save fails, the card goes back to how it was
+   * and the board says so; it never pretends an order moved when it didn't.
+   */
+  const move = async (ticket: StationTicket, to: TicketStatus, why?: string) => {
+    const before = tickets;
+    setProblem(null);
+    setTickets((current) =>
+      to === "preparing"
+        ? current.map((item) => (item.id === ticket.id ? { ...item, status: "preparing" } : item))
+        : current.filter((item) => item.id !== ticket.id),
+    );
+    try {
+      const response = await fetch(`/api/${station}/tickets`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ stationOrderId: ticket.id, from: ticket.status, to, reason: why }),
+      });
+      if (response.status === 403) {
+        setSignedOut(true);
+        return;
+      }
+      if (!response.ok) throw new Error("not saved");
+    } catch {
+      setTickets(before);
+      setProblem(`Table ${ticket.table.number} didn’t update. Check the connection and try again.`);
+    }
+    void refetch();
+  };
+
+  const confirmCancel = () => {
+    const why = reason.trim();
+    if (!why) {
+      setReasonError("Say why, so the guests can be told.");
+      return;
+    }
+    const ticket = cancelling;
+    setCancelling(null);
+    if (ticket) void move(ticket, "cancelled", why);
+  };
 
   const turnOnSound = async () => {
     try {
@@ -187,6 +238,15 @@ export function StationBoard({ station, initial }: { station: BoardStation; init
         </div>
       </div>
 
+      {problem ? (
+        <p
+          role="alert"
+          className="rounded-md bg-danger-subtle p-4 text-lg text-danger-subtle-foreground"
+        >
+          {problem}
+        </p>
+      ) : null}
+
       {tickets.length === 0 ? (
         <p className="text-lg leading-relaxed text-muted-foreground">
           New orders appear here, oldest first.
@@ -195,23 +255,97 @@ export function StationBoard({ station, initial }: { station: BoardStation; init
         <ol className="grid gap-6 md:grid-cols-2 xl:grid-cols-3" aria-label="Orders, oldest first">
           {tickets.map((ticket) => (
             <li key={ticket.id}>
-              <TicketCard ticket={ticket} now={now} isNew={flashing.has(ticket.id)} />
+              <TicketCard
+                ticket={ticket}
+                now={now}
+                isNew={flashing.has(ticket.id)}
+                onMove={(to) => void move(ticket, to)}
+                onCancel={() => {
+                  setReason("");
+                  setReasonError(null);
+                  setCancelling(ticket);
+                }}
+              />
             </li>
           ))}
         </ol>
       )}
+
+      {recent.length > 0 ? (
+        <details className="rounded-lg border border-border bg-surface p-4 text-lg">
+          <summary className="flex min-h-11 cursor-pointer items-center font-medium">
+            Recently done ({recent.length})
+          </summary>
+          <ul className="mt-4 flex flex-col gap-3">
+            {recent.map((item) => (
+              <li key={item.id} className="leading-relaxed">
+                <span className="font-semibold">Table {item.table.number}</span>
+                {" · "}
+                {item.status === "served" ? "Served" : "Cancelled"}{" "}
+                <time dateTime={item.at}>{ticketAge(item.at, now).toLowerCase()}</time>
+                {item.items.length > 0
+                  ? ` · ${item.items.map((line) => `${line.quantity} × ${line.name}`).join(", ")}`
+                  : null}
+              </li>
+            ))}
+          </ul>
+        </details>
+      ) : null}
+
+      <Sheet
+        open={cancelling !== null}
+        onOpenChange={(open) => {
+          if (!open) setCancelling(null);
+        }}
+        title={cancelling ? `Cancel table ${cancelling.table.number}’s order?` : "Cancel order?"}
+        description="The order leaves the board. Add a short reason for the record."
+      >
+        <form
+          className="flex flex-col gap-6"
+          onSubmit={(event) => {
+            event.preventDefault();
+            confirmCancel();
+          }}
+        >
+          <Textarea
+            label="Reason"
+            rows={3}
+            maxLength={MAX_CANCEL_REASON}
+            value={reason}
+            error={reasonError ?? undefined}
+            onChange={(event) => {
+              setReason(event.target.value);
+              setReasonError(null);
+            }}
+          />
+          <div className="flex flex-wrap gap-4">
+            <Button type="submit" variant="danger" size="lg">
+              Cancel order
+            </Button>
+            <Button type="button" variant="secondary" size="lg" onClick={() => setCancelling(null)}>
+              Keep order
+            </Button>
+          </div>
+        </form>
+      </Sheet>
     </section>
   );
 }
+
+const statusLabels = { received: "Waiting", preparing: "Preparing" } as const;
 
 function TicketCard({
   ticket,
   now,
   isNew,
+  onMove,
+  onCancel,
 }: {
   ticket: StationTicket;
   now: number;
   isNew: boolean;
+  onMove: (to: TicketStatus) => void;
+  onCancel: () => void;
 }) {
   return (
     <Card className="relative h-full overflow-hidden">
@@ -238,6 +372,10 @@ function TicketCard({
             <time dateTime={ticket.createdAt}>{ticketAge(ticket.createdAt, now)}</time>
           </p>
         </div>
+        <p className="text-lg">
+          <span className="sr-only">Status: </span>
+          <span className="font-medium">{statusLabels[ticket.status]}</span>
+        </p>
         <ul className="flex flex-col gap-1 text-xl" aria-label="Items">
           {ticket.items.map((item, index) => (
             <li key={`${item.name}-${index}`}>
@@ -263,6 +401,36 @@ function TicketCard({
             </ul>
           </div>
         ) : null}
+        <div className="mt-2 flex flex-wrap gap-3">
+          {ticket.status === "received" ? (
+            <Button
+              type="button"
+              size="lg"
+              variant="secondary"
+              aria-label={`Start preparing table ${ticket.table.number}`}
+              onClick={() => onMove("preparing")}
+            >
+              Start preparing
+            </Button>
+          ) : null}
+          <Button
+            type="button"
+            size="lg"
+            aria-label={`Served table ${ticket.table.number}`}
+            onClick={() => onMove("served")}
+          >
+            Served
+          </Button>
+          <Button
+            type="button"
+            size="lg"
+            variant="ghost"
+            aria-label={`Cancel table ${ticket.table.number}`}
+            onClick={onCancel}
+          >
+            Cancel
+          </Button>
+        </div>
       </div>
     </Card>
   );
