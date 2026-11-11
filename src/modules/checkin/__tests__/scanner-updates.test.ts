@@ -94,4 +94,46 @@ describe("scanner live updates", () => {
     expect(state.refresh.mock.calls.length).toBeGreaterThanOrEqual(2);
     state.stop();
   });
+  it("ignores unrelated notifications and repeated cleanup", async () => {
+    vi.useFakeTimers();
+    const state = setup();
+    state.callbacks.onEvent("order.changed", {});
+    state.callbacks.onStatus?.("live");
+    state.callbacks.onStatus?.("reconnecting");
+    await vi.advanceTimersByTimeAsync(0);
+    expect(state.invalidate).not.toHaveBeenCalled();
+    state.stop();
+    state.stop();
+    state.callbacks.onStatus?.("signed-out");
+    expect(state.unsubscribe).toHaveBeenCalledOnce();
+    expect(state.signedOut).not.toHaveBeenCalled();
+  });
+  it("never bypasses a failed known-change barrier", async () => {
+    vi.useFakeTimers();
+    const state = setup();
+    state.invalidate.mockRejectedValueOnce(new Error("worker unavailable"));
+    state.callbacks.onEvent("checkin.recorded", {});
+    await vi.advanceTimersByTimeAsync(0);
+    expect(state.refresh).not.toHaveBeenCalled();
+    state.stop();
+  });
+  it("cleans even a synchronously refused subscription", () => {
+    vi.useFakeTimers();
+    const unsubscribe = vi.fn();
+    const signedOut = vi.fn();
+    const stop = startScannerUpdates({
+      client: {} as Subscription["client"],
+      refresh: vi.fn(),
+      invalidate: vi.fn(),
+      signedOut,
+      subscribe: (options) => {
+        options.onStatus?.("signed-out");
+        return unsubscribe;
+      },
+    });
+    expect(unsubscribe).toHaveBeenCalledOnce();
+    expect(signedOut).toHaveBeenCalledOnce();
+    stop();
+    expect(unsubscribe).toHaveBeenCalledOnce();
+  });
 });
