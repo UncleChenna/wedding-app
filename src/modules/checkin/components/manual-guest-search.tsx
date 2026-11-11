@@ -9,6 +9,7 @@ import {
 } from "../lib/manual-checkin";
 import { AdmissionResult } from "./admission-result";
 import { ScanResultPanel } from "./scan-result-panel";
+import type { AdmissionResponse } from "../lib/online-admission";
 
 export type ManualLookup = (
   input: ManualLookupRequest,
@@ -23,10 +24,14 @@ export function ManualGuestSearch({
   lookup,
   onClose,
   onAdmissionRecorded,
+  onAdmissionOutcome,
+  staleNotice,
 }: {
   lookup: ManualLookup;
   onClose: () => void;
-  onAdmissionRecorded: () => void;
+  onAdmissionRecorded?: () => void;
+  onAdmissionOutcome?: (response: AdmissionResponse) => void;
+  staleNotice?: string;
 }) {
   const [query, setQuery] = useState("");
   const [answer, setAnswer] = useState<Awaited<ReturnType<ManualLookup>> | null>(null);
@@ -156,6 +161,7 @@ export function ManualGuestSearch({
             )}
           </>
         )}
+        {answer?.cached && staleNotice && <p role="status">{staleNotice}</p>}
         {response?.state === "selection" &&
           (answer?.cached ? (
             <ScanResultPanel
@@ -170,6 +176,7 @@ export function ManualGuestSearch({
               manual={{ invitationId: response.invitationId, version: response.version }}
               onBusyChange={setBusy}
               onComplete={onAdmissionRecorded}
+              onOutcome={onAdmissionOutcome}
             />
           ))}
         {response?.state === "session_expired" && (

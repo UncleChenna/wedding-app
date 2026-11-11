@@ -39,3 +39,25 @@ requires fresh authoritative selection before recording entry.
 Read installed Next route-handler and server/client guides before wiring routes
 and components. Follow ui-review; actual auth/SQL, denied-camera flow and every
 theme/375/768/1280 still unverified. Old tickets/worktrees untouched.
+
+## 2026-11-11 integration checkpoint (supersedes pending evidence above)
+
+Merged develop3b6c04e7 as0e7cedbe and wired manual UI through the existing065
+session/cache wrapper. Authoritative denial and terminal outcomes share the
+unsafe-cache generation fence; cached search/selection is read-only until066.
+Production build passed. Owned isolated native PostgreSQL35681 migrated and
+seven real admission tests passed. Manual production browser passed2/2 in31s,
+including committed-response loss/exact UUID retry, offline selection and camera
+tracks ending on mode switch. Database is stopped with data retained; path marker
+is /tmp/TICKET-063-postgres-path. Never touch068Supabase36181.
+144 captures exist under docs/reviews/TICKET-063. All72mobile images reviewed;
+desktop independent review pending. Root source review clean. Quick lint and24
+related tests passed, but test-only required-window-property cast failed types;
+fixed to optional guarded property, rerun pending. Hold broad suites until068's
+coverage session54247 ends. Physical/performance release checks remain unverified.
+Keep PR152 draft until065 closure proof and final exact-head CI/review complete.
+
+Final quick now passes lint, types and24 related tests. Official full suite passed
+2,009 tests with207 conditional skips; critical coverage98.82% lines/99.08%
+branches. Heavy slot released to068. No source changed after the reviewed browser
+run; only fixture typing corrected. Physical arm-length AC stays unchecked.

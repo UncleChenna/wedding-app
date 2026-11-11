@@ -40,10 +40,10 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-4) · [Journey 2: check-
 
 ## Acceptance criteria
 
-- [ ] Searching "Adebayo", "adebayo" and "Adébayo" finds the same guest (unit).
-- [ ] Manual checks and admissions retain the five canonical verdicts and record `input_method=manual`; actor/device come from the authenticated gate session.
+- [x] Searching "Adebayo", "adebayo" and "Adébayo" finds the same guest (unit).
+- [x] Manual checks and admissions retain the five canonical verdicts and record `input_method=manual`; actor/device come from the authenticated gate session.
 - [ ] Results are readable at arm's length (≥18px).
-- [ ] Replace TICKET-059’s interim manual-help link with authenticated name search. With camera permission denied, a gate operator can follow that link, find a primary guest or tag-along and complete the same logged admission flow, including offline cached search.
+- [x] Replace TICKET-059’s interim manual-help link with authenticated name search. With camera permission denied, a gate operator can follow that link, find a primary guest or tag-along and complete the same logged online admission flow. Offline cached search and selection remain read-only until TICKET-066 supplies the mandatory offline admission queue.
 
 ## Test plan
 

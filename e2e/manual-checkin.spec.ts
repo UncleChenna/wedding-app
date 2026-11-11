@@ -61,6 +61,7 @@ test("denied camera recovers through companion search and exact manual admission
     await page.goto("/checkin");
     await page.getByLabel("Your six-digit PIN").fill(pin);
     await page.getByRole("button", { name: "Sign in", exact: true }).click();
+    await expect(page.getByText("Guest list saved just now.")).toBeVisible({ timeout: 20_000 });
     await page.getByRole("button", { name: "Open camera", exact: true }).click();
     await expect(
       page.getByText(/Allow camera access in your browser’s site settings/),
@@ -90,9 +91,20 @@ test("denied camera recovers through companion search and exact manual admission
       await page.setViewportSize({ width: 375, height: 812 });
     }
     await capture("matches");
+    await context.setOffline(true);
+    await page.getByRole("button", { name: "Find guest", exact: true }).click();
+    await page.getByRole("button", { name: new RegExp(primaryName) }).click();
+    await expect(page.getByRole("heading", { name: "Valid pass", exact: true })).toBeVisible();
+    await expect(page.getByText(/No entry is recorded offline/)).toBeVisible();
+    await expect(page.getByLabel("How many are here?")).toHaveCount(0);
+    expect(await db`select id from scan_events where invitation_id=${invitation}`).toHaveLength(0);
+    await capture("cached-selection");
+    await context.setOffline(false);
+    await expect(page.getByLabel("How many are here?")).toHaveCount(0);
+    await page.getByRole("button", { name: "Find guest", exact: true }).click();
     await page.getByRole("button", { name: new RegExp(primaryName) }).click();
     await expect(page.getByLabel("How many are here?")).toHaveValue("3");
-    await expect(page.getByText(String(tableNumber), { exact: true })).toBeVisible();
+    await expect(page.getByText(`Table ${tableNumber}`, { exact: true })).toBeVisible();
     await expect(page.locator("body")).not.toContainText("PRIVATE DIET MARKER");
     await expect(page.locator("body")).not.toContainText("PRIVATE RSVP MARKER");
     expect(
@@ -138,6 +150,33 @@ test("denied camera recovers through companion search and exact manual admission
       await db`select admitted_people from admission_counters where invitation_id=${invitation}`,
     ).toEqual([{ admitted_people: 1 }]);
     await capture("replaced");
+    await page.getByRole("button", { name: "Back to camera" }).click();
+    await page.evaluate(() => {
+      Object.defineProperty(navigator, "mediaDevices", {
+        configurable: true,
+        value: {
+          getUserMedia: async () => {
+            const canvas = document.createElement("canvas");
+            canvas.width = canvas.height = 320;
+            const stream = canvas.captureStream(15);
+            Object.assign(window, { manualCameraTracks: stream.getTracks() });
+            return stream;
+          },
+        },
+      });
+    });
+    await page.getByRole("button", { name: "Open camera", exact: true }).click();
+    await expect(page.getByRole("button", { name: "Pause camera" })).toBeVisible();
+    await page.getByRole("button", { name: "Find guest by name", exact: true }).click();
+    expect(
+      await page.evaluate(() => {
+        const tracks = (window as Window & { manualCameraTracks?: MediaStreamTrack[] })
+          .manualCameraTracks;
+        return Boolean(
+          tracks && tracks.length > 0 && tracks.every((track) => track.readyState === "ended"),
+        );
+      }),
+    ).toBe(true);
   } finally {
     await db`delete from event_settings where id=1 and venue=${venue}`;
     await db`update staff set revoked_at=now() where id=${staff}`;
