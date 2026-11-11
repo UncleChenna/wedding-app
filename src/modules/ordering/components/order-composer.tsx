@@ -6,6 +6,7 @@ import { cooldownMessage, ORDER_NOTE_MAX, orderCopy } from "../lib/order";
 import { splitByStation, type Station } from "../lib/stations";
 import { newRequestId, submitOrder, type SubmitDeps } from "../lib/submit-order";
 import { MenuSections } from "./menu-sections";
+import { LiveOrderStatus, OrderStatusLine } from "./order-status-live";
 import { useMenuAvailability } from "./use-menu-availability";
 
 type Line = { id: string; name: string; quantity: number; station: Station };
@@ -13,7 +14,7 @@ type Phase =
   | { kind: "editing"; notice?: string }
   | { kind: "sending"; attempt: number }
   | { kind: "failed"; limited?: true }
-  | { kind: "sent"; lines: Line[]; note: string };
+  | { kind: "sent"; lines: Line[]; note: string; orderId: string };
 
 const sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 
@@ -109,7 +110,7 @@ export function OrderComposer({
     );
     if (outcome.status === "sent") {
       requestId.current = null;
-      setPhase({ kind: "sent", lines: snapshot, note: trimmedNote });
+      setPhase({ kind: "sent", lines: snapshot, note: trimmedNote, orderId: outcome.orderId });
       return;
     }
     if (outcome.status === "failed") {
@@ -148,24 +149,29 @@ export function OrderComposer({
           {orderCopy.sent}
         </h3>
         {/* Kitchen and bar prepare their parts separately; the guest sees both in one place. */}
-        {splitByStation(phase.lines).map((group) => (
-          <div key={group.station} className="mt-8">
-            <h4 id={`order-sent-${group.station}`} className="type-label text-primary">
-              {group.label}
-            </h4>
-            <ul aria-labelledby={`order-sent-${group.station}`} className="mt-4 space-y-4">
-              {group.items.map((line) => (
-                <li
-                  key={line.id}
-                  className="flex justify-between gap-6 border-b border-border pb-4 text-lg"
-                >
-                  <span className="min-w-0 wrap-anywhere">{line.name}</span>
-                  <span className="shrink-0 whitespace-nowrap">× {line.quantity}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+        <LiveOrderStatus orderId={phase.orderId}>
+          {({ view, slow }) =>
+            splitByStation(phase.lines).map((group) => (
+              <div key={group.station} className="mt-8">
+                <h4 id={`order-sent-${group.station}`} className="type-label text-primary">
+                  {group.label}
+                </h4>
+                <ul aria-labelledby={`order-sent-${group.station}`} className="mt-4 space-y-4">
+                  {group.items.map((line) => (
+                    <li
+                      key={line.id}
+                      className="flex justify-between gap-6 border-b border-border pb-4 text-lg"
+                    >
+                      <span className="min-w-0 wrap-anywhere">{line.name}</span>
+                      <span className="shrink-0 whitespace-nowrap">× {line.quantity}</span>
+                    </li>
+                  ))}
+                </ul>
+                <OrderStatusLine view={view} station={group.station} slow={slow} />
+              </div>
+            ))
+          }
+        </LiveOrderStatus>
         {phase.note && (
           <p className="mt-6 text-base leading-relaxed wrap-anywhere">Your note: {phase.note}</p>
         )}
