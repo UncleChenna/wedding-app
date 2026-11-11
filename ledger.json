@@ -2969,14 +2969,15 @@
     },
     "WED-075": {
       "log": [
-        "- 2026-11-11 — todo → claimed — unclechenna (claude) — started ahead of TICKET-078 (in_review)"
+        "- 2026-11-11 — todo → claimed — unclechenna (claude) — started ahead of TICKET-078 (in_review)",
+        "- 2026-11-11 — todo → in_progress — unclechenna (claude) — started ahead of TICKET-078 (in_review)"
       ],
-      "status": "todo",
+      "status": "in_progress",
       "owner": "unclechenna",
       "agent": "claude",
       "branch": "TICKET-075",
       "pr": "",
-      "started": "",
+      "started": "2026-11-11",
       "completed": "",
       "updated": "2026-11-11",
       "reason": "",
