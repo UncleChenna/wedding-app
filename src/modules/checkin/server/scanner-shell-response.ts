@@ -1,4 +1,5 @@
 import "server-only";
+import { clientEnv } from "@/modules/shared/lib/env/client";
 import { unstable_rethrow } from "next/navigation";
 import { logger } from "@/modules/shared/lib/logger";
 import { securityHeaders } from "@/modules/shared/lib/security-headers";
@@ -38,11 +39,20 @@ export async function scannerShellResponse(
       ["Content-Type", "text/html; charset=utf-8"],
       ["Cache-Control", headers["Cache-Control"]],
       ["Referrer-Policy", "no-referrer"],
-      ...securityHeaders({ isDev: serverEnv.NODE_ENV !== "production" })
+      ...securityHeaders({
+        isDev: serverEnv.NODE_ENV !== "production",
+        supabaseUrl: clientEnv.NEXT_PUBLIC_SUPABASE_URL,
+      })
         .filter(({ key }) => key === "Content-Security-Policy" || key === "Permissions-Policy")
         .map(({ key, value }): [string, string] => [key, value]),
     ];
-    const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="robots" content="noindex, noarchive"><title>Gate scanner</title><link rel="stylesheet" href="${assets.stylesheet}">${assets.fonts.map((path) => `<link rel="preload" as="font" type="font/woff2" href="${path}" crossorigin>`).join("")}<style>${css}</style></head><body><div id="scanner-shell" data-expires-at="${expiresAt}" data-session="${fingerprint}" data-build="${assets.build}"></div><noscript>Turn on JavaScript to use the camera scanner.</noscript><script defer src="${assets.script}"></script></body></html>`;
+    const realtime = encodeURIComponent(
+      JSON.stringify({
+        url: clientEnv.NEXT_PUBLIC_SUPABASE_URL,
+        publishableKey: clientEnv.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
+      }),
+    );
+    const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="robots" content="noindex, noarchive"><title>Gate scanner</title><link rel="stylesheet" href="${assets.stylesheet}">${assets.fonts.map((path) => `<link rel="preload" as="font" type="font/woff2" href="${path}" crossorigin>`).join("")}<style>${css}</style></head><body><div id="scanner-shell" data-expires-at="${expiresAt}" data-session="${fingerprint}" data-build="${assets.build}" data-realtime="${realtime}"></div><noscript>Turn on JavaScript to use the camera scanner.</noscript><script defer src="${assets.script}"></script></body></html>`;
     const grant: ScannerShellGrant = {
       version: 1,
       session: fingerprint,

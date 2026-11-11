@@ -137,3 +137,12 @@ describe("scanner live updates", () => {
     expect(unsubscribe).toHaveBeenCalledOnce();
   });
 });
+
+it("keeps older shells polling without a stored Realtime configuration", async () => {
+  vi.useFakeTimers();
+  const refresh = vi.fn(async () => {});
+  const stop = startScannerUpdates({ refresh, invalidate: vi.fn(), signedOut: vi.fn() });
+  await vi.advanceTimersByTimeAsync(5_000);
+  expect(refresh).toHaveBeenCalledOnce();
+  stop();
+});

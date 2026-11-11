@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Scanner, readLivePass, type ScanResolver } from "./scanner";
 import { GuestSnapshotStatus } from "./guest-snapshot-status";
 import { useGuestSnapshot } from "./use-guest-snapshot";
@@ -8,19 +8,23 @@ import { readGuestSnapshot } from "../browser/guest-snapshot-client";
 import { scannerWorkerMessage } from "../browser/scanner-worker-message";
 import { resolveSnapshotRead } from "../lib/resolve-snapshot-read";
 import { ScannerSession } from "./scanner-session";
+import { createStationClient } from "@/modules/shared/lib/station-client";
+import { startScannerUpdates } from "../lib/scanner-updates";
 
 export function GuestSnapshotScanner({
   session,
   expiresAt,
+  realtime,
 }: {
   session: string;
   expiresAt: number;
+  realtime?: { url: string; publishableKey: string };
 }) {
   const freshness = useGuestSnapshot({ session, expiresAt });
   const refresh = freshness.refresh;
   const unsafeCache = useRef(false);
   const invalidationGeneration = useRef(0);
-  const changed = useCallback(async () => {
+  const invalidate = useCallback(async () => {
     // Never fall back to a copy already contradicted by an authoritative read or
     // receipt. Only invalidate our session's private copy; preserve shell/queues.
     unsafeCache.current = true;
@@ -34,8 +38,11 @@ export function GuestSnapshotScanner({
       cleared.privateSnapshotRemoved === true
     )
       unsafeCache.current = false;
+  }, [session]);
+  const changed = useCallback(async () => {
+    await invalidate();
     void refresh(true);
-  }, [session, refresh]);
+  }, [invalidate, refresh]);
   // This describes the last read, not connectivity. Reconnecting must never turn
   // an old cached result into a newly authorized admission form.
   const [cached, setCached] = useState(false);
@@ -85,6 +92,38 @@ export function GuestSnapshotScanner({
     },
     [session, expiresAt, changed],
   );
+  const refreshRead = useCallback<ScanResolver>(
+    async (qr, signal) => {
+      if (signal.aborted || unsafeCache.current) return { state: "unavailable" };
+      const snapshot = await readGuestSnapshot({ session, expiresAt });
+      if (signal.aborted || unsafeCache.current) return { state: "unavailable" };
+      return snapshot
+        ? resolveSnapshotRead(qr, window.location.origin, snapshot, { session, expiresAt })
+        : { state: "unavailable" };
+    },
+    [session, expiresAt],
+  );
+  useEffect(() => {
+    if (deniedSession === session || expiresAt <= Date.now()) return;
+    const client = realtime
+      ? createStationClient(realtime.url, realtime.publishableKey)
+      : undefined;
+    const stop = startScannerUpdates({
+      client,
+      invalidate,
+      refresh: () => refresh(true),
+      signedOut: () => {
+        invalidationGeneration.current++;
+        unsafeCache.current = true;
+        setDeniedSession(session);
+        void scannerWorkerMessage("DENY_SCANNER_SESSION", session);
+      },
+    });
+    return () => {
+      stop();
+      client?.disconnect();
+    };
+  }, [session, expiresAt, deniedSession, refresh, invalidate, realtime]);
   if (deniedSession === session)
     return (
       <ScannerSession expiresAt={0} session={session}>
@@ -105,6 +144,8 @@ export function GuestSnapshotScanner({
       <Scanner
         key={session}
         resolveRead={resolveRead}
+        refreshRead={refreshRead}
+        readRevision={freshness.summary?.generatedAt}
         allowAdmission={!cached}
         readOnlyNotice={
           cached && age >= 30

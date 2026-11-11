@@ -1,7 +1,7 @@
 import { subscribeStation, type RealtimeClientLike } from "@/modules/shared/lib/station-channel";
 
 type Options = {
-  client: RealtimeClientLike;
+  client?: RealtimeClientLike;
   refresh: () => Promise<void>;
   /** Reuse the snapshot's known-change barrier before fetching authoritative state. */
   invalidate: () => Promise<void>;
@@ -45,20 +45,21 @@ export function startScannerUpdates({
     clearInterval(poll);
     subscription.stop?.();
   }
-  subscription.stop = subscribe({
-    station: "gate",
-    client,
-    onEvent: (event) => {
-      if (event === "checkin.recorded") void changed();
-    },
-    onResync: () => void refetch(),
-    onStatus: (status) => {
-      if (!stopped && status === "signed-out") {
-        stop();
-        signedOut();
-      }
-    },
-  });
-  if (stopped) subscription.stop();
+  if (client)
+    subscription.stop = subscribe({
+      station: "gate",
+      client,
+      onEvent: (event) => {
+        if (event === "checkin.recorded") void changed();
+      },
+      onResync: () => void refetch(),
+      onStatus: (status) => {
+        if (!stopped && status === "signed-out") {
+          stop();
+          signedOut();
+        }
+      },
+    });
+  if (stopped) subscription.stop?.();
   return stop;
 }

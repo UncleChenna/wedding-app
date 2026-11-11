@@ -7,6 +7,16 @@ import { readGuestSnapshot } from "../browser/guest-snapshot-client";
 import { resolveSnapshotRead } from "../lib/resolve-snapshot-read";
 import { scannerWorkerMessage } from "../browser/scanner-worker-message";
 import type { AdmissionResponse } from "../lib/online-admission";
+vi.mock("../lib/scanner-updates", () => ({ startScannerUpdates: vi.fn(() => vi.fn()) }));
+vi.mock("@/modules/shared/lib/station-client", () => ({
+  createStationClient: vi.fn(() => ({ disconnect: vi.fn() })),
+}));
+vi.mock("@/modules/shared/lib/env/client", () => ({
+  clientEnv: {
+    NEXT_PUBLIC_SUPABASE_URL: "http://127.0.0.1:9999",
+    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: "synthetic",
+  },
+}));
 const refresh = vi.hoisted(() => vi.fn());
 vi.mock("../components/use-guest-snapshot", () => ({
   useGuestSnapshot: () => ({
