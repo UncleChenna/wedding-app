@@ -17,7 +17,7 @@ Served, or Cancel.
 
 # Changes
 
-- **Migration `drizzle/0028_station-order-events.sql`** (generated, additive). A new `station_order_events` table
+- **Migration `drizzle/0030_station-order-events.sql`** (generated, additive). A new `station_order_events` table
   holds:
   - the station ticket, from and to status, reason, staff, device and time
   - RLS on, with no browser policy (ADR 0024)
@@ -98,7 +98,7 @@ Served, or Cancel.
 
 # Risks and rollout
 
-- **Migration 0028 is additive:** a new table, so existing rows are unaffected.
+- **Migration 0030 is additive:** a new table, so existing rows are unaffected.
 - **Rollback:** revert the PR. The table can stay, or a follow-up migration can drop it with your approval.
 
 # Screenshots

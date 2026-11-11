@@ -62,7 +62,7 @@ _Agents append dated notes here while working._
 - 2026-11-10 (unclechenna, claude):
   - **Moves:** received → preparing → served, or cancelled before served. Received → served is allowed for quick
     drinks. Served and cancelled are final.
-  - **History:** every move is a row in `station_order_events` (migration 0028, additive) with the from and to
+  - **History:** every move is a row in `station_order_events` (migration 0030, additive) with the from and to
     status, staff, device and time. The database refuses a cancel without a reason.
   - **Two tablets:** each move names the status the board showed. A move from an out-of-date status is refused as
     `stale`, so racing tablets can't both win.
