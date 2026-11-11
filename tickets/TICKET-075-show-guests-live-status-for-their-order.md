@@ -40,10 +40,10 @@ See: [Table ordering](../docs/prd.md#table-ordering) (ORD-3) · [Journey 3: orde
 
 ## Acceptance criteria
 
-- [ ] A board status change shows on the guest page within 2s (e2e).
-- [ ] Another submission's id cannot be guessed (≥96-bit id, unit).
+- [x] A board status change shows on the guest page within 2s (e2e).
+- [x] Another submission's id cannot be guessed (≥96-bit id, unit).
 
-- [ ] Anonymous status responses disclose only the opaque order receipt and public item/status information, not guest identities, dietary notes or other tables.
+- [x] Anonymous status responses disclose only the opaque order receipt and public item/status information, not guest identities, dietary notes or other tables.
 
 ## Test plan
 
@@ -59,6 +59,16 @@ See: [Table ordering](../docs/prd.md#table-ordering) (ORD-3) · [Journey 3: orde
 ## Notes / decisions
 
 _Agents append dated notes here while working._
+
+- 2026-11-11 (unclechenna, claude):
+  - **Polling, not Realtime:** guests poll `GET /api/orders/<receipt>/status` (ADR 0024 keeps browser Realtime for
+    staff only). It polls every 1.5 s while in progress, backs off after failures or a 429, and stops once every
+    station is served or cancelled. It uses the existing `lookup` request budget.
+  - **Receipt:** the receipt is the server-generated order id, a v4 UUID with 122 random bits. Malformed and
+    unknown receipts get the same 404.
+  - **Production-only bug:** the first build re-ran the polling effect on every render, about 60 requests a
+    second. The default fetcher wasn't stable in the production bundle, so it's now held in a ref. The e2e now
+    asserts fewer than 20 requests and that polling stops once settled.
 
 ## Activity log
 
