@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   isSettled,
   nextPollMs,
@@ -22,6 +22,12 @@ const browserFetch: Fetcher = (input, init) => fetch(input, init);
 export function useOrderStatus(orderId: string, fetcher: Fetcher = browserFetch) {
   const [view, setView] = useState<OrderStatusView | null>(null);
   const [slow, setSlow] = useState(false);
+  // A ref, not an effect dependency: a production build doesn't keep the default fetcher
+  // identical between renders, and a changing dependency restarted polling on every render.
+  const fetchRef = useRef(fetcher);
+  useEffect(() => {
+    fetchRef.current = fetcher;
+  });
 
   useEffect(() => {
     let cancelled = false;
@@ -30,7 +36,9 @@ export function useOrderStatus(orderId: string, fetcher: Fetcher = browserFetch)
     const poll = async () => {
       let retryAfter: number | undefined;
       try {
-        const response = await fetcher(`/api/orders/${orderId}/status`, { cache: "no-store" });
+        const response = await fetchRef.current(`/api/orders/${orderId}/status`, {
+          cache: "no-store",
+        });
         if (response.status === 429) retryAfter = Number(response.headers.get("Retry-After")) || 5;
         const parsed = orderStatusSchema.safeParse(response.ok ? await response.json() : null);
         if (parsed.success) {
@@ -54,7 +62,7 @@ export function useOrderStatus(orderId: string, fetcher: Fetcher = browserFetch)
       cancelled = true;
       if (timer) clearTimeout(timer);
     };
-  }, [orderId, fetcher]);
+  }, [orderId]);
 
   return { view, slow };
 }
