@@ -162,7 +162,9 @@ jobs:
         run: pnpm db:generate --name ci-drift-check && git diff --exit-code drizzle/ && test -z "$(git ls-files --others --exclude-standard drizzle/)"
 
   visual-regression:
-    name: visual regression (guest pages)
+    needs: plan
+    if: needs.plan.outputs.guest == 'true'
+    name: ${{ ((github.event.action == 'edited' && !github.event.changes.base) || (github.event.action == 'labeled' && github.event.label.name != 'ci:full')) && 'visual regression (guest pages) (metadata only)' || 'visual regression (guest pages)' }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     services:
@@ -336,7 +338,18 @@ jobs:
   required:
     name: ${{ ((github.event.action == 'edited' && !github.event.changes.base) || (github.event.action == 'labeled' && github.event.label.name != 'ci:full')) && 'required CI gates (metadata only)' || 'required CI gates' }}
     if: always() && needs.plan.result != 'skipped'
-    needs: [plan, tickets, pr-text, verify, database, guest-journey, camera-decoding, admin-journey]
+    needs:
+      [
+        plan,
+        tickets,
+        pr-text,
+        verify,
+        database,
+        guest-journey,
+        visual-regression,
+        camera-decoding,
+        admin-journey,
+      ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
