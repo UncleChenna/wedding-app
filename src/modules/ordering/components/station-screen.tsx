@@ -32,7 +32,7 @@ async function StationScreenContent({ station }: { station: BoardStation }) {
     initial = await readStationBoard(db, station);
   } catch {
     log.warn("Station board unavailable", { station });
-    initial = { generatedAt: new Date().toISOString(), tickets: [] };
+    initial = { generatedAt: new Date().toISOString(), tickets: [], recent: [] };
   }
   return (
     <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 md:px-8">
