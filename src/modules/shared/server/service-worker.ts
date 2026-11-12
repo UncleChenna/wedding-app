@@ -4,6 +4,9 @@ import { createScannerShellRuntime } from "@/modules/checkin/browser/scanner-she
 import { installScannerShellWorker } from "@/modules/checkin/browser/scanner-shell-worker";
 import { createGuestSnapshotStore } from "@/modules/checkin/browser/guest-snapshot-store";
 import { createGuestSnapshotRuntime } from "@/modules/checkin/browser/guest-snapshot-runtime";
+import { createOfflineQueuePolicy } from "@/modules/checkin/lib/offline-queue";
+import { createOfflineQueueStore } from "@/modules/checkin/browser/offline-queue-store";
+import { createOfflineQueueRuntime } from "@/modules/checkin/browser/offline-queue-runtime";
 import { parseGuestSnapshot } from "@/modules/checkin/lib/guest-snapshot";
 
 import { ownPassWorkerSource } from "@/modules/invitations/lib/offline-worker";
@@ -22,7 +25,7 @@ import {
  * using the old one closes (TICKET-111 adds the update prompt).
  */
 export function serviceWorkerSource(
-  scanner: { build: string; assets: readonly string[] } | null = null,
+  scanner: { build: string; assets: readonly string[]; verifier?: string } | null = null,
 ): string {
   return `"use strict";
 const SW_CACHE_PREFIX = ${JSON.stringify(SW_CACHE_PREFIX)};
@@ -70,6 +73,13 @@ ${ownPassWorkerSource()}
 const scannerWorker = ${
     scanner
       ? `(() => {
+  ${scanner.verifier ? `importScripts(${JSON.stringify(scanner.verifier)});` : ""}
+  const createQueuePolicy = ${createOfflineQueuePolicy.toString()};
+  const createQueueStore = ${createOfflineQueueStore.toString()};
+  const createQueueRuntime = ${createOfflineQueueRuntime.toString()};
+  const queuePolicy = createQueuePolicy();
+  let queueStore;
+  const getQueueStore = () => queueStore || (queueStore = createQueueStore(queuePolicy));
   const createStore = ${createScannerShellStore.toString()};
   const createRuntime = ${createScannerShellRuntime.toString()};
   const install = ${installScannerShellWorker.toString()};
@@ -86,6 +96,18 @@ const scannerWorker = ${
     origin: self.location.origin, build: ${JSON.stringify(scanner.build)}
   }));
   return install({ host: self, store: getStore, runtime: getRuntime,
+    ${
+      scanner.verifier
+        ? `queue: { store: getQueueStore, runtime: (snapshot) => createQueueRuntime({
+      policy: queuePolicy, store: getQueueStore(), snapshot,
+      verify: async (qr, keys) => {
+        const token = ScannerQueueCrypto.signedPassToken(qr, self.location.origin);
+        return token ? ScannerQueueCrypto.verifyGatePass(token, keys, { now: Date.now() }) : { ok: false, reason: "malformed" };
+      },
+      decide: ScannerQueueCrypto.decideAdmission, fetcher: fetch.bind(self), origin: self.location.origin
+    }) },`
+        : ""
+    }
     guests: { store: getGuestStore, runtime: (authority, denied) => createGuestRuntime({
       store: getGuestStore(), authority, denied, parse: parseGuestSnapshot,
       fetcher: fetch.bind(self), origin: self.location.origin
@@ -198,7 +220,7 @@ self.addEventListener("fetch", (event) => {
 
 /** /sw.js must never be cached itself, so updates are always noticed. */
 export function serviceWorkerResponse(
-  scanner: { build: string; assets: readonly string[] } | null = null,
+  scanner: { build: string; assets: readonly string[]; verifier?: string } | null = null,
 ): Response {
   return new Response(serviceWorkerSource(scanner), {
     headers: {

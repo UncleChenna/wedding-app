@@ -1,3 +1,27 @@
+# TICKET-047: reconcile the merged Open Graph preview
+
+## Problem and result
+
+PR #60 delivered the public invitation preview and merged on 1 November, but the shared ticket remained blocked with no PR link. This documentation-only follow-up reconciles software preview completion with the owner-approved separation of release QA. Product behavior is unchanged.
+
+## Changes
+
+- Record the original merged commit and tested head in the ticket.
+- Replace the preview completion criterion with an explicit disposition of the unrun device check; preserve its original wording and mandatory release status.
+- Retain TICKET-201’s existing physical Open Graph checks and exact-zero CLS criterion. No release dependency or test is removed.
+
+## Verification
+
+Historical PR #60: merge `6ebd4b474928a5289d8e294b95d64c019ba98319`, tested head `b3df9446973c6baf30c5ae29b92f4e5eb484e55c`, successful required CI run `41304954441`. Current base: `eb14549758ac20fdb286325c7aa57ce42605b564`. Current documentation validation passes (223 tickets), local snapshots render, `git diff --check` passes, and `pnpm verify:quick` passes lint and types with no related unit tests for this documentation-only change. Required full CI must pass before this follow-up merges.
+
+## Limits and review
+
+Physical iOS/Android WhatsApp preview checks remain unrun. Historical homepage CLS `0.00007339025002649255` is nonzero, not a pass. TICKET-201 remains a release blocker. Review the ticket’s original phone requirement against TICKET-201’s public Open Graph scope and unchecked CLS criterion. No source, CI, schema, dependency, database or service changes. Rollback is a documentation revert, preserving historical evidence.
+
+## Original implementation evidence
+
+The following is historical evidence from PR #60, not a new verification run.
+
 # Ticket
 
 Ticket: TICKET-047

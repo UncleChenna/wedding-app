@@ -15,6 +15,14 @@ const stored = {
 it("recognizes only the same committed online intent from the same authenticated actor", () => {
   expect(sameOnlineAdmission(stored, actor, request)).toBe(true);
 });
+it("binds manual receipts to the input method without relabelling historical QR receipts", () => {
+  const manual = { ...request, inputMethod: "manual" as const };
+  expect(sameOnlineAdmission({ ...stored, inputMethod: "manual" }, actor, manual)).toBe(true);
+  expect(sameOnlineAdmission({ ...stored, inputMethod: "manual" }, actor, request)).toBe(false);
+  expect(sameOnlineAdmission({ ...stored, inputMethod: "qr" }, actor, manual)).toBe(false);
+  expect(sameOnlineAdmission({ ...stored, inputMethod: null }, actor, manual)).toBe(false);
+  expect(sameOnlineAdmission({ ...stored, inputMethod: null }, actor, request)).toBe(true);
+});
 it.each([
   { staffId: "other" },
   { deviceId: "other" },

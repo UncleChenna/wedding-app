@@ -18,6 +18,12 @@ vi.mock("@/modules/shared/server/staff-cookies", () => ({
 vi.mock("next/headers", () => ({ cookies: mocks.cookies }));
 vi.mock("../server/scanner-assets", () => ({ readScannerAssets: mocks.assets }));
 vi.mock("@/modules/shared/server/env", () => ({ serverEnv: { NODE_ENV: "test" } }));
+vi.mock("@/modules/shared/lib/env/client", () => ({
+  clientEnv: {
+    NEXT_PUBLIC_SUPABASE_URL: "https://scanner.example.invalid",
+    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: 'public-key"<marker>',
+  },
+}));
 const themes = async () => getActiveThemes();
 beforeEach(() => {
   mocks.auth.mockReset().mockResolvedValue({
@@ -49,6 +55,15 @@ it("issues a no-store minimal shell using live gate authorization without names,
   expect(grant.session).toMatch(/^[a-f0-9]{64}$/);
   expect(grant.html).toContain('id="scanner-shell"');
   expect(grant.html).toContain('data-expires-at="');
+  const encoded = grant.html.match(/data-realtime="([^"]+)"/)?.[1];
+  expect(JSON.parse(decodeURIComponent(encoded ?? ""))).toEqual({
+    url: "https://scanner.example.invalid",
+    publishableKey: 'public-key"<marker>',
+  });
+  expect(grant.html).not.toContain("<marker>");
+  expect(grant.headers.find(([name]) => name === "Content-Security-Policy")?.[1]).toContain(
+    "wss://scanner.example.invalid",
+  );
   expect(grant.html).toContain(grant.assets[0]);
   expect(grant.headers).toContainEqual([
     "Permissions-Policy",

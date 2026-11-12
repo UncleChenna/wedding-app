@@ -1,7 +1,11 @@
 import { expect, it, vi } from "vitest";
 import { guestSnapshotResponse } from "../server/guest-snapshot-response";
 
-const authority = () => ({ session: "a".repeat(64), expiresAt: Date.now() + 60_000 });
+const authority = () => ({
+  session: "a".repeat(64),
+  expiresAt: Date.now() + 60_000,
+  actor: { staffId: "22222222-2222-4222-8222-222222222222", deviceId: "b".repeat(64) },
+});
 const projection = () => ({
   keys: [{ kid: "test", alg: "Ed25519", spki: "MCowBQYDK2VwAyEA" + "A".repeat(43) }],
   invitations: [],
@@ -48,4 +52,21 @@ it("rejects private extras and errors without exposing their content", async () 
     expect(response.status).toBe(503);
     expect(await response.text()).not.toMatch(/private@example|database details/);
   }
+});
+
+it("publishes only trusted original actor IDs and withholds an identity change during projection", async () => {
+  const actor = { staffId: "22222222-2222-4222-8222-222222222222", deviceId: "b".repeat(64) };
+  const first = { ...authority(), actor };
+  const response = await guestSnapshotResponse({
+    authorize: async () => first,
+    load: async () => projection(),
+  });
+  expect(await response.json()).toMatchObject({ version: 2, actor });
+  const changed = vi
+    .fn()
+    .mockResolvedValueOnce(first)
+    .mockResolvedValue({ ...first, actor: { ...actor, deviceId: "c".repeat(64) } });
+  expect(
+    (await guestSnapshotResponse({ authorize: changed, load: async () => projection() })).status,
+  ).toBe(401);
 });

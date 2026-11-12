@@ -9,8 +9,23 @@ export function postScanSync(request: Request) {
   return scanSyncResponse(request, {
     authorize: async () => {
       const current = await currentStaffDevice("gate");
-      return current ? { staffId: current.identity.staffId, deviceId: current.device.id } : null;
+      return current
+        ? {
+            staffId: current.identity.staffId,
+            deviceId: current.device.id,
+            credentialVersion: current.identity.credentialVersion,
+          }
+        : null;
     },
-    reconcile: (actor, events) => reconcileScanBatch(db, actor, events),
+    reconcile: (actor, events) =>
+      reconcileScanBatch(db, actor, events, async () => {
+        const current = await currentStaffDevice("gate");
+        return (
+          current !== null &&
+          current.identity.staffId === actor.staffId &&
+          current.device.id === actor.deviceId &&
+          current.identity.credentialVersion === actor.credentialVersion
+        );
+      }),
   });
 }

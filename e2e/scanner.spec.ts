@@ -105,7 +105,14 @@ test.describe("gate scanner route", () => {
     await page.reload();
     await expect(open).toBeVisible();
     await page.evaluate(() => document.fonts.ready);
-    await page.waitForLoadState("networkidle");
+    // Realtime and five-second snapshot polling intentionally remain active.
+    // Observe settled font/layout frames, not a globally idle network.
+    await page.evaluate(
+      () =>
+        new Promise<void>((resolve) =>
+          requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+        ),
+    );
     expect(
       await page.evaluate(() => (window as unknown as { scannerCls: number }).scannerCls),
     ).toBe(0);
@@ -118,7 +125,7 @@ test.describe("gate scanner route", () => {
         .map((element) => element.textContent),
     );
     expect(targets).toEqual([]);
-    const folder = `docs/reviews/TICKET-062/scanner-${info.project.name}`;
+    const folder = `${process.env.SCANNER_REVIEW_DIR ?? "docs/reviews/TICKET-063"}/scanner-${info.project.name}`;
     mkdirSync(folder, { recursive: true });
     await page.emulateMedia({ reducedMotion: "reduce" });
     for (const theme of themes) {
@@ -130,8 +137,13 @@ test.describe("gate scanner route", () => {
     await open.focus();
     await open.press("Enter");
     await expect(page.getByText(/Allow camera access/)).toBeVisible();
-    await page.getByRole("link", { name: "Manual check-in help" }).click();
-    await expect(page.locator("#manual-check-in-help")).toBeFocused();
+    await page.getByRole("button", { name: "Find guest by name" }).click();
+    await expect(page.getByRole("heading", { name: "Find a guest" })).toBeVisible();
+    await expect(page.getByLabel("Guest name", { exact: true })).toBeFocused();
+    await expect(page.getByRole("button", { name: "Retry camera" })).toHaveCount(0);
+    await page.getByRole("button", { name: "Back to camera" }).click();
+    await page.getByRole("button", { name: "Open camera" }).click();
+    await expect(page.getByText(/Allow camera access/)).toBeVisible();
     for (const theme of themes) {
       await applyTheme(page, theme);
       expect(await scanA11y(page)).toEqual([]);

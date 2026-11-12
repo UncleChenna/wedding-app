@@ -11,14 +11,15 @@ import {
   type AdmissionResponse,
 } from "../lib/online-admission";
 import type { ScanReadResult } from "../lib/scan-read-result";
+import type { ManualAdmissionRequest } from "../lib/manual-checkin";
 import { ScanResultPanel } from "./scan-result-panel";
 
 export type AdmissionSubmitter = (
-  input: AdmissionRequest,
+  input: AdmissionRequest | ManualAdmissionRequest,
   signal: AbortSignal,
 ) => Promise<AdmissionResponse>;
 async function submitLive(
-  input: AdmissionRequest,
+  input: AdmissionRequest | ManualAdmissionRequest,
   signal: AbortSignal,
 ): Promise<AdmissionResponse> {
   const transport = new AbortController();
@@ -29,14 +30,17 @@ async function submitLive(
   // Keep the component's intent alive so retry uses exactly the same event ID.
   const timeout = setTimeout(abort, 8000);
   try {
-    const response = await fetch("/api/checkin/admit", {
-      method: "POST",
-      credentials: "same-origin",
-      cache: "no-store",
-      signal: transport.signal,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(input),
-    });
+    const response = await fetch(
+      "operation" in input ? "/api/checkin/manual" : "/api/checkin/admit",
+      {
+        method: "POST",
+        credentials: "same-origin",
+        cache: "no-store",
+        signal: transport.signal,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(input),
+      },
+    );
     if (response.status === 403) return { state: "session_expired" };
     const parsed = admissionResponseSchema.safeParse(await response.json());
     return parsed.success ? parsed.data : { state: "unavailable" };
@@ -58,6 +62,7 @@ const refusal = {
 export function AdmissionResult({
   result,
   qr,
+  manual,
   submit = submitLive,
   onBusyChange,
   onComplete,
@@ -67,6 +72,7 @@ export function AdmissionResult({
 }: {
   result: ScanReadResult;
   qr: string | null;
+  manual?: Pick<ManualAdmissionRequest, "invitationId" | "version">;
   submit?: AdmissionSubmitter;
   onBusyChange: (busy: boolean) => void;
   onComplete?: () => void;
@@ -80,7 +86,7 @@ export function AdmissionResult({
   const [pending, setPending] = useState(false);
   const [response, setResponse] = useState<AdmissionResponse | null>(null);
   const [validation, setValidation] = useState("");
-  const intent = useRef<AdmissionRequest | null>(null);
+  const intent = useRef<AdmissionRequest | ManualAdmissionRequest | null>(null);
   const controller = useRef<AbortController | null>(null);
   const receipt = useRef<HTMLDivElement>(null);
   const uncertain = response?.state === "unavailable";
@@ -96,7 +102,7 @@ export function AdmissionResult({
   async function admit() {
     if (
       controller.current ||
-      !qr ||
+      (!qr && !manual) ||
       result.state !== "valid" ||
       (!allowAdmission && !intent.current)
     )
@@ -107,7 +113,19 @@ export function AdmissionResult({
       return;
     }
     setValidation("");
-    const request = intent.current ?? { clientEventId: crypto.randomUUID(), qr, people: selected };
+    const request =
+      intent.current ??
+      (manual
+        ? {
+            operation: "admit" as const,
+            ...manual,
+            clientEventId: crypto.randomUUID(),
+            people: selected,
+          }
+        : qr
+          ? { clientEventId: crypto.randomUUID(), qr, people: selected }
+          : null);
+    if (!request) return;
     intent.current = request;
     const current = new AbortController();
     controller.current = current;
@@ -211,7 +229,7 @@ export function AdmissionResult({
       </div>
     );
   }
-  if (result.state !== "valid" || !qr || (!allowAdmission && !response && !pending))
+  if (result.state !== "valid" || (!qr && !manual) || (!allowAdmission && !response && !pending))
     return (
       <ScanResultPanel
         state={result.state}
