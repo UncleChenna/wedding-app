@@ -3096,9 +3096,10 @@
       "log": [
         "- 2026-11-12 — todo → claimed — divine (codex)",
         "- 2026-11-12 — todo → in_progress — divine (codex)",
-        "- 2026-11-12 — in_progress → in_review — divine (codex)"
+        "- 2026-11-12 — in_progress → in_review — divine (codex)",
+        "- 2026-11-12 — in_review → in_progress — divine (codex) — Final CI exposed an uncached first-use decoder chunk, missing defensive observation coverage, and a background-revocation fixture race; repairing without weakening gates."
       ],
-      "status": "in_review",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-066",
