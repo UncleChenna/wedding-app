@@ -33,14 +33,14 @@ Backlog audit coverage: PWA privacy, CHK-6. See [PRD](../docs/prd.md) and [audit
 
 ## Out of scope
 
-- Work outside the stated contract; consuming screens and launch operations remain in their linked tickets. No product implementation is part of this audit.
+- New consuming screens and physical-device launch certification. Post-expiry administrator recovery is tracked in release-blocking TICKET-231; this ticket preserves evidence without extending credentials.
 
 ## Acceptance criteria
 
-- [ ] Apply TICKET-169 freshness and device-expiry rules; logout/expiry removes private lookup data without silently discarding pending scan evidence.
-- [ ] Guest cache is scoped to the authorized pass; switching links never displays another household and online revocation removes the known invalid copy.
-- [ ] Handle storage eviction, quota failure and unavailable IndexedDB with clear recovery instructions and no false offline-ready/admitted state.
-- [ ] Exclude dietary notes and secrets from scanner caches; document purge after the event and preserve pending evidence until acknowledged through the approved recovery path.
+- [x] Apply TICKET-169 freshness and device-expiry rules; logout/expiry removes private lookup data without silently discarding pending scan evidence.
+- [x] Guest cache is scoped to the authorized pass; switching links never displays another household and online revocation removes the known invalid copy.
+- [x] Handle storage eviction, quota failure and unavailable IndexedDB with clear recovery instructions and no false offline-ready/admitted state.
+- [x] Exclude dietary notes and secrets from scanner caches; document purge after the event and preserve pending evidence until acknowledged through the approved recovery path.
 
 ## Test plan
 
@@ -53,6 +53,7 @@ Backlog audit coverage: PWA privacy, CHK-6. See [PRD](../docs/prd.md) and [audit
 
 ## Notes / decisions
 
+- 2026-11-12 — Implemented bounded own-pass retention, acknowledged-only cleanup and partial-eviction identity checks. Actual worker/storage browser suite: 36 passed. Expired staff evidence stays retained; TICKET-231 must provide administrative recovery before release. Full-origin loss is unrecoverable; physical-device QA remains a release gate.
 - 2026-10-21 — Added by HARNESS-002. All criteria describe future work; no completion or human approval is implied.
 
 ## Activity log

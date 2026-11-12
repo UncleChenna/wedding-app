@@ -233,6 +233,7 @@ describe("served worker script", () => {
     store.set(SW_STATIC_CACHE, new Map());
     store.set("someone-elses-cache", new Map());
     store.set(OWN_PASS_CACHE, new Map());
+    store.set("wedding-scanner-queue-identity-v1", new Map());
 
     await install();
     expect(self.skipWaiting).not.toHaveBeenCalled();
@@ -243,7 +244,13 @@ describe("served worker script", () => {
     expect(caches.delete).toHaveBeenCalledWith(`${SW_CACHE_PREFIX}static-v0`);
     expect(caches.delete).toHaveBeenCalledWith(`${SW_CACHE_PREFIX}offline-v0`);
     expect([...store.keys()].sort()).toEqual(
-      [SW_STATIC_CACHE, SW_OFFLINE_CACHE, OWN_PASS_CACHE, "someone-elses-cache"].sort(),
+      [
+        SW_STATIC_CACHE,
+        SW_OFFLINE_CACHE,
+        OWN_PASS_CACHE,
+        "wedding-scanner-queue-identity-v1",
+        "someone-elses-cache",
+      ].sort(),
     );
   });
 
