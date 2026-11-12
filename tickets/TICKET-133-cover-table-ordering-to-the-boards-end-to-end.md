@@ -2,20 +2,20 @@
 id: TICKET-133
 title: Cover table ordering to the boards end to end
 epic: testing
-status: todo
+status: in_progress
 priority: high
 estimate: M
 labels: [test]
 module: ordering
-owner: ""
-agent: ""
+owner: unclechenna
+agent: claude
 blocked_by: [TICKET-075, TICKET-077, TICKET-078, TICKET-073, TICKET-080]
 blocks: [TICKET-137, TICKET-154]
-branch: ""
+branch: TICKET-133
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-12
+started: 2026-11-12
 completed: ""
 reason: ""
 resume_to: ""
@@ -57,3 +57,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-12 — todo → claimed — unclechenna (claude) — started ahead of TICKET-075 (in_review), TICKET-077 (in_review), TICKET-078 (in_review)
+- 2026-11-12 — todo → in_progress — unclechenna (claude) — started ahead of TICKET-075 (in_review), TICKET-077 (in_review), TICKET-078 (in_review)
