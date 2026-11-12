@@ -4,11 +4,14 @@ on:
   push:
     branches: [main]
   pull_request:
-    # `edited` re-runs the PR text check when a title or body changes.
-    types: [opened, synchronize, reopened, edited, ready_for_review]
+    # Only base edits run code checks; text edits have their own workflow/concurrency.
+    types: [opened, synchronize, reopened, edited, ready_for_review, labeled]
+  workflow_dispatch:
+  release:
+    types: [published]
 
 concurrency:
-  group: ci-${{ github.ref }}
+  group: ci-${{ github.ref }}-${{ ((github.event.action == 'edited' && !github.event.changes.base) || (github.event.action == 'labeled' && github.event.label.name != 'ci:full')) && github.run_id || 'code' }}
   cancel-in-progress: true
 
 permissions:
@@ -23,8 +26,33 @@ env:
   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH
 
 jobs:
+  plan:
+    name: ${{ ((github.event.action == 'edited' && !github.event.changes.base) || (github.event.action == 'labeled' && github.event.label.name != 'ci:full')) && 'verification scope (metadata only)' || 'verification scope' }}
+    if: >-
+      github.event.action != 'edited' && github.event.action != 'labeled' ||
+      github.event.action == 'edited' && github.event.changes.base ||
+      github.event.action == 'labeled' && github.event.label.name == 'ci:full'
+    runs-on: ubuntu-latest
+    outputs:
+      full: ${{ steps.scope.outputs.full }}
+      ui: ${{ steps.scope.outputs.ui }}
+      database: ${{ steps.scope.outputs.database }}
+      guest: ${{ steps.scope.outputs.guest }}
+      camera: ${{ steps.scope.outputs.camera }}
+      admin: ${{ steps.scope.outputs.admin }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+      - id: scope
+        run: node scripts/ci-plan.mjs
+
   tickets:
-    name: tickets valid
+    needs: plan
+    name: ${{ ((github.event.action == 'edited' && !github.event.changes.base) || (github.event.action == 'labeled' && github.event.label.name != 'ci:full')) && 'tickets valid (metadata only)' || 'tickets valid' }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -38,20 +66,21 @@ jobs:
       - run: pnpm t:validate
 
   pr-text:
-    name: no AI attribution in PR text
-    if: github.event_name == 'pull_request'
+    name: ${{ ((github.event.action == 'edited' && !github.event.changes.base) || (github.event.action == 'labeled' && github.event.label.name != 'ci:full')) && 'no AI attribution in PR text (metadata only)' || 'no AI attribution in PR text' }}
+    needs: plan
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v7
-      # PR text is untrusted: pass it through env, never interpolate it into the script.
-      - env:
+      - if: github.event_name == 'pull_request'
+        env:
           PR_TITLE: ${{ github.event.pull_request.title }}
           PR_BODY: ${{ github.event.pull_request.body }}
         run: node scripts/harness/commit-rules.mjs pr
 
   verify:
-    name: pnpm verify
+    needs: plan
+    name: ${{ ((github.event.action == 'edited' && !github.event.changes.base) || (github.event.action == 'labeled' && github.event.label.name != 'ci:full')) && 'pnpm verify (metadata only)' || 'pnpm verify' }}
     runs-on: ubuntu-latest
     # Full browser matrix measured 16.3m, plus setup/unit/build and scanner checks.
     timeout-minutes: 25
@@ -69,19 +98,22 @@ jobs:
           --health-retries 10
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm exec playwright install --with-deps chromium webkit
+      - if: needs.plan.outputs.full == 'true' || needs.plan.outputs.ui == 'true'
+        run: pnpm exec playwright install --with-deps chromium webkit
       - run: pnpm agents:link && pnpm agents:check
       - name: Prepare the verification database
+        if: needs.plan.outputs.full == 'true' || needs.plan.outputs.ui == 'true'
         run: pnpm db:migrate
-      - run: pnpm verify
-      - name: Verify scanner credentials in Chromium and WebKit
-        run: pnpm test:gate
+      - name: Run selected verification (full mode retains pnpm verify and test:gate)
+        run: node scripts/ci-verify.mjs
       - name: Preserve scanner verification evidence
         if: always()
         uses: actions/upload-artifact@v7
@@ -97,7 +129,9 @@ jobs:
           retention-days: 7
 
   database:
-    name: migrations + seed
+    needs: plan
+    if: needs.plan.outputs.database == 'true'
+    name: ${{ ((github.event.action == 'edited' && !github.event.changes.base) || (github.event.action == 'labeled' && github.event.label.name != 'ci:full')) && 'migrations + seed (metadata only)' || 'migrations + seed' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     services:
@@ -128,7 +162,9 @@ jobs:
         run: pnpm db:generate --name ci-drift-check && git diff --exit-code drizzle/ && test -z "$(git ls-files --others --exclude-standard drizzle/)"
 
   guest-journey:
-    name: invitation journey (mobile + desktop)
+    needs: plan
+    if: needs.plan.outputs.guest == 'true'
+    name: ${{ ((github.event.action == 'edited' && !github.event.changes.base) || (github.event.action == 'labeled' && github.event.label.name != 'ci:full')) && 'invitation journey (mobile + desktop) (metadata only)' || 'invitation journey (mobile + desktop)' }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     services:
@@ -172,6 +208,12 @@ jobs:
           RUN_GUEST_SNAPSHOT_DB_TESTS: "1"
       - name: Verify authenticated cached scanner reads and revocation refresh
         run: pnpm exec tsx scripts/test-guest-snapshot.ts
+      - name: Verify immutable offline scan reconciliation
+        run: pnpm exec vitest run scripts/__tests__/scan-sync.integration.test.ts
+        env:
+          RUN_SCAN_SYNC_DB_TESTS: "1"
+      - name: Verify durable offline admission and foreground sync
+        run: pnpm exec tsx scripts/test-offline-queue.ts
       - name: Verify atomic shared-network request budgets
         run: pnpm exec vitest run scripts/__tests__/rate-limit.integration.test.ts
         env:
@@ -180,6 +222,8 @@ jobs:
         run: pnpm exec playwright test e2e/order-submit.spec.ts --project=mobile --project=desktop --workers=1 --grep "network limit"
         env:
           RUN_ORDER_BROWSER_TESTS: "1"
+      - name: Verify Journey 3, guest order to kitchen and bar boards to served
+        run: pnpm exec tsx scripts/test-ordering-journey.ts
       - if: failure()
         uses: actions/upload-artifact@v7
         with:
@@ -190,7 +234,9 @@ jobs:
           retention-days: 7
 
   camera-decoding:
-    name: camera QR pixels (Chromium + WebKit)
+    needs: plan
+    if: needs.plan.outputs.camera == 'true'
+    name: ${{ ((github.event.action == 'edited' && !github.event.changes.base) || (github.event.action == 'labeled' && github.event.label.name != 'ci:full')) && 'camera QR pixels (Chromium + WebKit) (metadata only)' || 'camera QR pixels (Chromium + WebKit)' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -207,6 +253,8 @@ jobs:
         run: pnpm exec playwright test --config scripts/scanner-shell.config.ts
       - name: Verify private snapshot lifecycle and worker upgrades
         run: pnpm exec playwright test --config scripts/guest-snapshot.config.ts
+      - name: Verify durable offline queue and cold worker restart
+        run: pnpm exec playwright test --config scripts/offline-queue.config.ts
       - if: failure()
         uses: actions/upload-artifact@v7
         with:
@@ -215,10 +263,13 @@ jobs:
             artifacts/TICKET-059/camera/
             artifacts/TICKET-108/store/
             artifacts/TICKET-065/store/
+            artifacts/TICKET-066/store/
           retention-days: 7
 
   admin-journey:
-    name: admin journey (mobile + desktop)
+    needs: plan
+    if: needs.plan.outputs.admin == 'true'
+    name: ${{ ((github.event.action == 'edited' && !github.event.changes.base) || (github.event.action == 'labeled' && github.event.label.name != 'ci:full')) && 'admin journey (mobile + desktop) (metadata only)' || 'admin journey (mobile + desktop)' }}
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
@@ -251,6 +302,39 @@ jobs:
           name: admin-scan-log-evidence
           path: artifacts/TICKET-174/
           retention-days: 7
+      - name: Verify transaction-bound gate broadcasts
+        run: pnpm exec tsx scripts/test-scanner-updates.ts --db-only
+      - name: Verify two-scanner Realtime, polling and admission retries
+        run: pnpm exec tsx scripts/test-scanner-updates.ts
+      - name: Preserve scanner synchronization evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: scanner-synchronization-evidence
+          path: docs/reviews/TICKET-068/
+          retention-days: 7
       - name: Stop this job's isolated stack
         if: always()
         run: test ! -f .harness/worktree.json || pnpm db:stop
+
+  required:
+    name: ${{ ((github.event.action == 'edited' && !github.event.changes.base) || (github.event.action == 'labeled' && github.event.label.name != 'ci:full')) && 'required CI gates (metadata only)' || 'required CI gates' }}
+    if: always() && needs.plan.result != 'skipped'
+    needs: [plan, tickets, pr-text, verify, database, guest-journey, camera-decoding, admin-journey]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+      - run: node scripts/ci-gate.mjs
+        env:
+          CI_NEEDS: ${{ toJSON(needs) }}
+
+  full-proof:
+    name: ${{ ((github.event.action == 'edited' && !github.event.changes.base) || (github.event.action == 'labeled' && github.event.label.name != 'ci:full')) && 'full verification proof (metadata only)' || 'full verification proof' }}
+    needs: [plan, required]
+    if: needs.plan.outputs.full == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'All original suites passed for this full verification run.'

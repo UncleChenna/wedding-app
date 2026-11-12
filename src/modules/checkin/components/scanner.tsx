@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/modules/shared/components/ui/button";
 import { startQrCamera, type CameraControls, type CameraProblem } from "../lib/camera-reader";
+import { OfflineAdmissionResult } from "./offline-admission-result";
 import { AdmissionResult, type AdmissionSubmitter } from "./admission-result";
 import type { AdmissionResponse } from "../lib/online-admission";
 import { scanReadResultSchema, type ScanReadResult } from "../lib/scan-read-result";
@@ -38,17 +39,25 @@ const recovery: Record<CameraProblem, string> = {
 export function Scanner({
   resolveRead = readLivePass,
   submitAdmission,
+  refreshRead,
+  readRevision,
   allowAdmission = true,
   onAdmissionRecorded,
   onAdmissionOutcome,
   readOnlyNotice,
+  offlineSession,
+  onManualSearch,
 }: {
   resolveRead?: ScanResolver;
   submitAdmission?: AdmissionSubmitter;
+  refreshRead?: ScanResolver;
+  readRevision?: number;
   allowAdmission?: boolean;
   onAdmissionRecorded?: () => void;
   onAdmissionOutcome?: (response: AdmissionResponse) => void;
   readOnlyNotice?: string;
+  offlineSession?: string;
+  onManualSearch?: () => void;
 }) {
   const video = useRef<HTMLVideoElement>(null);
   const resultRegion = useRef<HTMLDivElement>(null);
@@ -69,8 +78,33 @@ export function Scanner({
   const [checkedQr, setCheckedQr] = useState<string | null>(null);
   const readController = useRef<AbortController | null>(null);
   const audio = useRef<AudioContext | null>(null);
+  const refreshController = useRef<AbortController | null>(null);
+  const revisionAtCheck = useRef(readRevision);
+  const displayedResult = useRef<ScanReadResult | null>(null);
+  const focusNewCheck = useRef(false);
+  const unresolved = useRef(false);
+  const deferredResult = useRef<ScanReadResult | null>(null);
+  const [changedDuringAdmission, setChangedDuringAdmission] = useState(false);
+  const admissionBusyChanged = useCallback((busy: boolean) => {
+    unresolved.current = busy;
+    setAdmissionBusy(busy);
+    if (!busy && deferredResult.current) {
+      const next = deferredResult.current;
+      deferredResult.current = null;
+      displayedResult.current = next;
+      setReadResult(next);
+      setChangedDuringAdmission(false);
+    }
+  }, []);
 
   const clearRead = useCallback(() => {
+    refreshController.current?.abort();
+    refreshController.current = null;
+    displayedResult.current = null;
+    focusNewCheck.current = false;
+    deferredResult.current = null;
+    unresolved.current = false;
+    setChangedDuringAdmission(false);
     readController.current?.abort();
     readController.current = null;
     setReadResult(null);
@@ -106,6 +140,9 @@ export function Scanner({
     setTorchBusy(false);
     setTorchAvailable(false);
     setState("paused");
+    displayedResult.current = result;
+    focusNewCheck.current = true;
+    revisionAtCheck.current = readRevision;
     setReadResult(result);
     setCheckedQr(result.state === "valid" ? qr : null);
     setReading(false);
@@ -135,8 +172,43 @@ export function Scanner({
   }
 
   useEffect(() => {
-    if (readResult) resultRegion.current?.focus();
+    // Background freshness updates must not steal focus from an admission receipt.
+    if (readResult && focusNewCheck.current) {
+      focusNewCheck.current = false;
+      resultRegion.current?.focus();
+    }
   }, [readResult]);
+
+  useEffect(() => {
+    if (!checkedQr || !refreshRead || readRevision === revisionAtCheck.current) return;
+    revisionAtCheck.current = readRevision;
+    const request = new AbortController();
+    refreshController.current = request;
+    void (async () => {
+      try {
+        const incoming = await refreshRead(checkedQr, request.signal);
+        if (request.signal.aborted) return;
+        const parsed = scanReadResultSchema.safeParse(incoming);
+        const next: ScanReadResult = parsed.success ? parsed.data : { state: "unavailable" };
+        if (JSON.stringify(next) === JSON.stringify(displayedResult.current)) {
+          deferredResult.current = null;
+          setChangedDuringAdmission(false);
+          return;
+        }
+        if (unresolved.current) {
+          deferredResult.current = next;
+          setChangedDuringAdmission(true);
+        } else {
+          displayedResult.current = next;
+          setReadResult(next);
+        }
+      } catch {
+        // Snapshot recovery owns network/storage failures. Do not invent a new verdict.
+      }
+    })();
+    // QR changes, a newer revision, session unmount and explicit reset all fence old reads.
+    return () => request.abort();
+  }, [checkedQr, readRevision, refreshRead]);
 
   const pauseCapture = useCallback(() => {
     readController.current?.abort();
@@ -286,19 +358,39 @@ export function Scanner({
           tabIndex={-1}
           className="focus-visible:outline-2 focus-visible:outline-ring"
         >
-          <AdmissionResult
-            result={readResult}
-            qr={checkedQr}
-            submit={submitAdmission}
-            allowAdmission={allowAdmission}
-            readOnlyNotice={readOnlyNotice}
-            onBusyChange={setAdmissionBusy}
-            onOutcome={onAdmissionOutcome}
-            onComplete={() => {
-              setAdmissionCompleted(true);
-              onAdmissionRecorded?.();
-            }}
-          />
+          {changedDuringAdmission && (
+            <p role="status" className="mb-4 text-lg leading-relaxed">
+              This pass was updated since this check. Finish or retry the current admission to
+              confirm its receipt before continuing.
+            </p>
+          )}
+          {offlineSession && !allowAdmission ? (
+            <OfflineAdmissionResult
+              result={readResult}
+              qr={checkedQr}
+              session={offlineSession}
+              notice={readOnlyNotice}
+              onBusyChange={admissionBusyChanged}
+              onRecorded={() => {
+                setAdmissionCompleted(true);
+                window.dispatchEvent(new Event("offline-queue-changed"));
+              }}
+            />
+          ) : (
+            <AdmissionResult
+              result={readResult}
+              qr={checkedQr}
+              submit={submitAdmission}
+              allowAdmission={allowAdmission}
+              readOnlyNotice={readOnlyNotice}
+              onBusyChange={admissionBusyChanged}
+              onOutcome={onAdmissionOutcome}
+              onComplete={() => {
+                setAdmissionCompleted(true);
+                onAdmissionRecorded?.();
+              }}
+            />
+          )}
         </div>
       )}
       {!admissionCompleted && (
@@ -342,27 +434,35 @@ export function Scanner({
           The camera light is unavailable. Scanning can continue.
         </p>
       )}
-      <a
-        href="#manual-check-in-help"
-        className="inline-flex min-h-11 items-center text-lg text-primary underline underline-offset-4"
-        onClick={() => document.getElementById("manual-check-in-help")?.focus()}
-      >
-        Manual check-in help
-      </a>
-      <section
-        id="manual-check-in-help"
-        tabIndex={-1}
-        aria-labelledby="manual-help-title"
-        className="flex flex-col gap-3 text-lg leading-relaxed focus-visible:outline-2 focus-visible:outline-ring"
-      >
-        <h2 id="manual-help-title" className="font-display text-3xl">
-          Need a hand?
-        </h2>
-        <p>
-          Name search is not available yet. Ask the gate lead to use the printed guest list or
-          another scanner.
-        </p>
-      </section>
+      {onManualSearch ? (
+        <Button size="lg" variant="secondary" disabled={admissionBusy} onClick={onManualSearch}>
+          Find guest by name
+        </Button>
+      ) : (
+        <>
+          <a
+            href="#manual-check-in-help"
+            className="inline-flex min-h-11 items-center text-lg text-primary underline underline-offset-4"
+            onClick={() => document.getElementById("manual-check-in-help")?.focus()}
+          >
+            Manual check-in help
+          </a>
+          <section
+            id="manual-check-in-help"
+            tabIndex={-1}
+            aria-labelledby="manual-help-title"
+            className="flex flex-col gap-3 text-lg leading-relaxed focus-visible:outline-2 focus-visible:outline-ring"
+          >
+            <h2 id="manual-help-title" className="font-display text-3xl">
+              Need a hand?
+            </h2>
+            <p>
+              Name search is not available yet. Ask the gate lead to use the printed guest list or
+              another scanner.
+            </p>
+          </section>
+        </>
+      )}
     </section>
   );
 }

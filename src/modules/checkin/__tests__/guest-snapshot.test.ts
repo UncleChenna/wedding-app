@@ -121,3 +121,19 @@ describe("minimal private guest snapshot", () => {
     expect(guestSnapshotFreshness(value, value.expiresAt)).toMatchObject({ expired: true });
   });
 });
+
+it("accepts v2 original-actor IDs while retaining strictly read-only v1 compatibility", () => {
+  const actor = { staffId: "22222222-2222-4222-8222-222222222222", deviceId: "b".repeat(64) };
+  const value = { ...snapshotFixture(), version: 2, actor };
+  expect(parseGuestSnapshot(value)).toEqual(value);
+  expect(parseGuestSnapshot(snapshotFixture())).not.toHaveProperty("actor");
+  expect(parseGuestSnapshot({ ...snapshotFixture(), actor })).toBeNull();
+  for (const invalid of [
+    null,
+    {},
+    { ...actor, email: "private@example.test" },
+    { ...actor, staffId: "invalid" },
+    { ...actor, deviceId: "credential" },
+  ])
+    expect(parseGuestSnapshot({ ...value, actor: invalid })).toBeNull();
+});

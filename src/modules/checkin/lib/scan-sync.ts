@@ -9,7 +9,7 @@ export const SCAN_RESULTS = ["valid", "already_used", "invalid", "revoked", "not
 export const MAX_SYNC_EVENTS = 200;
 
 export const scanEventSchema = z
-  .object({
+  .strictObject({
     clientEventId: z.uuid(),
     /** Null when the device could not match the pass to an invitation. */
     invitationId: z.uuid().nullable(),
@@ -18,15 +18,35 @@ export const scanEventSchema = z
     reportedResult: z.enum(SCAN_RESULTS),
     /** People the device let in. Only a valid scan admits anyone. */
     reportedPeople: z.int().min(0).max(50),
+    kind: z.enum(["admission", "observation"]).optional(),
+    inputMethod: z.enum(["qr", "manual"]).optional(),
   })
-  .refine((event) => (event.reportedResult === "valid") === event.reportedPeople > 0, {
-    message: "A valid scan admits at least one person; any other result admits nobody.",
-    path: ["reportedPeople"],
-  });
+  .refine(
+    (event) =>
+      event.kind === "observation"
+        ? event.reportedPeople === 0
+        : (event.reportedResult === "valid") === event.reportedPeople > 0,
+    {
+      message: "A valid scan admits at least one person; any other result admits nobody.",
+      path: ["reportedPeople"],
+    },
+  );
 export type ScanEventReport = z.infer<typeof scanEventSchema>;
 
-export const scanSyncBatchSchema = z.object({
+export const scanSyncBatchSchema = z.strictObject({
   events: z.array(scanEventSchema).min(1).max(MAX_SYNC_EVENTS),
+});
+
+/** Original identity must be checked by the server, not merely by the uploading tab. */
+export const scanSyncUploadSchema = scanSyncBatchSchema.extend({
+  expectedActor: z.strictObject({
+    staffId: z.uuid(),
+    deviceId: z
+      .string()
+      .min(1)
+      .max(128)
+      .regex(/^[A-Za-z0-9_-]+$/),
+  }),
 });
 
 export type ScanResult = (typeof SCAN_RESULTS)[number];
@@ -63,6 +83,11 @@ export type ReconciledScan = { result: ScanResult; admitted: number; conflict: b
  * - A refusal the device showed admits nobody and needs no review.
  */
 export function reconcileScan(report: ScanEventReport, state: ReconcileState): ReconciledScan {
+  if (report.kind === "observation") {
+    return report.reportedPeople === 0
+      ? { result: report.reportedResult, admitted: 0, conflict: false }
+      : { result: "invalid", admitted: 0, conflict: true };
+  }
   if (report.reportedResult !== "valid") {
     return { result: report.reportedResult, admitted: 0, conflict: false };
   }

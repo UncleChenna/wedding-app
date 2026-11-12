@@ -1,5 +1,5 @@
 {
-  "id": "46b26b63-d62c-4890-82e8-f8a2fa4acb9e",
+  "id": "93e7e26d-9ea1-45d6-9dd8-817700111459",
   "prevId": "0d1c6b13-f85c-4288-a1e5-54349924ac34",
   "version": "7",
   "dialect": "postgresql",
@@ -1595,12 +1595,6 @@
           "primaryKey": false,
           "notNull": false
         },
-        "entered_by_staff_id": {
-          "name": "entered_by_staff_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": false
-        },
         "status": {
           "name": "status",
           "type": "order_status",
@@ -1665,19 +1659,6 @@
             "id"
           ],
           "onDelete": "restrict",
-          "onUpdate": "no action"
-        },
-        "orders_entered_by_staff_id_staff_id_fk": {
-          "name": "orders_entered_by_staff_id_staff_id_fk",
-          "tableFrom": "orders",
-          "tableTo": "staff",
-          "columnsFrom": [
-            "entered_by_staff_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "set null",
           "onUpdate": "no action"
         }
       },
@@ -2141,6 +2122,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "offline_intent_digest": {
+          "name": "offline_intent_digest",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
         "legacy_check_in_id": {
           "name": "legacy_check_in_id",
           "type": "uuid",
@@ -2301,6 +2288,10 @@
       "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {
+        "scan_events_offline_intent_digest": {
+          "name": "scan_events_offline_intent_digest",
+          "value": "\"scan_events\".\"offline_intent_digest\" is null or (\"scan_events\".\"source\" = 'offline' and \"scan_events\".\"offline_intent_digest\" ~ '^[0-9a-f]{64}$')"
+        },
         "scan_events_input_method": {
           "name": "scan_events_input_method",
           "value": "\"scan_events\".\"input_method\" is null or \"scan_events\".\"input_method\" in ('qr', 'manual')"

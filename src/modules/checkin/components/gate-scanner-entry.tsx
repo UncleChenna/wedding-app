@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { clientEnv } from "@/modules/shared/lib/env/client";
 import { currentStaffDevice } from "@/modules/shared/server/staff-cookies";
 import { staffSignOutAction, clearStaffSessionAction } from "@/modules/shared/server/staff-actions";
 import { StaffEntry } from "@/modules/shared/components/staff-entry";
@@ -35,7 +36,14 @@ async function Content() {
         signOut={staffSignOutAction}
         clearSession={clearStaffSessionAction}
       >
-        <GuestSnapshotScanner session={session} expiresAt={staff.expiresAt.getTime()} />
+        <GuestSnapshotScanner
+          session={session}
+          expiresAt={staff.expiresAt.getTime()}
+          realtime={{
+            url: clientEnv.NEXT_PUBLIC_SUPABASE_URL,
+            publishableKey: clientEnv.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
+          }}
+        />
       </ScannerOfflineControls>
     </main>
   );
