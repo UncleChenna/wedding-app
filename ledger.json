@@ -3037,15 +3037,16 @@
         "- 2026-11-12 — todo → in_progress — divine (codex)",
         "- 2026-11-12 — in_progress → in_review — divine (codex)",
         "- 2026-11-12 — in_review → in_progress — divine (codex) — Actual GitHub metadata-only jobs retain unevaluated names; preserve recognition using exact aliases and captured-payload regression.",
-        "- 2026-11-12 — in_progress → in_review — divine (codex)"
+        "- 2026-11-12 — in_progress → in_review — divine (codex)",
+        "- 2026-11-12 — in_review → done — divine (codex)"
       ],
-      "status": "in_review",
+      "status": "done",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-227",
       "pr": "https://github.com/UncleChenna/wedding-app/pull/165",
       "started": "2026-11-12",
-      "completed": "",
+      "completed": "2026-11-12",
       "updated": "2026-11-12",
       "reason": "",
       "resume_to": ""
