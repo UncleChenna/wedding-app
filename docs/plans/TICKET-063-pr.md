@@ -36,8 +36,8 @@ transaction; cached selections remain explicitly read-only until TICKET-066.
 - Four themes × three widths (375/768/1280) × six states × two projects produce
   144 screenshots. Browser assertions enforce no horizontal overflow and zero axe
   violations. Physical arm's-length/device review remains a release requirement.
-- Working against merged TICKET-065 implementation; keep draft while its completion
-  evidence is being reconciled and this PR's final verification is outstanding.
+- TICKET-065 is now verified merged and marked done. All software acceptance
+  criteria are proved; physical release checks remain explicitly separate.
 
 # Verification
 
@@ -93,3 +93,10 @@ remains attributed to its original base. Combined quick verification passes lint
 and types (no changed source since integration); final combined CI is pending.
 The original arm's-length requirement is preserved unchecked in TICKET-201,
 which blocks both release tickets, under the approved preview exception.
+
+Final dependency integration: develop2a0cf958adf7614c69758753bc35d8d5ea18aa5b
+merged conflict-free as eb854c7. Decoder changes are the independently reviewed
+repair whose complete hosted CI passed before merge. Combined manual-cache,
+snapshot boundary and decoder regression tests:37passed (2.50s). Normal merge
+hooks and ticket validation pass; final PR-head CI remains required before merge.
+No repeated unchanged broad local suite or physical-device pass is claimed.

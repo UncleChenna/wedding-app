@@ -68,3 +68,7 @@ clean, completing144-image matrix review. Original physical arm-length AC kept
 verbatim unchecked in201 (unowned/todo confirmed); software063 acceptance now
 explicitly separates18px/automated checks from that release gate. Await verified
 PR158 combinedCI before finalbaseintegration/readiness; no baselinegreenclaim.
+
+Final integration2026-11-12:065done confirmed, develop2a0cf958 merged cleanly
+as eb854c7.37focusedmanual/cache/decoder tests pass. Preparing normalt:pr;
+physical201gates remain unchecked. NoDBrunning. FinalCI required beforemerge.
