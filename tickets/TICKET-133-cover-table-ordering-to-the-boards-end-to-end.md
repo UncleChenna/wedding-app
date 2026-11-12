@@ -2,7 +2,7 @@
 id: TICKET-133
 title: Cover table ordering to the boards end to end
 epic: testing
-status: in_progress
+status: in_review
 priority: high
 estimate: M
 labels: [test]
@@ -12,7 +12,7 @@ agent: claude
 blocked_by: [TICKET-075, TICKET-077, TICKET-078, TICKET-073, TICKET-080]
 blocks: [TICKET-137, TICKET-154]
 branch: TICKET-133
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/166
 created: 2026-10-21
 updated: 2026-11-12
 started: 2026-11-12
@@ -67,3 +67,4 @@ _Agents append dated notes here while working._
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-12 — todo → claimed — unclechenna (claude) — started ahead of TICKET-075 (in_review), TICKET-077 (in_review), TICKET-078 (in_review)
 - 2026-11-12 — todo → in_progress — unclechenna (claude) — started ahead of TICKET-075 (in_review), TICKET-077 (in_review), TICKET-078 (in_review)
+- 2026-11-12 — in_progress → in_review — unclechenna (claude)
