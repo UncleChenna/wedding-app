@@ -62,7 +62,7 @@ The reservation is locked across worktrees in one clone; live port checks also a
 2. Tick the acceptance criteria you proved. Never append to the shared historical `docs/progress.md`. Commit ticket changes only.
 3. Copy `.github/pull_request_template.md` to `docs/plans/<ticket-id>-pr.md`, fill in evidence and commit it. This PR body is the single write-up for finished work: no separate handoff, plan or review file is required. Write `docs/handoffs/<ticket-id>.md` only when work is unfinished or changing hands.
 4. Run `pnpm t:pr <id>` inside the worktree. It runs `verify:quick` (`--full` runs the whole suite locally), pushes the branch, opens, updates or readies a PR targeting `develop` titled `<id>: <title>`, and moves the ticket to `in_review`. It requires `gh` and an authenticated `origin`.
-5. CI runs the full `pnpm verify` and is the merge gate. When every required check is green, the ticket owner's agent merges its own PR into `develop`, unless the owner asked to review first. Never merge another owner's PR or on red or pending checks. Then `pnpm t:move <id> done` verifies the merged PR and records completion in the ledger. Only the ticket’s own branch syncs its file; other branches read completion from the shared ledger. Only the owner merges `develop` into `main`.
+5. CI runs the required scope-selected PR checks described below and is the merge gate. When every required check is green, the ticket owner's agent merges its own PR into `develop`, unless the owner asked to review first. Never merge another owner's PR or on red or pending checks. Then `pnpm t:move <id> done` verifies the merged PR and records completion in the ledger. Only the ticket’s own branch syncs its file; other branches read completion from the shared ledger. Only the owner merges `develop` into `main`.
 6. From the primary checkout, run `pnpm wt:remove <id>`. It refuses dirty or unmerged work, stops only that stack, deletes its disposable database volumes, and removes the checkout. The Git branch remains for recovery. Removal is explicit authorization to delete that worktree's disposable data; back up anything valuable first.
 
 `wt:list` lists Git checkouts; `wt:prune` removes stale Git metadata only, never data. A failed setup leaves a reservation and checkout for retry; use `wt:remove` for cleanup. If a harness process crashes while holding `.git/harness-*.lock`, confirm no process is active before manually removing that lock directory. No automatic expiry can evict a live agent's lock.
@@ -79,7 +79,7 @@ Author each portable skill at `.agents/skills/<name>/SKILL.md` with YAML `name` 
 
 Shared pre-tool hooks allow non-secret reads outside the checkout, resolve symlink targets, and confine edits to the checkout, except for throwaway locations (`/dev/null` and temp folders such as `/tmp` and the agent scratchpad). Other checkouts, including other people's worktrees, stay off limits. Secret environment-file reads remain blocked (`.env.example` is allowed). Common shell commands and redirects are inspected by their read/write operands, so mentioning a protected path in quoted data or a read-only pipeline does not imply a write. Heredoc bodies are treated as data, not commands. Dynamic write targets must use an explicit path. This is static inspection, not a complete shell interpreter; arbitrary programs still rely on post-tool/staged checks and platform permissions.
 
-Shared pre-tool hooks reject direct protected-file edits and obvious shell writes. Post-tool hooks format/lint changed editable files and only _report_ protected files changed by a program (a generator, `pnpm install`). The stop hook likewise reports them and requires `verify:quick`, with no failure-count escape for a failing check. Cursor uses uncapped follow-ups. Husky is the enforcement point: it blocks main/develop commits and direct pushes, refuses unapproved protected staged files, and runs lint-staged and the quick gate. CI remains the full merge gate. Hooks cannot prevent a user killing a process, disabling local hooks, or arbitrary external programs changing files; they are workflow enforcement, not an OS security boundary. Sandbox permissions and GitHub protection remain necessary.
+Shared pre-tool hooks reject direct protected-file edits and obvious shell writes. Post-tool hooks format/lint changed editable files and only _report_ protected files changed by a program (a generator, `pnpm install`). The stop hook likewise reports them and requires `verify:quick`, with no failure-count escape for a failing check. Cursor uses uncapped follow-ups. Husky is the enforcement point: it blocks main/develop commits and direct pushes, refuses unapproved protected staged files, and runs lint-staged and the quick gate. CI remains the required merge gate; full release verification remains mandatory. Hooks cannot prevent a user killing a process, disabling local hooks, or arbitrary external programs changing files; they are workflow enforcement, not an OS security boundary. Sandbox permissions and GitHub protection remain necessary.
 
 ### Protected files
 
@@ -161,6 +161,42 @@ all tracked and nonignored untracked files, runtime, environment, local environm
 configuration and installed dependency metadata. Hashes do not disclose values.
 Any changed input, missing/malformed record or failed new run prevents reuse.
 This is a local workflow optimization, not signed proof or a security boundary:
-never hand-edit evidence, and always retain independent full CI checks. Database
+never hand-edit evidence, and always retain independent CI checks under the policy below. Database
 contents and external services can change independently; use `--force-verify`
 after such changes. Neither reuse nor a passing gate certifies unrun device QA.
+
+## CI verification policy
+
+Every implementation PR runs format, lint, types and tests affected by its exact
+base/head changes. The selector uses committed Git changes, not a clean checkout's
+empty working diff. Vitest follows the import graph for changed feature sources;
+changed tests also run directly. Deleted paths, missing history, unknown files,
+shared modules, routes, configuration, tooling and workflow changes select the
+complete original verification matrix. Documentation-only changes still run the
+static gates and ticket checks, with no claim that product tests executed.
+
+Feature UI changes run the small mobile/desktop route smoke suite. Feature server,
+authentication, persistence, scanner and offline changes select their existing
+integration jobs. The required aggregate reports selected and non-applicable jobs
+and rejects any failed, cancelled or unexpectedly skipped selected check. A skipped
+non-applicable suite is not a passing test result. PR descriptions must state the
+actual selected evidence and retain physical-device release requirements.
+
+The original full `pnpm verify`, scanner engines, migrations/seed and integration
+jobs remain mandatory before release. They run for main pushes, published releases,
+manual CI dispatch and PRs labelled `ci:full`; shared/unknown scope also runs them.
+Run full CI on the intended release commit **before publishing**; the published
+release trigger is an additional check, not authorization to release first.
+For an explicit full PR run, apply `ci:full` (or remove/reapply it to rerun at the
+same head). The `ci:full` label exists in the repository and works while this workflow
+is only on develop. GitHub exposes manual dispatch once the trigger is present on
+the default branch (currently main); do not change the default branch or push to
+main to enable it. Historical repair reconciliation accepts only an exact-head PR run
+with all original jobs and the full verification proof successful; targeted-only
+runs cannot certify an earlier broken merge. Existing historical evidence remains
+compatible.
+
+PR title/body edits run the text rule independently. The code workflow ignores
+those events using separate concurrency and distinct metadata-only check names,
+so it neither cancels nor supersedes real implementation checks. A base-branch
+edit still performs normal code verification against the new base SHA.

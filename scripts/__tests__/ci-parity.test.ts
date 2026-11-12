@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 import { describe, expect, it } from "vitest";
+import { verificationCommands } from "../ci-verify.mjs";
 
 const root = resolve(import.meta.dirname, "../..");
 const workflow = readFileSync(resolve(root, ".github/workflows/ci.yml"), "utf8");
@@ -32,8 +33,13 @@ describe("CI parity", () => {
       "pnpm exec playwright install --with-deps chromium webkit",
       "pnpm agents:link && pnpm agents:check",
       "pnpm db:migrate",
-      "pnpm verify",
-      "pnpm test:gate",
+      "node scripts/ci-verify.mjs",
     ]);
+    expect(verificationCommands({ full: true })).toEqual([
+      ["pnpm", "verify"],
+      ["pnpm", "test:gate"],
+    ]);
+    expect(verifyJob).toContain("fetch-depth: 0");
+    expect(workflow).toContain("|| 'full verification proof'");
   });
 });
