@@ -2,7 +2,7 @@
 id: TICKET-068
 title: Sync check-ins across scanners within two seconds
 epic: checkin
-status: in_progress
+status: in_review
 priority: high
 estimate: M
 labels: [frontend, backend]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-033, TICKET-061, TICKET-065]
 blocks: [TICKET-137, TICKET-154]
 branch: TICKET-068
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/154
 created: 2026-10-21
 updated: 2026-11-12
 started: 2026-11-10
@@ -63,3 +63,4 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-7).
 - 2026-11-10 — todo → in_progress — divine (codex) — started ahead of TICKET-065 (in_review)
 - 2026-11-12 — in_progress → blocked — divine (codex) — Awaiting verified TICKET-065 decoder follow-up; switching to user-assigned targeted CI ticket.
 - 2026-11-12 — blocked → in_progress — divine (codex) — Verified TICKET-065 decoder repair merged; resuming final combined integration.
+- 2026-11-12 — in_progress → in_review — divine (codex)
