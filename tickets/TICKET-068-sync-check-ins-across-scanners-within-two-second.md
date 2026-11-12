@@ -2,7 +2,7 @@
 id: TICKET-068
 title: Sync check-ins across scanners within two seconds
 epic: checkin
-status: in_progress
+status: in_review
 priority: high
 estimate: M
 labels: [frontend, backend]
