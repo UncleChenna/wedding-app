@@ -2792,16 +2792,17 @@
         "- 2026-11-10 — in_progress → in_review — divine (codex)",
         "- 2026-11-10 — in_review → in_progress — divine (codex) — Fix reviewed admission-refusal cache invalidation gap before merge",
         "- 2026-11-10 — in_progress → in_review — divine (codex)",
-        "- 2026-11-10 — in_review → in_progress — divine (codex) — Diagnose final CI WebKit signed QR decode failure without weakening camera checks"
+        "- 2026-11-10 — in_review → in_progress — divine (codex) — Diagnose final CI WebKit signed QR decode failure without weakening camera checks",
+        "- 2026-11-12 — in_progress → in_review — divine (codex)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-065",
-      "pr": "https://github.com/UncleChenna/wedding-app/pull/147",
+      "pr": "https://github.com/UncleChenna/wedding-app/pull/158",
       "started": "2026-11-09",
       "completed": "",
-      "updated": "2026-11-10",
+      "updated": "2026-11-12",
       "reason": "",
       "resume_to": ""
     },
