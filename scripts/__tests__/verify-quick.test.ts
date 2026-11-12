@@ -36,6 +36,9 @@ function fixture() {
   write(".github/workflows/ci.yml", readFileSync(join(root, ".github/workflows/ci.yml"), "utf8"));
   write(".env.example", readFileSync(join(root, ".env.example"), "utf8"));
   write(parity, readFileSync(join(root, parity), "utf8"));
+  for (const file of ["ci-verify.mjs", "ci-plan.mjs", "ci-selection.mjs"]) {
+    write(`scripts/${file}`, readFileSync(join(root, "scripts", file), "utf8"));
+  }
   git("add", ".");
   git("commit", "-qm", "fixture baseline");
   git("update-ref", "refs/remotes/origin/develop", "HEAD");
