@@ -144,7 +144,7 @@ Every new ticket uses its exact ID as its branch, such as `TICKET-188`. Push to 
 Keep the ticket ID in the Markdown filename, commit subjects and PR title (`TICKET-188: task title`).
 One ticket produces one branch and PR; additional scope needs its own ticket. All PRs target `develop`.
 Agents push progress and open a draft PR for unfinished handoffs; finished work must have a ready review PR.
-CI's full `pnpm verify` is the merge gate. Once every required check is green, the ticket owner's agent merges its
+CI's required scope-selected checks are the merge gate; full verification remains mandatory before release (see [CI policy](collaboration.md#ci-verification-policy)). Once every required check is green, the ticket owner's agent merges its
 own PR into `develop`, unless the owner asked to review first. Agents never merge another owner's PR, never merge on
 red or pending checks, never enable auto-merge, and never push directly to integration branches. Only the owner
 merges into `main`.

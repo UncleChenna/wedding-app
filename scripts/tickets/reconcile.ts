@@ -39,9 +39,19 @@ const requiredJobs = [
 /** Optional review success cannot stand in for the repository's full CI workflow. */
 export function verifyRepairRun(value: unknown, expectedHead: string, historical = false): string {
   const checked = runSchema.parse(value);
+  // Scoped CI is not full repair provenance. Its dedicated proof job only runs
+  // after every original suite succeeds; skipped jobs still fail runSchema above.
+  const scopedWorkflow = checked.jobs.some((job) => job.name === "verification scope");
+  const expectedJobs = scopedWorkflow
+    ? ["verification scope", "required CI gates", "full verification proof",
+        "no AI attribution in PR text",
+       "tickets valid", "pnpm verify", "migrations + seed",
+       "invitation journey (mobile + desktop)", "admin journey (mobile + desktop)",
+       "camera QR pixels (Chromium + WebKit)"]
+    : historical ? requiredJobs.slice(0, 4) : requiredJobs;
   if (
     checked.headSha !== expectedHead ||
-    (historical ? requiredJobs.slice(0, 4) : requiredJobs).some(
+    expectedJobs.some(
       (name) => !checked.jobs.some((job) => job.name === name),
     )
   )
@@ -181,81 +191,52 @@ export function reconciliationEvidence(
   };
 }
 
-function verifiedRun(cwd: string, head: string, dependencies: Dependencies, historical: boolean) {
-  const runs = z
-    .array(z.object({ databaseId: z.number().int().positive() }))
-    .parse(
-      dependencies.gh(
-        [
-          "run",
-          "list",
-          "--workflow",
-          "ci.yml",
-          "--commit",
-          head,
-          "--event",
-          "pull_request",
-          "--limit",
-          "1",
-          "--json",
-          "databaseId",
-        ],
-        cwd,
-      ),
-    );
-  const latest = runs[0];
-  if (!latest) throw new TransitionError("No CI workflow run exists for the repair head.");
-  const evidence = dependencies.gh(
-    [
-      "run",
-      "view",
-      String(latest.databaseId),
-      "--json",
-      "databaseId,headSha,status,conclusion,event,url,jobs",
-    ],
-    cwd,
-  );
-  const runUrl = verifyRepairRun(evidence, head, historical);
-  if (runSchema.parse(evidence).databaseId !== latest.databaseId)
-    throw new TransitionError("CI run identity changed while reading evidence.");
-  const currentRuns = z
-    .array(z.object({ databaseId: z.number().int().positive() }))
-    .parse(
-      dependencies.gh(
-        [
-          "run",
-          "list",
-          "--workflow",
-          "ci.yml",
-          "--commit",
-          head,
-          "--event",
-          "pull_request",
-          "--limit",
-          "1",
-          "--json",
-          "databaseId",
-        ],
-        cwd,
-      ),
-    );
-  if (currentRuns[0]?.databaseId !== latest.databaseId)
+const metadataJobNames = [
+  "verification scope", "tickets valid", "no AI attribution in PR text", "pnpm verify",
+  "migrations + seed", "invitation journey (mobile + desktop)",
+  "camera QR pixels (Chromium + WebKit)", "admin journey (mobile + desktop)",
+  "required CI gates", "full verification proof",
+].map((name) => `${name} (metadata only)`);
+
+/** Only the exact, completed all-skipped metadata workflow is ignorable. */
+export function isMetadataOnlyRun(value: unknown, expectedHead: string): boolean {
+  const parsed = z.object({
+    headSha: z.literal(expectedHead), event: z.literal("pull_request"),
+    status: z.literal("completed"), conclusion: z.enum(["success", "skipped"]),
+    jobs: z.array(z.object({name: z.string(), status: z.literal("completed"), conclusion: z.literal("skipped")})),
+  }).safeParse(value);
+  return parsed.success && parsed.data.jobs.length === metadataJobNames.length &&
+    metadataJobNames.every((name) => parsed.data.jobs.some((job) => job.name === name));
+}
+
+export function verifiedRun(cwd: string, head: string, dependencies: Dependencies, historical: boolean) {
+  const read = (id: number) => dependencies.gh([
+    "run", "view", String(id), "--json", "databaseId,headSha,status,conclusion,event,url,jobs",
+  ], cwd);
+  const latestCodeRun = () => {
+    const runs = z.array(z.object({databaseId: z.number().int().positive()})).parse(dependencies.gh([
+      "run", "list", "--workflow", "ci.yml", "--commit", head, "--event", "pull_request",
+      "--limit", "20", "--json", "databaseId",
+    ], cwd));
+    for (const candidate of runs) {
+      const evidence = read(candidate.databaseId);
+      if (z.object({databaseId:z.literal(candidate.databaseId)}).safeParse(evidence).success === false)
+        throw new TransitionError("CI run identity changed while reading evidence.");
+      if (!isMetadataOnlyRun(evidence, head)) return {id:candidate.databaseId,evidence};
+    }
+    // Bound the search and fail closed rather than assume older unseen evidence passed.
+    throw new TransitionError("No implementation CI found in the latest 20 runs; rerun full CI.");
+  };
+  const latest = latestCodeRun();
+  const runUrl = verifyRepairRun(latest.evidence, head, historical);
+  const current = latestCodeRun();
+  if (current.id !== latest.id)
     throw new TransitionError("A newer repair CI run appeared; wait for its completed result.");
-  // A GitHub rerun can retain the run ID while becoming pending again.
-  const finalRun = dependencies.gh(
-    [
-      "run",
-      "view",
-      String(latest.databaseId),
-      "--json",
-      "databaseId,headSha,status,conclusion,event,url,jobs",
-    ],
-    cwd,
-  );
-  if (
-    verifyRepairRun(finalRun, head, historical) !== runUrl ||
-    runSchema.parse(finalRun).databaseId !== latest.databaseId
-  )
+  if (verifyRepairRun(current.evidence, head, historical) !== runUrl)
+    throw new TransitionError("Repair CI evidence changed during reconciliation.");
+  // Reruns retain an ID: re-read it after the latest-run scan as well.
+  const finalRun = read(latest.id);
+  if (verifyRepairRun(finalRun, head, historical) !== runUrl || runSchema.parse(finalRun).databaseId !== latest.id)
     throw new TransitionError("Repair CI evidence changed during reconciliation.");
   return runUrl;
 }
