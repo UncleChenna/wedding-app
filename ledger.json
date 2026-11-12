@@ -2895,16 +2895,17 @@
         "- 2026-11-10 — todo → claimed — divine (codex) — started ahead of TICKET-065 (in_review), TICKET-062 (in_review)",
         "- 2026-11-10 — todo → in_progress — divine (codex) — started ahead of TICKET-065 (in_review), TICKET-062 (in_review)",
         "- 2026-11-10 — in_progress → blocked — divine (codex) — Awaiting verified TICKET-065 merge and its authoritative-outcome cache boundary before scanner/offline integration and actual browser verification; server and isolated UI checkpoint pushed in draft PR152.",
-        "- 2026-11-11 — blocked → in_progress — divine (codex) — Resume manual search integration against merged cache implementation; keep draft until dependency verification and actual journey checks pass; started ahead of TICKET-065 (in_progress)"
+        "- 2026-11-11 — blocked → in_progress — divine (codex) — Resume manual search integration against merged cache implementation; keep draft until dependency verification and actual journey checks pass; started ahead of TICKET-065 (in_progress)",
+        "- 2026-11-12 — in_progress → in_review — divine (codex)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-063",
-      "pr": "",
+      "pr": "https://github.com/UncleChenna/wedding-app/pull/152",
       "started": "2026-11-10",
       "completed": "",
-      "updated": "2026-11-11",
+      "updated": "2026-11-12",
       "reason": "",
       "resume_to": ""
     },
