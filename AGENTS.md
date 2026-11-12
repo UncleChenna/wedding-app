@@ -143,7 +143,7 @@ Before writing or changing code, review the task list to confirm you are working
    with the ticket id, e.g. `TICKET-014: add RSVP form validation`.
 5. **Finish.** Tick the acceptance criteria, write the PR body (`docs/plans/<id>-pr.md`, the single write-up), then
    `pnpm t:pr <id>`. It runs `verify:quick` (`--full` for the whole suite), pushes, opens or readies a PR to
-   `develop`, and moves the ticket to `in_review`. CI runs the full `pnpm verify`.
+   `develop`, and moves the ticket to `in_review`. CI runs the [scope-selected PR checks](docs/collaboration.md#ci-verification-policy); full verification remains mandatory before release.
 6. **Close.** Once CI is green, merge it yourself (see Merging above) unless the owner wants to review first. Then
    `pnpm t:move <id> done` (records completion date and PR link), then `pnpm wt:remove <id>`.
    The ticket file and boards catch up on your next ticket branch (`t:move … in_progress` syncs them).

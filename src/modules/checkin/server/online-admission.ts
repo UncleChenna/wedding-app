@@ -1,6 +1,7 @@
 import "server-only";
 import { and, eq, isNull } from "drizzle-orm";
 import type { Db } from "@/modules/shared/server/db/client";
+import { publishToStation } from "@/modules/shared/server/realtime-publish";
 import {
   admissionCounters,
   invitations,
@@ -22,6 +23,7 @@ export type VerifiedAdmissionIntent = {
   invitationId: string;
   passVersion: number;
   people: number;
+  inputMethod?: "qr" | "manual";
 };
 
 async function replay(
@@ -40,6 +42,7 @@ async function replay(
       admittedPeople: scanEvents.admittedPeople,
       conflict: scanEvents.conflict,
       receivedAt: scanEvents.receivedAt,
+      inputMethod: scanEvents.inputMethod,
     })
     .from(scanEvents)
     .where(eq(scanEvents.clientEventId, intent.clientEventId));
@@ -125,10 +128,16 @@ export function admitVerifiedPass(
         reportedPeople: intent.people,
         admittedPeople: decision.admit,
         source: "online",
+        inputMethod: intent.inputMethod ?? "qr",
       })
       .onConflictDoNothing({ target: scanEvents.clientEventId })
       .returning({ receivedAt: scanEvents.receivedAt });
     if (!inserted) return (await replay(tx, actor, intent)) ?? { state: "conflict" };
+    await publishToStation(tx, "gate", "checkin.recorded", {
+      invitationId: invitation.id,
+      admitted: decision.admit,
+      conflict: false,
+    });
     return {
       state: "recorded",
       people: decision.admit,

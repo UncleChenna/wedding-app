@@ -1,4 +1,15 @@
-import { z } from "zod";
+import {
+  strictObject,
+  string,
+  regex,
+  literal,
+  uuid,
+  number,
+  int,
+  minimum,
+  maximum,
+  type infer as Infer,
+} from "zod/mini";
 import { ed25519 } from "@noble/curves/ed25519.js";
 
 /**
@@ -12,17 +23,17 @@ export const GATE_PASS_MAX_LENGTH = 512;
 /** ADR 0020 row 11: reject passes issued more than 10 minutes ahead of the device clock. */
 export const GATE_PASS_MAX_FUTURE_SKEW_SECONDS = 600;
 
-export const gateKeyIdSchema = z.string().regex(/^[a-z0-9-]{1,32}$/);
+export const gateKeyIdSchema = string().check(regex(/^[a-z0-9-]{1,32}$/));
 
-export const gatePassPayloadSchema = z.strictObject({
-  v: z.literal(GATE_PASS_VERSION),
+export const gatePassPayloadSchema = strictObject({
+  v: literal(GATE_PASS_VERSION),
   kid: gateKeyIdSchema,
-  inv: z.uuid(),
-  ver: z.number().int().positive().max(2_147_483_647),
-  iat: z.number().int().nonnegative(),
+  inv: uuid(),
+  ver: number().check(int(), minimum(1), maximum(2_147_483_647)),
+  iat: number().check(int(), minimum(0)),
 });
 
-export type GatePassPayload = z.infer<typeof gatePassPayloadSchema>;
+export type GatePassPayload = Infer<typeof gatePassPayloadSchema>;
 
 /** A published verification key: raw SPKI DER, base64url-encoded. */
 export type GatePublicKey = { kid: string; alg: "Ed25519"; spki: string };

@@ -88,6 +88,31 @@ afterEach(() => {
   vi.useRealTimers();
   vi.unstubAllGlobals();
 });
+it("uses an explicit manual target without a QR and retains it through uncertain retry", async () => {
+  const request = vi
+    .fn<typeof fetch>()
+    .mockRejectedValueOnce(new Error("lost response"))
+    .mockResolvedValueOnce(
+      Response.json({ state: "duplicate", people: 4, recordedAt: "2026-12-19T12:00:00.000Z" }),
+    );
+  vi.stubGlobal("fetch", request);
+  const manual = { invitationId: "550e8400-e29b-41d4-a716-446655440000", version: 3 };
+  render(<AdmissionResult result={result} qr={null} manual={manual} onBusyChange={() => {}} />);
+  await act(async () => fireEvent.click(screen.getByRole("button", { name: "Admit 4 guests" })));
+  const first = request.mock.calls[0];
+  expect(first?.[0]).toBe("/api/checkin/manual");
+  expect(JSON.parse(String(first?.[1]?.body))).toEqual({
+    operation: "admit",
+    ...manual,
+    people: 4,
+    clientEventId: expect.any(String),
+  });
+  await act(async () =>
+    fireEvent.click(screen.getByRole("button", { name: "Retry this admission" })),
+  );
+  expect(request.mock.calls[1]?.[1]?.body).toBe(first?.[1]?.body);
+  expect(screen.getByRole("heading", { name: "Already recorded" })).toBeVisible();
+});
 it("defaults to remaining and shows welcome only after the committed selected count", async () => {
   const submit = vi.fn<AdmissionSubmitter>(async () => ({
     state: "recorded" as const,

@@ -2,6 +2,7 @@ import "server-only";
 import { unstable_rethrow } from "next/navigation";
 import { createLogger } from "@/modules/shared/lib/logger";
 import { guestSnapshotSchema } from "../lib/guest-snapshot";
+import type { OfflineActor } from "../lib/offline-queue";
 import type { SnapshotAuthority } from "../browser/guest-snapshot-store";
 
 const headers = {
@@ -14,7 +15,7 @@ const refuse = (status: number) =>
 
 /** Recheck the same live credential after the consistent database projection finishes. */
 export async function guestSnapshotResponse(deps: {
-  authorize: () => Promise<SnapshotAuthority | null>;
+  authorize: () => Promise<(SnapshotAuthority & { actor: OfflineActor }) | null>;
   load: () => Promise<unknown>;
 }): Promise<Response> {
   try {
@@ -26,6 +27,8 @@ export async function guestSnapshotResponse(deps: {
     if (
       !current ||
       current.session !== initial.session ||
+      current.actor.staffId !== initial.actor.staffId ||
+      current.actor.deviceId !== initial.actor.deviceId ||
       Math.min(current.expiresAt, initial.expiresAt) <= Date.now()
     )
       return refuse(401);
@@ -34,7 +37,8 @@ export async function guestSnapshotResponse(deps: {
     // Spreading the explicit projection preserves unknown fields for strict rejection.
     const parsed = guestSnapshotSchema.safeParse({
       ...projection,
-      version: 1,
+      version: 2,
+      actor: initial.actor,
       session: initial.session,
       generatedAt,
       expiresAt: Math.min(initial.expiresAt, current.expiresAt),

@@ -410,6 +410,7 @@ export const scanEvents = pgTable(
     conflict: boolean("conflict").notNull().default(false),
     source: text("source").notNull(),
     inputMethod: text("input_method"),
+    offlineIntentDigest: text("offline_intent_digest"),
     legacyCheckInId: uuid("legacy_check_in_id").references(() => checkIns.id, {
       onDelete: "restrict",
     }),
@@ -420,6 +421,10 @@ export const scanEvents = pgTable(
     index("scan_events_invitation_received_idx").on(t.invitationId, t.receivedAt),
     index("scan_events_device_received_idx").on(t.deviceId, t.receivedAt),
     index("scan_events_staff_received_idx").on(t.staffId, t.receivedAt),
+    check(
+      "scan_events_offline_intent_digest",
+      sql`${t.offlineIntentDigest} is null or (${t.source} = 'offline' and ${t.offlineIntentDigest} ~ '^[0-9a-f]{64}$')`,
+    ),
     check(
       "scan_events_input_method",
       sql`${t.inputMethod} is null or ${t.inputMethod} in ('qr', 'manual')`,

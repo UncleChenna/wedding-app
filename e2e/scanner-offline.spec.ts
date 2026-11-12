@@ -65,7 +65,13 @@ test.describe("authenticated offline scanner", () => {
       timeout: 20_000,
     });
     await page.evaluate(() => document.fonts.ready);
-    await page.waitForLoadState("networkidle");
+    // Background synchronization stays active; wait for settled rendered frames.
+    await page.evaluate(
+      () =>
+        new Promise<void>((resolve) =>
+          requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+        ),
+    );
     expect(
       await page.evaluate(
         () => (window as unknown as { offlineScannerCls: number }).offlineScannerCls,

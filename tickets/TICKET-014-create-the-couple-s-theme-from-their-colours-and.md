@@ -10,7 +10,7 @@ module: theming
 owner: ""
 agent: ""
 blocked_by: [TICKET-008, TICKET-013, TICKET-170, TICKET-037]
-blocks: [TICKET-176, TICKET-099, TICKET-116, TICKET-154]
+blocks: [TICKET-176, TICKET-116, TICKET-154]
 branch: ""
 pr: ""
 created: 2026-10-21

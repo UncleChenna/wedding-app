@@ -2,20 +2,20 @@
 id: TICKET-063
 title: Add manual search and check-in by guest name
 epic: checkin
-status: todo
+status: in_review
 priority: high
 estimate: M
 labels: [frontend, backend]
 module: checkin
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-061, TICKET-065, TICKET-062]
-blocks: [TICKET-132]
-branch: ""
-pr: ""
+blocks: [TICKET-132, TICKET-136]
+branch: TICKET-063
+pr: https://github.com/UncleChenna/wedding-app/pull/152
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-12
+started: 2026-11-10
 completed: ""
 reason: ""
 resume_to: ""
@@ -40,10 +40,10 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-4) · [Journey 2: check-
 
 ## Acceptance criteria
 
-- [ ] Searching "Adebayo", "adebayo" and "Adébayo" finds the same guest (unit).
-- [ ] Manual check-in is logged with result `manual`.
-- [ ] Results are readable at arm's length (≥18px).
-- [ ] Replace TICKET-059’s interim manual-help link with authenticated name search. With camera permission denied, a gate operator can follow that link, find a primary guest or tag-along and complete the same logged admission flow, including offline cached search.
+- [x] Searching "Adebayo", "adebayo" and "Adébayo" finds the same guest (unit).
+- [x] Manual checks and admissions retain the five canonical verdicts and record `input_method=manual`; actor/device come from the authenticated gate session.
+- [x] Results use ≥18px text and pass automated responsive/accessibility checks; the original physical arm's-length readability requirement remains mandatory and unchecked in TICKET-201.
+- [x] Replace TICKET-059’s interim manual-help link with authenticated name search. With camera permission denied, a gate operator can follow that link, find a primary guest or tag-along and complete the same logged online admission flow. Offline cached search and selection remain read-only until TICKET-066 supplies the mandatory offline admission queue.
 
 ## Test plan
 
@@ -59,6 +59,14 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-4) · [Journey 2: check-
 
 2026-11-09: Carries the mandatory manual-search recovery link from TICKET-059, whose camera foundation precedes these admission/cache dependencies. CHK-4 is not waived; release journeys TICKET-132 and TICKET-136 remain blocked on this full implementation.
 
+2026-11-10: Clarified stale manual-result wording to TICKET-062's input-method contract. This ticket includes offline cached search/read and current online admission; TICKET-066 retains offline mutation, outbox and sync. Cached results do not claim entry was recorded and require fresh online selection before admission. Both dependencies remain incomplete until merged; keep this PR draft while working ahead.
+
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-10 — todo → claimed — divine (codex) — started ahead of TICKET-065 (in_review), TICKET-062 (in_review)
+- 2026-11-10 — todo → in_progress — divine (codex) — started ahead of TICKET-065 (in_review), TICKET-062 (in_review)
+- 2026-11-10 — in_progress → blocked — divine (codex) — Awaiting verified TICKET-065 merge and its authoritative-outcome cache boundary before scanner/offline integration and actual browser verification; server and isolated UI checkpoint pushed in draft PR152.
+- 2026-11-11 — blocked → in_progress — divine (codex) — Resume manual search integration against merged cache implementation; keep draft until dependency verification and actual journey checks pass; started ahead of TICKET-065 (in_progress)
+- 2026-11-12 — in_progress → in_review — divine (codex)
+- 2026-11-12 — in_review → in_progress — divine (codex) — Repair inherited scanner browser expectation for the implemented manual search recovery flow

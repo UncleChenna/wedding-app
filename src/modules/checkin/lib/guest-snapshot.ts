@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { OfflineActor } from "./offline-queue";
 import type { GatePublicKey } from "./gate-token";
 
 export interface GuestSnapshotRow {
@@ -13,7 +14,9 @@ export interface GuestSnapshotRow {
   tableNumber: number | null;
 }
 export interface GuestSnapshot {
-  version: 1;
+  version: 1 | 2;
+  /** Present only in v2; v1 remains readable but cannot authorize offline queue writes. */
+  actor?: OfflineActor;
   session: string;
   generatedAt: number;
   expiresAt: number;
@@ -40,15 +43,35 @@ export function parseGuestSnapshot(input: unknown): GuestSnapshot | null {
   const value = record(input);
   if (
     !value ||
-    !exact(value, ["version", "session", "generatedAt", "expiresAt", "keys", "invitations"])
+    !exact(value, [
+      "version",
+      "session",
+      "generatedAt",
+      "expiresAt",
+      "keys",
+      "invitations",
+      ...(value.version === 2 ? ["actor"] : []),
+    ])
   )
     return null;
   if (
-    value.version !== 1 ||
+    (value.version !== 1 && value.version !== 2) ||
     typeof value.session !== "string" ||
     !/^[a-f0-9]{64}$/.test(value.session)
   )
     return null;
+  if (value.version === 2) {
+    const actor = record(value.actor);
+    if (
+      !actor ||
+      !exact(actor, ["staffId", "deviceId"]) ||
+      typeof actor.staffId !== "string" ||
+      !/^[a-f0-9]{8}-(?:[a-f0-9]{4}-){3}[a-f0-9]{12}$/.test(actor.staffId) ||
+      typeof actor.deviceId !== "string" ||
+      !/^[a-f0-9]{64}$/.test(actor.deviceId)
+    )
+      return null;
+  }
   if (
     !integer(value.generatedAt, 1, Number.MAX_SAFE_INTEGER) ||
     !integer(value.expiresAt, value.generatedAt + 1, Number.MAX_SAFE_INTEGER)

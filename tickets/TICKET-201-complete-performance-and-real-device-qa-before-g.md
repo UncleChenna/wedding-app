@@ -42,6 +42,8 @@ Claiming untested checks pass, weakening thresholds, changing TICKET-015's pause
 
 ## Acceptance criteria
 
+- [ ] TICKET-063: Results are readable at arm's length (≥18px). Verify manual primary/tag-along search, denied-camera recovery, keyboard focus, uncertain admission retry and offline read-only warnings on physical gate phones/tablets in all shipped themes. Record device/OS/browser/build and actual results; browser emulation does not certify physical readability. This remains mandatory and release-blocking under the approved preview exception.
+
 - [ ] TICKET-166: On physical iOS and Android, verify the admin event-closure form's keyboard, safe areas, focus visibility and confirmation controls; download and open the anonymous memories CSV/PDF in native viewers and check long-menu pagination. Use synthetic events only, retain pending admission evidence, and record device/OS/browser/build and actual results. These checks remain release-blocking under the owner's preview exception; automated emulation does not certify them. Production closure still requires approved event timing and operator confirmation.
 
 - [ ] TICKET-107: on physical iOS and Android, including WhatsApp and installed standalone mode, open an accepted invitation once, confirm the saved hint, disable connectivity and reopen the original link. Decode the saved QR, verify guest-link isolation, last-refresh warning, reconnect revocation/decline cleanup and storage-eviction behavior. Record device/OS/app/build versions and results. TICKET-184 expiry/logout checks remain mandatory; desktop emulation does not certify these requirements. Both releases remain blocked by unresolved results.

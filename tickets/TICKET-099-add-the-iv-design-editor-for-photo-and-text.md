@@ -9,7 +9,7 @@ labels: [frontend, backend]
 module: admin
 owner: ""
 agent: ""
-blocked_by: [TICKET-014, TICKET-088, TICKET-175]
+blocked_by: [TICKET-088, TICKET-175]
 blocks: []
 branch: ""
 pr: ""
@@ -61,6 +61,7 @@ See: [Admin dashboard](../docs/prd.md#admin-dashboard) (ADM-5).
 
 _Agents append dated notes here while working._
 
+- 2026-11-12 (unclechenna, claude): owner asked to build this now. The editor works with any uploaded photo (TICKET-175 is done); the couple's final hero photo (TICKET-014) is content, not a code dependency.
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md

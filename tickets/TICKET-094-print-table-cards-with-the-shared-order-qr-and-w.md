@@ -9,7 +9,7 @@ labels: [frontend, design]
 module: admin
 owner: ""
 agent: ""
-blocked_by: [TICKET-011, TICKET-093, TICKET-170, TICKET-145]
+blocked_by: [TICKET-011, TICKET-093, TICKET-170]
 blocks: [TICKET-154, TICKET-160]
 branch: ""
 pr: ""
@@ -57,6 +57,7 @@ See: [Admin dashboard](../docs/prd.md#admin-dashboard) (ADM-2) · [Connectivity 
 
 _Agents append dated notes here while working._
 
+- 2026-11-12 (unclechenna, claude): owner asked to build this now. The domain only changes the QR's target, which comes from `NEXT_PUBLIC_SITE_URL`, so it no longer blocks building; printing (TICKET-160) still waits on the domain (TICKET-145).
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md

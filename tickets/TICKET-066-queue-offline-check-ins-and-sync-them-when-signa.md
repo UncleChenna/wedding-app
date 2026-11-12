@@ -2,20 +2,20 @@
 id: TICKET-066
 title: Queue offline check-ins and sync them when signal returns
 epic: checkin
-status: todo
+status: in_review
 priority: high
 estimate: M
 labels: [frontend, backend, pwa]
 module: checkin
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-065, TICKET-173, TICKET-062]
-blocks: [TICKET-067, TICKET-111, TICKET-129, TICKET-132, TICKET-143]
-branch: ""
-pr: ""
+blocks: [TICKET-067, TICKET-111, TICKET-129, TICKET-136, TICKET-143, TICKET-180]
+branch: TICKET-066
+pr: https://github.com/UncleChenna/wedding-app/pull/164
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-12
+started: 2026-11-12
 completed: ""
 reason: ""
 resume_to: ""
@@ -39,10 +39,10 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-6) · [Security](../docs
 
 ## Acceptance criteria
 
-- [ ] Persist every offline scan attempt transactionally before reporting an admission as recorded; quota/write failure shows a recovery state.
-- [ ] Ten offline admissions survive reload and sync exactly once after repeated reconnects, using TICKET-173 per-event acknowledgements.
-- [ ] Foreground and manual retry work on Safari without Background Sync; failures remain queued with visible pending count.
-- [ ] Invalid, used and revoked attempts are logged as well as successful admissions; pending count clears only after committed acknowledgement.
+- [x] Persist every offline scan attempt transactionally before reporting an admission as recorded; quota/write failure shows a recovery state.
+- [x] Ten offline admissions survive reload and sync exactly once after repeated reconnects, using TICKET-173 per-event acknowledgements.
+- [x] Foreground and manual retry work on Safari without Background Sync; failures remain queued with visible pending count.
+- [x] Invalid, used and revoked attempts are logged as well as successful admissions; pending count clears only after committed acknowledgement.
 
 ## Test plan
 
@@ -57,8 +57,12 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-6) · [Security](../docs
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-11-12: Durable worker-owned queue, authenticated actor binding, manual/QR count confirmation and immutable replay digest implemented. Actual product2/2, snapshot compatibility2/2, manual recovery2/2, Chromium/WebKit worker/store18/18 and isolated reconciliation13/13 pass. See docs/reviews/TICKET-066/queue-contract.md and migration-review.md. Physical-device and initial-wire performance release gates remain mandatory; final hosted CI must pass before merge.
 
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-12 — todo → claimed — divine (codex)
+- 2026-11-12 — todo → in_progress — divine (codex)
+- 2026-11-12 — in_progress → in_review — divine (codex)
+- 2026-11-12 — in_review → in_progress — divine (codex) — Final CI exposed an uncached first-use decoder chunk, missing defensive observation coverage, and a background-revocation fixture race; repairing without weakening gates.
