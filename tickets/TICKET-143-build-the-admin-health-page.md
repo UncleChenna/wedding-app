@@ -2,7 +2,7 @@
 id: TICKET-143
 title: Build the admin health page
 epic: observability
-status: in_review
+status: done
 priority: medium
 estimate: M
 labels: [frontend, backend]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/171
 created: 2026-10-21
 updated: 2026-11-12
 started: 2026-11-12
-completed: ""
+completed: 2026-11-12
 reason: ""
 resume_to: ""
 ---
@@ -63,3 +63,4 @@ See: [Performance and reliability](../docs/prd.md#performance-and-reliability).
 - 2026-11-12 — todo → claimed — divine (codex)
 - 2026-11-12 — todo → in_progress — divine (codex)
 - 2026-11-12 — in_progress → in_review — divine (codex)
+- 2026-11-12 — in_review → done — divine (codex)
