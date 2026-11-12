@@ -39,9 +39,9 @@ TICKET-135 adds a visual-regression CI job. TICKET-227's exact metadata-only job
 
 ## Acceptance criteria
 
-- [ ] Historical ten-job and new eleven-job metadata runs are recognised, including GitHub's unevaluated-name form.
-- [ ] Unknown, duplicate, missing, failed, pending and wrong-head/event cases remain rejected.
-- [ ] Valid full evidence remains discoverable past either metadata-only shape; newer real failed/pending runs remain blocking.
+- [x] Historical ten-job and new eleven-job metadata runs are recognised, including GitHub's unevaluated-name form.
+- [x] Unknown, duplicate, missing, failed, pending and wrong-head/event cases remain rejected.
+- [x] Valid full evidence remains discoverable past either metadata-only shape; newer real failed/pending runs remain blocking.
 
 ## Test plan
 
@@ -51,11 +51,13 @@ TICKET-135 adds a visual-regression CI job. TICKET-227's exact metadata-only job
 ## Files likely touched
 
 - scripts/tickets/reconcile.ts
-- scripts/__tests__/ticket-reconciliation.test.ts and fixtures
+- scripts/__tests__/ticket-reconcile.test.ts and fixtures
 
 ## Notes / decisions
 
 - 2026-11-12: Owner authorized completing remaining tasks and PR maintenance. No database or UI changes.
+
+- 2026-11-12: Captured actual eleven-job metadata run 43279926245. Regressions failed twice before the fix; all 15 pass afterward, including legacy ten-job payloads. Quick lint/types/related tests pass. Independent review found no blocker. PR-167 corrected body passes standalone PR-text run 43279926313; rerunning failed original jobs retained its old event body, so that aggregate still fails until a fresh code event. No heavy jobs were rerun.
 
 ## Activity log
 
