@@ -127,6 +127,44 @@ jobs:
       - name: Migrations match schema.ts
         run: pnpm db:generate --name ci-drift-check && git diff --exit-code drizzle/ && test -z "$(git ls-files --others --exclude-standard drizzle/)"
 
+  visual-regression:
+    name: visual regression (guest pages)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 54322:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm db:migrate
+      - run: pnpm build
+      - name: Compare every guest page with its committed baseline
+        run: pnpm exec tsx scripts/test-visual-regression.ts
+      - if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: visual-baselines
+          path: |
+            e2e/regression/**/*-linux.png
+            test-results/
+          retention-days: 7
+
   guest-journey:
     name: invitation journey (mobile + desktop)
     runs-on: ubuntu-latest

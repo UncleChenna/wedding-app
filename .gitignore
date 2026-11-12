@@ -47,3 +47,7 @@ tooling/plugin/dist/
 
 # Generated immutable offline scanner assets (prebuild)
 /public/scanner-assets/
+
+# Visual regression baselines are Linux-only (made on CI); local renders never get committed.
+e2e/regression/**/*-darwin.png
+e2e/regression/**/*-win32.png
