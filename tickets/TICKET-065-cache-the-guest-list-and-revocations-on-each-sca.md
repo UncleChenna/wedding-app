@@ -2,7 +2,7 @@
 id: TICKET-065
 title: Cache the guest list and revocations on each scanner
 epic: checkin
-status: in_review
+status: done
 priority: high
 estimate: L
 labels: [frontend, pwa]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/158
 created: 2026-10-21
 updated: 2026-11-12
 started: 2026-11-09
-completed: ""
+completed: 2026-11-12
 reason: ""
 resume_to: ""
 ---
@@ -74,3 +74,4 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-6) · [Connectivity plan
 - 2026-11-10 — in_review → in_progress — divine (codex) — Diagnose final CI WebKit signed QR decode failure without weakening camera checks
 - 2026-11-12 — in_progress → in_review — divine (codex)
 - 2026-11-12 — in_review → in_progress — divine (codex) — Fix reproduced scale and orientation dependent dense QR finder failure from final WebKit CI; preserve assertions and exact diagnostics
+- 2026-11-12 — in_review → done — divine (codex)
