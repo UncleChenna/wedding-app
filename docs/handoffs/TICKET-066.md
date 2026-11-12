@@ -107,3 +107,18 @@ request interception preserves actual competing-write/revocation server tests;
 /tmp/TICKET-066-sleep-evidence.log. No timeout/assertion change. Independent098
 and024 repair reviews are clean. Native29341 stopped/data retained again.
 Camera-pixel regression12/12 passes54.5s in Chromium/WebKit, including dense/orientation, native-attempted and fallback paths with throttle/track assertions. Next quick, repair commit/push/t:pr and wait for fresh exact-head CI. Preserve original failures as history.
+
+## Completion — 2026-11-12 15:45 UTC
+
+Owner: divine; agent: codex; branch: TICKET-066. PR #164 merged into
+`develop` as `1cc4f02064686a5bf42cc9b070fb7b431ce7cfbc` after all ten
+required checks passed on exact head `dd7722157992517f6ecb5fb157083de09ab42a2f`
+in run `43247685207`. Fresh base/head/conflict checks were clean. The CLI
+recorded `done` and pushed completion commit `c65dd8c1`. Original failed CI
+remains documented above; no failed run was represented as passing.
+
+The owned native PostgreSQL instance on port 29341 is stopped with data retained.
+No production database was changed. Physical-device release checks remain in
+TICKET-114/TICKET-163/TICKET-201; conflict resolution and private-data recovery
+remain TICKET-067/TICKET-184, and the TICKET-081 byte budget remains unverified
+for release. Next action: inspect the live queue before claiming subsequent work.
