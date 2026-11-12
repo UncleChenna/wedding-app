@@ -41,6 +41,13 @@ For each pair:
 - **Merges that would break the size-L limit:** 117+118, and 151+179+153.
 - **Tickets on different timelines:** 157 (menu) and 177 (guest list).
 
+**Two dependency corrections** (owner's request, 2026-11-12, to start the admin work now):
+
+- **TICKET-094 (table cards)** no longer waits on the domain, because the QR target comes from
+  `NEXT_PUBLIC_SITE_URL`. Printing (TICKET-160) still does.
+- **TICKET-099 (invitation design editor)** no longer waits on the couple's hero photo (TICKET-014). It works with
+  any uploaded photo (TICKET-175 is done).
+
 # Acceptance criteria and evidence
 
 - [x] **All 17 absorbed tickets are cancelled with a "Merged into" reason, and their criteria appear in the
