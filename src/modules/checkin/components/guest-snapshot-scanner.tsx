@@ -82,12 +82,16 @@ export function GuestSnapshotScanner({
       }
       if (signal.aborted) return { state: "unavailable" };
       if (unsafeCache.current) return { state: "unavailable" };
+      const generation = invalidationGeneration.current;
       const snapshot = await readGuestSnapshot({ session, expiresAt });
-      if (signal.aborted) return { state: "unavailable" };
+      if (signal.aborted || unsafeCache.current || generation !== invalidationGeneration.current)
+        return { state: "unavailable" };
       const result = snapshot
         ? await resolveSnapshotRead(qr, window.location.origin, snapshot, { session, expiresAt })
         : { state: "unavailable" as const };
-      if (!signal.aborted) setCached(true);
+      if (signal.aborted || unsafeCache.current || generation !== invalidationGeneration.current)
+        return { state: "unavailable" };
+      setCached(true);
       return result;
     },
     [session, expiresAt, changed],
@@ -95,11 +99,16 @@ export function GuestSnapshotScanner({
   const refreshRead = useCallback<ScanResolver>(
     async (qr, signal) => {
       if (signal.aborted || unsafeCache.current) return { state: "unavailable" };
+      const generation = invalidationGeneration.current;
       const snapshot = await readGuestSnapshot({ session, expiresAt });
-      if (signal.aborted || unsafeCache.current) return { state: "unavailable" };
-      return snapshot
-        ? resolveSnapshotRead(qr, window.location.origin, snapshot, { session, expiresAt })
-        : { state: "unavailable" };
+      if (signal.aborted || unsafeCache.current || generation !== invalidationGeneration.current)
+        return { state: "unavailable" };
+      const result = snapshot
+        ? await resolveSnapshotRead(qr, window.location.origin, snapshot, { session, expiresAt })
+        : { state: "unavailable" as const };
+      return signal.aborted || unsafeCache.current || generation !== invalidationGeneration.current
+        ? { state: "unavailable" }
+        : result;
     },
     [session, expiresAt],
   );

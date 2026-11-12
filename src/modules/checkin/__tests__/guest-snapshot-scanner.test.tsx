@@ -18,6 +18,7 @@ vi.mock("@/modules/shared/lib/env/client", () => ({
   },
 }));
 const refresh = vi.hoisted(() => vi.fn());
+const refreshResult = vi.hoisted(() => vi.fn());
 vi.mock("../components/use-guest-snapshot", () => ({
   useGuestSnapshot: () => ({
     summary: null,
@@ -31,14 +32,23 @@ vi.mock("../components/scanner", () => ({
   readLivePass: vi.fn(),
   Scanner: ({
     resolveRead,
+    refreshRead,
     allowAdmission,
     onAdmissionOutcome,
   }: {
     resolveRead: ScanResolver;
+    refreshRead: ScanResolver;
     allowAdmission: boolean;
     onAdmissionOutcome?: (response: AdmissionResponse) => void;
   }) => (
     <>
+      <button
+        onClick={() =>
+          void refreshRead("signed fixture", new AbortController().signal).then(refreshResult)
+        }
+      >
+        Refresh fixture
+      </button>
       <button
         data-admission={String(allowAdmission)}
         onClick={() => void resolveRead("signed fixture", new AbortController().signal)}
@@ -152,4 +162,46 @@ it("refuses cached fallback after known-change erasure was not acknowledged", as
   fireEvent.click(screen.getByRole("button", { name: "Check fixture" }));
   await waitFor(() => expect(readLivePass).toHaveBeenCalledTimes(2));
   expect(readGuestSnapshot).not.toHaveBeenCalled();
+});
+
+it("rejects a refresh read that crosses a completed known-change invalidation", async () => {
+  const pending = Promise.withResolvers<Awaited<ReturnType<typeof readGuestSnapshot>>>();
+  vi.mocked(readGuestSnapshot).mockReturnValue(pending.promise);
+  vi.mocked(scannerWorkerMessage).mockResolvedValue({ privateSnapshotRemoved: true });
+  vi.mocked(resolveSnapshotRead).mockResolvedValue({ state: "unknown" });
+  render(<GuestSnapshotScanner session={"a".repeat(64)} expiresAt={Date.now() + 60_000} />);
+  fireEvent.click(screen.getByRole("button", { name: "Refresh fixture" }));
+  await waitFor(() => expect(readGuestSnapshot).toHaveBeenCalledTimes(1));
+  fireEvent.click(screen.getByRole("button", { name: "Refused admission" }));
+  await waitFor(() => expect(refresh).toHaveBeenCalledWith(true));
+  pending.resolve({
+    version: 1,
+    session: "a".repeat(64),
+    expiresAt: Date.now() + 60_000,
+    generatedAt: Date.now(),
+    keys: [],
+    invitations: [],
+  });
+  await waitFor(() => expect(refreshResult).toHaveBeenCalledWith({ state: "unavailable" }));
+  expect(resolveSnapshotRead).not.toHaveBeenCalled();
+});
+it("rejects a refresh whose signature resolution crosses a completed invalidation", async () => {
+  const pending = Promise.withResolvers<Awaited<ReturnType<typeof resolveSnapshotRead>>>();
+  vi.mocked(readGuestSnapshot).mockResolvedValue({
+    version: 1,
+    session: "a".repeat(64),
+    expiresAt: Date.now() + 60_000,
+    generatedAt: Date.now(),
+    keys: [],
+    invitations: [],
+  });
+  vi.mocked(resolveSnapshotRead).mockReturnValue(pending.promise);
+  vi.mocked(scannerWorkerMessage).mockResolvedValue({ privateSnapshotRemoved: true });
+  render(<GuestSnapshotScanner session={"a".repeat(64)} expiresAt={Date.now() + 60_000} />);
+  fireEvent.click(screen.getByRole("button", { name: "Refresh fixture" }));
+  await waitFor(() => expect(resolveSnapshotRead).toHaveBeenCalledTimes(1));
+  fireEvent.click(screen.getByRole("button", { name: "Refused admission" }));
+  await waitFor(() => expect(refresh).toHaveBeenCalledWith(true));
+  pending.resolve({ state: "unknown" });
+  await waitFor(() => expect(refreshResult).toHaveBeenCalledWith({ state: "unavailable" }));
 });

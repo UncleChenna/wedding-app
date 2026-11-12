@@ -105,7 +105,14 @@ test.describe("gate scanner route", () => {
     await page.reload();
     await expect(open).toBeVisible();
     await page.evaluate(() => document.fonts.ready);
-    await page.waitForLoadState("networkidle");
+    // Realtime and five-second snapshot polling intentionally remain active.
+    // Observe settled font/layout frames, not a globally idle network.
+    await page.evaluate(
+      () =>
+        new Promise<void>((resolve) =>
+          requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+        ),
+    );
     expect(
       await page.evaluate(() => (window as unknown as { scannerCls: number }).scannerCls),
     ).toBe(0);
@@ -118,7 +125,7 @@ test.describe("gate scanner route", () => {
         .map((element) => element.textContent),
     );
     expect(targets).toEqual([]);
-    const folder = `docs/reviews/TICKET-062/scanner-${info.project.name}`;
+    const folder = `${process.env.SCANNER_REVIEW_DIR ?? "docs/reviews/TICKET-062"}/scanner-${info.project.name}`;
     mkdirSync(folder, { recursive: true });
     await page.emulateMedia({ reducedMotion: "reduce" });
     for (const theme of themes) {

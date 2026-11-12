@@ -252,7 +252,7 @@ jobs:
           path: artifacts/TICKET-174/
           retention-days: 7
       - name: Verify transaction-bound gate broadcasts
-        run: RUN_REALTIME_DB_TESTS=1 pnpm exec vitest run scripts/__tests__/gate-broadcast.integration.test.ts --maxWorkers=1
+        run: pnpm exec tsx scripts/test-scanner-updates.ts --db-only
       - name: Verify two-scanner Realtime, polling and admission retries
         run: pnpm exec tsx scripts/test-scanner-updates.ts
       - name: Preserve scanner synchronization evidence

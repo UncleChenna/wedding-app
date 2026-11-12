@@ -1,21 +1,35 @@
 import { generateKeyPairSync, randomBytes } from "node:crypto";
 import { spawnSync } from "node:child_process";
+import { readFileSync } from "node:fs";
+import { parseEnv } from "node:util";
+import { journeyEnvironment, assertAdminJourneyTarget } from "./admin-journey-ci";
+const env = journeyEnvironment(process.env, parseEnv(readFileSync(".env.local", "utf8")));
+assertAdminJourneyTarget(process.cwd(), env);
 const keys = generateKeyPairSync("ed25519");
 const result = spawnSync(
   "pnpm",
-  [
-    "exec",
-    "playwright",
-    "test",
-    "e2e/scanner-updates.spec.ts",
-    "--project=mobile",
-    "--project=desktop",
-    "--workers=1",
-  ],
+  process.argv.includes("--db-only")
+    ? [
+        "exec",
+        "vitest",
+        "run",
+        "scripts/__tests__/gate-broadcast.integration.test.ts",
+        "--maxWorkers=1",
+      ]
+    : [
+        "exec",
+        "playwright",
+        "test",
+        "e2e/scanner-updates.spec.ts",
+        "--project=mobile",
+        "--project=desktop",
+        "--workers=1",
+      ],
   {
     stdio: "inherit",
     env: {
-      ...process.env,
+      ...env,
+      RUN_REALTIME_DB_TESTS: "1",
       RUN_SCANNER_UPDATES: "1",
       STAFF_SESSION_SECRET: randomBytes(32).toString("hex"),
       GATE_SIGNING_KEY_ID: "scanner-updates-test",
