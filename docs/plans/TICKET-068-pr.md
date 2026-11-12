@@ -37,7 +37,7 @@ Hosted CI exposed wrong inherited database defaults and obsolete network-idle wa
 
 # Risks and rollout
 
-No migration, policy, production application or external guest message. Broadcast availability requires the existing private station policies and configured public Supabase endpoint. A failed refresh preserves explicit snapshot/session safety restrictions rather than inventing admission counts. Physical phones, venue-network timing, fresh Lighthouse and CLS are unverified release checks; this browser evidence does not replace them. Verified decoder follow-up158 is now integrated from develop2a0cf958, along with navigation157 and current ordering changes. Final publication waits for the approved targeted-CI workflow227 to avoid redundant hosted matrices.
+No migration, policy, production application or external guest message. Broadcast availability requires the existing private station policies and configured public Supabase endpoint. A failed refresh preserves explicit snapshot/session safety restrictions rather than inventing admission counts. Physical phones, venue-network timing, fresh Lighthouse and CLS are unverified release checks; this browser evidence does not replace them. Verified decoder follow-up158 is now integrated from develop2a0cf958, along with navigation157 and current ordering changes. Verified targeted-CI workflow227 is integrated from developaf819983. Its conservative workflow/tooling classification selects full verification for this PR; the scanner SQL/browser gates are retained in the real-Supabase admin job.
 
 # Screenshots
 
