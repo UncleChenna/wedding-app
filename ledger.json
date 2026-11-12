@@ -2934,13 +2934,14 @@
         "- 2026-11-10 — todo → claimed — divine (codex) — started ahead of TICKET-065 (in_review)",
         "- 2026-11-10 — todo → in_progress — divine (codex) — started ahead of TICKET-065 (in_review)",
         "- 2026-11-12 — in_progress → blocked — divine (codex) — Awaiting verified TICKET-065 decoder follow-up; switching to user-assigned targeted CI ticket.",
-        "- 2026-11-12 — blocked → in_progress — divine (codex) — Verified TICKET-065 decoder repair merged; resuming final combined integration."
+        "- 2026-11-12 — blocked → in_progress — divine (codex) — Verified TICKET-065 decoder repair merged; resuming final combined integration.",
+        "- 2026-11-12 — in_progress → in_review — divine (codex)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-068",
-      "pr": "",
+      "pr": "https://github.com/UncleChenna/wedding-app/pull/154",
       "started": "2026-11-10",
       "completed": "",
       "updated": "2026-11-12",
