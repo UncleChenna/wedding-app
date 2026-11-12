@@ -2,7 +2,7 @@
 id: TICKET-079
 title: Let staff enter an order for a table from the board
 epic: ordering
-status: in_progress
+status: in_review
 priority: high
 estimate: M
 labels: [frontend]
@@ -12,7 +12,7 @@ agent: claude
 blocked_by: [TICKET-078, TICKET-073]
 blocks: [TICKET-154]
 branch: TICKET-079
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/161
 created: 2026-10-21
 updated: 2026-11-12
 started: 2026-11-12
@@ -73,3 +73,4 @@ _Agents append dated notes here while working._
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-12 — todo → claimed — unclechenna (claude) — started ahead of TICKET-078 (in_review)
 - 2026-11-12 — todo → in_progress — unclechenna (claude) — started ahead of TICKET-078 (in_review)
+- 2026-11-12 — in_progress → in_review — unclechenna (claude)
