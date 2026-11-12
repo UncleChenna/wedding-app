@@ -2,20 +2,20 @@
 id: TICKET-180
 title: Preserve queued events across worker and data upgrades
 epic: pwa
-status: todo
+status: in_progress
 priority: high
 estimate: M
 labels: [pwa, test]
 module: checkin
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-066, TICKET-105]
 blocks: [TICKET-111, TICKET-154]
-branch: ""
+branch: TICKET-180
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-12
+started: 2026-11-12
 completed: ""
 reason: ""
 resume_to: ""
@@ -57,3 +57,5 @@ Backlog audit coverage: PWA update, CHK-6. See [PRD](../docs/prd.md) and [audit]
 ## Activity log
 
 - 2026-10-21 — new → todo — divine
+- 2026-11-12 — todo → claimed — divine (codex)
+- 2026-11-12 — todo → in_progress — divine (codex)
