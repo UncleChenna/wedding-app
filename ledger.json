@@ -3044,14 +3044,15 @@
     "WED-228": {
       "log": [
         "- 2026-11-12 — backlog → todo — unclechenna (claude)",
-        "- 2026-11-12 — todo → claimed — unclechenna (claude)"
+        "- 2026-11-12 — todo → claimed — unclechenna (claude)",
+        "- 2026-11-12 — todo → in_progress — unclechenna (claude)"
       ],
-      "status": "todo",
+      "status": "in_progress",
       "owner": "unclechenna",
       "agent": "claude",
       "branch": "TICKET-228",
       "pr": "",
-      "started": "",
+      "started": "2026-11-12",
       "completed": "",
       "updated": "2026-11-12",
       "reason": "",
