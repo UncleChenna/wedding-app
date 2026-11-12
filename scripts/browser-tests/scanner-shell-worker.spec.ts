@@ -1,6 +1,6 @@
 import { createServer, type Server } from "node:http";
 import { generateKeyPairSync, randomUUID, sign } from "node:crypto";
-import { readFile, mkdtemp, rm } from "node:fs/promises";
+import { readFile, mkdtemp, rm, mkdir, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { resolve, join } from "node:path";
 import { runInNewContext } from "node:vm";
@@ -204,7 +204,7 @@ async function prepare(page: Page) {
 test("actual worker restores the complete scanner bundle offline and decodes QR video pixels", async ({
   page,
   context,
-}) => {
+}, info) => {
   expiresAt = Date.now() + 12_000;
   await prepare(page);
   expect(await message(page, "REFRESH_GUEST_SNAPSHOT")).toEqual({ state: "ready" });
@@ -261,7 +261,52 @@ test("actual worker restores the complete scanner bundle offline and decodes QR 
     });
   }, qr);
   await page.getByRole("button", { name: "Open camera" }).click();
-  await expect(page.getByRole("heading", { name: "Valid pass", exact: true })).toBeVisible();
+  try {
+    await expect(page.getByRole("heading", { name: "Valid pass", exact: true })).toBeVisible();
+  } catch (error) {
+    try {
+      const folder = info.outputPath("synthetic-decode-diagnostics");
+      await mkdir(folder, { recursive: true });
+      await writeFile(`${folder}/fixture.png`, Buffer.from(qr.split(",")[1] ?? "", "base64"));
+      const captured = await page.locator("video").evaluate((element) => {
+        const video = element as HTMLVideoElement;
+        const canvas = document.createElement("canvas");
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const drawing = canvas.getContext("2d");
+        const drawable = drawing && canvas.width > 0 && canvas.height > 0 && video.readyState >= 2;
+        if (drawable) drawing.drawImage(video, 0, 0);
+        return {
+          frame: drawable ? canvas.toDataURL("image/png") : null,
+          width: video.videoWidth,
+          height: video.videoHeight,
+          ready: video.readyState,
+          paused: video.paused,
+          time: video.currentTime,
+          hidden: document.hidden,
+          decodedFrames:
+            typeof video.getVideoPlaybackQuality === "function"
+              ? video.getVideoPlaybackQuality().totalVideoFrames
+              : null,
+          assets: performance
+            .getEntriesByType("resource")
+            .map((entry) => new URL(entry.name).pathname),
+        };
+      });
+      if (captured.frame)
+        await writeFile(
+          `${folder}/video.png`,
+          Buffer.from(captured.frame.split(",")[1] ?? "", "base64"),
+        );
+      await writeFile(
+        `${folder}/state.json`,
+        JSON.stringify({ ...captured, frame: undefined }, null, 2),
+      );
+    } catch {
+      // Diagnostics must never replace the original failed camera assertion.
+    }
+    throw error;
+  }
   await expect(page.getByText("Synthetic offline household", { exact: true })).toBeVisible();
   await expect(page.getByText("Party of 2 · 0 admitted so far", { exact: true })).toBeVisible();
   await expect(page.getByText("Table 9", { exact: true })).toBeVisible();
