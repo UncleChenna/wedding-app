@@ -7,6 +7,8 @@ import { assertDatabaseTarget } from "../database-target";
 import * as schema from "../../src/modules/shared/server/db/schema";
 import type { Db } from "../../src/modules/shared/server/db/client";
 import { admitVerifiedPass } from "../../src/modules/checkin/server/online-admission";
+import { searchManualGuests } from "../../src/modules/checkin/server/manual-search-repository";
+import { recordScanObservation } from "../../src/modules/checkin/server/scan-observation";
 
 describe.runIf(process.env.RUN_ONLINE_ADMISSION_DB_TESTS === "1")(
   "online admission transactions",
@@ -55,6 +57,57 @@ describe.runIf(process.env.RUN_ONLINE_ADMISSION_DB_TESTS === "1")(
           .from(schema.admissionCounters)
           .where(eq(schema.admissionCounters.invitationId, invitationId))
       )[0]?.admittedPeople ?? 0;
+
+    it("searches a real companion name and records one manual admission across concurrent retries", async () => {
+      const { actor, intent } = await party();
+      const unique = randomUUID().replaceAll("-", "");
+      await db.insert(schema.guests).values({
+        invitationId: intent.invitationId,
+        name: `Adébayo ${unique}`,
+        isPrimary: false,
+        dietaryNotes: "PRIVATE-DIET-MARKER",
+      });
+      const match = await searchManualGuests(db, `adebayo ${unique}`);
+      expect(match).toEqual({
+        hasMore: false,
+        matches: [
+          {
+            invitationId: intent.invitationId,
+            name: "Synthetic household",
+            matchedName: `Adébayo ${unique}`,
+          },
+        ],
+      });
+      expect(JSON.stringify(match)).not.toContain("PRIVATE-DIET-MARKER");
+      expect(
+        await recordScanObservation(
+          db,
+          actor,
+          {
+            invitationId: intent.invitationId,
+            inputMethod: "manual",
+            result: "valid",
+            reportedAt: new Date(),
+          },
+          async () => true,
+        ),
+      ).toBe(true);
+      expect(await counter(intent.invitationId)).toBe(0);
+      const manual = { ...intent, inputMethod: "manual" as const };
+      const outcomes = await Promise.all([
+        admitVerifiedPass(db, actor, manual, async () => true),
+        admitVerifiedPass(db, actor, manual, async () => true),
+      ]);
+      expect(outcomes.map((outcome) => outcome.state).sort()).toEqual(["duplicate", "recorded"]);
+      expect(await admitVerifiedPass(db, actor, intent, async () => true)).toEqual({
+        state: "conflict",
+      });
+      const evidence = await events(intent.invitationId);
+      expect(evidence).toHaveLength(2);
+      expect(evidence.every((event) => event.inputMethod === "manual")).toBe(true);
+      expect(evidence.map((event) => event.admittedPeople).sort()).toEqual([0, 2]);
+      expect(await counter(intent.invitationId)).toBe(2);
+    });
 
     it("admits2of4 once, preserves the exact retry receipt and refuses changed replay intent", async () => {
       const { actor, intent } = await party();
@@ -129,41 +182,45 @@ describe.runIf(process.env.RUN_ONLINE_ADMISSION_DB_TESTS === "1")(
       expect(await counter(intent.invitationId)).toBe(0);
       expect(await events(intent.invitationId)).toHaveLength(0);
     });
-    it("rechecks session authorization after actually waiting for the invitation lock", async () => {
-      const { actor, intent } = await party();
-      const locked = Promise.withResolvers<void>(),
-        release = Promise.withResolvers<void>();
-      let authorized = true;
-      const holder = db.transaction(async (tx) => {
-        await tx
-          .select({ id: schema.invitations.id })
-          .from(schema.invitations)
-          .where(eq(schema.invitations.id, intent.invitationId))
-          .for("update");
-        locked.resolve();
-        await release.promise;
-      });
-      void holder.catch(locked.reject);
-      await locked.promise;
-      const attempt = admitVerifiedPass(db, actor, intent, async () => authorized);
-      try {
-        await expect
-          .poll(async () => {
-            const rows = await db.execute(
-              sql`select count(*)::int as waiting from pg_stat_activity where application_name='TICKET-061-admission-tests' and wait_event_type='Lock'`,
-            );
-            return Number(rows[0]?.waiting ?? 0);
-          })
-          .toBeGreaterThan(0);
-        authorized = false;
-        release.resolve();
-        await holder;
-        expect(await attempt).toEqual({ state: "session_expired" });
-        expect(await events(intent.invitationId)).toHaveLength(0);
-      } finally {
-        release.resolve();
-        await Promise.allSettled([holder, attempt]);
-      }
-    });
+    it.each(["qr", "manual"] as const)(
+      "rechecks %s session authorization after actually waiting for the invitation lock",
+      async (inputMethod) => {
+        const { actor, intent: initialIntent } = await party();
+        const intent = { ...initialIntent, inputMethod };
+        const locked = Promise.withResolvers<void>(),
+          release = Promise.withResolvers<void>();
+        let authorized = true;
+        const holder = db.transaction(async (tx) => {
+          await tx
+            .select({ id: schema.invitations.id })
+            .from(schema.invitations)
+            .where(eq(schema.invitations.id, intent.invitationId))
+            .for("update");
+          locked.resolve();
+          await release.promise;
+        });
+        void holder.catch(locked.reject);
+        await locked.promise;
+        const attempt = admitVerifiedPass(db, actor, intent, async () => authorized);
+        try {
+          await expect
+            .poll(async () => {
+              const rows = await db.execute(
+                sql`select count(*)::int as waiting from pg_stat_activity where application_name='TICKET-061-admission-tests' and wait_event_type='Lock'`,
+              );
+              return Number(rows[0]?.waiting ?? 0);
+            })
+            .toBeGreaterThan(0);
+          authorized = false;
+          release.resolve();
+          await holder;
+          expect(await attempt).toEqual({ state: "session_expired" });
+          expect(await events(intent.invitationId)).toHaveLength(0);
+        } finally {
+          release.resolve();
+          await Promise.allSettled([holder, attempt]);
+        }
+      },
+    );
   },
 );

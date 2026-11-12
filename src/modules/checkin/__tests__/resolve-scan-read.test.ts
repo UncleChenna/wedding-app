@@ -1,6 +1,6 @@
 import { generateKeyPairSync, sign } from "node:crypto";
 import { expect, it, vi } from "vitest";
-import { resolveScanRead } from "../lib/resolve-scan-read";
+import { resolveGuestRead, resolveScanRead } from "../lib/resolve-scan-read";
 import { encodeGatePassPayload } from "../lib/gate-token";
 const pair = generateKeyPairSync("ed25519");
 const keys = [
@@ -32,6 +32,13 @@ const row = {
   admittedSoFar: 2,
   admissions: [],
 };
+it("resolves an authorized manual selection using the same current eligibility projection", () => {
+  expect(resolveGuestRead(row, 1)).toMatchObject({ state: "valid", guest: { name: "Ada" } });
+  expect(resolveGuestRead({ ...row, status: "revoked" }, 1)).toEqual({ state: "revoked" });
+  expect(resolveGuestRead(row, 2)).toEqual({ state: "invalid" });
+  expect(resolveGuestRead(null, 1)).toEqual({ state: "unknown" });
+  expect(resolveGuestRead({ ...row, contact: "private" }, 1)).toEqual({ state: "unavailable" });
+});
 it("uses actual signature verification then canonical admission rules without recording admission", async () => {
   const load = vi.fn(async () => row);
   const result = await resolveScanRead(qr(), "https://wedding.example", keys, load);
