@@ -83,3 +83,7 @@ Signed-pass entry is separate from the personal invitation: /p/[pass] carries no
 ## Invitation reply history (TICKET-100)
 
 Admin → Guests → Invitation actions → Reply history opens `/admin/guests/[id]/history` for that household. The protected, read-only timeline shows every saved RSVP or admin correction newest first, before/after details and explicit UTC timestamps. Back to guests returns to the list. Missing invitations return404; no-record and temporary-load-failure states are distinct. Raw invitation credentials, contacts and actor identifiers are not part of the history display.
+
+## Offline admission conflicts
+
+The signed-in gate scanner shows recent conflicting offline entries below the scan controls. Each entry includes the household, operator/device, reported and received times, reported count and canonical admitted count. Realtime notifications refresh this online-only list; an unavailable connection clears it rather than presenting stale certainty. The gate lead opens **Admin → Scan log**, filters conflicts, and adds an append-only resolution note. Original admission evidence and counts are never rewritten.
