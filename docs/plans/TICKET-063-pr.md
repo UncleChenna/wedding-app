@@ -54,7 +54,8 @@ transaction; cached selections remain explicitly read-only until TICKET-066.
 - Official full unit/coverage suite: 2,009 passed, 207 conditional skips; 98.82%
   critical lines and 99.08% branches.
 - Independent source review found no blocker in the shared cache integration.
-  Final screenshot review and exact-head CI remain outstanding.
+  Independent review inspected all 72 desktop captures with no layout blocker;
+  exact-head CI remains outstanding.
 
 # Risks and rollout
 
@@ -68,8 +69,8 @@ is preserved. The local native database checks do not certify Supabase Auth/Real
 # Screenshots
 
 See docs/reviews/TICKET-063/{mobile,desktop}: matches, cached-selection, choose-count,
-uncertain, duplicate and replaced, for every theme and width. Mobile's 72 captures
-have been visually inspected; desktop independent review is pending.
+uncertain, duplicate and replaced, for every theme and width. All 144 captures have been visually inspected: 72 mobile by the implementation
+review and 72 desktop by an independent reviewer, with no material layout issue.
 
 # UI checklist
 
@@ -81,3 +82,14 @@ Cached results clearly state that entry was not recorded. No offline admission i
 
 The stale result=manual wording now follows the established input-method contract.
 The existing CI admission runner includes the manual journey; no checks are removed.
+
+# Current-base integration
+
+Develop eb14549758ac20fdb286325c7aa57ce42605b564 integrated conflict-free as
+fe785d7. The three incoming0030 migration/journal files were byte-identical to
+develop; their authorization record uses the user's standing full-project
+authority. No database was changed by this integration. Earlier local evidence
+remains attributed to its original base. Combined quick verification passes lint
+and types (no changed source since integration); final combined CI is pending.
+The original arm's-length requirement is preserved unchecked in TICKET-201,
+which blocks both release tickets, under the approved preview exception.

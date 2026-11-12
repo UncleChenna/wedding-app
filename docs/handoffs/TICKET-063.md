@@ -61,3 +61,10 @@ Final quick now passes lint, types and24 related tests. Official full suite pass
 2,009 tests with207 conditional skips; critical coverage98.82% lines/99.08%
 branches. Heavy slot released to068. No source changed after the reviewed browser
 run; only fixture typing corrected. Physical arm-length AC stays unchecked.
+
+2026-11-12: Current develop eb145497 integrated conflict-free asfe785d7; quick
+lint/types pass (no changed source). All72desktop images independently reviewed
+clean, completing144-image matrix review. Original physical arm-length AC kept
+verbatim unchecked in201 (unowned/todo confirmed); software063 acceptance now
+explicitly separates18px/automated checks from that release gate. Await verified
+PR158 combinedCI before finalbaseintegration/readiness; no baselinegreenclaim.
