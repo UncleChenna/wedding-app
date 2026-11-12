@@ -2,20 +2,20 @@
 id: TICKET-066
 title: Queue offline check-ins and sync them when signal returns
 epic: checkin
-status: todo
+status: in_progress
 priority: high
 estimate: M
 labels: [frontend, backend, pwa]
 module: checkin
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-065, TICKET-173, TICKET-062]
 blocks: [TICKET-067, TICKET-111, TICKET-129, TICKET-136, TICKET-143, TICKET-180]
-branch: ""
+branch: TICKET-066
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-12
+started: 2026-11-12
 completed: ""
 reason: ""
 resume_to: ""
@@ -62,3 +62,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-12 — todo → claimed — divine (codex)
+- 2026-11-12 — todo → in_progress — divine (codex)
