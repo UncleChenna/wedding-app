@@ -3112,13 +3112,14 @@
     "WED-135": {
       "log": [
         "- 2026-11-12 — todo → claimed — unclechenna (claude) — started ahead of TICKET-075 (in_review)",
-        "- 2026-11-12 — todo → in_progress — unclechenna (claude) — started ahead of TICKET-075 (in_review)"
+        "- 2026-11-12 — todo → in_progress — unclechenna (claude) — started ahead of TICKET-075 (in_review)",
+        "- 2026-11-12 — in_progress → in_review — unclechenna (claude)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "unclechenna",
       "agent": "claude",
       "branch": "TICKET-135",
-      "pr": "",
+      "pr": "https://github.com/UncleChenna/wedding-app/pull/167",
       "started": "2026-11-12",
       "completed": "",
       "updated": "2026-11-12",
