@@ -1,4 +1,5 @@
 import "server-only";
+import { installWorkerUpdateGuard } from "@/modules/checkin/browser/worker-update-guard";
 import { createScannerShellStore } from "@/modules/checkin/browser/scanner-shell-store";
 import { createScannerShellRuntime } from "@/modules/checkin/browser/scanner-shell-runtime";
 import { installScannerShellWorker } from "@/modules/checkin/browser/scanner-shell-worker";
@@ -69,12 +70,15 @@ async function precacheAsset(cache, path) {
 
 ${ownPassWorkerSource()}
 
+const createQueuePolicy = ${createOfflineQueuePolicy.toString()};
+const createQueueStore = ${createOfflineQueueStore.toString()};
+const installUpdateGuard = ${installWorkerUpdateGuard.toString()};
+const updateGuard = installUpdateGuard(self, () => createQueueStore(createQueuePolicy()));
+
 const scannerWorker = ${
     scanner
       ? `(() => {
   ${scanner.verifier ? `importScripts(${JSON.stringify(scanner.verifier)});` : ""}
-  const createQueuePolicy = ${createOfflineQueuePolicy.toString()};
-  const createQueueStore = ${createOfflineQueueStore.toString()};
   const createQueueRuntime = ${createOfflineQueueRuntime.toString()};
   const queuePolicy = createQueuePolicy();
   let queueStore;
@@ -141,8 +145,8 @@ self.addEventListener("install", (event) => {
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    (async () => {
-      if (scannerWorker) await scannerWorker.activate();
+    updateGuard.cleanUp(async () => {
+      if (scannerWorker) await scannerWorker.activateUnderLock();
       const names = await caches.keys();
       await Promise.all(
         names
@@ -157,7 +161,7 @@ self.addEventListener("activate", (event) => {
           .map((name) => caches.delete(name)),
       );
       await self.clients.claim();
-    })(),
+    }),
   );
 });
 
