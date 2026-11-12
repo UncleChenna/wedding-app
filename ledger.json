@@ -3008,14 +3008,15 @@
     },
     "WED-081": {
       "log": [
-        "- 2026-11-12 — todo → claimed — divine (codex) — started ahead of TICKET-075 (in_review)"
+        "- 2026-11-12 — todo → claimed — divine (codex) — started ahead of TICKET-075 (in_review)",
+        "- 2026-11-12 — todo → in_progress — divine (codex) — started ahead of TICKET-075 (in_review)"
       ],
-      "status": "todo",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-081",
       "pr": "",
-      "started": "",
+      "started": "2026-11-12",
       "completed": "",
       "updated": "2026-11-12",
       "reason": "",
