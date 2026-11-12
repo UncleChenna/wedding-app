@@ -17,16 +17,19 @@ type RecordedAdmission = {
   reportedPeople: number;
   admittedPeople: number;
   conflict: boolean;
+  inputMethod?: string | null;
 };
 
 /** An existing immutable event is a receipt, never permission to admit someone again. */
 export function sameOnlineAdmission(
   stored: RecordedAdmission,
   actor: Pick<AdmissionActor, "staffId" | "deviceId">,
-  intent: { invitationId: string; people: number },
+  intent: { invitationId: string; people: number; inputMethod?: "qr" | "manual" },
 ): boolean {
   return (
     stored.source === "online" &&
+    // Older QR receipts predate input_method; manual receipts must be explicit.
+    (stored.inputMethod ?? "qr") === (intent.inputMethod ?? "qr") &&
     stored.result === "valid" &&
     !stored.conflict &&
     stored.staffId === actor.staffId &&

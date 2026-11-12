@@ -8,6 +8,7 @@ const result = spawnSync(
     "playwright",
     "test",
     "e2e/online-admission.spec.ts",
+    "e2e/manual-checkin.spec.ts",
     "--project=mobile",
     "--project=desktop",
     "--workers=1",

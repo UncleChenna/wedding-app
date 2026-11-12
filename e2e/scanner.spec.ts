@@ -118,7 +118,7 @@ test.describe("gate scanner route", () => {
         .map((element) => element.textContent),
     );
     expect(targets).toEqual([]);
-    const folder = `docs/reviews/TICKET-062/scanner-${info.project.name}`;
+    const folder = `docs/reviews/TICKET-063/scanner-${info.project.name}`;
     mkdirSync(folder, { recursive: true });
     await page.emulateMedia({ reducedMotion: "reduce" });
     for (const theme of themes) {
@@ -130,8 +130,13 @@ test.describe("gate scanner route", () => {
     await open.focus();
     await open.press("Enter");
     await expect(page.getByText(/Allow camera access/)).toBeVisible();
-    await page.getByRole("link", { name: "Manual check-in help" }).click();
-    await expect(page.locator("#manual-check-in-help")).toBeFocused();
+    await page.getByRole("button", { name: "Find guest by name" }).click();
+    await expect(page.getByRole("heading", { name: "Find a guest" })).toBeVisible();
+    await expect(page.getByLabel("Guest name", { exact: true })).toBeFocused();
+    await expect(page.getByRole("button", { name: "Retry camera" })).toHaveCount(0);
+    await page.getByRole("button", { name: "Back to camera" }).click();
+    await page.getByRole("button", { name: "Open camera" }).click();
+    await expect(page.getByText(/Allow camera access/)).toBeVisible();
     for (const theme of themes) {
       await applyTheme(page, theme);
       expect(await scanA11y(page)).toEqual([]);
