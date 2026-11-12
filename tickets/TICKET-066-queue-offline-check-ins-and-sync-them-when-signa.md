@@ -2,7 +2,7 @@
 id: TICKET-066
 title: Queue offline check-ins and sync them when signal returns
 epic: checkin
-status: in_progress
+status: in_review
 priority: high
 estimate: M
 labels: [frontend, backend, pwa]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-065, TICKET-173, TICKET-062]
 blocks: [TICKET-067, TICKET-111, TICKET-129, TICKET-136, TICKET-143, TICKET-180]
 branch: TICKET-066
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/164
 created: 2026-10-21
 updated: 2026-11-12
 started: 2026-11-12
@@ -64,3 +64,4 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-6) · [Security](../docs
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-12 — todo → claimed — divine (codex)
 - 2026-11-12 — todo → in_progress — divine (codex)
+- 2026-11-12 — in_progress → in_review — divine (codex)
