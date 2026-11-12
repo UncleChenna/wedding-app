@@ -72,3 +72,13 @@ PR158 combinedCI before finalbaseintegration/readiness; no baselinegreenclaim.
 Final integration2026-11-12:065done confirmed, develop2a0cf958 merged cleanly
 as eb854c7.37focusedmanual/cache/decoder tests pass. Preparing normalt:pr;
 physical201gates remain unchecked. NoDBrunning. FinalCI required beforemerge.
+
+Final-head CI ee7e18b5 passed six required jobs, but the inherited scanner journey
+still expected the old manual-help anchor. The actual named guest-search feature
+replaced that placeholder. Updated the regression to enter real search, verify
+heading/input focus and absent camera controls, return to camera and retry denied
+permission. Original invalid-QR/privacy/role/revocation assertions remain.
+Production rebuild passes; exact CI runner passes both projects (36.6s/36.1s).
+Four owned recovery screenshots now under063/scanner-{mobile,desktop}; no062
+artifacts changed. Database stopped with data retained. Await227base integration
+before final ready/CI; no merge until all required exact-head checks pass.

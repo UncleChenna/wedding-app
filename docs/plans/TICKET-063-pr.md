@@ -100,3 +100,11 @@ repair whose complete hosted CI passed before merge. Combined manual-cache,
 snapshot boundary and decoder regression tests:37passed (2.50s). Normal merge
 hooks and ticket validation pass; final PR-head CI remains required before merge.
 No repeated unchanged broad local suite or physical-device pass is claimed.
+
+### Inherited scanner recovery regression
+
+The first final CI run passed six required jobs but found a stale expectation
+for the former manual-help anchor. The updated test now exercises actual named
+search and focus, returns to camera, and retains permission/QR/privacy/role and
+revocation checks. Rebuilt exact runner: mobile36.6s, desktop36.1s, both pass.
+Fresh final CI is still required after the pending CI-policy base integration.
