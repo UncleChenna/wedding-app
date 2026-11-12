@@ -10,9 +10,9 @@ Offline scanner checks currently remain read-only. This ticket will record offli
 
 Planned implementation, not completed evidence:
 
-- A separate worker-owned IndexedDB queue stores immutable attempt UUIDs and original staff/device identity. Queue writes and local pending allowance updates commit together under the existing scanner publication lock.
+- A separate worker-owned IndexedDB queue stores immutable attempt UUIDs and original staff/device identity. Positive admission requires a verified invitation ID and an explicit known allowance or ADR0020 name-checked-unknown decision. Queue writes and local pending allowance updates commit together under the existing scanner publication lock.
 - Version2 private snapshots add only server-verified staff/device IDs. Version1 snapshots remain readable but cannot authorize queue writes. Session expiry removes private snapshots without deleting unsynced evidence.
-- Atomic committed acknowledgements remove pending events and retain an allowance barrier until a trustworthy refreshed snapshot accounts for them. A crash or stale snapshot must never restore already-used local places.
+- Atomic committed acknowledgements remove pending events and retain an allowance barrier until a trustworthy refreshed snapshot accounts for them. Captured barrier generations can be retired across operators without clearing newer acknowledgements or pending evidence. A crash or stale snapshot must never restore already-used local places.
 - Same-origin uploads require the current authenticated identity to match the queued original actor. Reconciliation preserves existing per-event transactions, strengthens replay identity, and checks current authority after lock waits.
 - The UI distinguishes local recorded admission from server acknowledgement, shows pending count, and supports foreground and manual retry without Background Sync. Invalid, used and revoked attempts are retained too.
 
@@ -22,7 +22,7 @@ All implementation criteria remain pending. Verify durable writes before positiv
 
 # Verification
 
-No implementation verification yet. Start from verified develop2a0cf958 containing TICKET-065. Planned focused pure/IndexedDB/HTTP tests, isolated PostgreSQL concurrency tests and real Chromium/WebKit offline-to-online browser evidence. Use normal quick checks and required CI; do not repeat broad suites without a new failure or concern.
+Unwired foundation:12 pure policy tests and10 real IndexedDB Chromium/WebKit cases pass, covering ten-attempt reload, concurrent capacity, quota rollback, corrupt-evidence retention and cross-operator barrier recovery. Quick lint/types/related tests pass. The policy passes the existing95/95critical coverage thresholds. Worker authorization, server upload, UI and end-to-end sync are not implemented yet. Start from verified develop2a0cf958 containing TICKET-065. Planned focused pure/IndexedDB/HTTP tests, isolated PostgreSQL concurrency tests and real Chromium/WebKit offline-to-online browser evidence. Use normal quick checks and required CI; do not repeat broad suites without a new failure or concern.
 
 # Risks and rollout
 
