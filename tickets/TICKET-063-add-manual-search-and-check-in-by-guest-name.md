@@ -2,7 +2,7 @@
 id: TICKET-063
 title: Add manual search and check-in by guest name
 epic: checkin
-status: in_progress
+status: in_review
 priority: high
 estimate: M
 labels: [frontend, backend]
