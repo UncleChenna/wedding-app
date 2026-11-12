@@ -23,7 +23,7 @@ The policy follows TICKET-169: five-minute refresh, immediate refresh after know
 
 # Verification
 
-Fresh follow-up base: develop `3b6c04e7`, integrated as `a827fad4`. Focused frame-reader tests24/24 pass on11November. Fresh camera browser8/8 passes39.8s on11November, including Chromium/WebKit and exact retained dense QR bytes. Quick/final CI are pending; the results below are retained historical implementation evidence, not a claim that this new head passed full verification.
+Fresh follow-up base: develop `eb145497`, integrated as `9cf072db` on12November, includes the verified PR157 navigation repair. Focused frame-reader tests24/24 and camera browser8/8 passed on11November; lint/types quick passed. Fresh combined camera browser8/8 passes37.0s on12November. Final quick passes lint/types (no changed-source unit selection; explicit24-test decoder suite passed separately). Exact-head CI remains pending. The results below are retained historical implementation evidence, not a claim that this new head passed full verification.
 
 - Production build passed, including the integrated TICKET-062/TICKET-225 base7533201c.
 - Authenticated snapshot journey: **2/2 passed**, mobile and desktop, 42.2 seconds. All six states were checked in four themes at 375/768/1280; axe reported zero violations, controls met 44px and pages had no horizontal overflow.
@@ -64,4 +64,4 @@ Rollback by reverting this ticket's application/worker changes. Do not erase uns
 
 # Harness changes, if any
 
-Three additive CI steps reuse existing disposable PostgreSQL and installed Chromium/WebKit jobs. Existing gates and timeouts are unchanged. See `docs/reviews/TICKET-065/ci-proposal.md`. The current source base is develop `7533201c` (including scan logging062 and recovery225), merged in `eb37685c`. Scanner timestamp/oversized-QR handling, immutable observation evidence, and all offline wrapper props remain intact. Independent source and all144-frame visual review found no blocker; the24 updated stale frames were reviewed again.
+This follow-up changes no harness configuration, dependency or CI step. The original merged implementation added three CI steps that reuse existing disposable PostgreSQL and installed Chromium/WebKit jobs. Existing gates and timeouts are unchanged. See `docs/reviews/TICKET-065/ci-proposal.md`. That earlier source checkpoint was develop `7533201c` (including scan logging062 and recovery225), merged in `eb37685c`. Scanner timestamp/oversized-QR handling, immutable observation evidence, and all offline wrapper props remain intact. Independent source and all144-frame visual review found no blocker; the24 updated stale frames were reviewed again.
