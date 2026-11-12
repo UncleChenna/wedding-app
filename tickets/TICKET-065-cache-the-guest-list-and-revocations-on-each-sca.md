@@ -2,7 +2,7 @@
 id: TICKET-065
 title: Cache the guest list and revocations on each scanner
 epic: checkin
-status: in_progress
+status: in_review
 priority: high
 estimate: L
 labels: [frontend, pwa]
@@ -12,9 +12,9 @@ agent: codex
 blocked_by: [TICKET-043, TICKET-061, TICKET-108]
 blocks: [TICKET-063, TICKET-066, TICKET-068, TICKET-184]
 branch: TICKET-065
-pr: https://github.com/UncleChenna/wedding-app/pull/147
+pr: https://github.com/UncleChenna/wedding-app/pull/158
 created: 2026-10-21
-updated: 2026-11-10
+updated: 2026-11-12
 started: 2026-11-09
 completed: ""
 reason: ""
@@ -72,3 +72,4 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-6) · [Connectivity plan
 - 2026-11-10 — in_review → in_progress — divine (codex) — Integrate verified TICKET-062 scan logging and TICKET-225 harness fixes before final combined verification
 - 2026-11-10 — in_review → in_progress — divine (codex) — Fix reviewed admission-refusal cache invalidation gap before merge
 - 2026-11-10 — in_review → in_progress — divine (codex) — Diagnose final CI WebKit signed QR decode failure without weakening camera checks
+- 2026-11-12 — in_progress → in_review — divine (codex)
