@@ -2,20 +2,20 @@
 id: TICKET-184
 title: Expire private offline data and recover from storage eviction
 epic: pwa
-status: todo
+status: in_progress
 priority: high
 estimate: M
 labels: [pwa, security, test]
 module: shared
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-065, TICKET-107]
 blocks: [TICKET-113, TICKET-129, TICKET-136, TICKET-168]
-branch: ""
+branch: TICKET-184
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-12
+started: 2026-11-12
 completed: ""
 reason: ""
 resume_to: ""
@@ -58,3 +58,5 @@ Backlog audit coverage: PWA privacy, CHK-6. See [PRD](../docs/prd.md) and [audit
 ## Activity log
 
 - 2026-10-21 — new → todo — divine
+- 2026-11-12 — todo → claimed — divine (codex)
+- 2026-11-12 — todo → in_progress — divine (codex)
