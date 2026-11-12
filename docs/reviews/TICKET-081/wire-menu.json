@@ -1,0 +1,147 @@
+{
+  "menu": true,
+  "budget": 200000,
+  "total": 387293,
+  "browserReported": 358568,
+  "transport": "loopback HTTP/1 wire; no rewriting",
+  "rows": [
+    {
+      "path": "/_next/static/chunks/3zrx-_cq_yp3p.css",
+      "worker": false,
+      "bytes": 1880,
+      "status": 200
+    },
+    {
+      "path": "/_next/static/media/inter_latin.p.1w7yplba6jnhb.woff2",
+      "worker": false,
+      "bytes": 50501,
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/16-bahn9lwtrk.css",
+      "worker": false,
+      "bytes": 9187,
+      "status": 200
+    },
+    {
+      "path": "/order",
+      "worker": false,
+      "bytes": 10448,
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/0ml5_j0ertd0g.js",
+      "worker": false,
+      "bytes": 1374,
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/1271wu918nbgg.js",
+      "worker": false,
+      "bytes": 8818,
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/turbopack-2c3mg3r-05n1w.js",
+      "worker": false,
+      "bytes": 5464,
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/31so6bar5gwkc.js",
+      "worker": false,
+      "bytes": 10925,
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/0br1ztogw4qzi.js",
+      "worker": false,
+      "bytes": 8883,
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/3_fuey1lj3h04.js",
+      "worker": false,
+      "bytes": 6434,
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/23ry5wiaikz45.js",
+      "worker": false,
+      "bytes": 38094,
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/2evwlrpfswvlm.js",
+      "worker": false,
+      "bytes": 4164,
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/0qlukae3ckvq1.js",
+      "worker": false,
+      "bytes": 11837,
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/3tqi3vgkhphbm.js",
+      "worker": false,
+      "bytes": 33387,
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/33k7qu9-8d2az.js",
+      "worker": false,
+      "bytes": 74631,
+      "status": 200
+    },
+    {
+      "path": "/themes/ivory-gold/paper.svg",
+      "worker": false,
+      "bytes": 2440,
+      "status": 200
+    },
+    {
+      "path": "/_next/static/media/cormorant_latin.142lwln7a8ewm.woff2",
+      "worker": false,
+      "bytes": 38373,
+      "status": 200
+    },
+    {
+      "path": "/sw.js",
+      "worker": true,
+      "bytes": 1027,
+      "status": 200
+    },
+    {
+      "path": "/offline",
+      "worker": true,
+      "bytes": 8785,
+      "status": 200
+    },
+    {
+      "path": "/offline-assets/inter-b714eddca05246b9.woff2",
+      "worker": true,
+      "bytes": 6922,
+      "status": 200
+    },
+    {
+      "path": "/offline-assets/cormorant-6dcbd80f527db744.woff2",
+      "worker": true,
+      "bytes": 10350,
+      "status": 200
+    },
+    {
+      "path": "/offline-assets/playfair-5b5d69a12afed94f.woff2",
+      "worker": true,
+      "bytes": 9382,
+      "status": 200
+    },
+    {
+      "path": "/offline-assets/jost-c38a7bce2755e180.woff2",
+      "worker": true,
+      "bytes": 5262,
+      "status": 200
+    }
+  ]
+}

@@ -4,6 +4,7 @@ import postgres, { type Sql } from "postgres";
 import { expect, test } from "@playwright/test";
 import { assertDatabaseTarget } from "../scripts/database-target";
 import { setOrderingOpen } from "./support/ordering-open";
+import { wireProxy } from "./support/wire-proxy";
 
 const table = randomInt(1_000_000, 2_000_000);
 const menuId = randomUUID();
@@ -41,8 +42,9 @@ test.describe("order first-visit transfer budget", () => {
     }, info) => {
       test.setTimeout(60_000);
       if (!baseURL) throw new Error("Production baseURL is required");
+      const wire = await wireProxy(baseURL);
       const context = await browser.newContext({
-        baseURL,
+        baseURL: wire.origin,
         serviceWorkers: "allow",
         viewport: { width: 375, height: 812 },
       });
@@ -69,7 +71,9 @@ test.describe("order first-visit transfer budget", () => {
       });
       try {
         if (menu)
-          await context.addCookies([{ name: "wedding-table", value: String(table), url: baseURL }]);
+          await context.addCookies([
+            { name: "wedding-table", value: String(table), url: wire.origin },
+          ]);
         const page = await context.newPage();
         const response = await page.goto("/order");
         expect(response?.status()).toBe(200);
@@ -93,17 +97,35 @@ test.describe("order first-visit transfer budget", () => {
         await expect
           .poll(() => Date.now() - lastFinished, { timeout: 15_000 })
           .toBeGreaterThanOrEqual(1500);
+        await expect
+          .poll(() => Date.now() - wire.snapshot().lastReceived, { timeout: 15_000 })
+          .toBeGreaterThanOrEqual(1500);
+        await expect.poll(() => wire.snapshot().pendingBytes).toBe(0);
         await Promise.all(measurements);
-        const total = rows.reduce((sum, row) => sum + row.bytes, 0);
+        const total = wire.snapshot().bytes;
+        const browserReported = rows.reduce((sum, row) => sum + row.bytes, 0);
         await info.attach("cold-transfer.json", {
-          body: JSON.stringify({ menu, budget: 200_000, total, rows }, null, 2),
+          body: JSON.stringify(
+            {
+              menu,
+              budget: 200_000,
+              total,
+              browserReported,
+              transport: "loopback HTTP/1 wire; no rewriting",
+              rows,
+            },
+            null,
+            2,
+          ),
           contentType: "application/json",
         });
         expect(rows.some((row) => row.worker)).toBe(true);
         expect(rows.every((row) => row.bytes >= 0)).toBe(true);
+        expect(total).toBeGreaterThanOrEqual(browserReported);
         expect(total).toBeLessThanOrEqual(200_000);
       } finally {
         await context.close();
+        await wire.close();
       }
     });
   }

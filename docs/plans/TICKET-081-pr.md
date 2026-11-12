@@ -1,46 +1,26 @@
-# TICKET-081: enforce the order-page transfer and delivery budgets
+# TICKET-081: reduce cold order-page traffic and enforce transfer budgets
 
-## Problem and current work
+Cold ordering visits still exceed the required 200,000-byte budget. This draft removes unnecessary offline-page bootstrap/full-font downloads and unused italic preloading, while preserving intended theme fonts and offline retry. The task is unfinished: complete HTTP wire totals are 399,416 bytes for the table form and 387,293 bytes for the menu. Order-to-board timing is not yet implemented or verified.
 
-A genuine cold visit to `/order` currently exceeds the required 200,000-byte budget. New production-browser regressions measure both the table form and a confirmed-table menu, including initial service-worker downloads. This is unfinished work: the new opt-in budget tests fail, and no optimization or delivery-time gate is claimed yet.
+## Changes
 
-## Evidence
+- The public offline fallback is native HTML with validated theme tokens, fixed escaped copy, original-path retry and home navigation. It contains no guest data, Next Flight or client bootstrap.
+- Four content-hashed font subsets cover the exact offline copy, retaining 400–600 weights for every approved family and valid custom body/display assignments. The 28,084-byte combined asset set preserves licensed font records and canonical metric fallbacks. Generation and source/output hashes are documented.
+- The worker permits only known hashed offline-font paths. Private/scanner rules remain unchanged; its cache version advances.
+- Cormorant retains its normal/italic and complete Unicode faces, but loads rendered styles on demand instead of eagerly downloading italic on plain order pages.
+- A passive loopback HTTP forwarder counts response headers, framing and bodies, including the worker bootstrap Chromium reports aszero. It does not rewrite/compress responses or warm caches. Browser measurements remain diagnostic.
 
-Base develop: eb14549758ac20fdb286325c7aa57ce42605b564. Production build passes. Actual local browser budget tests fail at 1,239,803 bytes (table form) and 1,227,649 bytes (menu), against 200,000. The service worker eagerly fetches full fonts referenced by offline-page CSS, including Inter236,076 and Cormorant209,428 bytes. Raw exploratory breakdown: docs/reviews/TICKET-081/cold-baseline.json. Native PostgreSQL on this worktree's reserved port was used only for synthetic table/menu data; it does not certify Realtime delivery.
+## Actual evidence
 
-## Test contract
+- Production builds pass. Offline foundation 44 focused tests and quicklint/types 54 related tests pass.
+- Cold offline production journeys pass 2/2: all four themes, intended loaded fonts, axe,375/768/1280 overflow checks and reconnect/retry preserving the original path.24 screens: `docs/reviews/TICKET-081/offline-mobile/` and `offline-desktop/`.
+- Preload change:5 font asset tests and 4 real browser checks pass, including no-JavaScript light/dark rendering, non-Latin fallback and glyph equivalence at all approved weights.
+- Two focused byte-counter tests pass, proving exact chunked worker-script bytes and rejecting nonloopback/TLS guessing.
+- Strict complete-wire budget tests fail 399,416/387,293 against 200,000. Raw actual trace attachments: `docs/reviews/TICKET-081/wire-{table,menu}.json`.
+- Earlier browser-reported totals fell from~1.24 MB to~368/359 KB, but those numbers undercounted the worker script. Same-run complete-wire evidence exposes 28,725 missing bytes percase. These older figures are not a budget pass or deployment measurement.
 
-Fresh browser context per route, normal HTTP caching within that visit, enabled service worker, actual200 response, visible form/menu, loaded fonts, completed worker installation and1.5seconds without completed requests. Encoded response body plus headers includes worker traffic; cached Chromium responses correctly sum tozero. No cache warm-up, request blocking or mocked page is used. Run RUN_ORDER_PERFORMANCE=1 with a production build and the isolated database.
+## Remaining work and risks
 
-## Remaining work
+Reduce remaining runtime/font traffic without losing behavior; add actual authenticated board delivery under 2 seconds on documented slow 4 G; wire both gates into CI; finish independent review. Measurements use local HTTP/1 and do not certify production HTTP/2/TLS, physical devices or reception conditions. No acceptance criterion is claimed complete merely from these reductions. No Realtime proof exists yet.
 
-- Reduce actual transfer without losing offline operation or theme/readability requirements.
-- Add the real authenticated board delivery test on documented slow4G settings; keep the strict under2seconds criterion.
-- Wire these gates into CI with environment documentation/parity intact.
-- Complete responsive/accessibility/performance review and independent source review.
-- Require TICKET-075's verified completion and final successful CI before readiness.
-
-No migration, dependency or production data change. This draft is not approval to release or merge failing work.
-
-## Offline foundation checkpoint
-
-Native public offline HTML now avoids downloading unrelated Next chunks and full
-font families for fallback installation. Four fixed-copy, content-hashed font
-subsets retain every approved family and400–600 weights; no system-font downgrade.
-44 focused tests, production build and2 real cold-offline browser cases pass,
-including four themes, accessibility, three widths and reconnect/retry. Screens:
-`docs/reviews/TICKET-081/offline-mobile/` and `offline-desktop/`.
-
-The unchanged budget tests remain red at408,534/399,213 bytes, versus200,000.
-Do not merge or mark complete on these results. Physical devices and slow4G
-board-delivery timing are still unverified. Rollback this checkpoint restores
-the prior Next offline page and worker policy; no migration or private-data
-cache change is involved.
-
-Preload follow-up: kept both Cormorant normal/italic faces and their complete
-Unicode fallbacks, but disabled eager preload of the paired registration.
-Rendered text still requests the face it uses; plain order pages no longer
-download unused italic. New measured totals367,825/358,539 bytes remain above
-200,000. Existing font asset tests5/5 pass; actual browser checks4/4 pass for
-no-JavaScript light/dark themes, non-Latin fallback and subset glyph equivalence
-at every approved weight. Production build passes. No actual-font substitution.
+Rollback restores the previous Next offline page/worker policy and font preload setting. There is no migration or private-cache format change. Generated fixed-copy fonts must be regenerated if offline text or source fonts change; they must never be used for arbitrary guest names.

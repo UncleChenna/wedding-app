@@ -60,3 +60,21 @@ download unused italic. New measured totals367,825/358,539 bytes remain above
 200,000. Existing font asset tests5/5 pass; actual browser checks4/4 pass for
 no-JavaScript light/dark themes, non-Latin fallback and subset glyph equivalence
 at every approved weight. Production build passes. No actual-font substitution.
+
+## Complete HTTP wire accounting supersedes browser-reported totals
+
+Chromium reports the200service-worker bootstrap body aszero, so the earlier
+request.sizes totals undercounted actual transferred bytes. The budget now uses
+a passive loopback TCP forwarder: unchanged upstream HTTP responses, including
+headers, chunk framing and worker script bytes, with fresh context/origin and
+settled drained sockets. Browser sizes remain diagnostic; no compression, warm
+cache or request exclusion is introduced. This measures local HTTP/1, not a
+claim about a deployed HTTP/2/TLS transport.
+
+Current complete totals399,416 table /387,293 menu remain RED against200,000.
+Same-run browser totals370,691/358,568 each missed28,725bytes. Raw evidence
+extracted from actual Playwright trace attachments: wire-table.json and
+wire-menu.json in docs/reviews/TICKET-081. Two focused countertests prove exact
+chunked worker-script response bytes and reject guessing nonloopback/TLS.
+Build passes; owned nativeDB stopped retained. No completed budget or delivery
+claim. Low-value generated-error-CSS experiment (~3KB reduction) reverted.
