@@ -6,7 +6,7 @@ import {
   scryptSync,
   sign,
 } from "node:crypto";
-import { mkdirSync } from "node:fs";
+import { mkdirSync, writeFileSync } from "node:fs";
 import postgres from "postgres";
 import QRCode from "qrcode";
 import { expect, test } from "@playwright/test";
@@ -36,6 +36,7 @@ test("ten offline admissions survive reload and sync once through the authentica
   const staff = randomUUID(),
     invitation = randomUUID(),
     venue = `snapshot-${randomUUID()}`;
+  const guestName = `Snapshot guest ${invitation.slice(0, 8)}`;
   const pin = String(randomInt(100000, 1000000)),
     salt = randomBytes(32);
   const hash = `scrypt$32768$8$1$${salt.toString("hex")}$${scryptSync(pin, salt, 64, { N: 32768, r: 8, p: 1, maxmem: 64 * 1024 * 1024 }).toString("hex")}`;
@@ -43,7 +44,7 @@ test("ten offline admissions survive reload and sync once through the authentica
     await db`insert into event_settings(id,venue,event_date,time_zone) values(1,${venue},'2099-12-19','Etc/UTC')`;
     await db`insert into staff(id,name,role,pin_hash,pin_issued_at,pin_expires_at) values(${staff},'Synthetic snapshot operator','gate',${hash},now()-interval '1 minute','2099-12-20T06:00:00Z')`;
     await db`insert into invitations(id,token,status,household_name) values(${invitation},${randomUUID().replaceAll("-", "")},'rsvp_yes','Snapshot household')`;
-    await db`insert into guests(invitation_id,name,is_primary,dietary_notes,email) values(${invitation},'Snapshot guest',true,'PRIVATE DIETARY MARKER','private@example.invalid')`;
+    await db`insert into guests(invitation_id,name,is_primary,dietary_notes,email) values(${invitation},${guestName},true,'PRIVATE DIETARY MARKER','private@example.invalid')`;
     await db`insert into rsvps(invitation_id,attending,count_attending,message) values(${invitation},true,20,'PRIVATE RSVP MARKER')`;
     const body = encodeGatePassPayload({
       v: 1,
@@ -105,14 +106,16 @@ test("ten offline admissions survive reload and sync once through the authentica
     try {
       await expect(page.getByRole("heading", { name: "Valid pass", exact: true })).toBeVisible();
     } catch (error) {
+      const diagnostics = JSON.stringify({
+        failedAssets,
+        worker: await page.evaluate(() => ({
+          controlled: Boolean(navigator.serviceWorker.controller),
+          online: navigator.onLine,
+        })),
+      });
+      writeFileSync(info.outputPath("offline-startup.json"), diagnostics);
       await info.attach("offline-startup.json", {
-        body: JSON.stringify({
-          failedAssets,
-          worker: await page.evaluate(() => ({
-            controlled: Boolean(navigator.serviceWorker.controller),
-            online: navigator.onLine,
-          })),
-        }),
+        body: diagnostics,
         contentType: "application/json",
       });
       throw error;
@@ -126,7 +129,13 @@ test("ten offline admissions survive reload and sync once through the authentica
     };
     await capture("offline-count");
     for (let count = 1; count <= 10; count++) {
-      if (count > 1) {
+      if (count === 10) {
+        await page.getByRole("button", { name: "Find guest by name", exact: true }).click();
+        await page.getByLabel("Guest name").fill(guestName);
+        await page.getByRole("button", { name: "Find guest", exact: true }).click();
+        await page.getByRole("button", { name: guestName, exact: true }).click();
+        await expect(page.getByRole("heading", { name: "Valid pass", exact: true })).toBeVisible();
+      } else if (count > 1) {
         if (count === 6) {
           await page.reload();
           await page.getByRole("button", { name: "Open camera", exact: true }).click();
@@ -168,6 +177,12 @@ test("ten offline admissions survive reload and sync once through the authentica
       { rows: number; people: number; ids: number }[]
     >`select count(*)::int as rows, sum(admitted_people)::int as people, count(distinct client_event_id)::int as ids from scan_events where invitation_id=${invitation} and source='offline'`;
     expect(totals).toEqual({ rows: 20, people: 10, ids: 20 });
+    expect(
+      await db`select input_method, sum(admitted_people)::int as people from scan_events where invitation_id=${invitation} and source='offline' and admitted_people>0 group by input_method order by input_method`,
+    ).toEqual([
+      { input_method: "manual", people: 1 },
+      { input_method: "qr", people: 9 },
+    ]);
     await capture("synced");
   } finally {
     await context.setOffline(false);

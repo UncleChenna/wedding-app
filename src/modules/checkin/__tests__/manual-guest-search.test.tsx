@@ -115,3 +115,33 @@ it("discards an older name response after the operator changes the query", async
   expect(screen.queryByText("Ada & Chidi")).toBeNull();
   expect(lookup.mock.calls[0]?.[1].aborted).toBe(true);
 });
+it("offers durable manual entry only with snapshot queue authority and retains the exact selection", async () => {
+  const lookup = vi
+    .fn<ManualLookup>()
+    .mockResolvedValueOnce(matches)
+    .mockResolvedValueOnce({
+      cached: true,
+      offlineSession: "a".repeat(64),
+      response: {
+        state: "selection",
+        invitationId: id,
+        version: 1,
+        result: {
+          state: "valid",
+          guest: {
+            name: "Ada & Chidi",
+            partySize: 3,
+            admittedSoFar: 1,
+            tableNumber: 7,
+            admissions: [],
+          },
+        },
+      },
+    });
+  render(<ManualGuestSearch lookup={lookup} onClose={() => {}} />);
+  fireEvent.change(screen.getByLabelText("Guest name"), { target: { value: "Ife" } });
+  await act(async () => fireEvent.click(screen.getByRole("button", { name: "Find guest" })));
+  await act(async () => fireEvent.click(screen.getByRole("button", { name: /Ada & Chidi/ })));
+  expect(screen.getByRole("button", { name: "Save offline entry" })).toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: "Admit 2 guests" })).not.toBeInTheDocument();
+});

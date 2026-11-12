@@ -13,7 +13,17 @@ import { ScannerSession } from "./scanner-session";
 import { ManualGuestSearch, type ManualLookup } from "./manual-guest-search";
 import { readLiveManual } from "../browser/manual-client";
 import { resolveManualSnapshot } from "../lib/manual-snapshot";
+import type { ScanReadResult } from "../lib/scan-read-result";
+import type { OfflineVerdict } from "../lib/offline-queue";
 import type { AdmissionResponse } from "../lib/online-admission";
+
+// Journal vocabulary intentionally records an unknown signed observation as
+// invalid until an explicit name-checked admission, and a replaced pass as revoked.
+function observationMatches(read: ScanReadResult, recorded: OfflineVerdict): boolean {
+  const expected =
+    read.state === "unknown" ? "invalid" : read.state === "replaced" ? "revoked" : read.state;
+  return recorded === expected;
+}
 
 export function GuestSnapshotScanner({
   session,
@@ -88,7 +98,29 @@ export function GuestSnapshotScanner({
         return { response: { state: "unavailable" }, cached: true };
       const response = resolveManualSnapshot(input, snapshot, { session, expiresAt });
       if (response.state === "session_expired") onAdmissionOutcome(response);
-      return { response, cached: true };
+      const writable = snapshot?.version === 2 && Boolean(snapshot.actor);
+      if (writable && response.state === "selection") {
+        const saved = await recordOfflineAttempt({
+          session,
+          clientEventId: crypto.randomUUID(),
+          inputMethod: "manual",
+          invitationId: response.invitationId,
+          kind: "observation",
+          people: 0,
+          nameChecked: false,
+        });
+        if (
+          signal.aborted ||
+          unsafeCache.current ||
+          generation !== invalidationGeneration.current ||
+          (saved.state !== "recorded" && saved.state !== "duplicate") ||
+          ((saved.state === "recorded" || saved.state === "duplicate") &&
+            !observationMatches(response.result, saved.result))
+        )
+          return { response: { state: "unavailable" }, cached: true };
+        window.dispatchEvent(new Event("offline-queue-changed"));
+      }
+      return { response, cached: true, ...(writable ? { offlineSession: session } : {}) };
     },
     [session, expiresAt, changed, onAdmissionOutcome],
   );
@@ -127,12 +159,15 @@ export function GuestSnapshotScanner({
       }
       if (signal.aborted) return { state: "unavailable" };
       if (unsafeCache.current) return { state: "unavailable" };
+      const generation = invalidationGeneration.current;
       const snapshot = await readGuestSnapshot({ session, expiresAt });
-      if (signal.aborted) return { state: "unavailable" };
+      if (signal.aborted || unsafeCache.current || generation !== invalidationGeneration.current)
+        return { state: "unavailable" };
       const result = snapshot
         ? await resolveSnapshotRead(qr, window.location.origin, snapshot, { session, expiresAt })
         : { state: "unavailable" as const };
-      if (signal.aborted) return { state: "unavailable" };
+      if (signal.aborted || unsafeCache.current || generation !== invalidationGeneration.current)
+        return { state: "unavailable" };
       const writable = snapshot?.version === 2 && Boolean(snapshot.actor);
       if (writable && result.state !== "unavailable" && result.state !== "session_expired") {
         const saved = await recordOfflineAttempt({
@@ -144,8 +179,13 @@ export function GuestSnapshotScanner({
           people: 0,
           nameChecked: false,
         });
-        if (signal.aborted) return { state: "unavailable" };
-        if (saved.state !== "recorded" && saved.state !== "duplicate")
+        if (signal.aborted || unsafeCache.current || generation !== invalidationGeneration.current)
+          return { state: "unavailable" };
+        if (
+          (saved.state !== "recorded" && saved.state !== "duplicate") ||
+          ((saved.state === "recorded" || saved.state === "duplicate") &&
+            !observationMatches(result, saved.result))
+        )
           return { state: "unavailable" };
         window.dispatchEvent(new Event("offline-queue-changed"));
       }

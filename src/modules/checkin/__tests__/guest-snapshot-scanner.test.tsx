@@ -7,9 +7,12 @@ import { readGuestSnapshot } from "../browser/guest-snapshot-client";
 import { resolveSnapshotRead } from "../lib/resolve-snapshot-read";
 import { scannerWorkerMessage } from "../browser/scanner-worker-message";
 import type { AdmissionResponse } from "../lib/online-admission";
+import { recordOfflineAttempt } from "../browser/offline-queue-client";
 import { readLiveManual } from "../browser/manual-client";
 vi.mock("../components/offline-queue-status", () => ({ OfflineQueueStatus: () => null }));
 const refresh = vi.hoisted(() => vi.fn());
+const resolvedReads = vi.hoisted(() => vi.fn());
+vi.mock("../browser/offline-queue-client", () => ({ recordOfflineAttempt: vi.fn() }));
 vi.mock("../components/use-guest-snapshot", () => ({
   useGuestSnapshot: () => ({
     summary: null,
@@ -36,7 +39,9 @@ vi.mock("../components/scanner", () => ({
       <button onClick={onManualSearch}>Find guest by name</button>
       <button
         data-admission={String(allowAdmission)}
-        onClick={() => void resolveRead("signed fixture", new AbortController().signal)}
+        onClick={() =>
+          void resolveRead("signed fixture", new AbortController().signal).then(resolvedReads)
+        }
       >
         Check fixture
       </button>
@@ -172,4 +177,40 @@ it("refuses cached fallback after known-change erasure was not acknowledged", as
   fireEvent.click(screen.getByRole("button", { name: "Check fixture" }));
   await waitFor(() => expect(readLivePass).toHaveBeenCalledTimes(2));
   expect(readGuestSnapshot).not.toHaveBeenCalled();
+});
+
+it("discards a stale green read when a deferred durable observation finds all places used", async () => {
+  Object.defineProperty(navigator, "onLine", { configurable: true, value: false });
+  vi.mocked(readGuestSnapshot).mockResolvedValue({
+    version: 2,
+    actor: { staffId: "550e8400-e29b-41d4-a716-446655440000", deviceId: "b".repeat(64) },
+    session: "a".repeat(64),
+    generatedAt: Date.now(),
+    expiresAt: Date.now() + 60_000,
+    keys: [],
+    invitations: [],
+  });
+  vi.mocked(resolveSnapshotRead).mockResolvedValue({
+    state: "valid",
+    guest: { name: "Synthetic", partySize: 1, admittedSoFar: 0, tableNumber: null, admissions: [] },
+  });
+  let release: () => void = () => {};
+  vi.mocked(recordOfflineAttempt).mockImplementation(
+    (input) =>
+      new Promise((resolve) => {
+        release = () =>
+          resolve({
+            state: "recorded",
+            clientEventId: input.clientEventId,
+            people: 0,
+            result: "already_used",
+          });
+      }),
+  );
+  render(<GuestSnapshotScanner session={"a".repeat(64)} expiresAt={Date.now() + 60_000} />);
+  fireEvent.click(screen.getByRole("button", { name: "Check fixture" }));
+  await waitFor(() => expect(recordOfflineAttempt).toHaveBeenCalledOnce());
+  expect(resolvedReads).not.toHaveBeenCalled();
+  release();
+  await waitFor(() => expect(resolvedReads).toHaveBeenCalledWith({ state: "unavailable" }));
 });

@@ -63,3 +63,21 @@ failure. Preserve `/tmp/TICKET-066-final-browser-clean-fixture.log` and
 `/tmp/TICKET-066-diagnostic-browser.log`. Latest quick107related tests and CI
 parity pass. Next integrate verified0639c24504f and adapt manual queue UI, then
 rerun affected compatibility checks and hosted fullCI.
+
+## Manual integration and review follow-up
+
+Verified063 integrated as45fc93c9. Manual cached selections now carry queue
+capability only from a v2 snapshot, record an observation before display and use
+real invitation IDs for explicit local count confirmation. Legacy snapshots stay
+read-only. A deferred-observation regression reproduced a stale green verdict
+when the worker found all places used; both QR/manual paths now reject divergent
+normalized verdicts, preserving unknown/replaced journal vocabulary. Fourteen
+related tests pass after the fix. Final browser fixture uses unique synthetic
+names because retained audit fixtures legitimately contain earlier households.
+
+Latest combined browser attempt failed: mobile initial camera stopped again;
+desktop reached the tenth manual selection but its non-unique fixture name matched
+six retained households. The fixture identity is corrected, not the selector
+relaxed. Failure-only static asset/controller diagnostics now persist to disk.
+No root cause for the mobile failure is claimed. Next integrate verified068,
+rebuild and diagnose/run final combined browser checks, then publish hosted CI.

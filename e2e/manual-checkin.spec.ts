@@ -79,7 +79,7 @@ test("denied camera recovers through companion search and exact manual admission
           expect(
             await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
           ).toBe(true);
-          const directory = `docs/reviews/TICKET-063/${info.project.name}`;
+          const directory = `${process.env.SCANNER_REVIEW_DIR ?? "docs/reviews/TICKET-063"}/${info.project.name}`;
           mkdirSync(directory, { recursive: true });
           await page.screenshot({
             path: `${directory}/${state}-${theme.id}-${width}.png`,
@@ -95,7 +95,12 @@ test("denied camera recovers through companion search and exact manual admission
     await page.getByRole("button", { name: "Find guest", exact: true }).click();
     await page.getByRole("button", { name: new RegExp(primaryName) }).click();
     await expect(page.getByRole("heading", { name: "Valid pass", exact: true })).toBeVisible();
-    await expect(page.getByText(/No entry is recorded offline/)).toBeVisible();
+    await expect(
+      page.getByRole("button", { name: "Save offline entry", exact: true }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Entry saved on this phone", exact: true }),
+    ).toHaveCount(0);
     await expect(page.getByLabel("How many are here?")).toHaveCount(0);
     expect(await db`select id from scan_events where invitation_id=${invitation}`).toHaveLength(0);
     await capture("cached-selection");

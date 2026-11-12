@@ -92,7 +92,7 @@ test("authenticated private snapshot supports offline reads and erases on sign-o
     expect(response.headers()["cache-control"]).toContain("no-store");
     expect(await response.text()).not.toMatch(/PRIVATE|private@example|dietary_notes|pin_hash/);
     await expect(page.getByText("Guest list saved just now.")).toBeVisible({ timeout: 20_000 });
-    const folder = `docs/reviews/TICKET-065/${info.project.name}`;
+    const folder = `${process.env.SCANNER_REVIEW_DIR ?? "docs/reviews/TICKET-065"}/${info.project.name}`;
     mkdirSync(folder, { recursive: true });
     async function capture(state: string) {
       await page.emulateMedia({ reducedMotion: "reduce" });
