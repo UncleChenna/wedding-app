@@ -1125,15 +1125,16 @@
         "- 2026-10-31 — todo → in_progress — divine (codex)",
         "- 2026-10-31 — in_progress → blocked — divine (codex) — Draft PR https://github.com/UncleChenna/wedding-app/pull/60 passes full verification; physical WhatsApp preview and measured homepage nonzero CLS remain unresolved, retained in release-blocking TICKET-201",
         "- 2026-11-12 — blocked → in_progress — divine (codex) — Reconcile merged PR 60 under approved preview delivery; physical WhatsApp and exact-zero CLS remain mandatory in release-blocking TICKET-201.",
-        "- 2026-11-12 — in_progress → in_review — divine (codex)"
+        "- 2026-11-12 — in_progress → in_review — divine (codex)",
+        "- 2026-11-12 — in_review → done — divine (codex)"
       ],
-      "status": "in_review",
+      "status": "done",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-047",
       "pr": "https://github.com/UncleChenna/wedding-app/pull/160",
       "started": "2026-10-31",
-      "completed": "",
+      "completed": "2026-11-12",
       "updated": "2026-11-12",
       "reason": "",
       "resume_to": ""
