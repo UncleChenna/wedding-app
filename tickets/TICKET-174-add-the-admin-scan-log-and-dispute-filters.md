@@ -12,9 +12,9 @@ agent: codex
 blocked_by: [TICKET-062, TICKET-088]
 blocks: [TICKET-154]
 branch: TICKET-174
-pr: https://github.com/UncleChenna/wedding-app/pull/151
+pr: https://github.com/UncleChenna/wedding-app/pull/157
 created: 2026-10-21
-updated: 2026-11-10
+updated: 2026-11-11
 started: 2026-11-09
 completed: ""
 reason: ""
@@ -62,3 +62,5 @@ Backlog audit coverage: CHK-5, ADM-3. See [PRD](../docs/prd.md) and [audit](AUDI
 - 2026-11-09 — todo → claimed — divine (codex) — started ahead of TICKET-062 (in_review)
 - 2026-11-09 — todo → in_progress — divine (codex) — started ahead of TICKET-062 (in_review)
 - 2026-11-10 — in_progress → in_review — divine (codex)
+- 2026-11-11 — in_review → in_progress — divine (codex) — Merged PR151 retains failing admin navigation assertion; repair and verify integrated develop before completion
+- 2026-11-11 — in_progress → in_review — divine (codex)
