@@ -15,6 +15,7 @@ export const adminSections = [
   { href: appRoutes.adminMenu.path, label: appRoutes.adminMenu.label, exact: false },
   { href: appRoutes.adminStaff.path, label: appRoutes.adminStaff.label, exact: false },
   { href: appRoutes.adminScans.path, label: appRoutes.adminScans.label, exact: false },
+  { href: appRoutes.adminHealth.path, label: appRoutes.adminHealth.label, exact: false },
   { href: appRoutes.adminSettings.path, label: appRoutes.adminSettings.label, exact: false },
 ] as const;
 

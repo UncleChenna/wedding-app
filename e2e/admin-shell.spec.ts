@@ -21,6 +21,7 @@ test.describe("admin shell", () => {
       "Menu",
       "Staff",
       "Scan log",
+      "Event health",
       "Settings",
     ];
     await expect(links).toHaveText(sections);
