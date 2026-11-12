@@ -40,8 +40,8 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-7).
 
 ## Acceptance criteria
 
-- [ ] An admission on device A shows as used on device B within 2s (e2e with two contexts).
-- [ ] With realtime blocked, polling updates within 15s.
+- [x] An admission on device A shows as used on device B within 2s (e2e with two contexts).
+- [x] With realtime blocked, polling updates within 15s.
 
 ## Test plan
 
@@ -54,7 +54,7 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-7).
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-11-12: Actual two-context private Supabase WebSocket/polling tests prove both timing criteria, with persisted timing evidence and all-theme UI checks. Lost-response retry retains one immutable request and one admission. Independent review findings for stale cache replies and focus were fixed with regressions. Verified065 decoder integration passes58 focused tests. Physical-device/venue-network and performance release gates remain unverified. Final exact-head CI is still required before merge; no previous failure or cancelled run is completion evidence.
 
 ## Activity log
 
