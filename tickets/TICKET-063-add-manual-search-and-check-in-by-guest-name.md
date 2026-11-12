@@ -2,7 +2,7 @@
 id: TICKET-063
 title: Add manual search and check-in by guest name
 epic: checkin
-status: in_review
+status: in_progress
 priority: high
 estimate: M
 labels: [frontend, backend]
@@ -69,3 +69,4 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-4) · [Journey 2: check-
 - 2026-11-10 — in_progress → blocked — divine (codex) — Awaiting verified TICKET-065 merge and its authoritative-outcome cache boundary before scanner/offline integration and actual browser verification; server and isolated UI checkpoint pushed in draft PR152.
 - 2026-11-11 — blocked → in_progress — divine (codex) — Resume manual search integration against merged cache implementation; keep draft until dependency verification and actual journey checks pass; started ahead of TICKET-065 (in_progress)
 - 2026-11-12 — in_progress → in_review — divine (codex)
+- 2026-11-12 — in_review → in_progress — divine (codex) — Repair inherited scanner browser expectation for the implemented manual search recovery flow
