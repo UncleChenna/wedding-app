@@ -76,6 +76,7 @@ export function Scanner({
   const refreshController = useRef<AbortController | null>(null);
   const revisionAtCheck = useRef(readRevision);
   const displayedResult = useRef<ScanReadResult | null>(null);
+  const focusNewCheck = useRef(false);
   const unresolved = useRef(false);
   const deferredResult = useRef<ScanReadResult | null>(null);
   const [changedDuringAdmission, setChangedDuringAdmission] = useState(false);
@@ -95,6 +96,7 @@ export function Scanner({
     refreshController.current?.abort();
     refreshController.current = null;
     displayedResult.current = null;
+    focusNewCheck.current = false;
     deferredResult.current = null;
     unresolved.current = false;
     setChangedDuringAdmission(false);
@@ -134,6 +136,7 @@ export function Scanner({
     setTorchAvailable(false);
     setState("paused");
     displayedResult.current = result;
+    focusNewCheck.current = true;
     revisionAtCheck.current = readRevision;
     setReadResult(result);
     setCheckedQr(result.state === "valid" ? qr : null);
@@ -164,7 +167,11 @@ export function Scanner({
   }
 
   useEffect(() => {
-    if (readResult) resultRegion.current?.focus();
+    // Background freshness updates must not steal focus from an admission receipt.
+    if (readResult && focusNewCheck.current) {
+      focusNewCheck.current = false;
+      resultRegion.current?.focus();
+    }
   }, [readResult]);
 
   useEffect(() => {

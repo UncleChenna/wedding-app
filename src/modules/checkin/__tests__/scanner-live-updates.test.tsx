@@ -54,6 +54,9 @@ it("preserves pending and uncertain intent during a canonical allowance change",
   );
   expect(submit.mock.calls[1]?.[0]).toEqual(submit.mock.calls[0]?.[0]);
   expect(screen.getByRole("heading", { name: "Already recorded" })).toBeVisible();
+  expect(
+    screen.getByRole("heading", { name: "Already recorded" }).closest('[tabindex="-1"]'),
+  ).toHaveFocus();
 });
 it("fences a slow refresh when a different QR is scanned", async () => {
   const pending = Promise.withResolvers<ScanReadResult>();

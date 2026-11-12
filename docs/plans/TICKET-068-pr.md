@@ -25,7 +25,7 @@ A gate scanner now refreshes its displayed pass when another scanner records an 
 - Actual Supabase:15 admission/reconciliation/publication tests and4 existing private-channel authorization tests passed. Broadcast tests reproduced missing messages before implementation; replay and rollback assertions remain.
 - Actual production browser:6/6 passed across mobile and desktop, all four themes axe-zero, no horizontal overflow375/768/1280.24 screenshots inspected without clipping or overlap.
 - Production build passed. Focused boundary/controller/scanner tests passed.
-- Full unit/coverage:1991 passed,207 conditional database skips,100.03s. Critical coverage98.71% lines/98.96% branches.
+- Full unit/coverage after freshness fix:1993 passed,207 conditional database skips,95.69s. Critical coverage98.71% lines/98.96% branches.
 - Quick verification passed lint, types, related tests and workflow/environment CI parity.
 - Final enhanced browser6/6 passed33.2s, including keyboard Enter retry,44px buttons and actual standalone offline reload/reconnect. Live updates measured120/70ms, polling2863/3360ms, uncertain notices125/123ms (mobile/desktop); exact JSON saved beside screenshots. Exact final-head CI and independent integration review remain required; this PR stays draft.
 
@@ -33,11 +33,11 @@ A gate scanner now refreshes its displayed pass when another scanner records an 
 
 Independent review identified stale cached replies crossing completed invalidation. Two regression tests cover delayed storage and signature resolution; generation checks now fail closed at both boundaries (nine boundary tests pass). The reviewer confirmed the fix clean.
 
-Hosted CI exposed wrong inherited database defaults and obsolete network-idle waits. The runner now explicitly combines generated managed configuration with identity guards. Actual tests under conflicting CI defaults pass: two publication SQL tests and six synchronization browser cases. Existing scanner lifecycle2/2 and offline2/2 pass with exact-zero CLS retained after fonts/rendered-frame readiness. Final full-suite refresh and combined-base CI remain pending; no failing run is represented as green.
+Hosted CI exposed wrong inherited database defaults and obsolete network-idle waits. The runner now explicitly combines generated managed configuration with identity guards. Actual tests under conflicting CI defaults pass: two publication SQL tests and six synchronization browser cases. Existing scanner lifecycle2/2 and offline2/2 pass with exact-zero CLS retained after fonts/rendered-frame readiness. The full-suite refresh passed1993 tests. Subsequent integrated CI revealed background updates stealing duplicate receipt focus; a red regression reproduced it and a one-shot new-scan focus fix passes14 scanner tests, independent review and the exact production admission journey2/2 (61s). Final combined-base CI remains pending; no failing run is represented as green.
 
 # Risks and rollout
 
-No migration, policy, production application or external guest message. Broadcast availability requires the existing private station policies and configured public Supabase endpoint. A failed refresh preserves explicit snapshot/session safety restrictions rather than inventing admission counts. Physical phones, venue-network timing, fresh Lighthouse and CLS are unverified release checks; this browser evidence does not replace them. Existing TICKET-065 decoder and TICKET-174 navigation follow-ups must be integrated before final publication.
+No migration, policy, production application or external guest message. Broadcast availability requires the existing private station policies and configured public Supabase endpoint. A failed refresh preserves explicit snapshot/session safety restrictions rather than inventing admission counts. Physical phones, venue-network timing, fresh Lighthouse and CLS are unverified release checks; this browser evidence does not replace them. Navigation follow-up157 and current ordering changes are integrated from developeb145497; TICKET-065 decoder follow-up158 remains pending.
 
 # Screenshots
 
