@@ -1,47 +1,52 @@
-# TICKET-081: reduce cold order-page traffic and enforce transfer budgets
+## Problem and result
 
-Cold ordering visits still exceed the required 200,000-byte budget. This draft removes unnecessary offline-page bootstrap/full-font downloads and unused italic preloading, while preserving intended theme fonts and offline retry. The task is unfinished: complete HTTP wire totals are 399,416 bytes for the table form and 387,293 bytes for the menu. The real local slow-4 G order-to-board test now passes, while its CI gate remains unfinished.
+A fresh `/order` visit originally transferred about 1.24 MB, including service-worker installation. The order page now uses a small themed HTML document with progressive enhancement and reuses the existing order submission, retry, validation, availability and status contracts. The original 200,000-byte budget remains unchanged.
+
+The final production build transfers 158,155–181,065 bytes across light/dark, mobile/desktop and table/menu cases. The menu fixture includes `Ọgbọnọ · Crème brûlée`. Real Supabase broadcast delivery under emulated slow 4G took 378.475 ms, below 2 seconds, with one persisted quantity and the matching broadcast observed before the board displayed it.
 
 ## Changes
 
-- The public offline fallback is native HTML with validated theme tokens, fixed escaped copy, original-path retry and home navigation. It contains no guest data, Next Flight or client bootstrap.
-- Four content-hashed font subsets cover the exact offline copy, retaining 400–600 weights for every approved family and valid custom body/display assignments. The 28,084-byte combined asset set preserves licensed font records and canonical metric fallbacks. Generation and source/output hashes are documented.
-- The worker permits only known hashed offline-font paths. Private/scanner rules remain unchanged; its cache version advances.
-- Cormorant retains its normal/italic and complete Unicode faces, but loads rendered styles on demand instead of eagerly downloading italic on plain order pages.
-- A passive loopback HTTP forwarder counts response headers, framing and bodies, including the worker bootstrap Chromium reports aszero. It does not rewrite/compress responses or warm caches. Browser measurements remain diagnostic.
+- Native GET and POST/redirect/GET preserve no-JavaScript table selection, same-origin checks, bounded streamed forms and the scoped HttpOnly session cookie. Unexpected page failures return a safe themed HTTP 503.
+- The small browser bundle imports existing submission/idempotency and polling contracts; strict response contracts use named Zod Mini imports. Guest quantity controls, notes, availability, retries, received/served groups and accessibility remain covered by existing journeys.
+- Generated, licensed font subsets retain original variable axes and exact rendering. Latin-1 and Igbo glyphs have dedicated subsets; other characters retain full-font fallback.
+- Public worker responses negotiate gzip with identity fallback, `Vary: Accept-Encoding`, unchanged scope and no-store update semantics. No request is hidden or delayed to meet the budget.
+- CI runs complete cold-wire budget/font checks and an actual Supabase slow-4G delivery check. The passive wire proxy counts response headers, chunk framing, worker bytes and fonts, including bytes Chromium's worker accounting omits.
 
-## Actual evidence
+## Evidence
 
-- Production builds pass. Offline foundation 44 focused tests and quicklint/types 54 related tests pass.
-- Cold offline production journeys pass 2/2: all four themes, intended loaded fonts, axe,375/768/1280 overflow checks and reconnect/retry preserving the original path.24 screens: `docs/reviews/TICKET-081/offline-mobile/` and `offline-desktop/`.
-- Preload change:5 font asset tests and 4 real browser checks pass, including no-JavaScript light/dark rendering, non-Latin fallback and glyph equivalence at all approved weights.
-- Two focused byte-counter tests pass, proving exact chunked worker-script bytes and rejecting nonloopback/TLS guessing.
-- Strict complete-wire budget tests fail 399,416/387,293 against 200,000. Raw actual trace attachments: `docs/reviews/TICKET-081/wire-{table,menu}.json`.
-- Earlier browser-reported totals fell from~1.24 MB to~368/359 KB, but those numbers undercounted the worker script. Same-run complete-wire evidence exposes 28,725 missing bytes percase. These older figures are not a budget pass or deployment measurement.
+- Production build and `pnpm verify:quick`: pass, including lint, types, related tests and CI parity.
+- Final cold-wire browser tests: 8/8 pass. Exact per-case totals and request breakdowns: `docs/reviews/TICKET-081/native-wire-{mobile,desktop}-{light,dark}-{table,menu}.json`.
+- Font browser parity: 48 comparisons per viewport across four families, weights 400/500/600, common punctuation, Latin-1, Igbo and full-font fallback; mobile and desktop pass. Hash/coverage/axis checks pass.
+- Worker compression and existing service-worker regressions plus font metadata: 45 tests pass. Round-trip decompression equals the complete original script; explicit gzip refusal and identity response are tested.
+- Actual slow-4G delivery: `docs/reviews/TICKET-081/delivery.json` (150 ms latency, 1.6 Mbps down, 750 Kbps up).
+- Native form/security tests cover body stream limits, origin rejection, cookie preservation, escaping and safe error recovery. Existing ordering contract tests pass.
+- Existing guest journey screenshots: `docs/reviews/TICKET-081/parity/`; final rerun result will be recorded before review readiness.
 
-## Remaining work and risks
+## Limitations and review
 
-Reduce remaining runtime/font traffic without losing behavior; wire the verified local delivery test into CI; wire both gates into CI; finish independent review. Measurements use local HTTP/1 and do not certify production HTTP/2/TLS, physical devices or reception conditions. No acceptance criterion is claimed complete merely from these reductions. No Realtime proof exists yet.
+This is a deliberate native-rendering exception documented in ADR 0027. Shared business rules remain authoritative, but the DOM adapter must stay aligned with shared controls. Physical phones, venue signal and fresh Lighthouse/CLS checks are not certified here; existing release gates remain mandatory. Large menus or additional Unicode fallback fonts can increase transfer beyond the measured synthetic menu. This does not promise an arbitrary amount of content fits 200 KB.
 
-Rollback restores the previous Next offline page/worker policy and font preload setting. There is no migration or private-cache format change. Generated fixed-copy fonts must be regenerated if offline text or source fonts change; they must never be used for arbitrary guest names.
+Review `/order` with JavaScript disabled for table selection, then enabled for quantity controls, notes, submit/retry, sold-out and received/served states. Inspect the all-theme screenshots and the exact wire artifacts. CI results and independent review must be clean before merging.
 
-## Actual slow-4 G delivery fixture
+## Rollback
 
-A fresh owned managed Supabase stack was started and migrated; no collaborator
-stack was touched. Production rebuilt with its real Realtime public config.
-New e 2 e/order-delivery.spec.ts uses a real guest submission, separate real PIN
-kitchen sign-in, confirmed Live subscription, both contexts throttled before
-connections (150 ms latency,1.6 Mbps down,750 kbps up), visible persisted single
-order and matching actual WebSocket broadcast before display. Native PostgreSQL
-without realtime.send is explicitly refused.
+No database migration or production data change. Restore the previous `/order/page.tsx` renderer and asset build command if necessary; retain immutable old assets for already-open documents. Font generation is reproducible via the pinned generator and manifest hashes.
 
-First run measured 356.9 ms but failed the transport proof because the fixture
-ignored binary frames. Installed Supabase serializer confirms UTF-8 event/JSON
-inside binary frames; the fixture now observes both encodings without relaxing
-the matching order UUID/before-visible requirement. Final actual test passed 1/1
-(9.5 s runner), retaining strict elapsed<2000 ms. Its exact passing elapsed value
-was attached in memory but not retained by the list reporter, so only the passing
-bound is claimed. A subsequent evidence-only change writes sanitized timing
-JSON after all assertions for future runs; this artifact is not fabricated.
-Managed stack stopped with backup preserved after verification. Byte requirement
-remains failed; CI wiring and final current-base review still outstanding.
+## UI checklist disposition
+
+| Item                | Result and evidence                                                                                                                                                                                                                 |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Screenshots         | All four themes at 375/768/1280 in `docs/reviews/TICKET-081/parity`; existing journey suite captures menu, table, retry and receipt states. Representative mobile menu inspected. Full independent visual review remains requested. |
+| Tokens              | PASS: document uses validated theme CSS; controls use token colors/radii/spacing. No literal color values in the new ordering stylesheet.                                                                                           |
+| Typography          | PASS: original approved font families, variable axes and exact browser pixel/width parity; complementary fallback ranges preserved.                                                                                                 |
+| Mobile              | Existing journey assertions check overflow and 44px controls across review widths; sticky action bar includes safe-area padding. Physical keyboard behavior remains unverified.                                                     |
+| Motion              | N/A: native ordering adapter has no transitions or animations.                                                                                                                                                                      |
+| Keyboard            | Native labels/forms and quantity keyboard controls preserved; table/error/receipt focus checked by existing journeys. No dialog introduced.                                                                                         |
+| Contrast            | All-theme axe assertions in existing journey suite; no color-only sold-out/status meaning.                                                                                                                                          |
+| Load/images         | No photographs on this route. Font metric fallbacks preserved; fresh exact-zero CLS not certified. Native font generation is the documented ADR0027 exception to next/font.                                                         |
+| Performance         | PASS for ticket budget and actual slow-4G delivery; fresh Lighthouse95 remains unverified and retained as release work.                                                                                                             |
+| Copy                | Existing approved ordering copy and human recovery text reused.                                                                                                                                                                     |
+| Shared components   | ADR0027 approved native-rendering exception; shared contracts, retry/idempotency, validation and grouping remain source of truth.                                                                                                   |
+| Sharing/devices     | OG metadata retained; WhatsApp preview and physical iOS/Android checks remain unverified release gates.                                                                                                                             |
+| QR / staff feedback | N/A: no QR or staff interface changes. Actual guest-to-staff delivery independently measured.                                                                                                                                       |
+| Verification        | Targeted quick verification and production build pass. CI scope checks and independent review required before merge. Full release verification remains required separately.                                                         |

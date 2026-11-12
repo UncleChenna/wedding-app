@@ -135,7 +135,7 @@ test.describe("guest order status", () => {
           expect(
             await guest.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
           ).toBe(true);
-          const dir = `docs/reviews/TICKET-075/${info.project.name}/${theme.id}`;
+          const dir = `${process.env.ORDER_REVIEW_DIR ?? "docs/reviews"}/TICKET-075/${info.project.name}/${theme.id}`;
           mkdirSync(dir, { recursive: true });
           await guest.screenshot({ path: `${dir}/${width}-served.png`, fullPage: true });
         }

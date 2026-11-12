@@ -1,3 +1,4 @@
+import { gunzipSync } from "node:zlib";
 import { runInNewContext } from "node:vm";
 
 import { describe, expect, it, vi } from "vitest";
@@ -10,7 +11,7 @@ import {
   SW_STATIC_CACHE,
 } from "../lib/sw-policy";
 import { OWN_PASS_CACHE } from "@/modules/invitations/lib/offline-worker";
-import { serviceWorkerSource } from "../server/service-worker";
+import { serviceWorkerResponse, serviceWorkerSource } from "../server/service-worker";
 
 const ORIGIN = "https://wedding.example";
 const req = (path: string, init: { method?: string; headers?: Record<string, string> } = {}) => ({
@@ -337,4 +338,26 @@ it("embeds the scanner worker as executable self-contained JavaScript without to
   expect(addEventListener.mock.calls.filter(([type]) => type === "fetch")).toHaveLength(1);
   expect(addEventListener.mock.calls.filter(([type]) => type === "message")).toHaveLength(2);
   expect(open).not.toHaveBeenCalled();
+});
+
+describe("worker transfer encoding", () => {
+  it("compresses the complete public script without changing update semantics", async () => {
+    const response = serviceWorkerResponse(null, "gzip, deflate, br");
+    expect(response.headers.get("Content-Encoding")).toBe("gzip");
+    expect(response.headers.get("Vary")).toBe("Accept-Encoding");
+    expect(response.headers.get("Cache-Control")).toBe("no-cache, no-store, must-revalidate");
+    expect(response.headers.get("Service-Worker-Allowed")).toBe("/");
+    const bytes = Buffer.from(await response.arrayBuffer());
+    expect(gunzipSync(bytes).toString()).toBe(serviceWorkerSource());
+    expect(bytes.byteLength).toBeLessThan(Buffer.byteLength(serviceWorkerSource()));
+  });
+  it.each(["", "br", "gzip;q=0, *;q=1", "gzip;q=0.000", "notgzip"])(
+    "retains identity for unsupported or refused gzip: %s",
+    async (encoding) => {
+      const response = serviceWorkerResponse(null, encoding);
+      expect(response.headers.get("Content-Encoding")).toBeNull();
+      expect(response.headers.get("Vary")).toBe("Accept-Encoding");
+      expect(await response.text()).toBe(serviceWorkerSource());
+    },
+  );
 });

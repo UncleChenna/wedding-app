@@ -1,5 +1,5 @@
 import { randomInt, randomUUID } from "node:crypto";
-import { existsSync } from "node:fs";
+import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import postgres, { type Sql } from "postgres";
 import { expect, test } from "@playwright/test";
 import { assertDatabaseTarget } from "../scripts/database-target";
@@ -8,7 +8,7 @@ import { wireProxy } from "./support/wire-proxy";
 
 const table = randomInt(1_000_000, 2_000_000);
 const menuId = randomUUID();
-const menuName = `Performance fixture ${menuId.slice(0, 8)}`;
+const menuName = `Ọgbọnọ · Crème brûlée ${menuId.slice(0, 8)}`;
 let db: Sql;
 let restoreOrdering: (() => Promise<void>) | undefined;
 
@@ -35,98 +35,120 @@ test.describe("order first-visit transfer budget", () => {
       await db.end();
     }
   });
-  for (const menu of [false, true]) {
-    test(`${menu ? "confirmed menu" : "table form"} transfers at most 200 KB including worker install`, async ({
-      browser,
-      baseURL,
-    }, info) => {
-      test.setTimeout(60_000);
-      if (!baseURL) throw new Error("Production baseURL is required");
-      const wire = await wireProxy(baseURL);
-      const context = await browser.newContext({
-        baseURL: wire.origin,
-        serviceWorkers: "allow",
-        viewport: { width: 375, height: 812 },
-      });
-      const rows: { path: string; worker: boolean; bytes: number; status: number | undefined }[] =
-        [];
-      const measurements: Promise<void>[] = [];
-      let lastFinished = Date.now();
-      context.on("requestfinished", (request) => {
-        lastFinished = Date.now();
-        measurements.push(
-          (async () => {
-            const response = await request.response();
-            const sizes = await request.sizes();
-            // Chromium reports cached body size as -headers; their sum correctly
-            // records zero network transfer. Never clamp the components separately.
-            rows.push({
-              path: new URL(request.url()).pathname,
-              worker: Boolean(request.serviceWorker()),
-              bytes: sizes.responseBodySize + sizes.responseHeadersSize,
-              status: response?.status(),
-            });
-          })(),
-        );
-      });
-      try {
-        if (menu)
-          await context.addCookies([
-            { name: "wedding-table", value: String(table), url: wire.origin },
-          ]);
-        const page = await context.newPage();
-        const response = await page.goto("/order");
-        expect(response?.status()).toBe(200);
-        await expect(
-          page.getByRole("heading", { name: "Hungry? Thirsty? Say the word." }),
-        ).toBeVisible();
-        if (menu)
-          await expect(
-            page.getByRole("button", { name: `Increase ${menuName} quantity` }),
-          ).toBeVisible();
-        else await expect(page.getByLabel("Table number", { exact: true })).toBeVisible();
-        await page.evaluate(() => document.fonts.ready);
-        await page.evaluate(() =>
-          Promise.race([
-            navigator.serviceWorker.ready.then(() => undefined),
-            new Promise<never>((_, reject) =>
-              setTimeout(() => reject(new Error("Worker installation did not finish")), 30_000),
-            ),
-          ]),
-        );
-        await expect
-          .poll(() => Date.now() - lastFinished, { timeout: 15_000 })
-          .toBeGreaterThanOrEqual(1500);
-        await expect
-          .poll(() => Date.now() - wire.snapshot().lastReceived, { timeout: 15_000 })
-          .toBeGreaterThanOrEqual(1500);
-        await expect.poll(() => wire.snapshot().pendingBytes).toBe(0);
-        await Promise.all(measurements);
-        const total = wire.snapshot().bytes;
-        const browserReported = rows.reduce((sum, row) => sum + row.bytes, 0);
-        await info.attach("cold-transfer.json", {
-          body: JSON.stringify(
-            {
-              menu,
-              budget: 200_000,
-              total,
-              browserReported,
-              transport: "loopback HTTP/1 wire; no rewriting",
-              rows,
-            },
-            null,
-            2,
-          ),
-          contentType: "application/json",
+  for (const colorScheme of ["light", "dark"] as const)
+    for (const menu of [false, true]) {
+      test(`${colorScheme} ${menu ? "confirmed menu" : "table form"} transfers at most 200 KB including worker install`, async ({
+        browser,
+        baseURL,
+      }, info) => {
+        test.setTimeout(60_000);
+        if (!baseURL) throw new Error("Production baseURL is required");
+        const wire = await wireProxy(baseURL);
+        const context = await browser.newContext({
+          baseURL: wire.origin,
+          serviceWorkers: "allow",
+          viewport: info.project.use.viewport ?? { width: 375, height: 812 },
+          colorScheme,
         });
-        expect(rows.some((row) => row.worker)).toBe(true);
-        expect(rows.every((row) => row.bytes >= 0)).toBe(true);
-        expect(total).toBeGreaterThanOrEqual(browserReported);
-        expect(total).toBeLessThanOrEqual(200_000);
-      } finally {
-        await context.close();
-        await wire.close();
-      }
-    });
-  }
+        const rows: { path: string; worker: boolean; bytes: number; status: number | undefined }[] =
+          [];
+        const measurements: Promise<void>[] = [];
+        let lastFinished = Date.now();
+        context.on("requestfinished", (request) => {
+          lastFinished = Date.now();
+          measurements.push(
+            (async () => {
+              const response = await request.response();
+              const sizes = await request.sizes();
+              // Chromium reports cached body size as -headers; their sum correctly
+              // records zero network transfer. Never clamp the components separately.
+              rows.push({
+                path: new URL(request.url()).pathname,
+                worker: Boolean(request.serviceWorker()),
+                bytes: sizes.responseBodySize + sizes.responseHeadersSize,
+                status: response?.status(),
+              });
+            })(),
+          );
+        });
+        try {
+          if (menu)
+            await context.addCookies([
+              { name: "wedding-table", value: String(table), url: wire.origin },
+            ]);
+          const page = await context.newPage();
+          const response = await page.goto("/order");
+          expect(response?.status()).toBe(200);
+          await expect(
+            page.getByRole("heading", { name: "Hungry? Thirsty? Say the word." }),
+          ).toBeVisible();
+          if (menu)
+            await expect(
+              page.getByRole("button", { name: `Increase ${menuName} quantity` }),
+            ).toBeVisible();
+          else await expect(page.getByLabel("Table number", { exact: true })).toBeVisible();
+          await page.evaluate(() => document.fonts.ready);
+          await page.evaluate(() =>
+            Promise.race([
+              navigator.serviceWorker.ready.then(() => undefined),
+              new Promise<never>((_, reject) =>
+                setTimeout(() => reject(new Error("Worker installation did not finish")), 30_000),
+              ),
+            ]),
+          );
+          await expect
+            .poll(() => Date.now() - lastFinished, { timeout: 15_000 })
+            .toBeGreaterThanOrEqual(1500);
+          await expect
+            .poll(() => Date.now() - wire.snapshot().lastReceived, { timeout: 15_000 })
+            .toBeGreaterThanOrEqual(1500);
+          await expect.poll(() => wire.snapshot().pendingBytes).toBe(0);
+          await Promise.all(measurements);
+          const total = wire.snapshot().bytes;
+          const browserReported = rows.reduce((sum, row) => sum + row.bytes, 0);
+          mkdirSync("docs/reviews/TICKET-081", { recursive: true });
+          writeFileSync(
+            `docs/reviews/TICKET-081/native-wire-${info.project.name}-${colorScheme}-${menu ? "menu" : "table"}.json`,
+            JSON.stringify(
+              {
+                menu,
+                colorScheme,
+                viewport: info.project.use.viewport,
+                budget: 200_000,
+                total,
+                browserReported,
+                transport: "loopback HTTP/1 wire; no rewriting",
+                rows,
+              },
+              null,
+              2,
+            ) + "\n",
+          );
+          await info.attach("cold-transfer.json", {
+            body: JSON.stringify(
+              {
+                menu,
+                colorScheme,
+                viewport: info.project.use.viewport,
+                budget: 200_000,
+                total,
+                browserReported,
+                transport: "loopback HTTP/1 wire; no rewriting",
+                rows,
+              },
+              null,
+              2,
+            ),
+            contentType: "application/json",
+          });
+          expect(rows.some((row) => row.worker)).toBe(true);
+          expect(rows.every((row) => row.bytes >= 0)).toBe(true);
+          expect(total).toBeGreaterThanOrEqual(browserReported);
+          expect(total).toBeLessThanOrEqual(200_000);
+        } finally {
+          await context.close();
+          await wire.close();
+        }
+      });
+    }
 });

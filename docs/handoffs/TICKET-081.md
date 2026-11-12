@@ -1,3 +1,9 @@
+# Current checkpoint — 2026-11-12
+
+Native ordering implementation is complete locally on base 1cc4f020. Final wire tests pass 8/8: maximum181065 bytes including worker install, default light/dark and both viewports. Real Supabase slow-4G delivery passes378.475ms. Full original variable axes restored after rejected partial-axis experiment; font parity48cases per viewport passes. Worker gzip negotiated with unchanged cache/scope and reviewed by queue_upgrade. Final guest parity rerun pending; PR162 remains draft until independent review/CI. See docs/plans/TICKET-081-pr.md for current scope/evidence.
+
+Owned Supabase stopped with backup preserved. Lightweight native PostgreSQL `/tmp/TICKET-081-postgres.J2KPia` on36761 is active only for final browser verification; stop preserving data afterward. No collaborator stacks touched. Earlier evidence below is historical, superseded by native-wire-<project>-<scheme>-<state>.json.
+
 # TICKET-081 — 2026-11-12 checkpoint
 
 Owned branch/worktree TICKET-081; baseeb145497, claimed via supported --ahead while merged075 awaits verified closure. No product source changed. New opt-in e2e/order-performance.spec.ts exposes the genuine cold-transfer failure for table form and selected menu; expected200,000 vs1,239,803/1,227,649 actual. Production build passes. Exploratory raw request breakdown saved in docs/reviews/TICKET-081/cold-baseline.json. The first harness attempt lacked contextbaseURL; fixed before collecting these budget failures. No timeout or budget was increased.

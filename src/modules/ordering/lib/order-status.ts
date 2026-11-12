@@ -1,20 +1,27 @@
-import { z } from "zod";
-import { TICKET_STATUSES, type TicketStatus } from "./ticket-status";
+import {
+  strictObject,
+  array,
+  enum as enumValue,
+  minLength,
+  uuid,
+  type infer as Infer,
+} from "zod/mini";
+import { TICKET_STATUSES, type TicketStatus } from "./ticket-status-values";
 
 /**
  * What a guest sees about their own order (ORD-3, TICKET-075). The receipt is the order id the
  * server generated (a random v4 UUID: 122 random bits), so it can't be guessed. The response
  * carries only each station's status: no names, notes, dietary details, table or items.
  */
-export const orderStatusSchema = z.strictObject({
-  stations: z
-    .array(z.strictObject({ station: z.enum(["kitchen", "bar"]), status: z.enum(TICKET_STATUSES) }))
-    .min(1),
+export const orderStatusSchema = strictObject({
+  stations: array(
+    strictObject({ station: enumValue(["kitchen", "bar"]), status: enumValue(TICKET_STATUSES) }),
+  ).check(minLength(1)),
 });
-export type OrderStatusView = z.infer<typeof orderStatusSchema>;
+export type OrderStatusView = Infer<typeof orderStatusSchema>;
 
 /** A v4 UUID: the only receipt shape the server ever issues. */
-export const receiptSchema = z.uuid({ version: "v4" });
+export const receiptSchema = uuid({ version: "v4" });
 
 export const orderStatusCopy = {
   received: "Received",
