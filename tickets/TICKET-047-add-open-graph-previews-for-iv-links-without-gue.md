@@ -2,7 +2,7 @@
 id: TICKET-047
 title: Add Open Graph previews for IV links without guest details
 epic: invitations
-status: in_progress
+status: in_review
 priority: urgent
 estimate: M
 labels: [frontend, design, security]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-037]
 blocks: [TICKET-120, TICKET-138, TICKET-176]
 branch: TICKET-047
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/160
 created: 2026-10-21
 updated: 2026-11-12
 started: 2026-10-31
@@ -66,7 +66,6 @@ PR #60 merged on 2026-11-01 as `6ebd4b474928a5289d8e294b95d64c019ba98319`; its t
 
 The owner approved preview delivery with remaining device/performance checks kept separately (TICKET-201 context). The original requirement, **WhatsApp preview checked on a phone (screenshot in notes)**, remains unverified and mandatory before guest release in TICKET-201’s public Open Graph/physical iOS and Android scope. The earlier measured homepage CLS `0.00007339025002649255` remains a failure against the exact-zero release criterion. Neither requirement is waived, and no physical screenshot or new measurement is claimed. TICKET-201 continues to block both releases.
 
-
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
@@ -74,3 +73,4 @@ The owner approved preview delivery with remaining device/performance checks kep
 - 2026-10-31 — todo → in_progress — divine (codex)
 - 2026-10-31 — in_progress → blocked — divine (codex) — Draft PR https://github.com/UncleChenna/wedding-app/pull/60 passes full verification; physical WhatsApp preview and measured homepage nonzero CLS remain unresolved, retained in release-blocking TICKET-201
 - 2026-11-12 — blocked → in_progress — divine (codex) — Reconcile merged PR 60 under approved preview delivery; physical WhatsApp and exact-zero CLS remain mandatory in release-blocking TICKET-201.
+- 2026-11-12 — in_progress → in_review — divine (codex)
