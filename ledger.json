@@ -1773,17 +1773,18 @@
     },
     "WED-213": {
       "log": [
-        "- 2026-11-04 — todo → claimed — unclechenna (claude)"
+        "- 2026-11-04 — todo → claimed — unclechenna (claude)",
+        "- 2026-11-12 — todo → cancelled — unclechenna (claude) — Merged into TICKET-149 (TICKET-228)"
       ],
-      "status": "todo",
+      "status": "cancelled",
       "owner": "unclechenna",
       "agent": "claude",
       "branch": "TICKET-213",
       "pr": "",
       "started": "",
       "completed": "",
-      "updated": "2026-11-04",
-      "reason": "",
+      "updated": "2026-11-12",
+      "reason": "Merged into TICKET-149 (TICKET-228)",
       "resume_to": ""
     },
     "WED-214": {
