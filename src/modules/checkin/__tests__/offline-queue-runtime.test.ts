@@ -186,3 +186,23 @@ it("never removes evidence on network failure or mismatched acknowledgement", as
   expect(await h.runtime.sync(session)).toMatchObject({ state: "unavailable" });
   expect(h.state.attempts).toHaveLength(1);
 });
+it("records explicit manual selections only from the current snapshot without fabricated QR", async () => {
+  const h = setup();
+  const { qr: _qr, ...base } = h.input;
+  const manual = { ...base, inputMethod: "manual", invitationId };
+  expect(await h.runtime.record(manual)).toMatchObject({ state: "recorded" });
+  expect(h.verify).not.toHaveBeenCalled();
+  expect(h.state.attempts[0]?.event).toMatchObject({
+    invitationId,
+    inputMethod: "manual",
+    reportedPeople: 1,
+  });
+  expect(
+    await h.runtime.record({
+      ...manual,
+      clientEventId: "44444444-4444-4444-8444-444444444444",
+      invitationId: "55555555-5555-4555-8555-555555555555",
+      nameChecked: true,
+    }),
+  ).toMatchObject({ state: "refused", result: "invalid" });
+});

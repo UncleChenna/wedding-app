@@ -208,6 +208,12 @@ jobs:
           RUN_GUEST_SNAPSHOT_DB_TESTS: "1"
       - name: Verify authenticated cached scanner reads and revocation refresh
         run: pnpm exec tsx scripts/test-guest-snapshot.ts
+      - name: Verify immutable offline scan reconciliation
+        run: pnpm exec vitest run scripts/__tests__/scan-sync.integration.test.ts
+        env:
+          RUN_SCAN_SYNC_DB_TESTS: "1"
+      - name: Verify durable offline admission and foreground sync
+        run: pnpm exec tsx scripts/test-offline-queue.ts
       - name: Verify atomic shared-network request budgets
         run: pnpm exec vitest run scripts/__tests__/rate-limit.integration.test.ts
         env:
@@ -245,6 +251,8 @@ jobs:
         run: pnpm exec playwright test --config scripts/scanner-shell.config.ts
       - name: Verify private snapshot lifecycle and worker upgrades
         run: pnpm exec playwright test --config scripts/guest-snapshot.config.ts
+      - name: Verify durable offline queue and cold worker restart
+        run: pnpm exec playwright test --config scripts/offline-queue.config.ts
       - if: failure()
         uses: actions/upload-artifact@v7
         with:
@@ -253,6 +261,7 @@ jobs:
             artifacts/TICKET-059/camera/
             artifacts/TICKET-108/store/
             artifacts/TICKET-065/store/
+            artifacts/TICKET-066/store/
           retention-days: 7
 
   admin-journey:

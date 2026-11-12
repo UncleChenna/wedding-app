@@ -7,6 +7,8 @@ import { useGuestSnapshot } from "./use-guest-snapshot";
 import { readGuestSnapshot } from "../browser/guest-snapshot-client";
 import { scannerWorkerMessage } from "../browser/scanner-worker-message";
 import { resolveSnapshotRead } from "../lib/resolve-snapshot-read";
+import { OfflineQueueStatus } from "./offline-queue-status";
+import { recordOfflineAttempt } from "../browser/offline-queue-client";
 import { ScannerSession } from "./scanner-session";
 
 export function GuestSnapshotScanner({
@@ -39,6 +41,7 @@ export function GuestSnapshotScanner({
   // This describes the last read, not connectivity. Reconnecting must never turn
   // an old cached result into a newly authorized admission form.
   const [cached, setCached] = useState(false);
+  const [queueAvailable, setQueueAvailable] = useState(false);
   const [deniedSession, setDeniedSession] = useState<string | null>(null);
   const resolveRead = useCallback<ScanResolver>(
     async (qr, signal) => {
@@ -80,7 +83,25 @@ export function GuestSnapshotScanner({
       const result = snapshot
         ? await resolveSnapshotRead(qr, window.location.origin, snapshot, { session, expiresAt })
         : { state: "unavailable" as const };
-      if (!signal.aborted) setCached(true);
+      if (signal.aborted) return { state: "unavailable" };
+      const writable = snapshot?.version === 2 && Boolean(snapshot.actor);
+      if (writable && result.state !== "unavailable" && result.state !== "session_expired") {
+        const saved = await recordOfflineAttempt({
+          session,
+          clientEventId: crypto.randomUUID(),
+          qr,
+          inputMethod: "qr",
+          kind: "observation",
+          people: 0,
+          nameChecked: false,
+        });
+        if (signal.aborted) return { state: "unavailable" };
+        if (saved.state !== "recorded" && saved.state !== "duplicate")
+          return { state: "unavailable" };
+        window.dispatchEvent(new Event("offline-queue-changed"));
+      }
+      setCached(true);
+      setQueueAvailable(writable);
       return result;
     },
     [session, expiresAt, changed],
@@ -98,14 +119,16 @@ export function GuestSnapshotScanner({
     <>
       {cached && (
         <p className="text-lg leading-relaxed">
-          Using the saved guest list. No entry is recorded by an offline check. Reconnect and scan
-          again to record entry.
+          {queueAvailable
+            ? "Using the saved guest list. Confirm the number entering to save an offline entry on this phone."
+            : "Using the saved guest list. No entry is recorded by an offline check. Reconnect and scan again to record entry."}
         </p>
       )}
       <Scanner
         key={session}
         resolveRead={resolveRead}
         allowAdmission={!cached}
+        offlineSession={cached && queueAvailable ? session : undefined}
         readOnlyNotice={
           cached && age >= 30
             ? `List not refreshed for ${age} min. New changes may not show.`
@@ -124,6 +147,7 @@ export function GuestSnapshotScanner({
           }
         }}
       />
+      <OfflineQueueStatus key={`queue-${session}`} session={session} expiresAt={expiresAt} />
       <GuestSnapshotStatus
         {...freshness}
         refresh={() => {

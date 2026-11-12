@@ -1,4 +1,5 @@
 import "server-only";
+import { createHash } from "node:crypto";
 import { and, eq, isNull } from "drizzle-orm";
 import type { Db } from "@/modules/shared/server/db/client";
 import {
@@ -24,6 +25,8 @@ type StoredEvent = {
   deviceId: string | null;
   staffId: string | null;
   inputMethod: string | null;
+  source: string;
+  offlineIntentDigest: string | null;
   reportedAt: Date;
   reportedResult: ScanEventReport["reportedResult"];
   reportedPeople: number;
@@ -147,6 +150,7 @@ async function reconcileOne(
       conflict: decision.conflict,
       source: "offline",
       inputMethod: event.inputMethod ?? "qr",
+      offlineIntentDigest: intentDigest(actor, event),
     })
     .onConflictDoNothing({ target: scanEvents.clientEventId })
     .returning({ id: scanEvents.id });
@@ -180,6 +184,8 @@ async function findReplay(
       deviceId: scanEvents.deviceId,
       staffId: scanEvents.staffId,
       inputMethod: scanEvents.inputMethod,
+      source: scanEvents.source,
+      offlineIntentDigest: scanEvents.offlineIntentDigest,
       reportedAt: scanEvents.reportedAt,
       reportedResult: scanEvents.reportedResult,
       reportedPeople: scanEvents.reportedPeople,
@@ -190,7 +196,11 @@ async function findReplay(
     .from(scanEvents)
     .where(eq(scanEvents.clientEventId, event.clientEventId));
   if (!stored) return null;
-  if (!sameScan(stored, actor, event) || !(await sameInvitation(tx, stored, event))) {
+  const sameIdentity =
+    stored.offlineIntentDigest !== null
+      ? stored.offlineIntentDigest === intentDigest(actor, event)
+      : await sameInvitation(tx, stored, event);
+  if (!sameScan(stored, actor, event) || !sameIdentity) {
     return { clientEventId: event.clientEventId, status: "rejected" };
   }
   return {
@@ -204,6 +214,7 @@ async function findReplay(
 
 function sameScan(stored: StoredEvent, actor: GateActor, event: ScanEventReport): boolean {
   return (
+    stored.source === "offline" &&
     stored.deviceId === actor.deviceId &&
     stored.staffId === actor.staffId &&
     (stored.inputMethod ?? "qr") === (event.inputMethod ?? "qr") &&
@@ -222,4 +233,24 @@ async function sameInvitation(tx: Tx, stored: StoredEvent, event: ScanEventRepor
     .from(invitations)
     .where(eq(invitations.id, event.invitationId));
   return !known;
+}
+
+/** Canonical non-secret intent identity. Old rows stay immutable and use legacy comparison. */
+function intentDigest(actor: GateActor, event: ScanEventReport): string {
+  return createHash("sha256")
+    .update(
+      JSON.stringify([
+        1,
+        actor.staffId.toLowerCase(),
+        actor.deviceId,
+        event.invitationId?.toLowerCase() ?? null,
+        event.passVersion,
+        new Date(event.reportedAt).toISOString(),
+        event.reportedResult,
+        event.reportedPeople,
+        event.kind ?? (event.reportedPeople > 0 ? "admission" : "observation"),
+        event.inputMethod ?? "qr",
+      ]),
+    )
+    .digest("hex");
 }

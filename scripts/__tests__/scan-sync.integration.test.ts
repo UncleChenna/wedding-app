@@ -205,6 +205,25 @@ describe.runIf(process.env.RUN_SCAN_SYNC_DB_TESTS === "1")("offline scan reconci
     expect(await stored(invitation)).toMatchObject({ rows: 0, counter: 0 });
   });
 
+  it("refuses changed pass versions and different unknown invitation IDs on an existing attempt", async () => {
+    const actor = await device();
+    const invitation = await party(4);
+    const known = scan(invitation, 1);
+    expect(statuses((await reconcile(database, actor, [known])).acks)).toEqual(["recorded"]);
+    expect(
+      statuses((await reconcile(database, actor, [{ ...known, passVersion: 2 }])).acks),
+    ).toEqual(["rejected"]);
+    const unknown = scan(randomUUID(), 1);
+    expect(statuses((await reconcile(database, actor, [unknown])).acks)).toEqual(["recorded"]);
+    expect(
+      statuses(
+        (await reconcile(database, actor, [{ ...unknown, invitationId: randomUUID() }])).acks,
+      ),
+    ).toEqual(["rejected"]);
+    expect(statuses((await reconcile(database, actor, [unknown])).acks)).toEqual(["duplicate"]);
+    expect(await stored(invitation)).toMatchObject({ rows: 1, counter: 1 });
+  });
+
   it("keeps eight reported admissions from two offline devices but counts only four", async () => {
     const [north, south] = [await device(), await device()];
     const invitation = await party(4);

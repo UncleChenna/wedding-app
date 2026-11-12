@@ -58,7 +58,7 @@ export function createOfflineQueueRuntime(options: Options) {
     const fields = [
       "session",
       "clientEventId",
-      "qr",
+      input?.inputMethod === "manual" ? "invitationId" : "qr",
       "inputMethod",
       "kind",
       "people",
@@ -72,9 +72,11 @@ export function createOfflineQueueRuntime(options: Options) {
       !/^[a-f0-9]{64}$/.test(input.session) ||
       typeof input.clientEventId !== "string" ||
       !/^[a-f0-9]{8}-(?:[a-f0-9]{4}-){3}[a-f0-9]{12}$/.test(input.clientEventId) ||
-      typeof input.qr !== "string" ||
-      input.qr.length > 2048 ||
-      input.inputMethod !== "qr" ||
+      !(input.inputMethod === "qr"
+        ? typeof input.qr === "string" && input.qr.length <= 2048
+        : input.inputMethod === "manual" &&
+          typeof input.invitationId === "string" &&
+          /^[a-f0-9]{8}-(?:[a-f0-9]{4}-){3}[a-f0-9]{12}$/.test(input.invitationId)) ||
       (input.kind !== "observation" && input.kind !== "admission") ||
       typeof input.people !== "number" ||
       !Number.isSafeInteger(input.people) ||
@@ -87,12 +89,19 @@ export function createOfflineQueueRuntime(options: Options) {
     const snapshot = await current(input.session);
     if (!snapshot?.actor) return unavailable();
     const actor = snapshot.actor;
-    const verified = await options.verify(input.qr, snapshot.keys);
+    let identity: { inv: string; ver: number } | null = null;
+    if (input.inputMethod === "qr" && typeof input.qr === "string") {
+      const verified = await options.verify(input.qr, snapshot.keys);
+      if (verified.ok) identity = verified.payload;
+    } else {
+      const selected = snapshot.invitations.find((row) => row.invitationId === input.invitationId);
+      if (selected) identity = { inv: selected.invitationId, ver: selected.tokenVersion };
+    }
     // Signature verification is asynchronous; expiry/replacement must still fail closed.
     const after = await current(input.session);
     if (!after?.actor || !policy.sameActor(after.actor, actor)) return unavailable();
-    const invitationId = verified.ok ? verified.payload.inv.toLowerCase() : null;
-    const passVersion = verified.ok ? verified.payload.ver : 1;
+    const invitationId = identity ? identity.inv.toLowerCase() : null;
+    const passVersion = identity ? identity.ver : 1;
     const row = after.invitations.find((item) => item.invitationId.toLowerCase() === invitationId);
     const state = await store.read();
     const existing =
@@ -121,7 +130,7 @@ export function createOfflineQueueRuntime(options: Options) {
     }
     let result: OfflineVerdict = "invalid";
     let allowance: OfflineAllowance = { kind: "known", remaining: 0 };
-    if (verified.ok && row) {
+    if (identity && row) {
       const decision = options.decide({
         invitation: {
           status: row.status,
@@ -137,7 +146,7 @@ export function createOfflineQueueRuntime(options: Options) {
         return { state: decision.result };
       result = decision.result;
       allowance = { kind: "known", remaining: Math.max(0, row.partySize - row.admittedSoFar) };
-    } else if (verified.ok && input.kind === "admission") {
+    } else if (identity && input.inputMethod === "qr" && input.kind === "admission") {
       if (!input.nameChecked) return { state: "name_check_required" as const };
       result = "valid";
       allowance = { kind: "name-checked-unknown" };
@@ -156,7 +165,7 @@ export function createOfflineQueueRuntime(options: Options) {
         reportedResult: result,
         reportedPeople: input.people,
         kind: input.kind,
-        inputMethod: "qr",
+        inputMethod: input.inputMethod === "manual" ? "manual" : "qr",
       },
     };
     if (after.expiresAt <= Date.now()) return unavailable();

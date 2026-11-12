@@ -126,8 +126,14 @@ test("authenticated private snapshot supports offline reads and erases on sign-o
     await expect(page.getByText("Guest list saved just now.")).toBeVisible();
     await page.getByRole("button", { name: "Open camera" }).click();
     await expect(page.getByRole("heading", { name: "Valid pass", exact: true })).toBeVisible();
-    await expect(page.getByText(/No entry is recorded by an offline check/)).toBeVisible();
-    await expect(page.getByRole("spinbutton")).toHaveCount(0);
+    await expect(page.getByText(/No admission has been recorded by this check/)).toBeVisible();
+    await expect(page.getByRole("spinbutton", { name: "Guests entering now" })).toBeVisible();
+    await expect(
+      page.getByRole("button", { name: "Save offline entry", exact: true }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Entry saved on this phone", exact: true }),
+    ).toHaveCount(0);
     expect(await db`select id from scan_events where invitation_id=${invitation}`).toHaveLength(0);
     await capture("cached-valid");
     // Advance only this page's display clock, not the worker/server authority.
@@ -156,9 +162,12 @@ test("authenticated private snapshot supports offline reads and erases on sign-o
       await page.reload();
       await page.getByRole("button", { name: "Open camera" }).click();
       await expect(page.getByRole("heading", { name: title, exact: true })).toBeVisible();
-      expect(await db`select id from scan_events where invitation_id=${invitation}`).toHaveLength(
-        1,
-      );
+      expect(
+        await db`select id from scan_events where invitation_id=${invitation} and source='online'`,
+      ).toHaveLength(1);
+      expect(
+        await db`select id from scan_events where invitation_id=${invitation} and source='offline' and admitted_people > 0`,
+      ).toHaveLength(0);
     }
     await refreshAndRead("Already used");
     await capture("cached-used");

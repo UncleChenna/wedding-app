@@ -7,6 +7,7 @@ import { readGuestSnapshot } from "../browser/guest-snapshot-client";
 import { resolveSnapshotRead } from "../lib/resolve-snapshot-read";
 import { scannerWorkerMessage } from "../browser/scanner-worker-message";
 import type { AdmissionResponse } from "../lib/online-admission";
+vi.mock("../components/offline-queue-status", () => ({ OfflineQueueStatus: () => null }));
 const refresh = vi.hoisted(() => vi.fn());
 vi.mock("../components/use-guest-snapshot", () => ({
   useGuestSnapshot: () => ({

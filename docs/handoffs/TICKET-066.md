@@ -30,3 +30,36 @@ Native PostgreSQL on owned port29341 is stopped; its data directory is retained 
 ## Remaining work
 
 Add worker lock/barrier/expiry regressions and real worker restart/upload tests; implement queue status, manual reconnect retry, durable local admission feedback and full offline-to-online journey. Preserve TICKET-063 manual selection and TICKET-068 current-result refresh contracts on integration. Never fabricate QR data for manual admission. Do not erase pending evidence on logout/expiry; TICKET-184 remains a separate recovery/retention task. UI evidence, required CI, final independent review and verified merge are still outstanding. Physical release checks remain in the existing release gates.
+
+## 2026-11-12 mounted queue checkpoint
+
+Integrated verified targeted-CI develop `af819983` as `8db11c3f`. Mounted explicit
+count confirmation, local durable receipts, foreground/manual sync and retained
+operator-scoped queue status. Production browser passed mobile/desktop (2 tests):
+ten offline admissions survive a mid-flow reload, become exactly ten canonical
+people in twenty observation/admission rows, and repeated sync adds no entry.
+Actual emitted worker/IDB tests and persistent browser cold-restart proof pass.
+Manual-selection adapter requires a real snapshot invitation, never a fabricated
+QR; TICKET-063 integration remains pending its merge.
+
+Review found stale 'waiting to sync' receipt text after delivery. A regression
+failed before the correction; the receipt now describes historical local storage
+and points to current sync/conflict status. Three component tests pass; final
+browser recapture is pending. Earlier 24 screenshots were independently reviewed
+without layout defects; final copy must be recaptured.
+
+New migration0031 binds immutable upload intent to a digest. See the migration
+review for actual 13-test database, two-run migration, RLS26 and seed repeatability
+evidence, and the explicit legacy NULL-digest limitation. Final integrated build,
+updated snapshot browser assertions, hosted CI and final review remain pending.
+Physical-device release checks remain in114/163/201. Initial service-worker wire
+cost includes the public crypto helper; TICKET-081's200KB budget is not certified.
+
+Final-copy browser rerun passed2/2 in19.4s and refreshed all24 captures. One earlier
+mobile run showed Camera stopped immediately after going offline; desktop passed.
+A diagnostic rerun added only static asset paths and controller/online booleans,
+then both passed. No root cause or product fix is claimed for that isolated
+failure. Preserve `/tmp/TICKET-066-final-browser-clean-fixture.log` and
+`/tmp/TICKET-066-diagnostic-browser.log`. Latest quick107related tests and CI
+parity pass. Next integrate verified0639c24504f and adapt manual queue UI, then
+rerun affected compatibility checks and hosted fullCI.

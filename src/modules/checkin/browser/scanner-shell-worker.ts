@@ -244,11 +244,16 @@ export function installScannerShellWorker({
                 const synced = await queueRuntime.sync(data.session);
                 result = synced;
                 if (synced.state === "denied") await invalidate();
-                else if (synced.state === "synced" && synced.committed > 0) {
+                else if (
+                  (synced.state === "synced" && synced.committed > 0) ||
+                  synced.state === "idle"
+                ) {
                   const captured = (await queue.store().read()).barriers;
-                  const refreshed = await guestRuntime.refresh();
-                  if (refreshed.state === "ready")
-                    await queue.store().clearCapturedBarriers(captured);
+                  if (captured.length > 0) {
+                    const refreshed = await guestRuntime.refresh();
+                    if (refreshed.state === "ready")
+                      await queue.store().clearCapturedBarriers(captured);
+                  }
                 }
               }
             }
