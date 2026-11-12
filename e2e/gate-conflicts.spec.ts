@@ -81,9 +81,14 @@ test("two offline devices report four each, retain one conflict, and show it on 
     await second.getByRole("button", { name: "Retry sync", exact: true }).click();
     for (const target of [page, second]) {
       const list = target.getByRole("region", { name: "Entry conflicts" });
-      await expect(list.getByRole("heading", { name, exact: true })).toBeVisible({ timeout: 2000 });
+      const entry = list.getByRole("listitem").filter({
+        has: target.getByRole("heading", { name, exact: true }),
+      });
+      await expect(entry.getByRole("heading", { name, exact: true })).toBeVisible({
+        timeout: 2000,
+      });
       await expect(
-        list.getByText("4 reported entering · 0 added to the guest count"),
+        entry.getByText("4 reported entering · 0 added to the guest count"),
       ).toBeVisible();
     }
     const elapsedMs = Date.now() - started;
@@ -107,7 +112,13 @@ test("two offline devices report four each, retain one conflict, and show it on 
     if (!conflict) throw new Error("Conflict evidence missing");
     await db`insert into scan_resolution_notes(event_id,request_id,admin_id,resolution) values(${conflict.id},${randomUUID()},${randomUUID()},'explained')`;
     await expect(
-      second.getByText("Discrepancy explained — original evidence retained."),
+      second
+        .getByRole("region", { name: "Entry conflicts" })
+        .getByRole("listitem")
+        .filter({
+          has: second.getByRole("heading", { name, exact: true }),
+        })
+        .getByText("Discrepancy explained — original evidence retained."),
     ).toBeVisible({ timeout: 10000 });
     expect(
       await db`select admitted_people from admission_counters where invitation_id=${invitation}`,
