@@ -2,7 +2,7 @@
 id: TICKET-180
 title: Preserve queued events across worker and data upgrades
 epic: pwa
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [pwa, test]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/169
 created: 2026-10-21
 updated: 2026-11-12
 started: 2026-11-12
-completed: ""
+completed: 2026-11-12
 reason: ""
 resume_to: ""
 ---
@@ -64,3 +64,4 @@ Backlog audit coverage: PWA update, CHK-6. See [PRD](../docs/prd.md) and [audit]
 - 2026-11-12 — todo → claimed — divine (codex)
 - 2026-11-12 — todo → in_progress — divine (codex)
 - 2026-11-12 — in_progress → in_review — divine (codex)
+- 2026-11-12 — in_review → done — divine (codex)
