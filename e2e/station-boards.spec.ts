@@ -6,6 +6,7 @@ import { assertDatabaseTarget } from "../scripts/database-target";
 import { themes } from "../src/modules/theming/themes";
 import { scanA11y } from "./support/axe";
 import { applyTheme } from "./support/theme";
+import { localBudgetIdentity } from "./support/local-budget-identity";
 
 /**
  * TICKET-076 and TICKET-077 on a production build against this worktree's local Supabase stack
@@ -73,6 +74,9 @@ async function chimes(page: Page) {
 }
 
 test.describe("kitchen board", () => {
+  // The tests share the event settings that keep staff signed in; parallel workers restoring
+  // them would sign each other out mid-test.
+  test.describe.configure({ mode: "serial" });
   test.skip(process.env.RUN_KITCHEN_BOARD_E2E !== "1", "Needs a local stack with Realtime");
 
   test.beforeAll(async () => {
@@ -97,6 +101,11 @@ test.describe("kitchen board", () => {
         (${drinkId}, ${"Chapman " + tag.slice(-6)}, 'soft_drink', 'bar', 5, true)`;
     await db`insert into staff(id, name, role, pin_hash, pin_issued_at, pin_expires_at)
       values (${barStaffId}, ${tag + " bar"}, 'bar', ${credential(barPin)}, now() - interval '1 minute', now() + interval '1 day')`;
+  });
+  // Every test signs devices in with PINs; repeated local runs would otherwise use up the
+  // localhost PIN budget (30 per 10 minutes) and fail at sign-in.
+  test.beforeEach(async () => {
+    await db`delete from request_budgets where scope = 'pin' and identity = ${localBudgetIdentity()}`;
   });
   test.afterAll(async () => {
     if (!db) return;

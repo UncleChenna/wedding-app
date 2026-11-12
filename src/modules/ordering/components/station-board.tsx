@@ -390,7 +390,7 @@ function TicketCard({
         )}
       />
       <div className="relative flex flex-col gap-4 p-6 text-lg leading-relaxed">
-        <div className="flex items-baseline justify-between gap-4">
+        <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
           <h3 className="font-display text-4xl leading-tight">
             Table {ticket.table.number}
             {ticket.table.name ? (
@@ -399,10 +399,10 @@ function TicketCard({
               </span>
             ) : null}
           </h3>
-          <p className="shrink-0 text-lg font-medium">
-            {isNew ? <span className="mr-3 tracking-widest uppercase">New</span> : null}
+          <p className="flex flex-wrap items-baseline gap-x-3 text-lg font-medium">
+            {isNew ? <span className="tracking-widest uppercase">New</span> : null}
             {ticket.staffEntered ? (
-              <span className="mr-3 tracking-widest uppercase">Staff order</span>
+              <span className="tracking-widest uppercase">Staff order</span>
             ) : null}
             <time dateTime={ticket.createdAt}>{ticketAge(ticket.createdAt, now)}</time>
           </p>
