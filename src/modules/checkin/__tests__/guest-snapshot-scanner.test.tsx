@@ -17,6 +17,7 @@ vi.mock("@/modules/shared/lib/env/client", () => ({
     NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: "synthetic",
   },
 }));
+import { readLiveManual } from "../browser/manual-client";
 const refresh = vi.hoisted(() => vi.fn());
 const refreshResult = vi.hoisted(() => vi.fn());
 vi.mock("../components/use-guest-snapshot", () => ({
@@ -35,13 +36,16 @@ vi.mock("../components/scanner", () => ({
     refreshRead,
     allowAdmission,
     onAdmissionOutcome,
+    onManualSearch,
   }: {
     resolveRead: ScanResolver;
     refreshRead: ScanResolver;
     allowAdmission: boolean;
     onAdmissionOutcome?: (response: AdmissionResponse) => void;
+    onManualSearch?: () => void;
   }) => (
     <>
+      <button onClick={onManualSearch}>Find guest by name</button>
       <button
         onClick={() =>
           void refreshRead("signed fixture", new AbortController().signal).then(refreshResult)
@@ -63,10 +67,35 @@ vi.mock("../components/scanner", () => ({
   ),
 }));
 vi.mock("../browser/guest-snapshot-client", () => ({ readGuestSnapshot: vi.fn() }));
+vi.mock("../browser/manual-client", () => ({ readLiveManual: vi.fn() }));
 vi.mock("../lib/resolve-snapshot-read", () => ({ resolveSnapshotRead: vi.fn() }));
 vi.mock("../browser/scanner-worker-message", () => ({ scannerWorkerMessage: vi.fn() }));
 beforeEach(() => {
   Object.defineProperty(navigator, "onLine", { configurable: true, value: true });
+});
+it("manual search cannot bypass a known-change cache barrier after failed erasure", async () => {
+  vi.mocked(scannerWorkerMessage).mockResolvedValue({ state: "unavailable" });
+  render(<GuestSnapshotScanner session={"a".repeat(64)} expiresAt={Date.now() + 60_000} />);
+  fireEvent.click(screen.getByRole("button", { name: "Refused admission" }));
+  await waitFor(() => expect(refresh).toHaveBeenCalled());
+  Object.defineProperty(navigator, "onLine", { configurable: true, value: false });
+  fireEvent.click(screen.getByRole("button", { name: "Find guest by name" }));
+  fireEvent.change(screen.getByLabelText("Guest name"), { target: { value: "Ada" } });
+  fireEvent.click(screen.getByRole("button", { name: /^Find guest$/ }));
+  await screen.findByText("Guest search is unavailable. Try again or ask the gate lead for help.");
+  expect(readGuestSnapshot).not.toHaveBeenCalled();
+});
+it("manual live authorization denial unmounts names and cannot fall back to private cache", async () => {
+  vi.mocked(readLiveManual).mockResolvedValue({ state: "session_expired" });
+  render(<GuestSnapshotScanner session={"a".repeat(64)} expiresAt={Date.now() + 60_000} />);
+  fireEvent.click(screen.getByRole("button", { name: "Find guest by name" }));
+  fireEvent.change(screen.getByLabelText("Guest name"), { target: { value: "Ada" } });
+  fireEvent.click(screen.getByRole("button", { name: /^Find guest$/ }));
+  await waitFor(() =>
+    expect(scannerWorkerMessage).toHaveBeenCalledWith("DENY_SCANNER_SESSION", "a".repeat(64)),
+  );
+  expect(screen.queryByLabelText("Guest name")).toBeNull();
+  expect(readGuestSnapshot).not.toHaveBeenCalled();
 });
 it("blocks cached fallback when a later admission is revoked and erasure/refresh fail", async () => {
   vi.mocked(scannerWorkerMessage).mockResolvedValue({ state: "unavailable" });

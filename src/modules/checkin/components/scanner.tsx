@@ -44,6 +44,7 @@ export function Scanner({
   onAdmissionRecorded,
   onAdmissionOutcome,
   readOnlyNotice,
+  onManualSearch,
 }: {
   resolveRead?: ScanResolver;
   submitAdmission?: AdmissionSubmitter;
@@ -53,6 +54,7 @@ export function Scanner({
   onAdmissionRecorded?: () => void;
   onAdmissionOutcome?: (response: AdmissionResponse) => void;
   readOnlyNotice?: string;
+  onManualSearch?: () => void;
 }) {
   const video = useRef<HTMLVideoElement>(null);
   const resultRegion = useRef<HTMLDivElement>(null);
@@ -415,27 +417,35 @@ export function Scanner({
           The camera light is unavailable. Scanning can continue.
         </p>
       )}
-      <a
-        href="#manual-check-in-help"
-        className="inline-flex min-h-11 items-center text-lg text-primary underline underline-offset-4"
-        onClick={() => document.getElementById("manual-check-in-help")?.focus()}
-      >
-        Manual check-in help
-      </a>
-      <section
-        id="manual-check-in-help"
-        tabIndex={-1}
-        aria-labelledby="manual-help-title"
-        className="flex flex-col gap-3 text-lg leading-relaxed focus-visible:outline-2 focus-visible:outline-ring"
-      >
-        <h2 id="manual-help-title" className="font-display text-3xl">
-          Need a hand?
-        </h2>
-        <p>
-          Name search is not available yet. Ask the gate lead to use the printed guest list or
-          another scanner.
-        </p>
-      </section>
+      {onManualSearch ? (
+        <Button size="lg" variant="secondary" disabled={admissionBusy} onClick={onManualSearch}>
+          Find guest by name
+        </Button>
+      ) : (
+        <>
+          <a
+            href="#manual-check-in-help"
+            className="inline-flex min-h-11 items-center text-lg text-primary underline underline-offset-4"
+            onClick={() => document.getElementById("manual-check-in-help")?.focus()}
+          >
+            Manual check-in help
+          </a>
+          <section
+            id="manual-check-in-help"
+            tabIndex={-1}
+            aria-labelledby="manual-help-title"
+            className="flex flex-col gap-3 text-lg leading-relaxed focus-visible:outline-2 focus-visible:outline-ring"
+          >
+            <h2 id="manual-help-title" className="font-display text-3xl">
+              Need a hand?
+            </h2>
+            <p>
+              Name search is not available yet. Ask the gate lead to use the printed guest list or
+              another scanner.
+            </p>
+          </section>
+        </>
+      )}
     </section>
   );
 }
