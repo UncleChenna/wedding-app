@@ -2,7 +2,7 @@
 id: TICKET-066
 title: Queue offline check-ins and sync them when signal returns
 epic: checkin
-status: in_progress
+status: in_review
 priority: high
 estimate: M
 labels: [frontend, backend, pwa]
