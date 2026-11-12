@@ -25,6 +25,10 @@ describe("cachePolicy: the documented strategy table (docs/pwa.md)", () => {
     ["/_next/static/chunks/app-1a2b3c.js", "cache-first"],
     ["/_next/static/css/4d5e6f.css", "cache-first"],
     ["/_next/static/media/cormorant.woff2", "cache-first"],
+    ["/offline-assets/cormorant-0123456789abcdef.woff2", "cache-first"],
+    ["/offline-assets/untrusted-0123456789abcdef.woff2", "network-only"],
+    ["/offline-assets/inter.woff2", "network-only"],
+    ["/offline-assets/inter-0123456789abcdef.woff2?guest=private", "network-only"],
   ])("caches immutable build assets: %s → %s", (path, policy) => {
     expect(cachePolicy(req(path))).toBe(policy);
   });
@@ -248,6 +252,16 @@ describe("served worker script", () => {
   });
 
   describe("offline fallback page (TICKET-106)", () => {
+    it("precaches only the explicitly declared hashed offline font", async () => {
+      const path = "/offline-assets/inter-0123456789abcdef.woff2";
+      const { store, install } = loadWorker({
+        bodies: {
+          [SW_OFFLINE_URL]: `<link rel="preload" as="font" href="${path}"><link href="/offline-assets/unknown.woff2">`,
+        },
+      });
+      await install();
+      expect([...(store.get(SW_STATIC_CACHE)?.keys() ?? [])]).toEqual([`${ORIGIN}${path}`]);
+    });
     const offlineHtml = `<!doctype html><link rel="stylesheet" href="/_next/static/css/app.css">
       <script src="/_next/static/chunks/main.js"></script>
       <script src="/_next/static/chunks/tracked.js?v=1"></script>`;

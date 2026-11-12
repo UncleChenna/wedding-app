@@ -21,3 +21,18 @@ Fresh browser context per route, normal HTTP caching within that visit, enabled 
 - Require TICKET-075's verified completion and final successful CI before readiness.
 
 No migration, dependency or production data change. This draft is not approval to release or merge failing work.
+
+## Offline foundation checkpoint
+
+Native public offline HTML now avoids downloading unrelated Next chunks and full
+font families for fallback installation. Four fixed-copy, content-hashed font
+subsets retain every approved family and400–600 weights; no system-font downgrade.
+44 focused tests, production build and2 real cold-offline browser cases pass,
+including four themes, accessibility, three widths and reconnect/retry. Screens:
+`docs/reviews/TICKET-081/offline-mobile/` and `offline-desktop/`.
+
+The unchanged budget tests remain red at408,534/399,213 bytes, versus200,000.
+Do not merge or mark complete on these results. Physical devices and slow4G
+board-delivery timing are still unverified. Rollback this checkpoint restores
+the prior Next offline page and worker policy; no migration or private-data
+cache change is involved.

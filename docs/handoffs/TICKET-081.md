@@ -28,3 +28,27 @@ validated error-theme build output/lazy boundary, then honest cold remeasurement
 A larger architectural change needs evidence, not an inflated budget or delayed
 measurement window. Owned native DB36761 stopped with data retained; production
 measurement server also stopped by Playwright. No Supabase or Realtime proof yet.
+
+## 2026-11-12 bounded offline foundation
+
+The generic offline route now returns a public native HTML document instead of
+a Next bootstrap. It retains validated theme tokens, intended font families,
+metric fallbacks, fixed copy, retry and home navigation. Four content-hashed
+font subsets cover that exact copy and weights400–600 for every family, including
+valid custom body/display assignments. Generated from existing licensed Latin
+faces with pinned FontTools; final combined font payload28,084bytes. Worker
+private/scanner handling and recursive CSS behavior remain unchanged; only the
+explicit hashed offline-font paths were added and cache version bumped.
+
+Production build passes;44 focused unit tests pass. Actual cold offline browser
+tests pass2/2 with all four themes, intended loaded FontFace objects, axe,
+375/768/1280 overflow checks and reconnect/retry preserving the original path.
+24 screenshots live in docs/reviews/TICKET-081/offline-{mobile,desktop}.
+Independent review found custom body roles needed400–600 on display families;
+this was fixed before final generation and browser evidence.
+
+Strict unchanged cold-transfer tests STILL FAIL:408,534 bytes table form and
+399,213 menu, including worker install. This is a measured reduction from~1.24MB,
+not completion of the200KB criterion. No Realtime/slow4G delivery proof yet.
+Next: reduce remaining client validation/default font preload cost, preserving
+all theme contracts; incoming066 verifier adds~20KB gzip and must be measured.

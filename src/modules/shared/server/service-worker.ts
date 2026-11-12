@@ -33,12 +33,13 @@ const cachePolicy = ${cachePolicy.toString()};
 
 /** Same-origin, query-free build asset paths referenced by a page or stylesheet. */
 const STATIC_ASSET = /^\\/_next\\/static\\/[\\w./-]+$/;
+const OFFLINE_FONT = /^\\/offline-assets\\/(?:cormorant|inter|playfair|jost)-[a-f0-9]{16}\\.woff2$/;
 function assetUrls(text, base) {
   const urls = new Set();
   for (const match of text.matchAll(/(?:src|href)="([^"]+)"|url\\(\\s*["']?([^"')\\s]+)/g)) {
     try {
       const url = new URL(match[1] || match[2], base);
-      if (url.origin === self.location.origin && !url.search && STATIC_ASSET.test(url.pathname)) {
+      if (url.origin === self.location.origin && !url.search && (STATIC_ASSET.test(url.pathname) || OFFLINE_FONT.test(url.pathname))) {
         urls.add(url.pathname);
       }
     } catch {

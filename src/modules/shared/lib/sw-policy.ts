@@ -28,7 +28,7 @@ export interface PolicyRequest {
 }
 
 /** Bump when cached content or the cache layout changes; older app caches are deleted on activate. */
-export const SW_CACHE_VERSION = 1;
+export const SW_CACHE_VERSION = 2;
 export const SW_CACHE_PREFIX = "wedding-";
 export const SW_STATIC_CACHE = `${SW_CACHE_PREFIX}static-v${SW_CACHE_VERSION}`;
 /** Holds only the public offline page (TICKET-106); never a visited page. */
@@ -49,6 +49,11 @@ export function cachePolicy(request: PolicyRequest): CachePolicy {
   if (url.origin !== request.origin) return "network-only";
   if (request.mode === "navigate") return "network-offline-fallback";
   if (url.search) return "network-only";
+  // Generated, fixed-copy offline fonts: bounded public content, never guest data.
+  if (
+    /^\/offline-assets\/(?:cormorant|inter|playfair|jost)-[a-f0-9]{16}\.woff2$/.test(url.pathname)
+  )
+    return "cache-first";
   // Content-hashed build output (JS, CSS, fonts): immutable, public, safe to keep.
   if (/^\/_next\/static\/[\w./-]+$/.test(url.pathname) && !url.pathname.includes("..")) {
     return "cache-first";
