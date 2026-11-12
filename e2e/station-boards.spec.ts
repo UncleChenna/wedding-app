@@ -265,4 +265,81 @@ test.describe("kitchen board", () => {
       await bar.context.close();
     }
   });
+
+  test("staff move an order to served, a failed save reverts, and cancelling needs a reason", async ({
+    page,
+  }) => {
+    test.setTimeout(120_000);
+    await page.goto("/kitchen");
+    await page.getByLabel("Your six-digit PIN").fill(pin);
+    await page.getByRole("button", { name: "Sign in", exact: true }).click();
+    await expect(page.getByRole("status").filter({ hasText: "Live" })).toBeVisible({
+      timeout: 15_000,
+    });
+    const served = await placeOrder("served", 1);
+    const failing = await placeOrder("failing", 1);
+    const cancelled = await placeOrder("cancelled", 1);
+    const card = (number: number) =>
+      page
+        .getByRole("list", { name: "Orders, oldest first" })
+        .getByRole("listitem")
+        .filter({
+          hasText: `Table ${number}`,
+        });
+    await expect(card(cancelled.number)).toBeVisible({ timeout: 2_000 });
+
+    // Received → preparing → served; it leaves the queue for "Recently done".
+    await page.getByRole("button", { name: `Start preparing table ${served.number}` }).click();
+    await expect(card(served.number)).toContainText("Preparing");
+    await page.getByRole("button", { name: `Served table ${served.number}` }).click();
+    await expect(card(served.number)).toHaveCount(0);
+    const recent = page.locator("details").filter({ hasText: "Recently done" });
+    await recent.locator("summary").click();
+    await expect(recent).toContainText(`Table ${served.number} · Served`);
+
+    // A forced failure: the card comes straight back and the board says so.
+    await page.route("**/api/kitchen/tickets", (route) =>
+      route.fulfill({ status: 503, contentType: "application/json", body: "{}" }),
+    );
+    await page.getByRole("button", { name: `Served table ${failing.number}` }).click();
+    await expect(
+      page.getByRole("alert").filter({ hasText: `Table ${failing.number} didn’t update` }),
+    ).toBeVisible();
+    await expect(card(failing.number)).toBeVisible();
+    await expect(card(failing.number)).toContainText("Waiting");
+    await page.unroute("**/api/kitchen/tickets");
+
+    // Cancelling asks for confirmation and a reason.
+    await page.getByRole("button", { name: `Cancel table ${cancelled.number}` }).click();
+    const sheet = page.getByRole("dialog", { name: `Cancel table ${cancelled.number}’s order?` });
+    await expect(sheet).toBeVisible();
+    await page.setViewportSize({ width: 375, height: 900 });
+    for (const theme of themes) {
+      await applyTheme(page, theme);
+      expect(await scanA11y(page), theme.id).toEqual([]);
+    }
+    await sheet.getByRole("button", { name: "Cancel order" }).click();
+    await expect(sheet.getByText("Say why, so the guests can be told.")).toBeVisible();
+    await expect(card(cancelled.number)).toBeVisible();
+    mkdirSync("docs/reviews/TICKET-078", { recursive: true });
+    await page.screenshot({ path: "docs/reviews/TICKET-078/375-cancel-sheet.png" });
+    await sheet.getByLabel("Reason").fill("Guest left early");
+    await sheet.getByRole("button", { name: "Cancel order" }).click();
+    await expect(card(cancelled.number)).toHaveCount(0);
+    await expect(recent).toContainText(`Table ${cancelled.number} · Cancelled`);
+
+    const events = await db<{ to_status: string; reason: string | null }[]>`
+      select e.to_status, e.reason from station_order_events e
+      join station_orders s on s.id = e.station_order_id
+      join orders o on o.id = s.order_id join tables t on t.id = o.table_id
+      where t.number in (${served.number}, ${failing.number}, ${cancelled.number})
+      order by e.created_at`;
+    expect(events).toEqual([
+      { to_status: "preparing", reason: null },
+      { to_status: "served", reason: null },
+      { to_status: "cancelled", reason: "Guest left early" },
+    ]);
+    await page.getByRole("list", { name: "Orders, oldest first" }).scrollIntoViewIfNeeded();
+    await page.screenshot({ path: "docs/reviews/TICKET-078/375-board-actions.png" });
+  });
 });
