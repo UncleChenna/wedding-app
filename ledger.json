@@ -3098,15 +3098,16 @@
         "- 2026-11-12 — todo → in_progress — divine (codex)",
         "- 2026-11-12 — in_progress → in_review — divine (codex)",
         "- 2026-11-12 — in_review → in_progress — divine (codex) — Final CI exposed an uncached first-use decoder chunk, missing defensive observation coverage, and a background-revocation fixture race; repairing without weakening gates.",
-        "- 2026-11-12 — in_progress → in_review — divine (codex)"
+        "- 2026-11-12 — in_progress → in_review — divine (codex)",
+        "- 2026-11-12 — in_review → done — divine (codex)"
       ],
-      "status": "in_review",
+      "status": "done",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-066",
       "pr": "https://github.com/UncleChenna/wedding-app/pull/164",
       "started": "2026-11-12",
-      "completed": "",
+      "completed": "2026-11-12",
       "updated": "2026-11-12",
       "reason": "",
       "resume_to": ""
