@@ -39,10 +39,10 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-6) · [Security](../docs
 
 ## Acceptance criteria
 
-- [ ] Persist every offline scan attempt transactionally before reporting an admission as recorded; quota/write failure shows a recovery state.
-- [ ] Ten offline admissions survive reload and sync exactly once after repeated reconnects, using TICKET-173 per-event acknowledgements.
-- [ ] Foreground and manual retry work on Safari without Background Sync; failures remain queued with visible pending count.
-- [ ] Invalid, used and revoked attempts are logged as well as successful admissions; pending count clears only after committed acknowledgement.
+- [x] Persist every offline scan attempt transactionally before reporting an admission as recorded; quota/write failure shows a recovery state.
+- [x] Ten offline admissions survive reload and sync exactly once after repeated reconnects, using TICKET-173 per-event acknowledgements.
+- [x] Foreground and manual retry work on Safari without Background Sync; failures remain queued with visible pending count.
+- [x] Invalid, used and revoked attempts are logged as well as successful admissions; pending count clears only after committed acknowledgement.
 
 ## Test plan
 
@@ -57,7 +57,7 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-6) · [Security](../docs
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-11-12: Durable worker-owned queue, authenticated actor binding, manual/QR count confirmation and immutable replay digest implemented. Actual product2/2, snapshot compatibility2/2, manual recovery2/2, Chromium/WebKit worker/store18/18 and isolated reconciliation13/13 pass. See docs/reviews/TICKET-066/queue-contract.md and migration-review.md. Physical-device and initial-wire performance release gates remain mandatory; final hosted CI must pass before merge.
 
 ## Activity log
 

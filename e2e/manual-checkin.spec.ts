@@ -113,8 +113,15 @@ test("denied camera recovers through companion search and exact manual admission
     await expect(page.locator("body")).not.toContainText("PRIVATE DIET MARKER");
     await expect(page.locator("body")).not.toContainText("PRIVATE RSVP MARKER");
     expect(
-      await db`select admitted_people,input_method,result from scan_events where invitation_id=${invitation}`,
+      await db`select admitted_people,input_method,result from scan_events where invitation_id=${invitation} and source='online'`,
     ).toEqual([{ admitted_people: 0, input_method: "manual", result: "valid" }]);
+    await expect
+      .poll(async () =>
+        Array.from(
+          await db`select admitted_people,input_method,result from scan_events where invitation_id=${invitation} and source='offline'`,
+        ),
+      )
+      .toEqual([{ admitted_people: 0, input_method: "manual", result: "valid" }]);
     await capture("choose-count");
     await page.getByLabel("How many are here?").fill("1");
     const attempts: string[] = [];

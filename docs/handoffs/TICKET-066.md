@@ -81,3 +81,16 @@ six retained households. The fixture identity is corrected, not the selector
 relaxed. Failure-only static asset/controller diagnostics now persist to disk.
 No root cause for the mobile failure is claimed. Next integrate verified068,
 rebuild and diagnose/run final combined browser checks, then publish hosted CI.
+
+## Final combined local verification
+
+Verified068 integrated as721da0c8. Preserved displayed-result refresh, pending
+intent freeze, one-shot focus and generation fences for both local/live forms.
+Incoming broadcast fixtures now supply the mandatory synthetic reauthorization
+callback; no production authorization was loosened. Final actual checks:
+queue product2/2 (18.2s), private-snapshot compatibility2/2 (42.3s), manual recovery
+2/2 (32.0s), actual worker/IDB/cold restart18/18 (7.8s), reconciliation DB13/13.
+The manual fixture now requires exactly one online and one offline zero-person
+observation before admission. All24queue captures refreshed. Native29341 stopped
+with retained data; no local heavy process remains. Next normalquick, evidence
+commit/push and t:pr, then exact final-head hostedCI and independent review.
