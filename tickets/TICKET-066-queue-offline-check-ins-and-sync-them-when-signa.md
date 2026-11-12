@@ -2,7 +2,7 @@
 id: TICKET-066
 title: Queue offline check-ins and sync them when signal returns
 epic: checkin
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [frontend, backend, pwa]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/164
 created: 2026-10-21
 updated: 2026-11-12
 started: 2026-11-12
-completed: ""
+completed: 2026-11-12
 reason: ""
 resume_to: ""
 ---
@@ -66,3 +66,4 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-6) · [Security](../docs
 - 2026-11-12 — todo → in_progress — divine (codex)
 - 2026-11-12 — in_progress → in_review — divine (codex)
 - 2026-11-12 — in_review → in_progress — divine (codex) — Final CI exposed an uncached first-use decoder chunk, missing defensive observation coverage, and a background-revocation fixture race; repairing without weakening gates.
+- 2026-11-12 — in_review → done — divine (codex)
