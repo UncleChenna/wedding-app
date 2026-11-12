@@ -39,6 +39,8 @@ const recovery: Record<CameraProblem, string> = {
 export function Scanner({
   resolveRead = readLivePass,
   submitAdmission,
+  refreshRead,
+  readRevision,
   allowAdmission = true,
   onAdmissionRecorded,
   onAdmissionOutcome,
@@ -48,6 +50,8 @@ export function Scanner({
 }: {
   resolveRead?: ScanResolver;
   submitAdmission?: AdmissionSubmitter;
+  refreshRead?: ScanResolver;
+  readRevision?: number;
   allowAdmission?: boolean;
   onAdmissionRecorded?: () => void;
   onAdmissionOutcome?: (response: AdmissionResponse) => void;
@@ -74,8 +78,33 @@ export function Scanner({
   const [checkedQr, setCheckedQr] = useState<string | null>(null);
   const readController = useRef<AbortController | null>(null);
   const audio = useRef<AudioContext | null>(null);
+  const refreshController = useRef<AbortController | null>(null);
+  const revisionAtCheck = useRef(readRevision);
+  const displayedResult = useRef<ScanReadResult | null>(null);
+  const focusNewCheck = useRef(false);
+  const unresolved = useRef(false);
+  const deferredResult = useRef<ScanReadResult | null>(null);
+  const [changedDuringAdmission, setChangedDuringAdmission] = useState(false);
+  const admissionBusyChanged = useCallback((busy: boolean) => {
+    unresolved.current = busy;
+    setAdmissionBusy(busy);
+    if (!busy && deferredResult.current) {
+      const next = deferredResult.current;
+      deferredResult.current = null;
+      displayedResult.current = next;
+      setReadResult(next);
+      setChangedDuringAdmission(false);
+    }
+  }, []);
 
   const clearRead = useCallback(() => {
+    refreshController.current?.abort();
+    refreshController.current = null;
+    displayedResult.current = null;
+    focusNewCheck.current = false;
+    deferredResult.current = null;
+    unresolved.current = false;
+    setChangedDuringAdmission(false);
     readController.current?.abort();
     readController.current = null;
     setReadResult(null);
@@ -111,6 +140,9 @@ export function Scanner({
     setTorchBusy(false);
     setTorchAvailable(false);
     setState("paused");
+    displayedResult.current = result;
+    focusNewCheck.current = true;
+    revisionAtCheck.current = readRevision;
     setReadResult(result);
     setCheckedQr(result.state === "valid" ? qr : null);
     setReading(false);
@@ -140,8 +172,43 @@ export function Scanner({
   }
 
   useEffect(() => {
-    if (readResult) resultRegion.current?.focus();
+    // Background freshness updates must not steal focus from an admission receipt.
+    if (readResult && focusNewCheck.current) {
+      focusNewCheck.current = false;
+      resultRegion.current?.focus();
+    }
   }, [readResult]);
+
+  useEffect(() => {
+    if (!checkedQr || !refreshRead || readRevision === revisionAtCheck.current) return;
+    revisionAtCheck.current = readRevision;
+    const request = new AbortController();
+    refreshController.current = request;
+    void (async () => {
+      try {
+        const incoming = await refreshRead(checkedQr, request.signal);
+        if (request.signal.aborted) return;
+        const parsed = scanReadResultSchema.safeParse(incoming);
+        const next: ScanReadResult = parsed.success ? parsed.data : { state: "unavailable" };
+        if (JSON.stringify(next) === JSON.stringify(displayedResult.current)) {
+          deferredResult.current = null;
+          setChangedDuringAdmission(false);
+          return;
+        }
+        if (unresolved.current) {
+          deferredResult.current = next;
+          setChangedDuringAdmission(true);
+        } else {
+          displayedResult.current = next;
+          setReadResult(next);
+        }
+      } catch {
+        // Snapshot recovery owns network/storage failures. Do not invent a new verdict.
+      }
+    })();
+    // QR changes, a newer revision, session unmount and explicit reset all fence old reads.
+    return () => request.abort();
+  }, [checkedQr, readRevision, refreshRead]);
 
   const pauseCapture = useCallback(() => {
     readController.current?.abort();
@@ -291,13 +358,19 @@ export function Scanner({
           tabIndex={-1}
           className="focus-visible:outline-2 focus-visible:outline-ring"
         >
+          {changedDuringAdmission && (
+            <p role="status" className="mb-4 text-lg leading-relaxed">
+              This pass was updated since this check. Finish or retry the current admission to
+              confirm its receipt before continuing.
+            </p>
+          )}
           {offlineSession && !allowAdmission ? (
             <OfflineAdmissionResult
               result={readResult}
               qr={checkedQr}
               session={offlineSession}
               notice={readOnlyNotice}
-              onBusyChange={setAdmissionBusy}
+              onBusyChange={admissionBusyChanged}
               onRecorded={() => {
                 setAdmissionCompleted(true);
                 window.dispatchEvent(new Event("offline-queue-changed"));
@@ -310,7 +383,7 @@ export function Scanner({
               submit={submitAdmission}
               allowAdmission={allowAdmission}
               readOnlyNotice={readOnlyNotice}
-              onBusyChange={setAdmissionBusy}
+              onBusyChange={admissionBusyChanged}
               onOutcome={onAdmissionOutcome}
               onComplete={() => {
                 setAdmissionCompleted(true);

@@ -2,6 +2,7 @@ import "server-only";
 import { createHash } from "node:crypto";
 import { and, eq, isNull } from "drizzle-orm";
 import type { Db } from "@/modules/shared/server/db/client";
+import { publishToStation } from "@/modules/shared/server/realtime-publish";
 import {
   admissionCounters,
   invitations,
@@ -163,6 +164,11 @@ async function reconcileOne(
       }
     );
   }
+  await publishToStation(tx, "gate", "checkin.recorded", {
+    invitationId: invitation?.id ?? null,
+    admitted: decision.admitted,
+    conflict: decision.conflict,
+  });
   return {
     clientEventId: event.clientEventId,
     status: "recorded",
