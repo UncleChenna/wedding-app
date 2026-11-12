@@ -47,7 +47,7 @@ mid-range Android, iPad and desktop sizes. This adds that suite and its CI job.
 - **Local stability:** a baseline run, then a comparison run, both 140 out of 140, twice. That came after fixing a
   fixture race where two workers both added the guest.
 - **CI:** first run 120 passed with 20 skipped; the pass link was missed because it's absolute. After the fix, run
-  `<run id>` generated all 140, and run `<run id>` compared them and passed.
+  43206580221 generated all 140; runs 43215328532 and 43219789885 compared against them and passed (140 of 140).
 
 # Not tested and limitations
 
