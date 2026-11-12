@@ -23,6 +23,7 @@ const DEVICES = [
 // A fixed invitation, so its page renders the same every run.
 const TOKEN = "visual-regression-invitation-0000000000000";
 const HOUSEHOLD = "The Example Household";
+const GUEST_ID = "5e1f0c2a-7d3b-4a96-9c1e-2b8f6d4a0e71";
 
 let db: Sql | undefined;
 let invitationId = "";
@@ -54,16 +55,18 @@ test.describe("guest pages look the same", () => {
       values (${TOKEN}, ${HOUSEHOLD}, 'rsvp_yes') on conflict (token) do nothing`;
     const [row] = await db<{ id: string }[]>`select id from invitations where token = ${TOKEN}`;
     invitationId = row?.id ?? "";
-    await db`insert into guests (invitation_id, name, is_primary)
-      select ${invitationId}, 'Ada Example', true
-      where not exists (select 1 from guests where invitation_id = ${invitationId})`;
+    // A fixed id, so parallel workers can't both add the guest.
+    await db`insert into guests (id, invitation_id, name, is_primary)
+      values (${GUEST_ID}, ${invitationId}, 'Ada Example', true) on conflict (id) do nothing`;
     await db`insert into rsvps (invitation_id, attending, count_attending)
       values (${invitationId}, true, 1) on conflict (invitation_id) do nothing`;
     // The pass link is only shown when gate signing keys are configured (the CI job sets fixed ones).
     const page = await browser.newPage();
     await page.goto(`/i/${TOKEN}`);
-    const link = page.locator("a[href^='/p/']").first();
-    passPath = (await link.count()) ? await link.getAttribute("href") : null;
+    // The pass link is absolute (built from the site URL); keep only its path.
+    const link = page.locator("a[href*='/p/']").first();
+    const href = (await link.count()) ? await link.getAttribute("href") : null;
+    passPath = href ? new URL(href, "http://localhost").pathname : null;
     await page.close();
   });
 
