@@ -2,7 +2,7 @@
 id: TICKET-228
 title: Merge unstarted overlapping tickets to cut per-ticket overhead
 epic: foundations
-status: in_progress
+status: in_review
 priority: medium
 estimate: M
 labels: [docs]
@@ -12,7 +12,7 @@ agent: claude
 blocked_by: []
 blocks: []
 branch: TICKET-228
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/163
 created: 2026-11-12
 updated: 2026-11-12
 started: 2026-11-12
@@ -80,3 +80,4 @@ work moves faster without changing what gets built. Rules: [tickets](../docs/tic
 - 2026-11-12 — backlog → todo — unclechenna (claude)
 - 2026-11-12 — todo → claimed — unclechenna (claude)
 - 2026-11-12 — todo → in_progress — unclechenna (claude)
+- 2026-11-12 — in_progress → in_review — unclechenna (claude)
