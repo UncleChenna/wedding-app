@@ -2939,15 +2939,16 @@
         "- 2026-11-12 — blocked → in_progress — divine (codex) — Verified TICKET-065 decoder repair merged; resuming final combined integration.",
         "- 2026-11-12 — in_progress → in_review — divine (codex)",
         "- 2026-11-12 — in_review → in_progress — divine (codex) — Integrate verified manual scanner changes before final combined review",
-        "- 2026-11-12 — in_progress → in_review — divine (codex)"
+        "- 2026-11-12 — in_progress → in_review — divine (codex)",
+        "- 2026-11-12 — in_review → done — divine (codex)"
       ],
-      "status": "in_review",
+      "status": "done",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-068",
       "pr": "https://github.com/UncleChenna/wedding-app/pull/154",
       "started": "2026-11-10",
-      "completed": "",
+      "completed": "2026-11-12",
       "updated": "2026-11-12",
       "reason": "",
       "resume_to": ""
