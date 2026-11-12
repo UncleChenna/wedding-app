@@ -2938,9 +2938,10 @@
         "- 2026-11-12 — in_progress → blocked — divine (codex) — Awaiting verified TICKET-065 decoder follow-up; switching to user-assigned targeted CI ticket.",
         "- 2026-11-12 — blocked → in_progress — divine (codex) — Verified TICKET-065 decoder repair merged; resuming final combined integration.",
         "- 2026-11-12 — in_progress → in_review — divine (codex)",
-        "- 2026-11-12 — in_review → in_progress — divine (codex) — Integrate verified manual scanner changes before final combined review"
+        "- 2026-11-12 — in_review → in_progress — divine (codex) — Integrate verified manual scanner changes before final combined review",
+        "- 2026-11-12 — in_progress → in_review — divine (codex)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-068",
