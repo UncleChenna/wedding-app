@@ -63,7 +63,7 @@ _Agents append dated notes here while working._
     session and reuses the guest order handler.
   - **Limits:** staff orders skip only the table cooldown. The open-order limit and item caps still apply, and they
     can still be placed while guest ordering is closed (as before).
-  - **Record:** `orders.entered_by_staff_id` (migration 0031, additive) records who entered it. Boards show
+  - **Record:** `orders.entered_by_staff_id` (migration 0032, additive) records who entered it. Boards show
     "Staff order" on those tickets.
   - **Board e2e harness:** the spec now runs serially, because tests share the event settings that keep staff
     signed in. It also resets the localhost PIN budget per test, so repeated runs don't hit the sign-in limit.

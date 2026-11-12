@@ -16,7 +16,7 @@ board (PRD connectivity plan).
 
 # Changes
 
-- **Migration `drizzle/0031_staff-entered-orders.sql`** (generated, additive): nullable
+- **Migration `drizzle/0032_staff-entered-orders.sql`** (generated, additive): nullable
   `orders.entered_by_staff_id`, referencing staff with `ON DELETE SET NULL`.
 - **`lib/order-limits.ts`:** `rejectTableUsage(..., { staffEntered })` skips only the cooldown.
 - **`server/create-order.ts`:**
@@ -86,7 +86,7 @@ board (PRD connectivity plan).
 
 # Risks and rollout
 
-- **Migration 0031 is additive:** a nullable column, so existing orders are unaffected.
+- **Migration 0032 is additive:** a nullable column, so existing orders are unaffected.
 - **Rollback:** revert the PR. The column can stay.
 
 # Screenshots
