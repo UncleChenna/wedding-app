@@ -1,3 +1,4 @@
+import metadataOnlyRun from "./fixtures/ci-metadata-only-run.json" with { type: "json" };
 import { describe, expect, it } from "vitest";
 import { isMetadataOnlyRun, verifiedRun, verifyRepairRun } from "../tickets/reconcile";
 
@@ -205,4 +206,35 @@ it("selects intact full evidence past metadata edits but never past newer real p
       false,
     ),
   ).toThrow(/newer repair CI/);
+});
+
+it("recognizes GitHub's actual unevaluated skipped-job names without accepting other expressions", () => {
+  // Captured from metadata-only run 43202976665; no test suite ran in this event.
+  expect(isMetadataOnlyRun(metadataOnlyRun, metadataOnlyRun.headSha)).toBe(true);
+  const jobs = metadataOnlyRun.jobs.map((job, index) =>
+    index === 0 ? { ...job, name: job.name.replace("github.event.action", "unknown.action") } : job,
+  );
+  expect(isMetadataOnlyRun({ ...metadataOnlyRun, jobs }, metadataOnlyRun.headSha)).toBe(false);
+  expect(
+    isMetadataOnlyRun(
+      {
+        ...metadataOnlyRun,
+        jobs: metadataOnlyRun.jobs.map((job, index) =>
+          index === 0 ? { ...job, conclusion: "failure" } : job,
+        ),
+      },
+      metadataOnlyRun.headSha,
+    ),
+  ).toBe(false);
+  expect(
+    isMetadataOnlyRun(
+      {
+        ...metadataOnlyRun,
+        jobs: metadataOnlyRun.jobs.map((job, index) =>
+          index === 0 ? metadataOnlyRun.jobs[1] : job,
+        ),
+      },
+      metadataOnlyRun.headSha,
+    ),
+  ).toBe(false);
 });

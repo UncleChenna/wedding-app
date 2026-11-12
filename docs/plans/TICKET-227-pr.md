@@ -32,6 +32,8 @@ Routine PRs currently run every browser and integration suite even when only doc
 - `pnpm agents:link`, `pnpm agents:check`, `pnpm plugin:build`: passed.
 - No local database or product browser verification required for this harness-only change. Hosted CI must run the full matrix because workflow/tooling scope is conservative.
 
+- Hosted metadata-edit check: run `43202976665` skipped code work, PR-text run `43202976830` passed, and existing full run `43201080772` remained running. GitHub exposes skipped job names as unevaluated expressions; a captured-payload regression reproduced rejection, then 14 reconciliation tests passed after adding exact aliases. Independent review confirmed malformed expressions, failed jobs and duplicate names still fail closed. Final-head CI must pass after this fix.
+
 # Risks and rollout
 
 This is the owner's explicitly approved CI policy change. No paid services, dependencies, secrets, migration or production data operation. A revert restores the previous all-PR full workflow. Selection defaults to full for uncertainty, at the cost of slower cross-cutting PRs. Full pre-release verification and existing physical-device release gates remain mandatory. Branch protection is not changed. The `ci:full` label has been created; manual dispatch becomes visible when the workflow reaches the default main branch. Required outcome summaries distinguish unrun jobs from tested successes.

@@ -196,7 +196,12 @@ const metadataJobNames = [
   "migrations + seed", "invitation journey (mobile + desktop)",
   "camera QR pixels (Chromium + WebKit)", "admin journey (mobile + desktop)",
   "required CI gates", "full verification proof",
-].map((name) => `${name} (metadata only)`);
+].map((name) => [
+  `${name} (metadata only)`,
+  // GitHub leaves job-name expressions unevaluated when the entire job is skipped.
+  // Match only our exact workflow expression, never arbitrary expressions or suffixes.
+  `((github.event.action == 'edited' && !github.event.changes.base) || (github.event.action == 'labeled' && github.event.label.name != 'ci:full')) && '${name} (metadata only)' || '${name}'`,
+]);
 
 /** Only the exact, completed all-skipped metadata workflow is ignorable. */
 export function isMetadataOnlyRun(value: unknown, expectedHead: string): boolean {
@@ -206,7 +211,7 @@ export function isMetadataOnlyRun(value: unknown, expectedHead: string): boolean
     jobs: z.array(z.object({name: z.string(), status: z.literal("completed"), conclusion: z.literal("skipped")})),
   }).safeParse(value);
   return parsed.success && parsed.data.jobs.length === metadataJobNames.length &&
-    metadataJobNames.every((name) => parsed.data.jobs.some((job) => job.name === name));
+    metadataJobNames.every((aliases) => parsed.data.jobs.some((job) => aliases.includes(job.name)));
 }
 
 export function verifiedRun(cwd: string, head: string, dependencies: Dependencies, historical: boolean) {
