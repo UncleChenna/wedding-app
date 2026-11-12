@@ -52,3 +52,11 @@ Strict unchanged cold-transfer tests STILL FAIL:408,534 bytes table form and
 not completion of the200KB criterion. No Realtime/slow4G delivery proof yet.
 Next: reduce remaining client validation/default font preload cost, preserving
 all theme contracts; incoming066 verifier adds~20KB gzip and must be measured.
+
+Preload follow-up: kept both Cormorant normal/italic faces and their complete
+Unicode fallbacks, but disabled eager preload of the paired registration.
+Rendered text still requests the face it uses; plain order pages no longer
+download unused italic. New measured totals367,825/358,539 bytes remain above
+200,000. Existing font asset tests5/5 pass; actual browser checks4/4 pass for
+no-JavaScript light/dark themes, non-Latin fallback and subset glyph equivalence
+at every approved weight. Production build passes. No actual-font substitution.

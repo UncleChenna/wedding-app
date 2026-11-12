@@ -36,3 +36,11 @@ Do not merge or mark complete on these results. Physical devices and slow4G
 board-delivery timing are still unverified. Rollback this checkpoint restores
 the prior Next offline page and worker policy; no migration or private-data
 cache change is involved.
+
+Preload follow-up: kept both Cormorant normal/italic faces and their complete
+Unicode fallbacks, but disabled eager preload of the paired registration.
+Rendered text still requests the face it uses; plain order pages no longer
+download unused italic. New measured totals367,825/358,539 bytes remain above
+200,000. Existing font asset tests5/5 pass; actual browser checks4/4 pass for
+no-JavaScript light/dark themes, non-Latin fallback and subset glyph equivalence
+at every approved weight. Production build passes. No actual-font substitution.
