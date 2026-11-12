@@ -2,7 +2,7 @@
 id: TICKET-227
 title: Select targeted PR checks and preserve full release verification
 epic: foundations
-status: in_review
+status: done
 priority: high
 estimate: L
 labels: [infra, test]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/165
 created: 2026-11-12
 updated: 2026-11-12
 started: 2026-11-12
-completed: ""
+completed: 2026-11-12
 reason: ""
 resume_to: ""
 ---
@@ -71,3 +71,4 @@ The owner approved targeted pull-request CI on 12 November 2026 so routine chang
 - 2026-11-12 — todo → in_progress — divine (codex)
 - 2026-11-12 — in_progress → in_review — divine (codex)
 - 2026-11-12 — in_review → in_progress — divine (codex) — Actual GitHub metadata-only jobs retain unevaluated names; preserve recognition using exact aliases and captured-payload regression.
+- 2026-11-12 — in_review → done — divine (codex)
