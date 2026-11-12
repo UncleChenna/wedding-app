@@ -17,7 +17,7 @@ queue-safe activation protocol for the upcoming prompt.
 - Exercise actual N/N+1 worker scripts, tab closure/reload, additive schema migration, rollback, interrupted upgrade and repeated HTTP acknowledgements in Chromium and WebKit.
 - Register the new upgrade tests in the existing CI offline-queue suite; consuming prompt UI remains TICKET-111.
 
-# Acceptance evidence
+# Acceptance criteria and evidence
 
 Four actual-browser cases pass across both engines (final run: 10.2 seconds). Exact queued IDs remain after
 upgrades/reloads/rollback; acknowledgements from the HTTP fixture produce exactly
@@ -34,7 +34,7 @@ and refusal of caller-supplied safety overrides are asserted.
 - Existing pass-worker unit fixture required real multi-listener event behavior; all existing assertions remain.
 - Independent review found a compatibility-read/cleanup lock gap; the guard now holds the lock through the entire cleanup and private activation, with a regression test. The final independent re-review is clean. Integrated develop `ddc81755` without conflicts; final selected CI remains required before merge.
 
-# Risks and rollback
+# Risks and rollout
 
 No SQL migration, dependency or production data operation. No queue data is
 removed by an upgrade. Older pre-180 code pins IDB version 1, so it is not a valid
