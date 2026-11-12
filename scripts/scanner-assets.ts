@@ -11,6 +11,7 @@ export interface ScannerAssetManifest {
   build: string;
   script: string;
   stylesheet: string;
+  verifier: string;
   fonts: string[];
   assets: string[];
 }
@@ -67,6 +68,30 @@ export async function generateScannerAssets(root: string): Promise<ScannerAssetM
     throw new Error("Scanner browser bundle contains a server module");
   const scriptBytes = result.outputFiles[0]?.contents;
   if (!scriptBytes) throw new Error("Scanner script missing");
+  const cryptoBundle = await build({
+    absWorkingDir: root,
+    entryPoints: ["src/modules/checkin/browser/offline-queue-crypto.ts"],
+    bundle: true,
+    splitting: false,
+    platform: "browser",
+    format: "iife",
+    globalName: "ScannerQueueCrypto",
+    target: "es2022",
+    minify: true,
+    write: false,
+    metafile: true,
+  });
+  if (
+    cryptoBundle.outputFiles.length !== 1 ||
+    Object.values(cryptoBundle.metafile.outputs).some((output) => output.imports.length) ||
+    Object.keys(cryptoBundle.metafile.inputs).some((path) =>
+      /(?:^|\/)server(?:\/|\.)|(?:^|\/)server-only(?:\/|$)/.test(path),
+    )
+  )
+    throw new Error("Scanner verifier must be a self-contained public-only script");
+  const verifierBytes = cryptoBundle.outputFiles[0]?.contents;
+  if (!verifierBytes || verifierBytes.length > 80_000)
+    throw new Error("Scanner verifier exceeds its 80 KB raw budget");
   const candidates = new Set<string>();
   for (const path of inputs.filter((path) => path.startsWith("src/") && /\.[jt]sx?$/.test(path))) {
     const source = await readFile(join(root, path), "utf8");
@@ -88,6 +113,8 @@ export async function generateScannerAssets(root: string): Promise<ScannerAssetM
   const files = new Map<string, Uint8Array>();
   const script = `/scanner-assets/scanner-${digest(scriptBytes)}.js`;
   files.set(script, scriptBytes);
+  const verifier = `/scanner-assets/scanner-${digest(verifierBytes)}.js`;
+  files.set(verifier, verifierBytes);
   const fonts: string[] = [];
   const fontCss: string[] = [
     await readFile(join(root, "src/modules/theming/font-fallbacks.css"), "utf8"),
@@ -108,12 +135,12 @@ export async function generateScannerAssets(root: string): Promise<ScannerAssetM
   const css = compiler.build([...candidates].sort()) + "\n" + fontCss.join("\n");
   const stylesheet = `/scanner-assets/scanner-${digest(css)}.css`;
   files.set(stylesheet, Buffer.from(css));
-  const inventory = { script, stylesheet, fonts };
+  const inventory = { script, stylesheet, fonts, verifier };
   const manifest: ScannerAssetManifest = {
     version: 1,
     build: digest(JSON.stringify(inventory)),
     ...inventory,
-    assets: [script, stylesheet, ...fonts],
+    assets: [script, stylesheet, ...fonts, verifier],
   };
   const output = join(root, "public/scanner-assets");
   await mkdir(output, { recursive: true });

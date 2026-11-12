@@ -1,0 +1,2 @@
+ALTER TABLE "scan_events" ADD COLUMN "offline_intent_digest" text;--> statement-breakpoint
+ALTER TABLE "scan_events" ADD CONSTRAINT "scan_events_offline_intent_digest" CHECK ("scan_events"."offline_intent_digest" is null or ("scan_events"."source" = 'offline' and "scan_events"."offline_intent_digest" ~ '^[0-9a-f]{64}$'));

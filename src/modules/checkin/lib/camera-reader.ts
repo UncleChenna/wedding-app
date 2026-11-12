@@ -1,3 +1,6 @@
+// The mounted online scanner must still decode its first frame after losing
+// connectivity; its lazy Next chunk is not part of the separate offline shell.
+import { BrowserQRCodeReader } from "@zxing/browser";
 import { createScanThrottle } from "./scan-throttle";
 
 type NativeDetector = { detect(source: HTMLVideoElement): Promise<{ rawValue: string }[]> };
@@ -75,7 +78,6 @@ export async function createFrameReader(): Promise<FrameReader> {
       }
     }
     if (!fallback) {
-      const { BrowserQRCodeReader } = await import("@zxing/browser");
       const reader = new BrowserQRCodeReader();
       let smaller: HTMLCanvasElement | undefined;
       let turn = 0;

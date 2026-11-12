@@ -96,11 +96,18 @@ describe.runIf(process.env.RUN_REALTIME_DB_TESTS === "1")("gate transaction broa
           reportedResult: "valid" as const,
           reportedPeople: 2,
         };
-        expect((await reconcileScanBatch(tx, actor, [report])).acks[0]?.status).toBe("recorded");
-        expect((await reconcileScanBatch(tx, actor, [report])).acks[0]?.status).toBe("duplicate");
-        const conflict = await reconcileScanBatch(tx, actor, [
-          { ...report, clientEventId: randomUUID(), reportedPeople: 1 },
-        ]);
+        expect(
+          (await reconcileScanBatch(tx, actor, [report], async () => true)).acks[0]?.status,
+        ).toBe("recorded");
+        expect(
+          (await reconcileScanBatch(tx, actor, [report], async () => true)).acks[0]?.status,
+        ).toBe("duplicate");
+        const conflict = await reconcileScanBatch(
+          tx,
+          actor,
+          [{ ...report, clientEventId: randomUUID(), reportedPeople: 1 }],
+          async () => true,
+        );
         expect(conflict.acks[0]).toMatchObject({ status: "recorded", admitted: 0, conflict: true });
         const published = await messages(tx, intent.invitationId);
         expect(published).toHaveLength(2);

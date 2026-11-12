@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/modules/shared/components/ui/button";
 import { startQrCamera, type CameraControls, type CameraProblem } from "../lib/camera-reader";
+import { OfflineAdmissionResult } from "./offline-admission-result";
 import { AdmissionResult, type AdmissionSubmitter } from "./admission-result";
 import type { AdmissionResponse } from "../lib/online-admission";
 import { scanReadResultSchema, type ScanReadResult } from "../lib/scan-read-result";
@@ -44,6 +45,7 @@ export function Scanner({
   onAdmissionRecorded,
   onAdmissionOutcome,
   readOnlyNotice,
+  offlineSession,
   onManualSearch,
 }: {
   resolveRead?: ScanResolver;
@@ -54,6 +56,7 @@ export function Scanner({
   onAdmissionRecorded?: () => void;
   onAdmissionOutcome?: (response: AdmissionResponse) => void;
   readOnlyNotice?: string;
+  offlineSession?: string;
   onManualSearch?: () => void;
 }) {
   const video = useRef<HTMLVideoElement>(null);
@@ -361,19 +364,33 @@ export function Scanner({
               confirm its receipt before continuing.
             </p>
           )}
-          <AdmissionResult
-            result={readResult}
-            qr={checkedQr}
-            submit={submitAdmission}
-            allowAdmission={allowAdmission}
-            readOnlyNotice={readOnlyNotice}
-            onBusyChange={admissionBusyChanged}
-            onOutcome={onAdmissionOutcome}
-            onComplete={() => {
-              setAdmissionCompleted(true);
-              onAdmissionRecorded?.();
-            }}
-          />
+          {offlineSession && !allowAdmission ? (
+            <OfflineAdmissionResult
+              result={readResult}
+              qr={checkedQr}
+              session={offlineSession}
+              notice={readOnlyNotice}
+              onBusyChange={admissionBusyChanged}
+              onRecorded={() => {
+                setAdmissionCompleted(true);
+                window.dispatchEvent(new Event("offline-queue-changed"));
+              }}
+            />
+          ) : (
+            <AdmissionResult
+              result={readResult}
+              qr={checkedQr}
+              submit={submitAdmission}
+              allowAdmission={allowAdmission}
+              readOnlyNotice={readOnlyNotice}
+              onBusyChange={admissionBusyChanged}
+              onOutcome={onAdmissionOutcome}
+              onComplete={() => {
+                setAdmissionCompleted(true);
+                onAdmissionRecorded?.();
+              }}
+            />
+          )}
         </div>
       )}
       {!admissionCompleted && (
