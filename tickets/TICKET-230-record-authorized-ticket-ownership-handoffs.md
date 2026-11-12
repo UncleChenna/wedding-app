@@ -38,10 +38,10 @@ The owner authorized completing and merging the remaining backlog, including wor
 
 ## Acceptance criteria
 
-- [ ] A coordinated handoff records the actual actor, old/new owner and reason without changing status, branch, PR or evidence.
-- [ ] Missing authorization acknowledgement, stale expected ownership, unclaimed and terminal tickets are rejected without mutation.
-- [ ] Existing claim, release, move and reconciliation ownership protections remain unchanged.
-- [ ] Documentation requires checking for another active editor and preserving uncommitted work before handoff.
+- [x] A coordinated handoff records the actual actor, old/new owner and reason without changing status, branch, PR or evidence.
+- [x] Missing authorization acknowledgement, stale expected ownership, unclaimed and terminal tickets are rejected without mutation.
+- [x] Existing claim, release, move and reconciliation ownership protections remain unchanged.
+- [x] Documentation requires checking for another active editor and preserving uncommitted work before handoff.
 
 ## Test plan
 
