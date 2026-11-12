@@ -82,12 +82,25 @@ by shared-worker/schema paths under227; no checks or assertions are weakened.
 
 ## Verification history and remaining limits
 
-Two earlier first-offline mobile attempts reported Camera stopped; desktop
-continued. Privacy-bounded failure diagnostics now record only static asset paths
-and controller/online booleans. The final combined run passes, but no root cause
-or product fix is claimed for those earlier intermittent failures. Hosted Linux
-checks remain required. A separate fixture failure from repeated synthetic names
-was fixed with unique per-invitation names, not by selecting an arbitrary match.
+Final CI43221819488 failed and was not merged. Its saved diagnostics established
+that the mounted online scanner requested an uncached Next decoder chunk only
+after going offline. The existing decoder is now imported with the scanner
+module; native-first decoding, fallback construction, throttle and signature
+verification are unchanged. This adds eager gate-route JavaScript, not a new
+dependency. Actual first-offline QR/manual product2/2 passes18.7s after the fix. All12real camera pixel cases pass54.5s in Chromium/WebKit with dense/orientation fixtures and unchanged throttle/track assertions.
+
+The same run exposed missing defensive observation coverage (91.66% branches).
+A meaningful regression now proves positive-person observations are rejected by
+the schema and defensively admit zero if validation is bypassed.71 targeted tests
+pass; scan-sync is100% lines/branches and camera-reader97.63% lines/95.95% branches
+under the unchanged per-file95% thresholds.
+
+The existing server-refusal fixture raced068's correct background revocation
+refresh. One-shot real-request interception now changes canonical state after
+the operator submits but before server handling; original refusal/count/danger
+assertions and timeouts remain. Actual mobile/desktop2/2 pass31.2s. One prior
+capture was interrupted by documented OS Deep Idle; the unchanged rerun used
+command-scoped sleep prevention. Fresh final-head Linux CI remains required.
 
 Verified063/068 are integrated through develop d6fc777c. The new reauthorization
 callback is supplied by the incoming isolated broadcast fixture; production
@@ -107,3 +120,10 @@ stopped with its synthetic data directory retained.
 | Performance                            | Not certified: eager public verifier adds measured worker bytes. Initial-wire budget remains081; no95Lighthouse or200KB claim.                                                                    |
 | Shared components                      | PASS: existing Button/Input and scanner result components reused; local receipt is a feature-specific confirmation.                                                                               |
 | Sharing/devices/QR output              | Sharing and QR generation N/A for this staff queue change. Real phones remain unverified under114/163/201; automated Chromium/WebKit checks are recorded separately.                              |
+
+## Repair review
+
+Independent review found no blocker in the static decoder import, one-shot
+server-race fixture or defensive observation regression. Final original review
+also covered the combined063/068 source and all16local/synced receipt captures.
+No merge or release approval is inferred from an earlier failed CI run.

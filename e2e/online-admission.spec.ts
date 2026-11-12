@@ -342,7 +342,16 @@ test("online partial admission commits once and safely retries a lost receipt", 
     await expect(page.getByLabel("How many are here?")).toHaveValue("1");
     // A competing scanner uses the last place after this read. The old form
     // cannot grant entry, even though it previously showed one place.
-    await db`insert into scan_events(client_event_id,invitation_id,staff_id,device_id,reported_at,reported_result,result,reported_people,admitted_people,source) values(${randomUUID()},${invitation},${staff},${device},now(),'valid','valid',1,1,'online')`;
+    await page.route(
+      "**/api/checkin/admit",
+      async (route) => {
+        // Change canonical state after the operator submits, before the server
+        // handles it. Background refresh must not replace the idle form first.
+        await db`insert into scan_events(client_event_id,invitation_id,staff_id,device_id,reported_at,reported_result,result,reported_people,admitted_people,source) values(${randomUUID()},${invitation},${staff},${device},now(),'valid','valid',1,1,'online')`;
+        await route.continue();
+      },
+      { times: 1 },
+    );
     await page.getByRole("button", { name: "Admit 1 guest", exact: true }).click();
     await expect(page.getByRole("heading", { name: "Please check" })).toBeVisible();
     await expect(page.getByText(/All places have already been admitted/)).toBeVisible();
@@ -357,7 +366,14 @@ test("online partial admission commits once and safely retries a lost receipt", 
     await db`update rsvps set count_attending=5 where invitation_id=${invitation}`;
     await page.getByRole("button", { name: "Scan next pass" }).click();
     await expect(page.getByLabel("How many are here?")).toHaveValue("1");
-    await db`update invitations set status='revoked' where id=${invitation}`;
+    await page.route(
+      "**/api/checkin/admit",
+      async (route) => {
+        await db`update invitations set status='revoked' where id=${invitation}`;
+        await route.continue();
+      },
+      { times: 1 },
+    );
     await page.getByRole("button", { name: "Admit 1 guest", exact: true }).click();
     await expect(page.getByText(/This pass has been revoked or replaced/)).toBeVisible();
     await expect(page.getByText("Not admitted", { exact: true })).toHaveClass(/bg-danger/);

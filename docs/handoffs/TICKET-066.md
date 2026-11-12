@@ -94,3 +94,16 @@ The manual fixture now requires exactly one online and one offline zero-person
 observation before admission. All24queue captures refreshed. Native29341 stopped
 with retained data; no local heavy process remains. Next normalquick, evidence
 commit/push and t:pr, then exact final-head hostedCI and independent review.
+
+## Confirmed CI repair
+
+CI43221819488 failed: defensive scan-sync observation branch below95%, first-use
+online-mounted ZXing chunk missing offline, and server-refusal fixture racing
+068 background refresh. No merge occurred. Static existing decoder import fixes
+the confirmed asset boundary; actual QR/manual queue2/2 passes18.7s.71targeted
+unit tests pass with scan-sync100% and camera-reader97.63/95.95coverage. One-shot
+request interception preserves actual competing-write/revocation server tests;
+2/2 pass31.2s. A preceding run slept14:45:02–14:48:33; bounded OS evidence is in
+/tmp/TICKET-066-sleep-evidence.log. No timeout/assertion change. Independent098
+and024 repair reviews are clean. Native29341 stopped/data retained again.
+Camera-pixel regression12/12 passes54.5s in Chromium/WebKit, including dense/orientation, native-attempted and fallback paths with throttle/track assertions. Next quick, repair commit/push/t:pr and wait for fresh exact-head CI. Preserve original failures as history.

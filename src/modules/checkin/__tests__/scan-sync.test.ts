@@ -239,3 +239,13 @@ it("rejects cross-origin sync and a changed operator before reconciliation", asy
   ).toBe(403);
   expect(reconcile).not.toHaveBeenCalled();
 });
+
+it("rejects positive-person observations at the boundary and counts nobody if validation was bypassed", () => {
+  const malformed = report({ kind: "observation", reportedPeople: 1 });
+  expect(scanSyncBatchSchema.safeParse({ events: [malformed] }).success).toBe(false);
+  expect(reconcileScan(malformed, { invitation, admittedSoFar: 0 })).toEqual({
+    result: "invalid",
+    admitted: 0,
+    conflict: true,
+  });
+});
