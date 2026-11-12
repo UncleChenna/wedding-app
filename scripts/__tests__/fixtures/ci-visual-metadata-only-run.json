@@ -1,0 +1,64 @@
+{
+  "conclusion": "skipped",
+  "databaseId": 43279926245,
+  "event": "pull_request",
+  "headSha": "21abf726693b6ab4e5649e1c370025a44232689f",
+  "jobs": [
+    {
+      "conclusion": "skipped",
+      "name": "((github.event.action == 'edited' \u0026\u0026 !github.event.changes.base) || (github.event.action == 'labeled' \u0026\u0026 github.event.label.name != 'ci:full')) \u0026\u0026 'verification scope (metadata only)' || 'verification scope'",
+      "status": "completed"
+    },
+    {
+      "conclusion": "skipped",
+      "name": "((github.event.action == 'edited' \u0026\u0026 !github.event.changes.base) || (github.event.action == 'labeled' \u0026\u0026 github.event.label.name != 'ci:full')) \u0026\u0026 'no AI attribution in PR text (metadata only)' || 'no AI attribution in PR text'",
+      "status": "completed"
+    },
+    {
+      "conclusion": "skipped",
+      "name": "((github.event.action == 'edited' \u0026\u0026 !github.event.changes.base) || (github.event.action == 'labeled' \u0026\u0026 github.event.label.name != 'ci:full')) \u0026\u0026 'pnpm verify (metadata only)' || 'pnpm verify'",
+      "status": "completed"
+    },
+    {
+      "conclusion": "skipped",
+      "name": "((github.event.action == 'edited' \u0026\u0026 !github.event.changes.base) || (github.event.action == 'labeled' \u0026\u0026 github.event.label.name != 'ci:full')) \u0026\u0026 'visual regression (guest pages) (metadata only)' || 'visual regression (guest pages)'",
+      "status": "completed"
+    },
+    {
+      "conclusion": "skipped",
+      "name": "((github.event.action == 'edited' \u0026\u0026 !github.event.changes.base) || (github.event.action == 'labeled' \u0026\u0026 github.event.label.name != 'ci:full')) \u0026\u0026 'required CI gates (metadata only)' || 'required CI gates'",
+      "status": "completed"
+    },
+    {
+      "conclusion": "skipped",
+      "name": "((github.event.action == 'edited' \u0026\u0026 !github.event.changes.base) || (github.event.action == 'labeled' \u0026\u0026 github.event.label.name != 'ci:full')) \u0026\u0026 'full verification proof (metadata only)' || 'full verification proof'",
+      "status": "completed"
+    },
+    {
+      "conclusion": "skipped",
+      "name": "((github.event.action == 'edited' \u0026\u0026 !github.event.changes.base) || (github.event.action == 'labeled' \u0026\u0026 github.event.label.name != 'ci:full')) \u0026\u0026 'camera QR pixels (Chromium + WebKit) (metadata only)' || 'camera QR pixels (Chromium + WebKit)'",
+      "status": "completed"
+    },
+    {
+      "conclusion": "skipped",
+      "name": "((github.event.action == 'edited' \u0026\u0026 !github.event.changes.base) || (github.event.action == 'labeled' \u0026\u0026 github.event.label.name != 'ci:full')) \u0026\u0026 'tickets valid (metadata only)' || 'tickets valid'",
+      "status": "completed"
+    },
+    {
+      "conclusion": "skipped",
+      "name": "((github.event.action == 'edited' \u0026\u0026 !github.event.changes.base) || (github.event.action == 'labeled' \u0026\u0026 github.event.label.name != 'ci:full')) \u0026\u0026 'admin journey (mobile + desktop) (metadata only)' || 'admin journey (mobile + desktop)'",
+      "status": "completed"
+    },
+    {
+      "conclusion": "skipped",
+      "name": "((github.event.action == 'edited' \u0026\u0026 !github.event.changes.base) || (github.event.action == 'labeled' \u0026\u0026 github.event.label.name != 'ci:full')) \u0026\u0026 'migrations + seed (metadata only)' || 'migrations + seed'",
+      "status": "completed"
+    },
+    {
+      "conclusion": "skipped",
+      "name": "((github.event.action == 'edited' \u0026\u0026 !github.event.changes.base) || (github.event.action == 'labeled' \u0026\u0026 github.event.label.name != 'ci:full')) \u0026\u0026 'invitation journey (mobile + desktop) (metadata only)' || 'invitation journey (mobile + desktop)'",
+      "status": "completed"
+    }
+  ],
+  "status": "completed"
+}

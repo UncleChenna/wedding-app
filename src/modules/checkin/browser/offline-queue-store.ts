@@ -15,9 +15,12 @@ export function createOfflineQueueStore(
 ) {
   function open(): Promise<IDBDatabase> {
     return new Promise((resolve, reject) => {
-      const request = factory.open("wedding-scanner-attempts-v1", 1);
+      const request = factory.open("wedding-scanner-attempts-v1");
       let blocked = false;
-      request.onupgradeneeded = () => request.result.createObjectStore("journal");
+      request.onupgradeneeded = () => {
+        if (!request.result.objectStoreNames.contains("journal"))
+          request.result.createObjectStore("journal");
+      };
       request.onerror = () => reject(request.error ?? new Error("Offline evidence unavailable"));
       request.onblocked = () => {
         blocked = true;
@@ -25,7 +28,10 @@ export function createOfflineQueueStore(
       };
       request.onsuccess = () => {
         if (blocked) request.result.close();
-        else resolve(request.result);
+        else {
+          request.result.onversionchange = () => request.result.close();
+          resolve(request.result);
+        }
       };
     });
   }

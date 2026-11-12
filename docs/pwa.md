@@ -142,3 +142,40 @@ An independent Cache Storage identity marker and IndexedDB journal identity dete
 If storage is unavailable, stop offline admission and use the existing connection/recovery advice or supervised paper fallback. Do not clear site data, delete the outbox, or reset its marker while pending evidence may remain. Reconnect and sync while valid staff authority exists; only exact server acknowledgements permit removal. After staff authority expires, preserve the browser profile and escalate to an administrator. TICKET-231 supplies the mandatory reviewed export/import recovery path before TICKET-154 releases; that path is not implemented by this ticket. A browser fixture renewing valid authority proves preservation and ordinary sync, not post-event credential renewal or administrative recovery.
 
 Automated evidence covers actual worker responses, capability switching/revocation, expired cached copies, partial eviction, legacy identity adoption, interrupted initialization and acknowledged-only cleanup in Chromium/WebKit. Physical phone storage behavior remains release QA under TICKET-201/TICKET-138.
+
+## Queue-safe worker updates (TICKET-180)
+
+The update UI (TICKET-111) must message the **waiting worker**, using a MessageChannel:
+`WORKER_UPDATE_STATUS` reads the origin-wide journal; `ACTIVATE_WORKER_UPDATE`
+rechecks it under the same Web Lock as scanner writes. Replies are `ready` with
+`pending: 0`, `deferred` with the total pending count, or `unavailable`. Only
+`ready` requests call `skipWaiting`. Counts include rejected and other-operator
+events: a page cannot authorize their deletion by supplying a count or override.
+Every successful query broadcasts `WORKER_UPDATE_STATE` to all same-origin tabs.
+The UI must query again before activation and on focus; broadcasts are snapshots,
+not permission tokens. It must never reload on `deferred` or `unavailable`.
+
+`skipWaiting` is invoked under the scanner lock but awaited outside it: activation
+also takes that lock. Holding it while awaiting activation deadlocks Chromium.
+An old tab may finish a compatible version-1 write during activation; no journal
+rewrite or clear occurs, so that evidence survives for the next worker.
+
+The stable `wedding-scanner-attempts-v1` database stores the strict version-1
+journal in `journal/current`. Readers open the current database version and close
+on `versionchange`. Future **additive** IDB migrations must use the same origin publication lock and may add stores atomically,
+but must retain this journal and its format through the supported rollback
+window. TICKET-180 is the minimum rollback reader for a higher IDB version;
+pre-180 readers pin version 1 and cannot reopen a version-2 database. No higher
+production database version is introduced by this ticket. Browser tests exercise
+an actual additive version-2 store and an aborted upgrade transaction.
+
+Incompatible journal formats or inaccessible coordination/storage return
+`unavailable`. Natural activation after every tab closes can still occur under
+browser lifecycle rules; its cleanup guard preserves all old caches and skips
+private-store invalidation if the journal cannot be read. It does not unregister
+workers, clear IndexedDB, or claim a completed migration. Restore a compatible
+worker to recover evidence. Compatible automatic activation may require signing
+in again before sync; it never discards queued IDs. Physical-device release QA
+remains separate. The upgrade fixture uses real emitted workers/IndexedDB and an
+idempotent HTTP acknowledgement fixture; database reconciliation is covered by
+TICKET-066's authenticated product tests, not simulated as production here.
