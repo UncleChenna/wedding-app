@@ -2,7 +2,7 @@
 id: TICKET-136
 title: Test the gate end to end with the network switched off
 epic: testing
-status: todo
+status: cancelled
 priority: high
 estimate: M
 labels: [test, pwa]
@@ -14,10 +14,10 @@ blocks: [TICKET-154, TICKET-163]
 branch: ""
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
+updated: 2026-11-12
 started: ""
 completed: ""
-reason: ""
+reason: "Merged into TICKET-132 (TICKET-228)"
 resume_to: ""
 ---
 
@@ -59,3 +59,4 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-12 — todo → cancelled — unclechenna (claude) — merged into TICKET-132 (TICKET-228)

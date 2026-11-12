@@ -2,7 +2,7 @@
 id: TICKET-180
 title: Preserve queued events across worker and data upgrades
 epic: pwa
-status: todo
+status: cancelled
 priority: high
 estimate: M
 labels: [pwa, test]
@@ -14,10 +14,10 @@ blocks: [TICKET-111, TICKET-154]
 branch: ""
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
+updated: 2026-11-12
 started: ""
 completed: ""
-reason: ""
+reason: "Merged into TICKET-111 (TICKET-228)"
 resume_to: ""
 ---
 
@@ -57,3 +57,4 @@ Backlog audit coverage: PWA update, CHK-6. See [PRD](../docs/prd.md) and [audit]
 ## Activity log
 
 - 2026-10-21 — new → todo — divine
+- 2026-11-12 — todo → cancelled — unclechenna (claude) — merged into TICKET-111 (TICKET-228)

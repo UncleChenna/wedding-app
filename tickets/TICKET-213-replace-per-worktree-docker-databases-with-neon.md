@@ -2,7 +2,7 @@
 id: TICKET-213
 title: Replace per-worktree Docker databases with Neon branches
 epic: foundations
-status: todo
+status: cancelled
 priority: high
 estimate: M
 labels: [infra, db, docs]
@@ -14,10 +14,10 @@ blocks: []
 branch: ""
 pr: ""
 created: 2026-11-04
-updated: 2026-11-04
+updated: 2026-11-12
 started: ""
 completed: ""
-reason: ""
+reason: "Merged into TICKET-149 (TICKET-228)"
 resume_to: ""
 ---
 
@@ -83,3 +83,4 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-11-04 — new → todo — unclechenna
+- 2026-11-12 — todo → cancelled — unclechenna (claude) — merged into TICKET-149 (TICKET-228)

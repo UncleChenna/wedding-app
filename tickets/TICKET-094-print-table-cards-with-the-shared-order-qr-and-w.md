@@ -9,7 +9,7 @@ labels: [frontend, design]
 module: admin
 owner: ""
 agent: ""
-blocked_by: [TICKET-011, TICKET-093, TICKET-170, TICKET-146]
+blocked_by: [TICKET-011, TICKET-093, TICKET-170, TICKET-145]
 blocks: [TICKET-154, TICKET-160]
 branch: ""
 pr: ""

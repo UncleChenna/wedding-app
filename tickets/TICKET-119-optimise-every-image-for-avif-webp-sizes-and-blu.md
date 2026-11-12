@@ -2,7 +2,7 @@
 id: TICKET-119
 title: Optimise every image for AVIF/WebP, sizes and blur
 epic: quality
-status: todo
+status: cancelled
 priority: urgent
 estimate: M
 labels: [frontend]
@@ -14,10 +14,10 @@ blocks: [TICKET-154, TICKET-176]
 branch: ""
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
+updated: 2026-11-12
 started: ""
 completed: ""
-reason: ""
+reason: "Merged into TICKET-014 (TICKET-228)"
 resume_to: ""
 ---
 
@@ -58,3 +58,4 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-12 — todo → cancelled — unclechenna (claude) — merged into TICKET-014 (TICKET-228)

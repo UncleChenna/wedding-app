@@ -2,7 +2,7 @@
 id: TICKET-201
 title: Complete performance and real-device QA before guest release
 epic: invitations
-status: todo
+status: cancelled
 priority: high
 estimate: M
 labels: [frontend, design, human]
@@ -14,10 +14,10 @@ blocks: [TICKET-154, TICKET-176]
 branch: ""
 pr: ""
 created: 2026-10-26
-updated: 2026-10-26
+updated: 2026-11-12
 started: ""
 completed: ""
-reason: ""
+reason: "Merged into TICKET-114 (TICKET-228)"
 resume_to: ""
 ---
 
@@ -95,3 +95,4 @@ Claiming untested checks pass, weakening thresholds, changing TICKET-015's pause
 ## Activity log
 
 - 2026-10-26 — new → todo — divine
+- 2026-11-12 — todo → cancelled — unclechenna (claude) — merged into TICKET-114 (TICKET-228)

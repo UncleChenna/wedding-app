@@ -10,7 +10,7 @@ module: checkin
 owner: ""
 agent: ""
 blocked_by: [TICKET-061, TICKET-065, TICKET-062]
-blocks: [TICKET-132, TICKET-136]
+blocks: [TICKET-132]
 branch: ""
 pr: ""
 created: 2026-10-21

@@ -4,13 +4,13 @@ title: Gate guest pages on Lighthouse mobile scores of 95 or more
 epic: quality
 status: todo
 priority: high
-estimate: M
+estimate: L
 labels: [test, infra]
 module: shared
 owner: ""
 agent: ""
-blocked_by: [TICKET-038, TICKET-044, TICKET-072]
-blocks: [TICKET-121, TICKET-154]
+blocked_by: [TICKET-014, TICKET-044, TICKET-072]
+blocks: [TICKET-154]
 branch: ""
 pr: ""
 created: 2026-10-21
@@ -33,6 +33,8 @@ See: [Design principles](../docs/prd.md#design-principles) · [Design principles
 
 - Lighthouse CI against a production build for /i/<fixture>, pass page, /order.
 - Budgets in config; scores recorded.
+- Merged from TICKET-121 (Fail e2e on layout shift or console errors on guest pages):
+  - Playwright fixture recording console errors and CLS for guest routes.
 
 ## Out of scope
 
@@ -44,6 +46,7 @@ See: [Design principles](../docs/prd.md#design-principles) · [Design principles
 - [ ] Current scores recorded in notes.
 
 - [ ] Measure the invitation and order pages on mobile with realistic images/fonts and completed RSVP states; keep the PRD Lighthouse performance target of at least 95 and order payload under 200KB.
+- [ ] (from TICKET-121) Any console error or CLS > 0 on a guest route fails the suite (proved in notes).
 
 ## Test plan
 
@@ -51,6 +54,7 @@ See: [Design principles](../docs/prd.md#design-principles) · [Design principles
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
 
 - Audit verification: Manual: record build, device/network profile, payload accounting and repeated performance runs.
+- (TICKET-121) End-to-end: Fixture.
 
 ## Files likely touched
 
@@ -60,6 +64,7 @@ See: [Design principles](../docs/prd.md#design-principles) · [Design principles
 ## Notes / decisions
 
 _Agents append dated notes here while working._
+- 2026-11-12 (unclechenna, claude): TICKET-228 merged TICKET-121 into this ticket (all unstarted) to cut per-ticket overhead. Their scope, criteria and dependencies are above; the merged tickets are cancelled.
 
 ## Activity log
 
