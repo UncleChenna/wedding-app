@@ -4,13 +4,13 @@ Ticket: TICKET-065
 
 # Summary
 
-A valid dense signed QR could leave the offline scanner at “Ready to scan” because the fallback decoder failed to find the code at its original pixel scale. This follow-up adds one bounded half-size retry after a normal NotFound result, preserving native/full-size decoding, verification, delivery throttling and camera cleanup.
+A valid dense signed QR could leave the offline scanner at “Ready to scan” because the fallback decoder failed to find the code at its original pixel scale. This follow-up adds one bounded fallback attempt per frame after an expected decoder failure, preserving native/full-size decoding, verification, delivery throttling and camera cleanup.
 
 PR147 merged `f3fbb6b1` into `15227feb` while its full verification was cancelled. The reviewed decoder repair `e3a68467` was not included. This PR carries that repair and fresh integrated verification; cancelled checks are not treated as successful completion.
 
 # Changes
 
-- Keep native and full-size decoding first. Only after NotFound, retry once using a reusable half-size nearest-neighbor canvas when both original dimensions are at least320px; never retry below160px.
+- Keep native and full-size decoding first. After NotFound, Format or Checksum failures, retry once using a reusable canvas: half-size first, then original-size90/180/270degree orientations across successive frames. Both original dimensions must be at least320px; never upsample or retry below160px. Reset on decode success, dimensions change or a new reader.
 - Retain a synthetic failing PNG and assert its exact decoded SHA256 in Chromium/WebKit, alongside repeated delivery timing and stopped camera tracks.
 - Cover expected/unexpected errors, dimension bounds and canvas reuse in unit tests.
 - Capture failure-only synthetic camera pixels and playback state in the existing CI artifact directory without changing assertions or timeouts.
@@ -65,3 +65,9 @@ Rollback by reverting this ticket's application/worker changes. Do not erase uns
 # Harness changes, if any
 
 This follow-up changes no harness configuration, dependency or CI step. The original merged implementation added three CI steps that reuse existing disposable PostgreSQL and installed Chromium/WebKit jobs. Existing gates and timeouts are unchanged. See `docs/reviews/TICKET-065/ci-proposal.md`. That earlier source checkpoint was develop `7533201c` (including scan logging062 and recovery225), merged in `eb37685c`. Scanner timestamp/oversized-QR handling, immutable observation evidence, and all offline wrapper props remain intact. Independent source and all144-frame visual review found no blocker; the24 updated stale frames were reviewed again.
+
+## Final Linux failure and orientation repair
+
+Run43194895337 failed one WebKit offline-worker QR assertion (45/46 worker cases passed); other pending jobs were subsequently superseded by the required status push, not certified successful. Its saved512px video had47frames and a complete synthetic QR. The exact PNG now lives beside the first decoder regression, with exact decoded SHA256 documented. All four real-video cases reproduced failure before repair. Half-size-only rotations still failed in Chromium because canvas resampling differed from the diagnostic image library; original-size270degree normal detection succeeded in both engines.
+
+The repaired bounded cycle keeps native/full-size first and adds at most one fallback decode per frame, without increasing frame rate, streams, timeouts or bypassing signature verification.25 focused unit tests and12 real camera browser cases pass (54.9s), retaining exact payload,3second delivery throttle and stopped-track assertions. Actual-worker46/46 passes40.6s; full frame/lifecycle48tests pass with97.65%lines/95.95%branches on the changed decoder under unchanged95/95thresholds. Quick passes lint, types and48relatedtests. Fresh Linux CI remains required before merge.

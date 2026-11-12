@@ -78,30 +78,55 @@ export async function createFrameReader(): Promise<FrameReader> {
       const { BrowserQRCodeReader } = await import("@zxing/browser");
       const reader = new BrowserQRCodeReader();
       let smaller: HTMLCanvasElement | undefined;
+      let turn = 0;
+      let dimensions = "";
       fallback = async (source) => {
         try {
-          return [reader.decode(source).getText()];
+          const text = reader.decode(source).getText();
+          turn = 0;
+          return [text];
         } catch (error) {
           const name = decodeException(error);
-          // Finder-pattern detection can miss a valid dense QR at one pixel
-          // scale. Retry this same frame once at half size, keeping >=160px in
-          // each dimension. Native/full-size success never pays this cost.
+          // Dense finder patterns can fail at one scale/orientation. Retry this
+          // same frame once: half-size first, then full-size quarter turns.
+          // Reset on success, dimensions change or a new reader; never increase
+          // frame frequency or decode attempts beyond full-size plus one retry.
           if (
-            name === "NotFoundException" &&
+            ["NotFoundException", "ChecksumException", "FormatException"].includes(name) &&
             source.videoWidth >= 320 &&
             source.videoHeight >= 320
           ) {
             smaller ??= document.createElement("canvas");
-            const width = Math.floor(source.videoWidth / 2);
-            const height = Math.floor(source.videoHeight / 2);
-            if (smaller.width !== width) smaller.width = width;
-            if (smaller.height !== height) smaller.height = height;
+            const nextDimensions = `${source.videoWidth}x${source.videoHeight}`;
+            if (dimensions !== nextDimensions) {
+              dimensions = nextDimensions;
+              turn = 0;
+            }
+            const rotation = turn;
+            turn = (turn + 1) % 4;
+            const width = Math.floor(source.videoWidth / (rotation === 0 ? 2 : 1));
+            const height = Math.floor(source.videoHeight / (rotation === 0 ? 2 : 1));
+            const canvasWidth = rotation % 2 ? height : width;
+            const canvasHeight = rotation % 2 ? width : height;
+            if (smaller.width !== canvasWidth) smaller.width = canvasWidth;
+            if (smaller.height !== canvasHeight) smaller.height = canvasHeight;
             const context = smaller.getContext("2d");
             if (context) {
+              const transforms: [number, number, number, number, number, number][] = [
+                [1, 0, 0, 1, 0, 0],
+                [0, 1, -1, 0, height, 0],
+                [-1, 0, 0, -1, width, height],
+                [0, -1, 1, 0, 0, width],
+              ];
+              const transform = transforms[rotation];
+              if (!transform) throw new Error("Invalid camera rotation");
+              context.setTransform(...transform);
               context.imageSmoothingEnabled = false;
               context.drawImage(source, 0, 0, width, height);
               try {
-                return [reader.decodeFromCanvas(smaller).getText()];
+                const text = reader.decodeFromCanvas(smaller).getText();
+                turn = 0;
+                return [text];
               } catch (scaledError) {
                 if (
                   !["NotFoundException", "ChecksumException", "FormatException"].includes(

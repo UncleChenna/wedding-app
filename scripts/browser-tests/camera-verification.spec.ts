@@ -24,6 +24,8 @@ for (const { fallback, dense } of [
   { fallback: true, dense: false },
   { fallback: false, dense: true },
   { fallback: true, dense: true },
+  { fallback: false, dense: "orientation" },
+  { fallback: true, dense: "orientation" },
 ]) {
   test(`actual video pixels decode with default/fallback=${fallback}, dense=${dense}`, async ({
     page,
@@ -42,11 +44,14 @@ for (const { fallback, dense } of [
     // Retained synthetic signed-pass pixels reproduced scale-sensitive finder
     // detection failure. No signing key or real guest data is present.
     const data = dense
-      ? `data:image/png;base64,${(await readFile("scripts/browser-tests/fixtures/dense-signed-pass.png")).toString("base64")}`
+      ? `data:image/png;base64,${(await readFile(`scripts/browser-tests/fixtures/${dense === "orientation" ? "orientation" : "dense"}-signed-pass.png`)).toString("base64")}`
       : await QRCode.toDataURL("synthetic-camera-qr", { width: 512, margin: 4 });
-    const expectedHash = dense
-      ? "9f1fb2db123433911c2e216afaa8e281670b35ade0039185e32e3344adc6b082"
-      : createHash("sha256").update("synthetic-camera-qr").digest("hex");
+    const expectedHash =
+      dense === "orientation"
+        ? "e1d8d14b42167e15e9669d0ba6cb2080eb38f4f600ea5faacf2a5854b26047f6"
+        : dense
+          ? "9f1fb2db123433911c2e216afaa8e281670b35ade0039185e32e3344adc6b082"
+          : createHash("sha256").update("synthetic-camera-qr").digest("hex");
     await page.route("http://localhost:32918/**", (route) =>
       route.fulfill({
         contentType: "text/html",

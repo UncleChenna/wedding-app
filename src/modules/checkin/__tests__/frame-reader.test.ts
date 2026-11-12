@@ -28,7 +28,7 @@ it("retries one smaller copy of a not-found frame and reuses the bounded canvas"
     throw { name: "NotFoundException" };
   });
   decodeFromCanvas.mockReturnValue({ getText: () => "recovered" });
-  const drawing = { drawImage: vi.fn(), imageSmoothingEnabled: true };
+  const drawing = { drawImage: vi.fn(), setTransform: vi.fn(), imageSmoothingEnabled: true };
   vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue(
     drawing as unknown as CanvasRenderingContext2D,
   );
@@ -70,6 +70,7 @@ it.each(["NotFoundException", "ChecksumException", "FormatException"])(
     });
     vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue({
       drawImage: vi.fn(),
+      setTransform: vi.fn(),
     } as unknown as CanvasRenderingContext2D);
     const read = await createFrameReader();
     expect(await read(sizedVideo(512, 512))).toEqual([]);
@@ -86,15 +87,23 @@ it("keeps full-size scanning available if a smaller canvas context cannot be cre
   expect(await read(sizedVideo(512, 512))).toEqual([]);
   expect(decodeFromCanvas).not.toHaveBeenCalled();
 });
-it.each(["ChecksumException", "FormatException"])("does not rescale a %s frame", async (name) => {
-  vi.stubGlobal("BarcodeDetector", undefined);
-  decode.mockImplementation(() => {
-    throw { name };
-  });
-  const read = await createFrameReader();
-  expect(await read(sizedVideo(512, 512))).toEqual([]);
-  expect(decodeFromCanvas).not.toHaveBeenCalled();
-});
+it.each(["ChecksumException", "FormatException"])(
+  "retries a bounded copy after a %s finder failure",
+  async (name) => {
+    vi.stubGlobal("BarcodeDetector", undefined);
+    decode.mockImplementation(() => {
+      throw { name };
+    });
+    decodeFromCanvas.mockReturnValue({ getText: () => "recovered" });
+    vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue({
+      drawImage: vi.fn(),
+      setTransform: vi.fn(),
+    } as unknown as CanvasRenderingContext2D);
+    const read = await createFrameReader();
+    expect(await read(sizedVideo(512, 512))).toEqual(["recovered"]);
+    expect(decodeFromCanvas).toHaveBeenCalledTimes(1);
+  },
+);
 it("propagates an unexpected smaller-frame decoder failure instead of masking it", async () => {
   vi.stubGlobal("BarcodeDetector", undefined);
   decode.mockImplementation(() => {
@@ -105,9 +114,46 @@ it("propagates an unexpected smaller-frame decoder failure instead of masking it
   });
   vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue({
     drawImage: vi.fn(),
+    setTransform: vi.fn(),
   } as unknown as CanvasRenderingContext2D);
   const read = await createFrameReader();
   await expect(read(sizedVideo(512, 512))).rejects.toThrow("scaled decoder failure");
+});
+it("cycles only one same-frame retry and resets after success or dimension changes", async () => {
+  vi.stubGlobal("BarcodeDetector", undefined);
+  decode.mockImplementation(() => {
+    throw { name: "FormatException" };
+  });
+  decodeFromCanvas.mockImplementation(() => {
+    throw { name: "NotFoundException" };
+  });
+  const drawing = { drawImage: vi.fn(), setTransform: vi.fn() };
+  vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue(
+    drawing as unknown as CanvasRenderingContext2D,
+  );
+  const read = await createFrameReader();
+  const frame = sizedVideo(640, 480);
+  for (let index = 0; index < 5; index++) expect(await read(frame)).toEqual([]);
+  expect(decode).toHaveBeenCalledTimes(5);
+  expect(decodeFromCanvas).toHaveBeenCalledTimes(5);
+  expect(drawing.setTransform.mock.calls).toEqual([
+    [1, 0, 0, 1, 0, 0],
+    [0, 1, -1, 0, 480, 0],
+    [-1, 0, 0, -1, 640, 480],
+    [0, -1, 1, 0, 0, 640],
+    [1, 0, 0, 1, 0, 0],
+  ]);
+  expect(drawing.drawImage.mock.calls.every(([source]) => source === frame)).toBe(true);
+  await read(sizedVideo(512, 512));
+  expect(drawing.setTransform).toHaveBeenLastCalledWith(1, 0, 0, 1, 0, 0);
+  decodeFromCanvas.mockReturnValueOnce({ getText: () => "success" });
+  expect(await read(sizedVideo(512, 512))).toEqual(["success"]);
+  await read(sizedVideo(512, 512));
+  expect(drawing.setTransform).toHaveBeenLastCalledWith(1, 0, 0, 1, 0, 0);
+  decode.mockReturnValueOnce({ getText: () => "full" });
+  expect(await read(sizedVideo(512, 512))).toEqual(["full"]);
+  await read(sizedVideo(512, 512));
+  expect(drawing.setTransform).toHaveBeenLastCalledWith(1, 0, 0, 1, 0, 0);
 });
 function native(detect: () => Promise<{ rawValue: string }[]>) {
   vi.stubGlobal(
