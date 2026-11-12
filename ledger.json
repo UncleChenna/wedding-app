@@ -2795,9 +2795,10 @@
         "- 2026-11-10 — in_review → in_progress — divine (codex) — Fix reviewed admission-refusal cache invalidation gap before merge",
         "- 2026-11-10 — in_progress → in_review — divine (codex)",
         "- 2026-11-10 — in_review → in_progress — divine (codex) — Diagnose final CI WebKit signed QR decode failure without weakening camera checks",
-        "- 2026-11-12 — in_progress → in_review — divine (codex)"
+        "- 2026-11-12 — in_progress → in_review — divine (codex)",
+        "- 2026-11-12 — in_review → in_progress — divine (codex) — Fix reproduced scale and orientation dependent dense QR finder failure from final WebKit CI; preserve assertions and exact diagnostics"
       ],
-      "status": "in_review",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-065",
