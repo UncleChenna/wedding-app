@@ -29,3 +29,7 @@ Managed worktree setup omitted supabase/templates/admin-code.html referenced by 
 ## 2026-10-31 — implementation pushed, QA remains
 
 Full pnpm verify passed: 491 unit tests / 26 skips, production build, 529 browser tests / 135 skips in 5.8 minutes. Log: artifacts/TICKET-047/full-verification.log. Full verification session61772 exited0. Implementation966a068 pushed; draft PR https://github.com/UncleChenna/wedding-app/pull/60. All local browser/performance processes stopped. Physical WhatsApp preview testing is still unverified and measured homepage CLS is nonzero; retain release-blocking201 and do not tick the phone criterion. Next: obtain real-device evidence and resolve/explicitly disposition the zero-CLS finding before t:pr can complete. Keep the draft reviewable and use the CLI blocked status while other ready tickets proceed. No merge performed.
+
+## 2026-11-12 — reconciliation resumed
+
+The original PR #60 is merged, with required CI green on b3df9446973c6baf30c5ae29b92f4e5eb484e55c. Fast-forwarded the owned clean worktree to develop eb145497 and resumed through the CLI. Documentation-only follow-up separates preview acceptance from the unverified phone and exact-zero CLS release checks already mandatory in TICKET-201. No product code or release dependency changed. Next: documentation validation, quick checks, independent review and a follow-up PR; require successful CI before merge and CLI completion.

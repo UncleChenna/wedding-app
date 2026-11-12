@@ -4,15 +4,16 @@ Ticket: TICKET-065
 
 # Summary
 
-Scanners now save a minimal, session-bound guest list after PIN sign-in and can check signed passes after an offline reload. Cached checks show valid, used, revoked and replaced results without recording admission. Live admission and uncertain retries remain unchanged; offline admission queueing belongs to TICKET-066.
+A valid dense signed QR could leave the offline scanner at “Ready to scan” because the fallback decoder failed to find the code at its original pixel scale. This follow-up adds one bounded fallback attempt per frame after an expected decoder failure, preserving native/full-size decoding, verification, delivery throttling and camera cleanup.
+
+PR147 merged `f3fbb6b1` into `15227feb` while its full verification was cancelled. The reviewed decoder repair `e3a68467` was not included. This PR carries that repair and fresh integrated verification; cancelled checks are not treated as successful completion.
 
 # Changes
 
-- An authenticated, no-store endpoint projects only names, invitation/version/status, RSVP allowance, admitted count, table and public verification keys. It rechecks the same live session after a consistent database read and bounds the response to 2 MiB.
-- A separate worker-owned IndexedDB store shares the existing origin-wide publication lock with scanner authorization. Generations fence late writes; sign-out, replacement and expiry erase private data without touching admission queues.
-- Refresh occurs at sign-in, every five minutes, on resume/reconnect and after known changes. A known authoritative change clears the matching private copy before refresh, so failed refresh cannot knowingly resurrect an older valid result. Failed erasure locks offline access and removes scanner readiness, including after browser restart.
-- The UI shows snapshot age, a thirty-minute warning, refresh status and explicit read-only wording. Thirty minutes is a warning, not an invented hard expiry. The earliest trusted session/PIN/event deadline remains authoritative.
-- Older worker acknowledgements trigger locked fallback cleanup. All parallel erasures settle before releasing the lock. A shorter newly authorized deadline invalidates the old embedded scanner identity.
+- Keep native and full-size decoding first. After NotFound, Format or Checksum failures, retry once using a reusable canvas: half-size first, then original-size90/180/270degree orientations across successive frames. Both original dimensions must be at least320px; never upsample or retry below160px. Reset on decode success, dimensions change or a new reader.
+- Retain a synthetic failing PNG and assert its exact decoded SHA256 in Chromium/WebKit, alongside repeated delivery timing and stopped camera tracks.
+- Cover expected/unexpected errors, dimension bounds and canvas reuse in unit tests.
+- Capture failure-only synthetic camera pixels and playback state in the existing CI artifact directory without changing assertions or timeouts.
 
 # Acceptance criteria and evidence
 
@@ -21,6 +22,8 @@ All functional criteria are demonstrated by the authenticated browser suite and 
 The policy follows TICKET-169: five-minute refresh, immediate refresh after known changes, thirty-minute warning and session expiry. Disconnected changes on another scanner remain unknown until refresh. No email, phone, notes, credentials or signed bearer token is cached. Names are private local device data, not a public asset.
 
 # Verification
+
+Fresh follow-up base: develop `eb145497`, integrated as `9cf072db` on12November, includes the verified PR157 navigation repair. Focused frame-reader tests24/24 and camera browser8/8 passed on11November; lint/types quick passed. Fresh combined camera browser8/8 passes37.0s on12November. Final quick passes lint/types (no changed-source unit selection; explicit24-test decoder suite passed separately). Exact-head CI remains pending. The results below are retained historical implementation evidence, not a claim that this new head passed full verification.
 
 - Production build passed, including the integrated TICKET-062/TICKET-225 base7533201c.
 - Authenticated snapshot journey: **2/2 passed**, mobile and desktop, 42.2 seconds. All six states were checked in four themes at 375/768/1280; axe reported zero violations, controls met 44px and pages had no horizontal overflow.
@@ -36,6 +39,10 @@ After integrating scan logging and recovery fixes from develop7533201c, the auth
 The combined live admission/logging browser also passed **2/2 in58.4s**, proving all authenticated verdict observations, partial admission, lost-response retry and concurrent refusal together with the snapshot wrapper. Native PostgreSQL26721 was then stopped with its data retained; no production or collaborator database was changed.
 
 Final independent review found an additional known-change path: an admission refusal after a valid read did not invalidate its saved snapshot. Eight failing regressions reproduced the gap. `AdmissionResult.onOutcome` now reports every terminal authoritative result through `Scanner.onAdmissionOutcome`; uncertain results retain the same retry intent, receipts keep their existing completion callback, and session denial locks the scanner. An out-of-order erase acknowledgement regression also failed before adding a generation fence, so an older success cannot clear a newer failure's local cache lockout. All **35 related tests pass**. The rebuilt authenticated browser journey passes **2/2 in44.5s**, including real valid-cache → server revocation → admission refusal → failed refresh → physically empty private snapshot → offline unavailable, with unchanged positive admission evidence. All144 screenshot files remain byte-identical. Both reviewers found the bounded fixes clean; fresh final CI is still required.
+
+Linux CI42732575530 exposed one WebKit signed-video decode timeout in the existing actual-worker test (45/46 passed). Camera-ready/saved-list context without frame pixels initially left the cause unknown, and five local repetitions passed. Failure-only synthetic fixture/video PNGs and playback/resource-path diagnostics were added to the output directory already uploaded by CI; diagnostic failures never replace the original assertion.
+
+Those diagnostics subsequently reproduced the failure locally in Chromium and retained a sharp complete QR with51 delivered frames. The exact image is valid: normal ZXing detection fails at512px (including TRY_HARDER), while normal256px detection and the diagnostic-only pure decoder recover the same232-byte text. Four retained-image real-video cases failed before the fix in both browsers. The production fallback now retains native/full-size success, and only after NotFound tries one half-size nearest-neighbor canvas with both dimensions at least160px; the canvas is reused and unexpected failures still propagate. No PURE_BARCODE assumption, dependency, polling interval or timeout was introduced. All **8 real-camera cases pass37.6s**, comparing the exact payload hash and preserving ≥3s delivery throttling/track cleanup. The full actual-worker suite passes **46/46 in43.7s**. **47 decoder/lifecycle tests pass**, with camera-reader coverage97.27%lines/96.55%branches/100%functions under the existing per-file gate. Independent review found no blocker; physical-camera performance remains part of the existing device release gates.
 
 The existing shell/decoder fixture also passes **46/46** Chromium/WebKit cases (43.1 seconds). The first checkpoint CI exposed its obsolete assertion that offline QR checks make a live POST. The fixture now uses an actual signed QR and private snapshot and proves exact household/table/party, no admission form and zero POST, retaining all expiry/track/restart assertions.
 
@@ -57,4 +64,10 @@ Rollback by reverting this ticket's application/worker changes. Do not erase uns
 
 # Harness changes, if any
 
-Three additive CI steps reuse existing disposable PostgreSQL and installed Chromium/WebKit jobs. Existing gates and timeouts are unchanged. See `docs/reviews/TICKET-065/ci-proposal.md`. The current source base is develop `7533201c` (including scan logging062 and recovery225), merged in `eb37685c`. Scanner timestamp/oversized-QR handling, immutable observation evidence, and all offline wrapper props remain intact. Independent source and all144-frame visual review found no blocker; the24 updated stale frames were reviewed again.
+This follow-up changes no harness configuration, dependency or CI step. The original merged implementation added three CI steps that reuse existing disposable PostgreSQL and installed Chromium/WebKit jobs. Existing gates and timeouts are unchanged. See `docs/reviews/TICKET-065/ci-proposal.md`. That earlier source checkpoint was develop `7533201c` (including scan logging062 and recovery225), merged in `eb37685c`. Scanner timestamp/oversized-QR handling, immutable observation evidence, and all offline wrapper props remain intact. Independent source and all144-frame visual review found no blocker; the24 updated stale frames were reviewed again.
+
+## Final Linux failure and orientation repair
+
+Run43194895337 failed one WebKit offline-worker QR assertion (45/46 worker cases passed); other pending jobs were subsequently superseded by the required status push, not certified successful. Its saved512px video had47frames and a complete synthetic QR. The exact PNG now lives beside the first decoder regression, with exact decoded SHA256 documented. All four real-video cases reproduced failure before repair. Half-size-only rotations still failed in Chromium because canvas resampling differed from the diagnostic image library; original-size270degree normal detection succeeded in both engines.
+
+The repaired bounded cycle keeps native/full-size first and adds at most one fallback decode per frame, without increasing frame rate, streams, timeouts or bypassing signature verification.25 focused unit tests and12 real camera browser cases pass (54.9s), retaining exact payload,3second delivery throttle and stopped-track assertions. Actual-worker46/46 passes40.6s; full frame/lifecycle48tests pass with97.65%lines/95.95%branches on the changed decoder under unchanged95/95thresholds. Quick passes lint, types and48relatedtests. Fresh Linux CI remains required before merge.
