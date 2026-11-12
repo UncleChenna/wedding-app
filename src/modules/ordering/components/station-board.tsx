@@ -88,6 +88,8 @@ export function StationBoard({ station, initial }: { station: BoardStation; init
   const [tickets, setTickets] = useState<StationTicket[]>(initial.tickets);
   const [recent, setRecent] = useState<RecentTicket[]>(initial.recent);
   const [problem, setProblem] = useState<string | null>(null);
+  // Tickets with a move still saving: their buttons wait, so a quick second tap can't race the first.
+  const [saving, setSaving] = useState<ReadonlySet<string>>(new Set());
   const [cancelling, setCancelling] = useState<StationTicket | null>(null);
   const [reason, setReason] = useState("");
   const [reasonError, setReasonError] = useState<string | null>(null);
@@ -155,6 +157,7 @@ export function StationBoard({ station, initial }: { station: BoardStation; init
   const move = async (ticket: StationTicket, to: TicketStatus, why?: string) => {
     const before = tickets;
     setProblem(null);
+    setSaving((current) => new Set([...current, ticket.id]));
     setTickets((current) =>
       to === "preparing"
         ? current.map((item) => (item.id === ticket.id ? { ...item, status: "preparing" } : item))
@@ -175,6 +178,7 @@ export function StationBoard({ station, initial }: { station: BoardStation; init
       setTickets(before);
       setProblem(`Table ${ticket.table.number} didn’t update. Check the connection and try again.`);
     }
+    setSaving((current) => new Set([...current].filter((id) => id !== ticket.id)));
     void refetch();
   };
 
@@ -259,6 +263,7 @@ export function StationBoard({ station, initial }: { station: BoardStation; init
                 ticket={ticket}
                 now={now}
                 isNew={flashing.has(ticket.id)}
+                busy={saving.has(ticket.id)}
                 onMove={(to) => void move(ticket, to)}
                 onCancel={() => {
                   setReason("");
@@ -338,12 +343,14 @@ function TicketCard({
   ticket,
   now,
   isNew,
+  busy,
   onMove,
   onCancel,
 }: {
   ticket: StationTicket;
   now: number;
   isNew: boolean;
+  busy: boolean;
   onMove: (to: TicketStatus) => void;
   onCancel: () => void;
 }) {
@@ -408,6 +415,7 @@ function TicketCard({
               size="lg"
               variant="secondary"
               aria-label={`Start preparing table ${ticket.table.number}`}
+              disabled={busy}
               onClick={() => onMove("preparing")}
             >
               Start preparing
@@ -417,6 +425,7 @@ function TicketCard({
             type="button"
             size="lg"
             aria-label={`Served table ${ticket.table.number}`}
+            disabled={busy}
             onClick={() => onMove("served")}
           >
             Served
@@ -426,6 +435,7 @@ function TicketCard({
             size="lg"
             variant="ghost"
             aria-label={`Cancel table ${ticket.table.number}`}
+            disabled={busy}
             onClick={onCancel}
           >
             Cancel
