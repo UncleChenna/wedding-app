@@ -2,7 +2,7 @@
 id: TICKET-227
 title: Select targeted PR checks and preserve full release verification
 epic: foundations
-status: in_progress
+status: in_review
 priority: high
 estimate: L
 labels: [infra, test]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: []
 blocks: []
 branch: TICKET-227
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/165
 created: 2026-11-12
 updated: 2026-11-12
 started: 2026-11-12
@@ -69,3 +69,4 @@ The owner approved targeted pull-request CI on 12 November 2026 so routine chang
 - 2026-11-12 — new → todo — divine
 - 2026-11-12 — todo → claimed — divine (codex)
 - 2026-11-12 — todo → in_progress — divine (codex)
+- 2026-11-12 — in_progress → in_review — divine (codex)
