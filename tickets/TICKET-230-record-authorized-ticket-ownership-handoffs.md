@@ -2,7 +2,7 @@
 id: TICKET-230
 title: Record authorized ticket ownership handoffs
 epic: foundations
-status: in_progress
+status: in_review
 priority: high
 estimate: S
 labels: [infra]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: []
 blocks: []
 branch: TICKET-230
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/170
 created: 2026-11-12
 updated: 2026-11-12
 started: 2026-11-12
@@ -63,3 +63,4 @@ The owner authorized completing and merging the remaining backlog, including wor
 - 2026-11-12 — backlog → todo — divine (codex)
 - 2026-11-12 — todo → claimed — divine (codex)
 - 2026-11-12 — todo → in_progress — divine (codex)
+- 2026-11-12 — in_progress → in_review — divine (codex)
