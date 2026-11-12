@@ -3034,9 +3034,10 @@
       "log": [
         "- 2026-11-12 — todo → claimed — divine (codex)",
         "- 2026-11-12 — todo → in_progress — divine (codex)",
-        "- 2026-11-12 — in_progress → in_review — divine (codex)"
+        "- 2026-11-12 — in_progress → in_review — divine (codex)",
+        "- 2026-11-12 — in_review → in_progress — divine (codex) — Actual GitHub metadata-only jobs retain unevaluated names; preserve recognition using exact aliases and captured-payload regression."
       ],
-      "status": "in_review",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-227",
