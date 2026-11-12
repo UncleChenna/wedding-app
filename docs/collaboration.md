@@ -188,7 +188,10 @@ manual CI dispatch and PRs labelled `ci:full`; shared/unknown scope also runs th
 Run full CI on the intended release commit **before publishing**; the published
 release trigger is an additional check, not authorization to release first.
 For an explicit full PR run, apply `ci:full` (or remove/reapply it to rerun at the
-same head). Historical repair reconciliation accepts only an exact-head PR run
+same head). The `ci:full` label exists in the repository and works while this workflow
+is only on develop. GitHub exposes manual dispatch once the trigger is present on
+the default branch (currently main); do not change the default branch or push to
+main to enable it. Historical repair reconciliation accepts only an exact-head PR run
 with all original jobs and the full verification proof successful; targeted-only
 runs cannot certify an earlier broken merge. Existing historical evidence remains
 compatible.

@@ -41,12 +41,12 @@ The owner approved targeted pull-request CI on 12 November 2026 so routine chang
 
 ## Acceptance criteria
 
-- [ ] Exact committed PR changes select dependency-aware unit tests, including deleted/renamed files; missing or ambiguous inputs select full verification.
-- [ ] Every PR runs lint/types; UI and sensitive integration mappings have executable selection regressions.
-- [ ] Required gates reject failed/cancelled selected jobs and distinguish intentionally unselected jobs from actual test execution.
-- [ ] Release/manual and explicit full PR modes run existing full suites; historical repair reconciliation cannot accept targeted-only proof.
-- [ ] PR body/title edits cannot cancel implementation checks; base changes still trigger verification.
-- [ ] Canonical docs/skills describe targeted PR checks and full release gates, with selector, parity and gate tests passing.
+- [x] Exact committed PR changes select dependency-aware unit tests, including deleted/renamed files; missing or ambiguous inputs select full verification.
+- [x] Every PR runs lint/types; UI and sensitive integration mappings have executable selection regressions.
+- [x] Required gates reject failed/cancelled selected jobs and distinguish intentionally unselected jobs from actual test execution.
+- [x] Release/manual and explicit full PR modes run existing full suites; historical repair reconciliation cannot accept targeted-only proof.
+- [x] PR body/title edits cannot cancel implementation checks; base changes still trigger verification.
+- [x] Canonical docs/skills describe targeted PR checks and full release gates, with selector, parity and gate tests passing.
 
 ## Test plan
 
@@ -61,6 +61,8 @@ The owner approved targeted pull-request CI on 12 November 2026 so routine chang
 ## Notes / decisions
 
 - 2026-11-12: Explicit owner authorization covers this CI policy change. Tests remain available and full release verification remains mandatory.
+
+- 2026-11-12: Implemented exact-revision selection, conservative full fallbacks, explicit required gates and full repair proof. Focused regressions, quick gate and normal hooks pass. Independent reviews found no remaining blockers after JSON and metadata fixes. Final hosted CI remains required before merge.
 
 ## Activity log
 
