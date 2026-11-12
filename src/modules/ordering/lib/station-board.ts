@@ -22,13 +22,27 @@ export const kitchenTicketSchema = z.strictObject({
 /** Bar tickets never carry dietary information (TICKET-128). */
 export const barTicketSchema = z.strictObject(baseTicket);
 
+/** Served or cancelled in the last hour, newest first: collapsed under the live queue. */
+export const recentTicketSchema = z.strictObject({
+  id: z.uuid(),
+  status: z.enum(["served", "cancelled"]),
+  at: z.iso.datetime({ offset: true }),
+  table: z.strictObject({ number: z.int(), name: z.string().nullable() }),
+  items: z.array(z.strictObject({ name: z.string(), quantity: z.int().min(1) })),
+});
+export type RecentTicket = z.infer<typeof recentTicketSchema>;
+export const RECENT_WINDOW_MINUTES = 60;
+export const RECENT_LIMIT = 10;
+
 export const kitchenBoardSchema = z.strictObject({
   generatedAt: z.iso.datetime({ offset: true }),
   tickets: z.array(kitchenTicketSchema),
+  recent: z.array(recentTicketSchema),
 });
 export const barBoardSchema = z.strictObject({
   generatedAt: z.iso.datetime({ offset: true }),
   tickets: z.array(barTicketSchema),
+  recent: z.array(recentTicketSchema),
 });
 export type KitchenTicket = z.infer<typeof kitchenTicketSchema>;
 export type KitchenBoard = z.infer<typeof kitchenBoardSchema>;

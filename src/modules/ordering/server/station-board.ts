@@ -1,5 +1,5 @@
 import "server-only";
-import { and, asc, eq, inArray, isNull, or, sql } from "drizzle-orm";
+import { and, asc, desc, eq, gte, inArray, isNull, or, sql } from "drizzle-orm";
 import type { Db } from "@/modules/shared/server/db/client";
 import {
   guests,
@@ -12,6 +12,9 @@ import {
 } from "@/modules/shared/server/db/schema";
 import {
   OPEN_TICKET_STATUSES,
+  RECENT_LIMIT,
+  RECENT_WINDOW_MINUTES,
+  type RecentTicket,
   type BarBoard,
   type BoardStation,
   type KitchenBoard,
@@ -64,7 +67,28 @@ async function readBoard(
       ),
     )
     .orderBy(asc(stationOrders.createdAt), asc(stationOrders.id));
-  if (tickets.length === 0) return { generatedAt: now.toISOString(), tickets: [] };
+  const finished = await database
+    .select({
+      id: stationOrders.id,
+      status: stationOrders.status,
+      at: stationOrders.updatedAt,
+      tableNumber: tables.number,
+      tableName: tables.name,
+    })
+    .from(stationOrders)
+    .innerJoin(orders, eq(orders.id, stationOrders.orderId))
+    .innerJoin(tables, eq(tables.id, orders.tableId))
+    .where(
+      and(
+        eq(stationOrders.station, station),
+        inArray(stationOrders.status, ["served", "cancelled"]),
+        gte(stationOrders.updatedAt, new Date(now.getTime() - RECENT_WINDOW_MINUTES * 60_000)),
+      ),
+    )
+    .orderBy(desc(stationOrders.updatedAt), desc(stationOrders.id))
+    .limit(RECENT_LIMIT);
+  if (tickets.length === 0 && finished.length === 0)
+    return { generatedAt: now.toISOString(), tickets: [], recent: [] };
 
   const items = await database
     .select({
@@ -75,14 +99,21 @@ async function readBoard(
     .from(orderItems)
     .innerJoin(menuItems, eq(menuItems.id, orderItems.menuItemId))
     .where(
-      inArray(
-        orderItems.stationOrderId,
-        tickets.map((ticket) => ticket.id),
-      ),
+      inArray(orderItems.stationOrderId, [
+        ...tickets.map((ticket) => ticket.id),
+        ...finished.map((ticket) => ticket.id),
+      ]),
     )
     .orderBy(asc(orderItems.createdAt), asc(orderItems.id));
 
   const itemsByTicket = Map.groupBy(items, (item) => item.stationOrderId);
+  const recent: RecentTicket[] = finished.map((ticket) => ({
+    id: ticket.id,
+    status: ticket.status as RecentTicket["status"],
+    at: ticket.at.toISOString(),
+    table: { number: ticket.tableNumber, name: ticket.tableName },
+    items: (itemsByTicket.get(ticket.id) ?? []).map(({ name, quantity }) => ({ name, quantity })),
+  }));
   const base = tickets.flatMap((ticket) => {
     const lines = itemsByTicket.get(ticket.id) ?? [];
     if (lines.length === 0) return [];
@@ -104,10 +135,12 @@ async function readBoard(
     return {
       generatedAt: now.toISOString(),
       tickets: base.map(({ tableId: _tableId, ...ticket }) => ticket),
+      recent,
     };
 
   // A guest's own table wins; otherwise their household's table.
   const tableIds = [...new Set(tickets.map((ticket) => ticket.tableId))];
+  if (tableIds.length === 0) return { generatedAt: now.toISOString(), tickets: [], recent };
   const seatedAt = sql<string>`coalesce(${guests.tableId}, ${invitations.tableId})`;
   const dietary = await database
     .select({ tableId: seatedAt, guest: guests.name, note: guests.dietaryNotes })
@@ -134,5 +167,6 @@ async function readBoard(
         note: (row.note ?? "").trim(),
       })),
     })),
+    recent,
   };
 }
