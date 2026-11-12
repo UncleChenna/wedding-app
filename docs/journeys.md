@@ -87,3 +87,7 @@ Admin → Guests → Invitation actions → Reply history opens `/admin/guests/[
 ## Offline admission conflicts
 
 The signed-in gate scanner shows recent conflicting offline entries below the scan controls. Each entry includes the household, operator/device, reported and received times, reported count and canonical admitted count. Realtime notifications refresh this online-only list; an unavailable connection clears it rather than presenting stale certainty. The gate lead opens **Admin → Scan log**, filters conflicts, and adds an append-only resolution note. Original admission evidence and counts are never rewritten.
+
+## Event health (TICKET-143)
+
+From the control room or admin navigation, open **Event health** (`/admin/health`). Refresh dependency checks, inspect pending/failed alert totals, follow **Open scan log**, or return with **Back to control room**. Live two-factor authorization protects `/api/admin/health`; public `/api/health` exposes only generic database readiness (`200`/`503`) with no counts or build details. Disconnected scanner queues remain explicitly unknown; ask operators to confirm their local pending counts. Broadcast capability is not proof of live delivery. Vercel commit metadata identifies deployed builds; other environments show an unlabelled build instead of inventing a version.

@@ -53,7 +53,7 @@ import {
   writeTicket,
 } from "./tickets/store";
 import { validateTickets } from "./tickets/validate";
-import { TransitionError, claim, logLine, move, release } from "./tickets/workflow";
+import { TransitionError, claim, handoff, logLine, move, release } from "./tickets/workflow";
 import type { MoveFacts } from "./tickets/workflow";
 
 const USAGE = `Usage: pnpm t:<command>
@@ -62,6 +62,7 @@ const USAGE = `Usage: pnpm t:<command>
   t:next [--module m] [--human]   best todo ticket with every blocker done
   t:show <id>
   t:claim <id> --owner <name> --agent <name>
+  t:handoff <id> --from <previous-owner> --agent <agent> --coordinated --reason <authorization>
   t:release <id>                  give back a claimed todo ticket
   t:move <id> <status> [--reason text] [--push]
   t:reconcile <id> --repair-pr <number> --reason <failure and repair>
@@ -642,6 +643,37 @@ function main(): number {
       console.log(
         `Claimed ${id} for ${who} (${agent}). Branch: ${t.meta.branch}\nNext: pnpm wt:new ${id}`,
       );
+      return 0;
+    }
+    case "handoff": {
+      const state = load(false);
+      if (state.mode !== "origin")
+        throw new TransitionError(
+          "Handoffs require the shared origin ledger; offline changes are refused.",
+        );
+      const ticket = find(state, args.positional[0] ?? "");
+      const who = actor(args, state.cwd);
+      const agent = str(args, "agent") || process.env.TICKETS_AGENT || "";
+      const reason = str(args, "reason")?.trim();
+      commitChange(state, ticket.meta.id, (current, statusOf) => ({
+        meta: handoff(
+          current.meta,
+          { actor: who, agent, today: today(), reason, statusOf },
+          {
+            expectedOwner: str(args, "from") || "",
+            coordinated: args.flags.coordinated === true,
+          },
+        ),
+        log: logLine(
+          today(),
+          current.meta.status,
+          current.meta.status,
+          who,
+          agent,
+          `Ownership handoff ${current.meta.owner} → ${who}; ${reason}`,
+        ),
+      }));
+      console.log(`${ticket.meta.id}: ownership handed to ${who}; status and evidence unchanged.`);
       return 0;
     }
     case "release": {

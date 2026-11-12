@@ -17,6 +17,11 @@ export async function AdminDashboard() {
       <ul className="mt-12 grid gap-8 sm:grid-cols-2">
         {[
           {
+            href: appRoutes.adminHealth.path,
+            name: "Event health",
+            text: "Check services, alert delivery and scanner sync guidance.",
+          },
+          {
             href: appRoutes.adminSeating.path,
             name: "Seating",
             text: "Arrange tables and keep households together.",
