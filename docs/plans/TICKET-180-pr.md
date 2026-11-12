@@ -19,7 +19,7 @@ queue-safe activation protocol for the upcoming prompt.
 
 # Acceptance evidence
 
-Four actual-browser cases pass across both engines. Exact queued IDs remain after
+Four actual-browser cases pass across both engines (final run: 10.2 seconds). Exact queued IDs remain after
 upgrades/reloads/rollback; acknowledgements from the HTTP fixture produce exactly
 two receipts after repeated delivery. Unsupported journals retain old caches even
 after all tabs close and a new worker activates naturally. Multi-tab broadcasts
@@ -28,11 +28,11 @@ and refusal of caller-supplied safety overrides are asserted.
 # Verification
 
 - Focused guard/shared/scanner worker unit tests: 60 passed.
-- Quick verification: lint, types and 46 related tests passed.
+- Quick verification: lint, types and 73 related tests passed.
 - Actual upgrade browser suite: 4 passed, including explicit multi-tab broadcasts and legacy reader rejection. Existing queue/store/worker suite: 22 passed before the final cleanup-lock review fix; final focused upgrade cases rerun afterward.
 - Initial real Chromium test exposed a skipWaiting/activation lock deadlock; fixed by awaiting activation outside the lock. Both engines then passed.
 - Existing pass-worker unit fixture required real multi-listener event behavior; all existing assertions remain.
-- Independent review found a compatibility-read/cleanup lock gap; the guard now holds the lock through the entire cleanup and private activation, with a regression test. Final selected CI remains required before merge.
+- Independent review found a compatibility-read/cleanup lock gap; the guard now holds the lock through the entire cleanup and private activation, with a regression test. The final independent re-review is clean. Integrated develop `ddc81755` without conflicts; final selected CI remains required before merge.
 
 # Risks and rollback
 
