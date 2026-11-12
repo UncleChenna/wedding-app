@@ -2,7 +2,7 @@
 id: TICKET-068
 title: Sync check-ins across scanners within two seconds
 epic: checkin
-status: in_progress
+status: blocked
 priority: high
 estimate: M
 labels: [frontend, backend]
@@ -14,11 +14,11 @@ blocks: [TICKET-137, TICKET-154]
 branch: TICKET-068
 pr: ""
 created: 2026-10-21
-updated: 2026-11-10
+updated: 2026-11-12
 started: 2026-11-10
 completed: ""
-reason: ""
-resume_to: ""
+reason: "Awaiting verified TICKET-065 decoder follow-up; switching to user-assigned targeted CI ticket."
+resume_to: in_progress
 ---
 
 # TICKET-068: Sync check-ins across scanners within two seconds
@@ -61,3 +61,4 @@ _Agents append dated notes here while working._
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-10 — todo → claimed — divine (codex) — started ahead of TICKET-065 (in_review)
 - 2026-11-10 — todo → in_progress — divine (codex) — started ahead of TICKET-065 (in_review)
+- 2026-11-12 — in_progress → blocked — divine (codex) — Awaiting verified TICKET-065 decoder follow-up; switching to user-assigned targeted CI ticket.
