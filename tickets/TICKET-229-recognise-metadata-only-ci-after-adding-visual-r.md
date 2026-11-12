@@ -2,7 +2,7 @@
 id: TICKET-229
 title: Recognise metadata-only CI after adding visual regression
 epic: foundations
-status: in_progress
+status: in_review
 priority: high
 estimate: S
 labels: [infra, test]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: []
 blocks: []
 branch: TICKET-229
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/168
 created: 2026-11-12
 updated: 2026-11-12
 started: 2026-11-12
@@ -65,3 +65,4 @@ TICKET-135 adds a visual-regression CI job. TICKET-227's exact metadata-only job
 - 2026-11-12 — backlog → todo — divine (codex)
 - 2026-11-12 — todo → claimed — divine (codex)
 - 2026-11-12 — todo → in_progress — divine (codex)
+- 2026-11-12 — in_progress → in_review — divine (codex)
