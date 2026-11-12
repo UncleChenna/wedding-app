@@ -107,4 +107,4 @@ The first final CI run passed six required jobs but found a stale expectation
 for the former manual-help anchor. The updated test now exercises actual named
 search and focus, returns to camera, and retains permission/QR/privacy/role and
 revocation checks. Rebuilt exact runner: mobile36.6s, desktop36.1s, both pass.
-Fresh final CI is still required after the pending CI-policy base integration.
+Verified CI-policy develop af819983 is integrated conflict-free as dd0d2dea. Independent review of the recovery-fixture repair found no blockers. Fresh scope-selected CI on the final head remains required before merge.
