@@ -19,6 +19,8 @@ import {
   type StationTicket,
 } from "../lib/station-board";
 import { MAX_CANCEL_REASON, type TicketStatus } from "../lib/ticket-status";
+import type { MenuItem } from "../lib/menu";
+import { StaffOrderSheet } from "./staff-order-sheet";
 
 const FLASH_MS = 4_000;
 
@@ -84,10 +86,19 @@ const liveLabels: Record<StationChannelStatus, string> = {
 
 const headings = { kitchen: "kitchen-orders", bar: "bar-orders" } as const;
 
-export function StationBoard({ station, initial }: { station: BoardStation; initial: Board }) {
+export function StationBoard({
+  station,
+  initial,
+  menu,
+}: {
+  station: BoardStation;
+  initial: Board;
+  menu: readonly MenuItem[];
+}) {
   const [tickets, setTickets] = useState<StationTicket[]>(initial.tickets);
   const [recent, setRecent] = useState<RecentTicket[]>(initial.recent);
   const [problem, setProblem] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
   const [cancelling, setCancelling] = useState<StationTicket | null>(null);
   const [reason, setReason] = useState("");
   const [reasonError, setReasonError] = useState<string | null>(null);
@@ -228,6 +239,18 @@ export function StationBoard({ station, initial }: { station: BoardStation; init
           >
             {liveLabels[live]}
           </p>
+          <StaffOrderSheet
+            station={station}
+            menu={menu}
+            onDone={(outcome) => {
+              if (outcome.kind === "signed-out") {
+                setSignedOut(true);
+                return;
+              }
+              setNotice(`Order sent for table ${outcome.table}.`);
+              void refetch();
+            }}
+          />
           {soundOn ? (
             <p className="text-lg">Sound on</p>
           ) : (
@@ -237,6 +260,15 @@ export function StationBoard({ station, initial }: { station: BoardStation; init
           )}
         </div>
       </div>
+
+      {notice ? (
+        <p
+          role="status"
+          className="rounded-md bg-success-subtle p-4 text-lg text-success-subtle-foreground"
+        >
+          {notice}
+        </p>
+      ) : null}
 
       {problem ? (
         <p
@@ -369,6 +401,9 @@ function TicketCard({
           </h3>
           <p className="shrink-0 text-lg font-medium">
             {isNew ? <span className="mr-3 tracking-widest uppercase">New</span> : null}
+            {ticket.staffEntered ? (
+              <span className="mr-3 tracking-widest uppercase">Staff order</span>
+            ) : null}
             <time dateTime={ticket.createdAt}>{ticketAge(ticket.createdAt, now)}</time>
           </p>
         </div>

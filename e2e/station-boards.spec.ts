@@ -342,4 +342,84 @@ test.describe("kitchen board", () => {
     await page.getByRole("list", { name: "Orders, oldest first" }).scrollIntoViewIfNeeded();
     await page.screenshot({ path: "docs/reviews/TICKET-078/375-board-actions.png" });
   });
+
+  test("a waiter enters an order from the board; it reaches both boards flagged and skips the cooldown", async ({
+    browser,
+  }) => {
+    test.setTimeout(180_000);
+    const number = randomInt(100000, 900000);
+    const [row] = await db<{ id: string }[]>`insert into tables(number, name, capacity)
+      values (${number}, 'Baobab', 8) returning id`;
+    tableIds.push(row?.id ?? "");
+    const signIn = async (path: string, code: string) => {
+      const context = await browser.newContext();
+      const page = await context.newPage();
+      await page.goto(path);
+      await page.getByLabel("Your six-digit PIN").fill(code);
+      await page.getByRole("button", { name: "Sign in", exact: true }).click();
+      await expect(page.getByRole("status").filter({ hasText: "Live" })).toBeVisible({
+        timeout: 15_000,
+      });
+      return { context, page };
+    };
+    const kitchen = await signIn("/kitchen", pin);
+    const bar = await signIn("/bar", barPin);
+    try {
+      const enter = async (food: number, drinks: number) => {
+        await kitchen.page.getByRole("button", { name: "New order" }).click();
+        const sheet = kitchen.page.getByRole("dialog", { name: "New order for a table" });
+        await sheet.getByLabel("Table number").fill(String(number));
+        for (let i = 0; i < food; i++)
+          await sheet
+            .getByRole("button", { name: `Increase Pepper soup ${tag.slice(-6)} quantity` })
+            .click();
+        for (let i = 0; i < drinks; i++)
+          await sheet
+            .getByRole("button", { name: `Increase Chapman ${tag.slice(-6)} quantity` })
+            .click();
+        return sheet;
+      };
+      const sheet = await enter(2, 1);
+      await kitchen.page.setViewportSize({ width: 375, height: 900 });
+      for (const theme of themes) {
+        await applyTheme(kitchen.page, theme);
+        expect(await scanA11y(kitchen.page), theme.id).toEqual([]);
+      }
+      mkdirSync("docs/reviews/TICKET-079", { recursive: true });
+      await kitchen.page.screenshot({ path: "docs/reviews/TICKET-079/375-new-order-sheet.png" });
+      await sheet.getByRole("button", { name: "Send order" }).click();
+      await expect(
+        kitchen.page.getByRole("status").filter({ hasText: `Order sent for table ${number}.` }),
+      ).toBeVisible();
+
+      const kitchenCard = kitchen.page
+        .getByRole("list", { name: "Orders, oldest first" })
+        .getByRole("listitem")
+        .filter({ hasText: `Table ${number}` });
+      const barCard = bar.page
+        .getByRole("list", { name: "Orders, oldest first" })
+        .getByRole("listitem")
+        .filter({ hasText: `Table ${number}` });
+      await expect(kitchenCard).toContainText("Staff order");
+      await expect(kitchenCard).toContainText("2 × Pepper soup");
+      await expect(barCard).toContainText("Staff order", { timeout: 2_000 });
+      await expect(barCard).toContainText("1 × Chapman");
+
+      // Straight away, a second order for the same table: a guest's phone would hit the cooldown.
+      await (await enter(1, 0)).getByRole("button", { name: "Send order" }).click();
+      await expect(
+        kitchen.page.getByRole("status").filter({ hasText: `Order sent for table ${number}.` }),
+      ).toBeVisible();
+      await expect(kitchenCard).toHaveCount(2);
+
+      const stored = await db<{ staff: string | null }[]>`
+        select entered_by_staff_id as staff from orders where table_id = ${row?.id ?? ""}`;
+      expect(stored).toEqual([{ staff: staffId }, { staff: staffId }]);
+      await kitchenCard.first().scrollIntoViewIfNeeded();
+      await kitchen.page.screenshot({ path: "docs/reviews/TICKET-079/375-staff-order-card.png" });
+    } finally {
+      await kitchen.context.close();
+      await bar.context.close();
+    }
+  });
 });

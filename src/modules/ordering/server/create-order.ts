@@ -32,8 +32,11 @@ const OPEN_STATUSES = ["received", "preparing", "ready"] as const;
 export async function createOrder(
   database: Pick<Db, "transaction">,
   order: OrderSubmission,
-  /** Staff entering an order for a table (TICKET-079) may do so while guest ordering is closed. */
-  options: { staffEntered?: boolean } = {},
+  /**
+   * Staff entering an order for a table (TICKET-079) may do so while guest ordering is closed and
+   * skip the table cooldown; the open-order limit and item caps still apply.
+   */
+  options: { staffEntered?: boolean; staffId?: string } = {},
 ): Promise<OrderResult> {
   const fingerprint = orderFingerprint({
     tableNumber: order.table,
@@ -87,7 +90,9 @@ export async function createOrder(
       })
       .from(orders)
       .where(eq(orders.tableId, table.id));
-    const tableRejection = rejectTableUsage(usage, settings);
+    const tableRejection = rejectTableUsage(usage, settings, {
+      staffEntered: options.staffEntered,
+    });
     if (tableRejection) return tableRejection;
 
     const ids = order.items.map((item) => item.menuItemId);
@@ -121,6 +126,7 @@ export async function createOrder(
         clientRequestId: order.clientRequestId,
         tableId: table.id,
         notes: order.note || null,
+        enteredByStaffId: options.staffEntered ? (options.staffId ?? null) : null,
       })
       .onConflictDoNothing({ target: orders.clientRequestId })
       .returning({ id: orders.id });

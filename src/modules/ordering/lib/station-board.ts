@@ -12,6 +12,8 @@ const baseTicket = {
   items: z.array(z.strictObject({ name: z.string(), quantity: z.int().min(1) })).min(1),
   note: z.string().nullable(),
   guestName: z.string().nullable(),
+  /** Entered by a waiter from a board (TICKET-079), not from a guest's phone. */
+  staffEntered: z.boolean(),
 };
 
 /** Kitchen tickets carry the table's dietary notes; the PRD allows admin and kitchen only. */
