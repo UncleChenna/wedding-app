@@ -39,8 +39,8 @@ See: [Performance and reliability](../docs/prd.md#performance-and-reliability).
 
 ## Acceptance criteria
 
-- [ ] Health shows each dependency's state; a stopped DB shows red with text (e2e with a stub).
-- [ ] /api/health reveals no internal details.
+- [x] Health shows each dependency's state; a stopped DB shows red with text (e2e with a stub).
+- [x] /api/health reveals no internal details.
 
 ## Test plan
 
@@ -55,7 +55,7 @@ See: [Performance and reliability](../docs/prd.md#performance-and-reliability).
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-11-12 — Added authenticated event health, bounded public readiness, honest unknown offline queues and realtime capability reporting. Focused verification: 134 related tests, 13 health tests, production build and both authenticated browser projects pass. Evidence and limitations: [PR write-up](../docs/plans/TICKET-143-pr.md).
 
 ## Activity log
 
