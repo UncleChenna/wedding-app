@@ -1,6 +1,6 @@
 # TICKET-081: reduce cold order-page traffic and enforce transfer budgets
 
-Cold ordering visits still exceed the required 200,000-byte budget. This draft removes unnecessary offline-page bootstrap/full-font downloads and unused italic preloading, while preserving intended theme fonts and offline retry. The task is unfinished: complete HTTP wire totals are 399,416 bytes for the table form and 387,293 bytes for the menu. Order-to-board timing is not yet implemented or verified.
+Cold ordering visits still exceed the required 200,000-byte budget. This draft removes unnecessary offline-page bootstrap/full-font downloads and unused italic preloading, while preserving intended theme fonts and offline retry. The task is unfinished: complete HTTP wire totals are 399,416 bytes for the table form and 387,293 bytes for the menu. The real local slow-4 G order-to-board test now passes, while its CI gate remains unfinished.
 
 ## Changes
 
@@ -21,6 +21,27 @@ Cold ordering visits still exceed the required 200,000-byte budget. This draft r
 
 ## Remaining work and risks
 
-Reduce remaining runtime/font traffic without losing behavior; add actual authenticated board delivery under 2 seconds on documented slow 4 G; wire both gates into CI; finish independent review. Measurements use local HTTP/1 and do not certify production HTTP/2/TLS, physical devices or reception conditions. No acceptance criterion is claimed complete merely from these reductions. No Realtime proof exists yet.
+Reduce remaining runtime/font traffic without losing behavior; wire the verified local delivery test into CI; wire both gates into CI; finish independent review. Measurements use local HTTP/1 and do not certify production HTTP/2/TLS, physical devices or reception conditions. No acceptance criterion is claimed complete merely from these reductions. No Realtime proof exists yet.
 
 Rollback restores the previous Next offline page/worker policy and font preload setting. There is no migration or private-cache format change. Generated fixed-copy fonts must be regenerated if offline text or source fonts change; they must never be used for arbitrary guest names.
+
+## Actual slow-4 G delivery fixture
+
+A fresh owned managed Supabase stack was started and migrated; no collaborator
+stack was touched. Production rebuilt with its real Realtime public config.
+New e 2 e/order-delivery.spec.ts uses a real guest submission, separate real PIN
+kitchen sign-in, confirmed Live subscription, both contexts throttled before
+connections (150 ms latency,1.6 Mbps down,750 kbps up), visible persisted single
+order and matching actual WebSocket broadcast before display. Native PostgreSQL
+without realtime.send is explicitly refused.
+
+First run measured 356.9 ms but failed the transport proof because the fixture
+ignored binary frames. Installed Supabase serializer confirms UTF-8 event/JSON
+inside binary frames; the fixture now observes both encodings without relaxing
+the matching order UUID/before-visible requirement. Final actual test passed 1/1
+(9.5 s runner), retaining strict elapsed<2000 ms. Its exact passing elapsed value
+was attached in memory but not retained by the list reporter, so only the passing
+bound is claimed. A subsequent evidence-only change writes sanitized timing
+JSON after all assertions for future runs; this artifact is not fabricated.
+Managed stack stopped with backup preserved after verification. Byte requirement
+remains failed; CI wiring and final current-base review still outstanding.

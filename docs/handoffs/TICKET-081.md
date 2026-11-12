@@ -78,3 +78,24 @@ wire-menu.json in docs/reviews/TICKET-081. Two focused countertests prove exact
 chunked worker-script response bytes and reject guessing nonloopback/TLS.
 Build passes; owned nativeDB stopped retained. No completed budget or delivery
 claim. Low-value generated-error-CSS experiment (~3KB reduction) reverted.
+
+## Actual slow-4G delivery fixture
+
+A fresh owned managed Supabase stack was started and migrated; no collaborator
+stack was touched. Production rebuilt with its real Realtime public config.
+New e2e/order-delivery.spec.ts uses a real guest submission, separate real PIN
+kitchen sign-in, confirmed Live subscription, both contexts throttled before
+connections (150ms latency,1.6Mbps down,750kbps up), visible persisted single
+order and matching actual WebSocket broadcast before display. Native PostgreSQL
+without realtime.send is explicitly refused.
+
+First run measured356.9ms but failed the transport proof because the fixture
+ignored binary frames. Installed Supabase serializer confirms UTF-8 event/JSON
+inside binary frames; the fixture now observes both encodings without relaxing
+the matching order UUID/before-visible requirement. Final actual test passed1/1
+(9.5s runner), retaining strict elapsed<2000ms. Its exact passing elapsed value
+was attached in memory but not retained by the list reporter, so only the passing
+bound is claimed. A subsequent evidence-only change writes sanitized timing
+JSON after all assertions for future runs; this artifact is not fabricated.
+Managed stack stopped with backup preserved after verification. Byte requirement
+remains failed; CI wiring and final current-base review still outstanding.
