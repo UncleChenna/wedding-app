@@ -2,7 +2,7 @@
 id: TICKET-068
 title: Sync check-ins across scanners within two seconds
 epic: checkin
-status: in_review
+status: in_progress
 priority: high
 estimate: M
 labels: [frontend, backend]
@@ -64,3 +64,4 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-7).
 - 2026-11-12 — in_progress → blocked — divine (codex) — Awaiting verified TICKET-065 decoder follow-up; switching to user-assigned targeted CI ticket.
 - 2026-11-12 — blocked → in_progress — divine (codex) — Verified TICKET-065 decoder repair merged; resuming final combined integration.
 - 2026-11-12 — in_progress → in_review — divine (codex)
+- 2026-11-12 — in_review → in_progress — divine (codex) — Integrate verified manual scanner changes before final combined review
