@@ -18,7 +18,13 @@ import type { scanSyncResponse as Respond } from "../../src/modules/checkin/serv
  */
 let sql: Sql;
 let database: Db;
-let reconcile: typeof Reconcile;
+let reconcileActual: typeof Reconcile;
+const reconcile = (
+  database: Parameters<typeof Reconcile>[0],
+  actor: GateActor,
+  events: readonly ScanEventReport[],
+  reauthorize: () => Promise<boolean> = async () => true,
+) => reconcileActual(database, actor, events, reauthorize);
 let respond: typeof Respond;
 let staffId: string;
 const tag = "TICKET-173 fixture";
@@ -61,12 +67,12 @@ const statuses = (acks: ScanEventAck[]) => acks.map((ack) => ack.status);
 
 describe.runIf(process.env.RUN_SCAN_SYNC_DB_TESTS === "1")("offline scan reconciliation", () => {
   beforeAll(async () => {
-    process.loadEnvFile(".env.local");
+    if (!process.env.DATABASE_URL) process.loadEnvFile(".env.local");
     const url = process.env.DATABASE_URL ?? "";
     assertDatabaseTarget(url, { localOnly: true });
     sql = postgres(url, { max: 8, connect_timeout: 10, onnotice: () => {} });
     database = drizzle(sql, { schema }) as unknown as Db;
-    reconcile = (await import("../../src/modules/checkin/server/reconcile-scans"))
+    reconcileActual = (await import("../../src/modules/checkin/server/reconcile-scans"))
       .reconcileScanBatch;
     respond = (await import("../../src/modules/checkin/server/scan-sync-response"))
       .scanSyncResponse;
@@ -105,6 +111,98 @@ describe.runIf(process.env.RUN_SCAN_SYNC_DB_TESTS === "1")("offline scan reconci
       rows: 1,
       counter: 2,
     });
+  });
+
+  it("binds retry receipts to the original operator and input method", async () => {
+    const actor = await device();
+    const invitation = await party(4);
+    const event = { ...scan(invitation, 1), inputMethod: "qr" as const };
+    expect(statuses((await reconcile(database, actor, [event])).acks)).toEqual(["recorded"]);
+    const [other] = await sql<{ id: string }[]>`insert into staff(name, role)
+      values (${tag + " replacement operator"}, 'gate') returning id`;
+    if (!other) throw new Error("no replacement operator");
+    expect(
+      statuses((await reconcile(database, { ...actor, staffId: other.id }, [event])).acks),
+    ).toEqual(["rejected"]);
+    expect(
+      statuses((await reconcile(database, actor, [{ ...event, inputMethod: "manual" }])).acks),
+    ).toEqual(["rejected"]);
+    expect(await stored(invitation)).toMatchObject({ rows: 1, counter: 1 });
+  });
+
+  it("stores an offline valid observation without admitting anyone", async () => {
+    const actor = await device();
+    const invitation = await party(4);
+    const event = { ...scan(invitation, 0), kind: "observation" as const };
+    expect((await reconcile(database, actor, [event])).acks).toEqual([
+      {
+        clientEventId: event.clientEventId,
+        status: "recorded",
+        result: "valid",
+        admitted: 0,
+        conflict: false,
+      },
+    ]);
+    expect(await stored(invitation)).toMatchObject({
+      rows: 1,
+      reported: 0,
+      admitted: 0,
+      counter: 0,
+    });
+  });
+
+  it("preserves a committed first acknowledgement when authentication expires mid-batch", async () => {
+    const actor = await device();
+    const invitation = await party(4);
+    let checks = 0;
+    const result = await reconcile(
+      database,
+      actor,
+      [scan(invitation, 1), scan(invitation, 1)],
+      async () => ++checks <= 2,
+    );
+    expect(result.revoked).toBe(true);
+    expect(statuses(result.acks)).toEqual(["recorded", "retry"]);
+    expect(await stored(invitation)).toMatchObject({ rows: 1, counter: 1 });
+  });
+
+  it("rechecks authentication after waiting for the invitation lock", async () => {
+    const actor = await device();
+    const invitation = await party(4);
+    let releaseLock = () => {};
+    const release = new Promise<void>((resolve) => {
+      releaseLock = resolve;
+    });
+    let locked = () => {};
+    const acquired = new Promise<void>((resolve) => {
+      locked = resolve;
+    });
+    const holder = sql.begin(async (tx) => {
+      await tx`select id from invitations where id = ${invitation} for update`;
+      locked();
+      await release;
+    });
+    await acquired;
+    let expired = false;
+    let checked = () => {};
+    const firstCheck = new Promise<void>((resolve) => {
+      checked = resolve;
+    });
+    const pending = reconcile(database, actor, [scan(invitation, 1)], async () => {
+      checked();
+      return !expired;
+    });
+    try {
+      await firstCheck;
+      expired = true;
+    } finally {
+      releaseLock();
+      await holder;
+    }
+    const result = await pending;
+    expect(result.revoked).toBe(true);
+    expect(statuses(result.acks)).toEqual(["retry"]);
+    expect(await stored(invitation)).toMatchObject({ rows: 0, counter: 0 });
   });
 
   it("keeps eight reported admissions from two offline devices but counts only four", async () => {
@@ -218,10 +316,11 @@ describe.runIf(process.env.RUN_SCAN_SYNC_DB_TESTS === "1")("offline scan reconci
       respond(
         new Request("http://localhost/api/checkin/sync", {
           method: "POST",
-          body: JSON.stringify({ events: batches.get(actor) }),
+          headers: { Origin: "http://localhost" },
+          body: JSON.stringify({ events: batches.get(actor), expectedActor: actor }),
         }),
         {
-          authorize: async () => actor,
+          authorize: async () => ({ ...actor, credentialVersion: 1 }),
           reconcile: (who, events) => reconcile(database, who, events),
         },
       ).then(async (response) => {

@@ -130,11 +130,18 @@ describe("scanSyncBatchSchema", () => {
 });
 
 describe("scanSyncResponse", () => {
-  const actor = { staffId: randomUUID(), deviceId: "gate-phone" };
+  const actor = { staffId: randomUUID(), deviceId: "gate-phone", credentialVersion: 1 };
   const post = (body: unknown) =>
     new Request("http://localhost/api/checkin/sync", {
       method: "POST",
-      body: typeof body === "string" ? body : JSON.stringify(body),
+      headers: { origin: "http://localhost" },
+      body:
+        typeof body === "string"
+          ? body
+          : JSON.stringify({
+              expectedActor: { staffId: actor.staffId, deviceId: actor.deviceId },
+              ...(body as object),
+            }),
     });
 
   it("refuses a signed-out or expired device before reading anything", async () => {
@@ -191,4 +198,44 @@ describe("scanSyncResponse", () => {
     expect(response.status).toBe(503);
     expect(JSON.stringify(await response.json())).not.toContain("10.0.0.1");
   });
+});
+
+it("stores offline valid observations without admitting anyone", () => {
+  const event = report({ reportedPeople: 0, kind: "observation", inputMethod: "qr" });
+  expect(scanSyncBatchSchema.safeParse({ events: [event] }).success).toBe(true);
+  expect(reconcileScan(event, { invitation, admittedSoFar: 0 })).toEqual({
+    result: "valid",
+    admitted: 0,
+    conflict: false,
+  });
+});
+it("rejects cross-origin sync and a changed operator before reconciliation", async () => {
+  const actor = { staffId: randomUUID(), deviceId: "a".repeat(64), credentialVersion: 1 };
+  const reconcile = vi.fn();
+  const request = (origin: string, staffId: string) =>
+    new Request("http://localhost/api/checkin/sync", {
+      method: "POST",
+      headers: { origin },
+      body: JSON.stringify({
+        expectedActor: { staffId, deviceId: actor.deviceId },
+        events: [report()],
+      }),
+    });
+  expect(
+    (
+      await scanSyncResponse(request("http://hostile.localhost", actor.staffId), {
+        authorize: async () => actor,
+        reconcile,
+      })
+    ).status,
+  ).toBe(400);
+  expect(
+    (
+      await scanSyncResponse(request("http://localhost", randomUUID()), {
+        authorize: async () => actor,
+        reconcile,
+      })
+    ).status,
+  ).toBe(403);
+  expect(reconcile).not.toHaveBeenCalled();
 });

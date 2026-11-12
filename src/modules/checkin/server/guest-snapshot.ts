@@ -12,7 +12,13 @@ export function getGuestSnapshotResponse() {
       const device = await currentStaffDevice("gate");
       if (!device) return null;
       const session = await scannerSessionFingerprint();
-      return session ? { session, expiresAt: device.expiresAt.getTime() } : null;
+      return session
+        ? {
+            session,
+            expiresAt: device.expiresAt.getTime(),
+            actor: { staffId: device.identity.staffId, deviceId: device.device.id },
+          }
+        : null;
     },
     load: async () => {
       const keys = loadGateSigningKeys();
