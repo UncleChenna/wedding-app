@@ -2898,15 +2898,16 @@
         "- 2026-11-11 — blocked → in_progress — divine (codex) — Resume manual search integration against merged cache implementation; keep draft until dependency verification and actual journey checks pass; started ahead of TICKET-065 (in_progress)",
         "- 2026-11-12 — in_progress → in_review — divine (codex)",
         "- 2026-11-12 — in_review → in_progress — divine (codex) — Repair inherited scanner browser expectation for the implemented manual search recovery flow",
-        "- 2026-11-12 — in_progress → in_review — divine (codex)"
+        "- 2026-11-12 — in_progress → in_review — divine (codex)",
+        "- 2026-11-12 — in_review → done — divine (codex)"
       ],
-      "status": "in_review",
+      "status": "done",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-063",
       "pr": "https://github.com/UncleChenna/wedding-app/pull/152",
       "started": "2026-11-10",
-      "completed": "",
+      "completed": "2026-11-12",
       "updated": "2026-11-12",
       "reason": "",
       "resume_to": ""
