@@ -1,7 +1,11 @@
 import { defineConfig, devices } from "@playwright/test";
 export default defineConfig({
   testDir: "./browser-tests",
-  testMatch: ["offline-queue-store.spec.ts", "offline-queue-worker.spec.ts"],
+  testMatch: [
+    "offline-queue-store.spec.ts",
+    "offline-queue-worker.spec.ts",
+    "queue-upgrade.spec.ts",
+  ],
   outputDir: "../artifacts/TICKET-066/store",
   reporter: "list",
   workers: 1,

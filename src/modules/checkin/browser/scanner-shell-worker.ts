@@ -359,19 +359,22 @@ export function installScannerShellWorker({
       }).catch(() => event.ports[0]?.postMessage({ state: "unavailable" })),
     );
   });
+  async function activateUnderLock() {
+    try {
+      const current = await store().current();
+      if (current && current.build !== build) await invalidate();
+      else if (guests) await snapshotAuthority();
+    } catch {
+      // Storage unavailable: document/status remain fail-closed.
+      await notify();
+    }
+  }
   return {
     cacheName,
+    // Only the top-level worker update guard calls this while holding the same origin lock.
+    activateUnderLock,
     async activate() {
-      await serialized(async () => {
-        try {
-          const current = await store().current();
-          if (current && current.build !== build) await invalidate();
-          else if (guests) await snapshotAuthority();
-        } catch {
-          // Storage unavailable: document/status remain fail-closed.
-          await notify();
-        }
-      }).catch(() => notify());
+      await serialized(activateUnderLock).catch(() => notify());
     },
     handleFetch(event: FetchEvent) {
       const request = event.request;
