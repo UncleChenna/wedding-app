@@ -120,6 +120,7 @@ function loadWorker(options: WorkerOptions = {}) {
     });
   });
   const self = {
+    navigator: { locks: { request: (_name: string, run: () => Promise<unknown>) => run() } },
     location: { origin: ORIGIN },
     clients: { claim: vi.fn(async () => undefined) },
     skipWaiting: vi.fn(),
@@ -133,6 +134,32 @@ function loadWorker(options: WorkerOptions = {}) {
     Request,
     URL,
     console,
+    // Empty compatible journal; real IDB upgrade behavior lives in queue-upgrade.spec.ts.
+    indexedDB: {
+      open: () => {
+        const request: { result?: unknown; onsuccess?: () => void } = {};
+        request.result = {
+          close: () => {},
+          transaction: () => {
+            const tx: { oncomplete?: () => void; objectStore: () => unknown } = {
+              objectStore: () => ({
+                get: () => {
+                  const row: { result: undefined; onsuccess?: () => void } = { result: undefined };
+                  queueMicrotask(() => {
+                    row.onsuccess?.();
+                    tx.oncomplete?.();
+                  });
+                  return row;
+                },
+              }),
+            };
+            return tx;
+          },
+        };
+        queueMicrotask(() => request.onsuccess?.());
+        return request;
+      },
+    },
   });
   const setOnline = (value: boolean) => void (online = value);
   async function install() {
@@ -226,7 +253,7 @@ describe("served worker script", () => {
     });
   });
 
-  it("never skips waiting, and on activate deletes only obsolete app-owned caches", async () => {
+  it("does not skip waiting automatically, and on activate deletes only obsolete app-owned caches", async () => {
     const { listeners, store, caches, self, install } = loadWorker();
     store.set(`${SW_CACHE_PREFIX}static-v0`, new Map());
     store.set(`${SW_CACHE_PREFIX}offline-v0`, new Map());
@@ -321,6 +348,6 @@ it("embeds the scanner worker as executable self-contained JavaScript without to
     URL,
   });
   expect(addEventListener.mock.calls.filter(([type]) => type === "fetch")).toHaveLength(1);
-  expect(addEventListener.mock.calls.filter(([type]) => type === "message")).toHaveLength(2);
+  expect(addEventListener.mock.calls.filter(([type]) => type === "message")).toHaveLength(3);
   expect(open).not.toHaveBeenCalled();
 });

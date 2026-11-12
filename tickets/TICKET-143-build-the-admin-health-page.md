@@ -2,20 +2,20 @@
 id: TICKET-143
 title: Build the admin health page
 epic: observability
-status: todo
+status: in_review
 priority: medium
 estimate: M
 labels: [frontend, backend]
 module: admin
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-066, TICKET-084, TICKET-088]
 blocks: [TICKET-142, TICKET-161]
-branch: ""
-pr: ""
+branch: TICKET-143
+pr: https://github.com/UncleChenna/wedding-app/pull/171
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-12
+started: 2026-11-12
 completed: ""
 reason: ""
 resume_to: ""
@@ -39,8 +39,8 @@ See: [Performance and reliability](../docs/prd.md#performance-and-reliability).
 
 ## Acceptance criteria
 
-- [ ] Health shows each dependency's state; a stopped DB shows red with text (e2e with a stub).
-- [ ] /api/health reveals no internal details.
+- [x] Health shows each dependency's state; a stopped DB shows red with text (e2e with a stub).
+- [x] /api/health reveals no internal details.
 
 ## Test plan
 
@@ -55,8 +55,11 @@ See: [Performance and reliability](../docs/prd.md#performance-and-reliability).
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-11-12 — Added authenticated event health, bounded public readiness, honest unknown offline queues and realtime capability reporting. Focused verification: 134 related tests, 13 health tests, production build and both authenticated browser projects pass. Evidence and limitations: [PR write-up](../docs/plans/TICKET-143-pr.md).
 
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-12 — todo → claimed — divine (codex)
+- 2026-11-12 — todo → in_progress — divine (codex)
+- 2026-11-12 — in_progress → in_review — divine (codex)

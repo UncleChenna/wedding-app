@@ -2,22 +2,22 @@
 id: TICKET-180
 title: Preserve queued events across worker and data upgrades
 epic: pwa
-status: cancelled
+status: in_review
 priority: high
 estimate: M
 labels: [pwa, test]
 module: checkin
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-066, TICKET-105]
 blocks: [TICKET-111, TICKET-154]
-branch: ""
-pr: ""
+branch: TICKET-180
+pr: https://github.com/UncleChenna/wedding-app/pull/169
 created: 2026-10-21
 updated: 2026-11-12
-started: ""
+started: 2026-11-12
 completed: ""
-reason: "Merged into TICKET-111 (TICKET-228)"
+reason: ""
 resume_to: ""
 ---
 
@@ -30,16 +30,17 @@ Backlog audit coverage: PWA update, CHK-6. See [PRD](../docs/prd.md) and [audit]
 ## Scope
 
 - Test worker and IndexedDB upgrades while admissions remain unsynced.
+- Supply the queue-safe activation protocol consumed by TICKET-111; retain version-1 journal compatibility through additive upgrades.
 
 ## Out of scope
 
-- Work outside the stated contract; consuming screens and launch operations remain in their linked tickets. No product implementation is part of this audit.
+- The visible update prompt and launch operations remain in their linked tickets (TICKET-111 and release QA).
 
 ## Acceptance criteria
 
-- [ ] A version N queue survives installation of N+1, reload, tab closure and schema migration with stable event ids and no missing or duplicate events.
-- [ ] Update prompt defers activation until queued events are acknowledged or the approved safe migration path is confirmed; multiple tabs show a coherent pending state.
-- [ ] Old/new client compatibility and rollback are explicit; incompatible migrations fail safely without clearing queues or caches containing the only copy of events.
+- [x] A version N queue survives installation of N+1, reload, tab closure and schema migration with stable event ids and no missing or duplicate events.
+- [x] The activation API for TICKET-111’s update prompt defers activation until queued events are acknowledged or the approved safe migration path is confirmed; multiple tabs receive a coherent pending state.
+- [x] Old/new client compatibility and rollback are explicit; incompatible migrations fail safely without clearing queues or caches containing the only copy of events.
 
 ## Test plan
 
@@ -54,7 +55,12 @@ Backlog audit coverage: PWA update, CHK-6. See [PRD](../docs/prd.md) and [audit]
 
 - 2026-10-21 — Added by HARNESS-002. All criteria describe future work; no completion or human approval is implied.
 
+- 2026-11-12 — Actual Chromium/WebKit worker upgrades, additive IDB migration, interrupted transaction and compatible rollback preserve exact IDs. Pre-180 pinned readers reject version 2 without altering evidence. All-tab closure retains incompatible journals/caches. TICKET-111 consumes the tested activation protocol and supplies the visible prompt.
+- 2026-11-12 — Independent review fixed cleanup atomicity; compatibility read and all activation cleanup now share the scanner lock. Focused tests and browser evidence are recorded in `docs/plans/TICKET-180-pr.md`; physical release QA is not claimed.
+
 ## Activity log
 
 - 2026-10-21 — new → todo — divine
-- 2026-11-12 — todo → cancelled — unclechenna (claude) — merged into TICKET-111 (TICKET-228)
+- 2026-11-12 — todo → claimed — divine (codex)
+- 2026-11-12 — todo → in_progress — divine (codex)
+- 2026-11-12 — in_progress → in_review — divine (codex)

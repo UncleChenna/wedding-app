@@ -1,3 +1,4 @@
+import visualMetadataOnlyRun from "./fixtures/ci-visual-metadata-only-run.json" with { type: "json" };
 import metadataOnlyRun from "./fixtures/ci-metadata-only-run.json" with { type: "json" };
 import { describe, expect, it } from "vitest";
 import { isMetadataOnlyRun, verifiedRun, verifyRepairRun } from "../tickets/reconcile";
@@ -185,6 +186,20 @@ it("selects intact full evidence past metadata edits but never past newer real p
       false,
     );
   expect(proof(metadata)).toBe(run.url);
+  expect(proof({ ...visualMetadataOnlyRun, databaseId: 43, headSha: head })).toBe(run.url);
+  expect(
+    proof({
+      ...metadata,
+      jobs: [
+        ...metadata.jobs,
+        {
+          name: "visual regression (guest pages) (metadata only)",
+          status: "completed",
+          conclusion: "skipped",
+        },
+      ],
+    }),
+  ).toBe(run.url);
   expect(() => proof({ ...run, databaseId: 43, status: "in_progress", conclusion: "" })).toThrow();
   expect(() => proof({ ...run, databaseId: 43, conclusion: "failure" })).toThrow();
   let lists = 0;
@@ -237,4 +252,45 @@ it("recognizes GitHub's actual unevaluated skipped-job names without accepting o
       metadataOnlyRun.headSha,
     ),
   ).toBe(false);
+});
+
+it("recognises the captured eleven-job visual workflow while rejecting malformed variants", () => {
+  expect(isMetadataOnlyRun(visualMetadataOnlyRun, visualMetadataOnlyRun.headSha)).toBe(true);
+  for (const change of [
+    { event: "workflow_dispatch" },
+    { headSha: "f".repeat(40) },
+    { status: "in_progress" },
+    { conclusion: "failure" },
+    { jobs: visualMetadataOnlyRun.jobs.slice(1) },
+    { jobs: [...visualMetadataOnlyRun.jobs, visualMetadataOnlyRun.jobs[0]] },
+    {
+      jobs: visualMetadataOnlyRun.jobs.map((job, index) =>
+        index === 0 ? visualMetadataOnlyRun.jobs[1] : job,
+      ),
+    },
+    {
+      jobs: visualMetadataOnlyRun.jobs.map((job) => ({
+        ...job,
+        name: job.name.replace("github.event.action", "other.event.action"),
+      })),
+    },
+    {
+      jobs: visualMetadataOnlyRun.jobs.map((job, index) =>
+        index === 0 ? { ...job, name: "unknown (metadata only)" } : job,
+      ),
+    },
+    {
+      jobs: visualMetadataOnlyRun.jobs.map((job, index) =>
+        index === 0 ? { ...job, conclusion: "success" } : job,
+      ),
+    },
+    {
+      jobs: visualMetadataOnlyRun.jobs.map((job, index) =>
+        index === 0 ? { ...job, status: "in_progress" } : job,
+      ),
+    },
+  ])
+    expect(
+      isMetadataOnlyRun({ ...visualMetadataOnlyRun, ...change }, visualMetadataOnlyRun.headSha),
+    ).toBe(false);
 });

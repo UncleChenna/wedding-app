@@ -83,3 +83,7 @@ Signed-pass entry is separate from the personal invitation: /p/[pass] carries no
 ## Invitation reply history (TICKET-100)
 
 Admin → Guests → Invitation actions → Reply history opens `/admin/guests/[id]/history` for that household. The protected, read-only timeline shows every saved RSVP or admin correction newest first, before/after details and explicit UTC timestamps. Back to guests returns to the list. Missing invitations return404; no-record and temporary-load-failure states are distinct. Raw invitation credentials, contacts and actor identifiers are not part of the history display.
+
+## Event health (TICKET-143)
+
+From the control room or admin navigation, open **Event health** (`/admin/health`). Refresh dependency checks, inspect pending/failed alert totals, follow **Open scan log**, or return with **Back to control room**. Live two-factor authorization protects `/api/admin/health`; public `/api/health` exposes only generic database readiness (`200`/`503`) with no counts or build details. Disconnected scanner queues remain explicitly unknown; ask operators to confirm their local pending counts. Broadcast capability is not proof of live delivery. Vercel commit metadata identifies deployed builds; other environments show an unlabelled build instead of inventing a version.

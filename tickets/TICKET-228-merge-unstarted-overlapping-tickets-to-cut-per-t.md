@@ -31,9 +31,8 @@ work moves faster without changing what gets built. Rules: [tickets](../docs/tic
 
 ## Scope
 
-- Merge 17 unstarted, unclaimed tickets into 11 survivors that cover the same flow:
+- Merge 16 unstarted, unclaimed tickets into 10 survivors that cover the same flow:
   - 085 ← 087 (alert sending and its board health)
-  - 111 ← 180 (app updates and queued data across upgrades)
   - 116 ← 121 (guest page performance and layout-shift gates)
   - 014 ← 038, 119 (theme, hero photo, image optimisation)
   - 126 ← 127 (privacy notice and retention job)
@@ -55,7 +54,7 @@ work moves faster without changing what gets built. Rules: [tickets](../docs/tic
 
 ## Acceptance criteria
 
-- [x] Each of the 17 absorbed tickets is `cancelled` with a "Merged into" reason, and its criteria appear in the survivor.
+- [x] Each of the 16 absorbed tickets is `cancelled` with a "Merged into" reason, and its criteria appear in the survivor.
 - [x] No unstarted ticket is blocked by a cancelled ticket (checked with grep), and `pnpm t:validate` passes.
 - [x] No started, claimed or finished ticket file is changed (only todo, backlog and cancelled files in the diff).
 
@@ -69,6 +68,8 @@ work moves faster without changing what gets built. Rules: [tickets](../docs/tic
 - `tickets/TICKET-*.md` (47 files)
 
 ## Notes / decisions
+
+- 2026-11-13 (unclechenna, claude): TICKET-180 was planned to merge into 111, but Codex completed it on develop first (PR #169), so that merge was dropped: 180 stays done, 111 is back to develop's version, and TICKET-154 depends on 180 again.
 
 - 2026-11-12 (unclechenna, claude): applied with a one-off script (survivor gets scope, criteria, test plan and
   merged dependencies; absorbed tickets cancelled; dependents repointed). Edits to in-flight tickets owned by

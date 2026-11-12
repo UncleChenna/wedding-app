@@ -5,16 +5,17 @@ Ticket: TICKET-228
 # Summary
 
 Every ticket carries the same fixed cost, whatever its size: a worktree, a database stack, a production build,
-browser tests, a PR and about 20 minutes of CI. At the owner's request (2026-11-12), this folds 17 tickets that
-hadn't started into 11 tickets covering the same flow. The scope doesn't change; the open list shrinks from 85 to
-68, and about 11 PRs fewer will be needed.
+browser tests, a PR and about 20 minutes of CI. At the owner's request (2026-11-12), this folds 16 tickets that
+hadn't started into 10 tickets covering the same flow. The scope doesn't change; the open list shrinks from 85 to
+69, and about 11 PRs fewer will be needed.
 
 # Changes
+
+TICKET-180 was also planned to merge into 111, but Codex completed it on develop first (#169), so that merge was dropped and 180 stays done.
 
 | Keeps going                           | Absorbs                                                | Why                                      |
 | ------------------------------------- | ------------------------------------------------------ | ---------------------------------------- |
 | TICKET-085 alert sending with retries | 087 alert health on boards                             | 087 shows 085's results                  |
-| TICKET-111 update prompt              | 180 queued data across upgrades                        | Same service-worker upgrade path         |
 | TICKET-116 Lighthouse gate            | 121 layout-shift and console-error gate                | Same guest-page test setup               |
 | TICKET-014 couple's theme             | 038 hero photo, 119 image optimisation                 | All wait on the owner's photos (008)     |
 | TICKET-126 privacy notice             | 127 retention deletion job                             | Both carry out the 122 decision          |
@@ -50,13 +51,13 @@ For each pair:
 
 # Acceptance criteria and evidence
 
-- [x] **All 17 absorbed tickets are cancelled with a "Merged into" reason, and their criteria appear in the
-      survivor.** `pnpm t:list` shows all 17 as `cancelled`, and each survivor lists "(from TICKET-x)" criteria.
+- [x] **All 16 absorbed tickets are cancelled with a "Merged into" reason, and their criteria appear in the
+      survivor.** `pnpm t:list` shows all 16 as `cancelled`, and each survivor lists "(from TICKET-x)" criteria.
 - [x] **No unstarted ticket is blocked by a cancelled ticket, and `pnpm t:validate` passes.**
   - `t:validate`: 224 tickets valid.
   - A grep of todo and backlog tickets for blockers among the cancelled ids found none.
 - [x] **No started, claimed or finished ticket file is changed.** The diff contains only todo (30) and cancelled
-      (17) ticket files, plus TICKET-228.
+      (16) ticket files, plus TICKET-228.
 
 # Verification
 
@@ -66,7 +67,7 @@ For each pair:
 # Risks and rollout
 
 - **The combined tickets are larger** (size L), so each PR will be bigger to review.
-- **Rollback:** revert the PR, and move the 17 tickets from `cancelled` back to `todo` in the ledger.
+- **Rollback:** revert the PR, and move the 16 tickets from `cancelled` back to `todo` in the ledger.
 
 # Screenshots
 
