@@ -1,6 +1,7 @@
 import "server-only";
 import { and, eq, isNull } from "drizzle-orm";
 import type { Db } from "@/modules/shared/server/db/client";
+import { publishToStation } from "@/modules/shared/server/realtime-publish";
 import {
   admissionCounters,
   invitations,
@@ -132,6 +133,11 @@ export function admitVerifiedPass(
       .onConflictDoNothing({ target: scanEvents.clientEventId })
       .returning({ receivedAt: scanEvents.receivedAt });
     if (!inserted) return (await replay(tx, actor, intent)) ?? { state: "conflict" };
+    await publishToStation(tx, "gate", "checkin.recorded", {
+      invitationId: invitation.id,
+      admitted: decision.admit,
+      conflict: false,
+    });
     return {
       state: "recorded",
       people: decision.admit,

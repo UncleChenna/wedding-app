@@ -291,6 +291,17 @@ jobs:
           name: admin-scan-log-evidence
           path: artifacts/TICKET-174/
           retention-days: 7
+      - name: Verify transaction-bound gate broadcasts
+        run: pnpm exec tsx scripts/test-scanner-updates.ts --db-only
+      - name: Verify two-scanner Realtime, polling and admission retries
+        run: pnpm exec tsx scripts/test-scanner-updates.ts
+      - name: Preserve scanner synchronization evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: scanner-synchronization-evidence
+          path: docs/reviews/TICKET-068/
+          retention-days: 7
       - name: Stop this job's isolated stack
         if: always()
         run: test ! -f .harness/worktree.json || pnpm db:stop
