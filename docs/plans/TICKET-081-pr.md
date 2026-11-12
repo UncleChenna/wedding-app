@@ -20,7 +20,7 @@ The final production build transfers 158,155–181,065 bytes across light/dark, 
 - Worker compression and existing service-worker regressions plus font metadata: 45 tests pass. Round-trip decompression equals the complete original script; explicit gzip refusal and identity response are tested.
 - Actual slow-4G delivery: `docs/reviews/TICKET-081/delivery.json` (150 ms latency, 1.6 Mbps down, 750 Kbps up).
 - Native form/security tests cover body stream limits, origin rejection, cookie preservation, escaping and safe error recovery. Existing ordering contract tests pass.
-- Existing guest journey screenshots: `docs/reviews/TICKET-081/parity/`; final rerun result will be recorded before review readiness.
+- Existing guest journey screenshots: `docs/reviews/TICKET-081/parity/`; all 11 existing guest journeys pass across the final run and focused retries (8 initial passes, then availability/cooldown passes and the status pass with its required ephemeral staff secret). The initial run was interrupted by wall-clock jumps; the missing-secret status attempt was an environment failure, not counted as a pass.
 
 ## Limitations and review
 

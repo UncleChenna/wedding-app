@@ -1,0 +1,81 @@
+{
+  "menu": false,
+  "budget": 200000,
+  "total": 180273,
+  "browserReported": 116255,
+  "transport": "loopback HTTP/1 wire; no rewriting",
+  "rows": [
+    {
+      "path": "/order-assets/order-f12add0191eacbf4a5c6b3e3a68ac3e826ca9045344eeac531c419be9af86289.css",
+      "worker": false,
+      "bytes": 3230,
+      "status": 200
+    },
+    {
+      "path": "/order",
+      "worker": false,
+      "bytes": 5343,
+      "status": 200
+    },
+    {
+      "path": "/order-assets/order-28d96cc2dce09d29d08226c65897b289df3e27c799b33387355b86f15103e4a6.js",
+      "worker": false,
+      "bytes": 13108,
+      "status": 200
+    },
+    {
+      "path": "/order-assets/order-693f1a187cb2c32b9ed037e229f728976621ff37c26a3ef406ed0cfc36a2ab5b.woff2",
+      "worker": false,
+      "bytes": 22935,
+      "status": 200
+    },
+    {
+      "path": "/order-assets/order-b3a35f584afbe2fe3d1995f9e89abe0e6696bfcfdca442369474577cbca90908.woff2",
+      "worker": false,
+      "bytes": 29911,
+      "status": 200
+    },
+    {
+      "path": "/scanner-assets/scanner-2f1362d50d7207b8944cc418f261a444a2e749b8ed8db0ee450e9cdcf7bffe0a.js",
+      "worker": true,
+      "bytes": 0,
+      "status": 200
+    },
+    {
+      "path": "/sw.js",
+      "worker": true,
+      "bytes": 1027,
+      "status": 200
+    },
+    {
+      "path": "/offline",
+      "worker": true,
+      "bytes": 8785,
+      "status": 200
+    },
+    {
+      "path": "/offline-assets/inter-b714eddca05246b9.woff2",
+      "worker": true,
+      "bytes": 6922,
+      "status": 200
+    },
+    {
+      "path": "/offline-assets/cormorant-6dcbd80f527db744.woff2",
+      "worker": true,
+      "bytes": 10350,
+      "status": 200
+    },
+    {
+      "path": "/offline-assets/playfair-5b5d69a12afed94f.woff2",
+      "worker": true,
+      "bytes": 9382,
+      "status": 200
+    },
+    {
+      "path": "/offline-assets/jost-c38a7bce2755e180.woff2",
+      "worker": true,
+      "bytes": 5262,
+      "status": 200
+    }
+  ]
+}
