@@ -309,7 +309,9 @@ function doMove(state: State, id: string, to: Status, args: Args): Ticket {
   if (to === "in_review" && !dry.verified) {
     const head = git(["rev-parse", "HEAD"], state.cwd);
     const script = reviewVerifyScript(args.flags);
-    console.log(`Running pnpm ${script} before review (CI runs the full verify)…`);
+    console.log(
+      `Running pnpm ${script} before review (CI runs scope-selected checks; full verification remains required before release)…`,
+    );
     if (!stream("pnpm", [script], state.cwd))
       throw new TransitionError(`pnpm ${script} failed; fix it before review.`);
     verifiedHead = head;
@@ -754,7 +756,9 @@ function main(): number {
       if (script === "verify" && !force && reusableVerification(state.cwd)) {
         console.log("Reusing matching successful verification (less than one hour old).");
       } else {
-        console.log(`Running pnpm ${script} (CI runs the full verify)…`);
+        console.log(
+          `Running pnpm ${script} (CI runs scope-selected checks; full verification remains required before release)…`,
+        );
         if (!stream("pnpm", [script], state.cwd)) throw new Error(`pnpm ${script} failed.`);
       }
       if (git(["rev-parse", "HEAD"], state.cwd) !== reviewHead)

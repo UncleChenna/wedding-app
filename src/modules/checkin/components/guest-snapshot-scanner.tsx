@@ -8,6 +8,10 @@ import { readGuestSnapshot } from "../browser/guest-snapshot-client";
 import { scannerWorkerMessage } from "../browser/scanner-worker-message";
 import { resolveSnapshotRead } from "../lib/resolve-snapshot-read";
 import { ScannerSession } from "./scanner-session";
+import { ManualGuestSearch, type ManualLookup } from "./manual-guest-search";
+import { readLiveManual } from "../browser/manual-client";
+import { resolveManualSnapshot } from "../lib/manual-snapshot";
+import type { AdmissionResponse } from "../lib/online-admission";
 
 export function GuestSnapshotScanner({
   session,
@@ -40,6 +44,51 @@ export function GuestSnapshotScanner({
   // an old cached result into a newly authorized admission form.
   const [cached, setCached] = useState(false);
   const [deniedSession, setDeniedSession] = useState<string | null>(null);
+  const [manual, setManual] = useState(false);
+  const onAdmissionOutcome = useCallback(
+    (outcome: AdmissionResponse) => {
+      if (outcome.state === "session_expired") {
+        invalidationGeneration.current++;
+        unsafeCache.current = true;
+        setDeniedSession(session);
+        void scannerWorkerMessage("DENY_SCANNER_SESSION", session);
+      } else if (outcome.state !== "unavailable") {
+        void changed();
+      }
+    },
+    [session, changed],
+  );
+  const lookupManual = useCallback<ManualLookup>(
+    async (input, signal) => {
+      if (navigator.onLine) {
+        try {
+          const response = await readLiveManual(input, signal);
+          if (signal.aborted) return { response: { state: "unavailable" }, cached: false };
+          if (response.state === "session_expired") {
+            onAdmissionOutcome(response);
+            return { response, cached: false };
+          }
+          if (response.state !== "unavailable") {
+            // Selecting a current household can contradict its prior cached allowance.
+            if (input.operation === "read") await changed();
+            return { response, cached: false };
+          }
+        } catch {
+          /* Still-authorized private cache may serve read-only results. */
+        }
+      }
+      if (signal.aborted || unsafeCache.current)
+        return { response: { state: "unavailable" }, cached: true };
+      const generation = invalidationGeneration.current;
+      const snapshot = await readGuestSnapshot({ session, expiresAt });
+      if (signal.aborted || unsafeCache.current || generation !== invalidationGeneration.current)
+        return { response: { state: "unavailable" }, cached: true };
+      const response = resolveManualSnapshot(input, snapshot, { session, expiresAt });
+      if (response.state === "session_expired") onAdmissionOutcome(response);
+      return { response, cached: true };
+    },
+    [session, expiresAt, changed, onAdmissionOutcome],
+  );
   const resolveRead = useCallback<ScanResolver>(
     async (qr, signal) => {
       if (navigator.onLine) {
@@ -96,34 +145,36 @@ export function GuestSnapshotScanner({
     : 0;
   return (
     <>
-      {cached && (
+      {cached && !manual && (
         <p className="text-lg leading-relaxed">
           Using the saved guest list. No entry is recorded by an offline check. Reconnect and scan
           again to record entry.
         </p>
       )}
-      <Scanner
-        key={session}
-        resolveRead={resolveRead}
-        allowAdmission={!cached}
-        readOnlyNotice={
-          cached && age >= 30
-            ? `List not refreshed for ${age} min. New changes may not show.`
-            : undefined
-        }
-        onAdmissionOutcome={(outcome) => {
-          // A refusal is just as authoritative as a receipt: the cached allowance,
-          // RSVP or revocation state may have changed after the initial live read.
-          if (outcome.state === "session_expired") {
-            invalidationGeneration.current++;
-            unsafeCache.current = true;
-            setDeniedSession(session);
-            void scannerWorkerMessage("DENY_SCANNER_SESSION", session);
-          } else {
-            void changed();
+      {manual ? (
+        <ManualGuestSearch
+          key={session}
+          lookup={lookupManual}
+          onClose={() => setManual(false)}
+          onAdmissionOutcome={onAdmissionOutcome}
+          staleNotice={
+            age >= 30 ? `List not refreshed for ${age} min. New changes may not show.` : undefined
           }
-        }}
-      />
+        />
+      ) : (
+        <Scanner
+          key={session}
+          resolveRead={resolveRead}
+          allowAdmission={!cached}
+          readOnlyNotice={
+            cached && age >= 30
+              ? `List not refreshed for ${age} min. New changes may not show.`
+              : undefined
+          }
+          onManualSearch={() => setManual(true)}
+          onAdmissionOutcome={onAdmissionOutcome}
+        />
+      )}
       <GuestSnapshotStatus
         {...freshness}
         refresh={() => {

@@ -22,6 +22,7 @@ export type VerifiedAdmissionIntent = {
   invitationId: string;
   passVersion: number;
   people: number;
+  inputMethod?: "qr" | "manual";
 };
 
 async function replay(
@@ -40,6 +41,7 @@ async function replay(
       admittedPeople: scanEvents.admittedPeople,
       conflict: scanEvents.conflict,
       receivedAt: scanEvents.receivedAt,
+      inputMethod: scanEvents.inputMethod,
     })
     .from(scanEvents)
     .where(eq(scanEvents.clientEventId, intent.clientEventId));
@@ -125,6 +127,7 @@ export function admitVerifiedPass(
         reportedPeople: intent.people,
         admittedPeople: decision.admit,
         source: "online",
+        inputMethod: intent.inputMethod ?? "qr",
       })
       .onConflictDoNothing({ target: scanEvents.clientEventId })
       .returning({ receivedAt: scanEvents.receivedAt });

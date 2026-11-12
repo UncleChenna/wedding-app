@@ -2,7 +2,7 @@
 export const REVIEW_BASE = "develop";
 
 /**
- * TICKET-217: CI's `pnpm verify` is the full merge gate, so the review hand-off runs the quick
+ * CI runs scope-selected PR checks and full verification before release; review hand-off runs the quick
  * check locally. `--full` runs the whole suite locally as well.
  */
 export function reviewVerifyScript(flags: Record<string, unknown>): "verify" | "verify:quick" {

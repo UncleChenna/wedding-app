@@ -39,21 +39,22 @@ export async function resolveScanRead(
   const verified = await verifyGatePass(token, keys, { now: Date.now() });
   if (!verified.ok) return { state: "invalid" };
   const input = await load(verified.payload.inv);
+  return resolveGuestRead(input, verified.payload.ver);
+}
+
+/** Shared presentation decision; callers must authorize the identity before loading this row. */
+export function resolveGuestRead(input: unknown, passVersion: number): ScanReadResult {
   if (input === null) return { state: "unknown" };
   const parsed = rowSchema.safeParse(input);
   if (!parsed.success) return { state: "unavailable" };
   const row = parsed.data;
   const decision = decideAdmission({
     invitation: row,
-    passVersion: verified.payload.ver,
+    passVersion,
     admittedSoFar: row.admittedSoFar,
   });
   if (decision.result !== "valid" && decision.result !== "already_used") {
-    if (
-      decision.result === "revoked" &&
-      row.status !== "revoked" &&
-      verified.payload.ver < row.tokenVersion
-    )
+    if (decision.result === "revoked" && row.status !== "revoked" && passVersion < row.tokenVersion)
       return { state: "replaced" };
     const refused = {
       invalid: "invalid",
