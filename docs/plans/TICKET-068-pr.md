@@ -27,7 +27,7 @@ A gate scanner now refreshes its displayed pass when another scanner records an 
 - Production build passed. Focused boundary/controller/scanner tests passed.
 - Full unit/coverage after freshness fix:1993 passed,207 conditional database skips,95.69s. Critical coverage98.71% lines/98.96% branches.
 - Quick verification passed lint, types, related tests and workflow/environment CI parity.
-- Final enhanced browser6/6 passed33.2s, including keyboard Enter retry,44px buttons and actual standalone offline reload/reconnect. Live updates measured120/70ms, polling2863/3360ms, uncertain notices125/123ms (mobile/desktop); exact JSON saved beside screenshots. Exact final-head CI and independent integration review remain required; this PR stays draft.
+- Final enhanced browser6/6 passed33.2s, including keyboard Enter retry,44px buttons and actual standalone offline reload/reconnect. Live updates measured120/70ms, polling2863/3360ms, uncertain notices125/123ms (mobile/desktop); exact JSON saved beside screenshots. Final combined-head CI remains required before merging.
 
 ## Review and CI repairs
 
@@ -50,3 +50,7 @@ PASS: all-theme automated accessibility, responsive overflow checks, visual insp
 # Harness changes, if any
 
 The existing real-Supabase admin CI job additionally runs the two gate-publication SQL tests and six scanner browser tests, then uploads screenshot/timing evidence. No test, timeout, security policy or threshold was weakened.
+
+## Final manual-search integration
+
+All ten CI jobs passed on head `25473c9d` (run `43207911754`), including full verification and the real two-scanner tests. Before merging, `develop` advanced to `9c24504f` with verified manual guest search. The integration preserves the manual search branch and admission callbacks alongside snapshot invalidation, visible QR refresh revisions and pending-intent fencing. Both test mock sets remain, and scanner screenshots retain the configurable review directory with the new manual-search default. Five focused interaction suites passed 48 tests in 2.48 seconds. This integrated head requires its own CI; the earlier green run is not presented as proof of the new combination.
