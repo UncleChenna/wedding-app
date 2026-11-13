@@ -1,11 +1,18 @@
-import { z } from "zod";
+import {
+  discriminatedUnion,
+  strictObject,
+  literal,
+  int,
+  positive,
+  type infer as Infer,
+} from "zod/mini";
 
-const replySchema = z.discriminatedUnion("state", [
-  z.object({ state: z.literal("ready"), pending: z.literal(0) }).strict(),
-  z.object({ state: z.literal("deferred"), pending: z.number().int().positive() }).strict(),
-  z.object({ state: z.literal("unavailable") }).strict(),
+const replySchema = discriminatedUnion("state", [
+  strictObject({ state: literal("ready"), pending: literal(0) }),
+  strictObject({ state: literal("deferred"), pending: int().check(positive()) }),
+  strictObject({ state: literal("unavailable") }),
 ]);
-export type UpdateReply = z.infer<typeof replySchema>;
+export type UpdateReply = Infer<typeof replySchema>;
 export type UpdateView = UpdateReply | { state: "hidden" | "checking" | "updating" };
 export function parseUpdateReply(value: unknown): UpdateReply {
   const result = replySchema.safeParse(value);

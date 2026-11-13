@@ -1,0 +1,514 @@
+{
+  "docs/reviews/TICKET-117/emerald-night/768/results.json": [
+    {
+      "state": "invitation",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "saved-rsvp",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "saved-rsvp-text-200",
+      "violations": [],
+      "overflow": false,
+      "textScale": 2
+    },
+    {
+      "state": "issued-pass",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "issued-pass-text-200",
+      "violations": [],
+      "overflow": false,
+      "textScale": 2
+    }
+  ],
+  "docs/reviews/TICKET-117/emerald-night/320/results.json": [
+    {
+      "state": "invitation",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "saved-rsvp",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "saved-rsvp-text-200",
+      "violations": [],
+      "overflow": true,
+      "textScale": 2
+    },
+    {
+      "state": "issued-pass",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "issued-pass-text-200",
+      "violations": [],
+      "overflow": false,
+      "textScale": 2
+    }
+  ],
+  "docs/reviews/TICKET-117/emerald-night/1280/results.json": [
+    {
+      "state": "invitation",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "saved-rsvp",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "saved-rsvp-text-200",
+      "violations": [],
+      "overflow": false,
+      "textScale": 2
+    },
+    {
+      "state": "issued-pass",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "issued-pass-text-200",
+      "violations": [],
+      "overflow": false,
+      "textScale": 2
+    }
+  ],
+  "docs/reviews/TICKET-117/emerald-night/375/results.json": [
+    {
+      "state": "invitation",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "saved-rsvp",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "saved-rsvp-text-200",
+      "violations": [],
+      "overflow": false,
+      "textScale": 2
+    },
+    {
+      "state": "issued-pass",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "issued-pass-text-200",
+      "violations": [],
+      "overflow": false,
+      "textScale": 2
+    }
+  ],
+  "docs/reviews/TICKET-117/ivory-gold/768/results.json": [
+    {
+      "state": "invitation",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "saved-rsvp",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "saved-rsvp-text-200",
+      "violations": [],
+      "overflow": false,
+      "textScale": 2
+    },
+    {
+      "state": "issued-pass",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "issued-pass-text-200",
+      "violations": [],
+      "overflow": false,
+      "textScale": 2
+    }
+  ],
+  "docs/reviews/TICKET-117/ivory-gold/320/results.json": [
+    {
+      "state": "invitation",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "saved-rsvp",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "saved-rsvp-text-200",
+      "violations": [],
+      "overflow": true,
+      "textScale": 2
+    },
+    {
+      "state": "issued-pass",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "issued-pass-text-200",
+      "violations": [],
+      "overflow": false,
+      "textScale": 2
+    }
+  ],
+  "docs/reviews/TICKET-117/ivory-gold/1280/results.json": [
+    {
+      "state": "invitation",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "saved-rsvp",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "saved-rsvp-text-200",
+      "violations": [],
+      "overflow": false,
+      "textScale": 2
+    },
+    {
+      "state": "issued-pass",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "issued-pass-text-200",
+      "violations": [],
+      "overflow": false,
+      "textScale": 2
+    }
+  ],
+  "docs/reviews/TICKET-117/ivory-gold/375/results.json": [
+    {
+      "state": "invitation",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "saved-rsvp",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "saved-rsvp-text-200",
+      "violations": [],
+      "overflow": false,
+      "textScale": 2
+    },
+    {
+      "state": "issued-pass",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "issued-pass-text-200",
+      "violations": [],
+      "overflow": false,
+      "textScale": 2
+    }
+  ],
+  "docs/reviews/TICKET-117/blush-sage/768/results.json": [
+    {
+      "state": "invitation",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "saved-rsvp",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "saved-rsvp-text-200",
+      "violations": [],
+      "overflow": false,
+      "textScale": 2
+    },
+    {
+      "state": "issued-pass",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "issued-pass-text-200",
+      "violations": [],
+      "overflow": false,
+      "textScale": 2
+    }
+  ],
+  "docs/reviews/TICKET-117/blush-sage/320/results.json": [
+    {
+      "state": "invitation",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "saved-rsvp",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "saved-rsvp-text-200",
+      "violations": [],
+      "overflow": true,
+      "textScale": 2
+    },
+    {
+      "state": "issued-pass",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "issued-pass-text-200",
+      "violations": [],
+      "overflow": false,
+      "textScale": 2
+    }
+  ],
+  "docs/reviews/TICKET-117/blush-sage/1280/results.json": [
+    {
+      "state": "invitation",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "saved-rsvp",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "saved-rsvp-text-200",
+      "violations": [],
+      "overflow": false,
+      "textScale": 2
+    },
+    {
+      "state": "issued-pass",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "issued-pass-text-200",
+      "violations": [],
+      "overflow": false,
+      "textScale": 2
+    }
+  ],
+  "docs/reviews/TICKET-117/blush-sage/375/results.json": [
+    {
+      "state": "invitation",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "saved-rsvp",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "saved-rsvp-text-200",
+      "violations": [],
+      "overflow": false,
+      "textScale": 2
+    },
+    {
+      "state": "issued-pass",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "issued-pass-text-200",
+      "violations": [],
+      "overflow": false,
+      "textScale": 2
+    }
+  ],
+  "docs/reviews/TICKET-117/midnight-champagne/768/results.json": [
+    {
+      "state": "invitation",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "saved-rsvp",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "saved-rsvp-text-200",
+      "violations": [],
+      "overflow": false,
+      "textScale": 2
+    },
+    {
+      "state": "issued-pass",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "issued-pass-text-200",
+      "violations": [],
+      "overflow": false,
+      "textScale": 2
+    }
+  ],
+  "docs/reviews/TICKET-117/midnight-champagne/320/results.json": [
+    {
+      "state": "invitation",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "saved-rsvp",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "saved-rsvp-text-200",
+      "violations": [],
+      "overflow": true,
+      "textScale": 2
+    },
+    {
+      "state": "issued-pass",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "issued-pass-text-200",
+      "violations": [],
+      "overflow": false,
+      "textScale": 2
+    }
+  ],
+  "docs/reviews/TICKET-117/midnight-champagne/1280/results.json": [
+    {
+      "state": "invitation",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "saved-rsvp",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "saved-rsvp-text-200",
+      "violations": [],
+      "overflow": false,
+      "textScale": 2
+    },
+    {
+      "state": "issued-pass",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "issued-pass-text-200",
+      "violations": [],
+      "overflow": false,
+      "textScale": 2
+    }
+  ],
+  "docs/reviews/TICKET-117/midnight-champagne/375/results.json": [
+    {
+      "state": "invitation",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "saved-rsvp",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "saved-rsvp-text-200",
+      "violations": [],
+      "overflow": false,
+      "textScale": 2
+    },
+    {
+      "state": "issued-pass",
+      "violations": [],
+      "overflow": false,
+      "textScale": 1
+    },
+    {
+      "state": "issued-pass-text-200",
+      "violations": [],
+      "overflow": false,
+      "textScale": 2
+    }
+  ]
+}

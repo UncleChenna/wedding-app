@@ -1,0 +1,15 @@
+{
+  "command": "pnpm exec esbuild src/modules/shared/browser/worker-update-client.ts --bundle --minify --platform=browser --format=esm",
+  "measurement": "Standalone module; not actual Next chunk or Lighthouse evidence",
+  "gzip": "Python gzip.compress, mtime=0, default level 9",
+  "sizes": {
+    "before": {
+      "minifiedBytes": 456601,
+      "gzipBytes": 93478
+    },
+    "after": {
+      "minifiedBytes": 20941,
+      "gzipBytes": 7225
+    }
+  }
+}

@@ -2,7 +2,7 @@
 id: TICKET-144
 title: Create the production Supabase project
 epic: deployment
-status: todo
+status: cancelled
 priority: urgent
 estimate: S
 labels: [human, infra]
@@ -14,10 +14,10 @@ blocks: [TICKET-028, TICKET-148, TICKET-149, TICKET-151]
 branch: ""
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
+updated: 2026-11-12
 started: ""
 completed: ""
-reason: ""
+reason: "Merged into TICKET-145 (TICKET-228)"
 resume_to: ""
 ---
 
@@ -59,3 +59,4 @@ See: [Tech stack and architecture](../docs/prd.md#tech-stack-and-architecture).
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-12 — todo → cancelled — unclechenna (claude) — merged into TICKET-145 (TICKET-228)

@@ -1,0 +1,7 @@
+{
+  "finding": "117-02",
+  "action": "Select Vegetable rice and save guest details",
+  "expected": "Meal remains selected after saved status receives focus",
+  "actual": "Native select value becomes empty",
+  "browserRegression": "Failed before onReset prevention; all16 invitation cases pass afterward"
+}

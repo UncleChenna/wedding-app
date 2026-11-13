@@ -2,7 +2,7 @@
 id: TICKET-206
 title: Verify admin MFA on physical iOS and Android before release
 epic: data-auth
-status: todo
+status: cancelled
 priority: urgent
 estimate: S
 labels: [human, test, security]
@@ -14,10 +14,10 @@ blocks: [TICKET-154, TICKET-176]
 branch: ""
 pr: ""
 created: 2026-10-31
-updated: 2026-10-31
+updated: 2026-11-12
 started: ""
 completed: ""
-reason: ""
+reason: "Merged into TICKET-114 (TICKET-228)"
 resume_to: ""
 ---
 
@@ -60,3 +60,4 @@ User approval allows the implementation merge, not release approval or bypassing
 ## Activity log
 
 - 2026-10-31 — new → todo — divine — approved physical-device follow-up for PR54
+- 2026-11-12 — todo → cancelled — unclechenna (claude) — merged into TICKET-114 (TICKET-228)
