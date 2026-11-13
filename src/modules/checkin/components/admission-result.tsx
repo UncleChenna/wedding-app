@@ -190,7 +190,7 @@ export function AdmissionResult({
                 {response.tableNumber === null && (
                   <p>Table not assigned. Ask the gate lead for your table.</p>
                 )}
-                <p className="text-3xl font-semibold">
+                <p className="text-4xl font-semibold">
                   {response.people} {response.people === 1 ? "guest" : "guests"} admitted
                 </p>
                 <p>
@@ -245,8 +245,8 @@ export function AdmissionResult({
             Pass check
           </StatusBadge>
           <h2 className="font-display text-4xl leading-tight">Valid pass</h2>
-          <p className="font-display text-3xl leading-tight wrap-anywhere">{result.guest.name}</p>
-          <p className="text-3xl font-semibold">
+          <p className="font-display text-4xl leading-tight wrap-anywhere">{result.guest.name}</p>
+          <p className="text-4xl font-semibold">
             {result.guest.tableNumber === null
               ? "Table not assigned"
               : `Table ${result.guest.tableNumber}`}

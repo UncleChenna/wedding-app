@@ -1,0 +1,68 @@
+{
+  "name": "admin-guests-new",
+  "theme": "emerald-night",
+  "violations": [],
+  "overflow": false,
+  "small": [
+    {
+      "text": "Household name",
+      "px": 16
+    },
+    {
+      "text": "Side",
+      "px": 16
+    },
+    {
+      "text": "Optional, for example bride's family or groom's friends.",
+      "px": 14
+    },
+    {
+      "text": "Table",
+      "px": 16
+    },
+    {
+      "text": "Changing the household table seats all its named guests together.",
+      "px": 14
+    },
+    {
+      "text": "Additional tag-along places",
+      "px": 16
+    },
+    {
+      "text": "Extra people this household may name when replying, in addition to the named inv",
+      "px": 14
+    },
+    {
+      "text": "Guest 1 name",
+      "px": 16
+    },
+    {
+      "text": "Guest 1 email",
+      "px": 16
+    },
+    {
+      "text": "Guest 1 phone",
+      "px": 16
+    },
+    {
+      "text": "Include the country code for numbers outside the UK.",
+      "px": 14
+    },
+    {
+      "text": "Remove guest",
+      "px": 16
+    },
+    {
+      "text": "1",
+      "px": 16
+    },
+    {
+      "text": "Add a named guest",
+      "px": 16
+    },
+    {
+      "text": "Create draft invitation",
+      "px": 16
+    }
+  ]
+}
