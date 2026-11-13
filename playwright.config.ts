@@ -25,18 +25,24 @@ export default defineConfig({
   projects: [
     {
       name: "mobile",
-      testIgnore: /visual\//,
+      testIgnore: /(visual|regression)\//,
       use: { ...devices["Pixel 7"] },
     },
     {
       name: "desktop",
-      testIgnore: /visual\//,
+      testIgnore: /(visual|regression)\//,
       use: { ...devices["Desktop Chrome"], viewport: { width: 1280, height: 800 } },
     },
     {
       name: "visual",
       testMatch: /visual\/.*\.spec\.ts/,
       use: { ...devices["Desktop Chrome"] },
+    },
+    {
+      // Committed baselines compared on CI's Linux runner (TICKET-135); 1x density keeps them small.
+      name: "regression",
+      testMatch: /regression\/.*\.spec\.ts/,
+      use: { ...devices["Desktop Chrome"], deviceScaleFactor: 1 },
     },
   ],
   webServer: {

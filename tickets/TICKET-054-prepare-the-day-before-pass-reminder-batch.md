@@ -2,7 +2,7 @@
 id: TICKET-054
 title: Prepare the day-before pass reminder batch
 epic: sharing
-status: in_review
+status: done
 priority: low
 estimate: S
 labels: [frontend]

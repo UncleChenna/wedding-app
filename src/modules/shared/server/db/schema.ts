@@ -89,6 +89,31 @@ export const invitationPhotos = pgTable(
   ],
 ).enableRLS();
 
+/** Only this selected design is published; uploaded photos remain private until selected. */
+export const invitationDesign = pgTable(
+  "invitation_design",
+  {
+    id: integer("id").primaryKey(),
+    version: integer("version").notNull().default(1),
+    photoId: uuid("photo_id").references(() => invitationPhotos.id, { onDelete: "restrict" }),
+    photoAlt: text("photo_alt").notNull().default(""),
+    headline: text("headline").notNull(),
+    subline: text("subline").notNull(),
+    updatedBy: uuid("updated_by").notNull(),
+    updatedAt: updatedAt(),
+  },
+  (t) => [
+    check("invitation_design_singleton", sql`${t.id} = 1`),
+    check("invitation_design_version", sql`${t.version} > 0`),
+    check("invitation_design_headline", sql`length(trim(${t.headline})) between 1 and 200`),
+    check("invitation_design_subline", sql`length(trim(${t.subline})) between 1 and 1000`),
+    check(
+      "invitation_design_alt",
+      sql`length(${t.photoAlt}) <= 500 and (${t.photoId} is null or length(trim(${t.photoAlt})) > 0)`,
+    ),
+  ],
+).enableRLS();
+
 /** Ephemeral keyed network counters; no credentials or raw addresses are stored. */
 export const requestBudgets = pgTable(
   "request_budgets",
@@ -696,6 +721,9 @@ export const eventSettings = pgTable(
     venue: text("venue"),
     mapUrl: text("map_url"),
     dressCode: text("dress_code"),
+    /** The venue router's Wi-Fi, printed on every table card (TICKET-094). */
+    wifiName: text("wifi_name"),
+    wifiPassword: text("wifi_password"),
     rsvpLockAt: timestamp("rsvp_lock_at", { withTimezone: true }),
     orderingOpen: boolean("ordering_open").notNull().default(false),
     activeThemeId: text("active_theme_id").notNull().default("ivory-gold"),

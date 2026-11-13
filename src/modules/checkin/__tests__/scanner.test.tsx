@@ -1,7 +1,8 @@
 // @vitest-environment jsdom
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
-import { Scanner } from "../components/scanner";
+import type { ScanReadResult } from "../lib/scan-read-result";
+import { Scanner, type ScanResolver } from "../components/scanner";
 import { startQrCamera } from "../lib/camera-reader";
 vi.mock("../lib/camera-reader", () => ({ startQrCamera: vi.fn() }));
 afterEach(() => {
@@ -169,7 +170,10 @@ it("ignores an older lookup finishing after a newer scan and clears private resu
     options?.onTorchAvailable(false);
     options?.onCode("first");
   });
-  await act(async () => options?.onCode("second"));
+  // A different capture is explicit; repeated frames cannot cancel a pending read.
+  fireEvent.click(screen.getByRole("button", { name: "Pause camera" }));
+  await act(async () => fireEvent.click(screen.getByRole("button", { name: "Open camera" })));
+  await act(async () => vi.mocked(startQrCamera).mock.calls[1]?.[0].onCode("second"));
   expect(screen.getByText("Synthetic guest")).toBeVisible();
   await act(async () => finish?.({ state: "invalid" }));
   expect(screen.getByRole("heading", { name: "Valid pass" })).toBeVisible();
@@ -213,4 +217,46 @@ it("reports an oversized decoded QR as bounded invalid evidence without sending 
   );
   expect(JSON.stringify(fetcher.mock.calls)).not.toContain("PRIVATE");
   expect(screen.getByRole("heading", { name: "Invalid pass" })).toBeVisible();
+});
+
+it("keeps one pending camera read despite repeated decoded frames", async () => {
+  const pending = Promise.withResolvers<ScanReadResult>();
+  const resolveRead = vi.fn<ScanResolver>(() => pending.promise);
+  vi.mocked(startQrCamera).mockResolvedValue({ stop: vi.fn(), setTorch: async () => false });
+  render(<Scanner resolveRead={resolveRead} />);
+  await act(async () => fireEvent.click(screen.getByRole("button", { name: "Open camera" })));
+  const options = vi.mocked(startQrCamera).mock.calls[0]?.[0];
+  act(() => options?.onCode("same private pass"));
+  const signal = resolveRead.mock.calls[0]?.[1];
+  act(() => options?.onCode("same private pass"));
+  act(() => options?.onCode("different private pass"));
+  expect(resolveRead).toHaveBeenCalledTimes(1);
+  expect(signal?.aborted).toBe(false);
+  await act(async () => pending.resolve({ state: "invalid" }));
+  expect(screen.getByRole("heading", { name: "Invalid pass" })).toBeVisible();
+});
+
+it("cancels a pending read on pause and fences its result after a fresh capture", async () => {
+  const old = Promise.withResolvers<ScanReadResult>();
+  const fresh = Promise.withResolvers<ScanReadResult>();
+  const resolveRead = vi
+    .fn<ScanResolver>()
+    .mockImplementationOnce(() => old.promise)
+    .mockImplementationOnce(() => fresh.promise);
+  vi.mocked(startQrCamera).mockResolvedValue({ stop: vi.fn(), setTorch: async () => false });
+  const view = render(<Scanner resolveRead={resolveRead} />);
+  await act(async () => fireEvent.click(screen.getByRole("button", { name: "Open camera" })));
+  act(() => vi.mocked(startQrCamera).mock.calls[0]?.[0].onCode("old private pass"));
+  const signal = resolveRead.mock.calls[0]?.[1];
+  fireEvent.click(screen.getByRole("button", { name: "Pause camera" }));
+  expect(signal?.aborted).toBe(true);
+  await act(async () => fireEvent.click(screen.getByRole("button", { name: "Open camera" })));
+  act(() => vi.mocked(startQrCamera).mock.calls[1]?.[0].onCode("fresh private pass"));
+  await act(async () => old.resolve({ state: "revoked" }));
+  expect(screen.queryByRole("heading", { name: "Revoked pass" })).not.toBeInTheDocument();
+  expect(resolveRead).toHaveBeenCalledTimes(2);
+  const currentSignal = resolveRead.mock.calls[1]?.[1];
+  view.unmount();
+  expect(currentSignal?.aborted).toBe(true);
+  await act(async () => fresh.resolve({ state: "invalid" }));
 });

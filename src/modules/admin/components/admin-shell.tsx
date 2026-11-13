@@ -12,6 +12,7 @@ export const adminSections = [
     exact: false,
   },
   { href: appRoutes.adminSharing.path, label: appRoutes.adminSharing.label, exact: false },
+  { href: appRoutes.adminDesign.path, label: appRoutes.adminDesign.label, exact: false },
   { href: appRoutes.adminMenu.path, label: appRoutes.adminMenu.label, exact: false },
   { href: appRoutes.adminStaff.path, label: appRoutes.adminStaff.label, exact: false },
   { href: appRoutes.adminScans.path, label: appRoutes.adminScans.label, exact: false },
@@ -35,7 +36,8 @@ export function AdminShell({
   currentPath?: string;
 }) {
   return (
-    <div className="flex min-h-dvh flex-col md:flex-row">
+    <div className="flex min-h-dvh flex-col md:flex-row [&_.text-base]:text-lg [&_.text-sm]:text-lg [&_.type-label]:text-lg [&_:is(input,select,textarea,button,a)]:scroll-mb-56 md:[&_:is(input,select,textarea,button,a)]:scroll-mb-0 [&_label]:text-lg">
+      {/* Admin controls keep the operational 18px minimum without changing guest defaults. */}
       <header
         data-admin-chrome
         className="flex items-start justify-between gap-4 border-b border-border px-6 py-4 md:hidden"
@@ -84,8 +86,8 @@ export function AdminShell({
           </li>
         </ul>
       </nav>
-      {/* Bottom padding keeps the last content above the fixed phone navigation. */}
-      <div className="min-w-0 flex-1 pb-[calc(12rem+env(safe-area-inset-bottom))] md:pb-0">
+      {/* Four rows of phone navigation need clearance below the last action. */}
+      <div className="min-w-0 flex-1 pb-[calc(16rem+env(safe-area-inset-bottom))] md:pb-0">
         {children}
       </div>
     </div>

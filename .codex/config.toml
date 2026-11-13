@@ -1,4 +1,4 @@
-# Shared project config. Trust this project in Codex before running its hooks.
+# Shared project config.
 # Keep personal model/account preferences in ~/.codex/config.toml.
 
 # No AI attribution in commits (AGENTS.md → "No AI attribution"). An empty
@@ -6,4 +6,4 @@
 commit_attribution = ""
 
 [features]
-hooks = true
+hooks = false

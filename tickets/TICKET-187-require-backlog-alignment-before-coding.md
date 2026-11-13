@@ -2,7 +2,7 @@
 id: TICKET-187
 title: Require backlog alignment before coding
 epic: foundations
-status: in_review
+status: done
 priority: urgent
 estimate: S
 labels: [docs]

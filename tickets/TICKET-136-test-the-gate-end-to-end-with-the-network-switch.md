@@ -2,7 +2,7 @@
 id: TICKET-136
 title: Test the gate end to end with the network switched off
 epic: testing
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [test, pwa]

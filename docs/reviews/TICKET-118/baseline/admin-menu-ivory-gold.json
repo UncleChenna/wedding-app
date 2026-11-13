@@ -1,0 +1,340 @@
+{
+  "name": "admin-menu",
+  "theme": "ivory-gold",
+  "violations": [],
+  "overflow": false,
+  "small": [
+    {
+      "text": "Meals",
+      "px": 13
+    },
+    {
+      "text": "Mark sold out",
+      "px": 16
+    },
+    {
+      "text": "Remove item",
+      "px": 16
+    },
+    {
+      "text": "Name",
+      "px": 16
+    },
+    {
+      "text": "Description",
+      "px": 16
+    },
+    {
+      "text": "Optional · up to 200 characters.",
+      "px": 14
+    },
+    {
+      "text": "Category",
+      "px": 16
+    },
+    {
+      "text": "Prepared by",
+      "px": 16
+    },
+    {
+      "text": "Orders for this item go to this board.",
+      "px": 14
+    },
+    {
+      "text": "Most per order",
+      "px": 16
+    },
+    {
+      "text": "Position",
+      "px": 16
+    },
+    {
+      "text": "Lower numbers appear first.",
+      "px": 14
+    },
+    {
+      "text": "Dietary tags",
+      "px": 16
+    },
+    {
+      "text": "Optional · separate with commas, e.g. vegan, gluten-free.",
+      "px": 14
+    },
+    {
+      "text": "Save item",
+      "px": 16
+    },
+    {
+      "text": "Mark sold out",
+      "px": 16
+    },
+    {
+      "text": "Remove item",
+      "px": 16
+    },
+    {
+      "text": "Name",
+      "px": 16
+    },
+    {
+      "text": "Description",
+      "px": 16
+    },
+    {
+      "text": "Optional · up to 200 characters.",
+      "px": 14
+    },
+    {
+      "text": "Category",
+      "px": 16
+    },
+    {
+      "text": "Prepared by",
+      "px": 16
+    },
+    {
+      "text": "Orders for this item go to this board.",
+      "px": 14
+    },
+    {
+      "text": "Most per order",
+      "px": 16
+    },
+    {
+      "text": "Position",
+      "px": 16
+    },
+    {
+      "text": "Lower numbers appear first.",
+      "px": 14
+    },
+    {
+      "text": "Dietary tags",
+      "px": 16
+    },
+    {
+      "text": "Optional · separate with commas, e.g. vegan, gluten-free.",
+      "px": 14
+    },
+    {
+      "text": "Save item",
+      "px": 16
+    },
+    {
+      "text": "Mark sold out",
+      "px": 16
+    },
+    {
+      "text": "Remove item",
+      "px": 16
+    },
+    {
+      "text": "Name",
+      "px": 16
+    },
+    {
+      "text": "Description",
+      "px": 16
+    },
+    {
+      "text": "Optional · up to 200 characters.",
+      "px": 14
+    },
+    {
+      "text": "Category",
+      "px": 16
+    },
+    {
+      "text": "Prepared by",
+      "px": 16
+    },
+    {
+      "text": "Orders for this item go to this board.",
+      "px": 14
+    },
+    {
+      "text": "Most per order",
+      "px": 16
+    },
+    {
+      "text": "Position",
+      "px": 16
+    },
+    {
+      "text": "Lower numbers appear first.",
+      "px": 14
+    },
+    {
+      "text": "Dietary tags",
+      "px": 16
+    },
+    {
+      "text": "Optional · separate with commas, e.g. vegan, gluten-free.",
+      "px": 14
+    },
+    {
+      "text": "Save item",
+      "px": 16
+    },
+    {
+      "text": "Mark sold out",
+      "px": 16
+    },
+    {
+      "text": "Remove item",
+      "px": 16
+    },
+    {
+      "text": "Name",
+      "px": 16
+    },
+    {
+      "text": "Description",
+      "px": 16
+    },
+    {
+      "text": "Optional · up to 200 characters.",
+      "px": 14
+    },
+    {
+      "text": "Category",
+      "px": 16
+    },
+    {
+      "text": "Prepared by",
+      "px": 16
+    },
+    {
+      "text": "Orders for this item go to this board.",
+      "px": 14
+    },
+    {
+      "text": "Most per order",
+      "px": 16
+    },
+    {
+      "text": "Position",
+      "px": 16
+    },
+    {
+      "text": "Lower numbers appear first.",
+      "px": 14
+    },
+    {
+      "text": "Dietary tags",
+      "px": 16
+    },
+    {
+      "text": "Optional · separate with commas, e.g. vegan, gluten-free.",
+      "px": 14
+    },
+    {
+      "text": "Save item",
+      "px": 16
+    },
+    {
+      "text": "Mark sold out",
+      "px": 16
+    },
+    {
+      "text": "Remove item",
+      "px": 16
+    },
+    {
+      "text": "Name",
+      "px": 16
+    },
+    {
+      "text": "Description",
+      "px": 16
+    },
+    {
+      "text": "Optional · up to 200 characters.",
+      "px": 14
+    },
+    {
+      "text": "Category",
+      "px": 16
+    },
+    {
+      "text": "Prepared by",
+      "px": 16
+    },
+    {
+      "text": "Orders for this item go to this board.",
+      "px": 14
+    },
+    {
+      "text": "Most per order",
+      "px": 16
+    },
+    {
+      "text": "Position",
+      "px": 16
+    },
+    {
+      "text": "Lower numbers appear first.",
+      "px": 14
+    },
+    {
+      "text": "Dietary tags",
+      "px": 16
+    },
+    {
+      "text": "Optional · separate with commas, e.g. vegan, gluten-free.",
+      "px": 14
+    },
+    {
+      "text": "Save item",
+      "px": 16
+    },
+    {
+      "text": "Name",
+      "px": 16
+    },
+    {
+      "text": "Description",
+      "px": 16
+    },
+    {
+      "text": "Optional · up to 200 characters.",
+      "px": 14
+    },
+    {
+      "text": "Category",
+      "px": 16
+    },
+    {
+      "text": "Prepared by",
+      "px": 16
+    },
+    {
+      "text": "Orders for this item go to this board.",
+      "px": 14
+    },
+    {
+      "text": "Most per order",
+      "px": 16
+    },
+    {
+      "text": "Position",
+      "px": 16
+    },
+    {
+      "text": "Lower numbers appear first.",
+      "px": 14
+    },
+    {
+      "text": "Dietary tags",
+      "px": 16
+    },
+    {
+      "text": "Optional · separate with commas, e.g. vegan, gluten-free.",
+      "px": 14
+    },
+    {
+      "text": "Add an item",
+      "px": 16
+    }
+  ]
+}

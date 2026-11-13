@@ -2,7 +2,7 @@
 id: TICKET-075
 title: Show guests live status for their order
 epic: ordering
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [frontend]

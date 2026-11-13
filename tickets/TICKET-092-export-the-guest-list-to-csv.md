@@ -2,7 +2,7 @@
 id: TICKET-092
 title: Export the guest list to CSV
 epic: admin
-status: in_review
+status: done
 priority: urgent
 estimate: S
 labels: [backend]

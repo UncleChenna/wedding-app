@@ -2,7 +2,7 @@
 id: TICKET-207
 title: Make cold font builds deterministic
 epic: design-system
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [frontend, test, infra]

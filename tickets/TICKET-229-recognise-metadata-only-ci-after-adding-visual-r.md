@@ -2,7 +2,7 @@
 id: TICKET-229
 title: Recognise metadata-only CI after adding visual regression
 epic: foundations
-status: in_review
+status: done
 priority: high
 estimate: S
 labels: [infra, test]

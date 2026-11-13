@@ -1,0 +1,17 @@
+{
+  "name": "gate-valid",
+  "theme": "midnight-champagne",
+  "violations": [],
+  "overflow": false,
+  "small": [],
+  "identifiers": [
+    {
+      "text": "Valid pass",
+      "px": 36
+    },
+    {
+      "text": "Table 840500",
+      "px": 30
+    }
+  ]
+}

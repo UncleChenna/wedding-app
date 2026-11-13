@@ -2,7 +2,7 @@
 id: TICKET-084
 title: Queue order alerts in an outbox and batch them per station
 epic: alerts
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [backend, db]

@@ -2,7 +2,7 @@
 id: TICKET-152
 title: Run smoke tests against every deployment
 epic: deployment
-status: todo
+status: cancelled
 priority: urgent
 estimate: M
 labels: [test, infra]
@@ -14,10 +14,10 @@ blocks: [TICKET-153, TICKET-176]
 branch: ""
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
+updated: 2026-11-12
 started: ""
 completed: ""
-reason: ""
+reason: "Merged into TICKET-150 (TICKET-228)"
 resume_to: ""
 ---
 
@@ -58,3 +58,4 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-12 — todo → cancelled — unclechenna (claude) — merged into TICKET-150 (TICKET-228)

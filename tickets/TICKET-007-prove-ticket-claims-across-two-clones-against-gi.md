@@ -2,7 +2,7 @@
 id: TICKET-007
 title: Prove ticket claims across two clones against GitHub
 epic: foundations
-status: in_review
+status: done
 priority: medium
 estimate: S
 labels: [test, infra]

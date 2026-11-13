@@ -1,0 +1,92 @@
+{
+  "name": "admin-staff",
+  "theme": "emerald-night",
+  "violations": [],
+  "overflow": false,
+  "small": [
+    {
+      "text": "Gate",
+      "px": 13
+    },
+    {
+      "text": "Issue PIN",
+      "px": 16
+    },
+    {
+      "text": "Issue PIN",
+      "px": 16
+    },
+    {
+      "text": "Kitchen",
+      "px": 13
+    },
+    {
+      "text": "Issue PIN",
+      "px": 16
+    },
+    {
+      "text": "Issue PIN",
+      "px": 16
+    },
+    {
+      "text": "Bar",
+      "px": 13
+    },
+    {
+      "text": "Issue PIN",
+      "px": 16
+    },
+    {
+      "text": "Name",
+      "px": 16
+    },
+    {
+      "text": "Works at",
+      "px": 16
+    },
+    {
+      "text": "Add a person",
+      "px": 16
+    },
+    {
+      "text": "Device name",
+      "px": 16
+    },
+    {
+      "text": "Rename",
+      "px": 16
+    },
+    {
+      "text": "Device name",
+      "px": 16
+    },
+    {
+      "text": "Rename",
+      "px": 16
+    },
+    {
+      "text": "Device name",
+      "px": 16
+    },
+    {
+      "text": "Rename",
+      "px": 16
+    },
+    {
+      "text": "Device name",
+      "px": 16
+    },
+    {
+      "text": "Rename",
+      "px": 16
+    },
+    {
+      "text": "Device name",
+      "px": 16
+    },
+    {
+      "text": "Rename",
+      "px": 16
+    }
+  ]
+}

@@ -2,7 +2,7 @@
 id: TICKET-076
 title: Build the kitchen board with oldest-first live orders
 epic: ordering
-status: in_progress
+status: done
 priority: high
 estimate: L
 labels: [frontend]

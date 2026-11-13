@@ -75,3 +75,20 @@ it("links to actual supplied pass content without an envelope interaction", () =
   expect(screen.getByRole("link", { name: "Your pass" })).toHaveAttribute("href", "#pass");
   expect(document.getElementById("pass")).toHaveTextContent("Issued pass content");
 });
+
+it("uses saved plain-text wording and preserves repeated sentences", () => {
+  render(
+    <InvitationLetter
+      details={{
+        ...defaultEventSettings,
+        headline: "Join us. Join us.",
+        subline: "A saved message <b>without HTML</b>",
+      }}
+      greeting="Our guest"
+    >
+      <p>Reply here</p>
+    </InvitationLetter>,
+  );
+  expect(screen.getAllByText("Join us.")).toHaveLength(2);
+  expect(screen.getByText("A saved message <b>without HTML</b>")).toBeVisible();
+});

@@ -2,7 +2,7 @@
 id: TICKET-030
 title: Require TOTP two-factor auth for admin accounts
 epic: data-auth
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [security, backend, frontend]

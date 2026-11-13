@@ -2,7 +2,7 @@
 id: TICKET-043
 title: Revoke and reissue invitations so old links and QRs stop working
 epic: invitations
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [backend, security]

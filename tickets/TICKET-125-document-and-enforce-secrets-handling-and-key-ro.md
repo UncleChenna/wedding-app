@@ -2,7 +2,7 @@
 id: TICKET-125
 title: Document and enforce secrets handling and key rotation
 epic: security
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [security, docs]

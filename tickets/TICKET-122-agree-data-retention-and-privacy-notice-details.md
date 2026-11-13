@@ -10,7 +10,7 @@ module: ops
 owner: ""
 agent: ""
 blocked_by: []
-blocks: [TICKET-126, TICKET-127]
+blocks: [TICKET-126]
 branch: ""
 pr: ""
 created: 2026-10-21

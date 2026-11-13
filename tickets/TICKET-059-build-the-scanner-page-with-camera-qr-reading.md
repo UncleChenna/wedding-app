@@ -2,7 +2,7 @@
 id: TICKET-059
 title: Build the scanner page with camera QR reading
 epic: checkin
-status: in_review
+status: done
 priority: high
 estimate: L
 labels: [frontend]

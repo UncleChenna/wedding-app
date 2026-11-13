@@ -2,7 +2,7 @@
 id: TICKET-071
 title: Show the menu by category with live sold-out state
 epic: ordering
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [frontend, backend]

@@ -2,7 +2,7 @@
 id: TICKET-120
 title: Set metadata and keep private pages out of search engines
 epic: quality
-status: in_review
+status: done
 priority: urgent
 estimate: S
 labels: [frontend, security]

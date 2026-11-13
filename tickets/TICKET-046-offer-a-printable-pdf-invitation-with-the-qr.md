@@ -2,7 +2,7 @@
 id: TICKET-046
 title: Offer a printable PDF invitation with the QR
 epic: invitations
-status: in_review
+status: done
 priority: urgent
 estimate: L
 labels: [frontend, backend]

@@ -2,7 +2,7 @@
 id: TICKET-052
 title: Fill share messages from the PRD wording templates
 epic: sharing
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [backend, docs]

@@ -2,7 +2,7 @@
 id: TICKET-214
 title: Allow work ahead of reserved ids and in-flight dependencies
 epic: foundations
-status: in_review
+status: done
 priority: urgent
 estimate: S
 labels: [infra, docs]

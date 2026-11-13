@@ -2,7 +2,7 @@
 id: TICKET-045
 title: Let guests save their pass as an image
 epic: invitations
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [frontend, backend]

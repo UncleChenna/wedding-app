@@ -2,7 +2,7 @@
 id: TICKET-090
 title: Add and edit invitations and guests one by one
 epic: admin
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [frontend, backend]

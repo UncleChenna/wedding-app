@@ -24,6 +24,9 @@ export const eventSettingsSchema = z
     venue: nonblank.max(500).nullable(),
     mapUrl: z.url({ protocol: /^https$/ }).nullable(),
     dressCode: nonblank.max(500).nullable(),
+    // Wi-Fi network names are at most 32 bytes and WPA passwords 8–63 characters.
+    wifiName: nonblank.max(32).nullable(),
+    wifiPassword: z.string().min(8).max(63).nullable(),
     rsvpLockAt: z.date().nullable(),
     orderingOpen: z.boolean(),
     activeThemeId: nonblank.max(100),
@@ -51,6 +54,8 @@ export const defaultEventSettings = Object.freeze({
   venue: null,
   mapUrl: null,
   dressCode: null,
+  wifiName: null,
+  wifiPassword: null,
   rsvpLockAt: null,
   orderingOpen: false,
   activeThemeId: "ivory-gold",
