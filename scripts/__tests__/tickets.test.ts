@@ -876,6 +876,21 @@ describe("working ahead (TICKET-214)", () => {
 
 describe("explicit merged-ticket repair reconciliation", () => {
   it.each([
+    "unrecorded passed",
+    "unrecorded in-progress passed",
+    "unrecorded wrong title",
+    "unrecorded wrong branch",
+    "unrecorded cross repository",
+    "unrecorded changed identity",
+    "unrecorded existing link",
+    "unrecorded invalid number",
+    "unrecorded failed CI",
+    "unrecorded pending CI",
+    "unrecorded other owner",
+    "unrecorded unfinished blocker",
+    "unrecorded unchecked criteria",
+    "unrecorded different repository",
+    "unrecorded open original",
     "passed",
     "historical passed",
     "historical source passed",
@@ -940,13 +955,16 @@ describe("explicit merged-ticket repair reconciliation", () => {
   ])(
     "preserves the ledger unless complete immutable evidence passes: %s",
     async (entry) => {
+      const unrecorded = entry.startsWith("unrecorded ");
       const historical = entry.startsWith("historical ");
       const sourceMode = entry.startsWith("historical source ");
-      const scenario = sourceMode
-        ? entry.slice("historical source ".length)
-        : historical
-          ? entry.slice("historical ".length)
-          : entry;
+      const scenario = unrecorded
+        ? entry.slice("unrecorded ".length)
+        : sourceMode
+          ? entry.slice("historical source ".length)
+          : historical
+            ? entry.slice("historical ".length)
+            : entry;
       const { a, dir, remote } = setup();
       git(a, "checkout", "-qb", "develop");
       const active = ticket(
@@ -960,7 +978,10 @@ describe("explicit merged-ticket repair reconciliation", () => {
           owner: scenario === "other owner" ? "friend" : "divine",
           agent: "codex",
           branch: "TICKET-001",
-          pr: "https://github.com/example/repo/pull/1",
+          pr:
+            unrecorded && scenario !== "existing link"
+              ? ""
+              : "https://github.com/example/repo/pull/1",
           reason: "Original CI failed before external merge",
           resume_to: "in_progress",
           blocked_by: scenario === "unfinished blocker" ? ["TICKET-002"] : [],
@@ -1021,7 +1042,16 @@ describe("explicit merged-ticket repair reconciliation", () => {
       ];
       writeFileSync(
         fixture,
-        JSON.stringify({ scenario, historical, originalHead, original, head, merge, jobNames }),
+        JSON.stringify({
+          scenario,
+          historical,
+          unrecorded,
+          originalHead,
+          original,
+          head,
+          merge,
+          jobNames,
+        }),
       );
       writeFileSync(
         join(bin, "gh"),
@@ -1030,11 +1060,16 @@ const fs = require("node:fs");
 const f = JSON.parse(fs.readFileSync(process.env.RECONCILE_FIXTURE, "utf8"));
 const args = process.argv.slice(2); const s = f.scenario; let result;
 if (args[0] === "pr") {
-  const original = args[2].endsWith("/1");
+  const original = args[2] === "1" || args[2].endsWith("/1");
   const countFile = process.env.RECONCILE_FIXTURE + (original ? ".original-reads" : ".reads");
   const reads = fs.existsSync(countFile) ? Number(fs.readFileSync(countFile, "utf8")) : 0;
   fs.writeFileSync(countFile, String(reads + 1));
   result = {url: (original && s === "different repository" ? "https://github.com/other/repo/pull/" : "https://github.com/example/repo/pull/") + (original ? "1" : "2"), state: s === (original ? "open original" : "open repair") ? "OPEN" : "MERGED", baseRefName: s === "wrong base" ? "main" : original && f.historical ? "legacy-stack" : "develop", headRefOid: original && f.historical ? ((s === "original head missing" || (s === "original changed" && reads > 0)) ? f.merge : f.originalHead) : !original && s === "changed repair head" && reads > 0 ? f.merge : f.head, mergeCommit: {oid: original ? (s === "repair omits original" ? f.merge : f.original) : (s === "unreachable" ? "f".repeat(40) : f.merge)}};
+  if (f.unrecorded && original) {
+    result.title = s === "wrong title" || (s === "changed identity" && reads > 0) ? "TICKET-002: Different task" : "TICKET-001: Original task";
+    result.headRefName = s === "wrong branch" ? "TICKET-002" : "TICKET-001";
+    result.isCrossRepository = s === "cross repository";
+  }
 } else if(args[1] === "list") {
   const originalRun = f.historical && args[args.indexOf("--commit") + 1] === f.originalHead;
   const listFile = process.env.RECONCILE_FIXTURE + (originalRun ? ".original-lists" : ".lists");
@@ -1072,6 +1107,7 @@ console.log(JSON.stringify(result));
         historical ? "--integration-pr" : "--repair-pr",
         "2",
         ...(scenario === "mixed flags" ? ["--repair-pr", "2"] : []),
+        ...(unrecorded ? ["--original-pr", scenario === "invalid number" ? "abc" : "1"] : []),
         ...(sourceMode || scenario === "source on repair"
           ? [
               "--source-commit",
@@ -1094,7 +1130,9 @@ console.log(JSON.stringify(result));
         expect(ledger.tickets["WED-001"].log.join("\n")).toContain(
           "Original CI failed before external merge",
         );
-        expect(ledger.tickets["WED-001"].pr).toBe(active.meta.pr);
+        expect(ledger.tickets["WED-001"].pr).toBe(
+          unrecorded ? "https://github.com/example/repo/pull/1" : active.meta.pr,
+        );
         if (historical) {
           const log = ledger.tickets["WED-001"].log.join("\n");
           expect(log).toContain(`head ${originalHead} merge ${original} base legacy-stack`);

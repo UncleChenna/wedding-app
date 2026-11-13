@@ -18,6 +18,7 @@ const ticket = (overrides: Partial<KitchenBoard["tickets"][number]> = {}) => ({
   items: [{ name: "Jollof rice", quantity: 2 }],
   note: null,
   guestName: null,
+  staffEntered: false,
   dietary: [{ guest: "Ada Obi", note: "Nut allergy" }],
   ...overrides,
 });

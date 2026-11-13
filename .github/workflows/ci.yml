@@ -322,7 +322,9 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: scanner-synchronization-evidence
-          path: docs/reviews/TICKET-068/
+          path: |
+            docs/reviews/TICKET-068/
+            docs/reviews/TICKET-067/
           retention-days: 7
       - name: Verify real slow-4G guest-to-board delivery
         run: pnpm exec tsx scripts/test-order-delivery.ts
