@@ -2,7 +2,7 @@
 id: TICKET-234
 title: Isolate concurrent ledger fetches and wait for active ticket writers
 epic: quality
-status: in_progress
+status: in_review
 priority: high
 estimate: S
 labels: [infra, test]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: []
 blocks: []
 branch: TICKET-234
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/180
 created: 2026-11-13
 updated: 2026-11-13
 started: 2026-11-13
@@ -67,3 +67,4 @@ Concurrent ticket commands in linked worktrees currently overwrite the same remo
 - 2026-11-13 — new → todo — divine (codex)
 - 2026-11-13 — todo → claimed — divine (codex)
 - 2026-11-13 — todo → in_progress — divine (codex)
+- 2026-11-13 — in_progress → in_review — divine (codex)
