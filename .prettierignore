@@ -17,7 +17,7 @@ src/modules/theming/themes/theme.schema.json
 .claude/skills
 tooling/plugin/dist
 
-# Machine-managed by pnpm t:* (round-trips exactly; see docs/tickets.md)
+# Hand-edited ticket files keep their own formatting
 tickets
 
 # Content-addressed prebuild output; formatting would invalidate its hashes.

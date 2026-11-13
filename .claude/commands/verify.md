@@ -3,7 +3,7 @@ description: Run the full pnpm verify gate and report results per stage
 argument-hint: "[fix]  (optional: also fix failures)"
 ---
 
-Run `pnpm verify` (format:check → lint → typecheck → test → build → e2e smoke).
+Run `pnpm verify` (format:check → lint → typecheck → test → build).
 
 Report a short table: each stage with ✔ / ✖, and for each failure the root cause in one line with `file:line`.
 
