@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Scanner, readLivePass, type ScanResolver } from "./scanner";
+import { GateConflicts } from "./gate-conflicts";
+import { useGateConflicts } from "./use-gate-conflicts";
 import { GuestSnapshotStatus } from "./guest-snapshot-status";
 import { useGuestSnapshot } from "./use-guest-snapshot";
 import { readGuestSnapshot } from "../browser/guest-snapshot-client";
@@ -38,6 +40,9 @@ export function GuestSnapshotScanner({
 }) {
   const freshness = useGuestSnapshot({ session, expiresAt });
   const refresh = freshness.refresh;
+  const conflicts = useGateConflicts(session, expiresAt);
+  const refreshConflicts = conflicts.refresh;
+  const conflictsDenied = conflicts.value.state === "denied";
   const unsafeCache = useRef(false);
   const invalidationGeneration = useRef(0);
   const invalidate = useCallback(async () => {
@@ -220,14 +225,16 @@ export function GuestSnapshotScanner({
     [session, expiresAt],
   );
   useEffect(() => {
-    if (deniedSession === session || expiresAt <= Date.now()) return;
+    if (deniedSession === session || conflictsDenied || expiresAt <= Date.now()) return;
     const client = realtime
       ? createStationClient(realtime.url, realtime.publishableKey)
       : undefined;
     const stop = startScannerUpdates({
       client,
       invalidate,
-      refresh: () => refresh(true),
+      refresh: async () => {
+        await Promise.all([refresh(true), refreshConflicts()]);
+      },
       signedOut: () => {
         invalidationGeneration.current++;
         unsafeCache.current = true;
@@ -239,8 +246,17 @@ export function GuestSnapshotScanner({
       stop();
       client?.disconnect();
     };
-  }, [session, expiresAt, deniedSession, refresh, invalidate, realtime]);
-  if (deniedSession === session)
+  }, [
+    session,
+    expiresAt,
+    deniedSession,
+    conflictsDenied,
+    refresh,
+    refreshConflicts,
+    invalidate,
+    realtime,
+  ]);
+  if (deniedSession === session || conflictsDenied)
     return (
       <ScannerSession expiresAt={0} session={session}>
         {null}
@@ -288,6 +304,7 @@ export function GuestSnapshotScanner({
       )}
 
       <OfflineQueueStatus key={`queue-${session}`} session={session} expiresAt={expiresAt} />
+      <GateConflicts value={conflicts.value} />
       <GuestSnapshotStatus
         {...freshness}
         refresh={() => {
