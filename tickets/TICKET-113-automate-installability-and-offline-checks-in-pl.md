@@ -2,7 +2,7 @@
 id: TICKET-113
 title: Automate installability and offline checks in Playwright
 epic: pwa
-status: in_progress
+status: blocked
 priority: high
 estimate: M
 labels: [pwa, test]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-11-13
 started: 2026-11-13
 completed: ""
-reason: ""
-resume_to: ""
+reason: "Implementation reviewed and published in PR179; waiting for TICKET-111 PR176 to pass CI and merge before dependency integration."
+resume_to: in_progress
 ---
 
 # TICKET-113: Automate installability and offline checks in Playwright
@@ -61,3 +61,4 @@ _Agents append dated notes here while working._
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-13 — todo → claimed — divine (codex) — started ahead of TICKET-111 (in_review)
 - 2026-11-13 — todo → in_progress — divine (codex) — started ahead of TICKET-111 (in_review)
+- 2026-11-13 — in_progress → blocked — divine (codex) — Implementation reviewed and published in PR179; waiting for TICKET-111 PR176 to pass CI and merge before dependency integration.
