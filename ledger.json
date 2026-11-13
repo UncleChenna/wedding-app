@@ -2982,9 +2982,10 @@
         "- 2026-11-10 — todo → claimed — unclechenna (claude) — started ahead of TICKET-076 (in_progress)",
         "- 2026-11-10 — todo → in_progress — unclechenna (claude) — started ahead of TICKET-076 (in_progress)",
         "- 2026-11-10 — in_progress → in_review — unclechenna (claude)",
-        "- 2026-11-13 — in_review → in_review — divine (codex) — Ownership handoff unclechenna → divine; Owner authorized coordinated ledger-only recovery of merged PR156; preserve collaborator files and original failed CI while verifying repair164"
+        "- 2026-11-13 — in_review → in_review — divine (codex) — Ownership handoff unclechenna → divine; Owner authorized coordinated ledger-only recovery of merged PR156; preserve collaborator files and original failed CI while verifying repair164",
+        "- 2026-11-13 — in_review → blocked — divine (codex) — Original merged PR156 CI43088907304 failed camera decoding and cancelled general verification; recover only with exact verified merged repair164"
       ],
-      "status": "in_review",
+      "status": "blocked",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-078",
@@ -2992,8 +2993,8 @@
       "started": "2026-11-10",
       "completed": "",
       "updated": "2026-11-13",
-      "reason": "",
-      "resume_to": ""
+      "reason": "Original merged PR156 CI43088907304 failed camera decoding and cancelled general verification; recover only with exact verified merged repair164",
+      "resume_to": "in_review"
     },
     "WED-075": {
       "log": [
