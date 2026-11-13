@@ -46,6 +46,7 @@ test.describe("invitation design publication", () => {
     browser,
     baseURL,
   }, info) => {
+    await page.setViewportSize({ width: info.project.name === "mobile" ? 375 : 1280, height: 812 });
     await signInAdmin(page, request, adminTestEmail(info.project.name, "design"));
     await page.goto("/admin/design");
     await page.getByLabel("Headline", { exact: true }).fill("Together for our favourite day");

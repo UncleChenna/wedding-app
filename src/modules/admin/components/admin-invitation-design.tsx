@@ -1,3 +1,4 @@
+import "server-only";
 import { db } from "@/modules/shared/server/db/client";
 import { readInvitationDesign } from "@/modules/shared/server/invitation-design";
 import { invitationSiteCopy } from "@/modules/invitations/lib/copy";
