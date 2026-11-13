@@ -1,3 +1,0 @@
-pnpm -s t:render --staged
-pnpm -s t:validate
-node scripts/harness/hooks.mjs commit

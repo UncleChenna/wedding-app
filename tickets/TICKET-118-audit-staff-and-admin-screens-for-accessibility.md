@@ -2,7 +2,7 @@
 id: TICKET-118
 title: Audit staff and admin screens for accessibility and legibility
 epic: quality
-status: in_review
+status: done
 priority: medium
 estimate: L
 labels: [frontend, test, human]

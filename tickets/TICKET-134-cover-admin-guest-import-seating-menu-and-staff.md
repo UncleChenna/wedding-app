@@ -2,7 +2,7 @@
 id: TICKET-134
 title: Cover admin guest import, seating, menu and staff end to end
 epic: testing
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [test]

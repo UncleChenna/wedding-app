@@ -2,7 +2,7 @@
 id: TICKET-020
 title: Add theme-driven dividers, monogram and paper texture
 epic: design-system
-status: in_review
+status: done
 priority: urgent
 estimate: S
 labels: [design, frontend]

@@ -2,7 +2,7 @@
 id: TICKET-192
 title: Tidy StatusPanel detail rendering and test selectors
 epic: design-system
-status: in_review
+status: done
 priority: low
 estimate: S
 labels: [frontend, test]

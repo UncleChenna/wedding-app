@@ -2,7 +2,7 @@
 id: TICKET-215
 title: Streamline routine agent approvals and reuse verified source checks
 epic: foundations
-status: in_review
+status: done
 priority: urgent
 estimate: L
 labels: [infra, test, docs]

@@ -2,7 +2,7 @@
 id: TICKET-037
 title: Build the IV page with names, date, venue, dress code and map
 epic: invitations
-status: in_review
+status: done
 priority: urgent
 estimate: L
 labels: [frontend, design]

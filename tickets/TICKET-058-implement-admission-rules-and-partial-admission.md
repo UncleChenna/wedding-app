@@ -2,7 +2,7 @@
 id: TICKET-058
 title: Implement admission rules and partial admission
 epic: checkin
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [backend, test]

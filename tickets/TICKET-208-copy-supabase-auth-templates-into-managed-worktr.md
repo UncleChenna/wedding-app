@@ -2,7 +2,7 @@
 id: TICKET-208
 title: Copy Supabase auth templates into managed worktrees
 epic: foundations
-status: in_review
+status: done
 priority: high
 estimate: S
 labels: [infra, test]

@@ -2,7 +2,7 @@
 id: TICKET-119
 title: Optimise every image for AVIF/WebP, sizes and blur
 epic: quality
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [frontend]

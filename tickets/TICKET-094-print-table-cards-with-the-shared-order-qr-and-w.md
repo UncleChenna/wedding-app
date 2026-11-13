@@ -2,7 +2,7 @@
 id: TICKET-094
 title: Print table cards with the shared order QR and Wi-Fi details
 epic: admin
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [frontend, design]

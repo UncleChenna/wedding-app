@@ -2,7 +2,7 @@
 id: TICKET-190
 title: Refresh the local ticket dashboard automatically
 epic: foundations
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [infra, frontend, test]

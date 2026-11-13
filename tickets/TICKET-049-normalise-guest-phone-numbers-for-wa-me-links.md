@@ -2,7 +2,7 @@
 id: TICKET-049
 title: Normalise guest phone numbers for wa.me links
 epic: sharing
-status: in_review
+status: done
 priority: urgent
 estimate: S
 labels: [backend]

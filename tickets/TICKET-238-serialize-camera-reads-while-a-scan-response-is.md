@@ -2,7 +2,7 @@
 id: TICKET-238
 title: Serialize camera reads while a scan response is pending
 epic: quality
-status: in_progress
+status: done
 priority: high
 estimate: S
 labels: [test]

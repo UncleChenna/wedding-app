@@ -2,7 +2,7 @@
 id: TICKET-096
 title: Manage staff, PINs and expiry
 epic: admin
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [frontend, backend, security]

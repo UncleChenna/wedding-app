@@ -2,7 +2,7 @@
 id: TICKET-209
 title: Connect guest, staff and admin journeys into one app
 epic: foundations
-status: in_review
+status: done
 priority: urgent
 estimate: L
 labels: [frontend, test, docs]

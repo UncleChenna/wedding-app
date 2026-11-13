@@ -97,6 +97,20 @@ test.describe("own offline pass", () => {
     await page.reload();
     await expect(page.getByRole("heading", { name: "Ada Offline" })).toBeVisible();
     await expect(page.getByText("This is your offline copy.", { exact: false })).toBeVisible();
+    // A queued connectivity event is not proof the browser has reconnected.
+    const offlineDocument = await page.evaluate(() => performance.timeOrigin);
+    await page.evaluate(() => window.dispatchEvent(new Event("online")));
+    await page.evaluate(
+      () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))),
+    );
+    expect(await page.evaluate(() => performance.timeOrigin)).toBe(offlineDocument);
+    // Pointer refresh remains available offline, as does the keyboard refresh below.
+    await Promise.all([
+      page.waitForEvent("framenavigated", (frame) => frame === page.mainFrame()),
+      page.getByRole("button", { name: "Refresh pass" }).click(),
+    ]);
+    await page.waitForLoadState("domcontentloaded");
+    await expect(page.getByRole("heading", { name: "Ada Offline" })).toBeVisible();
     const refreshed = await page.locator("time").getAttribute("datetime");
     expect(refreshed).toMatch(/^20/);
     await page.evaluate(() => document.fonts.ready);
@@ -182,7 +196,8 @@ test.describe("own offline pass", () => {
     expect(new URL(page.url()).pathname).toBe(b.path);
     await expect(page.getByRole("heading", { name: "You're offline" })).toBeVisible();
     await expect(page.getByText("Ada Offline", { exact: true })).toHaveCount(0);
-    await page.goto(a.path);
+    await page.goBack();
+    expect(new URL(page.url()).pathname).toBe(a.path);
     await expect(page.getByRole("heading", { name: "Ada Offline" })).toBeVisible();
     await db`update invitations set status='revoked' where id=${a.id}`;
     await context.setOffline(false);

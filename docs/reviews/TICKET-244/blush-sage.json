@@ -1,0 +1,26 @@
+{
+  "theme": "blush-sage",
+  "preloads": [],
+  "fonts": [
+    "http://localhost:33791/_next/static/media/jost_latin.20yracrfrld3x.woff2",
+    "http://localhost:33791/_next/static/media/cormorant_latin.142lwln7a8ewm.woff2",
+    "http://localhost:33791/_next/static/media/jost.08e_d0l1djpwm.woff2"
+  ],
+  "transfers": [
+    {
+      "url": "http://localhost:33791/_next/static/media/jost_latin.20yracrfrld3x.woff2",
+      "transferSize": 26636,
+      "encodedBodySize": 26336
+    },
+    {
+      "url": "http://localhost:33791/_next/static/media/cormorant_latin.142lwln7a8ewm.woff2",
+      "transferSize": 37696,
+      "encodedBodySize": 37396
+    },
+    {
+      "url": "http://localhost:33791/_next/static/media/jost.08e_d0l1djpwm.woff2",
+      "transferSize": 0,
+      "encodedBodySize": 50620
+    }
+  ]
+}

@@ -2,7 +2,7 @@
 id: TICKET-228
 title: Merge unstarted overlapping tickets to cut per-ticket overhead
 epic: foundations
-status: in_review
+status: done
 priority: medium
 estimate: M
 labels: [docs]

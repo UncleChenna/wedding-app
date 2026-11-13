@@ -1,0 +1,32 @@
+{
+  "theme": "ivory-gold",
+  "preloads": [],
+  "fonts": [
+    "http://localhost:33791/_next/static/media/jost_latin.20yracrfrld3x.woff2",
+    "http://localhost:33791/_next/static/media/cormorant_latin.142lwln7a8ewm.woff2",
+    "http://localhost:33791/_next/static/media/inter_latin.1w7yplba6jnhb.woff2",
+    "http://localhost:33791/_next/static/media/inter.13hvi11ycy5-b.woff2"
+  ],
+  "transfers": [
+    {
+      "url": "http://localhost:33791/_next/static/media/jost_latin.20yracrfrld3x.woff2",
+      "transferSize": 26636,
+      "encodedBodySize": 26336
+    },
+    {
+      "url": "http://localhost:33791/_next/static/media/cormorant_latin.142lwln7a8ewm.woff2",
+      "transferSize": 37696,
+      "encodedBodySize": 37396
+    },
+    {
+      "url": "http://localhost:33791/_next/static/media/inter_latin.1w7yplba6jnhb.woff2",
+      "transferSize": 49824,
+      "encodedBodySize": 49524
+    },
+    {
+      "url": "http://localhost:33791/_next/static/media/inter.13hvi11ycy5-b.woff2",
+      "transferSize": 0,
+      "encodedBodySize": 236076
+    }
+  ]
+}

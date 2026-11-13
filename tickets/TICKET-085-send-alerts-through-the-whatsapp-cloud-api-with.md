@@ -2,7 +2,7 @@
 id: TICKET-085
 title: Send alerts through the WhatsApp Cloud API with retries
 epic: alerts
-status: todo
+status: in_review
 priority: high
 estimate: L
 labels: [backend]

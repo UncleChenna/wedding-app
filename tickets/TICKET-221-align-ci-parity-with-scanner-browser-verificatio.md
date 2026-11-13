@@ -2,7 +2,7 @@
 id: TICKET-221
 title: Repair scanner CI parity and signature canonicality
 epic: foundations
-status: in_review
+status: done
 priority: high
 estimate: S
 labels: [test]

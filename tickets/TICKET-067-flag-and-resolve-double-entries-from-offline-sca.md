@@ -2,7 +2,7 @@
 id: TICKET-067
 title: Flag and resolve double entries from offline scanners
 epic: checkin
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [frontend, backend]

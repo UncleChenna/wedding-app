@@ -2,7 +2,7 @@
 id: TICKET-172
 title: Migrate staff identities and device registrations
 epic: data-auth
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [db, security]

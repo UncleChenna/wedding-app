@@ -2,7 +2,7 @@
 id: TICKET-022
 title: Generate a full palette from one or two seed colours
 epic: design-system
-status: in_review
+status: done
 priority: low
 estimate: M
 labels: [design, frontend]

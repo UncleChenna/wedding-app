@@ -2,7 +2,7 @@
 id: TICKET-232
 title: Reconcile merged ordering tickets and retain tablet release QA
 epic: quality
-status: in_review
+status: done
 priority: high
 estimate: S
 labels: [docs]

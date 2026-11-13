@@ -2,7 +2,7 @@
 id: TICKET-109
 title: Prompt installation on Android and Chrome
 epic: pwa
-status: in_review
+status: done
 priority: medium
 estimate: M
 labels: [pwa, frontend]
