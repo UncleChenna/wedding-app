@@ -3680,9 +3680,10 @@
     "WED-121": {
       "log": [
         "- 2026-11-13 — todo → claimed — divine (codex) — started ahead of TICKET-116 (in_progress)",
-        "- 2026-11-13 — todo → in_progress — divine (codex) — started ahead of TICKET-116 (in_progress)"
+        "- 2026-11-13 — todo → in_progress — divine (codex) — started ahead of TICKET-116 (in_progress)",
+        "- 2026-11-13 — in_progress → cancelled — divine (codex) — Merged TICKET-228 consolidates this requirement into TICKET-116. Original https://github.com/UncleChenna/wedding-app/pull/196 implementation and evidence from a08b3a46 are preserved and independently reviewed in https://github.com/UncleChenna/wedding-app/pull/195 at 72360fa0; requirement remains mandatory."
       ],
-      "status": "in_progress",
+      "status": "cancelled",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-121",
@@ -3690,7 +3691,7 @@
       "started": "2026-11-13",
       "completed": "",
       "updated": "2026-11-13",
-      "reason": "",
+      "reason": "Merged TICKET-228 consolidates this requirement into TICKET-116. Original https://github.com/UncleChenna/wedding-app/pull/196 implementation and evidence from a08b3a46 are preserved and independently reviewed in https://github.com/UncleChenna/wedding-app/pull/195 at 72360fa0; requirement remains mandatory.",
       "resume_to": ""
     },
     "WED-241": {
