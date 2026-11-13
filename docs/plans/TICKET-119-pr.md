@@ -21,7 +21,7 @@ Photographs previously depended on the framework’s WebP-only default and had n
 # Verification
 
 - `pnpm exec vitest run scripts/__tests__/image-policy.test.ts`: eight passed, including actual application source inventory.
-- `pnpm verify:quick`: lint, strict types and eight related tests pass.
+- `pnpm verify:quick`: lint, strict types and initial eight related tests pass. After integration, lint/types/parity and 582 related cases pass; two unchanged pass-image raster cases hit their existing 5s timeout during concurrent compiler contention. Both pass unchanged in 1.23s when run alone; normal integration commit hooks then pass. No timeout or assertion was altered.
 - Production build passes after integrating the merged hero. Actual private mobile browser test passes (1.4s case / 3.6s suite), including image decoding, HTTP status, AVIF/WebP negotiation and the unchanged 150,000-byte ceiling.
 - The fixture requires an explicit opt-in and local database target, creates only synthetic invitation data, tracks settings ownership and cleans only its own rows.
 - Fresh hosted CI remains required. Develop currently contains the separate TICKET-113 fixture-order failure, tracked by TICKET-242; this ticket does not bypass that failure.
