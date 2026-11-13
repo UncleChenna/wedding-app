@@ -1,0 +1,39 @@
+@media print {
+  @page table-card {
+    size: A6 portrait;
+    margin: 8mm;
+  }
+  body:has(.table-cards-page) [data-admin-chrome],
+  .table-cards-controls {
+    display: none !important;
+  }
+  .table-cards-page {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .table-cards-page > div {
+    margin: 0 !important;
+  }
+  .table-cards {
+    display: block !important;
+  }
+  /* One card per A6 page; keep the theme's paper and QR colours when printing. */
+  .table-card {
+    page: table-card;
+    break-after: page;
+    break-inside: avoid;
+    min-height: calc(148mm - 16mm);
+    justify-content: center;
+    border: none !important;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .table-card:last-child {
+    break-after: auto;
+  }
+  .table-card-qr {
+    width: 50mm;
+    max-width: none;
+  }
+}
