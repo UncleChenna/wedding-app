@@ -92,7 +92,29 @@ test.describe("invitation design publication", () => {
       "Keep my unsaved wording",
     );
     await stale.close();
-    await page.reload();
+    let releasePreview = () => {};
+    const heldPreview = new Promise<void>((resolve) => {
+      releasePreview = resolve;
+    });
+    await page.route("**/api/admin/photos/*", async (route) => {
+      await heldPreview;
+      await route.continue();
+    });
+    const preview = page.locator("[data-design-photo]");
+    let reservedPreview: Awaited<ReturnType<typeof preview.boundingBox>> = null;
+    try {
+      await page.reload();
+      await expect(preview).toBeVisible();
+      await expect(preview).toHaveAttribute("aria-busy", "true");
+      await page.evaluate(() => document.fonts.ready);
+      reservedPreview = await preview.boundingBox();
+      expect(reservedPreview).not.toBeNull();
+    } finally {
+      releasePreview();
+    }
+    await expect(preview).toHaveAttribute("aria-busy", "false");
+    expect(await preview.boundingBox()).toEqual(reservedPreview);
+    await page.unroute("**/api/admin/photos/*");
     await expect(page.getByLabel("Headline", { exact: true })).toHaveValue(
       "Together for our favourite day",
     );

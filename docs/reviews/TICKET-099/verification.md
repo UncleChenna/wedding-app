@@ -28,3 +28,5 @@
 Independent source review found no blocking authorization, optimistic concurrency or metadata-exposure defect. An administrator must complete sign-in before every save. Uploading alone is private; saving publishes only the selected image. Previously published/cache copies cannot be recalled by replacing the selection.
 
 Apply the additive0036 migration before application deployment. To roll back, revert application usage while retaining the table/data; no destructive database rollback is required. Do not remove an already deployed migration.
+
+The final preview repair keeps the uploaded-photo frame at a fixed aspect ratio while authenticated bytes load. A deliberately held photo response verifies identical frame geometry before and after loading. The complete mobile journey passes in 13.1s and desktop in 10.2s, including all-theme accessibility checks. The production build passes; independent source review found no blocking issue.

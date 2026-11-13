@@ -27,3 +27,5 @@ Real email/TOTP mobile 375 and desktop 1280 journeys pass, including private-to-
 Migration `0036_invitation-design.sql` follows develop’s unchanged 0035 Wi-Fi migration. Apply it before deploying this code; no production application has been performed. Roll back application usage while retaining the additive data table.
 
 The selected photo is public and cached copies may remain after replacement. Final photo rights/approval remain TICKET-008. Fresh guest Lighthouse and physical-phone/WhatsApp checks are not claimed; existing release gates TICKET-116/201 remain mandatory under the approved preview workflow. The known merged offline-pass CI fixture-order issue is tracked separately in TICKET-242.
+
+The final preview repair keeps the uploaded-photo frame at a fixed aspect ratio while authenticated bytes load. A deliberately held photo response verifies identical frame geometry before and after loading. The complete mobile journey passes in 13.1s and desktop in 10.2s, including all-theme accessibility checks. The production build passes; independent source review found no blocking issue.

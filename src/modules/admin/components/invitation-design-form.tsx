@@ -198,8 +198,12 @@ export function InvitationDesignForm({
           Invitation preview
         </h2>
         {photo ? (
-          visiblePreview ? (
-            <div className="relative aspect-[4/3] overflow-hidden">
+          <div
+            className="relative aspect-[4/3] overflow-hidden"
+            data-design-photo
+            aria-busy={!visiblePreview}
+          >
+            {visiblePreview ? (
               <Image
                 src={visiblePreview}
                 alt={alt || "Selected invitation photograph"}
@@ -209,10 +213,12 @@ export function InvitationDesignForm({
                 blurDataURL={photo.blurDataURL}
                 className="object-cover object-top"
               />
-            </div>
-          ) : (
-            <p>Loading your selected photograph…</p>
-          )
+            ) : (
+              <p className="absolute inset-0 flex items-center justify-center p-6 text-center">
+                Loading your selected photograph…
+              </p>
+            )}
+          </div>
         ) : (
           <figure className="space-y-4">
             <div className="relative aspect-[4/3] overflow-hidden">
