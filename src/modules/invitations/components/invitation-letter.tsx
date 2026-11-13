@@ -91,7 +91,7 @@ export function InvitationLetter({
       )}
       <Divider className="my-12 md:my-16" />
       <section aria-labelledby="celebration-details">
-        <h2 id="celebration-details" className="text-center type-heading">
+        <h2 id="celebration-details" className="text-center type-heading wrap-anywhere">
           The celebration
         </h2>
         <dl className="mt-8 grid gap-8 text-center text-base leading-relaxed md:grid-cols-3 md:gap-12">

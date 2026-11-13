@@ -1,0 +1,32 @@
+[
+  {
+    "state": "invitation",
+    "violations": [],
+    "overflow": false,
+    "textScale": 1
+  },
+  {
+    "state": "saved-rsvp",
+    "violations": [],
+    "overflow": false,
+    "textScale": 1
+  },
+  {
+    "state": "saved-rsvp-text-200",
+    "violations": [],
+    "overflow": false,
+    "textScale": 2
+  },
+  {
+    "state": "issued-pass",
+    "violations": [],
+    "overflow": false,
+    "textScale": 1
+  },
+  {
+    "state": "issued-pass-text-200",
+    "violations": [],
+    "overflow": false,
+    "textScale": 2
+  }
+]
