@@ -3257,16 +3257,17 @@
     "WED-232": {
       "log": [
         "- 2026-11-12 — todo → claimed — divine (codex)",
-        "- 2026-11-12 — todo → in_progress — divine (codex)"
+        "- 2026-11-12 — todo → in_progress — divine (codex)",
+        "- 2026-11-13 — in_progress → in_review — divine (codex)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-232",
-      "pr": "",
+      "pr": "https://github.com/UncleChenna/wedding-app/pull/174",
       "started": "2026-11-12",
       "completed": "",
-      "updated": "2026-11-12",
+      "updated": "2026-11-13",
       "reason": "",
       "resume_to": ""
     }
