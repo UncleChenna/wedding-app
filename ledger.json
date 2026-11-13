@@ -3480,9 +3480,10 @@
       "log": [
         "- 2026-11-13 — todo → claimed — divine (codex)",
         "- 2026-11-13 — todo → in_progress — divine (codex)",
-        "- 2026-11-13 — in_progress → in_review — divine (codex)"
+        "- 2026-11-13 — in_progress → in_review — divine (codex)",
+        "- 2026-11-13 — in_review → blocked — divine (codex) — Merged PR185 final CI43386213746 failed only ordering transfer diagnostics, with a later context.close timeout; all security-related jobs passed. Verified repair PR188 is now merged."
       ],
-      "status": "in_review",
+      "status": "blocked",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-129",
@@ -3490,8 +3491,8 @@
       "started": "2026-11-13",
       "completed": "",
       "updated": "2026-11-13",
-      "reason": "",
-      "resume_to": ""
+      "reason": "Merged PR185 final CI43386213746 failed only ordering transfer diagnostics, with a later context.close timeout; all security-related jobs passed. Verified repair PR188 is now merged.",
+      "resume_to": "in_review"
     },
     "WED-118": {
       "log": [
