@@ -2,7 +2,7 @@
 id: TICKET-240
 title: Reduce worker update validation bundle with strict guards
 epic: quality
-status: in_progress
+status: in_review
 priority: high
 estimate: S
 labels: [frontend, test]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: []
 blocks: []
 branch: TICKET-240
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/198
 created: 2026-11-13
 updated: 2026-11-13
 started: 2026-11-13
@@ -64,3 +64,4 @@ The shared worker-update client loads full Zod on guest pages for a small strict
 - 2026-11-13 — new → todo — divine
 - 2026-11-13 — todo → claimed — divine (codex)
 - 2026-11-13 — todo → in_progress — divine (codex)
+- 2026-11-13 — in_progress → in_review — divine (codex)
