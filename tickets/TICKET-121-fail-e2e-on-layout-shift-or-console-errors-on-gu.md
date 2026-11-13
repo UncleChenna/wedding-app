@@ -39,7 +39,7 @@ See: [What "flawless" means in testing](../docs/prd.md#what-flawless-means-in-te
 
 ## Acceptance criteria
 
-- [ ] Any console error or CLS > 0 on a guest route fails the suite (proved in notes).
+- [x] Any console error or CLS > 0 on a guest route fails the suite (proved in notes).
 
 ## Test plan
 
@@ -52,7 +52,7 @@ See: [What "flawless" means in testing](../docs/prd.md#what-flawless-means-in-te
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-11-13: Implemented automatic fixture for positive guest journeys. Three real injected faults are rejected after navigation/tab closure; four production mobile/desktop journeys pass7.8s. Independent review clean; /offline included, staff-only recovery excluded. Remains draft until TICKET-116 merges; see docs/reviews/TICKET-121/verification.md.
 
 ## Activity log
 

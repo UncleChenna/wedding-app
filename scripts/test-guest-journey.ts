@@ -10,6 +10,7 @@ const result = spawnSync(
     "playwright",
     "test",
     "e2e/guest.spec.ts",
+    "e2e/guest-order-quality.spec.ts",
     "--project=mobile",
     "--project=desktop",
     "--workers=1",
