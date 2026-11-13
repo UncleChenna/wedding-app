@@ -2,7 +2,7 @@
 id: TICKET-246
 title: Validate ticket reservations against the branch baseline
 epic: foundations
-status: in_progress
+status: in_review
 priority: urgent
 estimate: S
 labels: [test, infra]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: []
 blocks: []
 branch: TICKET-246
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/205
 created: 2026-11-13
 updated: 2026-11-13
 started: 2026-11-13
@@ -66,3 +66,4 @@ Ticket validation compares reserved IDs with the moving origin/develop tip. When
 - 2026-11-13 — backlog → todo — divine (codex)
 - 2026-11-13 — todo → claimed — divine (codex)
 - 2026-11-13 — todo → in_progress — divine (codex)
+- 2026-11-13 — in_progress → in_review — divine (codex)
