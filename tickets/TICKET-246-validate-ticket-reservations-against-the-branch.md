@@ -42,7 +42,7 @@ Ticket validation compares reserved IDs with the moving origin/develop tip. When
 - [x] An older valid branch still validates after another reserved ticket merges into develop.
 - [x] Removing a ticket present in that branch’s merge-base fails validation.
 - [x] Missing ledger or baseline data retains strict missing-ID validation.
-- [ ] Focused real-Git regressions and normal hooks pass.
+- [x] Focused real-Git regressions and normal hooks pass.
 
 ## Test plan
 
