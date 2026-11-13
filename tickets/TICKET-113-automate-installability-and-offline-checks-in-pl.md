@@ -2,7 +2,7 @@
 id: TICKET-113
 title: Automate installability and offline checks in Playwright
 epic: pwa
-status: in_review
+status: in_progress
 priority: high
 estimate: M
 labels: [pwa, test]
@@ -64,3 +64,4 @@ See: [Tech stack and architecture](../docs/prd.md#tech-stack-and-architecture) �
 - 2026-11-13 — in_progress → blocked — divine (codex) — Implementation reviewed and published in PR179; waiting for TICKET-111 PR176 to pass CI and merge before dependency integration.
 - 2026-11-13 — blocked → in_progress — divine (codex)
 - 2026-11-13 — in_progress → in_review — divine (codex)
+- 2026-11-13 — in_review → in_progress — divine (codex) — Coordinated handoff to integrate current develop and the reviewed TICKET-237 diagnostic repair; preserve unresolved scanner CI evidence.
