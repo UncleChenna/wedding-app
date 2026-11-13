@@ -1,0 +1,12 @@
+{
+  "width": 375,
+  "deviceScaleFactor": 2.625,
+  "privateFixture": true,
+  "images": [
+    {
+      "status": 200,
+      "type": "image/avif",
+      "bytes": 28120
+    }
+  ]
+}
