@@ -2,6 +2,7 @@ import { mkdirSync } from "node:fs";
 import { expect, test } from "@playwright/test";
 import { listThemes } from "../src/modules/theming";
 import { scanA11y } from "./support/axe";
+import { applyTheme } from "./support/theme";
 
 for (const theme of listThemes())
   for (const width of [375, 768, 1280]) {
@@ -11,7 +12,10 @@ for (const theme of listThemes())
       const delivered = page.waitForResponse((response) =>
         response.url().includes("/_next/image?"),
       );
-      await page.goto(`/dev/invitation/letter?theme=${theme.id}`);
+      await page.goto(
+        process.env.INVITATION_HERO_PATH ?? `/dev/invitation/letter?theme=${theme.id}`,
+      );
+      if (process.env.INVITATION_HERO_PATH) await applyTheme(page, theme);
       const image = page.locator("[data-invitation-hero] img");
       await expect(image).toHaveAttribute("alt", /stock photograph/);
       await expect
@@ -37,7 +41,7 @@ for (const theme of listThemes())
       await page
         .locator("[data-invitation-hero]")
         .screenshot({ path: `${folder}/${theme.id}-${width}.png` });
-      await page.getByRole("link", { name: "Kindly reply" }).focus();
+      await page.getByRole("link", { name: /^(Kindly reply|Your reply)$/ }).focus();
       await page.keyboard.press("Enter");
       await expect(page.locator("#reply")).toBeFocused();
     });
@@ -56,7 +60,9 @@ test("image decode preserves the reserved hero and following content positions",
     await route.continue();
   });
   try {
-    await page.goto("/dev/invitation/letter", { waitUntil: "domcontentloaded" });
+    await page.goto(process.env.INVITATION_HERO_PATH ?? "/dev/invitation/letter", {
+      waitUntil: "domcontentloaded",
+    });
     await page.evaluate(() => document.fonts.ready);
     const hero = page.locator("[data-invitation-hero]");
     const before = await hero.boundingBox();

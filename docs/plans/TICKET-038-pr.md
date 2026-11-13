@@ -8,11 +8,17 @@ The approved stock photograph is visibly identified as a sample and credited to 
 
 - Missing-component regression reproduced, then12 focused hero/letter/invitation tests passed.
 - Quick verification passes lint, TypeScript and21 related unit tests.
-- Browser crop/format/layout evidence, production build and independent review remain in progress. No real-device or Lighthouse completion is claimed.
+- Final production build passes. All13 private-route browser cases pass (19.2s): four themes at375/768/1280, actual optimized WebP responses, viewport-width image, axe zero, keyboard reply focus and unchanged hero/heading positions when the image finishes decoding.
+- Final crops inspected in `docs/reviews/TICKET-038/`; desktop uses top alignment to retain both faces. Independent source review is clean.
+- Lighthouse13.6 mobile on the actual synthetic private route: Performance90, Accessibility100, CLS0, LCP3.64s. The95 performance target remains unmet and tracked by TICKET-116/TICKET-201; standing preview authorization applies. No physical WhatsApp/iOS/Android success is claimed.
 
 ## Review
 
 Open `/dev/invitation/letter` with local previews enabled. Check the figure at375/768/1280, sample attribution, names, and keyboard navigation through Kindly reply. The same component appears on authenticated `/i/<token>` invitations.
+
+## UI checklist
+
+PASS: screenshots/crops across all themes and widths; theme tokens; restrained typography; viewport width and44px attribution target; reduced motion; keyboard reply focus; axe/contrast; reserved image space/blur/WebP and measured CLS0; honest sample copy. Feature-specific component reuses existing letter/envelope controls. QR and staff feedback N/A because unchanged. Verification: production build, quick lint/types/21 related tests,13 browser cases pass. Performance95 FAIL (90 measured); physical sharing/devices NOT VERIFIED, retained in release gates under standing preview permission.
 
 ## Risks and rollback
 

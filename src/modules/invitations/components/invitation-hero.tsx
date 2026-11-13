@@ -20,7 +20,7 @@ export function InvitationHero({ photo }: { photo?: InvitationHeroPhoto }) {
           blurDataURL={display.blurDataURL}
           loading="eager"
           fetchPriority="high"
-          className="object-cover object-[50%_25%]"
+          className="object-cover object-top"
         />
       </div>
       {!photo && (
