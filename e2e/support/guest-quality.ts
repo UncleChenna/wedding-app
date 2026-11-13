@@ -4,6 +4,11 @@ export type GuestQualityIssue = {
   route: string;
   kind: "console.error" | "pageerror" | "layout-shift" | "unsupported";
   value?: number;
+  sources?: {
+    tag: string;
+    before: { x: number; y: number; width: number; height: number };
+    after: { x: number; y: number; width: number; height: number };
+  }[];
 };
 
 export function guestRoute(path: string): string | null {
@@ -38,17 +43,13 @@ export async function watchGuestQuality(context: BrowserContext) {
   context.on("page", watch);
   for (const page of context.pages()) watch(page);
   await context.exposeBinding("__reportGuestQuality", (_source, issue: GuestQualityIssue) => {
-    // The init script emits only route labels, numeric shifts and static categories.
+    // The init script emits only route labels, numeric shifts, layout rectangles, element tags and static categories.
     // Never retain console text, guest names, URLs, request bodies or pass tokens.
     issues.push(issue);
   });
   await context.addInitScript(() => {
     const state = window as unknown as {
-      __reportGuestQuality: (issue: {
-        route: string;
-        kind: "layout-shift" | "unsupported";
-        value?: number;
-      }) => Promise<void>;
+      __reportGuestQuality: (issue: GuestQualityIssue) => Promise<void>;
       __flushGuestQuality: () => Promise<void>;
     };
     const route = () => {
@@ -59,9 +60,21 @@ export async function watchGuestQuality(context: BrowserContext) {
       return null;
     };
     const pending: Promise<void>[] = [];
-    const emit = (kind: "layout-shift" | "unsupported", value?: number) => {
+    const emit = (
+      kind: "layout-shift" | "unsupported",
+      value?: number,
+      sources?: GuestQualityIssue["sources"],
+    ) => {
       const current = route();
-      if (current) pending.push(state.__reportGuestQuality({ route: current, kind, value }));
+      if (current)
+        pending.push(
+          state.__reportGuestQuality({
+            route: current,
+            kind,
+            value,
+            ...(sources ? { sources } : {}),
+          }),
+        );
     };
     if (!PerformanceObserver.supportedEntryTypes.includes("layout-shift")) {
       emit("unsupported");
@@ -72,8 +85,26 @@ export async function watchGuestQuality(context: BrowserContext) {
     }
     const collect = (entries: PerformanceEntry[]) => {
       for (const entry of entries) {
-        const shift = entry as PerformanceEntry & { value: number; hadRecentInput: boolean };
-        if (!shift.hadRecentInput && shift.value > 0) emit("layout-shift", shift.value);
+        const shift = entry as PerformanceEntry & {
+          value: number;
+          hadRecentInput: boolean;
+          sources: { node?: Node; previousRect: DOMRectReadOnly; currentRect: DOMRectReadOnly }[];
+        };
+        if (!shift.hadRecentInput && shift.value > 0) {
+          const rect = ({ x, y, width, height }: DOMRectReadOnly) => ({ x, y, width, height });
+          emit(
+            "layout-shift",
+            shift.value,
+            shift.sources.map((source) => ({
+              tag:
+                source.node instanceof Element
+                  ? source.node.tagName
+                  : (source.node?.parentElement?.tagName ?? "unknown"),
+              before: rect(source.previousRect),
+              after: rect(source.currentRect),
+            })),
+          );
+        }
       }
     };
     const observer = new PerformanceObserver((list) => collect(list.getEntries()));

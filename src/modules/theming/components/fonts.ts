@@ -21,7 +21,13 @@ const cormorantComplete = localFont({
   // The automatic face only names Times New Roman, which may be absent on Linux.
   // Our metric-compatible local face also supports Liberation Serif.
   adjustFontFallback: false,
-  declarations: [{ prop: "unicode-range", value: "U+0100-1FFF, U+2070-209F, U+20D0-10FFFF" }],
+  declarations: [
+    {
+      prop: "unicode-range",
+      value:
+        "U+0100-0142, U+0145-1E43, U+1E46-1EC9, U+1ECE-1EE3, U+1EE6-1FFF, U+2070-209F, U+20D0-10FFFF",
+    },
+  ],
   fallback: ["Cormorant Metric Fallback"],
 });
 
@@ -30,8 +36,8 @@ const cormorant = localFont({
   // this paired registration downloads italic even on plain ordering pages.
   preload: false,
   src: [
-    { path: "../fonts/cormorant-latin.woff2", weight: "400 600", style: "normal" },
-    { path: "../fonts/cormorant-italic-latin.woff2", weight: "400 600", style: "italic" },
+    { path: "../fonts/cormorant-common.woff2", weight: "400 600", style: "normal" },
+    { path: "../fonts/cormorant-italic-common.woff2", weight: "400 600", style: "italic" },
   ],
   variable: "--font-cormorant",
   display: "swap",
@@ -48,12 +54,18 @@ const playfairComplete = localFont({
   variable: "--font-playfair-complete",
   display: "swap",
   adjustFontFallback: false,
-  declarations: [{ prop: "unicode-range", value: "U+0100-1FFF, U+2070-209F, U+20D0-10FFFF" }],
+  declarations: [
+    {
+      prop: "unicode-range",
+      value:
+        "U+0100-0142, U+0145-1E43, U+1E46-1EC9, U+1ECE-1EE3, U+1EE6-1FFF, U+2070-209F, U+20D0-10FFFF",
+    },
+  ],
   fallback: ["Playfair Metric Fallback"],
 });
 
 const playfair = localFont({
-  src: [{ path: "../fonts/playfair-latin.woff2", weight: "400 900", style: "normal" }],
+  src: [{ path: "../fonts/playfair-common.woff2", weight: "400 900", style: "normal" }],
   preload: false,
   variable: "--font-playfair",
   display: "swap",
@@ -66,12 +78,18 @@ const interComplete = localFont({
   variable: "--font-inter-complete",
   display: "swap",
   adjustFontFallback: false,
-  declarations: [{ prop: "unicode-range", value: "U+0100-1FFF, U+2070-209F, U+20D0-10FFFF" }],
+  declarations: [
+    {
+      prop: "unicode-range",
+      value:
+        "U+0100-0142, U+0145-1E43, U+1E46-1EC9, U+1ECE-1EE3, U+1EE6-1FFF, U+2070-209F, U+20D0-10FFFF",
+    },
+  ],
   fallback: ["Inter Metric Fallback"],
 });
 
 const inter = localFont({
-  src: [{ path: "../fonts/inter-latin.woff2", weight: "100 900", style: "normal" }],
+  src: [{ path: "../fonts/inter-common.woff2", weight: "100 900", style: "normal" }],
   variable: "--font-inter",
   display: "swap",
   adjustFontFallback: false,
@@ -83,12 +101,18 @@ const jostComplete = localFont({
   variable: "--font-jost-complete",
   display: "swap",
   adjustFontFallback: false,
-  declarations: [{ prop: "unicode-range", value: "U+0100-1FFF, U+2070-209F, U+20D0-10FFFF" }],
+  declarations: [
+    {
+      prop: "unicode-range",
+      value:
+        "U+0100-0142, U+0145-1E43, U+1E46-1EC9, U+1ECE-1EE3, U+1EE6-1FFF, U+2070-209F, U+20D0-10FFFF",
+    },
+  ],
   fallback: ["Jost Metric Fallback"],
 });
 
 const jost = localFont({
-  src: [{ path: "../fonts/jost-latin.woff2", weight: "100 900", style: "normal" }],
+  src: [{ path: "../fonts/jost-common.woff2", weight: "100 900", style: "normal" }],
   preload: false,
   variable: "--font-jost",
   display: "swap",

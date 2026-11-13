@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { expect, test } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
-for (const route of ["/missing-layout-proof", "/checkin"]) {
+for (const route of ["/", "/missing-layout-proof", "/checkin"]) {
   for (const colorScheme of ["light", "dark"] as const) {
     test(`shared placeholder ${route} ${colorScheme} has no cold-load shift`, async ({
       page,
@@ -64,7 +64,10 @@ for (const route of ["/missing-layout-proof", "/checkin"]) {
       const directory = process.env.PLACEHOLDER_REVIEW_DIR ?? "artifacts/TICKET-121/placeholders";
       await mkdir(directory, { recursive: true });
       await page.screenshot({
-        path: join(directory, `${route.slice(1)}-${colorScheme}-${testInfo.project.name}.png`),
+        path: join(
+          directory,
+          `${route.slice(1) || "home"}-${colorScheme}-${testInfo.project.name}.png`,
+        ),
         fullPage: true,
       });
     });

@@ -1,0 +1,109 @@
+{
+  "generator": "fonttools[woff]==4.60.1",
+  "codepoints": [323, 324, 7748, 7749, 7882, 7883, 7884, 7885, 7908, 7909],
+  "fonts": [
+    {
+      "family": "cormorant",
+      "layoutFeatures": [
+        "calt",
+        "ccmp",
+        "dnom",
+        "frac",
+        "kern",
+        "liga",
+        "lnum",
+        "mark",
+        "mkmk",
+        "numr",
+        "pnum",
+        "tnum"
+      ],
+      "codepoints": [323, 324, 7748, 7749, 7882, 7883, 7884, 7885, 7908, 7909],
+      "decompositionCodepoints": [73, 78, 79, 85, 105, 110, 111, 117, 769, 775, 803],
+      "file": "cormorant-common.woff2",
+      "sha256": "0efe744016d66d28b30a38c3cff2744f9cc3ecce852b951384464bb7d4795bad",
+      "bytes": 38828,
+      "sourceSha256": "1477688bded85a50142027e63b791235111c13e2c8eadfcb60769b273ec6d050",
+      "latinSourceSha256": "173b1f3449514245b23cb6ff69a41b8c37f62e8f2a1121e9fc5cc64cdece2b63"
+    },
+    {
+      "family": "cormorant-italic",
+      "layoutFeatures": [
+        "calt",
+        "ccmp",
+        "dnom",
+        "frac",
+        "kern",
+        "liga",
+        "lnum",
+        "mark",
+        "mkmk",
+        "numr",
+        "pnum",
+        "tnum"
+      ],
+      "codepoints": [323, 324, 7748, 7749, 7882, 7883, 7884, 7885, 7908, 7909],
+      "decompositionCodepoints": [73, 78, 79, 85, 105, 110, 111, 117, 769, 775, 803],
+      "file": "cormorant-italic-common.woff2",
+      "sha256": "08084ebf07d02535a0b18f7df2397cd0ba13b23f2cd766587d94c7b3c9fea76f",
+      "bytes": 40968,
+      "sourceSha256": "a089d20d630be3109f6cc6949f043b942624764ca60672588707b420c036af1f",
+      "latinSourceSha256": "a63910fce8349d6cfa66f0292e8e8265ba6340d5aa7b29f7851e7e0850c2b4d1"
+    },
+    {
+      "family": "inter",
+      "layoutFeatures": [
+        "calt",
+        "ccmp",
+        "dnom",
+        "frac",
+        "kern",
+        "mark",
+        "mkmk",
+        "numr",
+        "pnum",
+        "tnum"
+      ],
+      "codepoints": [323, 324, 7748, 7749, 7882, 7883, 7884, 7885, 7908, 7909],
+      "decompositionCodepoints": [73, 78, 79, 85, 105, 110, 111, 117, 769, 775, 803],
+      "file": "inter-common.woff2",
+      "sha256": "6ab50bb567aad22a50b8054faf190687f448186f545a7365fb3ff41df97f9739",
+      "bytes": 53532,
+      "sourceSha256": "19f69ff6f767ca29866c23cec64417b5fbb008633114ae64091f318d7d683a09",
+      "latinSourceSha256": "256be69dc7fa36c9d756c39e07c182ae0c0bc2100591c95aff634922a59fb8c5"
+    },
+    {
+      "family": "jost",
+      "layoutFeatures": ["kern", "tnum"],
+      "codepoints": [323, 324],
+      "decompositionCodepoints": [73, 78, 79, 85, 105, 110, 111, 117, 769, 775],
+      "file": "jost-common.woff2",
+      "sha256": "3933eea79f3aa50472dfafd7818bf56d03df94aa5e230e06bfad238df280e923",
+      "bytes": 26188,
+      "sourceSha256": "870145b6a67b1b0972ddafb56ecb8c4b366328d0c7111dc5c364ca7053129df8",
+      "latinSourceSha256": "66e71d40fd6df61c7c3f00a4a2790528ab3b11c11bfa228ef48c6d0fde9c2d42"
+    },
+    {
+      "family": "playfair",
+      "layoutFeatures": [
+        "calt",
+        "ccmp",
+        "dnom",
+        "frac",
+        "kern",
+        "liga",
+        "lnum",
+        "mark",
+        "mkmk",
+        "numr"
+      ],
+      "codepoints": [323, 324, 7882, 7883, 7884, 7885, 7908, 7909],
+      "decompositionCodepoints": [73, 78, 79, 85, 105, 110, 111, 117, 769, 775, 803],
+      "file": "playfair-common.woff2",
+      "sha256": "ac324e039a158885e951fae2700426311c10fb9c0486607eefb6ec052bf2974c",
+      "bytes": 35616,
+      "sourceSha256": "1906c2e1b48558440ddcccd03e30f1927223823a627adcec71bdae96d95070d8",
+      "latinSourceSha256": "f4ae954cf5a72a618a6f9e32aa681914a398fca752672316a77557fc854f00a3"
+    }
+  ]
+}

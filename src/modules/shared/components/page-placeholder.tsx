@@ -31,7 +31,7 @@ export function PagePlaceholder({
       <h1 className="w-full font-display text-4xl leading-tight font-medium text-balance sm:text-5xl">
         {title}
       </h1>
-      <p className="w-full max-w-md text-lg leading-relaxed text-pretty text-muted-foreground">
+      <p className="w-full max-w-md text-left text-lg leading-relaxed text-pretty text-muted-foreground">
         {description}
       </p>
       {children}
