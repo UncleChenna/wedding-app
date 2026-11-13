@@ -2,7 +2,7 @@
 id: TICKET-111
 title: Show an update-available prompt for new versions
 epic: pwa
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [pwa, frontend]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/176
 created: 2026-10-21
 updated: 2026-11-13
 started: 2026-11-13
-completed: ""
+completed: 2026-11-13
 reason: ""
 resume_to: ""
 ---
@@ -67,3 +67,4 @@ See: [Tech stack and architecture](../docs/prd.md#tech-stack-and-architecture).
 - 2026-11-13 — todo → in_progress — divine (codex)
 - 2026-11-13 — in_progress → in_review — divine (codex)
 - 2026-11-13 — in_review → in_progress — divine (codex) — Publish verified smoke selector and return-to-page refresh fixes
+- 2026-11-13 — in_review → done — divine (codex)
