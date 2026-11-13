@@ -22,6 +22,8 @@ Each guest sees the theme that matches their phone or computer's appearance sett
 
 Emerald Night and Blush & Sage come from the invitation design spike. Either can take its scheme's slot below.
 
+The default Ivory & Gold preset uses the couple’s approved ivory `#FFF9EF` page, chocolate `#432B22` text/primary controls, and champagne `#D6BE8D` secondary/decorative fills. Champagne never serves as body text; chocolate labels contrast on it. The stable `ivory-gold` ID preserves existing active-theme settings, while registered custom published palettes retain their saved values. Semantic status colours, dark-mode selection, fonts and QR tokens remain unchanged. Final visual approval remains in TICKET-008 before release.
+
 ## Switch a theme (10 seconds)
 
 Live pages read `event_settings.active_theme_id` (light) and `active_dark_theme_id` (dark). Registry validation rejects unknown IDs and themes in the wrong scheme. The server renders both palettes, texture and browser-bar colours before hydration; device media queries choose the palette without JavaScript.
