@@ -9,9 +9,12 @@ import {
   registeredDevices,
   rsvps,
   scanEvents,
+  scanRecoveryAudits,
+  scanResolutionNotes,
   staff,
 } from "@/modules/shared/server/db/schema";
 import { logger } from "@/modules/shared/lib/logger";
+import { recoveryRecordIdentity, type RecoveryRecord } from "../lib/recovery";
 import { reconcileScan, type ScanEventAck, type ScanEventReport } from "../lib/scan-sync";
 
 type Tx = Parameters<Parameters<Db["transaction"]>[0]>[0];
@@ -72,22 +75,29 @@ async function reconcileOne(
   actor: GateActor,
   event: ScanEventReport,
   reauthorize: () => Promise<boolean>,
+  recovery = false,
 ): Promise<ScanEventAck> {
   // Access is rechecked per event, so a revocation stops the rest of an in-flight batch.
   const [member] = await tx
     .select({ id: staff.id })
     .from(staff)
-    .where(and(eq(staff.id, actor.staffId), eq(staff.role, "gate"), isNull(staff.revokedAt)))
+    .where(
+      recovery
+        ? eq(staff.id, actor.staffId)
+        : and(eq(staff.id, actor.staffId), eq(staff.role, "gate"), isNull(staff.revokedAt)),
+    )
     .for("share");
   const [device] = await tx
     .select({ id: registeredDevices.id })
     .from(registeredDevices)
     .where(
-      and(
-        eq(registeredDevices.id, actor.deviceId),
-        eq(registeredDevices.role, "gate"),
-        isNull(registeredDevices.revokedAt),
-      ),
+      recovery
+        ? eq(registeredDevices.id, actor.deviceId)
+        : and(
+            eq(registeredDevices.id, actor.deviceId),
+            eq(registeredDevices.role, "gate"),
+            isNull(registeredDevices.revokedAt),
+          ),
     )
     .for("share");
   if (!member || !device || !(await reauthorize())) throw new ActorRevoked();
@@ -259,4 +269,85 @@ function intentDigest(actor: GateActor, event: ScanEventReport): string {
       ]),
     )
     .digest("hex");
+}
+
+/** Explicit administrator recovery; never called by ordinary device synchronization.
+ * A current admin must reauthorize before every append. Historical actor rows are
+ * retained as provenance, even when their current gate credentials are revoked.
+ */
+export async function reconcileRecoveredScans(
+  database: Pick<Db, "transaction">,
+  adminId: string,
+  requestId: string,
+  records: readonly RecoveryRecord[],
+  reauthorize: () => Promise<boolean>,
+): Promise<ScanEventAck[]> {
+  const acks: ScanEventAck[] = [];
+  for (const record of records) {
+    try {
+      const ack = await database.transaction(async (tx) => {
+        if (!(await reauthorize())) throw new ActorRevoked();
+        const digest = createHash("sha256").update(recoveryRecordIdentity(record)).digest("hex");
+        const [previous] = await tx
+          .select({ digest: scanRecoveryAudits.intentDigest })
+          .from(scanRecoveryAudits)
+          .where(
+            and(
+              eq(scanRecoveryAudits.adminId, adminId),
+              eq(scanRecoveryAudits.requestId, requestId),
+              eq(scanRecoveryAudits.clientEventId, record.event.clientEventId),
+            ),
+          );
+        if (previous && previous.digest !== digest)
+          return { clientEventId: record.event.clientEventId, status: "rejected" as const };
+        const result = await reconcileOne(tx, record.actor, record.event, reauthorize, true);
+        if (result.status === "retry") return result;
+        if (!(await reauthorize())) throw new ActorRevoked();
+        const [audit] = await tx
+          .insert(scanRecoveryAudits)
+          .values({
+            adminId,
+            requestId,
+            clientEventId: record.event.clientEventId,
+            intentDigest: digest,
+            outcome: result.status,
+          })
+          .onConflictDoNothing()
+          .returning({ id: scanRecoveryAudits.id });
+        if (!audit && !previous) {
+          const [winner] = await tx
+            .select({ digest: scanRecoveryAudits.intentDigest })
+            .from(scanRecoveryAudits)
+            .where(
+              and(
+                eq(scanRecoveryAudits.adminId, adminId),
+                eq(scanRecoveryAudits.requestId, requestId),
+                eq(scanRecoveryAudits.clientEventId, record.event.clientEventId),
+              ),
+            );
+          // A conflicting concurrent import must roll back this transaction's event too.
+          if (winner?.digest !== digest) throw new Error("Recovery request changed");
+        }
+        if (audit) {
+          const [stored] = await tx
+            .select({ id: scanEvents.id })
+            .from(scanEvents)
+            .where(eq(scanEvents.clientEventId, record.event.clientEventId));
+          if (stored)
+            await tx.insert(scanResolutionNotes).values({
+              eventId: stored.id,
+              requestId: audit.id,
+              adminId,
+              resolution: result.status === "rejected" ? "escalated" : "reviewed",
+            });
+        }
+        return result;
+      });
+      acks.push(ack);
+    } catch {
+      logger.child({ module: "checkin-recovery" }).warn("Recovery record could not be confirmed");
+      acks.push({ clientEventId: record.event.clientEventId, status: "retry" });
+    }
+  }
+  return acks;
 }
