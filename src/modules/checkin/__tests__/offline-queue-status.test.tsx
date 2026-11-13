@@ -57,3 +57,53 @@ it("does not start upload after the trusted session deadline", async () => {
   expect(deps.message).not.toHaveBeenCalled();
   expect(deps.status).not.toHaveBeenCalled();
 });
+
+it("waits for preparation and refreshes automatically after it completes", async () => {
+  deps.status.mockResolvedValueOnce(null);
+  render(<OfflineQueueStatus session={"a".repeat(64)} expiresAt={Date.now() + 60_000} />);
+  await waitFor(() => expect(deps.status).toHaveBeenCalledOnce());
+  expect(screen.getByText(/Preparing saved records/)).toBeInTheDocument();
+  expect(screen.queryByText(/could not be checked/)).toBeNull();
+  fireEvent(window, new Event("scanner-preparation-complete"));
+  expect(await screen.findByText("2 records are waiting to sync.")).toBeInTheDocument();
+});
+it("keeps a real unavailable queue unavailable after preparation", async () => {
+  deps.status.mockResolvedValue(null);
+  render(<OfflineQueueStatus session={"a".repeat(64)} expiresAt={Date.now() + 60_000} />);
+  await waitFor(() => expect(deps.status).toHaveBeenCalledOnce());
+  fireEvent(window, new Event("scanner-preparation-complete"));
+  expect(await screen.findByText(/could not be checked/)).toBeInTheDocument();
+  expect(screen.queryByText(/No records are waiting/)).toBeNull();
+});
+it("does not lose preparation completion during an earlier probe", async () => {
+  let release: (value: null) => void = () => {};
+  deps.status.mockImplementationOnce(
+    () =>
+      new Promise((resolve) => {
+        release = resolve;
+      }),
+  );
+  render(<OfflineQueueStatus session={"a".repeat(64)} expiresAt={Date.now() + 60_000} />);
+  await waitFor(() => expect(deps.status).toHaveBeenCalledOnce());
+  fireEvent(window, new Event("scanner-preparation-complete"));
+  await act(async () => release(null));
+  expect(await screen.findByText("2 records are waiting to sync.")).toBeInTheDocument();
+  expect(deps.status).toHaveBeenCalledTimes(2);
+});
+it("does not recheck after unmount while preparation is completing", async () => {
+  let release: (value: null) => void = () => {};
+  deps.status.mockImplementationOnce(
+    () =>
+      new Promise((resolve) => {
+        release = resolve;
+      }),
+  );
+  const view = render(
+    <OfflineQueueStatus session={"a".repeat(64)} expiresAt={Date.now() + 60_000} />,
+  );
+  await waitFor(() => expect(deps.status).toHaveBeenCalledOnce());
+  fireEvent(window, new Event("scanner-preparation-complete"));
+  view.unmount();
+  await act(async () => release(null));
+  expect(deps.status).toHaveBeenCalledOnce();
+});

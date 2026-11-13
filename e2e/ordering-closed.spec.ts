@@ -82,7 +82,10 @@ test.describe("ordering open and closed", () => {
         expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
           true,
         );
-        const dir = "docs/reviews/TICKET-080/" + theme.id;
+        const dir =
+          (process.env.ORDER_REVIEW_DIR
+            ? process.env.ORDER_REVIEW_DIR + "/TICKET-080/"
+            : "docs/reviews/TICKET-080/") + theme.id;
         mkdirSync(dir, { recursive: true });
         await page.screenshot({ path: dir + "/" + width + "-closed.png" });
       }

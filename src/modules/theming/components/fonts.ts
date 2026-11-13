@@ -26,6 +26,9 @@ const cormorantComplete = localFont({
 });
 
 const cormorant = localFont({
+  // Let rendered text request the normal/italic face it actually uses. Preloading
+  // this paired registration downloads italic even on plain ordering pages.
+  preload: false,
   src: [
     { path: "../fonts/cormorant-latin.woff2", weight: "400 600", style: "normal" },
     { path: "../fonts/cormorant-italic-latin.woff2", weight: "400 600", style: "italic" },

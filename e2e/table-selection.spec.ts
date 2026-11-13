@@ -79,7 +79,10 @@ test.describe("real table selection", () => {
         expect(
           await input.evaluate((el) => parseFloat(getComputedStyle(el).fontSize)),
         ).toBeGreaterThanOrEqual(24);
-        const dir = "docs/reviews/TICKET-070/" + theme.id;
+        const dir =
+          (process.env.ORDER_REVIEW_DIR
+            ? process.env.ORDER_REVIEW_DIR + "/TICKET-070/"
+            : "docs/reviews/TICKET-070/") + theme.id;
         mkdirSync(dir, { recursive: true });
         await page.screenshot({ path: dir + "/" + width + "-error.png", fullPage: true });
       }
@@ -106,7 +109,14 @@ test.describe("real table selection", () => {
           true,
         );
         await page.screenshot({
-          path: "docs/reviews/TICKET-070/" + theme.id + "/" + width + "-selected.png",
+          path:
+            (process.env.ORDER_REVIEW_DIR
+              ? process.env.ORDER_REVIEW_DIR + "/TICKET-070/"
+              : "docs/reviews/TICKET-070/") +
+            theme.id +
+            "/" +
+            width +
+            "-selected.png",
           fullPage: true,
         });
       }

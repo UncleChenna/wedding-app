@@ -8,6 +8,7 @@ const isDev = process.env.NODE_ENV !== "production";
 const nextConfig: NextConfig = {
   cacheComponents: true,
   outputFileTracingIncludes: {
+    "/order": ["./public/order-assets/manifest.json"],
     "/checkin/offline-shell": ["./public/scanner-assets/manifest.json"],
     "/sw.js": ["./public/scanner-assets/manifest.json"],
     "/i/*/invitation.pdf": ["./src/modules/invitations/fonts/*.ttf"],

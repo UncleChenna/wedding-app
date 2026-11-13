@@ -61,13 +61,12 @@ export function PersonalInvitation({
       )}
       {next.showOrdering && (
         <p className="mt-12">
-          <Link
+          <a
             href={appRoutes.order.path}
-            prefetch={false}
             className="inline-flex min-h-11 min-w-11 items-center text-lg text-primary underline underline-offset-4"
           >
             Order to your table
-          </Link>
+          </a>
         </p>
       )}
       <Link

@@ -68,7 +68,7 @@ test.describe("smoke @smoke", () => {
       await expect(sheet).toBeHidden();
 
       await section.getByRole("button", { name: "Show toast" }).click();
-      await expect(section.getByRole("status")).toContainText("Order sent");
+      await expect(section.getByRole("status").filter({ hasText: "Order sent" })).toBeVisible();
     }
   });
 
