@@ -102,6 +102,16 @@ test("camera pixels show all five gate results without admitting anyone", async 
         },
       });
     });
+    let delayedReadCount = 0;
+    if (process.env.RUN_DELAYED_GATE_READ === "1")
+      await context.route("**/api/checkin/read", async (route) => {
+        delayedReadCount++;
+        const response = await route.fetch();
+        // The server has already logged the first observation. Keep that response
+        // pending beyond the camera's three-second suppression interval.
+        if (delayedReadCount === 1) await new Promise((resolve) => setTimeout(resolve, 4_000));
+        await route.fulfill({ response }).catch(() => undefined);
+      });
     await page.goto("/checkin");
     await page.getByLabel("Your six-digit PIN").fill(pin);
     await page.getByRole("button", { name: "Sign in", exact: true }).click();
@@ -110,7 +120,10 @@ test("camera pixels show all five gate results without admitting anyone", async 
       .find((cookie) => cookie.name === "wedding-staff-device")
       ?.value.split(".")[0];
     expect(browserDevice).toMatch(/^[a-f0-9]{64}$/);
-    const folder = `docs/reviews/TICKET-235/${info.project.name}`;
+    const folder =
+      process.env.RUN_DELAYED_GATE_READ === "1"
+        ? `artifacts/TICKET-238/${info.project.name}`
+        : `docs/reviews/TICKET-235/${info.project.name}`;
     mkdirSync(folder, { recursive: true });
     for (const [index, item] of cases.entries()) {
       const frame = frames[index];
@@ -137,6 +150,7 @@ test("camera pixels show all five gate results without admitting anyone", async 
       ).toBe(true);
       const observations =
         await db`select result,input_method,source,admitted_people from scan_events where staff_id=${staff} and device_id=${browserDevice ?? ""} and result=${item.state} and reported_people=0`;
+      if (process.env.RUN_DELAYED_GATE_READ === "1") expect(delayedReadCount).toBe(index + 1);
       expect(observations).toEqual([
         { result: item.state, input_method: "qr", source: "online", admitted_people: 0 },
       ]);

@@ -39,10 +39,10 @@ TICKET-118's extended real camera audit observed two zero-admission not_rsvped e
 
 ## Acceptance criteria
 
-- [ ] Repeated decode callbacks during one pending read issue exactly one resolver request and do not abort it.
-- [ ] Explicit stop/unmount still cancels; a new capture can read again; stale responses cannot overwrite a newer scan.
-- [ ] Actual signed camera check delayed beyond three seconds records exactly one zero-admission observation and no admission.
-- [ ] TICKET-154 lists this repair as a release prerequisite; original gate assertions remain intact.
+- [x] Repeated decode callbacks during one pending read issue exactly one resolver request and do not abort it.
+- [x] Explicit stop/unmount still cancels; a new capture can read again; stale responses cannot overwrite a newer scan.
+- [x] Actual signed camera check delayed beyond three seconds records exactly one zero-admission observation and no admission.
+- [x] TICKET-154 lists this repair as a release prerequisite; original gate assertions remain intact.
 
 ## Test plan
 
@@ -58,6 +58,8 @@ TICKET-118's extended real camera audit observed two zero-admission not_rsvped e
 - tickets/TICKET-154-release-to-production-and-confirm-the-site-insta.md
 
 ## Notes / decisions
+
+- 2026-11-13: Deferred unit reproduces3reads before repair, then16 focused scanner/live-update tests pass. Production build and two actual delayed signed-camera browser cases pass (18.0s), retaining exact-one observations and no-admission assertions. Explicit pause/reopen is now required to replace a pending capture; stale-response test retains its original assertions with that real interaction.
 
 - 2026-11-13: The quiet TICKET-118 rerun passes; this does not erase the earlier duplicate observation. Repair the overlap deterministically rather than loosening counts or raising timeouts.
 
