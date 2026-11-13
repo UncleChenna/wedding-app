@@ -52,6 +52,12 @@ export function ScanLogView({
           Review gate checks and offline conflicts. Original evidence stays unchanged when you add a
           resolution note. All times are UTC.
         </p>
+        <Link
+          href="/admin/scans/recovery"
+          className="inline-flex min-h-11 items-center text-primary underline"
+        >
+          Recover gate records
+        </Link>
       </header>
       <form
         key={scanLogSearch(filters)}
