@@ -430,9 +430,9 @@ const joinNotes = (...notes: (string | undefined)[]) =>
   notes.filter(Boolean).join("; ") || undefined;
 
 /**
- * Ids allocated in the shared ledger whose files have not reached develop yet: another collaborator may still be
- * writing them. Ids already on develop are never reserved, so deleting a committed ticket is still caught. Returns
- * undefined (strict validation) when the ledger cannot be read.
+ * IDs allocated after this branch's common baseline may belong to another
+ * collaborator. Later develop merges must not make their files mandatory here.
+ * Baseline IDs remain mandatory; unreadable or ambiguous history stays strict.
  */
 function reservedIds(cwd: string): ReadonlySet<string> | undefined {
   let ledger: LedgerData | null;
@@ -442,8 +442,12 @@ function reservedIds(cwd: string): ReadonlySet<string> | undefined {
     return undefined;
   }
   if (!ledger) return undefined;
-  const onDevelop = new Set(
-    (tryGit(["ls-tree", "--name-only", `origin/${REVIEW_BASE}`, "tickets/"], cwd) ?? "")
+  const bases = tryGit(["merge-base", "--all", "HEAD", `origin/${REVIEW_BASE}`], cwd);
+  if (!bases || bases.split("\n").length !== 1) return undefined;
+  const baselineTree = tryGit(["ls-tree", "--name-only", bases, "tickets/"], cwd);
+  if (baselineTree === null) return undefined;
+  const onBaseline = new Set(
+    baselineTree
       .split("\n")
       .map((path) => /tickets\/((?:TICKET|WED)-\d{3})-/.exec(path)?.[1])
       .filter((id): id is string => Boolean(id))
@@ -451,7 +455,7 @@ function reservedIds(cwd: string): ReadonlySet<string> | undefined {
   );
   return new Set(
     Array.from({ length: ledger.lastId }, (_, i) => formatId(i + 1)).filter(
-      (id) => !onDevelop.has(id),
+      (id) => !onBaseline.has(id),
     ),
   );
 }

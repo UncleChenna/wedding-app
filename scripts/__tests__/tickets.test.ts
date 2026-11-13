@@ -463,6 +463,82 @@ function tWithEnv(cwd: string, extraEnv: Record<string, string>, ...args: string
 }
 
 describe("ticket CLI with a shared remote", () => {
+  async function reservedBranch() {
+    const f = setup();
+    for (let number = 3; number <= 164; number++) {
+      const id = `TICKET-${String(number).padStart(3, "0")}`;
+      const item = ticket(id);
+      writeFileSync(join(f.a, item.path), serializeTicket(item));
+    }
+    git(f.a, "add", "tickets");
+    git(f.a, "commit", "-qm", "fixture: complete milestone baseline");
+    git(f.a, "push", "origin", "main", "main:develop");
+    git(f.b, "fetch", "origin", "main");
+    git(f.b, "merge", "--ff-only", "origin/main");
+    const third = await t(
+      f.b,
+      "new",
+      "--title",
+      "Third",
+      "--epic",
+      "foundations",
+      "--module",
+      "shared",
+    );
+    expect(third.code, third.out).toBe(0);
+    writeFileSync(join(f.b, "tickets/TICKET-165-third.md"), serializeTicket(ticket("TICKET-165")));
+    const fourth = await t(
+      f.a,
+      "new",
+      "--title",
+      "Fourth",
+      "--epic",
+      "foundations",
+      "--module",
+      "shared",
+    );
+    expect(fourth.code, fourth.out).toBe(0);
+    writeFileSync(join(f.a, "tickets/TICKET-166-fourth.md"), serializeTicket(ticket("TICKET-166")));
+    return f;
+  }
+
+  it("keeps reservations valid when develop advances but rejects baseline deletion", async () => {
+    const f = await reservedBranch();
+    const before = await t(f.a, "validate");
+    expect(before.code, before.out).toBe(0);
+    git(f.b, "add", "tickets");
+    git(f.b, "commit", "-qm", "fixture: publish third ticket");
+    git(f.b, "push", "origin", "HEAD:develop");
+    git(f.a, "fetch", "origin", "develop");
+    const after = await t(f.a, "validate");
+    expect(after.code, after.out).toBe(0);
+    rmSync(join(f.a, "tickets/TICKET-001-build-thing.md"));
+    const removed = await t(f.a, "validate");
+    expect(removed.code).not.toBe(0);
+    expect(removed.out).toContain("missing TICKET-001");
+  }, 30_000);
+
+  it.each(["baseline", "unrelated baseline", "ledger"])(
+    "fails closed when the reservation %s is unavailable",
+    async (missing) => {
+      const f = await reservedBranch();
+      if (missing === "baseline") git(f.a, "update-ref", "-d", "refs/remotes/origin/develop");
+      if (missing === "unrelated baseline") {
+        const tree = git(f.a, "rev-parse", "HEAD^{tree}");
+        const orphan = git(f.a, "commit-tree", tree, "-m", "fixture: unrelated history");
+        git(f.a, "update-ref", "refs/remotes/origin/develop", orphan);
+      }
+      const result = await tWithEnv(
+        f.a,
+        missing === "ledger" ? { TICKETS_LEDGER: "off" } : {},
+        "validate",
+      );
+      expect(result.code).not.toBe(0);
+      expect(result.out).toContain("missing TICKET-165");
+    },
+    30_000,
+  );
+
   it.each([
     "failed",
     "passed",
