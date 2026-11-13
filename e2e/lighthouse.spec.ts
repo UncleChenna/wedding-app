@@ -60,6 +60,16 @@ test("mobile guest pages meet the recorded Lighthouse policy", async ({
       if (target.cookie)
         await context.addCookies([{ name: "wedding-table", value: String(table), url: baseURL }]);
       await page.goto(target.url);
+      if (target.name === "invitation-rsvp-saved") {
+        const hero = page.locator("[data-invitation-hero] img");
+        await expect(hero).toBeVisible();
+        await expect
+          .poll(() =>
+            hero.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0),
+          )
+          .toBe(true);
+        await page.evaluate(() => document.fonts.ready);
+      }
       if (target.name === "issued-pass")
         await expect(page.getByRole("heading", { name: "Ada Lighthouse" })).toBeVisible();
       if (target.name === "order-menu")

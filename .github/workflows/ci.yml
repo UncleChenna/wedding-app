@@ -273,6 +273,8 @@ jobs:
           RUN_ORDER_BROWSER_TESTS: "1"
       - name: Verify Journey 3, guest order to kitchen and bar boards to served
         run: pnpm exec tsx scripts/test-ordering-journey.ts
+      - name: Verify saved guest pass offline, isolation and revocation
+        run: pnpm exec tsx scripts/review-offline-pass.ts
       - if: failure()
         uses: actions/upload-artifact@v7
         with:

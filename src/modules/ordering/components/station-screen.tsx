@@ -46,7 +46,7 @@ async function StationScreenContent({ station }: { station: BoardStation }) {
     <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 md:px-8">
       <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
         <div>
-          <p className="text-sm font-medium tracking-widest text-muted-foreground uppercase">
+          <p className="text-lg font-medium tracking-widest text-muted-foreground uppercase">
             Staff
           </p>
           <h1 className="font-display text-4xl leading-tight md:text-5xl">{titles[station]}</h1>
