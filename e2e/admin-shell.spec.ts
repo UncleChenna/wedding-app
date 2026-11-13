@@ -18,6 +18,7 @@ test.describe("admin shell", () => {
       "Guests",
       "Invitation requests",
       "Sharing",
+      "Invitation design",
       "Menu",
       "Staff",
       "Scan log",
