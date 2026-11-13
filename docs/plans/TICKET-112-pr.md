@@ -12,15 +12,18 @@ The existing transactional order outbox gains independent push delivery state. D
 
 ## Evidence so far
 
--18 focused tests pass: endpoint restrictions, generic payloads, denied/unavailable permission, old-subscription reconciliation, fixed notification navigation and channel failure isolation.
+- 19 focused tests pass: endpoint restrictions, generic payloads, denied/unavailable permission, old-subscription reconciliation, fixed notification navigation and channel failure isolation.
 
-- Lint, TypeScript,168 related tests and two CI-parity checks pass. Production build passed before the develop integration; the integrated build remains to run.
+- Lint, TypeScript, 168 related tests and two CI-parity checks pass. Both initial and integrated production builds pass.
 - Migration0035 was generated after integrating develop6b2c9d3e. Two applications preserve counts; all28 public tables retain RLS. Four isolated database tests pass for batching, failure retries, credential/device revocation and expired subscriptions. The provisional0033 database is stopped and preserved separately; no production or collaborator database was changed.
 - Initial independent review found stale browser-only subscription state, permission prompting before configuration, and channel failure coupling. All three were corrected with regression tests.
 
+- Four headed Chromium browser cases pass: denied permission leaves authenticated kitchen boards usable in all four themes at 375/768/1280; the actual worker displays generic notifications on mobile and desktop after DevTools transport injection. Axe reports no violations, controls meet 44px, and no horizontal overflow was observed. Twenty-four screenshots are in ignored `artifacts/TICKET-112/`. DevTools delivery does not certify FCM/APNs encryption or transport.
+- Run `pnpm exec tsx scripts/test-staff-push.ts` against this ticket’s disposable database and production build. The runner uses headed Chromium because headless denies the native Notification API; Linux requires an Xvfb display.
+
 ## Remaining before review
 
-- Actual Chromium push delivery journey, production build and all-theme staff-control review.
+- External push-provider delivery for an actual queued order remains unverified. A disposable headed Chromium profile registered with FCM, but the probe did not observe a notification. This is not recorded as delivery success.
 - Independent final review, required CI and release-gated physical installed-iOS push checks.
 
 ## Rollout
