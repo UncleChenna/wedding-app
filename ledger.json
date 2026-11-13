@@ -3625,6 +3625,21 @@
       "updated": "2026-11-13",
       "reason": "",
       "resume_to": ""
+    },
+    "WED-116": {
+      "log": [
+        "- 2026-11-13 — todo → claimed — divine (codex) — started ahead of TICKET-038 (in_progress)"
+      ],
+      "status": "todo",
+      "owner": "divine",
+      "agent": "codex",
+      "branch": "TICKET-116",
+      "pr": "",
+      "started": "",
+      "completed": "",
+      "updated": "2026-11-13",
+      "reason": "",
+      "resume_to": ""
     }
   }
 }
