@@ -3003,18 +3003,19 @@
         "- 2026-11-11 — todo → in_progress — unclechenna (claude) — started ahead of TICKET-078 (in_review)",
         "- 2026-11-11 — in_progress → in_review — unclechenna (claude)",
         "- 2026-11-13 — in_review → in_review — divine (codex) — Ownership handoff unclechenna → divine; Owner authorized coordinated ledger-only recovery of completed merged PR159; preserve collaborator files and original failed CI while proving integrated repair164",
-        "- 2026-11-13 — in_review → blocked — divine (codex) — Original merged PR159 CI43110368023 failed Scan log keyboard expectation and online-admission decoding; recover only with verified merged repair164"
+        "- 2026-11-13 — in_review → blocked — divine (codex) — Original merged PR159 CI43110368023 failed Scan log keyboard expectation and online-admission decoding; recover only with verified merged repair164",
+        "- 2026-11-13 — blocked → done — divine (codex) — Reconciled original https://github.com/UncleChenna/wedding-app/pull/159; previous block: Original merged PR159 CI43110368023 failed Scan log keyboard expectation and online-admission decoding; recover only with verified merged repair164; Original PR159 failed stale Scan log navigation expectation and admission decoding; integrated repair164 contains both fixes and passes all ten exact-head full CI jobs at dd772215; verified repair https://github.com/UncleChenna/wedding-app/pull/164 head dd7722157992517f6ecb5fb157083de09ab42a2f; CI https://github.com/UncleChenna/wedding-app/actions/runs/43247685207; develop 4b37377599afd4030e310058d56734fa1e8dc587"
       ],
-      "status": "blocked",
+      "status": "done",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-075",
       "pr": "https://github.com/UncleChenna/wedding-app/pull/159",
       "started": "2026-11-11",
-      "completed": "",
+      "completed": "2026-11-13",
       "updated": "2026-11-13",
-      "reason": "Original merged PR159 CI43110368023 failed Scan log keyboard expectation and online-admission decoding; recover only with verified merged repair164",
-      "resume_to": "in_review"
+      "reason": "",
+      "resume_to": ""
     },
     "WED-079": {
       "log": [
