@@ -2,20 +2,20 @@
 id: TICKET-119
 title: Optimise every image for AVIF/WebP, sizes and blur
 epic: quality
-status: todo
+status: in_progress
 priority: urgent
 estimate: M
 labels: [frontend]
 module: shared
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-038]
 blocks: [TICKET-154, TICKET-176]
-branch: ""
+branch: TICKET-119
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-13
+started: 2026-11-13
 completed: ""
 reason: ""
 resume_to: ""
@@ -58,3 +58,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-13 — todo → claimed — divine (codex) — started ahead of TICKET-038 (in_progress)
+- 2026-11-13 — todo → in_progress — divine (codex) — started ahead of TICKET-038 (in_progress)
