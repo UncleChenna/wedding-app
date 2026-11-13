@@ -52,6 +52,28 @@ describe("update reload safety", () => {
     ).toEqual({ state: "unavailable" });
     expect(reload).not.toHaveBeenCalled();
   });
+  it.each([
+    null,
+    undefined,
+    [],
+    "ready",
+    {},
+    { state: "ready", pending: 0, extra: true },
+    { state: "unavailable", pending: 0 },
+    { state: "deferred", pending: 1, extra: true },
+    ...[-1, 0, 0.5, NaN, Infinity, Number.MAX_SAFE_INTEGER + 1, "1"].map((pending) => ({
+      state: "deferred",
+      pending,
+    })),
+  ])("fails closed for invalid reply %j", (reply) => {
+    expect(parseUpdateReply(reply)).toEqual({ state: "unavailable" });
+  });
+  it.each([1, Number.MAX_SAFE_INTEGER])("retains valid deferred count %s", (pending) => {
+    expect(parseUpdateReply({ state: "deferred", pending })).toEqual({
+      state: "deferred",
+      pending,
+    });
+  });
   it("rejects malformed or contradictory worker replies", () => {
     expect(parseUpdateReply({ state: "ready", pending: 2 })).toEqual({ state: "unavailable" });
     expect(parseUpdateReply({ state: "deferred", pending: 0 })).toEqual({ state: "unavailable" });

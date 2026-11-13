@@ -40,9 +40,9 @@ The shared worker-update client loads full Zod on guest pages for a small strict
 
 ## Acceptance criteria
 
-- [ ] Valid reply states retain identical parsed results and malformed/extra-field replies fail closed.
-- [ ] Browser module bundle shrinks with exact before/after byte evidence and no new dependency.
-- [ ] Existing worker update safety tests and quick verification pass.
+- [x] Valid reply states retain identical parsed results and malformed/extra-field replies fail closed.
+- [x] Browser module bundle shrinks with exact before/after byte evidence and no new dependency.
+- [x] Existing worker update safety tests and quick verification pass.
 
 ## Test plan
 
