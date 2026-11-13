@@ -2,7 +2,7 @@
 id: TICKET-184
 title: Expire private offline data and recover from storage eviction
 epic: pwa
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [pwa, security, test]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/173
 created: 2026-10-21
 updated: 2026-11-13
 started: 2026-11-12
-completed: ""
+completed: 2026-11-13
 reason: ""
 resume_to: ""
 ---
@@ -64,3 +64,4 @@ Backlog audit coverage: PWA privacy, CHK-6. See [PRD](../docs/prd.md) and [audit
 - 2026-11-12 — in_progress → in_review — divine (codex)
 - 2026-11-13 — in_review → in_progress — divine (codex) — Align private-cache smoke assertion with validated non-private queue identity marker
 - 2026-11-13 — in_progress → in_review — divine (codex)
+- 2026-11-13 — in_review → done — divine (codex)
