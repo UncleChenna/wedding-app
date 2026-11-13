@@ -40,10 +40,10 @@ Concurrent ticket commands in linked worktrees currently overwrite the same remo
 
 ## Acceptance criteria
 
-- [ ] Origin reads return the advertised ledger snapshot without changing shared remote-tracking references or FETCH_HEAD.
-- [ ] Concurrent commands can read and serialize writes without losing ledger updates.
-- [ ] Lock contention waits for a bounded duration; timeout and non-contention errors fail without removing an unowned lock.
-- [ ] Existing compare-and-swap, ownership and lifecycle checks remain enforced.
+- [x] Origin reads return the advertised ledger snapshot without changing shared remote-tracking references or FETCH_HEAD.
+- [x] Concurrent commands can read and serialize writes without losing ledger updates.
+- [x] Lock contention waits for a bounded duration; timeout and non-contention errors fail without removing an unowned lock.
+- [x] Existing compare-and-swap, ownership and lifecycle checks remain enforced.
 
 ## Test plan
 
@@ -59,6 +59,8 @@ Concurrent ticket commands in linked worktrees currently overwrite the same remo
 ## Notes / decisions
 
 - 2026-11-13 — Scoped after observed simultaneous ticket CLI failures; no collaborator worktree or lock deletion is authorized by this repair.
+
+- 2026-11-13 — Five real-Git concurrency/failure regressions pass; existing ticket suite plus first three concurrency regressions: 129 passing. Quick verification passes lint, types and 27 related tests.
 
 ## Activity log
 
