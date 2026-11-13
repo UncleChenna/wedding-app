@@ -2680,18 +2680,19 @@
         "- 2026-11-09 — todo → claimed — unclechenna (claude) — started ahead of TICKET-033 (in_review), TICKET-128 (blocked)",
         "- 2026-11-09 — todo → in_progress — unclechenna (claude) — started ahead of TICKET-033 (in_review), TICKET-128 (blocked)",
         "- 2026-11-13 — in_progress → in_progress — divine (codex) — Ownership handoff unclechenna → divine; Owner authorized ledger-only reconciliation of completed merged PR140; coordinated preservation of former editor worktrees, tablet release QA retained by merged232",
-        "- 2026-11-13 — in_progress → blocked — divine (codex) — Merged PR140 remains unrecorded in the in-progress ledger; TICKET-233 adds verified original-PR recovery. Manual tablet QA is retained unchecked in release-blocking201 by merged232."
+        "- 2026-11-13 — in_progress → blocked — divine (codex) — Merged PR140 remains unrecorded in the in-progress ledger; TICKET-233 adds verified original-PR recovery. Manual tablet QA is retained unchecked in release-blocking201 by merged232.",
+        "- 2026-11-13 — blocked → done — divine (codex) — Reconciled original https://github.com/UncleChenna/wedding-app/pull/140; previous block: Merged PR140 remains unrecorded in the in-progress ledger; TICKET-233 adds verified original-PR recovery. Manual tablet QA is retained unchecked in release-blocking201 by merged232.; PR140 merged before its URL was recorded; merged232 retains manual tablet QA in201, and verified177 contains completed criteria and full CI proof without changing original implementation history; verified repair https://github.com/UncleChenna/wedding-app/pull/177 head d72e38c5242b3ba1e0764413a2fd2de6e1680cb2; CI https://github.com/UncleChenna/wedding-app/actions/runs/43376289583; develop 4b37377599afd4030e310058d56734fa1e8dc587"
       ],
-      "status": "blocked",
+      "status": "done",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-076",
-      "pr": "",
+      "pr": "https://github.com/UncleChenna/wedding-app/pull/140",
       "started": "2026-11-09",
-      "completed": "",
+      "completed": "2026-11-13",
       "updated": "2026-11-13",
-      "reason": "Merged PR140 remains unrecorded in the in-progress ledger; TICKET-233 adds verified original-PR recovery. Manual tablet QA is retained unchecked in release-blocking201 by merged232.",
-      "resume_to": "in_progress"
+      "reason": "",
+      "resume_to": ""
     },
     "WED-108": {
       "log": [
