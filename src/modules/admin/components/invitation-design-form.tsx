@@ -122,6 +122,7 @@ export function InvitationDesignForm({
           label="Headline"
           name="headline"
           value={headline}
+          readOnly={pending}
           onChange={(event) => setHeadline(event.target.value)}
           maxLength={200}
           required
@@ -130,6 +131,7 @@ export function InvitationDesignForm({
           label="Invitation message"
           name="subline"
           value={subline}
+          readOnly={pending}
           onChange={(event) => setSubline(event.target.value)}
           maxLength={1000}
           rows={4}
@@ -138,6 +140,7 @@ export function InvitationDesignForm({
         <Button
           type="button"
           variant="secondary"
+          disabled={pending}
           onClick={() => {
             setHeadline(invitationSiteCopy.headline);
             setSubline(invitationSiteCopy.subline);
@@ -165,6 +168,7 @@ export function InvitationDesignForm({
           label="Photo description"
           name="photoAlt"
           value={alt}
+          readOnly={pending}
           onChange={(event) => setAlt(event.target.value)}
           maxLength={500}
           required={Boolean(photo)}
@@ -216,7 +220,8 @@ export function InvitationDesignForm({
       </section>
       <p className="max-w-prose leading-relaxed">
         Saving publishes this wording and selected photo on your invitations. The saved photo can be
-        viewed by anyone with its image link; uploading alone keeps it private.
+        viewed by anyone with its image link; uploading alone keeps it private. Previously published
+        copies may remain available after you replace the photo.
       </p>
       {state.status !== "idle" && (
         <p role={state.status === "error" ? "alert" : "status"}>{state.message}</p>

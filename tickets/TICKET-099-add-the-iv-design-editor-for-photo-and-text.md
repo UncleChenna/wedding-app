@@ -39,7 +39,7 @@ See: [Admin dashboard](../docs/prd.md#admin-dashboard) (ADM-5).
 
 ## Acceptance criteria
 
-- [ ] Uploads over 8 MB or non-images are rejected (unit).
+- [x] Uploads over 8 MB or non-images are rejected (unit).
 - [ ] Changes appear on /i/<token> after save (e2e).
 - [ ] Editor previews clearly distinguish stock fallback from the saved photo; fallback alt text never identifies stock subjects as the couple. Saving a photo does not certify TICKET-008 final publication rights or couple approval.
 
@@ -61,6 +61,8 @@ See: [Admin dashboard](../docs/prd.md#admin-dashboard) (ADM-5).
 ## Notes / decisions
 
 - 2026-11-13 — TICKET-236: Preview implementation can use the approved stock asset; final launch still requires TICKET-008. Keep TICKET-038/088/175 prerequisites and the existing upload/failure contract.
+
+- 2026-11-13 — Draft PR #197: editor, authorized versioned saving and selected-photo publication are implemented. Unit/database checks and production build pass. Guest wording is connected; selected-photo rendering awaits TICKET-038 integration and final browser evidence.
 
 _Agents append dated notes here while working._
 
