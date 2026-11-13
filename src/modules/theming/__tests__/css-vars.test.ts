@@ -24,7 +24,7 @@ describe("themeToCssVars", () => {
   });
 
   it("renders a CSS rule for a selector", () => {
-    expect(themeToCssText(theme, ":root")).toMatch(/^:root \{ --t-color-background: #FBF8F3;/);
+    expect(themeToCssText(theme, ":root")).toMatch(/^:root \{ --t-color-background: #FFF9EF;/);
   });
 });
 
