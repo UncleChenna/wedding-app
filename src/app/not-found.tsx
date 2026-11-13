@@ -6,8 +6,13 @@ import { PagePlaceholder } from "@/modules/shared/components/page-placeholder";
 export default function NotFound() {
   return (
     <PagePlaceholder
+      align="left"
       eyebrow="404"
-      title="This page wandered off"
+      title={
+        <span className="block whitespace-pre-line sm:whitespace-normal">
+          {"This page\nwandered off"}
+        </span>
+      }
       description="We couldn't find what you were looking for. Check the link on your invitation, or head back home."
     >
       <Link
