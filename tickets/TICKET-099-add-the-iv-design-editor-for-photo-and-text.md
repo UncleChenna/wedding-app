@@ -2,20 +2,20 @@
 id: TICKET-099
 title: Add the IV design editor for photo and text
 epic: admin
-status: todo
+status: in_progress
 priority: medium
 estimate: M
 labels: [frontend, backend]
 module: admin
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-038, TICKET-088, TICKET-175]
 blocks: []
-branch: ""
+branch: TICKET-099
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-13
+started: 2026-11-13
 completed: ""
 reason: ""
 resume_to: ""
@@ -67,3 +67,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-13 — todo → claimed — divine (codex) — started ahead of TICKET-038 (in_review)
+- 2026-11-13 — todo → in_progress — divine (codex) — started ahead of TICKET-038 (in_review)
