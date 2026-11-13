@@ -4,7 +4,8 @@ import { expect, test, type Page } from "@playwright/test";
 /**
  * Service worker on the production build (TICKET-105, ADR 0014): registered at root
  * scope, never cached itself, caches only immutable build assets, and never stores
- * pages, invitation URLs, admin or API responses.
+ * private pages, invitation URLs, admin or API responses. A separate random identity
+ * marker detects partial admission-journal eviction without caching guest data.
  */
 async function controlledPage(page: Page) {
   await page.goto("/");
@@ -63,7 +64,27 @@ test.describe("service worker @smoke", () => {
     expect(urls.length).toBeGreaterThan(0);
     // The only page ever stored is the generic, public offline page (TICKET-106).
     expect(urls.filter((url) => url === "/offline")).toHaveLength(1);
-    for (const url of urls.filter((url) => url !== "/offline")) {
+    // Partial-eviction detection stores exactly one non-private random UUID,
+    // not a navigable page or invitation payload. Validate its dedicated cache.
+    const marker = await page.evaluate(async () => {
+      const cache = await caches.open("wedding-scanner-queue-identity-v1");
+      const keys = await cache.keys();
+      return Promise.all(
+        keys.map(async (request) => ({
+          url: request.url,
+          body: await (await cache.match(request))?.text(),
+        })),
+      );
+    });
+    expect(marker).toHaveLength(1);
+    const identity = marker[0];
+    if (!identity) throw new Error("Expected exactly one queue identity marker");
+    expect(identity.url).toBe(new URL("/offline-queue-identity", page.url()).href);
+    expect(identity.body).toMatch(/^[a-f0-9]{8}-(?:[a-f0-9]{4}-){3}[a-f0-9]{12}$/);
+    expect(urls.filter((url) => url === "/offline-queue-identity")).toHaveLength(1);
+    for (const url of urls.filter(
+      (url) => url !== "/offline" && url !== "/offline-queue-identity",
+    )) {
       expect(url).toMatch(/^\/_next\/static\//);
     }
   });
