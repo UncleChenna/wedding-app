@@ -39,7 +39,7 @@ See: [Journey 2: check-in at the gate](../docs/prd.md#journey-2-check-in-at-the-
 
 ## Acceptance criteria
 
-- [ ] All five result types and partial admission pass in CI.
+- [x] All five result types and partial admission pass in CI.
 
 ## Test plan
 
@@ -52,7 +52,7 @@ See: [Journey 2: check-in at the gate](../docs/prd.md#journey-2-check-in-at-the-
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-11-13: Added actual camera-pixel coverage for all five visible results and their immutable zero-admission server observations. Existing partial-admission/retry and manual-search tests remain in the same CI-invoked runner. All six mobile/desktop cases pass locally; hosted CI must pass before merge. See docs/plans/TICKET-132-pr.md.
 
 ## Activity log
 
