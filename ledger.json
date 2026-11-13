@@ -2981,16 +2981,17 @@
       "log": [
         "- 2026-11-10 — todo → claimed — unclechenna (claude) — started ahead of TICKET-076 (in_progress)",
         "- 2026-11-10 — todo → in_progress — unclechenna (claude) — started ahead of TICKET-076 (in_progress)",
-        "- 2026-11-10 — in_progress → in_review — unclechenna (claude)"
+        "- 2026-11-10 — in_progress → in_review — unclechenna (claude)",
+        "- 2026-11-13 — in_review → in_review — divine (codex) — Ownership handoff unclechenna → divine; Owner authorized coordinated ledger-only recovery of merged PR156; preserve collaborator files and original failed CI while verifying repair164"
       ],
       "status": "in_review",
-      "owner": "unclechenna",
-      "agent": "claude",
+      "owner": "divine",
+      "agent": "codex",
       "branch": "TICKET-078",
       "pr": "https://github.com/UncleChenna/wedding-app/pull/156",
       "started": "2026-11-10",
       "completed": "",
-      "updated": "2026-11-10",
+      "updated": "2026-11-13",
       "reason": "",
       "resume_to": ""
     },
