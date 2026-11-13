@@ -39,9 +39,9 @@ Merged ordering work remains open because one physical-tablet criterion has no r
 
 ## Acceptance criteria
 
-- [ ] The manual tablet requirement remains unchecked in TICKET-201, which continues to block both releases; TICKET-076 explicitly records the approved transfer rather than a physical pass.
-- [ ] The merged ordering chain has documented exact PR/CI evidence and dependency order, distinguishing original success from verified repairs.
-- [ ] Ticket definitions validate and changed Markdown formatting passes.
+- [x] The manual tablet requirement remains unchecked in TICKET-201, which continues to block both releases; TICKET-076 explicitly records the approved transfer rather than a physical pass.
+- [x] The merged ordering chain has documented exact PR/CI evidence and dependency order, distinguishing original success from verified repairs.
+- [x] Ticket definitions validate and changed Markdown formatting passes.
 
 ## Test plan
 

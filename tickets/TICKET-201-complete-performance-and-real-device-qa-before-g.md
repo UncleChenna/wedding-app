@@ -42,6 +42,8 @@ Claiming untested checks pass, weakening thresholds, changing TICKET-015's pause
 
 ## Acceptance criteria
 
+- [ ] TICKET-076: verify kitchen and shared bar boards are legible at one metre on the actual event tablets, in every shipped theme and realistic venue lighting. Check table numbers, item quantities, notes, age and status controls; record device/model/OS/browser/build, distance and actual outcomes. Also confirm new-order visual feedback and unlocked audio on those devices. The original manual criterion remains unperformed; this transfer permits preview completion only and continues to block both TICKET-154 and TICKET-176.
+
 - [ ] TICKET-063: Results are readable at arm's length (≥18px). Verify manual primary/tag-along search, denied-camera recovery, keyboard focus, uncertain admission retry and offline read-only warnings on physical gate phones/tablets in all shipped themes. Record device/OS/browser/build and actual results; browser emulation does not certify physical readability. This remains mandatory and release-blocking under the approved preview exception.
 
 - [ ] TICKET-166: On physical iOS and Android, verify the admin event-closure form's keyboard, safe areas, focus visibility and confirmation controls; download and open the anonymous memories CSV/PDF in native viewers and check long-menu pagination. Use synthetic events only, retain pending admission evidence, and record device/OS/browser/build and actual results. These checks remain release-blocking under the owner's preview exception; automated emulation does not certify them. Production closure still requires approved event timing and operator confirmation.
@@ -81,6 +83,8 @@ Claiming untested checks pass, weakening thresholds, changing TICKET-015's pause
 - docs/reviews/, affected feature components and e2e tests; keep code repairs scoped or split them.
 
 ## Notes / decisions
+
+- 2026-11-12 — TICKET-232 retains TICKET-076’s physical one-metre board check here under the owner’s standing manual-QA disposition. It remains unchecked and mandatory before release.
 
 - 2026-11-01: Retained110's physical iPhone/WhatsApp requirement here under the owner's existing preview delivery exception. The manual check remains unchecked; no release dependency or performance requirement is removed.
 
