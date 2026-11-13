@@ -2,20 +2,20 @@
 id: TICKET-136
 title: Test the gate end to end with the network switched off
 epic: testing
-status: todo
+status: in_progress
 priority: high
 estimate: M
 labels: [test, pwa]
 module: checkin
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-066, TICKET-067, TICKET-108, TICKET-063, TICKET-062, TICKET-184]
 blocks: [TICKET-154, TICKET-163]
-branch: ""
+branch: TICKET-136
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-13
+started: 2026-11-13
 completed: ""
 reason: ""
 resume_to: ""
@@ -59,3 +59,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-13 — todo → claimed — divine (codex)
+- 2026-11-13 — todo → in_progress — divine (codex)
