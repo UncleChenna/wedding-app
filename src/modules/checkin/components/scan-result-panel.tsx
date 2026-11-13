@@ -36,7 +36,7 @@ export function ScanResultPanel({
         {visibleGuest && (
           <div className="flex flex-col gap-3">
             <p className="font-display text-4xl leading-tight wrap-anywhere">{visibleGuest.name}</p>
-            <p className="text-3xl font-semibold">
+            <p className="text-4xl font-semibold">
               {visibleGuest.tableNumber === null
                 ? "Table not assigned"
                 : `Table ${visibleGuest.tableNumber}`}

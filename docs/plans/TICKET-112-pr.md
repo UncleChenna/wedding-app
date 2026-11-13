@@ -32,4 +32,12 @@ The three optional `WEB_PUSH_*` settings enable the feature as a complete set. W
 
 ## Migration and rollback
 
-Apply `0035_staff-push.sql` after develop's unchanged0033/0034 recovery migrations. This adds an RLS-enabled device subscription table and independent delivery columns/index on the existing outbox. No existing columns, policies or rows are removed. Rolling back the application can leave these additive fields in place; disable the VAPID settings to stop new sends. Do not drop retained audit/recovery data.
+Apply `0037_staff-push.sql` after develop’s unchanged 0035 Wi-Fi and 0036 invitation-design migrations. This adds an RLS-enabled device subscription table and independent delivery columns/index on the existing outbox. No existing columns, policies or rows are removed. Rolling back the application can leave these additive fields in place; disable the VAPID settings to stop new sends. Do not drop retained audit/recovery data.
+
+## Current base integration
+
+Integrated develop `227527b7`. Preserved all merged migration history and regenerated only this branch’s unmerged push migration as 0037; the SQL is byte-identical to its earlier 0035 version. On a fresh isolated database at this worktree’s reserved port, two migration applications produce identical counts, all 29 public tables retain RLS, and all four push database tests pass (662 ms). Existing native database data was preserved. No production database was used. Current-base lint/types and CI are pending; older evidence above is retained with its original scope. Actual browser-provider delivery remains unverified and this PR remains draft.
+
+The first integration commit attempt stopped in ticket validation before lint/types: the moving develop baseline incorrectly demanded newly merged TICKET-238. TICKET-246 tracks this harness repair. No verification rule was bypassed; the staged integration remains intact. The new isolated database is stopped with its data preserved.
+
+The authorized narrow integration carries only the unchanged merged TICKET-238 definition to satisfy the existing validator while TICKET-246 repairs that race. Its content and metadata are byte-identical to develop; no TICKET-238 implementation is imported separately. Normal hooks remain required.

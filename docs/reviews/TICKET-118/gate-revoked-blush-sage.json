@@ -1,0 +1,13 @@
+{
+  "name": "gate-revoked",
+  "theme": "blush-sage",
+  "violations": [],
+  "overflow": false,
+  "small": [],
+  "identifiers": [
+    {
+      "text": "Revoked pass",
+      "px": 36
+    }
+  ]
+}

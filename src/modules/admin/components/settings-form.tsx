@@ -146,6 +146,24 @@ export function SettingsForm({ defaults }: { defaults: SettingsDefaults }) {
             max={100}
           />
         </div>
+        <div className="grid gap-6 sm:grid-cols-2">
+          <Input
+            {...field("wifiName")}
+            label="Wi-Fi name"
+            maxLength={32}
+            autoComplete="off"
+            spellCheck={false}
+            hint="Printed on every table card. Optional until the router is set up."
+          />
+          <Input
+            {...field("wifiPassword")}
+            label="Wi-Fi password"
+            maxLength={63}
+            autoComplete="off"
+            spellCheck={false}
+            hint="Printed on every table card, so use the guest network's password."
+          />
+        </div>
       </Group>
       <div className="flex flex-wrap items-center gap-4">
         <Button type="submit" size="lg" disabled={pending} aria-busy={pending}>

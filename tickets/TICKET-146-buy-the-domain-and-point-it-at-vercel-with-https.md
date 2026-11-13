@@ -2,7 +2,7 @@
 id: TICKET-146
 title: Buy the domain and point it at Vercel with HTTPS
 epic: deployment
-status: todo
+status: cancelled
 priority: urgent
 estimate: S
 labels: [human, infra]
@@ -14,10 +14,10 @@ blocks: [TICKET-028, TICKET-094, TICKET-154, TICKET-160, TICKET-176]
 branch: ""
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
+updated: 2026-11-12
 started: ""
 completed: ""
-reason: ""
+reason: "Merged into TICKET-145 (TICKET-228)"
 resume_to: ""
 ---
 
@@ -41,6 +41,7 @@ See: [Open questions](../docs/prd.md#open-questions) · [Tech stack and architec
 
 - [ ] https://<domain> serves the app with a valid certificate (curl output in notes).
 - [ ] NEXT_PUBLIC_SITE_URL set to the domain in production.
+- [ ] Record evidence of the authorized registrant, domain ownership and working DNS control without storing credentials or payment data. TICKET-008 supplies the domain choice; this ticket verifies ownership after purchase.
 
 ## Test plan
 
@@ -53,8 +54,11 @@ See: [Open questions](../docs/prd.md#open-questions) · [Tech stack and architec
 
 ## Notes / decisions
 
+- 2026-11-13 — TICKET-236: Domain ownership evidence belongs here, not before this purchase ticket. TICKET-008 final asset and choice requirements remain intact; both release tickets also require this domain/HTTPS evidence.
+
 - 2026-10-21: Needs a person (decision, account or physical task). Agents may prepare docs and record the outcome.
 
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-12 — todo → cancelled — unclechenna (claude) — merged into TICKET-145 (TICKET-228)

@@ -1,0 +1,12 @@
+{
+  "name": "admin",
+  "theme": "midnight-champagne",
+  "violations": [],
+  "overflow": false,
+  "small": [
+    {
+      "text": "Open ordering",
+      "px": 16
+    }
+  ]
+}

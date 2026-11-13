@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 /** A station ticket's life (ORD-5): received → preparing → served, or cancelled before served. */
-export const TICKET_STATUSES = ["received", "preparing", "served", "cancelled"] as const;
-export type TicketStatus = (typeof TICKET_STATUSES)[number];
+import { TICKET_STATUSES, type TicketStatus } from "./ticket-status-values";
+export { TICKET_STATUSES, type TicketStatus } from "./ticket-status-values";
 
 const MOVES: Record<TicketStatus, readonly TicketStatus[]> = {
   received: ["preparing", "served", "cancelled"],

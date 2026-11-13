@@ -9,7 +9,7 @@ labels: [infra, test]
 module: ops
 owner: ""
 agent: ""
-blocked_by: [TICKET-005, TICKET-014, TICKET-028, TICKET-034, TICKET-035, TICKET-042, TICKET-043, TICKET-045, TICKET-046, TICKET-047, TICKET-048, TICKET-050, TICKET-051, TICKET-052, TICKET-091, TICKET-092, TICKET-101, TICKET-107, TICKET-120, TICKET-126, TICKET-131, TICKET-138, TICKET-140, TICKET-146, TICKET-148, TICKET-150, TICKET-152, TICKET-153, TICKET-170, TICKET-183, TICKET-185, TICKET-012, TICKET-027, TICKET-038, TICKET-119, TICKET-128, TICKET-206, TICKET-201]
+blocked_by: [TICKET-008, TICKET-005, TICKET-014, TICKET-028, TICKET-034, TICKET-035, TICKET-042, TICKET-043, TICKET-045, TICKET-046, TICKET-047, TICKET-048, TICKET-050, TICKET-051, TICKET-052, TICKET-091, TICKET-092, TICKET-101, TICKET-107, TICKET-120, TICKET-126, TICKET-131, TICKET-114, TICKET-140, TICKET-145, TICKET-150, TICKET-153, TICKET-170, TICKET-183, TICKET-185, TICKET-012, TICKET-027, TICKET-038, TICKET-119, TICKET-128]
 blocks: [TICKET-154, TICKET-159, TICKET-177]
 branch: ""
 pr: ""
@@ -37,6 +37,8 @@ Backlog audit coverage: INV-1–7, milestone invitations week 2–3. See [PRD](.
 
 ## Acceptance criteria
 
+- [ ] TICKET-008 final domain choice, >=2400px hero and square assets, both-partner publication rights and final visual approval are recorded; TICKET-146 confirms actual domain ownership/DNS/HTTPS. Stock-preview permission alone is not final launch approval.
+
 - [ ] Deploy only the completed invitation/admin surfaces; unfinished order/scanner routes and actions are disabled by an explicit tested release boundary.
 - [ ] Pass RSVP, tag-along meals, edit/lock, revoke/reissue, QR download, sharing, privacy and endpoint-abuse checks on the production domain; verify the invite on real iOS/Android WhatsApp.
 - [ ] Confirm production account recovery, migrations, backups, tested restore and rollback, monitoring, invitation wording and owner approval before sending real invitations.
@@ -58,6 +60,8 @@ Backlog audit coverage: INV-1–7, milestone invitations week 2–3. See [PRD](.
 - docs/runbooks/; release configuration; e2e/
 
 ## Notes / decisions
+
+- 2026-11-13 — TICKET-236: Preview/theme implementation is independent of final approvals; all original release checks remain required, with TICKET-008 now an explicit direct prerequisite.
 
 - 2026-10-26: Owner explicitly deferred Apple/Google Wallet on 2026-10-26. Launch still requires QR/image/PDF and offline-pass journeys; do not require issuer accounts or claim Wallet is implemented. Event details are currently TBD; see docs/prd.md#approved-event-defaults.
 

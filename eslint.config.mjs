@@ -72,6 +72,7 @@ export default defineConfig([
     "out/**",
     "build/**",
     "public/scanner-assets/**", // Generated minified bundle; its source stays linted.
+    "public/order-assets/**", // Generated order bundle; browser source stays linted.
     "coverage/**",
     "playwright-report/**",
     "test-results/**",

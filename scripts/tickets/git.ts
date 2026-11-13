@@ -1,5 +1,5 @@
 import { execFileSync, spawnSync } from "node:child_process";
-import { lstatSync, mkdirSync, mkdtempSync, rmSync } from "node:fs";
+import { chmodSync, lstatSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
@@ -53,6 +53,13 @@ export interface LedgerSnapshot {
   sha: string | null;
   data: LedgerData;
 }
+
+export interface LedgerWriteOptions {
+  /** Per preparation command, not the whole transaction; callers may only lower it. */
+  preparationTimeoutMs?: number;
+}
+
+const PREPARATION_TIMEOUT_MS = 30_000;
 
 const empty = (): LedgerData => ({ version: 1, lastId: 0, tickets: {} });
 
@@ -109,20 +116,33 @@ function writeLedger(
   parent: string | null,
   data: LedgerData,
   message: string,
+  preparationTimeoutMs: number,
 ) {
   const temp = mkdtempSync(join(tmpdir(), "wedding-ledger-"));
   try {
+    chmodSync(temp, 0o700);
     const env = { ...process.env, GIT_INDEX_FILE: join(temp, "index") };
-    const blob = git(["hash-object", "-w", "--stdin"], cwd, JSON.stringify(data, null, 2) + "\n");
-    execFileSync("git", ["update-index", "--add", "--cacheinfo", `100644,${blob},${FILE}`], {
-      cwd,
-      env,
-    });
-    const tree = execFileSync("git", ["write-tree"], { cwd, env, encoding: "utf8" }).trim();
-    const commit = git(
+    const input = join(temp, FILE);
+    writeFileSync(input, JSON.stringify(data, null, 2) + "\n", { mode: 0o600, flag: "wx" });
+    const prepare = (args: string[], childEnv = process.env) =>
+      execFileSync("git", args, {
+        cwd,
+        env: childEnv,
+        encoding: "utf8",
+        stdio: ["ignore", "pipe", "pipe"],
+        timeout: preparationTimeoutMs,
+        // Only unpublished object/index preparation runs here. Killing this
+        // owned child cannot change a ref, and cannot leave the input pipe open.
+        killSignal: "SIGKILL",
+      }).trim();
+    const blob = prepare(["hash-object", "-w", "--no-filters", "--", input]);
+    prepare(["update-index", "--add", "--cacheinfo", `100644,${blob},${FILE}`], env);
+    const tree = prepare(["write-tree"], env);
+    const commit = prepare(
       ["commit-tree", tree, ...(parent ? ["-p", parent] : []), "-m", message],
-      cwd,
     );
+    // Keep publication semantics unchanged: a timeout after a remote accepts a
+    // push would make its acknowledgement ambiguous and could repeat an update.
     if (mode === "local")
       git(
         ["update-ref", LOCAL_REF, commit, parent ?? "0000000000000000000000000000000000000000"],
@@ -198,8 +218,18 @@ export function mutateLedger<T>(
   cwd: string,
   mode: LedgerMode,
   update: (data: LedgerData) => { result: T; message: string },
+  options: LedgerWriteOptions = {},
 ): T {
   if (mode === "off") throw new Error("mutateLedger called with ledger off");
+  const preparationTimeoutMs = options.preparationTimeoutMs ?? PREPARATION_TIMEOUT_MS;
+  if (
+    !Number.isSafeInteger(preparationTimeoutMs) ||
+    preparationTimeoutMs <= 0 ||
+    preparationTimeoutMs > PREPARATION_TIMEOUT_MS
+  )
+    throw new RangeError(
+      `Ledger preparation timeout must be an integer from 1 to ${PREPARATION_TIMEOUT_MS}ms.`,
+    );
   return withLedgerLock(cwd, () => {
     let lastError: unknown;
     for (let attempt = 0; attempt < 3; attempt++) {
@@ -208,7 +238,7 @@ export function mutateLedger<T>(
       const data = structuredClone(snapshot.data);
       const { result, message } = update(data);
       try {
-        writeLedger(cwd, mode, snapshot.sha, data, message);
+        writeLedger(cwd, mode, snapshot.sha, data, message, preparationTimeoutMs);
         return result;
       } catch (error) {
         lastError = error;

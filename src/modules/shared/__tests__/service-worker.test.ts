@@ -1,3 +1,4 @@
+import { gunzipSync } from "node:zlib";
 import { createOfflineQueuePolicy } from "@/modules/checkin/lib/offline-queue";
 
 import { runInNewContext } from "node:vm";
@@ -13,6 +14,7 @@ import {
 } from "../lib/sw-policy";
 import { OWN_PASS_CACHE } from "@/modules/invitations/lib/offline-worker";
 import { serviceWorkerSource } from "../server/service-worker";
+import { serviceWorkerResponse } from "../server/service-worker-response";
 
 const ORIGIN = "https://wedding.example";
 const req = (path: string, init: { method?: string; headers?: Record<string, string> } = {}) => ({
@@ -27,6 +29,10 @@ describe("cachePolicy: the documented strategy table (docs/pwa.md)", () => {
     ["/_next/static/chunks/app-1a2b3c.js", "cache-first"],
     ["/_next/static/css/4d5e6f.css", "cache-first"],
     ["/_next/static/media/cormorant.woff2", "cache-first"],
+    ["/offline-assets/cormorant-0123456789abcdef.woff2", "cache-first"],
+    ["/offline-assets/untrusted-0123456789abcdef.woff2", "network-only"],
+    ["/offline-assets/inter.woff2", "network-only"],
+    ["/offline-assets/inter-0123456789abcdef.woff2?guest=private", "network-only"],
   ])("caches immutable build assets: %s → %s", (path, policy) => {
     expect(cachePolicy(req(path))).toBe(policy);
   });
@@ -299,6 +305,16 @@ describe("served worker script", () => {
   });
 
   describe("offline fallback page (TICKET-106)", () => {
+    it("precaches only the explicitly declared hashed offline font", async () => {
+      const path = "/offline-assets/inter-0123456789abcdef.woff2";
+      const { store, install } = loadWorker({
+        bodies: {
+          [SW_OFFLINE_URL]: `<link rel="preload" as="font" href="${path}"><link href="/offline-assets/unknown.woff2">`,
+        },
+      });
+      await install();
+      expect([...(store.get(SW_STATIC_CACHE)?.keys() ?? [])]).toEqual([`${ORIGIN}${path}`]);
+    });
     const offlineHtml = `<!doctype html><link rel="stylesheet" href="/_next/static/css/app.css">
       <script src="/_next/static/chunks/main.js"></script>
       <script src="/_next/static/chunks/tracked.js?v=1"></script>`;
@@ -374,4 +390,26 @@ it("embeds the scanner worker as executable self-contained JavaScript without to
   expect(addEventListener.mock.calls.filter(([type]) => type === "fetch")).toHaveLength(1);
   expect(addEventListener.mock.calls.filter(([type]) => type === "message")).toHaveLength(3);
   expect(open).not.toHaveBeenCalled();
+});
+
+describe("worker transfer encoding", () => {
+  it("compresses the complete public script without changing update semantics", async () => {
+    const response = serviceWorkerResponse(null, "gzip, deflate, br");
+    expect(response.headers.get("Content-Encoding")).toBe("gzip");
+    expect(response.headers.get("Vary")).toBe("Accept-Encoding");
+    expect(response.headers.get("Cache-Control")).toBe("no-cache, no-store, must-revalidate");
+    expect(response.headers.get("Service-Worker-Allowed")).toBe("/");
+    const bytes = Buffer.from(await response.arrayBuffer());
+    expect(gunzipSync(bytes).toString()).toBe(serviceWorkerSource());
+    expect(bytes.byteLength).toBeLessThan(Buffer.byteLength(serviceWorkerSource()));
+  });
+  it.each(["", "br", "gzip;q=0, *;q=1", "gzip;q=0.000", "notgzip"])(
+    "retains identity for unsupported or refused gzip: %s",
+    async (encoding) => {
+      const response = serviceWorkerResponse(null, encoding);
+      expect(response.headers.get("Content-Encoding")).toBeNull();
+      expect(response.headers.get("Vary")).toBe("Accept-Encoding");
+      expect(await response.text()).toBe(serviceWorkerSource());
+    },
+  );
 });

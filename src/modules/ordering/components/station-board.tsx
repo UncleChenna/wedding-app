@@ -430,13 +430,13 @@ function TicketCard({
         </ul>
         {ticket.note ? (
           <p>
-            <span className="text-sm tracking-widest uppercase">Note</span>
+            <span className="text-lg tracking-widest uppercase">Note</span>
             <span className="block">{ticket.note}</span>
           </p>
         ) : null}
         {"dietary" in ticket && ticket.dietary.length > 0 ? (
           <div className="rounded-md border border-warning bg-warning-subtle p-4 text-warning-subtle-foreground">
-            <p className="text-sm font-medium tracking-widest uppercase">Dietary at this table</p>
+            <p className="text-lg font-medium tracking-widest uppercase">Dietary at this table</p>
             <ul className="mt-2 flex flex-col gap-1">
               {ticket.dietary.map((row) => (
                 <li key={`${row.guest}-${row.note}`}>

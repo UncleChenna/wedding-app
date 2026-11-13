@@ -9,7 +9,7 @@ labels: [infra, pwa, test]
 module: ops
 owner: ""
 agent: ""
-blocked_by: [TICKET-044, TICKET-050, TICKET-067, TICKET-068, TICKET-079, TICKET-080, TICKET-081, TICKET-085, TICKET-087, TICKET-092, TICKET-093, TICKET-094, TICKET-097, TICKET-100, TICKET-101, TICKET-114, TICKET-116, TICKET-117, TICKET-118, TICKET-119, TICKET-120, TICKET-121, TICKET-124, TICKET-126, TICKET-127, TICKET-129, TICKET-130, TICKET-131, TICKET-132, TICKET-133, TICKET-134, TICKET-135, TICKET-136, TICKET-137, TICKET-138, TICKET-140, TICKET-146, TICKET-148, TICKET-153, TICKET-166, TICKET-174, TICKET-180, TICKET-012, TICKET-038, TICKET-176, TICKET-206, TICKET-201, TICKET-231]
+blocked_by: [TICKET-008, TICKET-044, TICKET-050, TICKET-067, TICKET-068, TICKET-079, TICKET-080, TICKET-081, TICKET-085, TICKET-092, TICKET-093, TICKET-094, TICKET-097, TICKET-100, TICKET-101, TICKET-114, TICKET-116, TICKET-117, TICKET-118, TICKET-119, TICKET-120, TICKET-124, TICKET-126, TICKET-129, TICKET-130, TICKET-131, TICKET-132, TICKET-133, TICKET-134, TICKET-135, TICKET-136, TICKET-137, TICKET-140, TICKET-145, TICKET-153, TICKET-166, TICKET-174, TICKET-180, TICKET-012, TICKET-038, TICKET-176, TICKET-231]
 blocks: [TICKET-157, TICKET-162, TICKET-164]
 branch: ""
 pr: ""
@@ -37,6 +37,8 @@ Full wedding-day app release after the earlier invitation release TICKET-176. Se
 
 ## Acceptance criteria
 
+- [ ] TICKET-008 final domain choice, >=2400px hero and square assets, both-partner publication rights and final visual approval are recorded; TICKET-146 confirms actual domain ownership/DNS/HTTPS. Stock-preview permission alone is not final launch approval.
+
 - [ ] Production smoke passes for the domain and all mandatory invitation, check-in, ordering and admin flows.
 - [ ] Manifest/HTTPS/worker checks pass and TICKET-114 real iOS/Android install evidence applies to this release; no Lighthouse PWA score is required.
 - [ ] Backup/restore, rollback, queue-safe upgrades and security/device gates have passing prerequisite evidence.
@@ -53,6 +55,8 @@ Full wedding-day app release after the earlier invitation release TICKET-176. Se
 - `CHANGELOG.md`
 
 ## Notes / decisions
+
+- 2026-11-13 — TICKET-236: Preview/theme implementation is independent of final approvals; all original release checks remain required, with TICKET-008 now an explicit direct prerequisite.
 
 _Agents append dated notes here while working._
 

@@ -1,5 +1,5 @@
 {
-  "id": "2b820a41-42fe-47c9-b07f-5a75297d6c3e",
+  "id": "3e569a36-80a3-4039-bc66-b991a0e0fa00",
   "prevId": "d217a341-3de6-47b3-b7c1-e2f9e253c679",
   "version": "7",
   "dialect": "postgresql",
@@ -239,6 +239,18 @@
         },
         "dress_code": {
           "name": "dress_code",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "wifi_name": {
+          "name": "wifi_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "wifi_password": {
+          "name": "wifi_password",
           "type": "text",
           "primaryKey": false,
           "notNull": false
@@ -1330,21 +1342,6 @@
           "primaryKey": false,
           "notNull": false
         },
-        "push_status": {
-          "name": "push_status",
-          "type": "order_alert_status",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'pending'"
-        },
-        "push_attempts": {
-          "name": "push_attempts",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "default": 0
-        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp with time zone",
@@ -1395,33 +1392,6 @@
           "concurrently": false,
           "method": "btree",
           "with": {}
-        },
-        "order_alerts_push_pending_idx": {
-          "name": "order_alerts_push_pending_idx",
-          "columns": [
-            {
-              "expression": "push_status",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "station",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "created_at",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
         }
       },
       "foreignKeys": {
@@ -1446,10 +1416,6 @@
         "order_alerts_attempts": {
           "name": "order_alerts_attempts",
           "value": "\"order_alerts\".\"attempts\" between 0 and 100"
-        },
-        "order_alerts_push_attempts": {
-          "name": "order_alerts_push_attempts",
-          "value": "\"order_alerts\".\"push_attempts\" between 0 and 5"
         },
         "order_alerts_message": {
           "name": "order_alerts_message",
@@ -2795,137 +2761,6 @@
         "staff_pin_attempts_failures_range": {
           "name": "staff_pin_attempts_failures_range",
           "value": "\"staff_pin_attempts\".\"failures\" between 0 and 5"
-        }
-      },
-      "isRLSEnabled": true
-    },
-    "public.staff_push_subscriptions": {
-      "name": "staff_push_subscriptions",
-      "schema": "",
-      "columns": {
-        "device_id": {
-          "name": "device_id",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "staff_id": {
-          "name": "staff_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "station": {
-          "name": "station",
-          "type": "station",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "credential_version": {
-          "name": "credential_version",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "endpoint": {
-          "name": "endpoint",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "p256dh": {
-          "name": "p256dh",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "auth": {
-          "name": "auth",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "expires_at": {
-          "name": "expires_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "last_delivered_at": {
-          "name": "last_delivered_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {
-        "staff_push_endpoint_key": {
-          "name": "staff_push_endpoint_key",
-          "columns": [
-            {
-              "expression": "endpoint",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {
-        "staff_push_subscriptions_device_id_registered_devices_id_fk": {
-          "name": "staff_push_subscriptions_device_id_registered_devices_id_fk",
-          "tableFrom": "staff_push_subscriptions",
-          "tableTo": "registered_devices",
-          "columnsFrom": [
-            "device_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "staff_push_subscriptions_staff_id_staff_id_fk": {
-          "name": "staff_push_subscriptions_staff_id_staff_id_fk",
-          "tableFrom": "staff_push_subscriptions",
-          "tableTo": "staff",
-          "columnsFrom": [
-            "staff_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {
-        "staff_push_endpoint_length": {
-          "name": "staff_push_endpoint_length",
-          "value": "char_length(\"staff_push_subscriptions\".\"endpoint\") between 1 and 2048"
-        },
-        "staff_push_key_format": {
-          "name": "staff_push_key_format",
-          "value": "\"staff_push_subscriptions\".\"p256dh\" ~ '^B[A-Za-z0-9_-]{86}$' and \"staff_push_subscriptions\".\"auth\" ~ '^[A-Za-z0-9_-]{22}$'"
-        },
-        "staff_push_credential_version": {
-          "name": "staff_push_credential_version",
-          "value": "\"staff_push_subscriptions\".\"credential_version\" > 0"
         }
       },
       "isRLSEnabled": true

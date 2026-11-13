@@ -71,6 +71,12 @@ export const appRoutes = {
     audience: "admin",
     access: "admin",
   },
+  adminTableCards: {
+    path: "/admin/guests/seating/cards",
+    label: "Table cards",
+    audience: "admin",
+    access: "admin",
+  },
   adminGatePrint: {
     path: "/admin/guests/print",
     label: "Print gate list",
@@ -102,6 +108,12 @@ export const appRoutes = {
     access: "admin",
   },
   adminMenu: { path: "/admin/menu", label: "Menu", audience: "admin", access: "admin" },
+  adminDesign: {
+    path: "/admin/design",
+    label: "Invitation design",
+    audience: "admin",
+    access: "admin",
+  },
   adminThemes: { path: "/admin/themes", label: "Themes", audience: "admin", access: "admin" },
   adminSettings: { path: "/admin/settings", label: "Settings", audience: "admin", access: "admin" },
   adminStaff: { path: "/admin/staff", label: "Staff", audience: "admin", access: "admin" },

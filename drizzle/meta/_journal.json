@@ -250,8 +250,22 @@
     {
       "idx": 35,
       "version": "7",
-      "when": 1794554339172,
-      "tag": "0035_staff-push",
+      "when": 1794555713560,
+      "tag": "0035_wifi-settings",
+      "breakpoints": true
+    },
+    {
+      "idx": 36,
+      "version": "7",
+      "when": 1794563453830,
+      "tag": "0036_invitation-design",
+      "breakpoints": true
+    },
+    {
+      "idx": 37,
+      "version": "7",
+      "when": 1794567271472,
+      "tag": "0037_staff-push",
       "breakpoints": true
     }
   ]

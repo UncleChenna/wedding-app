@@ -1,5 +1,8 @@
+import "@/modules/shared/browser/validation-runtime";
+
 import { z } from "zod";
 import { createRoot } from "react-dom/client";
+import { ServiceWorkerRegistration } from "@/modules/shared/components/service-worker-registration";
 import { GuestSnapshotScanner } from "../components/guest-snapshot-scanner";
 import { OfflineScannerSession } from "../components/offline-scanner-session";
 
@@ -23,6 +26,7 @@ if (container) {
           Offline scanner loaded. Open the camera when you’re ready.
         </p>
       </header>
+      <ServiceWorkerRegistration />
       <OfflineScannerSession
         expiresAt={expiresAt}
         session={container.dataset.session ?? ""}

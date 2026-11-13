@@ -1,4 +1,5 @@
 import "server-only";
+import { readBoundedJson } from "@/modules/shared/server/bounded-json";
 import { z } from "zod";
 import { unstable_rethrow } from "next/navigation";
 import { logger } from "@/modules/shared/lib/logger";
@@ -24,16 +25,10 @@ export async function scanReadResponse(request: Request, deps: Dependencies): Pr
     const origin = new URL(request.url).origin;
     if (request.headers.get("origin") !== origin)
       return Response.json({ state: "invalid" }, { status: 403, headers });
-    const text = await request.text();
-    if (new TextEncoder().encode(text).byteLength > 8192)
+    const data = await readBoundedJson(request, 8192);
+    if (data.status !== "valid")
       return Response.json({ state: "invalid" }, { status: 400, headers });
-    let data: unknown;
-    try {
-      data = JSON.parse(text);
-    } catch {
-      data = null;
-    }
-    const parsed = input.safeParse(data);
+    const parsed = input.safeParse(data.value);
     if (!parsed.success) return Response.json({ state: "invalid" }, { status: 400, headers });
     const now = Date.now();
     const reportedAt = new Date(parsed.data.reportedAt ?? now);

@@ -9,7 +9,7 @@ labels: [human]
 module: ops
 owner: ""
 agent: ""
-blocked_by: [TICKET-051, TICKET-138, TICKET-177, TICKET-158, TICKET-176]
+blocked_by: [TICKET-051, TICKET-114, TICKET-177, TICKET-158, TICKET-176]
 blocks: [TICKET-164]
 branch: ""
 pr: ""

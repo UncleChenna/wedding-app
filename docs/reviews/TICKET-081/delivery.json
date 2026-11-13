@@ -1,0 +1,11 @@
+{
+  "elapsedMs": 378.47499999999945,
+  "limitMs": 2000,
+  "profile": {
+    "latency": 150,
+    "downloadThroughput": 200000,
+    "uploadThroughput": 93750
+  },
+  "matchingBroadcastBeforeVisible": true,
+  "persistedQuantity": 1
+}

@@ -1,7 +1,7 @@
 import { randomBytes, createPrivateKey, createPublicKey } from "node:crypto";
 import jsQR from "jsqr";
 import { verifyGatePass } from "../src/modules/checkin/lib/gate-token";
-import { mkdirSync, readFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync } from "node:fs";
 import postgres, { type Sql } from "postgres";
 import { test, expect } from "@playwright/test";
 import { assertDatabaseTarget } from "../scripts/database-target";
@@ -16,6 +16,7 @@ test.describe("own offline pass", () => {
     "Requires isolated fixtures and ephemeral signing keys",
   );
   let db: Sql;
+  let createdSettings = false;
   const ids: string[] = [];
   async function fixture(name: string) {
     const token = randomBytes(32).toString("base64url");
@@ -29,20 +30,28 @@ test.describe("own offline pass", () => {
     return { id: row.id, path: "/i/" + token };
   }
   test.beforeAll(async () => {
-    process.loadEnvFile(".env.local");
-    const meta = JSON.parse(readFileSync(".harness/worktree.json", "utf8")) as { path: string };
-    expect(meta.path).toBe(process.cwd());
+    if (existsSync(".env.local")) process.loadEnvFile(".env.local");
+    if (existsSync(".harness/worktree.json")) {
+      const meta = JSON.parse(readFileSync(".harness/worktree.json", "utf8")) as { path: string };
+      expect(meta.path).toBe(process.cwd());
+    } else if (process.env.CI !== "true" || process.env.GITHUB_ACTIONS !== "true") {
+      throw new Error("Offline pass fixtures require a managed worktree or hosted CI checkout");
+    }
     assertDatabaseTarget(process.env.DATABASE_URL ?? "", { localOnly: true });
     db = postgres(process.env.DATABASE_URL ?? "", { max: 2 });
     const settings = await db`select venue from event_settings where id=1`;
     if (settings.length && settings[0]?.venue !== "RSVP browser test only")
       throw new Error("Refusing non-test settings");
-    await db`insert into event_settings(id,time_zone,venue) values(1,'Etc/UTC','RSVP browser test only') on conflict(id) do nothing`;
+    const inserted =
+      await db`insert into event_settings(id,time_zone,venue,event_date) values(1,'Etc/UTC','RSVP browser test only','2099-12-19') on conflict(id) do nothing returning id`;
+    createdSettings = inserted.length === 1;
   });
   test.afterAll(async () => {
     if (db) {
       try {
         if (ids.length) await db`delete from invitations where id in ${db(ids)}`;
+        if (createdSettings)
+          await db`delete from event_settings where id=1 and venue='RSVP browser test only'`;
       } finally {
         await db.end();
       }
@@ -51,7 +60,7 @@ test.describe("own offline pass", () => {
   test("first view saves only this pass; offline reload, themes, eviction and reconnect revocation", async ({
     page,
     context,
-  }) => {
+  }, info) => {
     const a = await fixture("Ada Offline");
     const b = await fixture("Uche Private");
     await page.addInitScript(() => {
@@ -75,7 +84,12 @@ test.describe("own offline pass", () => {
         await applyTheme(page, theme);
         await savedHint.scrollIntoViewIfNeeded();
         expect(await scanA11y(page)).toEqual([]);
-        const dir = "docs/reviews/TICKET-107/" + theme.id;
+        const dir =
+          (process.env.OFFLINE_PASS_REVIEW_DIR ?? "docs/reviews/TICKET-107") +
+          "/" +
+          info.project.name +
+          "/" +
+          theme.id;
         mkdirSync(dir, { recursive: true });
         await page.screenshot({ path: dir + "/online-" + width + ".png" });
       }
@@ -146,13 +160,26 @@ test.describe("own offline pass", () => {
         await button.focus();
         await expect(button).toBeFocused();
         expect((await button.boundingBox())?.height).toBeGreaterThanOrEqual(44);
-        const dir = "docs/reviews/TICKET-107/" + theme.id;
+        const dir =
+          (process.env.OFFLINE_PASS_REVIEW_DIR ?? "docs/reviews/TICKET-107") +
+          "/" +
+          info.project.name +
+          "/" +
+          theme.id;
         mkdirSync(dir, { recursive: true });
         await page.screenshot({ path: dir + "/" + width + ".png", fullPage: true });
       }
-    await page.getByRole("button", { name: "Refresh pass" }).press("Enter");
+    // The timestamp is unchanged offline and can match the old document before reload.
+    // Await the real refresh navigation before testing a different private URL.
+    await Promise.all([
+      page.waitForEvent("framenavigated", (frame) => frame === page.mainFrame()),
+      page.getByRole("button", { name: "Refresh pass" }).press("Enter"),
+    ]);
+    await page.waitForLoadState("domcontentloaded");
+    expect(new URL(page.url()).pathname).toBe(a.path);
     await expect(page.locator("time")).toHaveAttribute("datetime", refreshed ?? "");
     await page.goto(b.path);
+    expect(new URL(page.url()).pathname).toBe(b.path);
     await expect(page.getByRole("heading", { name: "You're offline" })).toBeVisible();
     await expect(page.getByText("Ada Offline", { exact: true })).toHaveCount(0);
     await page.goto(a.path);

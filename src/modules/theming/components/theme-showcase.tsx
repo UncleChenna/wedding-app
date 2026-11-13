@@ -1,3 +1,4 @@
+import { WorkerUpdateExamples } from "@/modules/shared/components/worker-update-prompt";
 import { InstallPrompt } from "@/modules/shared/components/install-prompt";
 import { IosInstallGuide } from "@/modules/shared/components/ios-install-guide";
 import { StaffSignIn } from "@/modules/shared/components/staff-sign-in";
@@ -356,6 +357,7 @@ export function ThemeShowcase({ theme, active }: { theme: Theme; active: boolean
             </div>
           </div>
         </div>
+        <WorkerUpdateExamples />
       </ToastProvider>
     </section>
   );
