@@ -2,7 +2,7 @@
 id: TICKET-238
 title: Serialize camera reads while a scan response is pending
 epic: quality
-status: in_review
+status: in_progress
 priority: high
 estimate: S
 labels: [test]
@@ -69,3 +69,4 @@ TICKET-118's extended real camera audit observed two zero-admission not_rsvped e
 - 2026-11-13 — todo → claimed — divine (codex)
 - 2026-11-13 — todo → in_progress — divine (codex)
 - 2026-11-13 — in_progress → in_review — divine (codex)
+- 2026-11-13 — in_review → in_progress — divine (codex) — Coordinated handoff: integrate verified TICKET-242 CI repair and current develop, retaining reviewed delayed-read regression and release dependency.

@@ -1,3 +1,5 @@
+import "@/modules/shared/browser/validation-runtime";
+
 import { z } from "zod";
 import { createRoot } from "react-dom/client";
 import { ServiceWorkerRegistration } from "@/modules/shared/components/service-worker-registration";

@@ -17,6 +17,7 @@ const selected = {
   verify: true,
   database: outputs.database === "true",
   "guest-journey": outputs.guest === "true",
+  "visual-regression": outputs.guest === "true",
   "camera-decoding": outputs.camera === "true",
   "admin-journey": outputs.admin === "true",
 };

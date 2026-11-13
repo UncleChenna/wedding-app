@@ -23,6 +23,7 @@ The new unit regression fails before repair (three resolver calls instead of one
 - Production build:pass.
 - Actual mobile/desktop delayed-response matrix:2 pass in18.0s; first response held4seconds after server logging, exactly one observation per verdict, no new admission.
 - Independent source review: no blocker; required hosted CI pending.
+- Integrated develop5c60dda9 with the merged TICKET-242 CI repair. The only conflict was the release dependency list: retain current develop’s consolidated list and add238. Independent review confirms no current prerequisite was removed; scanner source and delayed-response assertions are unchanged. Fresh integrated checks remain pending.
 
 # Risks and rollout
 

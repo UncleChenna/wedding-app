@@ -68,6 +68,9 @@ export function PartyForm({ token, details }: { token: string; details: PartyDet
       <form
         ref={container}
         action={action}
+        // Server actions reset native controls after completion. These fields remain
+        // controlled by the saved/draft people state; a native reset can clear selects.
+        onReset={(event) => event.preventDefault()}
         className="mt-8 space-y-8 pb-[env(safe-area-inset-bottom)]"
       >
         <input type="hidden" name="token" value={token} />
