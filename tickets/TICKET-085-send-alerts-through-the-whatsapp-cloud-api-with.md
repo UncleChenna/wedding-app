@@ -9,7 +9,7 @@ labels: [backend]
 module: ordering
 owner: ""
 agent: ""
-blocked_by: [TICKET-083, TICKET-084, TICKET-086, TICKET-076]
+blocked_by: [TICKET-084, TICKET-086, TICKET-076]
 blocks: [TICKET-154]
 branch: ""
 pr: ""
@@ -65,6 +65,9 @@ See: [ORD-9 WhatsApp order alerts](../docs/prd.md#ord-9--whatsapp-order-alerts-m
 
 _Agents append dated notes here while working._
 - 2026-11-12 (unclechenna, claude): TICKET-228 merged TICKET-087 into this ticket (all unstarted) to cut per-ticket overhead. Their scope, criteria and dependencies are above; the merged tickets are cancelled.
+- 2026-11-13 (unclechenna, claude): owner approved building this before the WhatsApp number exists. TICKET-083 no
+  longer blocks the build: the sender stays off until its settings are set and is tested against a mocked Cloud
+  API. The manual live-message criterion still needs TICKET-083 before this ticket is done.
 
 ## Activity log
 
