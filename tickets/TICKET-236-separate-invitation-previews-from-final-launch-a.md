@@ -2,7 +2,7 @@
 id: TICKET-236
 title: Separate invitation previews from final launch approvals
 epic: design-system
-status: in_progress
+status: in_review
 priority: urgent
 estimate: S
 labels: [docs]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: []
 blocks: []
 branch: TICKET-236
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/187
 created: 2026-11-13
 updated: 2026-11-13
 started: 2026-11-13
@@ -65,3 +65,4 @@ The approved invitation preview can be built before final photographs and domain
 - 2026-11-13 — new → todo — divine (codex)
 - 2026-11-13 — todo → claimed — divine (codex)
 - 2026-11-13 — todo → in_progress — divine (codex)
+- 2026-11-13 — in_progress → in_review — divine (codex)
