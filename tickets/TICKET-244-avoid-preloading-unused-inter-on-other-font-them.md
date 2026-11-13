@@ -2,7 +2,7 @@
 id: TICKET-244
 title: Avoid preloading unused Inter on other font themes
 epic: quality
-status: in_progress
+status: in_review
 priority: high
 estimate: S
 labels: [frontend, test]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: []
 blocks: []
 branch: TICKET-244
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/204
 created: 2026-11-13
 updated: 2026-11-13
 started: 2026-11-13
@@ -69,4 +69,4 @@ TICKET-116’s actual hero baseline on develop `21722cb97d525a683e0fcd85a4007bbd
 - 2026-11-13 — new → todo — divine
 - 2026-11-13 — todo → claimed — divine (codex)
 - 2026-11-13 — todo → in_progress — divine (codex)
-
+- 2026-11-13 — in_progress → in_review — divine (codex)
