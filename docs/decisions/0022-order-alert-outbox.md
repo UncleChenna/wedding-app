@@ -65,6 +65,49 @@ Rejected:
 - **The secret lives in `cron.job`:** it's in the scheduled command, readable by database administrators only.
   Rotating it is one re-run of `pnpm alerts:schedule`.
 
+## TICKET-085 production sender — 2026-11-13
+
+The production route now uses a configured WhatsApp Cloud API template sender. The historical logging
+sender is retained for development only; it is no longer used by the route. Missing or incomplete
+provider configuration leaves pending alerts untouched; the route answers 503 only when neither WhatsApp nor
+browser push is configured.
+
+This supersedes the original network-inside-transaction production delivery guarantee. The drain
+locks pending rows, selects one due message (whole order lines, up to 1024 characters), snapshots
+opted-in recipients, and commits a `failed` reservation before contacting Meta. It then marks the
+reserved rows `sent` only when every distinct recipient number receives API acceptance. The next
+drain cannot claim these rows again. A crash, timeout, partial acceptance or failed acceptance write
+leaves a visible failure, including the unavoidable crash-before-send window. The board remains the
+source of truth; there is no automatic retry of an uncertain POST and no exactly-once delivery claim.
+An individual order exceeding the template limit is visibly failed without truncation or HTTP.
+Later messages remain pending for later scheduled ticks. Large backlogs may exceed the original
+60-second notification target; this must be checked in the staff-phone/load rehearsal.
+
+Explicit structured transient Graph rejections allow at most three retries (four requests), with
+500/1000/2000ms backoff and bounded Retry-After handling. A bare HTTP500, malformed acceptance,
+transport failure or timeout is uncertain and is never automatically retried. A drain has a 20-second
+provider budget inside a 30-second route allowance. Every attempt rechecks recorded opt-in and
+revocation for that station/phone; duplicate staff records sharing a phone get one message. The
+final consent check and external provider acceptance cannot be one atomic transaction.
+
+Use an approved utility template with exactly one body text parameter; the sender flattens newlines
+and tabs to spaces, without truncating instructions. The API version is explicit configuration, not
+a guessed future default. No callback endpoint is added: asynchronous provider delivery receipts are
+not certified by this implementation, and repeated callbacks cannot trigger another send. Staff UI
+uses neutral "recorded as sent" wording because older logging-only rows also used `sent`; API
+acceptance itself does not establish delivery on a phone.
+
+Provider configuration is server-only and documented in `.env.example`. No live account, message,
+payment or migration is created by this ticket. Deployment starts disabled; enable only after
+TICKET-083 supplies the account, approved template and opted-in staff test recipient. Rollback:
+clear provider configuration or remove the schedule; orders and board access continue. Preserve
+failed rows for investigation and do not mass-reset them to pending.
+
+References: [Meta template messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/template-messages),
+[Meta error codes](https://developers.facebook.com/documentation/business-messaging/whatsapp/support/error-codes).
+The error-code reference was reviewed on 2026-11-13; the template page rate-limited automated access.
+Live template compatibility and phone receipt remain mandatory setup evidence, not a claimed result.
+
 ## TICKET-112 — optional browser push
 
 The same committed order-alert row now has independent push status and attempt count. The drain runs the two delivery channels independently. A WhatsApp failure cannot consume or prevent a browser notification, and push never blocks order creation. Generic notices coalesce per station and device; they contain no guest or order details.

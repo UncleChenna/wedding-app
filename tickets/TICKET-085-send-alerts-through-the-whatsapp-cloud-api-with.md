@@ -7,18 +7,18 @@ priority: high
 estimate: L
 labels: [backend]
 module: ordering
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-084, TICKET-086, TICKET-076]
 blocks: [TICKET-154]
-branch: ""
+branch: TICKET-085
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-13
+started: 2026-11-13
 completed: ""
-reason: ""
-resume_to: ""
+reason: "Implementation and local verification published in PR #208; live phone receipt requires TICKET-083 account, approved template and opted-in recipient. No real message sent."
+resume_to: in_progress
 ---
 
 # TICKET-085: Send alerts through the WhatsApp Cloud API with retries
@@ -42,11 +42,11 @@ See: [ORD-9 WhatsApp order alerts](../docs/prd.md#ord-9--whatsapp-order-alerts-m
 
 ## Acceptance criteria
 
-- [ ] A provider 500 retries up to 3 times then records failure (unit with mocked fetch).
+- [x] A provider 500 retries up to 3 times then records failure (unit with mocked fetch).
 - [ ] A live test message is received on a staff phone (manual, in notes).
 
-- [ ] Require recorded station opt-in before sending; provider timeout/retry must not duplicate a batch and failure leaves the board operational.
-- [ ] (from TICKET-087) A recorded failure shows a visible warning with text on the board (e2e).
+- [x] Require recorded station opt-in before sending; provider timeout/retry must not duplicate a batch and failure leaves the board operational.
+- [x] (from TICKET-087) A recorded failure shows a visible warning with text on the board (e2e).
 
 ## Test plan
 
@@ -69,6 +69,16 @@ _Agents append dated notes here while working._
   longer blocks the build: the sender stays off until its settings are set and is tested against a mocked Cloud
   API. The manual live-message criterion still needs TICKET-083 before this ticket is done.
 
+- 2026-11-13 (divine): Implemented configured template sending, committed one-message claims,
+  three retries for explicit structured transient500 rejections, no replay for uncertain/partial
+  outcomes, phone deduplication, and board health.25 focused tests including5 isolated PostgreSQL
+  cases pass; production build and four-theme375px warning/axe browser check pass. A bare500 is
+  ambiguous and deliberately not retried. No live message sent; TICKET-083's account/template and
+  consenting staff-phone check remain required before done. Detailed guarantee/rollback in ADR0022.
+
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-13 — todo → claimed — divine (codex)
+- 2026-11-13 — todo → in_progress — divine (codex)
+- 2026-11-13 — in_progress → blocked — divine (codex) — Implementation and local verification published in PR #208; live phone receipt requires TICKET-083 account, approved template and opted-in recipient. No real message sent.

@@ -3,11 +3,11 @@ import { db } from "@/modules/shared/server/db/client";
 import { serverEnv } from "@/modules/shared/server/env";
 import { logger } from "@/modules/shared/lib/logger";
 import { drainAuthorized } from "../lib/drain-auth";
-import { loggingSender } from "./alert-drain";
-import { drainOrderAlerts } from "./alert-outbox";
 import { staffPushConfig } from "./staff-push-config";
 import { drainStaffPush } from "./staff-push-outbox";
 import { sendStaffPush } from "./staff-push-send";
+import { whatsAppConfig } from "./whatsapp-config";
+import { drainWhatsAppAlerts } from "./whatsapp-drain";
 
 const noStore = { "cache-control": "no-store" };
 
@@ -20,10 +20,15 @@ export async function alertDrainResponse(request: Request): Promise<Response> {
   if (!secret) return Response.json({ error: "unavailable" }, { status: 503, headers: noStore });
   if (!drainAuthorized(request.headers.get("authorization"), secret))
     return Response.json({ error: "unauthorized" }, { status: 401, headers: noStore });
+  const whatsApp = whatsAppConfig();
+  const pushEnabled = Boolean(staffPushConfig());
+  // Each channel is optional and independent: an unconfigured channel leaves its rows untouched.
+  if (!whatsApp && !pushEnabled)
+    return Response.json({ error: "unavailable" }, { status: 503, headers: noStore });
   try {
     const [alerts, push] = await Promise.allSettled([
-      drainOrderAlerts(db, loggingSender),
-      staffPushConfig() ? drainStaffPush(db, sendStaffPush) : Promise.resolve(null),
+      whatsApp ? drainWhatsAppAlerts(db, whatsApp) : Promise.resolve(null),
+      pushEnabled ? drainStaffPush(db, sendStaffPush) : Promise.resolve(null),
     ]);
     if (alerts.status === "rejected" || push.status === "rejected") {
       logger.child({ module: "order-alerts" }).warn("An alert delivery channel could not complete");
