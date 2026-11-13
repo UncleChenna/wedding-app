@@ -40,12 +40,12 @@ TICKET-184 retains original pending admission evidence when a scanner session ex
 
 ## Acceptance criteria
 
-- [ ] Expired-session devices can export retained original records without gaining admission or ordinary sync authority; exports contain no invitation links, signing keys or dietary notes.
-- [ ] A current authorized admin explicitly reviews bounded, validated imported records and their original provenance before reconciliation; unauthorized or malformed imports cannot write admission evidence.
-- [ ] Duplicate imports preserve original UUIDs and yield the same server acknowledgement without double-counting admissions; conflicting UUID payloads are rejected and auditable.
-- [ ] Pending local evidence is cleared only after matching durable server acknowledgements or an explicitly audited administrative recovery disposition; interrupted imports and rejected rows remain recoverable.
-- [ ] The admin log links to recovery, reports per-record outcomes and returns to the log; docs describe export/import steps, evidence limitations and incident escalation.
-- [ ] TICKET-154 cannot complete until this recovery path and its automated expired-session regression pass.
+- [x] Expired-session devices can export retained original records without gaining admission or ordinary sync authority; exports contain no invitation links, signing keys or dietary notes.
+- [x] A current authorized admin explicitly reviews bounded, validated imported records and their original provenance before reconciliation; unauthorized or malformed imports cannot write admission evidence.
+- [x] Duplicate imports preserve original UUIDs and yield the same server acknowledgement without double-counting admissions; conflicting UUID payloads are rejected and auditable.
+- [x] Pending local evidence is cleared only after matching durable server acknowledgements or an explicitly audited administrative recovery disposition; interrupted imports and rejected rows remain recoverable.
+- [x] The admin log links to recovery, reports per-record outcomes and returns to the log; docs describe export/import steps, evidence limitations and incident escalation.
+- [x] TICKET-154 cannot complete until this recovery path and its automated expired-session regression pass.
 
 ## Test plan
 
@@ -62,6 +62,8 @@ TICKET-184 retains original pending admission evidence when a scanner session ex
 ## Notes / decisions
 
 - 2026-11-12 — Release-blocking follow-up to TICKET-184. Retention alone is not a working post-event recovery path; credentials remain bounded and no implementation is claimed here.
+
+- 2026-11-13 — Implemented reviewed recovery with bounded original evidence, transactional append-only audits and signed exact receipts. Seven focused units, fifteen scan-sync database tests and two authenticated production-browser journeys pass. Two local synthetic seed runs have matching counts. All four palettes checked at 375px plus 768/1280 screenshots; physical device transfer remains TICKET-201/TICKET-138 release QA. See `docs/plans/TICKET-231-pr.md` and `docs/pwa.md` for rollout and limitations.
 
 ## Activity log
 

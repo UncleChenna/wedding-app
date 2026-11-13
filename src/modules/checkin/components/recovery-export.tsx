@@ -18,7 +18,7 @@ export function RecoveryExport() {
       link.click();
       setTimeout(() => URL.revokeObjectURL(href), 1000);
       setMessage(
-        `Saved ${evidence.records.length} records for review. The originals remain on this device.${remaining ? ` ${remaining} more remain; repeat after this batch is confirmed.` : ""}`,
+        `Saved ${evidence.records.length} ${evidence.records.length === 1 ? "record" : "records"} for review. The originals remain on this device.${remaining ? ` ${remaining} more remain; repeat after this batch is confirmed.` : ""}`,
       );
     } catch {
       setMessage(
@@ -38,7 +38,7 @@ export function RecoveryExport() {
     try {
       const count = await applyRecoveryReceipt((await file.text()).trim());
       setMessage(
-        `${count} confirmed records cleared from this device. Unconfirmed records stay here.`,
+        `${count} confirmed ${count === 1 ? "record" : "records"} cleared from this device. Unconfirmed records stay here.`,
       );
     } catch {
       setMessage(
@@ -54,7 +54,7 @@ export function RecoveryExport() {
         This does not sign you in or admit anyone. Export the records, then give the file to your
         administrator through your agreed private channel.
       </p>
-      <Button disabled={busy} onClick={() => void save()}>
+      <Button size="lg" disabled={busy} onClick={() => void save()}>
         Save recovery file
       </Button>
       <div className="space-y-2">

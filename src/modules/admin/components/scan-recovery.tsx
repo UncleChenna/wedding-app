@@ -8,6 +8,12 @@ import {
   RECOVERY_BODY_LIMIT,
   type RecoveryExport,
 } from "@/modules/checkin/lib/recovery";
+const outcomeLabels: Record<string, string> = {
+  recorded: "Recorded",
+  duplicate: "Already recorded",
+  rejected: "Needs review",
+  retry: "Not confirmed",
+};
 export function ScanRecovery() {
   const [evidence, setEvidence] = useState<RecoveryExport | null>(null),
     [reviewed, setReviewed] = useState(false);
@@ -111,7 +117,8 @@ export function ScanRecovery() {
                 className="space-y-2 border-b border-border pb-6 break-words"
               >
                 <p className="font-semibold">
-                  {event.reportedPeople} people · {event.reportedResult.replaceAll("_", " ")}
+                  {event.reportedPeople} {event.reportedPeople === 1 ? "person" : "people"} ·{" "}
+                  {event.reportedResult.replaceAll("_", " ")}
                 </p>
                 <dl className="space-y-1">
                   <dt>Record</dt>
@@ -127,9 +134,12 @@ export function ScanRecovery() {
                 </dl>
                 {outcomes.find((row) => row.clientEventId === event.clientEventId) && (
                   <p>
-                    {outcomes
-                      .find((row) => row.clientEventId === event.clientEventId)
-                      ?.status.replaceAll("_", " ")}
+                    {
+                      outcomeLabels[
+                        outcomes.find((row) => row.clientEventId === event.clientEventId)?.status ??
+                          ""
+                      ]
+                    }
                   </p>
                 )}
               </li>
@@ -147,7 +157,7 @@ export function ScanRecovery() {
               I checked the original device, operator and records and approve this import.
             </span>
           </label>
-          <Button disabled={!reviewed || busy} onClick={() => void submit()}>
+          <Button size="lg" disabled={!reviewed || busy} onClick={() => void submit()}>
             {busy ? "Importing…" : "Import reviewed records"}
           </Button>
         </section>
@@ -163,7 +173,9 @@ export function ScanRecovery() {
             confirmed records will be cleared. Re-importing the same file produces a fresh receipt
             without counting records twice.
           </p>
-          <Button onClick={download}>Save confirmation receipt</Button>
+          <Button size="lg" onClick={download}>
+            Save confirmation receipt
+          </Button>
         </section>
       )}
       <Link

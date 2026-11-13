@@ -1,10 +1,32 @@
 import { createHmac, randomBytes, randomUUID } from "node:crypto";
 import { mkdirSync, readFileSync } from "node:fs";
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 import postgres, { type Sql } from "postgres";
 import { assertAdminJourneyTarget } from "../scripts/admin-journey-ci";
 import { signInAdmin } from "./support/admin-session";
 import { scanA11y } from "./support/axe";
+import { applyTheme } from "./support/theme";
+import { themes } from "../src/modules/theming/themes";
+async function reviewScreens(page: Page, folder: string, name: string, mobile: boolean) {
+  for (const theme of mobile ? themes : [themes[0]]) {
+    if (!theme) throw new Error("Missing theme");
+    await applyTheme(page, theme);
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+      true,
+    );
+    expect(await scanA11y(page)).toEqual([]);
+    await page.screenshot({ path: `${folder}/${name}-${theme.id}.png`, fullPage: true });
+  }
+  if (mobile) {
+    await page.setViewportSize({ width: 768, height: 900 });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+      true,
+    );
+    await page.screenshot({ path: `${folder}/${name}-768.png`, fullPage: true });
+    await page.setViewportSize({ width: 375, height: 900 });
+  }
+}
 
 test.use({ trace: "off", screenshot: "off", video: "off" });
 test.describe("reviewed recovery", () => {
@@ -23,6 +45,7 @@ test.describe("reviewed recovery", () => {
     request,
     context,
   }, info) => {
+    await page.setViewportSize({ width: info.project.name === "mobile" ? 375 : 1280, height: 900 });
     const actor = { staffId: randomUUID(), deviceId: randomBytes(32).toString("hex") },
       invitation = randomUUID();
     const event = {
@@ -134,7 +157,7 @@ test.describe("reviewed recovery", () => {
       "1 of 2 records confirmed",
     );
     await page.getByRole("button", { name: "Import reviewed records" }).click();
-    await expect(page.getByText("duplicate", { exact: true })).toBeVisible();
+    await expect(page.getByText("Already recorded", { exact: true })).toBeVisible();
     expect(
       await db`select id from scan_events where client_event_id=${event.clientEventId}`,
     ).toHaveLength(1);
@@ -143,8 +166,7 @@ test.describe("reviewed recovery", () => {
     ).toHaveLength(1);
     const folder = `docs/reviews/TICKET-231/${info.project.name}`;
     mkdirSync(folder, { recursive: true });
-    await expect(await scanA11y(page)).toEqual([]);
-    await page.screenshot({ path: `${folder}/admin-review.png`, fullPage: true });
+    await reviewScreens(page, folder, "admin-review", info.project.name === "mobile");
     const receiptDownload = page.waitForEvent("download");
     await page.getByRole("button", { name: "Save confirmation receipt" }).click();
     const receiptPath = await (await receiptDownload).path();
@@ -163,7 +185,7 @@ test.describe("reviewed recovery", () => {
       .getByLabel("Administrator’s receipt")
       .setInputFiles({ name: "receipt.txt", mimeType: "text/plain", buffer: receipt });
     await expect(page.getByRole("main").getByRole("status")).toContainText(
-      "1 confirmed records cleared",
+      "1 confirmed record cleared",
     );
     await page.reload();
     await page
@@ -178,7 +200,6 @@ test.describe("reviewed recovery", () => {
     if (!retainedPath) throw new Error("Missing retained evidence export");
     const retained = JSON.parse(readFileSync(retainedPath, "utf8"));
     expect(retained.records).toEqual([{ actor, event: conflicting }]);
-    await expect(await scanA11y(page)).toEqual([]);
-    await page.screenshot({ path: `${folder}/device-confirmed.png`, fullPage: true });
+    await reviewScreens(page, folder, "device-confirmed", info.project.name === "mobile");
   });
 });

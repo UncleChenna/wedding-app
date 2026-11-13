@@ -173,7 +173,7 @@ describe.runIf(process.env.RUN_ADMISSION_DB_TESTS === "1")("admission storage", 
         join pg_class c on c.oid=t.tgrelid join pg_namespace n on n.oid=c.relnamespace
         where n.nspname=${namespace} and t.tgname in
         ('rsvp_history_append_only','scan_events_append_only','scan_recovery_audits_append_only','admission_counters_no_removal','rsvp_admission_no_truncate','guest_admission_no_truncate')`;
-      expect(guards).toHaveLength(5);
+      expect(guards).toHaveLength(6);
       expect(guards.every((row) => row.tgenabled === "O")).toBe(true);
     });
   }, 10_000);

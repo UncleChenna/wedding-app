@@ -10,36 +10,37 @@ Recover retained offline admissions after gate credentials expire without restor
 
 - Add bounded strict export/import contracts and two-step admin authorization rechecked within each record transaction.
 - Preserve original UUID, actor and device provenance through existing reconciliation; atomically append recovery audit digests and scan-log notes before acknowledgement.
-- Add RLS-enabled append-only `scan_recovery_audits` with generated migrations0032/0033. No browser policies or existing admission guards change. The generated trigger declaration is falsely classified destructive by the hook; its exact path authorization is recorded under the user’s standing instruction, without changing the hook.
+- Add RLS-enabled append-only `scan_recovery_audits` with generated migrations 0032/0033. No browser policies or existing admission guards change. The generated trigger declaration is falsely classified destructive by the hook; its exact path authorization is recorded under the user’s standing instruction, without changing the hook.
 - Add public local-device recovery and protected admin review pages with entry/return links. Public recovery grants no staff/admin authority and uploads no records until an administrator explicitly imports them.
 - Sign receipts using a separate HMAC domain on the existing server secret. Online receipt verification validates expiry; local cleanup matches complete record identity before acknowledging.
-- Make TICKET-231 a direct release154 prerequisite; extend existing authenticated admin and scan-sync test lanes.
+- Make TICKET-231 a direct release TICKET-154 prerequisite; extend existing authenticated admin and scan-sync test lanes.
 
 # Acceptance criteria and evidence
 
-Implementation is in progress. Strict contracts, authorization, receipt integrity and durable reconciliation are covered. Actual browser export/import/cleanup, UI evidence, seed-repeat verification and final review remain before readiness.
+All six criteria have implementation and automated evidence: expired authority remains denied; explicit admin review and strict bounded input gate writes; original UUID replay is idempotent; exact signed receipts clear only committed records; entry/return links and operational documentation are present; TICKET-154 directly depends on this ticket.
 
 # Verification
 
 - Seven focused unit tests pass: bounded schemas, secret/duplicate rejection, explicit review, same-origin/admin enforcement, streamed-size cancellation, HMAC tampering/expiry and signed exact acknowledgement.
 - Fifteen actual scan-sync database tests pass, including revoked historical actor recovery, repeated import idempotency, rejected UUID conflict audit, authority loss and audit failure rollback.
-- Migrations applied twice; row counts identical; RLS enabled on all27 public tables.
-- Production build passes after correcting a test helper type. Initial browser run exposed an ambiguous status selector; scoped repair retains its assertion. The complete journey now passes mobile and desktop (2 tests,12.0s), including duplicate import, conflicting-record retention, forged receipt rejection, reload and idempotent exact cleanup. An intervening mobile MFA enrollment stall is preserved as an unclaimed failed run.
+- Ten historical migration/seed-guard tests pass on owned native PostgreSQL at the assigned port (0.8s). Prior Docker runs hit connection timeouts; no assertions/timeouts were weakened. The owned Supabase stack was stopped with its backup preserved after actual browser/database tests.
+- Migrations applied twice; row counts identical; RLS enabled on all 27 public tables.
+- Production build passes after correcting a test helper type. Initial browser run exposed an ambiguous status selector; scoped repair retains its assertion. The final production build and complete journey pass mobile and desktop (2 tests, 24.0s), including duplicate import, conflicting-record retention, forged receipt rejection, reload and idempotent exact cleanup. An intervening mobile MFA enrollment stall is preserved as an unclaimed failed run.
 - Independent critical-path review found no blocking authorization, transaction, signed-receipt or evidence-retention issue.
 
 # Risks and rollout
 
-Apply generated additive0032/0033 before the new API; no production application is performed here. Audit rows are append-only. Local synthetic seed reset temporarily disables only the named audit guard in the existing transaction, restores it before inserts, and must be verified before readiness. Concurrent migration numbering must be reconciled against latest develop before merge.
+Apply generated additive 0032/0033 before the new API; no production application is performed here. Audit rows are append-only. Local synthetic seed reset temporarily disables only the named audit guard in the existing transaction, restores it before inserts, and passed two synthetic seed runs with identical row counts. Concurrent migration numbering must be reconciled against latest develop before merge.
 
-Recovery files are untrusted claims, so an admin must check the original device/operator and explicitly approve. Deleted original staff/device rows cannot be reconstructed automatically. Full-origin loss cannot restore evidence. Receipts expire after24 hours; replaying the same reviewed import regenerates a receipt without double-counting. Pending/rejected/mismatched records remain local; do not clear browser data. Physical-phone file transfer remains release QA.
+Recovery files are untrusted claims, so an admin must check the original device/operator and explicitly approve. Deleted original staff/device rows cannot be reconstructed automatically. Full-origin loss cannot restore evidence. Receipts expire after 24 hours; replaying the same reviewed import regenerates a receipt without double-counting. Pending/rejected/mismatched records remain local; do not clear browser data. Physical-phone file transfer remains release QA.
 
 # Screenshots
 
-Pending actual authenticated browser evidence under `docs/reviews/TICKET-231/`.
+Actual authenticated screenshots: `docs/reviews/TICKET-231/mobile/` (both pages in four palettes at 375px, plus 768px) and `desktop/` (1280px). Fixtures contain synthetic identifiers only.
 
 # UI checklist
 
-Existing shared buttons, theme tokens, staff-size text, labelled file controls and return links are used. Automated keyboard/accessibility/mobile inspection and screenshots are pending; physical devices are unverified.
+Existing shared buttons, theme tokens, staff-size text, labelled file controls and return links are used. All-theme axe and overflow checks pass, with reduced-motion browser settings and labelled native controls. Screenshots were visually inspected. Physical device file transfer, dedicated keyboard-only journey and fresh Lighthouse/CLS measurements remain release QA; no claim is made that those manual checks passed.
 
 # Harness changes, if any
 
