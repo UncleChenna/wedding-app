@@ -2,7 +2,7 @@
 id: TICKET-233
 title: Recover merged tickets whose original PR was not recorded
 epic: quality
-status: in_review
+status: done
 priority: high
 estimate: S
 labels: [infra, test]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/177
 created: 2026-11-13
 updated: 2026-11-13
 started: 2026-11-13
-completed: ""
+completed: 2026-11-13
 reason: ""
 resume_to: ""
 ---
@@ -67,3 +67,4 @@ TICKET-076 was merged as PR140 while its ledger stayed in_progress with no PR UR
 - 2026-11-13 — todo → claimed — divine (codex)
 - 2026-11-13 — todo → in_progress — divine (codex)
 - 2026-11-13 — in_progress → in_review — divine (codex)
+- 2026-11-13 — in_review → done — divine (codex)
