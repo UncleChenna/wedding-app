@@ -9,8 +9,10 @@ describe("theme editor drafts", () => {
     expect(draft.id).toBe("wedding-light");
     expect(draft.pattern).toBeUndefined();
     expect(themeDraftProblem(draft)).toBeNull();
-    draft.colors.primary = preset.colors.foreground;
-    expect(preset.colors.primary).not.toBe(draft.colors.primary);
+    const originalPrimary = preset.colors.primary;
+    draft.colors.primary = preset.colors.secondary;
+    expect(draft.colors.primary).not.toBe(originalPrimary);
+    expect(preset.colors.primary).toBe(originalPrimary);
   });
   it("names failing contrast pairs and accepts curated preset tokens", () => {
     const draft = copyThemeDraft(getTheme("ivory-gold"), "wedding-light");

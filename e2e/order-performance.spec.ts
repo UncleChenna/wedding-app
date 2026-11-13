@@ -4,6 +4,7 @@ import postgres, { type Sql } from "postgres";
 import { expect, test } from "@playwright/test";
 import { assertDatabaseTarget } from "../scripts/database-target";
 import { setOrderingOpen } from "./support/ordering-open";
+import { boundedDiagnostic } from "./support/bounded-diagnostic";
 import { wireProxy } from "./support/wire-proxy";
 
 const table = randomInt(1_000_000, 2_000_000);
@@ -50,24 +51,40 @@ test.describe("order first-visit transfer budget", () => {
           viewport: info.project.use.viewport ?? { width: 375, height: 812 },
           colorScheme,
         });
-        const rows: { path: string; worker: boolean; bytes: number; status: number | undefined }[] =
-          [];
+        const rows: {
+          path: string;
+          worker: boolean;
+          bytes: number | null;
+          status: number | undefined;
+          unavailable?: "timeout" | "rejected";
+        }[] = [];
         const measurements: Promise<void>[] = [];
         let lastFinished = Date.now();
         context.on("requestfinished", (request) => {
           lastFinished = Date.now();
           measurements.push(
             (async () => {
-              const response = await request.response();
-              const sizes = await request.sizes();
-              // Chromium reports cached body size as -headers; their sum correctly
-              // records zero network transfer. Never clamp the components separately.
-              rows.push({
+              const identity = {
                 path: new URL(request.url()).pathname,
                 worker: Boolean(request.serviceWorker()),
-                bytes: sizes.responseBodySize + sizes.responseHeadersSize,
-                status: response?.status(),
-              });
+              };
+              const diagnostic = await boundedDiagnostic(
+                (async () => {
+                  const response = await request.response();
+                  const sizes = await request.sizes();
+                  // Cached body size can be -headers; the sum correctly records zero.
+                  return {
+                    bytes: sizes.responseBodySize + sizes.responseHeadersSize,
+                    status: response?.status(),
+                  };
+                })(),
+                3000,
+              );
+              rows.push(
+                diagnostic.available
+                  ? { ...identity, ...diagnostic.value }
+                  : { ...identity, bytes: null, status: undefined, unavailable: diagnostic.reason },
+              );
             })(),
           );
         });
@@ -105,7 +122,8 @@ test.describe("order first-visit transfer budget", () => {
           await expect.poll(() => wire.snapshot().pendingBytes).toBe(0);
           await Promise.all(measurements);
           const total = wire.snapshot().bytes;
-          const browserReported = rows.reduce((sum, row) => sum + row.bytes, 0);
+          const unavailableDiagnostics = rows.filter((row) => row.bytes === null).length;
+          const browserReported = rows.reduce((sum, row) => sum + (row.bytes ?? 0), 0);
           mkdirSync("docs/reviews/TICKET-081", { recursive: true });
           writeFileSync(
             `docs/reviews/TICKET-081/native-wire-${info.project.name}-${colorScheme}-${menu ? "menu" : "table"}.json`,
@@ -117,6 +135,8 @@ test.describe("order first-visit transfer budget", () => {
                 budget: 200_000,
                 total,
                 browserReported,
+                unavailableDiagnostics,
+                browserReportedComplete: unavailableDiagnostics === 0,
                 transport: "loopback HTTP/1 wire; no rewriting",
                 rows,
               },
@@ -133,6 +153,8 @@ test.describe("order first-visit transfer budget", () => {
                 budget: 200_000,
                 total,
                 browserReported,
+                unavailableDiagnostics,
+                browserReportedComplete: unavailableDiagnostics === 0,
                 transport: "loopback HTTP/1 wire; no rewriting",
                 rows,
               },
@@ -142,12 +164,18 @@ test.describe("order first-visit transfer budget", () => {
             contentType: "application/json",
           });
           expect(rows.some((row) => row.worker)).toBe(true);
-          expect(rows.every((row) => row.bytes >= 0)).toBe(true);
+          expect(
+            rows.every((row) => (row.bytes === null ? Boolean(row.unavailable) : row.bytes >= 0)),
+          ).toBe(true);
           expect(total).toBeGreaterThanOrEqual(browserReported);
           expect(total).toBeLessThanOrEqual(200_000);
         } finally {
-          await context.close();
-          await wire.close();
+          // Release proxy sockets even if Chromium context cleanup fails.
+          try {
+            await context.close();
+          } finally {
+            await wire.close();
+          }
         }
       });
     }

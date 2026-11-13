@@ -38,3 +38,7 @@ Run `pnpm exec tsx scripts/review-staff-accessibility.ts --build` in this manage
 ## Release requirements
 
 TICKET-201 retains physical event-device arm’s-length reading, realistic lighting, VoiceOver/TalkBack and software-keyboard checks. Record actual device/model/OS/browser/build and results before release. Desktop emulation, axe and CSS measurements do not replace them. Guest sharing, QR generation and guest performance are unchanged by this ticket.
+
+## Integration follow-up
+
+The first hosted guest job failed in the existing ordering-transfer diagnostic hang (run43389897703). Integrated develop97e67cd2, including the independently verified TICKET-237 diagnostic repair and TICKET-014 approved palette, without conflicts. Thirteen focused diagnostic/token-contrast tests pass. Original screenshots document the earlier reviewed palette; the integrated token changes are preserved unchanged from TICKET-014, not presented as newly captured staff screenshots. Hosted checks must pass on the updated head.
