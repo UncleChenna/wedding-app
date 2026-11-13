@@ -18,6 +18,8 @@ export async function AdminSettings() {
     venue: settings.venue ?? "",
     mapUrl: settings.mapUrl ?? "",
     dressCode: settings.dressCode ?? "",
+    wifiName: settings.wifiName ?? "",
+    wifiPassword: settings.wifiPassword ?? "",
     rsvpLockAt:
       settings.rsvpLockAt && settings.timeZone
         ? utcToZonedLocal(settings.rsvpLockAt, settings.timeZone)
