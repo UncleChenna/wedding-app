@@ -40,10 +40,10 @@ The approved invitation preview can be built before final photographs and domain
 
 ## Acceptance criteria
 
-- [ ] TICKET-014 and TICKET-038 no longer depend on final asset/domain approval; their implementation and verification requirements remain testable.
-- [ ] TICKET-008 preserves final asset, rights and couple visual approval requirements; TICKET-146 owns domain ownership evidence without a dependency cycle.
-- [ ] TICKET-099 describes preview/final asset semantics and both release tickets directly require TICKET-008.
-- [ ] Ticket validation and rendering pass with unchanged affected-ticket status/ownership/PR metadata.
+- [x] TICKET-014 and TICKET-038 no longer depend on final asset/domain approval; their implementation and verification requirements remain testable.
+- [x] TICKET-008 preserves final asset, rights and couple visual approval requirements; TICKET-146 owns domain ownership evidence without a dependency cycle.
+- [x] TICKET-099 describes preview/final asset semantics and both release tickets directly require TICKET-008.
+- [x] Ticket validation and rendering pass with unchanged affected-ticket status/ownership/PR metadata.
 
 ## Test plan
 
