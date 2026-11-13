@@ -39,11 +39,11 @@ The [offline pass contract](../docs/prd.md) requires one guest's cached pass to 
 
 ## Acceptance criteria
 
-- [ ] A stale online event cannot reopen a departing saved pass or override navigation to another invitation.
-- [ ] Manual Refresh still reloads offline by keyboard and pointer.
-- [ ] A genuine reconnect on the active page still refreshes and removes a revoked pass; history restoration re-enables active-page reconnect handling.
-- [ ] Actual browser regression retains exact B URL/no-A-content checks and the existing revocation/cache-empty assertions.
-- [ ] Focused lifecycle tests and existing offline-pass tests pass with unchanged privacy thresholds.
+- [x] A stale online event cannot reopen a departing saved pass or override navigation to another invitation.
+- [x] Manual Refresh still reloads offline by keyboard and pointer.
+- [x] A genuine reconnect on the active page still refreshes and removes a revoked pass; history restoration re-enables active-page reconnect handling.
+- [x] Actual browser regression retains exact B URL/no-A-content checks and the existing revocation/cache-empty assertions.
+- [x] Focused lifecycle tests and existing offline-pass tests pass with unchanged privacy thresholds.
 
 ## Test plan
 
@@ -66,3 +66,5 @@ The [offline pass contract](../docs/prd.md) requires one guest's cached pass to 
 - 2026-11-13 — created for confirmed runtime reconnect defect.
 - 2026-11-13 — todo → claimed — divine (codex)
 - 2026-11-13 — todo → in_progress — divine (codex)
+
+2026-11-13: Production build, 18 focused tests and both actual browser journeys pass; independent review clean. PR207 is published. Required hosted checks remain pending.
