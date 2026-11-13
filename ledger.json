@@ -3607,13 +3607,14 @@
     "WED-119": {
       "log": [
         "- 2026-11-13 — todo → claimed — divine (codex) — started ahead of TICKET-038 (in_progress)",
-        "- 2026-11-13 — todo → in_progress — divine (codex) — started ahead of TICKET-038 (in_progress)"
+        "- 2026-11-13 — todo → in_progress — divine (codex) — started ahead of TICKET-038 (in_progress)",
+        "- 2026-11-13 — in_progress → in_review — divine (codex)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-119",
-      "pr": "",
+      "pr": "https://github.com/UncleChenna/wedding-app/pull/193",
       "started": "2026-11-13",
       "completed": "",
       "updated": "2026-11-13",
