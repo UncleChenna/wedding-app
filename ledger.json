@@ -3228,15 +3228,16 @@
         "- 2026-11-12 — todo → in_progress — divine (codex)",
         "- 2026-11-12 — in_progress → in_review — divine (codex)",
         "- 2026-11-13 — in_review → in_progress — divine (codex) — Align private-cache smoke assertion with validated non-private queue identity marker",
-        "- 2026-11-13 — in_progress → in_review — divine (codex)"
+        "- 2026-11-13 — in_progress → in_review — divine (codex)",
+        "- 2026-11-13 — in_review → done — divine (codex)"
       ],
-      "status": "in_review",
+      "status": "done",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-184",
       "pr": "https://github.com/UncleChenna/wedding-app/pull/173",
       "started": "2026-11-12",
-      "completed": "",
+      "completed": "2026-11-13",
       "updated": "2026-11-13",
       "reason": "",
       "resume_to": ""
