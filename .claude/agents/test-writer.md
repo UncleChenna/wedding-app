@@ -7,7 +7,7 @@ model: inherit
 
 You write tests for this repo before the implementation exists. Read `AGENTS.md` first.
 
-Inputs: a ticket id (`pnpm t:show TICKET-NNN`) or a description with acceptance criteria.
+Inputs: a ticket file in `tickets/` or a description with acceptance criteria.
 
 Rules:
 
