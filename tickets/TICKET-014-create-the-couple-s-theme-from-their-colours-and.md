@@ -2,7 +2,7 @@
 id: TICKET-014
 title: Create the couple's theme from their approved colours
 epic: design-system
-status: in_review
+status: in_progress
 priority: urgent
 estimate: S
 labels: [design, frontend]
@@ -68,3 +68,4 @@ See: [How theming works](../docs/prd.md#how-theming-works) · [Open questions](.
 - 2026-11-13 — todo → claimed — divine (codex)
 - 2026-11-13 — todo → in_progress — divine (codex)
 - 2026-11-13 — in_progress → in_review — divine (codex)
+- 2026-11-13 — in_review → in_progress — divine (codex) — CI correctly requires regenerating preset-derived PWA icons after palette changes
