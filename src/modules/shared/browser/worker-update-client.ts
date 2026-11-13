@@ -95,6 +95,14 @@ export function watchWorkerUpdates(
   }
   container.addEventListener("controllerchange", controllerChanged);
   registration.addEventListener("updatefound", updateFound);
+  const windowHost = typeof window === "undefined" ? undefined : window;
+  const documentHost = typeof document === "undefined" ? undefined : document;
+  const visible = () => {
+    if (documentHost?.visibilityState === "visible") void refresh();
+  };
+  windowHost?.addEventListener("focus", refresh);
+  windowHost?.addEventListener("online", refresh);
+  documentHost?.addEventListener("visibilitychange", visible);
   const timer = setInterval(() => {
     void refresh();
   }, 10000);
@@ -157,6 +165,9 @@ export function watchWorkerUpdates(
       watchedInstaller?.removeEventListener("statechange", refresh);
       container.removeEventListener("controllerchange", controllerChanged);
       registration.removeEventListener("updatefound", updateFound);
+      windowHost?.removeEventListener("focus", refresh);
+      windowHost?.removeEventListener("online", refresh);
+      documentHost?.removeEventListener("visibilitychange", visible);
     },
   };
 }
