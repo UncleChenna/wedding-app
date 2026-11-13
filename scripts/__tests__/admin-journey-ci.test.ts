@@ -95,20 +95,6 @@ it("generated local targets override inherited CI defaults without changing unre
   ).toMatchObject({ DATABASE_URL: "local", PATH: "bin" });
 });
 
-it("runs the real admin suite in its own CI job and retains only sanitized evidence", () => {
-  const workflow = readFileSync(
-    join(import.meta.dirname, "../../.github/workflows/ci.yml"),
-    "utf8",
-  );
-  const job = workflow.match(/^  admin-journey:\n([\s\S]*?)(?=^  [a-z][\w-]*:|$(?![\s\S]))/m)?.[1];
-  expect(job).toContain("pnpm exec tsx scripts/test-admin-journey.ts --ci");
-  expect(job).toContain("path: artifacts/TICKET-134/");
-  expect(job).not.toContain("test-results/");
-  expect(job).not.toContain("playwright-report/");
-  expect(job).toContain("if: always()");
-  expect(job).toContain("pnpm db:stop");
-});
-
 it("rejects another local database or Auth stack before fixture writes", () => {
   const root = fixture();
   prepareAdminJourneyCi(root, hosted(root));

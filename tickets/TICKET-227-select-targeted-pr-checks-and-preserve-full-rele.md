@@ -2,7 +2,7 @@
 id: TICKET-227
 title: Select targeted PR checks and preserve full release verification
 epic: foundations
-status: in_review
+status: done
 priority: high
 estimate: L
 labels: [infra, test]

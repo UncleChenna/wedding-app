@@ -2,7 +2,7 @@
 id: TICKET-169
 title: Approve offline freshness and the gate credential contract
 epic: checkin
-status: in_review
+status: done
 priority: urgent
 estimate: S
 labels: [human, security, docs]

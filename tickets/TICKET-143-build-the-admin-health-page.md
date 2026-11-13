@@ -2,7 +2,7 @@
 id: TICKET-143
 title: Build the admin health page
 epic: observability
-status: in_review
+status: done
 priority: medium
 estimate: M
 labels: [frontend, backend]

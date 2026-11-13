@@ -2,7 +2,7 @@
 id: TICKET-112
 title: Send web push to staff boards where supported
 epic: pwa
-status: blocked
+status: in_review
 priority: low
 estimate: L
 labels: [pwa, backend]

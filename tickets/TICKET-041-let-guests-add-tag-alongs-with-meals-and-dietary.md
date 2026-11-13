@@ -2,7 +2,7 @@
 id: TICKET-041
 title: Let guests add tag-alongs with meals and dietary notes
 epic: invitations
-status: in_review
+status: done
 priority: urgent
 estimate: L
 labels: [frontend, backend]

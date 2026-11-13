@@ -2,7 +2,7 @@
 id: TICKET-010
 title: Add fixed semantic status tokens for valid, used and invalid
 epic: design-system
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [design, frontend]

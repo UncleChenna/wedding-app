@@ -2,7 +2,7 @@
 id: TICKET-036
 title: "Generate invitation tokens and the personal /i/[token] route"
 epic: invitations
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [backend, security]

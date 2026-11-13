@@ -2,7 +2,7 @@
 id: TICKET-089
 title: Build the guest list with RSVP status and filters
 epic: admin
-status: in_review
+status: done
 priority: urgent
 estimate: L
 labels: [frontend, backend]

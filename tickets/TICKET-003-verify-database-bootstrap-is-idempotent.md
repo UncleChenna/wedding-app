@@ -2,7 +2,7 @@
 id: TICKET-003
 title: Verify database bootstrap is idempotent
 epic: foundations
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [db, test]

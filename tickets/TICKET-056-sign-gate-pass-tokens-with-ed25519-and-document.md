@@ -2,7 +2,7 @@
 id: TICKET-056
 title: Sign gate pass tokens with Ed25519 and document key handling
 epic: checkin
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [security, backend]

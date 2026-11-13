@@ -2,7 +2,7 @@
 id: TICKET-195
 title: Wait for colour transitions after applying a theme in e2e helpers
 epic: quality
-status: in_review
+status: done
 priority: medium
 estimate: S
 labels: [test]

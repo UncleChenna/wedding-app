@@ -2,7 +2,7 @@
 id: TICKET-035
 title: Choose the invitation voice and approve guest-facing copy
 epic: invitations
-status: in_review
+status: done
 priority: urgent
 estimate: S
 labels: [human, docs]

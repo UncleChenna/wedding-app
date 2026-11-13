@@ -2,7 +2,7 @@
 id: TICKET-047
 title: Add Open Graph previews for IV links without guest details
 epic: invitations
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [frontend, design, security]

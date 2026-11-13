@@ -62,6 +62,7 @@ it("preserves font ranges, styles, fallbacks and selective preloading", () => {
     ],
   });
   expect(calls["--font-inter"]).toMatchObject({
+    preload: false,
     fallback: ["var(--font-inter-complete)"],
     src: [{ weight: "100 900", style: "normal" }],
   });

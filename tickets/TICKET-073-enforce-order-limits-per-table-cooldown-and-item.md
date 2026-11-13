@@ -2,7 +2,7 @@
 id: TICKET-073
 title: Enforce order limits per table, cooldown and item caps
 epic: ordering
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [backend, security]

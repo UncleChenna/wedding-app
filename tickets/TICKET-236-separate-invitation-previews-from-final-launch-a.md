@@ -2,7 +2,7 @@
 id: TICKET-236
 title: Separate invitation previews from final launch approvals
 epic: design-system
-status: in_review
+status: done
 priority: urgent
 estimate: S
 labels: [docs]

@@ -2,7 +2,7 @@
 id: TICKET-115
 title: Add automated accessibility checks to Playwright
 epic: quality
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [test, frontend]

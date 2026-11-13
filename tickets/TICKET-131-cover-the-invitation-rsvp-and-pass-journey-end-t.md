@@ -2,7 +2,7 @@
 id: TICKET-131
 title: Cover the invitation, RSVP and pass journey end to end
 epic: testing
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [test]

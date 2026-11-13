@@ -2,7 +2,7 @@
 id: TICKET-064
 title: Register and name scanner and board devices
 epic: checkin
-status: in_review
+status: done
 priority: medium
 estimate: S
 labels: [backend, frontend]

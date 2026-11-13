@@ -2,7 +2,7 @@
 id: TICKET-204
 title: Follow the device light/dark setting and polish every page for phones
 epic: design-system
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [frontend, design]

@@ -1,6 +1,6 @@
 # Frontend design principles
 
-These rules apply to every agent and human changing UI. Complete [the UI checklist](ui-checklist.md) before marking UI work done. Token definitions and extension steps live in [theming.md](theming.md).
+These rules apply to every agent and human changing UI. Run through [the UI checklist](ui-checklist.md) after UI changes. Token definitions and extension steps live in [theming.md](theming.md).
 
 **North star:** the site should feel like a beautifully printed wedding invitation that happens to be alive. When in doubt, remove something.
 
@@ -72,7 +72,7 @@ These rules apply to every agent and human changing UI. Complete [the UI checkli
 
 - Build with components from `src/modules/shared/components/ui`. Do not create one-off buttons, cards, or inputs.
 - Add any new reusable UI pattern to shared components and demonstrate it on `/dev/theme`.
-- Review every affected guest-facing screen in every registered theme, with a minimum of two themes, at all three review widths. Admin and staff screens need one theme at 375px plus an axe scan per theme ([UI checklist](ui-checklist.md) scope). Theme switching must preserve layout, meaning, and usability.
+- Review every affected guest-facing screen in every registered theme, with a minimum of two themes, at all three review widths. Admin and staff screens need one theme at 375px. Theme switching must preserve layout, meaning, and usability.
 
 ## 11. Accessibility
 

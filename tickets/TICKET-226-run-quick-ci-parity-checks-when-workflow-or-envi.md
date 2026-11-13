@@ -2,7 +2,7 @@
 id: TICKET-226
 title: Run quick CI parity checks when workflow or environment files change
 epic: foundations
-status: in_review
+status: done
 priority: high
 estimate: S
 labels: [infra, test]

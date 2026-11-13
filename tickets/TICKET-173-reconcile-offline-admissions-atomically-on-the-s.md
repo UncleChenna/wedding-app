@@ -2,7 +2,7 @@
 id: TICKET-173
 title: Reconcile offline admissions atomically on the server
 epic: checkin
-status: in_review
+status: done
 priority: high
 estimate: L
 labels: [backend, db, test]

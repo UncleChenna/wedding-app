@@ -2,7 +2,7 @@
 id: TICKET-200
 title: Build table entry and menu ordering frontend previews
 epic: ordering
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [frontend, design]
