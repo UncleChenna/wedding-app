@@ -48,3 +48,26 @@ it("requires explicit review and preserves every intent field in receipt identit
     }),
   );
 });
+it("normalizes legacy omitted kinds while distinguishing observations from admissions", () => {
+  const legacy = { ...record, event: { ...record.event, kind: undefined, inputMethod: undefined } };
+  expect(recoveryRecordIdentity(legacy)).toBe(recoveryRecordIdentity(record));
+  const observation = { ...legacy, event: { ...legacy.event, reportedPeople: 0 } };
+  expect(recoveryRecordIdentity(observation)).toBe(
+    recoveryRecordIdentity({
+      ...record,
+      event: { ...record.event, reportedPeople: 0, kind: "observation" },
+    }),
+  );
+  expect(recoveryRecordIdentity(observation)).not.toBe(recoveryRecordIdentity(legacy));
+  const named = {
+    ...record,
+    event: { ...record.event, invitationId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa" },
+  };
+  expect(recoveryRecordIdentity(named)).toBe(
+    recoveryRecordIdentity({
+      ...named,
+      event: { ...named.event, invitationId: named.event.invitationId.toUpperCase() },
+    }),
+  );
+  expect(recoveryRecordIdentity(named)).not.toBe(recoveryRecordIdentity(record));
+});
