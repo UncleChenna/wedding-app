@@ -40,7 +40,7 @@ See: [Design principles](../docs/prd.md#design-principles).
 ## Acceptance criteria
 
 - [x] A test fails if any next/image lacks sizes or dimensions on guest routes.
-- [ ] Largest image on /i/<token> ≤150 KB at 375px.
+- [x] Largest image on /i/<token> ≤150 KB at 375px.
 
 ## Test plan
 
@@ -54,6 +54,8 @@ See: [Design principles](../docs/prd.md#design-principles).
 ## Notes / decisions
 
 - 2026-11-13 — Started ahead of TICKET-038 under the supported workflow. Eight source-policy tests pass; explicit AVIF/WebP configuration added. Private invitation byte-budget verification awaits the merged hero. Keep PR draft; no completed dependency or mobile budget is inferred. See docs/plans/TICKET-119-pr.md.
+
+- 2026-11-13 — Integrated develop 21722cb9 including merged hero. Production build and eight source-policy tests pass; actual private 375px invitation delivers 28,120-byte AVIF at DPR 2.625. Evidence in docs/reviews/TICKET-119/mobile-image-budget.json. Hosted CI still required; unrelated merged PWA fixture-order repair is tracked in TICKET-242.
 
 ## Activity log
 
