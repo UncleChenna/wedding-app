@@ -1,5 +1,17 @@
 # ordering
 
+## Production rendering (TICKET-081)
+
+`/order` now serves a small native HTML document and a content-hashed progressive
+bundle. `server/order-page.ts` keeps table validation and the scoped session cookie;
+`browser/order-entry.ts` renders cart state using the existing `submitOrder`, menu
+availability and status contracts. The original React renderer remains for compatibility,
+not in the production order route. See [ADR0027](../../../docs/decisions/0027-lightweight-order-document.md).
+
+The existing browser journeys remain the behavioral contract. `RUN_ORDER_PERFORMANCE=1`
+runs complete cold-wire checks; `scripts/test-order-delivery.ts` exercises real Supabase
+broadcast delivery under slow-4G emulation. Neither test certifies physical venue signal.
+
 Table ordering: guests enter their table number and order free food/drinks (`menu_items`, `orders`, `order_items`, `tables`); kitchen and bar see a live board per station. Routes: `src/app/(guest)/order`, `src/app/(staff)/kitchen`.
 
 ## Frontend preview
@@ -8,7 +20,7 @@ Table ordering: guests enter their table number and order free food/drinks (`men
 
 ## Table selection
 
-`/order` validates a positive integer against `tables` through Drizzle without sign-in or an invitation credential. A successful Server Action stores only the canonical table number in an HttpOnly, SameSite=Lax session cookie scoped to `/order` (Secure in production). Every render revalidates that cookie; it is a convenience, never authorization or proof that a table exists when an order is submitted.
+`/order` validates a positive integer against `tables` through Drizzle without sign-in or an invitation credential. A successful native POST stores only the canonical table number in an HttpOnly, SameSite=Lax session cookie scoped to `/order` (Secure in production). Every render revalidates that cookie; it is a convenience, never authorization or proof that a table exists when an order is submitted.
 
 Unknown, malformed and unavailable selections leave the previous cookie unchanged. Error redirects use fixed codes and the submitted public table number, so native forms display the same errors without JavaScript. The route waits for request data to render usable HTML instead of a JavaScript-revealed streaming fallback. A change link returns to the form; a fresh browser session has no selection.
 

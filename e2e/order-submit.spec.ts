@@ -119,7 +119,7 @@ test.describe("order submission on a flaky network", () => {
           expect(
             await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
           ).toBe(true);
-          const dir = `docs/reviews/TICKET-123/${info.project.name}/${theme.id}`;
+          const dir = `${process.env.ORDER_REVIEW_DIR ?? "docs/reviews"}/TICKET-123/${info.project.name}/${theme.id}`;
           mkdirSync(dir, { recursive: true });
           await page.getByRole("button", { name: "Try again" }).scrollIntoViewIfNeeded();
           await page.screenshot({ path: `${dir}/${width}-limited.png`, fullPage: true });
@@ -190,7 +190,13 @@ test.describe("order submission on a flaky network", () => {
         expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
           true,
         );
-        const dir = (process.env.ORDER_REVIEW_DIR ?? "docs/reviews/TICKET-074") + "/" + theme.id;
+        const dir =
+          (process.env.ORDER_REVIEW_DIR ??
+            (process.env.ORDER_REVIEW_DIR
+              ? process.env.ORDER_REVIEW_DIR + "/TICKET-074"
+              : "docs/reviews/TICKET-074")) +
+          "/" +
+          theme.id;
         mkdirSync(dir, { recursive: true });
         await page
           .getByRole("heading", { name: "On its way. Sit back, we've got this." })
@@ -233,7 +239,10 @@ test.describe("order submission on a flaky network", () => {
         await retry.scrollIntoViewIfNeeded();
         await page.screenshot({
           path:
-            (process.env.ORDER_REVIEW_DIR ?? "docs/reviews/TICKET-074") +
+            (process.env.ORDER_REVIEW_DIR ??
+              (process.env.ORDER_REVIEW_DIR
+                ? process.env.ORDER_REVIEW_DIR + "/TICKET-074"
+                : "docs/reviews/TICKET-074")) +
             "/" +
             theme.id +
             "/" +
@@ -311,7 +320,10 @@ test.describe("order submission on a flaky network", () => {
         expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
           true,
         );
-        const dir = "docs/reviews/TICKET-073/" + theme.id;
+        const dir =
+          (process.env.ORDER_REVIEW_DIR
+            ? process.env.ORDER_REVIEW_DIR + "/TICKET-073/"
+            : "docs/reviews/TICKET-073/") + theme.id;
         mkdirSync(dir, { recursive: true });
         await notice.scrollIntoViewIfNeeded();
         await page.screenshot({ path: dir + "/" + width + "-cooldown.png" });

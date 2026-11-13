@@ -222,6 +222,16 @@ link and CI history are not replaced. Other worktrees' ticket files are untouche
 only the ticket's own branch may later sync its completion metadata. Physical
 release requirements remain separate and mandatory.
 
+### Merged work without a recorded PR link
+
+If a ticket was externally merged before its PR URL entered the ledger, its owner may explicitly supply the original repository PR number:
+
+```bash
+pnpm t:reconcile TICKET-076 --original-pr 140 --repair-pr 175 --reason "Original merged work lacked its ledger PR link; the separate verified repair contains the approved criteria disposition"
+```
+
+Use the actual verified repair number; the example is illustrative. This option works only for an owned blocked or in-progress ticket with an empty PR field and a recorded branch. It cannot replace an existing original link or combine with historical integration mode. The original must be a merged, same-repository PR whose title begins with the exact ticket ID, whose head branch matches the recorded branch, and whose tested head contains that ticket definition. All existing dependency, merge ancestry, complete criteria and exact-head full-repair-CI checks still apply. Both PR identities are re-read before completion. Only after all proof succeeds does one ledger transaction record the verified original URL and completion; failures leave both unchanged. No historical worktree is edited.
+
 ### Historical stacked merges
 
 For an owned `in_review` ticket whose original PR merged into an intermediate
@@ -262,3 +272,9 @@ Similar patches or selected files alone never qualify. TICKET-225's
 [provenance audit](reviews/TICKET-225/provenance.md) documents the exact retained
 source for TICKET-186/#4 and TICKET-187/#5. Their statuses remain unchanged until
 the guarded mechanism is independently reviewed, merged and applied through CLI.
+
+## Concurrent ledger commands
+
+Commands read the exact commit advertised by origin without rewriting shared remote-tracking references or `FETCH_HEAD`. Linked-worktree writers wait up to 30 seconds for the clone's existing ticket lock, then read fresh state and apply the usual remote compare-and-swap lease. Across separate clones, a lost lease retries the update against fresh state and rechecks its rules.
+
+If the wait expires, retry after the active command finishes. The command leaves the existing lock untouched; it never steals locks or treats a network failure as an empty ledger. A crashed writer still requires deliberate diagnosis before manual recovery. Older checkouts retain the previous behavior until updated.

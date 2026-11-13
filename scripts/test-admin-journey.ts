@@ -30,6 +30,8 @@ try {
         `${prefix}-${project}@example.test`,
         `${prefix}-counters-${project}@example.test`,
         `${prefix}-health-${project}@example.test`,
+        `${prefix}-recovery-${project}-0@example.test`,
+        `${prefix}-recovery-${project}-1@example.test`,
         `${prefix}-scans-${project}-0@example.test`,
         `${prefix}-scans-${project}-1@example.test`,
       ])
@@ -38,7 +40,7 @@ try {
     NEXT_PUBLIC_SITE_URL: `http://localhost:${meta.pwPort}`,
   });
   run(["db:migrate"], env);
-  if (!process.argv.includes("--health")) {
+  if (!process.argv.includes("--health") && !process.argv.includes("--recovery")) {
     run(
       [
         "exec",
@@ -66,14 +68,17 @@ try {
       "exec",
       "playwright",
       "test",
-      ...(process.argv.includes("--health")
-        ? ["e2e/admin-health.spec.ts"]
-        : [
-            "e2e/admin.spec.ts",
-            "e2e/admin-dashboard.spec.ts",
-            "e2e/admin-scan-log.spec.ts",
-            "e2e/admin-health.spec.ts",
-          ]),
+      ...(process.argv.includes("--recovery")
+        ? ["e2e/admin-recovery.spec.ts"]
+        : process.argv.includes("--health")
+          ? ["e2e/admin-health.spec.ts"]
+          : [
+              "e2e/admin.spec.ts",
+              "e2e/admin-dashboard.spec.ts",
+              "e2e/admin-scan-log.spec.ts",
+              "e2e/admin-health.spec.ts",
+              "e2e/admin-recovery.spec.ts",
+            ]),
       "--project=mobile",
       "--project=desktop",
       "--workers=1",
