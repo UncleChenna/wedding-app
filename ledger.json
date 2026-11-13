@@ -3002,9 +3002,10 @@
         "- 2026-11-11 — todo → claimed — unclechenna (claude) — started ahead of TICKET-078 (in_review)",
         "- 2026-11-11 — todo → in_progress — unclechenna (claude) — started ahead of TICKET-078 (in_review)",
         "- 2026-11-11 — in_progress → in_review — unclechenna (claude)",
-        "- 2026-11-13 — in_review → in_review — divine (codex) — Ownership handoff unclechenna → divine; Owner authorized coordinated ledger-only recovery of completed merged PR159; preserve collaborator files and original failed CI while proving integrated repair164"
+        "- 2026-11-13 — in_review → in_review — divine (codex) — Ownership handoff unclechenna → divine; Owner authorized coordinated ledger-only recovery of completed merged PR159; preserve collaborator files and original failed CI while proving integrated repair164",
+        "- 2026-11-13 — in_review → blocked — divine (codex) — Original merged PR159 CI43110368023 failed Scan log keyboard expectation and online-admission decoding; recover only with verified merged repair164"
       ],
-      "status": "in_review",
+      "status": "blocked",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-075",
@@ -3012,8 +3013,8 @@
       "started": "2026-11-11",
       "completed": "",
       "updated": "2026-11-13",
-      "reason": "",
-      "resume_to": ""
+      "reason": "Original merged PR159 CI43110368023 failed Scan log keyboard expectation and online-admission decoding; recover only with verified merged repair164",
+      "resume_to": "in_review"
     },
     "WED-079": {
       "log": [
