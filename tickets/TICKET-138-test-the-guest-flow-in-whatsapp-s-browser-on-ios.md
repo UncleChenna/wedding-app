@@ -2,7 +2,7 @@
 id: TICKET-138
 title: Test the guest flow in WhatsApp's browser on iOS and Android
 epic: testing
-status: todo
+status: cancelled
 priority: urgent
 estimate: S
 labels: [human, test]
@@ -14,10 +14,10 @@ blocks: [TICKET-154, TICKET-159, TICKET-176]
 branch: ""
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
+updated: 2026-11-12
 started: ""
 completed: ""
-reason: ""
+reason: "Merged into TICKET-114 (TICKET-228)"
 resume_to: ""
 ---
 
@@ -62,3 +62,4 @@ See: [Design principles](../docs/prd.md#design-principles) · [What "flawless" m
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-12 — todo → cancelled — unclechenna (claude) — merged into TICKET-114 (TICKET-228)
