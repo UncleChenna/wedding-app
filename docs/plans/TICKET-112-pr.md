@@ -24,7 +24,7 @@ The existing transactional order outbox gains independent push delivery state. D
 ## Remaining before review
 
 - External push-provider delivery for an actual queued order remains unverified. A disposable headed Chromium profile registered with FCM, but the probe did not observe a notification. This is not recorded as delivery success.
-- Independent final review, required CI and release-gated physical installed-iOS push checks.
+- Independent final review is clean. Required CI and release-gated physical installed-iOS push checks remain. A second fresh Chrome probe timed out registration after45 seconds; no external delivery success is claimed.
 
 ## Rollout
 
