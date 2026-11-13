@@ -2,7 +2,7 @@
 id: TICKET-113
 title: Automate installability and offline checks in Playwright
 epic: pwa
-status: in_progress
+status: in_review
 priority: high
 estimate: M
 labels: [pwa, test]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-104, TICKET-106, TICKET-107, TICKET-108, TICKET-111, TICKET-109, TICKET-110, TICKET-184]
 blocks: [TICKET-114]
 branch: TICKET-113
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/179
 created: 2026-10-21
 updated: 2026-11-13
 started: 2026-11-13
@@ -63,3 +63,4 @@ See: [Tech stack and architecture](../docs/prd.md#tech-stack-and-architecture) �
 - 2026-11-13 — todo → in_progress — divine (codex) — started ahead of TICKET-111 (in_review)
 - 2026-11-13 — in_progress → blocked — divine (codex) — Implementation reviewed and published in PR179; waiting for TICKET-111 PR176 to pass CI and merge before dependency integration.
 - 2026-11-13 — blocked → in_progress — divine (codex)
+- 2026-11-13 — in_progress → in_review — divine (codex)
