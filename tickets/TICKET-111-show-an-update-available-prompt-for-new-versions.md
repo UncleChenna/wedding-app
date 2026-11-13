@@ -2,7 +2,7 @@
 id: TICKET-111
 title: Show an update-available prompt for new versions
 epic: pwa
-status: in_review
+status: in_progress
 priority: high
 estimate: M
 labels: [pwa, frontend]
@@ -66,3 +66,4 @@ See: [Tech stack and architecture](../docs/prd.md#tech-stack-and-architecture).
 - 2026-11-13 — todo → claimed — divine (codex)
 - 2026-11-13 — todo → in_progress — divine (codex)
 - 2026-11-13 — in_progress → in_review — divine (codex)
+- 2026-11-13 — in_review → in_progress — divine (codex) — Publish verified smoke selector and return-to-page refresh fixes
