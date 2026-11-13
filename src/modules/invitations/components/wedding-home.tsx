@@ -1,6 +1,11 @@
 import Link from "next/link";
 import { appRoutes } from "@/modules/shared/lib/routes";
-import { ceremonyLabel, eventSummary, type PublicEventDetails } from "../lib/event-summary";
+import {
+  eventSummary,
+  rsvpByLabel,
+  timeOfDay,
+  type PublicEventDetails,
+} from "../lib/event-summary";
 import { invitationSiteCopy } from "../lib/copy";
 export function WeddingHome({ settings }: { settings: PublicEventDetails }) {
   const summary = eventSummary(settings);
@@ -15,13 +20,40 @@ export function WeddingHome({ settings }: { settings: PublicEventDetails }) {
       <time dateTime={settings.eventDate} className="mt-8 text-lg leading-relaxed">
         {summary.date}
       </time>
-      <p className="mt-4 text-lg leading-relaxed">{settings.venue ?? "Venue to follow"}</p>
-      <p className="mt-2 text-lg leading-relaxed">
-        {ceremonyLabel(settings.ceremonyTime, settings.timeZone)}
-      </p>
+      <dl className="mx-auto mt-8 grid w-full max-w-3xl gap-8 text-lg leading-relaxed md:grid-cols-2">
+        <div className="min-w-0">
+          <dt className="type-label text-primary">
+            Church service
+            {timeOfDay(settings.ceremonyTime) ? ` · ${timeOfDay(settings.ceremonyTime)}` : ""}
+          </dt>
+          <dd className="mt-2 wrap-anywhere">{settings.venue ?? "Venue to follow"}</dd>
+        </div>
+        <div className="min-w-0">
+          <dt className="type-label text-primary">
+            Reception
+            {timeOfDay(settings.receptionTime) ? ` · ${timeOfDay(settings.receptionTime)}` : ""}
+          </dt>
+          <dd className="mt-2 wrap-anywhere">{settings.receptionVenue ?? "Venue to follow"}</dd>
+        </div>
+      </dl>
       <p className="mt-8 w-full text-base leading-relaxed">
         We can&apos;t wait to celebrate with you.
       </p>
+      {settings.rsvpPhone ? (
+        <p className="mx-auto mt-6 max-w-prose text-base leading-relaxed">
+          Have a printed card? RSVP by call or text to{" "}
+          <a
+            href={`tel:${settings.rsvpPhone.replace(/[^+0-9]/g, "")}`}
+            className="inline-flex min-h-11 items-center text-primary underline underline-offset-4"
+          >
+            {settings.rsvpPhone}
+          </a>
+          {rsvpByLabel(settings.rsvpLockAt, settings.timeZone)
+            ? ` by ${rsvpByLabel(settings.rsvpLockAt, settings.timeZone)}`
+            : ""}
+          , with the card number from the top of your invitation.
+        </p>
+      ) : null}
       <Link
         prefetch={false}
         href={appRoutes.invite.path}
