@@ -665,6 +665,9 @@ export const eventSettings = pgTable(
     venue: text("venue"),
     mapUrl: text("map_url"),
     dressCode: text("dress_code"),
+    /** The venue router's Wi-Fi, printed on every table card (TICKET-094). */
+    wifiName: text("wifi_name"),
+    wifiPassword: text("wifi_password"),
     rsvpLockAt: timestamp("rsvp_lock_at", { withTimezone: true }),
     orderingOpen: boolean("ordering_open").notNull().default(false),
     activeThemeId: text("active_theme_id").notNull().default("ivory-gold"),
