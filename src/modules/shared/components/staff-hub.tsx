@@ -22,6 +22,14 @@ export function StaffHub() {
           ))}
         </ul>
       </nav>
+      <p className="mt-8">
+        <Link
+          href={appRoutes.gateRecovery.path}
+          className="inline-flex min-h-11 items-center text-primary underline"
+        >
+          Recover retained gate records
+        </Link>
+      </p>
       <Link
         href={appRoutes.home.path}
         className="mt-12 inline-flex min-h-11 items-center text-primary underline underline-offset-4"

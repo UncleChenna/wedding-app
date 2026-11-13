@@ -1,5 +1,5 @@
 import { execFileSync, spawnSync } from "node:child_process";
-import { mkdirSync, mkdtempSync, rmSync } from "node:fs";
+import { lstatSync, mkdirSync, mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
@@ -74,17 +74,28 @@ export function readLedger(cwd: string, mode: LedgerMode): LedgerSnapshot | null
       );
     }
     if (line) {
-      git(
-        [
-          "fetch",
-          "--quiet",
-          "origin",
-          `${LEDGER_REF}:refs/remotes/origin/ticket-ledger`,
-          "--force",
-        ],
-        cwd,
-      );
-      sha = git(["rev-parse", "refs/remotes/origin/ticket-ledger"], cwd);
+      const advertised = line.split(/\s+/)[0];
+      if (!advertised || !/^[0-9a-f]{40,64}$/.test(advertised))
+        throw new LedgerUnavailableError("Origin returned an invalid ledger commit.");
+      try {
+        // Linked worktrees share refs and FETCH_HEAD. Fetch the immutable object
+        // without a destination ref, configured ref mapping, tags or FETCH_HEAD.
+        git(
+          [
+            "fetch",
+            "--quiet",
+            "--no-write-fetch-head",
+            "--no-tags",
+            "--refmap=",
+            "origin",
+            advertised,
+          ],
+          cwd,
+        );
+      } catch {
+        throw new LedgerUnavailableError("Cannot fetch the advertised ticket ledger commit.");
+      }
+      sha = advertised;
     }
   }
   if (!sha) return { sha: null, data: empty() };
@@ -134,17 +145,43 @@ function writeLedger(
 }
 
 /** Serialise ledger edits within one clone; the remote lease serialises across clones. */
-function withLock<T>(cwd: string, fn: () => T): T {
+export function withLedgerLock<T>(cwd: string, fn: () => T, timeoutMs = 30_000): T {
   const dir = join(
     git(["rev-parse", "--path-format=absolute", "--git-common-dir"], cwd),
     "harness-tickets.lock",
   );
-  try {
-    mkdirSync(dir);
-  } catch {
-    throw new Error(
-      `Another ticket command holds ${dir}. If no ticket command is running, remove that directory.`,
-    );
+  const deadline = performance.now() + timeoutMs;
+  const sleeper = new Int32Array(new SharedArrayBuffer(4));
+  for (;;) {
+    if (performance.now() >= deadline)
+      throw new Error(
+        `Timed out waiting for another ticket command holding ${dir}. Retry when it finishes; the existing lock was preserved.`,
+      );
+    try {
+      mkdirSync(dir);
+      break;
+    } catch (error) {
+      if (!(error instanceof Error) || !("code" in error) || error.code !== "EEXIST") throw error;
+      try {
+        if (!lstatSync(dir).isDirectory())
+          throw new Error(`Ticket lock is not a directory: ${dir}`);
+      } catch (inspectionError) {
+        // Its owner may have released it between mkdir and inspection.
+        if (
+          inspectionError instanceof Error &&
+          "code" in inspectionError &&
+          inspectionError.code === "ENOENT"
+        )
+          continue;
+        throw inspectionError;
+      }
+      const remaining = deadline - performance.now();
+      if (remaining <= 0)
+        throw new Error(
+          `Timed out waiting for another ticket command holding ${dir}. Retry when it finishes; the existing lock was preserved.`,
+        );
+      Atomics.wait(sleeper, 0, 0, Math.min(100, remaining));
+    }
   }
   try {
     return fn();
@@ -163,7 +200,7 @@ export function mutateLedger<T>(
   update: (data: LedgerData) => { result: T; message: string },
 ): T {
   if (mode === "off") throw new Error("mutateLedger called with ledger off");
-  return withLock(cwd, () => {
+  return withLedgerLock(cwd, () => {
     let lastError: unknown;
     for (let attempt = 0; attempt < 3; attempt++) {
       const snapshot = readLedger(cwd, mode);
