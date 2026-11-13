@@ -12,6 +12,7 @@ beforeEach(() => {
   lines.length = 0;
   vi.spyOn(console, "log").mockImplementation((line: string) => lines.push(JSON.parse(line)));
   vi.spyOn(console, "error").mockImplementation((line: string) => lines.push(JSON.parse(line)));
+  vi.spyOn(console, "warn").mockImplementation((line: string) => lines.push(JSON.parse(line)));
   vi.mocked(headers).mockResolvedValue(new Headers());
 });
 

@@ -5,7 +5,7 @@ import { stockHeroBlur, type InvitationHeroPhoto } from "../lib/hero-photo";
 export function InvitationHero({ photo }: { photo?: InvitationHeroPhoto }) {
   const display = photo ?? {
     src: "/share/couple-placeholder.jpg",
-    alt: "A couple holding hands in warm evening light; stock photograph",
+    alt: "A couple holding hands in warm evening light",
     blurDataURL: stockHeroBlur,
   };
   return (
@@ -23,18 +23,6 @@ export function InvitationHero({ photo }: { photo?: InvitationHeroPhoto }) {
           className="object-cover object-top"
         />
       </div>
-      {!photo && (
-        <figcaption className="grid gap-y-1 px-6 py-4 text-base leading-relaxed md:px-12">
-          <span>Sample photograph</span>
-          <a
-            href="https://unsplash.com/photos/a-bride-and-groom-holding-hands-and-smiling-glouLzM1PMg"
-            className="inline-flex min-h-11 w-fit items-center text-primary underline underline-offset-4"
-            rel="noreferrer"
-          >
-            Lauren Mitchell / Unsplash
-          </a>
-        </figcaption>
-      )}
     </figure>
   );
 }

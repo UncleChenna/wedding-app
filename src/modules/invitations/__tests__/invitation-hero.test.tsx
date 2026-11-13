@@ -3,20 +3,18 @@ import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 import { InvitationHero } from "../components/invitation-hero";
 
-it("identifies stock subjects honestly and reserves responsive image space", () => {
-  render(<InvitationHero />);
-  const photo = screen.getByRole("img", { name: /stock photograph/i });
+it("shows the default photo plainly, with reserved responsive space and no sample labels", () => {
+  const { container } = render(<InvitationHero />);
+  const photo = screen.getByRole("img", { name: "A couple holding hands in warm evening light" });
   expect(photo).toHaveAttribute("sizes", "100vw");
   expect(photo).toHaveAttribute("data-nimg", "fill");
   expect(photo.getAttribute("style")).toContain("background-image");
-  expect(screen.getByText(/Sample photograph/)).toBeVisible();
-  expect(screen.getByRole("link", { name: "Lauren Mitchell / Unsplash" })).toHaveAttribute(
-    "href",
-    "https://unsplash.com/photos/a-bride-and-groom-holding-hands-and-smiling-glouLzM1PMg",
-  );
+  expect(container.textContent).toBe("");
+  expect(screen.queryByRole("link")).toBeNull();
+  expect(container.innerHTML).not.toMatch(/sample|stock|unsplash/i);
 });
 
-it("uses supplied photo description and blur metadata without labelling it stock", () => {
+it("uses supplied photo description and blur metadata", () => {
   render(
     <InvitationHero
       photo={{

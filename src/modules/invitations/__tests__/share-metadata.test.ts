@@ -2,6 +2,12 @@ import { describe, expect, it } from "vitest";
 import { invitationPreviewHtml, invitationPreviewMetadata } from "../lib/share-metadata";
 
 describe("public invitation previews", () => {
+  it("returns only plain data, so cached page metadata stays serializable", () => {
+    const result = invitationPreviewMetadata("https://wedding.example");
+    expect(structuredClone(result)).toEqual(result);
+    expect(JSON.parse(JSON.stringify(result))).toEqual(result);
+  });
+
   it("uses approved public wording and a token-free image URL", () => {
     const result = invitationPreviewMetadata("https://wedding.example/i/private-token?guest=Amara");
     expect(result.openGraph).toMatchObject({
@@ -40,7 +46,7 @@ it("uses saved public event details for both social cards without serializing ex
   expect(result.openGraph).toMatchObject({
     images: [
       {
-        alt: "Nneka and Chidi's wedding invitation, with an illustrative wedding-couple photograph.",
+        alt: "Nneka and Chidi's wedding invitation.",
       },
     ],
   });
