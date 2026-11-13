@@ -2,7 +2,7 @@
 id: TICKET-238
 title: Serialize camera reads while a scan response is pending
 epic: quality
-status: in_progress
+status: in_review
 priority: high
 estimate: S
 labels: [test]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: []
 blocks: []
 branch: TICKET-238
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/194
 created: 2026-11-13
 updated: 2026-11-13
 started: 2026-11-13
@@ -68,3 +68,4 @@ TICKET-118's extended real camera audit observed two zero-admission not_rsvped e
 - 2026-11-13 — new → todo — divine (codex)
 - 2026-11-13 — todo → claimed — divine (codex)
 - 2026-11-13 — todo → in_progress — divine (codex)
+- 2026-11-13 — in_progress → in_review — divine (codex)
