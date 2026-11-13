@@ -2,20 +2,20 @@
 id: TICKET-112
 title: Send web push to staff boards where supported
 epic: pwa
-status: todo
+status: in_progress
 priority: low
 estimate: L
 labels: [pwa, backend]
 module: ordering
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-076, TICKET-084, TICKET-105]
 blocks: []
-branch: ""
+branch: TICKET-112
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-13
+started: 2026-11-13
 completed: ""
 reason: ""
 resume_to: ""
@@ -61,3 +61,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-13 — todo → claimed — divine (codex)
+- 2026-11-13 — todo → in_progress — divine (codex)
