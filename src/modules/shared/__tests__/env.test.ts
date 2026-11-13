@@ -15,6 +15,14 @@ describe("env schema", () => {
       STAFF_SESSION_SECRET: "",
       SUPABASE_JWT_SECRET: "",
       ALERT_DRAIN_SECRET: "",
+      WHATSAPP_ACCESS_TOKEN: "",
+      WHATSAPP_PHONE_NUMBER_ID: "",
+      WHATSAPP_API_VERSION: "",
+      WHATSAPP_ALERT_TEMPLATE: "",
+      WHATSAPP_TEMPLATE_LANGUAGE: "",
+      WEB_PUSH_PUBLIC_KEY: "",
+      WEB_PUSH_PRIVATE_KEY: "",
+      WEB_PUSH_SUBJECT: "",
     });
   });
 

@@ -9,7 +9,7 @@ import { withStaffPinAttempt } from "./staff-attempts";
 import { verifyStaffPin } from "./staff-pin";
 import { readStaffSession, type StaffSessionIdentity } from "./staff-session";
 
-export const staffRoleSchema = z.enum(["gate", "kitchen", "bar"]);
+export const staffRoleSchema = z.enum(["gate", "kitchen", "bar", "host"]);
 export type StaffRole = z.infer<typeof staffRoleSchema>;
 export type StaffSignInResult =
   | { status: "success"; value: StaffSessionIdentity & { expiresAt: Date } }

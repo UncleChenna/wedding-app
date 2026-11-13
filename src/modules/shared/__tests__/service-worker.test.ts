@@ -214,7 +214,14 @@ function fetchEvent(
 describe("served worker script", () => {
   it("is valid JavaScript that registers install, activate and fetch handlers", () => {
     const { listeners } = loadWorker();
-    expect([...listeners.keys()].sort()).toEqual(["activate", "fetch", "install", "message"]);
+    expect([...listeners.keys()].sort()).toEqual([
+      "activate",
+      "fetch",
+      "install",
+      "message",
+      "notificationclick",
+      "push",
+    ]);
   });
 
   it("answers immutable assets from cache-first and leaves every page and API to the network", async () => {

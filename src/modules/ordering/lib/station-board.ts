@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { alertHealthSchema } from "./alert-health";
 
 /** Tickets a board shows: everything not yet served or cancelled (ORD-4, ORD-5). */
 export const OPEN_TICKET_STATUSES = ["received", "preparing"] as const;
@@ -38,11 +39,13 @@ export const RECENT_LIMIT = 10;
 
 export const kitchenBoardSchema = z.strictObject({
   generatedAt: z.iso.datetime({ offset: true }),
+  alertHealth: alertHealthSchema.optional(),
   tickets: z.array(kitchenTicketSchema),
   recent: z.array(recentTicketSchema),
 });
 export const barBoardSchema = z.strictObject({
   generatedAt: z.iso.datetime({ offset: true }),
+  alertHealth: alertHealthSchema.optional(),
   tickets: z.array(barTicketSchema),
   recent: z.array(recentTicketSchema),
 });

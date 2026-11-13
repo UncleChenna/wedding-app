@@ -1,11 +1,11 @@
-# Replace these handles before enabling required CODEOWNERS reviews.
-* @REPLACE_ME_DIVINE @REPLACE_ME_FRIEND
-/src/modules/invitations/ @REPLACE_ME_DIVINE
-/src/modules/theming/ @REPLACE_ME_DIVINE
-/src/modules/checkin/ @REPLACE_ME_FRIEND
-/src/modules/ordering/ @REPLACE_ME_FRIEND
-/src/modules/admin/ @REPLACE_ME_DIVINE @REPLACE_ME_FRIEND
-/src/modules/shared/ @REPLACE_ME_DIVINE @REPLACE_ME_FRIEND
-/.github/ @REPLACE_ME_DIVINE @REPLACE_ME_FRIEND
-/.agents/ @REPLACE_ME_DIVINE @REPLACE_ME_FRIEND
-/scripts/ @REPLACE_ME_DIVINE @REPLACE_ME_FRIEND
+# Code owners (TICKET-005): UncleChenna and ihemegodsfavour8-lang.
+* @UncleChenna @ihemegodsfavour8-lang
+/src/modules/invitations/ @UncleChenna
+/src/modules/theming/ @UncleChenna
+/src/modules/checkin/ @ihemegodsfavour8-lang
+/src/modules/ordering/ @ihemegodsfavour8-lang
+/src/modules/admin/ @UncleChenna @ihemegodsfavour8-lang
+/src/modules/shared/ @UncleChenna @ihemegodsfavour8-lang
+/.github/ @UncleChenna @ihemegodsfavour8-lang
+/.agents/ @UncleChenna @ihemegodsfavour8-lang
+/scripts/ @UncleChenna @ihemegodsfavour8-lang

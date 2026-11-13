@@ -60,6 +60,7 @@ export const appRoutes = {
   bar: { path: "/bar", label: "Bar board", audience: "staff", access: "public" },
   checkin: { path: "/checkin", label: "Gate check-in", audience: "staff", access: "public" },
   kitchen: { path: "/kitchen", label: "Kitchen board", audience: "staff", access: "public" },
+  host: { path: "/host", label: "Table host", audience: "staff", access: "public" },
   admin: { path: "/admin", label: "Wedding control room", audience: "admin", access: "admin" },
   adminSharing: { path: "/admin/sharing", label: "Sharing", audience: "admin", access: "admin" },
   adminGuests: { path: "/admin/guests", label: "Guests", audience: "admin", access: "admin" },

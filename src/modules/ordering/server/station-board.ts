@@ -20,6 +20,8 @@ import {
   type KitchenBoard,
 } from "../lib/station-board";
 
+import { readAlertHealth } from "./alert-health";
+
 type Reader = Pick<Db, "select">;
 
 /** The kitchen board, with the dietary notes of guests seated at each order's table. */
@@ -32,8 +34,12 @@ export function readBarBoard(database: Reader, now = new Date()): Promise<BarBoa
   return readBoard(database, "bar", now) as Promise<BarBoard>;
 }
 
-export function readStationBoard(database: Reader, station: BoardStation, now = new Date()) {
-  return station === "kitchen" ? readKitchenBoard(database, now) : readBarBoard(database, now);
+export async function readStationBoard(database: Reader, station: BoardStation, now = new Date()) {
+  const [board, alertHealth] = await Promise.all([
+    station === "kitchen" ? readKitchenBoard(database, now) : readBarBoard(database, now),
+    readAlertHealth(database, station),
+  ]);
+  return { ...board, alertHealth };
 }
 
 /**

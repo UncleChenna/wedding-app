@@ -31,15 +31,6 @@ export function WeddingHome({ settings }: { settings: PublicEventDetails }) {
       >
         Your invitation
       </Link>
-      {process.env.NODE_ENV === "development" && (
-        <Link
-          prefetch={false}
-          href={appRoutes.dev.path}
-          className="mt-8 inline-flex min-h-11 items-center justify-center text-primary underline underline-offset-4"
-        >
-          Browse page previews
-        </Link>
-      )}
     </main>
   );
 }

@@ -24,6 +24,10 @@ const stations = {
     title: "Bar board",
     description: "The drinks board is coming soon. For now, check orders with your station lead.",
   },
+  host: {
+    title: "Your tables",
+    description: "Orders for your tables appear here once you're signed in.",
+  },
 } as const;
 const log = createLogger({ module: "staff-auth" });
 

@@ -47,8 +47,10 @@ function serialize(value: unknown, depth = 0): unknown {
   return out;
 }
 
+// Both go to stderr on the server; console.warn keeps expected fallbacks out of Next's dev error overlay.
 function defaultWrite(level: LogLevel, line: string) {
-  if (level === "error" || level === "warn") console.error(line);
+  if (level === "error") console.error(line);
+  else if (level === "warn") console.warn(line);
   else console.log(line);
 }
 

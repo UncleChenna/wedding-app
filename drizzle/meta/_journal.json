@@ -260,6 +260,20 @@
       "when": 1794563453830,
       "tag": "0036_invitation-design",
       "breakpoints": true
+    },
+    {
+      "idx": 37,
+      "version": "7",
+      "when": 1794567271472,
+      "tag": "0037_staff-push",
+      "breakpoints": true
+    },
+    {
+      "idx": 38,
+      "version": "7",
+      "when": 1794574517662,
+      "tag": "0038_host-tables",
+      "breakpoints": true
     }
   ]
 }

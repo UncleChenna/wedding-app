@@ -134,7 +134,7 @@ export const requestBudgets = pgTable(
 
 // ─── Enums ────────────────────────────────────────────────────────────────
 
-export const staffRole = pgEnum("staff_role", ["admin", "gate", "kitchen", "bar"]);
+export const staffRole = pgEnum("staff_role", ["admin", "gate", "kitchen", "bar", "host"]);
 export const invitationStatus = pgEnum("invitation_status", [
   "draft",
   "sent",
@@ -247,7 +247,8 @@ export const registeredDevices = pgTable(
   (t) => [
     check("registered_devices_id_format", sql`${t.id} ~ '^[A-Za-z0-9][A-Za-z0-9._:-]{0,199}$'`),
     check("registered_devices_name_length", sql`char_length(trim(${t.name})) between 1 and 120`),
-    check("registered_devices_staff_role", sql`${t.role} in ('gate', 'kitchen', 'bar')`),
+    // Any PIN role. Written as "not admin" so adding a role never needs this literal list.
+    check("registered_devices_staff_role", sql`${t.role} <> 'admin'`),
   ],
 ).enableRLS();
 
@@ -341,6 +342,24 @@ export const tables = pgTable(
     updatedAt: updatedAt(),
   },
   (t) => [check("tables_capacity_positive", sql`${t.capacity} > 0`)],
+).enableRLS();
+
+/** The tables a table host looks after (TICKET-082). Only `host` staff should appear here. */
+export const hostTables = pgTable(
+  "host_tables",
+  {
+    staffId: uuid("staff_id")
+      .notNull()
+      .references(() => staff.id, { onDelete: "cascade" }),
+    tableId: uuid("table_id")
+      .notNull()
+      .references(() => tables.id, { onDelete: "cascade" }),
+    createdAt: createdAt(),
+  },
+  (t) => [
+    primaryKey({ columns: [t.staffId, t.tableId] }),
+    index("host_tables_table_idx").on(t.tableId),
+  ],
 ).enableRLS();
 
 export const guests = pgTable(
@@ -697,14 +716,48 @@ export const orderAlerts = pgTable(
     attempts: integer("attempts").notNull().default(0),
     lastAttemptAt: timestamp("last_attempt_at", { withTimezone: true }),
     sentAt: timestamp("sent_at", { withTimezone: true }),
+    pushStatus: orderAlertStatus("push_status").notNull().default("pending"),
+    pushAttempts: integer("push_attempts").notNull().default(0),
     createdAt: createdAt(),
   },
   (t) => [
     // One alert per ticket, so a replayed order can never queue a second message.
     uniqueIndex("order_alerts_station_order_key").on(t.stationOrderId),
     index("order_alerts_pending_idx").on(t.status, t.station, t.createdAt),
+    index("order_alerts_push_pending_idx").on(t.pushStatus, t.station, t.createdAt),
     check("order_alerts_attempts", sql`${t.attempts} between 0 and 100`),
+    check("order_alerts_push_attempts", sql`${t.pushAttempts} between 0 and 5`),
     check("order_alerts_message", sql`char_length(${t.message}) between 1 and 4000`),
+  ],
+).enableRLS();
+
+/** Optional per-device browser subscriptions; no browser database access. */
+export const staffPushSubscriptions = pgTable(
+  "staff_push_subscriptions",
+  {
+    deviceId: text("device_id")
+      .primaryKey()
+      .references(() => registeredDevices.id, { onDelete: "cascade" }),
+    staffId: uuid("staff_id")
+      .notNull()
+      .references(() => staff.id, { onDelete: "cascade" }),
+    station: station("station").notNull(),
+    credentialVersion: integer("credential_version").notNull(),
+    endpoint: text("endpoint").notNull(),
+    p256dh: text("p256dh").notNull(),
+    auth: text("auth").notNull(),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    lastDeliveredAt: timestamp("last_delivered_at", { withTimezone: true }),
+    createdAt: createdAt(),
+  },
+  (t) => [
+    uniqueIndex("staff_push_endpoint_key").on(t.endpoint),
+    check("staff_push_endpoint_length", sql`char_length(${t.endpoint}) between 1 and 2048`),
+    check(
+      "staff_push_key_format",
+      sql`${t.p256dh} ~ '^B[A-Za-z0-9_-]{86}$' and ${t.auth} ~ '^[A-Za-z0-9_-]{22}$'`,
+    ),
+    check("staff_push_credential_version", sql`${t.credentialVersion} > 0`),
   ],
 ).enableRLS();
 

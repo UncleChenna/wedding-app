@@ -26,7 +26,7 @@ export function deniedRequest(request: NextRequest, signInPath: string): NextRes
   return privateResponse(NextResponse.redirect(new URL(signInPath, request.url)));
 }
 
-const stations = { gate: "/checkin", kitchen: "/kitchen", bar: "/bar" } as const;
+const stations = { gate: "/checkin", kitchen: "/kitchen", bar: "/bar", host: "/host" } as const;
 export function staffRequestRole(pathname: string): StaffRole | null {
   for (const [role, path] of Object.entries(stations)) {
     // Exact roots host the PIN bootstrap UI. Their content checks live access itself.

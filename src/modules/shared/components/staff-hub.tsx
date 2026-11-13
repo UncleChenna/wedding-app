@@ -10,7 +10,7 @@ export function StaffHub() {
       </p>
       <nav aria-label="Staff stations" className="mt-12">
         <ul className="space-y-8">
-          {[appRoutes.checkin, appRoutes.kitchen, appRoutes.bar].map((route) => (
+          {[appRoutes.checkin, appRoutes.kitchen, appRoutes.bar, appRoutes.host].map((route) => (
             <li key={route.path}>
               <Link
                 href={route.path}

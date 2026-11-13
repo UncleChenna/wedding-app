@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { createLogger, REDACTED, type LogLevel } from "../lib/logger";
 
@@ -89,5 +89,20 @@ describe("request correlation and bounded redaction", () => {
     log.info("bounded", { value });
     expect(lines[0]?.line).not.toContain("deep-secret-fixture");
     expect(lines[0]?.line).toContain("[truncated]");
+  });
+});
+
+describe("default output", () => {
+  it("writes warnings with console.warn and errors with console.error", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    const error = vi.spyOn(console, "error").mockImplementation(() => undefined);
+    const log = createLogger({ app: "test" }, { level: "debug", format: "json" });
+    log.warn("Using defaults");
+    log.error("Failed");
+    expect(warn).toHaveBeenCalledOnce();
+    expect(String(warn.mock.calls[0]?.[0])).toContain("Using defaults");
+    expect(error).toHaveBeenCalledOnce();
+    expect(String(error.mock.calls[0]?.[0])).toContain("Failed");
+    vi.restoreAllMocks();
   });
 });

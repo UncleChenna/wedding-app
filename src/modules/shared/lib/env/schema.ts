@@ -28,11 +28,34 @@ export const serverEnvSchema = z.object({
       message: "SUPABASE_JWT_SECRET must be at least 32 characters",
     })
     .default(""),
+  WHATSAPP_ACCESS_TOKEN: z.string().default(""),
+  WHATSAPP_PHONE_NUMBER_ID: z.string().default(""),
+  WHATSAPP_API_VERSION: z.string().default(""),
+  WHATSAPP_ALERT_TEMPLATE: z.string().default(""),
+  WHATSAPP_TEMPLATE_LANGUAGE: z.string().default(""),
   ALERT_DRAIN_SECRET: z
     .string()
     .regex(
       /^(?:[0-9a-f]{64})?$/,
       "ALERT_DRAIN_SECRET must be 32 random bytes encoded as lowercase hex",
+    )
+    .default(""),
+  WEB_PUSH_PUBLIC_KEY: z
+    .string()
+    .regex(/^(?:B[A-Za-z0-9_-]{86})?$/)
+    .default(""),
+  WEB_PUSH_PRIVATE_KEY: z
+    .string()
+    .regex(/^(?:[A-Za-z0-9_-]{43})?$/)
+    .default(""),
+  WEB_PUSH_SUBJECT: z
+    .string()
+    .max(254)
+    .refine(
+      (value) =>
+        value === "" ||
+        /^mailto:[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ||
+        (URL.canParse(value) && new URL(value).protocol === "https:"),
     )
     .default(""),
 });

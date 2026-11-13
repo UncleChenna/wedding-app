@@ -41,42 +41,59 @@ export async function moveTicket(
     if (ticket.status !== move.from) return { status: "stale", current: ticket.status };
     if (!canMove(move.from, move.to)) return { status: "illegal" };
 
-    const [event] = await tx
-      .insert(stationOrderEvents)
-      .values({
-        stationOrderId: ticket.id,
-        fromStatus: move.from,
-        toStatus: move.to,
-        reason: move.to === "cancelled" ? (move.reason ?? null) : null,
-        staffId: actor.staffId,
-        deviceId: actor.deviceId,
-      })
-      .returning({ createdAt: stationOrderEvents.createdAt });
-    await tx
-      .update(stationOrders)
-      .set({ status: move.to, updatedAt: event?.createdAt ?? new Date() })
-      .where(eq(stationOrders.id, ticket.id));
-
-    // The guest's order follows its tickets, so the table's open-order limit frees up on serve.
-    const siblings = await tx
-      .select({ status: stationOrders.status })
-      .from(stationOrders)
-      .where(eq(stationOrders.orderId, ticket.orderId))
-      .for("update");
-    await tx
-      .update(orders)
-      .set({ status: orderStatusFrom(siblings.map((row) => row.status)) })
-      .where(eq(orders.id, ticket.orderId));
-
-    await publishToStation(tx, actor.station, "order.changed", {
-      stationOrderId: ticket.id,
-      orderId: ticket.orderId,
-      status: move.to,
-    });
+    const event = await recordMove(tx, { ...ticket, station: actor.station }, move, actor);
     return {
       status: "moved",
       ticketStatus: move.to,
-      movedAt: (event?.createdAt ?? new Date()).toISOString(),
+      movedAt: event.toISOString(),
     };
   });
+}
+
+type Tx = Parameters<Parameters<Db["transaction"]>[0]>[0];
+
+/**
+ * Records one legal move on a ticket the caller has already locked and checked: the event (who,
+ * which device, when), the ticket, the order status that follows its tickets, and a notice to the
+ * ticket's station once the transaction commits. Returns when the move happened.
+ */
+export async function recordMove(
+  tx: Tx,
+  ticket: { id: string; orderId: string; station: BoardStation },
+  move: TicketMove,
+  who: { staffId: string; deviceId: string },
+): Promise<Date> {
+  const [event] = await tx
+    .insert(stationOrderEvents)
+    .values({
+      stationOrderId: ticket.id,
+      fromStatus: move.from,
+      toStatus: move.to,
+      reason: move.to === "cancelled" ? (move.reason ?? null) : null,
+      staffId: who.staffId,
+      deviceId: who.deviceId,
+    })
+    .returning({ createdAt: stationOrderEvents.createdAt });
+  await tx
+    .update(stationOrders)
+    .set({ status: move.to, updatedAt: event?.createdAt ?? new Date() })
+    .where(eq(stationOrders.id, ticket.id));
+
+  // The guest's order follows its tickets, so the table's open-order limit frees up on serve.
+  const siblings = await tx
+    .select({ status: stationOrders.status })
+    .from(stationOrders)
+    .where(eq(stationOrders.orderId, ticket.orderId))
+    .for("update");
+  await tx
+    .update(orders)
+    .set({ status: orderStatusFrom(siblings.map((row) => row.status)) })
+    .where(eq(orders.id, ticket.orderId));
+
+  await publishToStation(tx, ticket.station, "order.changed", {
+    stationOrderId: ticket.id,
+    orderId: ticket.orderId,
+    status: move.to,
+  });
+  return event?.createdAt ?? new Date();
 }

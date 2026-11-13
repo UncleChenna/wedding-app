@@ -48,3 +48,13 @@ Polling, not Supabase Realtime: Realtime on `menu_items` needs an anonymous read
 The note is plain text: control and format characters become spaces, whitespace collapses, and it renders as text. Only JSON bodies up to 8 KB are accepted. Expected failures are fixed codes; database errors become a retryable 503 with nothing logged but the outcome.
 
 Not here: live order status (TICKET-075), and the admin open/close switch (TICKET-080). The confirmation groups the order under "From the kitchen" and "From the bar"; the menu carries each item's station for that.
+
+## Table hosts (TICKET-082)
+
+Optional waiters per section. An admin adds a person as **Table host** and types their table numbers on
+`/admin/staff` (`host_tables`). The host signs in with a PIN at `/host` and sees open kitchen and bar
+tickets for those tables only, oldest first, with no dietary notes or guest names. Their one action is
+**Served** (`POST /api/host/tickets`): it locks the ticket, checks the table is theirs and the status is
+what the board showed, then records the move under the host through the same `recordMove` path as the
+stations, so the kitchen or bar board updates live. Hosts can't start preparing or cancel. The host board
+polls `GET /api/host/board` every 5 seconds; it has no Realtime topic, so no new RLS policy was needed.

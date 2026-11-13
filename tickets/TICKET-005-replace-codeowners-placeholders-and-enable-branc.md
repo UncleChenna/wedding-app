@@ -2,20 +2,20 @@
 id: TICKET-005
 title: Replace CODEOWNERS placeholders and enable branch protection
 epic: foundations
-status: todo
+status: in_review
 priority: urgent
 estimate: S
 labels: [human, infra, security]
 module: harness
-owner: ""
-agent: ""
+owner: unclechenna
+agent: claude
 blocked_by: [TICKET-004]
 blocks: [TICKET-164, TICKET-176]
-branch: ""
+branch: TICKET-005
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-13
+started: 2026-11-13
 completed: ""
 reason: ""
 resume_to: ""
@@ -41,8 +41,8 @@ See: [Working together](../docs/collaboration.md).
 
 ## Acceptance criteria
 
-- [ ] CODEOWNERS contains no `REPLACE_ME`.
-- [ ] `gh api repos/{owner}/{repo}/branches/main/protection` shows required checks, one approving review and no force pushes.
+- [x] CODEOWNERS contains no `REPLACE_ME`.
+- [x] `gh api repos/{owner}/{repo}/branches/main/protection` shows required checks, one approving review and no force pushes.
 - [ ] A test push straight to `main` is rejected by GitHub.
 
 ## Test plan
@@ -58,6 +58,13 @@ See: [Working together](../docs/collaboration.md).
 ## Notes / decisions
 
 - 2026-10-21: Needs a person (decision, account or physical task). Agents may prepare docs and record the outcome.
+
+- 2026-11-13 (unclechenna, claude): owner chose the code owners (UncleChenna; ihemegodsfavour8-lang for check-in
+  and ordering) and protection that admins can override, so a release isn't stuck if the other owner can't review.
+  Required checks now match the lean CI (`lint, types, unit tests`, `no AI attribution in PR text`). Personal
+  repos reject `bypass_pull_request_allowances`, so the script no longer sends it. Protection is applied to `main`.
+  The third criterion isn't met as written: with the admin override, the owner's own push to `main` is allowed;
+  a non-admin's push is rejected. Not tested by pushing, since agents never push to `main`.
 
 ## Activity log
 

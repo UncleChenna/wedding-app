@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { render, screen } from "@testing-library/react";
-import { expect, it } from "vitest";
+import { expect, it, vi } from "vitest";
 import { defaultEventSettings } from "@/modules/shared/lib/event-settings";
 import { WeddingHome } from "../components/wedding-home";
 import { eventSummary } from "../lib/event-summary";
@@ -24,6 +24,13 @@ it("renders configured names, date and known details rather than sample copy", (
     date: "Saturday, 12 June 2027",
     description: "Celebrate with Jane and Alex on Saturday, 12 June 2027 at The Garden.",
   });
+});
+it("never links guests to internal preview pages, even in local development", () => {
+  vi.stubEnv("NODE_ENV", "development");
+  render(<WeddingHome settings={defaultEventSettings} />);
+  vi.unstubAllEnvs();
+  expect(screen.getAllByRole("link").map((link) => link.getAttribute("href"))).toEqual(["/invite"]);
+  expect(screen.queryByText(/preview/i)).toBeNull();
 });
 it("keeps unknown details explicit", () => {
   render(<WeddingHome settings={defaultEventSettings} />);
