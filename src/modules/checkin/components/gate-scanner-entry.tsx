@@ -58,6 +58,7 @@ export function GateScannerEntry() {
           title="Gate check-in"
           description="Getting your scanner ready…"
           backTo={appRoutes.staff}
+          variant="staff"
         />
       }
     >

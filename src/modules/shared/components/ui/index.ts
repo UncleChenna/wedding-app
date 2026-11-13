@@ -1,6 +1,7 @@
 export { ActionBar, type ActionBarProps } from "./action-bar";
 export { Button, type ButtonProps, type ButtonSize, type ButtonVariant } from "./button";
 export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./card";
+export { CenteredPanel, panelLinkClassName, type CenteredPanelProps } from "./centered-panel";
 export { Input, type InputProps } from "./input";
 export { Checkbox, type CheckboxProps } from "./checkbox";
 export {

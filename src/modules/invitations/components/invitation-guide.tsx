@@ -1,41 +1,44 @@
 import Link from "next/link";
+import { CenteredPanel, panelLinkClassName } from "@/modules/shared/components/ui/centered-panel";
 import { appRoutes } from "@/modules/shared/lib/routes";
 import { eventSummary, type PublicEventDetails } from "../lib/event-summary";
 
 export function InvitationGuide({ settings }: { settings: PublicEventDetails }) {
   const summary = eventSummary(settings);
   return (
-    <main className="mx-auto flex min-h-dvh max-w-2xl flex-col justify-center px-6 py-16">
-      <p className="mb-8 text-base tracking-widest text-primary uppercase">{summary.title}</p>
-      <h1 className="font-display text-5xl tracking-tight md:text-6xl">
-        An invitation <span className="block">just for you</span>
-      </h1>
-      <p className="mt-8 text-lg leading-relaxed">
-        Your personal invitation will arrive as a link from us. Keep it close — it will be your way
-        to reply and find the details for our celebration.
-      </p>
-      <p className="mt-6 text-base leading-relaxed">Save the date: {summary.date}.</p>
-      <section className="mt-12" aria-labelledby="find-invitation">
-        <h2 id="find-invitation" className="type-heading">
+    <CenteredPanel
+      eyebrow={summary.title}
+      title={
+        <>
+          An invitation <span className="block">just for you</span>
+        </>
+      }
+      description={
+        <>
+          <p>
+            Your personal invitation will arrive as a link from us. Keep it close — it will be your
+            way to reply and find the details for our celebration.
+          </p>
+          <p className="mt-4 text-balance text-foreground">Save the date: {summary.date}.</p>
+        </>
+      }
+      footer={
+        <Link prefetch={false} href={appRoutes.home.path} className={panelLinkClassName}>
+          Back to our day
+        </Link>
+      }
+    >
+      <section aria-labelledby="find-invitation" className="text-center">
+        <h2 id="find-invitation" className="font-display text-3xl leading-tight">
           Need your link?
         </h2>
-        <p className="mt-6 text-lg leading-relaxed">
+        <p className="mt-4 text-lg leading-relaxed">
           Can’t find your invitation? Ask the person who invited you to send your link again.
         </p>
-        <Link
-          href={appRoutes.lostLink.path}
-          className="mt-6 inline-flex min-h-11 items-center text-primary underline underline-offset-4"
-        >
+        <Link href={appRoutes.lostLink.path} className={`mt-4 ${panelLinkClassName}`}>
           Request your invitation link
         </Link>
       </section>
-      <Link
-        prefetch={false}
-        href={appRoutes.home.path}
-        className="mt-10 inline-flex min-h-11 items-center justify-start text-primary underline underline-offset-4"
-      >
-        Back to our day
-      </Link>
-    </main>
+    </CenteredPanel>
   );
 }
