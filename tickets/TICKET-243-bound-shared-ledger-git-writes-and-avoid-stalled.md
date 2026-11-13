@@ -2,7 +2,7 @@
 id: TICKET-243
 title: Bound shared-ledger Git writes and avoid stalled standard-input pipes
 epic: foundations
-status: in_progress
+status: in_review
 priority: high
 estimate: S
 labels: [infra, test]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: []
 blocks: []
 branch: TICKET-243
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/201
 created: 2026-11-13
 updated: 2026-11-13
 started: 2026-11-13
@@ -71,3 +71,4 @@ Owned ticket publication repeatedly stalled for minutes in `git hash-object -w -
 - 2026-11-13 — backlog → todo — divine (codex)
 - 2026-11-13 — todo → claimed — divine (codex)
 - 2026-11-13 — todo → in_progress — divine (codex)
+- 2026-11-13 — in_progress → in_review — divine (codex)
