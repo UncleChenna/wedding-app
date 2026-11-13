@@ -9,7 +9,7 @@ The default light preset used tan backgrounds, gold primary controls and a burgu
 # Changes
 
 - Update the existing ivory-gold JSON so saved preset IDs and default configuration continue to work.
-- Preserve dark themes, semantic status colours, fonts, geometry, texture and existing QR ink/paper.
+- Preserve dark themes, semantic status colours, fonts, geometry, texture and existing QR ink/paper. Regenerate the dependent ivory PWA icons and startup screens with the existing generator.
 - Expand the palette contract and update the CSS serialization expectation. Fix the draft-copy regression fixture to mutate to a genuinely different colour; it still proves the original preset remains unchanged.
 - Document preset behavior. Custom published palettes keep their saved values; no settings or database rows are rewritten.
 
@@ -21,6 +21,7 @@ The theme passes the existing AA gate across all registered themes. Screenshots 
 
 - Exact approved palette contract: one red test before implementation.
 - `pnpm exec vitest run src/modules/theming`: 163 passed.
+- Hosted full unit discovery caught stale generated ivory PWA assets, which dynamically read the JSON and were not selected by related tests. Regenerated them with `pnpm exec tsx scripts/pwa-icons.ts`; all12 icon tests pass, including exact generation equality. No other palette assets changed.
 - Production build: passed. Database-free previews intentionally use approved defaults.
 - Production screenshot suite: 24 passed, no horizontal overflow.
 - Theme review, base component accessibility and motion browser suites: 15 passed, including all-theme axe, 44px targets, keyboard focus/trapping, reduced motion and long-name wrapping.
