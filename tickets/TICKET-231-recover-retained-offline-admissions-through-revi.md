@@ -2,7 +2,7 @@
 id: TICKET-231
 title: Recover retained offline admissions through reviewed admin imports
 epic: checkin
-status: in_progress
+status: in_review
 priority: high
 estimate: L
 labels: [backend, security, test]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-184, TICKET-173, TICKET-174]
 blocks: [TICKET-154]
 branch: TICKET-231
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/175
 created: 2026-11-12
 updated: 2026-11-13
 started: 2026-11-13
@@ -71,3 +71,4 @@ TICKET-184 retains original pending admission evidence when a scanner session ex
 - 2026-11-13 — backlog → todo — divine (codex)
 - 2026-11-13 — todo → claimed — divine (codex) — started ahead of TICKET-184 (in_review)
 - 2026-11-13 — todo → in_progress — divine (codex) — started ahead of TICKET-184 (in_review)
+- 2026-11-13 — in_progress → in_review — divine (codex)
