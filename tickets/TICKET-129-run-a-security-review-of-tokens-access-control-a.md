@@ -39,10 +39,10 @@ See: [Security](../docs/prd.md#security) · [Milestones, scope and testing](../d
 
 ## Acceptance criteria
 
-- [ ] Review report in docs/audits/ covering every server action.
-- [ ] `pnpm audit --prod` has no high/critical issues.
+- [x] Review report in docs/audits/ covering every server action.
+- [x] `pnpm audit --prod` has no high/critical issues.
 
-- [ ] No unresolved high/critical security finding may pass the release gate; each finding needs a linked bounded fix and successful retest, not just a report.
+- [x] No unresolved high/critical security finding may pass the release gate; each finding needs a linked bounded fix and successful retest, not just a report.
 
 ## Test plan
 
@@ -57,7 +57,7 @@ See: [Security](../docs/prd.md#security) · [Milestones, scope and testing](../d
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-11-13 — Audited 38 exported actions and 35 route handlers against develop6b2c9d3e. Two moderate origin/body-buffering findings reproduced and fixed in this ticket. See docs/audits/TICKET-129-security-review.md and docs/plans/TICKET-129-pr.md for scope, retests and deployment limitations. Production advisory audit: zero high/critical (zero total). Required CI remains pending before merge; no unresolved high/critical finding identified.
 
 ## Activity log
 

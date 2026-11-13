@@ -6,6 +6,7 @@ const actor = { station: "kitchen" as const, staffId: randomUUID(), deviceId: "k
 const post = (body: unknown) =>
   new Request("http://localhost/api/kitchen/tickets", {
     method: "POST",
+    headers: { Origin: "http://localhost" },
     body: typeof body === "string" ? body : JSON.stringify(body),
   });
 const move = { stationOrderId: randomUUID(), from: "received", to: "preparing" };
