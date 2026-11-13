@@ -22,7 +22,7 @@ The new unit regression fails before repair (three resolver calls instead of one
 - Focused scanner/live-update units:16 pass.
 - Production build:pass.
 - Actual mobile/desktop delayed-response matrix:2 pass in18.0s; first response held4seconds after server logging, exactly one observation per verdict, no new admission.
-- Independent source review requested; required hosted CI pending.
+- Independent source review: no blocker; required hosted CI pending.
 
 # Risks and rollout
 
