@@ -16,7 +16,7 @@ export function invitationPreviewCopy(event: PreviewEventDetails) {
   return {
     title: `${event.coupleNames.join(" & ")} · ${date}`,
     date,
-    alt: `${event.coupleNames.join(" and ")}'s wedding invitation, with an illustrative wedding-couple photograph.`,
+    alt: `${event.coupleNames.join(" and ")}'s wedding invitation.`,
   };
 }
 
@@ -26,9 +26,9 @@ export function invitationPreviewMetadata(
   event: PreviewEventDetails = defaultEventSettings,
 ): Metadata {
   const copy = invitationPreviewCopy(event);
+  // Absolute image URLs need no metadataBase, and a URL object can't be cached by "use cache".
   const image = new URL("/invitation-preview", new URL(siteUrl).origin).href;
   return {
-    metadataBase: new URL(new URL(siteUrl).origin),
     openGraph: {
       type: "website",
       title: copy.title,

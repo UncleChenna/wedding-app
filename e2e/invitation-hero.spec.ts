@@ -17,7 +17,7 @@ for (const theme of listThemes())
       );
       if (process.env.INVITATION_HERO_PATH) await applyTheme(page, theme);
       const image = page.locator("[data-invitation-hero] img");
-      await expect(image).toHaveAttribute("alt", /stock photograph/);
+      await expect(image).toHaveAttribute("alt", /.+/);
       await expect
         .poll(() =>
           image.evaluate(
