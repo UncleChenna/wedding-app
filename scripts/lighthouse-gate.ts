@@ -11,6 +11,10 @@ const reportSchema = z.object({
   lighthouseVersion: z.literal(LIGHTHOUSE_POLICY.version),
   finalDisplayedUrl: z.string().url(),
   runtimeError: z.unknown().optional(),
+  configSettings: z.object({
+    formFactor: z.literal("mobile"),
+    throttlingMethod: z.literal("simulate"),
+  }),
   categories: z.object({
     performance: z.object({ score: z.number().min(0).max(1) }),
     accessibility: z.object({ score: z.number().min(0).max(1) }),
