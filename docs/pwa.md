@@ -179,3 +179,20 @@ in again before sync; it never discards queued IDs. Physical-device release QA
 remains separate. The upgrade fixture uses real emitted workers/IndexedDB and an
 idempotent HTTP acknowledgement fixture; database reconciliation is covered by
 TICKET-066's authenticated product tests, not simulated as production here.
+
+## Automated installation and offline coverage (TICKET-113)
+
+| Requirement                                                                                     | Executable coverage                                                                            | Gate                                                   |
+| ----------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| Manifest discovery, safe root launch/scope and icon metadata                                    | `e2e/manifest.spec.ts`, `e2e/pwa-icons.spec.ts`                                                | `pnpm verify` smoke; shared/app changes select full CI |
+| HTTPS secure context, browser installability diagnostics, worker control and offline navigation | `e2e/pwa-https.spec.ts`                                                                        | `@smoke` in `pnpm verify`                              |
+| Android prompt lifecycle and iOS install instructions                                           | `e2e/install-prompt.spec.ts`, `e2e/ios-install-guide.spec.ts`                                  | Smoke; browser events/UA are emulated                  |
+| Saved personal QR, link isolation, expiry/eviction and reconnect revocation                     | `scripts/review-offline-pass.ts` → `e2e/offline-pass.spec.ts`; private-retention browser suite | Guest CI journey and camera worker suite               |
+| Authenticated scanner cold reload/sign-out and retained attempts                                | `scripts/test-offline-scanner.ts`, `scripts/test-offline-queue.ts`                             | Guest CI journey                                       |
+| N/N+1 worker changes, pending events and explicit safe updates                                  | `scripts/browser-tests/queue-upgrade.spec.ts` (TICKET-111 adds client accept/Later/reload)     | Camera CI job via `scripts/offline-queue.config.ts`    |
+
+The HTTPS fixture proxies only the owned loopback production server, generates a one-day local certificate and pins that certificate's public key only in its disposable Chromium process. It checks a real HTTPS secure context, actual manifest parsing/installability diagnostics, service-worker control and offline navigation. Standalone display is emulated to exercise the app branch; it is not evidence of a native installation. Certificates, browser and listener are cleaned up even after failure. This does not validate a deployment's public certificate or domain: those checks remain part of TICKET-154.
+
+The offline-pass runner uses ephemeral signing keys and only synthetic rows in the worktree's local database (or a hosted disposable CI database), and cleans up only settings it actually inserted. It writes review images under `artifacts/TICKET-113` instead of overwriting another ticket's committed screenshots. Run `pnpm exec tsx scripts/review-offline-pass.ts` after a production build and isolated migrations.
+
+TICKET-114 still requires native iOS Safari and Android Chrome installation, home-screen launching, orientation/keyboard behavior and browser-specific offline recovery on real devices. TICKET-201/TICKET-138 keep physical storage/device checks. No removed Lighthouse PWA score is used or substituted for those checks. General Performance/Accessibility targets remain separate release requirements.
