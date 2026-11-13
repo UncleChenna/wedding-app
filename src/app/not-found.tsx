@@ -9,6 +9,8 @@ export default function NotFound() {
       eyebrow="404"
       title="This page wandered off"
       description="We couldn't find what you were looking for. Check the link on your invitation, or head back home."
+      backTo={null}
+      className="min-h-dvh"
     >
       <Link
         href={appRoutes.home.path}
