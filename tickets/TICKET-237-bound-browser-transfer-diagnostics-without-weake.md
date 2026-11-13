@@ -2,7 +2,7 @@
 id: TICKET-237
 title: Bound browser transfer diagnostics without weakening wire budgets
 epic: quality
-status: in_review
+status: done
 priority: high
 estimate: S
 labels: [test]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/188
 created: 2026-11-13
 updated: 2026-11-13
 started: 2026-11-13
-completed: ""
+completed: 2026-11-13
 reason: ""
 resume_to: ""
 ---
@@ -68,3 +68,4 @@ TICKET-129 CI run43386213746 stalls after the native-order wire and browser netw
 - 2026-11-13 — todo → claimed — divine (codex)
 - 2026-11-13 — todo → in_progress — divine (codex)
 - 2026-11-13 — in_progress → in_review — divine (codex)
+- 2026-11-13 — in_review → done — divine (codex)
