@@ -41,8 +41,8 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-6).
 
 ## Acceptance criteria
 
-- [ ] Two devices each admitting 4 of 4 offline produce one flagged conflict after sync (unit + e2e).
-- [ ] The conflict appears on every scanner within 2 seconds of sync.
+- [x] Two devices each admitting 4 of 4 offline produce one flagged conflict after sync (unit + e2e).
+- [x] The conflict appears on every scanner within 2 seconds of sync.
 
 ## Test plan
 
@@ -56,7 +56,7 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-6).
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-11-13 — Hosted production two-device sync passes in both projects: mobile851ms, desktop828ms, one flagged conflict, canonical admitted count4. All-theme axe/375px screenshots inspected. CI43318217477 passes all ten jobs at38de17eb; detailed evidence in docs/plans/TICKET-067-pr.md. Physical-device release checks remain unverified.
 
 ## Activity log
 
