@@ -42,9 +42,9 @@ TICKET-076 was merged as PR140 while its ledger stayed in_progress with no PR UR
 
 ## Acceptance criteria
 
-- [ ] An owned in-progress or blocked ticket with a missing original PR can recover only with explicitly supplied verified merged PR identity and separate full repair proof.
-- [ ] Wrong ticket/branch/repository, changing metadata, an existing recorded PR, failed CI or unfinished dependencies leave the ledger unchanged.
-- [ ] CLI docs describe the option and focused regression tests pass without weakening existing cases.
+- [x] An owned in-progress or blocked ticket with a missing original PR can recover only with explicitly supplied verified merged PR identity and separate full repair proof.
+- [x] Wrong ticket/branch/repository, changing metadata, an existing recorded PR, failed CI or unfinished dependencies leave the ledger unchanged.
+- [x] CLI docs describe the option and focused regression tests pass without weakening existing cases.
 
 ## Test plan
 
@@ -56,6 +56,8 @@ TICKET-076 was merged as PR140 while its ledger stayed in_progress with no PR UR
 - scripts/tickets.ts, scripts/tickets/reconcile.ts, scripts/__tests__/tickets.test.ts, docs/tickets.md.
 
 ## Notes / decisions
+
+- 2026-11-13: Added15 real-Git CLI cases; initial3 failures prove absent support/ignored override. Final141 focused ticket/reconciliation tests pass, lint and types pass, independent source review clean. No lifecycle guard bypass or original-link overwrite is allowed.
 
 - 2026-11-13: Root assigned this narrow repair after the existing CLI correctly refused076 completion. Physical tablet QA stays unchecked in201.
 
