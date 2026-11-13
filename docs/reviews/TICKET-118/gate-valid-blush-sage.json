@@ -1,0 +1,17 @@
+{
+  "name": "gate-valid",
+  "theme": "blush-sage",
+  "violations": [],
+  "overflow": false,
+  "small": [],
+  "identifiers": [
+    {
+      "text": "Valid pass",
+      "px": 36
+    },
+    {
+      "text": "Table 806073",
+      "px": 36
+    }
+  ]
+}

@@ -43,6 +43,7 @@ Claiming untested checks pass, weakening thresholds, changing TICKET-015's pause
 ## Acceptance criteria
 
 - [ ] TICKET-117: complete guest accessibility sign-off on physical iOS VoiceOver and Android TalkBack, including invitation reading order, saved RSVP announcements, companion add/remove, issued pass/save controls and table ordering. Verify actual browser200% zoom, software keyboard and WhatsApp behavior. Record device/OS/browser/build and findings/retests in docs/audits/TICKET-117-guest-accessibility.md; automated axe, text-size emulation and keyboard checks do not certify these requirements. Preserve both release gates until all applicable A/AA findings are resolved.
+- [ ] TICKET-118: verify gate verdicts and admission identifiers, kitchen/bar boards and staff order dialogs at arm’s length on actual event devices in every shipped theme; record device/OS/browser/build and venue lighting. Verify admin keyboard, VoiceOver/TalkBack and software-keyboard operation on actual phones. Automated Chromium font/axe/keyboard evidence is not a physical-device pass.
 
 - [ ] TICKET-111: on actual event phones/tablets verify waiting-update notifications, Later, queue-blocked Reload and explicit safe reload across tabs; retain saved attempts through interruption. Record OS/browser/build. Fresh guest-page Lighthouse and layout-shift measurements remain required before release; automated preview evidence does not certify these checks.
 

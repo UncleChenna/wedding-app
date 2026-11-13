@@ -1,0 +1,52 @@
+{
+  "name": "admin-themes",
+  "theme": "blush-sage",
+  "violations": [],
+  "overflow": false,
+  "small": [
+    {
+      "text": "Your celebration",
+      "px": 13
+    },
+    {
+      "text": "Invitation preview · sample photograph and venue details",
+      "px": 16
+    },
+    {
+      "text": "Together with our families",
+      "px": 16
+    },
+    {
+      "text": "The day",
+      "px": 16
+    },
+    {
+      "text": "19 December 2026",
+      "px": 16
+    },
+    {
+      "text": "Time to follow",
+      "px": 16
+    },
+    {
+      "text": "The place",
+      "px": 16
+    },
+    {
+      "text": "Sample Garden",
+      "px": 16
+    },
+    {
+      "text": "Sample location",
+      "px": 16
+    },
+    {
+      "text": "Dress code",
+      "px": 16
+    },
+    {
+      "text": "Dress code to follow",
+      "px": 16
+    }
+  ]
+}
