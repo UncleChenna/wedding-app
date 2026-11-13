@@ -13,7 +13,7 @@ The new saved-pass check failed in the shared guest CI job because an earlier or
 - Await the actual main-frame refresh navigation before testing another invitation URL; assert both private paths explicitly. The old unchanged timestamp matched the old document while its pending reload could overwrite the next navigation.
 - Preserve every browser assertion, fixture ownership guard and timeout. No product logic or database deletion changes.
 
-# Acceptance evidence
+# Acceptance criteria and evidence
 
 Workflow ordering, regression and the navigation race repair are complete. Actual local repaired sequence checks pass; hosted verification of the final head remains pending. The externally merged TICKET-113 PR #179 failed run 43402002867 at its offline-pass settings guard; this repair does not rewrite that failure or certify completion.
 
@@ -27,7 +27,7 @@ Workflow ordering, regression and the navigation race repair are complete. Actua
 - After synchronizing refresh, both unchanged-budget offline projects pass: mobile 14.8s, desktop 13.7s, 30.5s total. Tests use TICKET-242’s own fresh local database and the existing integrated develop 21722cb9 production build, sharing ephemeral signing keys. All theme, keyboard, QR-signature, cross-invitation isolation and reconnect-revocation assertions remain.
 - Fresh hosted CI is the remaining gate before merge.
 
-# Risks and rollback
+# Risks and rollout
 
 The fixture sequence is deliberate: ordering retains default settings, while the private-pass fixture refuses unknown settings. Reverting restores the known CI failure. This change neither resets shared databases nor loosens fixture authorization.
 
