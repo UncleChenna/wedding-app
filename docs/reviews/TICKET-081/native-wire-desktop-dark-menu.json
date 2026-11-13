@@ -6,7 +6,7 @@
     "height": 800
   },
   "budget": 200000,
-  "total": 168831,
+  "total": 169404,
   "browserReported": 133922,
   "transport": "loopback HTTP/1 wire; no rewriting",
   "rows": [
@@ -41,15 +41,15 @@
       "status": 200
     },
     {
-      "path": "/order-assets/order-0d5f0bc80133b83a23b86cc7317de12f4f828c8f45b90ad6dd5a9258186b2676.woff2",
-      "worker": false,
-      "bytes": 2493,
-      "status": 200
-    },
-    {
       "path": "/order-assets/order-12edd4bfdec213ede2bc68eb8b58e964632baad7541530add962ec5daa3c3044.woff2",
       "worker": false,
       "bytes": 4573,
+      "status": 200
+    },
+    {
+      "path": "/order-assets/order-0d5f0bc80133b83a23b86cc7317de12f4f828c8f45b90ad6dd5a9258186b2676.woff2",
+      "worker": false,
+      "bytes": 2493,
       "status": 200
     },
     {

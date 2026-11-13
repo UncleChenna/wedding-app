@@ -267,3 +267,156 @@ test("a new operator's fresh canonical snapshot retires old barriers but preserv
   expect(recovered.attempts).toEqual([second]);
   expect(recovered.receipts).toHaveLength(1);
 });
+
+test("privacy cleanup removes acknowledged receipts but preserves pending and rejected evidence", async ({
+  page,
+}) => {
+  const first = crypto.randomUUID(),
+    second = crypto.randomUUID(),
+    third = crypto.randomUUID();
+  for (const id of [first, second, third])
+    await page.evaluate(
+      (value) => window.queueStore.record(value, { kind: "known", remaining: 3 }),
+      attempt(id),
+    );
+  await page.evaluate(
+    async ({ actor, first, second }) => {
+      await window.queueStore.acknowledge(
+        actor,
+        [
+          {
+            clientEventId: first,
+            status: "recorded",
+            result: "valid",
+            admitted: 1,
+            conflict: false,
+          },
+          { clientEventId: second, status: "rejected" },
+        ],
+        crypto.randomUUID(),
+      );
+    },
+    { actor, first, second },
+  );
+  expect(await page.evaluate(() => window.queueStore.purgeAcknowledged())).toBe(1);
+  const journal = await page.evaluate(() => window.queueStore.read());
+  expect(journal.receipts).toEqual([]);
+  expect(journal.attempts.map((row) => [row.event.clientEventId, row.rejected])).toEqual([
+    [second, true],
+    [third, false],
+  ]);
+  expect(journal.barriers).toHaveLength(1);
+});
+
+test("partial queue eviction never reports an empty journal or accepts another admission", async ({
+  page,
+}) => {
+  const id = crypto.randomUUID();
+  await page.evaluate(
+    (value) => window.queueStore.record(value, { kind: "known", remaining: 1 }),
+    attempt(id),
+  );
+  await page.evaluate(
+    () =>
+      new Promise<void>((done, reject) => {
+        const request = indexedDB.deleteDatabase("wedding-scanner-attempts-v1");
+        request.onsuccess = () => done();
+        request.onerror = () => reject(request.error);
+      }),
+  );
+  expect(
+    await page.evaluate(async () => {
+      try {
+        await window.queueStore.read();
+        return "unsafe empty";
+      } catch {
+        return "needs recovery";
+      }
+    }),
+  ).toBe("needs recovery");
+  expect(
+    await page.evaluate(async (value) => {
+      try {
+        await window.queueStore.record(value, { kind: "known", remaining: 1 });
+        return "unsafe admission";
+      } catch {
+        return "needs recovery";
+      }
+    }, attempt(crypto.randomUUID())),
+  ).toBe("needs recovery");
+});
+test("cache-only eviction restores the identity marker from the intact queue", async ({ page }) => {
+  const id = crypto.randomUUID();
+  await page.evaluate(
+    (value) => window.queueStore.record(value, { kind: "known", remaining: 1 }),
+    attempt(id),
+  );
+  await page.evaluate(() => caches.delete("wedding-scanner-queue-identity-v1"));
+  expect(
+    (await page.evaluate(() => window.queueStore.read())).attempts.map(
+      (row) => row.event.clientEventId,
+    ),
+  ).toEqual([id]);
+  expect(await page.evaluate(() => caches.has("wedding-scanner-queue-identity-v1"))).toBe(true);
+});
+
+test("legacy journals adopt an identity without replacing pending evidence", async ({ page }) => {
+  const id = crypto.randomUUID();
+  await page.evaluate(
+    (value) => window.queueStore.record(value, { kind: "known", remaining: 1 }),
+    attempt(id),
+  );
+  await page.evaluate(async () => {
+    await new Promise<void>((done, reject) => {
+      const request = indexedDB.open("wedding-scanner-attempts-v1");
+      request.onsuccess = () => {
+        const db = request.result,
+          tx = db.transaction("journal", "readwrite");
+        tx.objectStore("journal").delete("identity");
+        tx.oncomplete = () => {
+          db.close();
+          done();
+        };
+        tx.onerror = () => reject(tx.error);
+      };
+    });
+    await caches.delete("wedding-scanner-queue-identity-v1");
+  });
+  expect(
+    (await page.evaluate(() => window.queueStore.read())).attempts.map(
+      (row) => row.event.clientEventId,
+    ),
+  ).toEqual([id]);
+});
+test("interrupted identity initialization cannot later masquerade as an empty queue", async ({
+  page,
+}) => {
+  expect(
+    await page.evaluate(async () => {
+      const original = IDBObjectStore.prototype.put;
+      IDBObjectStore.prototype.put = function (...args) {
+        if (this.name === "journal")
+          throw new DOMException("Synthetic full store", "QuotaExceededError");
+        return original.apply(this, args);
+      };
+      try {
+        await window.queueStore.read();
+        return "unsafe ready";
+      } catch {
+        return "unavailable";
+      } finally {
+        IDBObjectStore.prototype.put = original;
+      }
+    }),
+  ).toBe("unavailable");
+  expect(
+    await page.evaluate(async () => {
+      try {
+        await window.queueStore.read();
+        return "unsafe empty";
+      } catch {
+        return "needs recovery";
+      }
+    }),
+  ).toBe("needs recovery");
+});

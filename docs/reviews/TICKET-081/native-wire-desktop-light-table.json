@@ -6,20 +6,20 @@
     "height": 800
   },
   "budget": 200000,
-  "total": 168066,
+  "total": 168639,
   "browserReported": 133157,
   "transport": "loopback HTTP/1 wire; no rewriting",
   "rows": [
     {
-      "path": "/order-assets/order-b31faeb4107a5c474451e7ecfdaf311e0fe7ea4f3d7fdf46f94397c7e76e7226.css",
-      "worker": false,
-      "bytes": 3658,
-      "status": 200
-    },
-    {
       "path": "/order",
       "worker": false,
       "bytes": 5440,
+      "status": 200
+    },
+    {
+      "path": "/order-assets/order-b31faeb4107a5c474451e7ecfdaf311e0fe7ea4f3d7fdf46f94397c7e76e7226.css",
+      "worker": false,
+      "bytes": 3658,
       "status": 200
     },
     {
@@ -29,15 +29,15 @@
       "status": 200
     },
     {
-      "path": "/order-assets/order-8b77391ba8a6baab7ea8ed64e4f8526cb0941234275f8f9be540b116d1c82c2d.woff2",
-      "worker": false,
-      "bytes": 38735,
-      "status": 200
-    },
-    {
       "path": "/order-assets/order-97ded2b82a8dc48c7158f38c005c9ce8ad93e2dd6d165d0e7d740df6afc21af7.woff2",
       "worker": false,
       "bytes": 30375,
+      "status": 200
+    },
+    {
+      "path": "/order-assets/order-8b77391ba8a6baab7ea8ed64e4f8526cb0941234275f8f9be540b116d1c82c2d.woff2",
+      "worker": false,
+      "bytes": 38735,
       "status": 200
     },
     {
@@ -71,15 +71,15 @@
       "status": 200
     },
     {
-      "path": "/offline-assets/jost-c38a7bce2755e180.woff2",
-      "worker": true,
-      "bytes": 5262,
-      "status": 200
-    },
-    {
       "path": "/offline-assets/playfair-5b5d69a12afed94f.woff2",
       "worker": true,
       "bytes": 9382,
+      "status": 200
+    },
+    {
+      "path": "/offline-assets/jost-c38a7bce2755e180.woff2",
+      "worker": true,
+      "bytes": 5262,
       "status": 200
     }
   ]

@@ -6,8 +6,8 @@
     "height": 839
   },
   "budget": 200000,
-  "total": 168066,
-  "browserReported": 133157,
+  "total": 168641,
+  "browserReported": 133159,
   "transport": "loopback HTTP/1 wire; no rewriting",
   "rows": [
     {
@@ -29,15 +29,15 @@
       "status": 200
     },
     {
-      "path": "/order-assets/order-8b77391ba8a6baab7ea8ed64e4f8526cb0941234275f8f9be540b116d1c82c2d.woff2",
-      "worker": false,
-      "bytes": 38735,
-      "status": 200
-    },
-    {
       "path": "/order-assets/order-97ded2b82a8dc48c7158f38c005c9ce8ad93e2dd6d165d0e7d740df6afc21af7.woff2",
       "worker": false,
       "bytes": 30375,
+      "status": 200
+    },
+    {
+      "path": "/order-assets/order-8b77391ba8a6baab7ea8ed64e4f8526cb0941234275f8f9be540b116d1c82c2d.woff2",
+      "worker": false,
+      "bytes": 38735,
       "status": 200
     },
     {
@@ -55,19 +55,19 @@
     {
       "path": "/offline",
       "worker": true,
-      "bytes": 8785,
-      "status": 200
-    },
-    {
-      "path": "/offline-assets/inter-b714eddca05246b9.woff2",
-      "worker": true,
-      "bytes": 6922,
+      "bytes": 8787,
       "status": 200
     },
     {
       "path": "/offline-assets/cormorant-6dcbd80f527db744.woff2",
       "worker": true,
       "bytes": 10350,
+      "status": 200
+    },
+    {
+      "path": "/offline-assets/inter-b714eddca05246b9.woff2",
+      "worker": true,
+      "bytes": 6922,
       "status": 200
     },
     {

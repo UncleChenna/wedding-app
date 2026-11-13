@@ -1,4 +1,6 @@
 import { gunzipSync } from "node:zlib";
+import { createOfflineQueuePolicy } from "@/modules/checkin/lib/offline-queue";
+
 import { runInNewContext } from "node:vm";
 
 import { describe, expect, it, vi } from "vitest";
@@ -133,12 +135,15 @@ function loadWorker(options: WorkerOptions = {}) {
   };
   runInNewContext(serviceWorkerSource(), {
     self,
+    navigator: self.navigator,
+    location: self.location,
     caches,
     fetch: fetchMock,
     Response,
     Request,
     URL,
     console,
+    structuredClone,
     // Empty compatible journal; real IDB upgrade behavior lives in queue-upgrade.spec.ts.
     indexedDB: {
       open: () => {
@@ -148,8 +153,13 @@ function loadWorker(options: WorkerOptions = {}) {
           transaction: () => {
             const tx: { oncomplete?: () => void; objectStore: () => unknown } = {
               objectStore: () => ({
-                get: () => {
-                  const row: { result: undefined; onsuccess?: () => void } = { result: undefined };
+                get: (key: string) => {
+                  const row: { result: unknown; onsuccess?: () => void } = {
+                    result:
+                      key === "identity"
+                        ? "12345678-1234-4234-8234-123456789abc"
+                        : createOfflineQueuePolicy().empty(),
+                  };
                   queueMicrotask(() => {
                     row.onsuccess?.();
                     tx.oncomplete?.();
@@ -265,6 +275,7 @@ describe("served worker script", () => {
     store.set(SW_STATIC_CACHE, new Map());
     store.set("someone-elses-cache", new Map());
     store.set(OWN_PASS_CACHE, new Map());
+    store.set("wedding-scanner-queue-identity-v1", new Map());
 
     await install();
     expect(self.skipWaiting).not.toHaveBeenCalled();
@@ -275,7 +286,13 @@ describe("served worker script", () => {
     expect(caches.delete).toHaveBeenCalledWith(`${SW_CACHE_PREFIX}static-v0`);
     expect(caches.delete).toHaveBeenCalledWith(`${SW_CACHE_PREFIX}offline-v0`);
     expect([...store.keys()].sort()).toEqual(
-      [SW_STATIC_CACHE, SW_OFFLINE_CACHE, OWN_PASS_CACHE, "someone-elses-cache"].sort(),
+      [
+        SW_STATIC_CACHE,
+        SW_OFFLINE_CACHE,
+        OWN_PASS_CACHE,
+        "wedding-scanner-queue-identity-v1",
+        "someone-elses-cache",
+      ].sort(),
     );
   });
 

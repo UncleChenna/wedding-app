@@ -158,6 +158,7 @@ self.addEventListener("activate", (event) => {
               name !== SW_STATIC_CACHE &&
               name !== SW_OFFLINE_CACHE &&
               name !== OWN_PASS_CACHE &&
+              name !== "wedding-scanner-queue-identity-v1" &&
               name !== scannerWorker?.cacheName,
           )
           .map((name) => caches.delete(name)),
