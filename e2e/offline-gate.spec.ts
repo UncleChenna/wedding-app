@@ -57,6 +57,13 @@ test("two offline scanners retain fifty QR scans and reconcile a shared allowanc
   const contexts = await Promise.all(
     [0, 1].map(() => browser.newContext({ baseURL, viewport: info.project.use.viewport })),
   );
+  const progress = { scanner: -1, scan: -1, phase: "setup" };
+  const syncResponses: { status: number; at: number }[] = [];
+  for (const context of contexts)
+    context.on("response", (response) => {
+      if (new URL(response.url()).pathname === "/api/checkin/sync")
+        syncResponses.push({ status: response.status(), at: Date.now() });
+    });
   try {
     await db`insert into event_settings(id,venue,event_date,time_zone) values(1,${venue},'2099-12-19','Etc/UTC')`;
     await db`insert into staff(id,name,role,pin_hash,pin_issued_at,pin_expires_at) values(${staff},'Synthetic offline gate operator','gate',${hash},now()-interval '1 minute','2099-12-20T06:00:00Z')`;
@@ -121,7 +128,10 @@ test("two offline scanners retain fifty QR scans and reconcile a shared allowanc
       }),
     );
     for (const [scanner, page] of pages.entries()) {
+      progress.scanner = scanner;
       for (let index = 0; index < 25; index++) {
+        progress.scan = index;
+        progress.phase = "camera";
         const code = codes[index === 0 ? 0 : 1 + scanner * 24 + index - 1];
         if (!code) throw new Error("QR fixture missing");
         await page.evaluate((src) => sessionStorage.setItem("synthetic-camera-qr", src), code);
@@ -162,6 +172,8 @@ test("two offline scanners retain fifty QR scans and reconcile a shared allowanc
       if (!page || !state) throw new Error("Scanner fixture missing");
       await page.reload();
       expect(await journal(page)).toEqual(state);
+      progress.scanner = index;
+      progress.phase = "reconnect";
       await context.setOffline(false);
       await page.getByRole("button", { name: "Retry sync", exact: true }).click();
       await expect.poll(async () => (await journal(page)).attempts.length).toBe(0);
@@ -205,6 +217,45 @@ test("two offline scanners retain fifty QR scans and reconcile a shared allowanc
       body: JSON.stringify({ totals, conflict }),
       contentType: "application/json",
     });
+  } catch (error) {
+    const states = await Promise.all(
+      contexts.map(async (context) => {
+        const page = context.pages()[0];
+        if (!page || page.isClosed()) return { unavailable: true };
+        let timer: ReturnType<typeof setTimeout> | undefined;
+        try {
+          return await Promise.race([
+            page.evaluate(() => ({
+              online: navigator.onLine,
+              visibility: document.visibilityState,
+              controller: Boolean(navigator.serviceWorker.controller),
+              headings: [...document.querySelectorAll("h1,h2")].map((node) =>
+                node.textContent?.slice(0, 160),
+              ),
+              statuses: [...document.querySelectorAll('[role="status"],[role="alert"]')].map(
+                (node) => node.textContent?.slice(0, 200),
+              ),
+              buttons: [...document.querySelectorAll("button")].map((node) => ({
+                text: node.textContent?.slice(0, 80),
+                disabled: node.disabled,
+              })),
+            })),
+            new Promise<{ unavailable: true }>((resolve) => {
+              timer = setTimeout(() => resolve({ unavailable: true }), 3000);
+            }),
+          ]);
+        } catch {
+          return { unavailable: true };
+        } finally {
+          clearTimeout(timer);
+        }
+      }),
+    );
+    await info.attach("scanner-failure-state.json", {
+      body: JSON.stringify({ progress, syncResponses: syncResponses.slice(-10), states }),
+      contentType: "application/json",
+    });
+    throw error;
   } finally {
     await Promise.all(contexts.map((context) => context.close()));
     await db`update staff set revoked_at=now() where id=${staff}`;
