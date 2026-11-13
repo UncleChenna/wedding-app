@@ -20,7 +20,19 @@ const reportSchema = z.object({
     accessibility: z.object({ score: z.number().min(0).max(1) }),
   }),
   audits: z.object({
-    "http-status-code": z.object({ score: z.literal(1) }),
+    "network-requests": z.object({
+      details: z.object({
+        items: z.array(
+          z.object({
+            url: z.string().url(),
+            statusCode: z.number(),
+            resourceType: z.string(),
+            experimentalFromMainFrame: z.boolean().optional(),
+            finished: z.boolean(),
+          }),
+        ),
+      }),
+    }),
   }),
 });
 
@@ -30,6 +42,20 @@ export function assessLighthouse(reports: unknown[], expectedUrl: string) {
   const parsed = reports.map((value) => reportSchema.parse(value));
   if (parsed.some((report) => report.runtimeError || report.finalDisplayedUrl !== expectedUrl))
     throw new Error("Lighthouse did not audit the intended successful guest page");
+  if (
+    parsed.some(
+      (report) =>
+        !report.audits["network-requests"].details.items.some(
+          (request) =>
+            request.url === expectedUrl &&
+            request.resourceType === "Document" &&
+            request.experimentalFromMainFrame === true &&
+            request.finished &&
+            request.statusCode === 200,
+        ),
+    )
+  )
+    throw new Error("Missing successful main-document network response");
   const performance = parsed
     .map((report) => report.categories.performance.score)
     .sort((a, b) => a - b);

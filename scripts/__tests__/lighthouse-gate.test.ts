@@ -6,7 +6,21 @@ const report = (performance = 0.95, accessibility = 0.95) => ({
   configSettings: { formFactor: "mobile", throttlingMethod: "simulate" },
   finalDisplayedUrl: url,
   categories: { performance: { score: performance }, accessibility: { score: accessibility } },
-  audits: { "http-status-code": { score: 1 } },
+  audits: {
+    "network-requests": {
+      details: {
+        items: [
+          {
+            url,
+            statusCode: 200,
+            resourceType: "Document",
+            experimentalFromMainFrame: true,
+            finished: true,
+          },
+        ],
+      },
+    },
+  },
 });
 describe("guest Lighthouse release thresholds", () => {
   it("accepts exactly95 and records every cold run", () => {
@@ -34,7 +48,28 @@ describe("guest Lighthouse release thresholds", () => {
     ).toThrow();
     expect(() =>
       assessLighthouse(
-        [report(), report(), { ...report(), audits: { "http-status-code": { score: 0 } } }],
+        [
+          report(),
+          report(),
+          {
+            ...report(),
+            audits: {
+              "network-requests": {
+                details: {
+                  items: [
+                    {
+                      url,
+                      statusCode: 404,
+                      resourceType: "Document",
+                      experimentalFromMainFrame: true,
+                      finished: true,
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        ],
         url,
       ),
     ).toThrow();

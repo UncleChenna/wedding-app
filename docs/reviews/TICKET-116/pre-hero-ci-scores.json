@@ -1,0 +1,11 @@
+{
+  "run": "43396276534",
+  "base": "49ecb0d117552806e77e0d6b62911705c864f99e",
+  "lighthouseVersion": "13.6.0",
+  "page": "invitation-rsvp-saved",
+  "performance": [0.93, 0.93, 0.95],
+  "medianPerformance": 0.93,
+  "accessibility": [1, 1, 1],
+  "passed": false,
+  "scope": "Pre-TICKET-038 integration; raw reports retained in CI guest-lighthouse-evidence artifact. Pass and order reports were not reached because initial HTTP report schema was incompatible with category-limited Lighthouse output."
+}
