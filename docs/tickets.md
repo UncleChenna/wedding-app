@@ -222,6 +222,16 @@ link and CI history are not replaced. Other worktrees' ticket files are untouche
 only the ticket's own branch may later sync its completion metadata. Physical
 release requirements remain separate and mandatory.
 
+### Merged work without a recorded PR link
+
+If a ticket was externally merged before its PR URL entered the ledger, its owner may explicitly supply the original repository PR number:
+
+```bash
+pnpm t:reconcile TICKET-076 --original-pr 140 --repair-pr 175 --reason "Original merged work lacked its ledger PR link; the separate verified repair contains the approved criteria disposition"
+```
+
+Use the actual verified repair number; the example is illustrative. This option works only for an owned blocked or in-progress ticket with an empty PR field and a recorded branch. It cannot replace an existing original link or combine with historical integration mode. The original must be a merged, same-repository PR whose title begins with the exact ticket ID, whose head branch matches the recorded branch, and whose tested head contains that ticket definition. All existing dependency, merge ancestry, complete criteria and exact-head full-repair-CI checks still apply. Both PR identities are re-read before completion. Only after all proof succeeds does one ledger transaction record the verified original URL and completion; failures leave both unchanged. No historical worktree is edited.
+
 ### Historical stacked merges
 
 For an owned `in_review` ticket whose original PR merged into an intermediate
