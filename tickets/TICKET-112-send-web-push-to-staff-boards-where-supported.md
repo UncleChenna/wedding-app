@@ -2,7 +2,7 @@
 id: TICKET-112
 title: Send web push to staff boards where supported
 epic: pwa
-status: in_progress
+status: blocked
 priority: low
 estimate: L
 labels: [pwa, backend]
@@ -17,8 +17,8 @@ created: 2026-10-21
 updated: 2026-11-13
 started: 2026-11-13
 completed: ""
-reason: ""
-resume_to: ""
+reason: "Implementation and independent review pass; real push-provider registration/delivery remains unverified after bounded local attempts. PR184 retains the original end-to-end delivery criterion."
+resume_to: in_progress
 ---
 
 # TICKET-112: Send web push to staff boards where supported
@@ -63,3 +63,4 @@ _Agents append dated notes here while working._
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-13 — todo → claimed — divine (codex)
 - 2026-11-13 — todo → in_progress — divine (codex)
+- 2026-11-13 — in_progress → blocked — divine (codex) — Implementation and independent review pass; real push-provider registration/delivery remains unverified after bounded local attempts. PR184 retains the original end-to-end delivery criterion.
