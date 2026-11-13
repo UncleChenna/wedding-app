@@ -4,9 +4,9 @@
 
 Actual personal invitation, saved RSVP/party fields and issued signed pass, rendered against an owned synthetic database. Four themes (Ivory & Gold, Midnight & Champagne, Emerald Night, Blush & Sage), 320/375/768/1280 CSS-pixel widths, reduced motion, sequential keyboard navigation to RSVP, keyboard submission, and focused saved-state announcements. Separate checks enlarge the root text size to 200%; this is text resizing, not a claim of physical browser zoom or screen-reader testing.
 
-The project’s Playwright/axe helper checks all WCAG 2.0/2.1/2.2 A/AA tags. Automated results do not establish full WCAG conformance. Table ordering is pending integration of TICKET-081’s final native renderer.
+The project’s Playwright/axe helper checks all WCAG 2.0/2.1/2.2 A/AA tags. Automated results do not establish full WCAG conformance. The native table selection, menu and sent-order receipt are also audited after integrating the final TICKET-081 renderer.
 
-Base: `207798dc4f1535aecbf254ef3959def934d9eee2`. Reproduce with `pnpm exec tsx scripts/review-guest-accessibility.ts` using an isolated migrated database and empty event settings. The runner generates ephemeral signing keys. Synthetic guests are retired after the run; no production records are involved.
+Final integration base: `979609e67070bf022ddc0a94f5807c090203331e`. Invitation evidence includes the saved-meal fix; native ordering evidence was recorded after this integration. Reproduce with `pnpm exec tsx scripts/review-guest-accessibility.ts` using an isolated migrated database and empty event settings. The runner generates ephemeral signing keys. Synthetic guests are retired after the run; no production records are involved.
 
 ## Finding and bounded fix
 
@@ -18,7 +18,8 @@ Fix: permit emergency word wrapping on this heading using the existing `wrap-any
 
 ## Automated evidence
 
-- 80 rendered-state axe scans: no detected A/AA violations.
+- 140 rendered-state axe scans: no detected A/AA violations (80 invitation/RSVP/pass and 60 ordering states).
+- 16 native-ordering cases pass across all four themes and widths. Table entry, quantity selection and order submission use real keyboard actions. Quantity, submit and receipt focus are hit-tested to ensure the fixed action bar does not cover them. The 320px ordering states also pass 200% text checks.
 - All16 theme/width cases: invitation, saved RSVP, enlarged saved RSVP, issued pass, enlarged pass fit the viewport after remediation.
 - RSVP is reached through sequential Tab navigation and submitted with Enter. Saved RSVP and party details move focus to their status messages.
 - Every audited case uses reduced-motion media preference.
@@ -32,6 +33,5 @@ These checks do not assess every dialog, error path or assistive-technology anno
 - Actual browser200% zoom/reflow and software keyboard interaction on the event’s supported phones.
 - WhatsApp in-app navigation/forms, real QR scanning and manual visual contrast review.
 - Fresh production Lighthouse and exact-zero CLS evidence under TICKET-201.
-- Final native ordering audit after TICKET-081 merges.
 
 No open serious issue was detected by the completed automated checks. The ticket’s full no-open-serious sign-off remains unverified until the outstanding manual work is performed. Preview merge authorization does not certify guest release readiness.

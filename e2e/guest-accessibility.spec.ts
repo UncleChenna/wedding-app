@@ -162,17 +162,38 @@ test.describe("guest accessibility audit", () => {
         ).toBeVisible();
         await audit("order-menu");
         if (width === 320) await audit("order-menu-text-200", 2);
+        async function expectFocusUncovered() {
+          await expect
+            .poll(
+              () =>
+                page.evaluate(() => {
+                  const active = document.activeElement;
+                  if (!(active instanceof HTMLElement)) return false;
+                  const rect = active.getBoundingClientRect();
+                  const hit = document.elementFromPoint(
+                    rect.left + rect.width / 2,
+                    rect.top + rect.height / 2,
+                  );
+                  return hit !== null && (hit === active || active.contains(hit));
+                }),
+              { message: "Keyboard focus must remain visible above the fixed action bar" },
+            )
+            .toBe(true);
+        }
         const quantity = page.getByRole("spinbutton", {
           name: "Vegetable rice quantity",
           exact: true,
         });
         await quantity.focus();
+        await expectFocusUncovered();
         await quantity.press("ArrowUp");
         await expect(quantity).toHaveValue("1");
         const send = page.getByRole("button", { name: "Send order", exact: true });
         await send.focus();
+        await expectFocusUncovered();
         await page.keyboard.press("Enter");
         await expect(page.locator("#order-sent")).toBeFocused();
+        await expectFocusUncovered();
         await audit("order-receipt");
         if (width === 320) await audit("order-receipt-text-200", 2);
       });

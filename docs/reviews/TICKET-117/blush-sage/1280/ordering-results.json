@@ -1,0 +1,20 @@
+[
+  {
+    "state": "order-table",
+    "violations": [],
+    "overflow": false,
+    "textScale": 1
+  },
+  {
+    "state": "order-menu",
+    "violations": [],
+    "overflow": false,
+    "textScale": 1
+  },
+  {
+    "state": "order-receipt",
+    "violations": [],
+    "overflow": false,
+    "textScale": 1
+  }
+]

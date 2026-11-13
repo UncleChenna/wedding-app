@@ -1,13 +1,11 @@
 # TICKET-117
 
-Started 2026-11-13, divine/codex, branch TICKET-117. Live prerequisites complete; no other owner. Base207798dc4f1535aecbf254ef3959def934d9eee2. Audit and UI-review skills read; existing axe/Playwright tooling will supply live DOM checks (AccessLint connector unavailable). Plan is docs/plans/2026-11-13-TICKET-117.md. No implementation changes yet. Actual mobile screen-reader and device checks remain outstanding release gates. Wait for081merge before final native-order audit.
+Branch TICKET-117, divine/codex. Draft PR https://github.com/UncleChenna/wedding-app/pull/183.
 
-## Current checkpoint
+Integrated pinned develop `979609e67070bf022ddc0a94f5807c090203331e` in `a0c86a7d`; only conflict was TICKET-201 criteria, preserving both 111 and 117 release gates. Both bounded fixes are independently reviewed: celebration heading reflow and controlled party form native-reset prevention.
 
-Owned nativePG27601 (path .harness/temporary-postgres-path) is running, no Supabase. Actual invitation/RSVP/pass baseline16cases produced4narrow200%text overflows; preservedbaseline. Oneheading wrap-anywhere fix yields16/16pass and80axe scans zero violations. Report+final84screens/JSON in docs/audits and docs/reviews/TICKET-117. Independent review requested. Nativeorder audit pending081merge. Physicalscreenreader signoff remainsunticked;201releasegate appended under standing authorization. Buildpasses. DraftPRnext.
+Final actual evidence: 16 invitation/RSVP/pass cases pass including saved meal assertion (1.1m); 16 native ordering cases pass with quantity/submit/receipt focus hit-testing (40.5s). Combined 140 axe state scans report zero detected A/AA issues. Native form-reset unit regression passes. Integrated production build passes. Screenshots and exact JSON are in docs/reviews/TICKET-117; audit report records manual limitations without claiming full conformance.
 
-Published draft PR https://github.com/UncleChenna/wedding-app/pull/183 at50f27e23. Base integration6b2c9d3e recorded as4c63afa9; exact original browser evidence remains against207798dc plus wrapping fix. Quicklint/typespass; independent review clean. OwnedPG27601stopped withdata preserved. Finalnativeorder audit stillwaits081PR162; itssecondCIrepair is beingpublished withstable screenshotoutputs. Auditfullsignoff staysoutstanding.
+Owned native PostgreSQL port27601, data path in `.harness/temporary-postgres-path`; no Supabase. Stop it after final quick checks, preserve data. Physical VoiceOver/TalkBack, phone zoom/keyboards and remaining manual release evidence remain mandatory in TICKET-201 under the standing preview authorization.
 
-## Saved meal reset finding
-
-Visual inspection exposed meal select clearing immediately after successful save. New actual browser assertion failed(expected mealUUID, receivedempty). PartyForm now prevents native action reset on controlled fields. Nativeform.reset unit regression passes; all16 actual invitation/RSVP/pass cases with savedselection assertion pass(1.1m). Final ordering tests are prepared but notrun until freshbase integration. Preserve baseline screenshot/JSON for117-02. Fetch pinned develop979609e67070bf022ddc0a94f5807c090203331e; integrate next toresolve PR183conflict and include merged081.
+Final quick verification passed lint/types (no newly changed source selected by related-unit runner). The explicit reset unit test passed before integration. Independent ordering-focus review is clean; it verifies the sampled controls, not every keyboard stop. Native PG stopped with data preserved after the audit.

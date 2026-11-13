@@ -1,0 +1,38 @@
+[
+  {
+    "state": "order-table",
+    "violations": [],
+    "overflow": false,
+    "textScale": 1
+  },
+  {
+    "state": "order-table-text-200",
+    "violations": [],
+    "overflow": false,
+    "textScale": 2
+  },
+  {
+    "state": "order-menu",
+    "violations": [],
+    "overflow": false,
+    "textScale": 1
+  },
+  {
+    "state": "order-menu-text-200",
+    "violations": [],
+    "overflow": false,
+    "textScale": 2
+  },
+  {
+    "state": "order-receipt",
+    "violations": [],
+    "overflow": false,
+    "textScale": 1
+  },
+  {
+    "state": "order-receipt-text-200",
+    "violations": [],
+    "overflow": false,
+    "textScale": 2
+  }
+]
