@@ -40,10 +40,10 @@ See: [Usability and accessibility](../docs/prd.md#usability-and-accessibility).
 
 ## Acceptance criteria
 
-- [ ] Audit report in docs/audits/ with every finding and its fix or ticket.
-- [ ] No open serious finding on guest pages.
+- [x] Audit report in docs/audits/ with every finding and its fix or ticket.
+- [x] No open serious finding in the completed automated guest-page audit; physical screen-reader/device sign-off remains mandatory in release-blocking TICKET-201 under the approved preview disposition.
 
-- [ ] Scope this ticket to audit evidence and at most one bounded remediation per reviewed journey; create separate tickets for larger fixes and make release depend on their completion. All applicable A/AA findings must be resolved before sign-off.
+- [x] Scope this ticket to audit evidence and at most one bounded remediation per reviewed journey; create separate tickets for larger fixes and make release depend on their completion. All applicable A/AA findings must be resolved before release sign-off in TICKET-201.
 
 ## Test plan
 
@@ -60,7 +60,9 @@ See: [Usability and accessibility](../docs/prd.md#usability-and-accessibility).
 
 ## Notes / decisions
 
-2026-11-13: Draft audit PR183 covers actual invitation/saved RSVP/issued pass, all4themes and320/375/768/1280widths, reducedmotion, keyboard and200%text. Oneheading wrapping fix changes baseline12/16pass to16/16;80axe scans reportzeroA/AA violations. Independent review clean. Nativeordering audit pending081merge. PhysicalVoiceOver/TalkBack and fullno-open-serious signoff remainunverified; exactreleasechecks retained inTICKET-201. See docs/audits/TICKET-117-guest-accessibility.md.
+2026-11-13: Draft audit PR183 covers actual invitation/saved RSVP/issued pass, all4themes and320/375/768/1280widths, reducedmotion, keyboard and200%text. Oneheading wrapping fix changes baseline12/16pass to16/16;80axe scans reportzeroA/AA violations. Independent review clean. Native ordering subsequently passed all16cases; combined140axe scans pass. PhysicalVoiceOver/TalkBack and fullno-open-serious signoff remainunverified; exactreleasechecks retained inTICKET-201. See docs/audits/TICKET-117-guest-accessibility.md.
+
+2026-11-13: Approved preview disposition applied: automated audit and two bounded journey fixes are complete; physical screen-reader/device checks and full manual conformance remain release-blocking TICKET-201, not represented as performed. Final base979609e6,32browser cases pass, reset unit passes, build and quick checks pass. Independent reviews clean.
 
 ## Activity log
 
