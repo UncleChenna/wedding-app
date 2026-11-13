@@ -10,7 +10,7 @@ module: ordering
 owner: divine
 agent: codex
 blocked_by: [TICKET-076, TICKET-084, TICKET-105]
-blocks: [TICKET-250]
+blocks: [TICKET-254]
 branch: TICKET-112
 pr: https://github.com/UncleChenna/wedding-app/pull/184
 created: 2026-10-21
@@ -58,7 +58,7 @@ See: [Table ordering](../docs/prd.md#table-ordering) (ORD-4).
 
 _Agents append dated notes here while working._
 
-- 2026-11-13 (unclechenna, claude): Merged in #184. The headed-browser e2e and the denied-permission unit test pass; delivery through a real push service to a real device is TICKET-250.
+- 2026-11-13 (unclechenna, claude): Merged in #184. The headed-browser e2e and the denied-permission unit test pass; delivery through a real push service to a real device is TICKET-254.
 
 ## Activity log
 

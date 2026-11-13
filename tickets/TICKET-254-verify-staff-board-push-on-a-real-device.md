@@ -1,5 +1,5 @@
 ---
-id: TICKET-250
+id: TICKET-254
 title: Verify staff-board push on a real device
 epic: pwa
 status: todo
@@ -21,7 +21,7 @@ reason: ""
 resume_to: ""
 ---
 
-# TICKET-250: Verify staff-board push on a real device
+# TICKET-254: Verify staff-board push on a real device
 
 ## Context
 
