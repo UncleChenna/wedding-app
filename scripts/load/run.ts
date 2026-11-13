@@ -126,14 +126,17 @@ async function runGate(passes: Pass[], scanners: Device[]) {
       const starts = schedule(lane.length, gateWindowMs);
       for (const [index, pass] of lane.entries()) {
         await sleep((starts[index] ?? 0) - (performance.now() - started));
+        const readAt = performance.now() - started;
         const read = await post("/api/checkin/read", { qr: pass.qr }, scanner.cookie);
         const readState = String(read.json.state ?? `http-${read.status}`);
         reads.push({
           ms: read.ms,
           ok: read.status === 200 && readState === "valid",
           outcome: readState,
+          at: readAt,
         });
         if (readState !== "valid") continue;
+        const admitAt = performance.now() - started;
         const admit = await post(
           "/api/checkin/admit",
           { clientEventId: randomUUID(), qr: pass.qr, people: pass.people },
@@ -144,6 +147,7 @@ async function runGate(passes: Pass[], scanners: Device[]) {
           ms: admit.ms,
           ok: admit.status === 200 && admitState === "recorded",
           outcome: admitState,
+          at: admitAt,
         });
         if (admitState === "recorded") admittedPeople += Number(admit.json.people ?? 0);
       }
@@ -182,7 +186,12 @@ async function runOrders(
           if (sent === undefined || stations.has(station)) continue;
           stations.add(station);
           seen.set(ticket.orderId, stations);
-          toBoard.push({ ms: now - sent, ok: true, outcome: `on ${station} board` });
+          toBoard.push({
+            ms: now - sent,
+            ok: true,
+            outcome: `on ${station} board`,
+            at: sent - ordersStarted,
+          });
         }
       } catch {
         // A failed poll is retried; a ticket that never appears is counted as missing below.
@@ -190,6 +199,7 @@ async function runOrders(
       await sleep(100);
     }
   };
+  const ordersStarted = performance.now();
   const pollers = [poll("kitchen"), poll("bar")];
 
   const starts = schedule(tables.length, orderWindowMs);
@@ -209,7 +219,12 @@ async function runOrders(
       };
       const result = await post("/api/orders", body);
       const status = String(result.json.status ?? `http-${result.status}`);
-      submits.push({ ms: result.ms, ok: status === "created", outcome: status });
+      submits.push({
+        ms: result.ms,
+        ok: status === "created",
+        outcome: status,
+        at: sent - started,
+      });
       const orderId = result.json.orderId;
       if (status === "created" && typeof orderId === "string") {
         created.add(orderId);
@@ -314,10 +329,25 @@ async function main() {
         "Data: seeded load profile (`pnpm db:seed --profile load`); no real guest data",
       ],
       targets: [
-        { name: "Scan to result (read)", summary: summarize(gate.reads), p95LimitMs: 1000 },
-        { name: "Admit", summary: summarize(gate.admits), p95LimitMs: 1000 },
-        { name: "Order submit", summary: summarize(orders.submits), p95LimitMs: 2000 },
-        { name: "Order to board", summary: summarize(orders.toBoard), p95LimitMs: 2000 },
+        {
+          name: "Scan to result (read)",
+          samples: gate.reads,
+          summary: summarize(gate.reads),
+          p95LimitMs: 1000,
+        },
+        { name: "Admit", samples: gate.admits, summary: summarize(gate.admits), p95LimitMs: 1000 },
+        {
+          name: "Order submit",
+          samples: orders.submits,
+          summary: summarize(orders.submits),
+          p95LimitMs: 2000,
+        },
+        {
+          name: "Order to board",
+          samples: orders.toBoard,
+          summary: summarize(orders.toBoard),
+          p95LimitMs: 2000,
+        },
       ],
       reconciliation: [
         {

@@ -17,7 +17,7 @@ created: 2026-10-21
 updated: 2026-10-21
 started: ""
 completed: ""
-reason: "Load tool and local evidence done; the staging run waits on TICKET-149 (staging database)"
+reason: "Load tool and local evidence done; the staging run waits on TICKET-149 and TICKET-258"
 resume_to: ""
 ---
 
@@ -66,6 +66,10 @@ See: [Testing plan](../docs/prd.md#testing-plan) · [Performance and reliability
   lost, and writes a report to docs/audits/. Local evidence: docs/audits/TICKET-137-load-2026-11-13.md
   (PRD protocol: 45-minute gate, 5-minute ordering) on a local production build. Remaining: rerun with
   `--staging --base-url …` on isolated staging data once TICKET-149 exists, and record that report here.
+- 2026-11-13: Local results and the stall diagnosis are in docs/audits/TICKET-137-load-notes.md. On a
+  loaded machine scans and orders stalled for minutes: every connection queued on the shared
+  `request_budgets` row lock. TICKET-258 makes that check a single statement. On a quiet machine all
+  targets pass. Nothing was ever lost.
 
 ## Activity log
 

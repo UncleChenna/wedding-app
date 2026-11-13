@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { passes, percentile, report, schedule, summarize } from "../load/stats";
+import { passes, percentile, report, schedule, slowest, summarize } from "../load/stats";
 
 describe("percentile", () => {
   it("uses nearest rank and ignores input order", () => {
@@ -69,5 +69,18 @@ describe("schedule", () => {
     expect(jittered).toHaveLength(10);
     expect(Math.max(...jittered)).toBeLessThan(60_000);
     expect(schedule(0, 1000)).toEqual([]);
+  });
+});
+
+describe("slowest", () => {
+  it("lists the slowest samples first with when they started", () => {
+    expect(
+      slowest([
+        { ms: 120, ok: true, outcome: "ok", at: 1_000 },
+        { ms: 5_000, ok: true, outcome: "ok", at: 125_000 },
+        { ms: 300, ok: true, outcome: "ok" },
+      ]),
+    ).toBe("5000 ms at 2:05, 300 ms, 120 ms at 0:01");
+    expect(slowest([])).toBe("none");
   });
 });

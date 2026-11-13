@@ -1,6 +1,7 @@
 /** Pure timing maths and the Markdown report for the load test (TICKET-137). */
 
-export type Sample = { ms: number; ok: boolean; outcome: string };
+/** `at` is when the request started, in ms from the start of the run. */
+export type Sample = { ms: number; ok: boolean; outcome: string; at?: number };
 
 export type Summary = {
   count: number;
@@ -33,7 +34,12 @@ export function summarize(samples: readonly Sample[]): Summary {
   };
 }
 
-export type Target = { name: string; summary: Summary; p95LimitMs: number };
+export type Target = {
+  name: string;
+  summary: Summary;
+  p95LimitMs: number;
+  samples?: readonly Sample[];
+};
 
 /** A target passes when nothing failed and its p95 is inside the limit. */
 export function passes(target: Target): boolean {
@@ -42,6 +48,22 @@ export function passes(target: Target): boolean {
     target.summary.failures === 0 &&
     target.summary.p95 !== null &&
     target.summary.p95 < target.p95LimitMs
+  );
+}
+
+/** "1840 ms at 12:05" for the five slowest samples, slowest first. */
+export function slowest(samples: readonly Sample[], count = 5): string {
+  const clock = (at: number) =>
+    `${Math.floor(at / 60_000)}:${String(Math.floor((at % 60_000) / 1000)).padStart(2, "0")}`;
+  return (
+    [...samples]
+      .sort((a, b) => b.ms - a.ms)
+      .slice(0, count)
+      .map(
+        (sample) =>
+          `${Math.round(sample.ms)} ms${sample.at === undefined ? "" : ` at ${clock(sample.at)}`}`,
+      )
+      .join(", ") || "none"
   );
 }
 
@@ -86,6 +108,12 @@ export function report(input: {
             .join(", ") || "none"
         }`,
     ),
+    "",
+    "## Slowest requests",
+    "",
+    "When in the run each measure's five slowest requests started, to tell steady load from a stall.",
+    "",
+    ...input.targets.map((target) => `- ${target.name}: ${slowest(target.samples ?? [])}`),
     "",
     "## Nothing lost",
     "",
