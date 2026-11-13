@@ -2,7 +2,7 @@
 id: TICKET-082
 title: Add the optional table host view for a section's tables
 epic: ordering
-status: in_review
+status: done
 priority: low
 estimate: M
 labels: [frontend]
@@ -12,11 +12,11 @@ agent: claude
 blocked_by: [TICKET-078]
 blocks: []
 branch: TICKET-082
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/212
 created: 2026-10-21
-updated: 2026-10-21
+updated: 2026-11-13
 started: ""
-completed: ""
+completed: 2026-11-13
 reason: ""
 resume_to: ""
 ---
@@ -55,6 +55,9 @@ See: [Users and roles](../docs/prd.md#users-and-roles).
 
 _Agents append dated notes here while working._
 
+- 2026-11-13 (unclechenna, claude): Merged in #212.
+
 ## Activity log
 
 - 2026-10-21 — new → backlog — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-13 — in_review → done — unclechenna (claude) — PR #212 merged

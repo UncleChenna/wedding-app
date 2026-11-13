@@ -2,7 +2,7 @@
 id: TICKET-249
 title: Remove development leftovers from public pages
 epic: quality
-status: in_review
+status: done
 priority: high
 estimate: S
 labels: [frontend]
@@ -12,11 +12,11 @@ agent: claude
 blocked_by: []
 blocks: []
 branch: TICKET-249
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/213
 created: 2026-11-13
 updated: 2026-11-13
 started: 2026-11-13
-completed: ""
+completed: 2026-11-13
 reason: ""
 resume_to: ""
 ---
@@ -70,6 +70,9 @@ _Agents append dated notes here while working._
   `console.warn`; both still go to stderr on the server. The stock photo stays until the real one is uploaded
   (TICKET-008); the admin design page still tells the owner it's a stock image.
 
+- 2026-11-13 (unclechenna, claude): Merged in #213.
+
 ## Activity log
 
 - 2026-11-13 — new → in_progress — unclechenna (claude) — owner asked to clean development material off public pages
+- 2026-11-13 — in_review → done — unclechenna (claude) — PR #213 merged
