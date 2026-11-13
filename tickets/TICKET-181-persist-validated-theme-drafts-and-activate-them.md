@@ -2,7 +2,7 @@
 id: TICKET-181
 title: Persist validated theme drafts and activate them atomically
 epic: design-system
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [backend, security]

@@ -2,7 +2,7 @@
 id: TICKET-004
 title: Get the first green CI run and confirm parity with pnpm verify
 epic: foundations
-status: in_review
+status: done
 priority: urgent
 estimate: S
 labels: [infra, test]

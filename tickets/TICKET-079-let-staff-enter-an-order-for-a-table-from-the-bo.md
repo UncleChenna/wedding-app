@@ -2,7 +2,7 @@
 id: TICKET-079
 title: Let staff enter an order for a table from the board
 epic: ordering
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [frontend]

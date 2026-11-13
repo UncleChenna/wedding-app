@@ -2,7 +2,7 @@
 id: TICKET-245
 title: Validate explicit release environment profiles before deployment
 epic: deployment
-status: in_progress
+status: done
 priority: high
 estimate: M
 labels: [infra, security, test]

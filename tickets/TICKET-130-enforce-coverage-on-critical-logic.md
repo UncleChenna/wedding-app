@@ -2,7 +2,7 @@
 id: TICKET-130
 title: Enforce coverage on critical logic
 epic: testing
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [test]

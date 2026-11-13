@@ -2,7 +2,7 @@
 id: TICKET-027
 title: Write the RLS ADR and least-privilege policies
 epic: data-auth
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [security, db]

@@ -2,7 +2,7 @@
 id: TICKET-123
 title: Apply ordering abuse limits and regress shared endpoint protection
 epic: security
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [security, backend]

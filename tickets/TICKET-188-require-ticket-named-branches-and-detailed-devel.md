@@ -2,7 +2,7 @@
 id: TICKET-188
 title: Require ticket-named branches and detailed develop PRs
 epic: foundations
-status: in_review
+status: done
 priority: urgent
 estimate: S
 labels: [docs, infra, test]

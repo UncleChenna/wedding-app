@@ -2,7 +2,7 @@
 id: TICKET-015
 title: Define the typography scale and font roles
 epic: design-system
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [design, frontend]

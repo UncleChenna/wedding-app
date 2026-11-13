@@ -2,7 +2,7 @@
 id: TICKET-133
 title: Cover table ordering to the boards end to end
 epic: testing
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [test]

@@ -2,7 +2,7 @@
 id: TICKET-050
 title: "Build the Share menu: WhatsApp, email, copy link and native share"
 epic: sharing
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [frontend]

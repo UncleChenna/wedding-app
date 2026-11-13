@@ -2,7 +2,7 @@
 id: TICKET-086
 title: Manage alert opt-ins and recipients per station
 epic: alerts
-status: in_review
+status: done
 priority: medium
 estimate: S
 labels: [frontend, backend]

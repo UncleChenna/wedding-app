@@ -2,7 +2,7 @@
 id: TICKET-180
 title: Preserve queued events across worker and data upgrades
 epic: pwa
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [pwa, test]

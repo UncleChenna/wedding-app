@@ -2,7 +2,7 @@
 id: TICKET-106
 title: Add an offline fallback page
 epic: pwa
-status: in_review
+status: done
 priority: high
 estimate: S
 labels: [pwa, frontend]

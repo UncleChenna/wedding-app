@@ -2,7 +2,7 @@
 id: TICKET-051
 title: Mark invitations as sent when shared
 epic: sharing
-status: in_review
+status: done
 priority: urgent
 estimate: S
 labels: [backend, frontend]

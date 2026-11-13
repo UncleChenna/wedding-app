@@ -2,7 +2,7 @@
 id: TICKET-193
 title: Return the network response when caching an asset fails
 epic: pwa
-status: in_review
+status: done
 priority: high
 estimate: S
 labels: [pwa, frontend]

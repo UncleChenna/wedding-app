@@ -2,7 +2,7 @@
 id: TICKET-057
 title: Verify gate tokens on the scanner device
 epic: checkin
-status: in_progress
+status: done
 priority: high
 estimate: M
 labels: [security, frontend]

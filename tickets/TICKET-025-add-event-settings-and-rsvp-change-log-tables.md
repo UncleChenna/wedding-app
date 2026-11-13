@@ -2,7 +2,7 @@
 id: TICKET-025
 title: Add event settings and RSVP change-log tables
 epic: data-auth
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [db, backend]

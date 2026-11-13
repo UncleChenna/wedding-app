@@ -2,7 +2,7 @@
 id: TICKET-019
 title: Add staff status panels and badges for arm's-length reading
 epic: design-system
-status: in_review
+status: done
 priority: urgent
 estimate: S
 labels: [frontend, design]

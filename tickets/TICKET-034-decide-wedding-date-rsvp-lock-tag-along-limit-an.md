@@ -2,7 +2,7 @@
 id: TICKET-034
 title: Decide wedding date, RSVP lock, tag-along limit and Wallet scope
 epic: invitations
-status: in_review
+status: done
 priority: urgent
 estimate: S
 labels: [human, docs]

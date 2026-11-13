@@ -2,7 +2,7 @@
 id: TICKET-240
 title: Reduce worker update validation bundle with strict guards
 epic: quality
-status: in_review
+status: done
 priority: high
 estimate: S
 labels: [frontend, test]

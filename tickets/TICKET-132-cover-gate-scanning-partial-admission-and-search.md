@@ -2,7 +2,7 @@
 id: TICKET-132
 title: Cover gate scanning, partial admission and search end to end
 epic: testing
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [test]

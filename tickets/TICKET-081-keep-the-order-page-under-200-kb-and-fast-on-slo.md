@@ -2,7 +2,7 @@
 id: TICKET-081
 title: Keep the order page under 200 KB and fast on slow networks
 epic: ordering
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [frontend, test]

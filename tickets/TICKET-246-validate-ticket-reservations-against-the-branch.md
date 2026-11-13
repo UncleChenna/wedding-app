@@ -2,7 +2,7 @@
 id: TICKET-246
 title: Validate ticket reservations against the branch baseline
 epic: foundations
-status: in_progress
+status: done
 priority: urgent
 estimate: S
 labels: [test, infra]

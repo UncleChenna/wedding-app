@@ -2,7 +2,7 @@
 id: TICKET-233
 title: Recover merged tickets whose original PR was not recorded
 epic: quality
-status: in_review
+status: done
 priority: high
 estimate: S
 labels: [infra, test]

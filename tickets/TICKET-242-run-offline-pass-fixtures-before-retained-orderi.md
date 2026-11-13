@@ -2,7 +2,7 @@
 id: TICKET-242
 title: Fix offline-pass CI fixture and navigation sequencing
 epic: quality
-status: in_review
+status: done
 priority: urgent
 estimate: S
 labels: [test, infra]

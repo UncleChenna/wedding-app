@@ -2,7 +2,7 @@
 id: TICKET-101
 title: Build the event settings page
 epic: admin
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [frontend, backend]

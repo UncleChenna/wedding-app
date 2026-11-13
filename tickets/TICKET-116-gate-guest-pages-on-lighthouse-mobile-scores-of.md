@@ -2,7 +2,7 @@
 id: TICKET-116
 title: Gate guest pages on Lighthouse mobile scores of 95 or more
 epic: quality
-status: todo
+status: in_review
 priority: high
 estimate: L
 labels: [test, infra]

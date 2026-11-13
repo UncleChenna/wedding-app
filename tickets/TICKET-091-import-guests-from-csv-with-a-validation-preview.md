@@ -2,7 +2,7 @@
 id: TICKET-091
 title: Import guests from CSV with a validation preview
 epic: admin
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [frontend, backend]

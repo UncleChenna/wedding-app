@@ -2,7 +2,7 @@
 id: TICKET-184
 title: Expire private offline data and recover from storage eviction
 epic: pwa
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [pwa, security, test]

@@ -2,7 +2,7 @@
 id: TICKET-069
 title: Export a printable gate guest list
 epic: checkin
-status: in_review
+status: done
 priority: high
 estimate: S
 labels: [frontend, backend]

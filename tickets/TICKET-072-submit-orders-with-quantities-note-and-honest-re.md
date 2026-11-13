@@ -2,7 +2,7 @@
 id: TICKET-072
 title: Submit orders with quantities, note and honest retrying
 epic: ordering
-status: in_review
+status: done
 priority: high
 estimate: L
 labels: [frontend, backend]

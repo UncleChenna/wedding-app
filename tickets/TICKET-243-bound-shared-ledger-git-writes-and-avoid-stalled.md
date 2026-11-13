@@ -2,7 +2,7 @@
 id: TICKET-243
 title: Bound shared-ledger Git writes and avoid stalled standard-input pipes
 epic: foundations
-status: in_review
+status: done
 priority: high
 estimate: S
 labels: [infra, test]

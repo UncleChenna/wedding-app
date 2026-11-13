@@ -2,7 +2,7 @@
 id: TICKET-061
 title: Admit arriving guests with partial counts
 epic: checkin
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [frontend, backend]

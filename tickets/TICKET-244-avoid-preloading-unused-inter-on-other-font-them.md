@@ -2,7 +2,7 @@
 id: TICKET-244
 title: Avoid preloading unused Inter on other font themes
 epic: quality
-status: in_review
+status: done
 priority: high
 estimate: S
 labels: [frontend, test]
