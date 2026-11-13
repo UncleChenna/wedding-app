@@ -60,7 +60,7 @@ See: [Usability and accessibility](../docs/prd.md#usability-and-accessibility).
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-11-13: Draft audit PR183 covers actual invitation/saved RSVP/issued pass, all4themes and320/375/768/1280widths, reducedmotion, keyboard and200%text. Oneheading wrapping fix changes baseline12/16pass to16/16;80axe scans reportzeroA/AA violations. Independent review clean. Nativeordering audit pending081merge. PhysicalVoiceOver/TalkBack and fullno-open-serious signoff remainunverified; exactreleasechecks retained inTICKET-201. See docs/audits/TICKET-117-guest-accessibility.md.
 
 ## Activity log
 

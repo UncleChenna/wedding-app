@@ -21,7 +21,7 @@ Audit actual guest invitation, saved RSVP and issued-pass pages for keyboard acc
 - Production build passes on base207798dc4f1535aecbf254ef3959def934d9eee2.
 - `pnpm exec tsx scripts/review-guest-accessibility.ts`:16/16 pass after fix (30.5s).
 - Root text sizing is used for200% text tests; this is not a claim of physical browser zoom.
-- Quick verification pending commit hook.
+- Quick verification passes lint and types; no related unit tests were selected after the committed audit. Independent bounded source/coverage review is clean.
 
 ## Risks and rollout
 
