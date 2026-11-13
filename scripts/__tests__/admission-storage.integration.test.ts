@@ -40,7 +40,8 @@ async function installProposal(
   for (const migration of journal.entries.filter(
     (entry) =>
       entry.tag === "0021_guest-import-batches" ||
-      /_scan-resolution-(notes|guards)$/.test(entry.tag),
+      /_scan-resolution-(notes|guards)$/.test(entry.tag) ||
+      /_scan-recovery-(audit|immutable)$/.test(entry.tag),
   )) {
     await applyProposal(tx, namespace, `drizzle/${migration.tag}.sql`);
   }
@@ -91,9 +92,9 @@ describe.runIf(process.env.RUN_ADMISSION_DB_TESTS === "1")("admission storage", 
         const guards = async () => tx`select t.tgname,t.tgenabled from pg_trigger t
           join pg_class c on c.oid=t.tgrelid join pg_namespace n on n.oid=c.relnamespace
           where n.nspname=${namespace} and t.tgname in
-          ('rsvp_history_append_only','scan_events_append_only','admission_counters_no_removal','rsvp_admission_no_truncate','guest_admission_no_truncate') order by t.tgname`;
+          ('rsvp_history_append_only','scan_events_append_only','scan_recovery_audits_append_only','admission_counters_no_removal','rsvp_admission_no_truncate','guest_admission_no_truncate') order by t.tgname`;
         const before = await guards();
-        expect(before).toHaveLength(5);
+        expect(before).toHaveLength(6);
         expect(before.every((row) => row.tgenabled === "O")).toBe(true);
         await expect(
           tx.savepoint(async (sp) => {
@@ -171,8 +172,8 @@ describe.runIf(process.env.RUN_ADMISSION_DB_TESTS === "1")("admission storage", 
       const guards = await tx`select t.tgenabled from pg_trigger t
         join pg_class c on c.oid=t.tgrelid join pg_namespace n on n.oid=c.relnamespace
         where n.nspname=${namespace} and t.tgname in
-        ('rsvp_history_append_only','scan_events_append_only','admission_counters_no_removal','rsvp_admission_no_truncate','guest_admission_no_truncate')`;
-      expect(guards).toHaveLength(5);
+        ('rsvp_history_append_only','scan_events_append_only','scan_recovery_audits_append_only','admission_counters_no_removal','rsvp_admission_no_truncate','guest_admission_no_truncate')`;
+      expect(guards).toHaveLength(6);
       expect(guards.every((row) => row.tgenabled === "O")).toBe(true);
     });
   }, 10_000);

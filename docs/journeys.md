@@ -91,3 +91,7 @@ The signed-in gate scanner shows recent conflicting offline entries below the sc
 ## Event health (TICKET-143)
 
 From the control room or admin navigation, open **Event health** (`/admin/health`). Refresh dependency checks, inspect pending/failed alert totals, follow **Open scan log**, or return with **Back to control room**. Live two-factor authorization protects `/api/admin/health`; public `/api/health` exposes only generic database readiness (`200`/`503`) with no counts or build details. Disconnected scanner queues remain explicitly unknown; ask operators to confirm their local pending counts. Broadcast capability is not proof of live delivery. Vercel commit metadata identifies deployed builds; other environments show an unlabelled build instead of inventing a version.
+
+## Reviewed gate recovery (TICKET-231)
+
+Staff home → Recover retained gate records (`/gate-recovery`) → save at most200 original pending records without staff renewal → privately give the file to an administrator. Admin scan log → Recover gate records (`/admin/scans/recovery`) → review original operator/device/record details → explicitly confirm and import → save signed confirmation receipt → return receipt to the original browser → verify online and clear only exact committed records. Rejected, mismatched and unconfirmed records stay retained. Both screens link back; full origin storage deletion cannot be recovered.
