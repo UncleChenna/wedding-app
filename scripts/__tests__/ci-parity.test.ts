@@ -9,6 +9,15 @@ const workflow = readFileSync(resolve(root, ".github/workflows/ci.yml"), "utf8")
 const example = readFileSync(resolve(root, ".env.example"), "utf8");
 
 describe("CI parity", () => {
+  it("runs the isolated saved-pass fixture before ordering retains default settings", () => {
+    const guest = workflow.indexOf("run: pnpm exec tsx scripts/test-guest-journey.ts");
+    const offline = workflow.indexOf("run: pnpm exec tsx scripts/review-offline-pass.ts");
+    const ordering = workflow.indexOf("run: pnpm exec playwright test e2e/order-submit.spec.ts");
+    expect(guest).toBeGreaterThanOrEqual(0);
+    expect(offline).toBeGreaterThan(guest);
+    expect(ordering).toBeGreaterThan(offline);
+  });
+
   it("documents each declared CI environment variable in the public example", () => {
     // ci.yml uses uppercase environment keys; application values are assignments,
     // while workflow-only values are documented as comments, not app defaults.

@@ -1,0 +1,116 @@
+{
+  "commit": "2b60183f",
+  "develop": "21722cb97d525a683e0fcd85a4007bbda5db9a76",
+  "note": "Actual merged hero, no TICKET-240 optimization. First attempt failed NO_NAVSTART before scoring; unchanged retry completed all nine reports and fails the invitation performance target.",
+  "scores": {
+    "policy": {
+      "version": "13.6.0",
+      "runs": 3,
+      "performance": 0.95,
+      "accessibility": 0.95
+    },
+    "scores": [
+      {
+        "page": "invitation-rsvp-saved",
+        "result": {
+          "passed": false,
+          "performance": [0.94, 0.9, 0.88],
+          "medianPerformance": 0.9,
+          "accessibility": [1, 1, 1]
+        }
+      },
+      {
+        "page": "issued-pass",
+        "result": {
+          "passed": true,
+          "performance": [0.98, 0.96, 0.96],
+          "medianPerformance": 0.96,
+          "accessibility": [1, 1, 1]
+        }
+      },
+      {
+        "page": "order-menu",
+        "result": {
+          "passed": true,
+          "performance": [1, 1, 1],
+          "medianPerformance": 1,
+          "accessibility": [1, 1, 1]
+        }
+      }
+    ]
+  },
+  "reports": [
+    {
+      "file": "invitation-rsvp-saved-1.json",
+      "sha256": "b2491ae33397b89ca1b0b30e091babf0d08811bbb3edc2a4c3b01e44c61a811c",
+      "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+      "cls": 0,
+      "lcpMs": 3049.715000000001,
+      "tbtMs": 109.49999999999977
+    },
+    {
+      "file": "invitation-rsvp-saved-2.json",
+      "sha256": "0d733f003e376555098a44795729bc27b2033163f6e5bd90c6ae80b7fc52fde1",
+      "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+      "cls": 0,
+      "lcpMs": 3650.969,
+      "tbtMs": 61.5
+    },
+    {
+      "file": "invitation-rsvp-saved-3.json",
+      "sha256": "ac7df0f6f4751886b017c0d12964c54ce91a21c37f980949cec278d29fe209dc",
+      "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+      "cls": 0,
+      "lcpMs": 3822.089000000001,
+      "tbtMs": 84.49999999999977
+    },
+    {
+      "file": "issued-pass-1.json",
+      "sha256": "1012233f818ea00dddf479efde9e58ddbbb93d2a7cbe5a3dcda6f04f73114c0d",
+      "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+      "cls": 0,
+      "lcpMs": 1089.111,
+      "tbtMs": 153.22225000000003
+    },
+    {
+      "file": "issued-pass-2.json",
+      "sha256": "8abf58ee2614863a09fab84d6f69478d27998dcd39e57278ec74f8af5e54d2f6",
+      "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+      "cls": 0,
+      "lcpMs": 1101.596,
+      "tbtMs": 235.6010000000001
+    },
+    {
+      "file": "issued-pass-3.json",
+      "sha256": "39c442d3602e14d1ff975589dfa8c9d9b338ee45b4d3c9a0443f8aaa572a37c6",
+      "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+      "cls": 0,
+      "lcpMs": 1121.539,
+      "tbtMs": 219.61525000000006
+    },
+    {
+      "file": "order-menu-1.json",
+      "sha256": "edbe1b6e9c7e3144ca8afe59f42156f68508d4b97b44e4eead13e446fc2d3921",
+      "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+      "cls": 0,
+      "lcpMs": 760.6701,
+      "tbtMs": 12
+    },
+    {
+      "file": "order-menu-2.json",
+      "sha256": "6e758fb14cbd515bef50375d5c1ed06cea23c80cc2ad5783029ae642f95ce147",
+      "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+      "cls": 0,
+      "lcpMs": 757.0857000000001,
+      "tbtMs": 0
+    },
+    {
+      "file": "order-menu-3.json",
+      "sha256": "a7ab5f0a7bc588b667208517ada99c4c3798168ec589600bbc4f9522a6bf88ef",
+      "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+      "cls": 0,
+      "lcpMs": 784.1831999999999,
+      "tbtMs": 8
+    }
+  ]
+}

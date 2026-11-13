@@ -2,7 +2,7 @@
 id: TICKET-121
 title: Fail e2e on layout shift or console errors on guest pages
 epic: quality
-status: todo
+status: cancelled
 priority: medium
 estimate: M
 labels: [test]
@@ -14,10 +14,10 @@ blocks: [TICKET-154]
 branch: ""
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
+updated: 2026-11-12
 started: ""
 completed: ""
-reason: ""
+reason: "Merged into TICKET-116 (TICKET-228)"
 resume_to: ""
 ---
 
@@ -57,3 +57,4 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-12 — todo → cancelled — unclechenna (claude) — merged into TICKET-116 (TICKET-228)
