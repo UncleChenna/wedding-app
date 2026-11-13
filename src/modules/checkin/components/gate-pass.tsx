@@ -1,5 +1,6 @@
 import { appRoutes } from "@/modules/shared/lib/routes";
 import Link from "next/link";
+import { CenteredPanel } from "@/modules/shared/components/ui/centered-panel";
 
 import { QrCode } from "@/modules/shared/components/ui/qr-code";
 
@@ -41,31 +42,37 @@ export function GatePass({ resolution, passUrl }: { resolution: PassResolution; 
   if (resolution.state !== "valid") {
     const copy = gatePassCopy[resolution.state];
     return (
-      <main className="mx-auto flex min-h-dvh w-full max-w-2xl flex-col justify-center px-6 py-16">
-        <p className="type-label text-primary">Your gate pass</p>
-        <h1 className="mt-6 type-heading text-balance">{copy.title}</h1>
-        <p className="mt-6 max-w-prose text-lg leading-relaxed">{copy.body}</p>
-        <Link
-          href={appRoutes.home.path}
-          prefetch={false}
-          className={`mt-10 self-start ${linkStyle}`}
-        >
-          Back to our day
-        </Link>
-      </main>
+      <CenteredPanel
+        eyebrow="Your gate pass"
+        title={copy.title}
+        description={copy.body}
+        footer={
+          <Link href={appRoutes.home.path} prefetch={false} className={linkStyle}>
+            Back to our day
+          </Link>
+        }
+      />
     );
   }
 
   const { pass } = resolution;
   const heading = pass.names.join(" & ") || pass.householdName || "Our dear guest";
   return (
-    <main className="mx-auto w-full max-w-2xl px-6 pt-12 pb-[max(3rem,env(safe-area-inset-bottom))] md:pt-20">
-      <p className="type-label text-primary">Your gate pass</p>
-      <h1 className="mt-6 type-heading text-balance wrap-anywhere">{heading}</h1>
-      {pass.householdName && pass.names.length > 0 && (
-        <p className="mt-3 text-lg leading-relaxed wrap-anywhere">{pass.householdName}</p>
-      )}
-      <dl className="mt-8 grid grid-cols-2 gap-6 text-lg leading-relaxed">
+    <CenteredPanel
+      eyebrow="Your gate pass"
+      title={<span className="wrap-anywhere">{heading}</span>}
+      description={
+        pass.householdName && pass.names.length > 0 ? (
+          <span className="wrap-anywhere">{pass.householdName}</span>
+        ) : undefined
+      }
+      footer={
+        <Link href={appRoutes.home.path} prefetch={false} className={linkStyle}>
+          Back to our day
+        </Link>
+      }
+    >
+      <dl className="grid grid-cols-2 gap-6 text-center text-lg leading-relaxed">
         <div>
           <dt className="type-label text-primary">Admits</dt>
           <dd className="mt-2">{partySizeLabel(pass.partySize)}</dd>
@@ -75,15 +82,12 @@ export function GatePass({ resolution, passUrl }: { resolution: PassResolution; 
           <dd className="mt-2">{pass.tableNumber ?? "To follow"}</dd>
         </div>
       </dl>
-      <div className="mt-10 w-full max-w-xs">
+      <div className="mx-auto mt-8 w-full max-w-xs">
         <QrCode value={passUrl} label={`Gate pass QR code for ${heading}`} />
       </div>
-      <p className="mt-6 max-w-prose text-base leading-relaxed">
+      <p className="mt-6 text-center text-base leading-relaxed">
         Show this at the gate. Each seat on the pass can be used once.
       </p>
-      <Link href={appRoutes.home.path} prefetch={false} className={`mt-8 ${linkStyle}`}>
-        Back to our day
-      </Link>
-    </main>
+    </CenteredPanel>
   );
 }

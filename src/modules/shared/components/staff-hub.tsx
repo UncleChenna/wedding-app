@@ -1,41 +1,39 @@
 import Link from "next/link";
 import { appRoutes } from "../lib/routes";
+import { CenteredPanel, panelLinkClassName } from "./ui/centered-panel";
+
+const stationLink =
+  "flex min-h-14 w-full items-center justify-center rounded-md border border-border bg-background px-4 text-lg font-medium text-foreground hover:border-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring";
 
 export function StaffHub() {
   return (
-    <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-12 text-lg leading-relaxed">
-      <h1 className="font-display text-4xl leading-tight md:text-5xl">Choose your station</h1>
-      <p className="mt-6 max-w-prose">
-        Welcome, team. Open your station to get ready for the celebration.
-      </p>
-      <nav aria-label="Staff stations" className="mt-12">
-        <ul className="space-y-8">
+    <CenteredPanel
+      variant="staff"
+      eyebrow="Staff"
+      title="Choose your station"
+      description="Welcome, team. Open your station to get ready for the celebration."
+      footer={
+        <>
+          <Link href={appRoutes.gateRecovery.path} className={panelLinkClassName}>
+            Recover retained gate records
+          </Link>
+          <Link href={appRoutes.home.path} className={panelLinkClassName}>
+            Back to our day
+          </Link>
+        </>
+      }
+    >
+      <nav aria-label="Staff stations">
+        <ul className="flex flex-col gap-3">
           {[appRoutes.checkin, appRoutes.kitchen, appRoutes.bar, appRoutes.host].map((route) => (
             <li key={route.path}>
-              <Link
-                href={route.path}
-                className="inline-flex min-h-11 items-center py-2 text-primary underline underline-offset-4"
-              >
+              <Link href={route.path} className={stationLink}>
                 {route.label}
               </Link>
             </li>
           ))}
         </ul>
       </nav>
-      <p className="mt-8">
-        <Link
-          href={appRoutes.gateRecovery.path}
-          className="inline-flex min-h-11 items-center text-primary underline"
-        >
-          Recover retained gate records
-        </Link>
-      </p>
-      <Link
-        href={appRoutes.home.path}
-        className="mt-12 inline-flex min-h-11 items-center text-primary underline underline-offset-4"
-      >
-        Back to our day
-      </Link>
-    </main>
+    </CenteredPanel>
   );
 }
