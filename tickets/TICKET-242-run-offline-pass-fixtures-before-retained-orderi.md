@@ -39,8 +39,8 @@ TICKET-113's saved-pass CI check runs after ordering fixtures retain a default s
 
 ## Acceptance criteria
 
-- [ ] CI runs saved-pass verification after the guest journey and before ordering fixture setup.
-- [ ] The ordering regression fails on the old workflow and passes on the corrected workflow.
+- [x] CI runs saved-pass verification after the guest journey and before ordering fixture setup.
+- [x] The ordering regression fails on the old workflow and passes on the corrected workflow.
 - [ ] Actual isolated guest and offline-pass browser checks pass, retaining all existing assertions and safety guards.
 
 ## Test plan
@@ -57,6 +57,8 @@ TICKET-113's saved-pass CI check runs after ordering fixtures retain a default s
 ## Notes / decisions
 
 - 2026-11-13 — TICKET-113 was externally merged at 0ac2159f while its invitation lane failed. This separate ticket preserves that failure and tracks the reviewed repair. No failed check is treated as passing.
+
+- 2026-11-13 — CI-parity regression: old order1failed/2passed, corrected order3passed. Guest mobile/desktop both pass; mobile offline pass succeeds22.8s. Desktop unchanged30s overall budget expires under severe concurrent local compilation; preserved traces, no threshold changes. Hosted sequence proof still required.
 
 ## Activity log
 
