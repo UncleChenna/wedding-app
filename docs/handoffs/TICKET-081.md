@@ -1,6 +1,6 @@
 # Current checkpoint — 2026-11-12
 
-Native ordering implementation is complete locally on base 63fcd272. Final wire tests pass 8/8: maximum 183349 bytes including worker install, default light/dark and both viewports. Real Supabase slow-4G delivery passes 378.475 ms. Full original variable axes restored after rejected partial-axis experiment; font parity 48 cases per viewport passes. Worker gzip negotiated with unchanged cache/scope and reviewed by queue_upgrade. Final guest parity passes all 11 cases across focused retries; implementation pushed 19bc2f4e and full independent source review found no blocker. PR162 remains pending CI. See docs/plans/TICKET-081-pr.md for current scope/evidence.
+Native ordering implementation is complete locally on base 63fcd272. Final wire tests pass 8/8: maximum 183344 bytes including worker install, default light/dark and both viewports. Real Supabase slow-4G delivery passes 378.475 ms. Full original variable axes restored after rejected partial-axis experiment; font parity 48 cases per viewport passes. Worker gzip negotiated with unchanged cache/scope and reviewed by queue_upgrade. Final guest parity passes all 11 cases across focused retries; implementation pushed 19bc2f4e and full independent source review found no blocker. PR162 remains pending CI. See docs/plans/TICKET-081-pr.md for current scope/evidence.
 
 Owned Supabase stopped with backup preserved. Lightweight native PostgreSQL `/tmp/TICKET-081-postgres.J2KPia` on 36761 is stopped with data retained after final browser verification. No collaborator stacks touched. Earlier evidence below is historical, superseded by native-wire-<project>-<scheme>-<state>.json.
 
@@ -109,3 +109,7 @@ remains failed; CI wiring and final current-base review still outstanding.
 ## CI repair checkpoint
 
 Run 43376098151 revealed native public preview metadata mismatch and node:zlib leaking into the pure worker-source VM fixture. Both repaired without relaxing tests. Shared dynamic public-event tags now render on order/offline routes; gzip response lives in service-worker-response.ts. Build, 63 focused unit tests, quick (76 related + 2 parity), 46 scanner browser cases and 12 share/budget cases pass. Two fixture-dependent private invitation checks were not enabled; existing invitation CI retains them. Final cold-wire max 183349 bytes includes the additional metadata. Independent delta review requested; publish this repair before resuming TICKET-136.
+
+## Stable verification output repair
+
+CI43382310008 passed1111smokes/279skipped then failed the unchanged-input fingerprint because offline-font screenshots rewrote tracked review evidence onLinux. e2e/pwa.spec.ts now defaults captures to ignored artifacts/TICKET-081; OFFLINE_FONT_REVIEW_DIR opts into reviewed output. No assertions/guard changed. Integrated exactdevelop6b2c9d3e as188eca14, applied merged migrations only toownedPG; build and8wirecases pass(max183344bytes),14PWA cases pass and fingerprint before/after staysidentical. Independent output-path review clean. Publish repair thenawaitCI;117nativeordering audit depends on merge.

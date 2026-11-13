@@ -6,7 +6,7 @@
     "height": 800
   },
   "budget": 200000,
-  "total": 160439,
+  "total": 160434,
   "browserReported": 124957,
   "transport": "loopback HTTP/1 wire; no rewriting",
   "rows": [
@@ -59,6 +59,12 @@
       "status": 200
     },
     {
+      "path": "/offline-assets/playfair-5b5d69a12afed94f.woff2",
+      "worker": true,
+      "bytes": 9382,
+      "status": 200
+    },
+    {
       "path": "/offline-assets/cormorant-6dcbd80f527db744.woff2",
       "worker": true,
       "bytes": 10350,
@@ -68,12 +74,6 @@
       "path": "/offline-assets/inter-b714eddca05246b9.woff2",
       "worker": true,
       "bytes": 6922,
-      "status": 200
-    },
-    {
-      "path": "/offline-assets/playfair-5b5d69a12afed94f.woff2",
-      "worker": true,
-      "bytes": 9382,
       "status": 200
     },
     {

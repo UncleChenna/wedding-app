@@ -103,7 +103,7 @@ test.describe("service worker @smoke", () => {
     await context.setOffline(true);
     await page.goto("/i/never-opened-font-proof");
     await expect(page.getByRole("heading", { name: "You're offline" })).toBeVisible();
-    const folder = `docs/reviews/TICKET-081/offline-${info.project.name}`;
+    const folder = `${process.env.OFFLINE_FONT_REVIEW_DIR ?? "artifacts/TICKET-081"}/offline-${info.project.name}`;
     mkdirSync(folder, { recursive: true });
     for (const theme of themes) {
       await applyTheme(page, theme);

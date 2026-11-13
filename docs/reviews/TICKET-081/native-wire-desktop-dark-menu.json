@@ -6,7 +6,7 @@
     "height": 800
   },
   "budget": 200000,
-  "total": 170792,
+  "total": 170787,
   "browserReported": 135310,
   "transport": "loopback HTTP/1 wire; no rewriting",
   "rows": [
