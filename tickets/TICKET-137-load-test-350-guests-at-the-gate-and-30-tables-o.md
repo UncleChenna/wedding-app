@@ -2,22 +2,22 @@
 id: TICKET-137
 title: Load test 350 guests at the gate and 30 tables ordering
 epic: testing
-status: todo
+status: blocked
 priority: high
 estimate: L
 labels: [test, infra]
 module: shared
-owner: ""
-agent: ""
+owner: UncleChenna
+agent: claude
 blocked_by: [TICKET-068, TICKET-073, TICKET-149, TICKET-026, TICKET-133]
 blocks: [TICKET-154, TICKET-163]
-branch: ""
+branch: TICKET-137
 pr: ""
 created: 2026-10-21
 updated: 2026-10-21
 started: ""
 completed: ""
-reason: ""
+reason: "Load tool and local evidence done; the staging run waits on TICKET-149 (staging database)"
 resume_to: ""
 ---
 
@@ -59,7 +59,13 @@ See: [Testing plan](../docs/prd.md#testing-plan) · [Performance and reliability
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-11-13: `pnpm load:test` (scripts/load/run.ts) drives the real endpoints of a running build: three
+  gate devices read and admit every attending invitation's signed pass over the gate window, while 30 tables
+  each send a food+drink order over the order window; order-to-board is timed by polling the kitchen and bar
+  board endpoints every 100 ms. Afterwards it checks the admission counters and orders table so nothing was
+  lost, and writes a report to docs/audits/. Local evidence: docs/audits/TICKET-137-load-2026-11-13.md
+  (PRD protocol: 45-minute gate, 5-minute ordering) on a local production build. Remaining: rerun with
+  `--staging --base-url …` on isolated staging data once TICKET-149 exists, and record that report here.
 
 ## Activity log
 
