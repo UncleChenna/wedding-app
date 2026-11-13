@@ -2,7 +2,7 @@
 id: TICKET-241
 title: Harden and verify local CSP and browser permissions before deployment
 epic: security
-status: in_progress
+status: in_review
 priority: high
 estimate: S
 labels: [security]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-033, TICKET-059, TICKET-105]
 blocks: [TICKET-124]
 branch: TICKET-241
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/199
 created: 2026-11-13
 updated: 2026-11-13
 started: 2026-11-13
@@ -69,3 +69,4 @@ TICKET-124 combines local policy implementation with HTTPS staging and productio
 - 2026-11-13 — backlog → todo — divine (codex)
 - 2026-11-13 — todo → claimed — divine (codex)
 - 2026-11-13 — todo → in_progress — divine (codex)
+- 2026-11-13 — in_progress → in_review — divine (codex)
