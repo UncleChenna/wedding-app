@@ -2,7 +2,7 @@
 id: TICKET-235
 title: Refresh saved gate records when scanner preparation completes
 epic: checkin
-status: in_review
+status: done
 priority: high
 estimate: S
 labels: [frontend, test]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/182
 created: 2026-11-13
 updated: 2026-11-13
 started: 2026-11-13
-completed: ""
+completed: 2026-11-13
 reason: ""
 resume_to: ""
 ---
@@ -65,3 +65,4 @@ TICKET-132's real signed camera journey shows a transient saved-records failure 
 - 2026-11-13 — todo → claimed — divine (codex)
 - 2026-11-13 — todo → in_progress — divine (codex)
 - 2026-11-13 — in_progress → in_review — divine (codex)
+- 2026-11-13 — in_review → done — divine (codex)
