@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { waitForPublicDestination } from "./support/routes";
 import { expect, test } from "@playwright/test";
 
@@ -93,7 +94,9 @@ test.describe("smoke @smoke", () => {
       const state = window as unknown as { policyViolations: string[] };
       state.policyViolations = [];
       addEventListener("securitypolicyviolation", (event) => {
-        state.policyViolations.push(event.effectiveDirective);
+        state.policyViolations.push(
+          `${event.effectiveDirective}:${event.blockedURI}:${new URL(event.sourceFile || location.href, location.href).pathname}`,
+        );
       });
     });
     const response = await page.goto("/");
@@ -152,6 +155,43 @@ test.describe("smoke @smoke", () => {
     const workerResponse = await page.request.get("/sw.js");
     expect(workerResponse.status()).toBe(200);
     expect(workerResponse.headers()["service-worker-allowed"]).toBe("/");
+    await page.waitForLoadState("networkidle");
+    expect(
+      await page.evaluate(
+        () => (window as unknown as { policyViolations: string[] }).policyViolations,
+      ),
+    ).toEqual([]);
+  });
+
+  test("standalone scanner initialization respects the delivered CSP", async ({ page }) => {
+    const response = await page.request.get("/");
+    expect(response.status()).toBe(200);
+    const manifest = JSON.parse(readFileSync("public/scanner-assets/manifest.json", "utf8")) as {
+      script: string;
+    };
+    expect(manifest.script).toMatch(/^\/scanner-assets\/[a-z0-9-]+\.js$/);
+    await page.addInitScript(() => {
+      const state = window as unknown as { policyViolations: string[] };
+      state.policyViolations = [];
+      addEventListener("securitypolicyviolation", (event) =>
+        state.policyViolations.push(event.effectiveDirective),
+      );
+    });
+    // Synthetic expired shell exercises the actual standalone bundle without
+    // minting a staff session or claiming an authenticated/offline admission.
+    await page.route("**/__scanner-csp-probe", (route) =>
+      route.fulfill({
+        status: 200,
+        headers: {
+          "content-type": "text/html",
+          "content-security-policy":
+            response.headers()["content-security-policy"] ?? "default-src 'none'",
+        },
+        body: `<!doctype html><html><body><div id="scanner-shell" data-expires-at="0" data-session="" data-build=""></div><script defer src="${manifest.script}"></script></body></html>`,
+      }),
+    );
+    await page.goto("/__scanner-csp-probe");
+    await expect(page.getByRole("heading", { name: "Gate check-in" })).toBeVisible();
     await page.waitForLoadState("networkidle");
     expect(
       await page.evaluate(

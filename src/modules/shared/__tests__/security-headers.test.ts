@@ -44,7 +44,7 @@ describe("CSP connection configuration", () => {
     "not a URL",
   ])("rejects unsafe configuration without exposing its value: %s", (supabaseUrl) => {
     expect(() => buildContentSecurityPolicy({ isDev: false, supabaseUrl })).toThrow(
-      "NEXT_PUBLIC_SUPABASE_URL must be an HTTP(S) URL with an exact hostname and no credentials",
+      /^NEXT_PUBLIC_SUPABASE_URL must be an HTTP\(S\) URL with an exact hostname and no credentials$/,
     );
   });
 

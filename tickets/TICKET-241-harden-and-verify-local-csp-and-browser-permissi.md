@@ -40,10 +40,10 @@ TICKET-124 combines local policy implementation with HTTPS staging and productio
 
 ## Acceptance criteria
 
-- [ ] Configured Supabase connection origins are restricted to valid HTTP(S) origins and their corresponding websocket origins; invalid protocols/credentials cannot create permissive directives.
-- [ ] Focused policy tests retain existing framing, objects, camera, worker, font and production eval restrictions.
-- [ ] Actual production-browser checks assert delivered headers, a blocked unauthorized script and functioning same-origin worker/font access without unexpected CSP violations.
-- [ ] ADR and TICKET-124 retain all HTTPS staging, production smoke and grade-A evidence requirements; no incomplete deployment check is marked done.
+- [x] Configured Supabase connection origins are restricted to valid HTTP(S) origins and their corresponding websocket origins; invalid protocols/credentials cannot create permissive directives.
+- [x] Focused policy tests retain existing framing, objects, camera, worker, font and production eval restrictions.
+- [x] Actual production-browser checks assert delivered headers, a blocked unauthorized script and functioning same-origin worker/font access without unexpected CSP violations.
+- [x] ADR and TICKET-124 retain all HTTPS staging, production smoke and grade-A evidence requirements; no incomplete deployment check is marked done.
 
 ## Test plan
 
@@ -61,7 +61,7 @@ TICKET-124 combines local policy implementation with HTTPS staging and productio
 
 ## Notes / decisions
 
-2026-11-13: Authorized implementation/verification split; TICKET-149 remains unstarted and no deployment evidence is implied.
+2026-11-13: Authorized implementation/verification split; TICKET-149 remains unstarted and no deployment evidence is implied. All 13 policy tests pass after reproduced invalid-host failures. Actual initial browser checks exposed the Zod evaluation probe; early named-mini jitless initialization repairs it in Next and standalone scanner entries. Final six mobile/desktop policy cases pass in 7.0 seconds; production build passes and independent review is clean. See docs/plans/TICKET-241-pr.md.
 
 ## Activity log
 
