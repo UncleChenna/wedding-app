@@ -3533,9 +3533,10 @@
         "- 2026-11-13 — todo → claimed — divine (codex)",
         "- 2026-11-13 — todo → in_progress — divine (codex)",
         "- 2026-11-13 — in_progress → in_review — divine (codex)",
-        "- 2026-11-13 — in_review → in_progress — divine (codex) — CI correctly requires regenerating preset-derived PWA icons after palette changes"
+        "- 2026-11-13 — in_review → in_progress — divine (codex) — CI correctly requires regenerating preset-derived PWA icons after palette changes",
+        "- 2026-11-13 — in_progress → in_review — divine (codex)"
       ],
-      "status": "in_progress",
+      "status": "in_review",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-014",
