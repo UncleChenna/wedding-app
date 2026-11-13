@@ -2,20 +2,20 @@
 id: TICKET-121
 title: Fail e2e on layout shift or console errors on guest pages
 epic: quality
-status: todo
+status: in_progress
 priority: medium
 estimate: M
 labels: [test]
 module: shared
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-116]
 blocks: [TICKET-154]
-branch: ""
+branch: TICKET-121
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-13
+started: 2026-11-13
 completed: ""
 reason: ""
 resume_to: ""
@@ -57,3 +57,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-13 — todo → claimed — divine (codex) — started ahead of TICKET-116 (in_progress)
+- 2026-11-13 — todo → in_progress — divine (codex) — started ahead of TICKET-116 (in_progress)
