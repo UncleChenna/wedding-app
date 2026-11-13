@@ -2,7 +2,7 @@
 id: TICKET-136
 title: Test the gate end to end with the network switched off
 epic: testing
-status: in_progress
+status: in_review
 priority: high
 estimate: M
 labels: [test, pwa]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-066, TICKET-067, TICKET-108, TICKET-063, TICKET-062, TICKET-184]
 blocks: [TICKET-154, TICKET-163]
 branch: TICKET-136
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/181
 created: 2026-10-21
 updated: 2026-11-13
 started: 2026-11-13
@@ -61,3 +61,4 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-6) · [Milestones, scope
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-13 — todo → claimed — divine (codex)
 - 2026-11-13 — todo → in_progress — divine (codex)
+- 2026-11-13 — in_progress → in_review — divine (codex)
