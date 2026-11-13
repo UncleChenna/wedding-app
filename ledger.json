@@ -3370,9 +3370,10 @@
       "log": [
         "- 2026-11-13 — todo → claimed — divine (codex) — started ahead of TICKET-111 (in_review)",
         "- 2026-11-13 — todo → in_progress — divine (codex) — started ahead of TICKET-111 (in_review)",
-        "- 2026-11-13 — in_progress → blocked — divine (codex) — Implementation reviewed and published in PR179; waiting for TICKET-111 PR176 to pass CI and merge before dependency integration."
+        "- 2026-11-13 — in_progress → blocked — divine (codex) — Implementation reviewed and published in PR179; waiting for TICKET-111 PR176 to pass CI and merge before dependency integration.",
+        "- 2026-11-13 — blocked → in_progress — divine (codex)"
       ],
-      "status": "blocked",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-113",
@@ -3380,8 +3381,8 @@
       "started": "2026-11-13",
       "completed": "",
       "updated": "2026-11-13",
-      "reason": "Implementation reviewed and published in PR179; waiting for TICKET-111 PR176 to pass CI and merge before dependency integration.",
-      "resume_to": "in_progress"
+      "reason": "",
+      "resume_to": ""
     },
     "WED-136": {
       "log": [
