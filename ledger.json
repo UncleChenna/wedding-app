@@ -3719,14 +3719,15 @@
     "WED-242": {
       "log": [
         "- 2026-11-13 — backlog → todo — divine (codex)",
-        "- 2026-11-13 — todo → claimed — divine (codex)"
+        "- 2026-11-13 — todo → claimed — divine (codex)",
+        "- 2026-11-13 — todo → in_progress — divine (codex)"
       ],
-      "status": "todo",
+      "status": "in_progress",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-242",
       "pr": "",
-      "started": "",
+      "started": "2026-11-13",
       "completed": "",
       "updated": "2026-11-13",
       "reason": "",
