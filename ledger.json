@@ -3293,12 +3293,13 @@
     },
     "WED-231": {
       "log": [
-        "- 2026-11-13 — backlog → todo — divine (codex)"
+        "- 2026-11-13 — backlog → todo — divine (codex)",
+        "- 2026-11-13 — todo → claimed — divine (codex) — started ahead of TICKET-184 (in_review)"
       ],
       "status": "todo",
-      "owner": "",
-      "agent": "",
-      "branch": "",
+      "owner": "divine",
+      "agent": "codex",
+      "branch": "TICKET-231",
       "pr": "",
       "started": "",
       "completed": "",
