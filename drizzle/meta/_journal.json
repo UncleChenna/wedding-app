@@ -225,6 +225,13 @@
       "when": 1794482191507,
       "tag": "0031_offline-intent-digest",
       "breakpoints": true
+    },
+    {
+      "idx": 32,
+      "version": "7",
+      "when": 1794510908916,
+      "tag": "0032_staff-entered-orders",
+      "breakpoints": true
     }
   ]
 }
