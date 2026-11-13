@@ -12,8 +12,8 @@ Run43388307715 failed desktop camera-result waiting, then retained50journal entr
 
 ## Verification
 
-Production build passes. Original two-scanner mobile/desktop journey is being reproduced with unchanged50QR scans,100original-event reconciliation, reload equality, shared allowance conflict and replay checks. No timeout, assertion or limit changed.
+Production build passes. Both original two-scanner mobile/desktop cases passed locally in 43.6 seconds with unchanged 50 QR scans, 100 original-event reconciliation, reload equality, shared allowance conflict and replay checks. Hosted run43400118523 attempt2 also passed. Attempt1 failed before tests because Docker port54322 was already occupied; the unchanged failed-job retry passed. No timeout, assertion or limit changed.
 
 ## Risks and rollout
 
-Test diagnostics only; no runtime/schema changes. No claim of fixed product behavior or real-phone certification. Keep PR113 unmerged until the scanner failure has an evidenced disposition.
+Test diagnostics only; no runtime/schema changes. No claim of fixed product behavior or real-phone certification. PR113 was subsequently merged externally. The earlier runtime failure remains unexplained; this diagnostic PR stays draft and does not certify that intermittent reconciliation is fixed.
