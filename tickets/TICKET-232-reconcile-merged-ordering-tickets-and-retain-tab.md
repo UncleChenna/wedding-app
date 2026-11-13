@@ -2,7 +2,7 @@
 id: TICKET-232
 title: Reconcile merged ordering tickets and retain tablet release QA
 epic: quality
-status: in_progress
+status: in_review
 priority: high
 estimate: S
 labels: [docs]
@@ -12,9 +12,9 @@ agent: codex
 blocked_by: []
 blocks: []
 branch: TICKET-232
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/174
 created: 2026-11-12
-updated: 2026-11-12
+updated: 2026-11-13
 started: 2026-11-12
 completed: ""
 reason: ""
@@ -62,3 +62,4 @@ Merged ordering work remains open because one physical-tablet criterion has no r
 - 2026-11-12 — new → todo — divine (codex)
 - 2026-11-12 — todo → claimed — divine (codex)
 - 2026-11-12 — todo → in_progress — divine (codex)
+- 2026-11-13 — in_progress → in_review — divine (codex)
