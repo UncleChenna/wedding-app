@@ -2,7 +2,7 @@
 id: TICKET-067
 title: Flag and resolve double entries from offline scanners
 epic: checkin
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [frontend, backend]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/172
 created: 2026-10-21
 updated: 2026-11-13
 started: 2026-11-12
-completed: ""
+completed: 2026-11-13
 reason: ""
 resume_to: ""
 ---
@@ -64,3 +64,4 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-6).
 - 2026-11-12 — todo → claimed — divine (codex)
 - 2026-11-12 — todo → in_progress — divine (codex)
 - 2026-11-13 — in_progress → in_review — divine (codex)
+- 2026-11-13 — in_review → done — divine (codex)
