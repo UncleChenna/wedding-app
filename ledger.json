@@ -3839,9 +3839,10 @@
     "WED-085": {
       "log": [
         "- 2026-11-13 — todo → claimed — divine (codex)",
-        "- 2026-11-13 — todo → in_progress — divine (codex)"
+        "- 2026-11-13 — todo → in_progress — divine (codex)",
+        "- 2026-11-13 — in_progress → blocked — divine (codex) — Implementation and local verification published in PR #208; live phone receipt requires TICKET-083 account, approved template and opted-in recipient. No real message sent."
       ],
-      "status": "in_progress",
+      "status": "blocked",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-085",
@@ -3849,8 +3850,8 @@
       "started": "2026-11-13",
       "completed": "",
       "updated": "2026-11-13",
-      "reason": "",
-      "resume_to": ""
+      "reason": "Implementation and local verification published in PR #208; live phone receipt requires TICKET-083 account, approved template and opted-in recipient. No real message sent.",
+      "resume_to": "in_progress"
     },
     "WED-248": {
       "log": [
