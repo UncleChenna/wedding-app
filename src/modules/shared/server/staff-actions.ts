@@ -5,7 +5,8 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createLogger } from "../lib/logger";
 import { staffSignInMessages, type StaffSignInState } from "../lib/staff-sign-in-state";
-import { signInStaff, staffRoleSchema } from "./staff-auth";
+import { signInLocalTester, signInStaff, staffRoleSchema } from "./staff-auth";
+import { usesLocalSignInCode } from "./local-sign-in";
 import { createStaffDeviceCookie, readStaffDeviceCookie } from "./staff-device-cookie";
 import {
   STAFF_DEVICE_COOKIE,
@@ -45,7 +46,10 @@ export async function staffSignInAction(
         maxAge: 60 * 60 * 24 * 90,
       });
     }
-    const result = await signInStaff(parsed.data.pin, parsed.data.role, device);
+    // Local development only (TICKET-250): the shared code opens any station as its local tester.
+    const result = (await usesLocalSignInCode(parsed.data.pin))
+      ? await signInLocalTester(parsed.data.role, device)
+      : await signInStaff(parsed.data.pin, parsed.data.role, device);
     if (result.status !== "success")
       return { status: result.status, message: staffSignInMessages[result.status] };
     const { expiresAt, ...identity } = result.value;

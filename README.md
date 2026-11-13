@@ -30,6 +30,14 @@ Useful URLs:
 
 Stop the database with `pnpm db:stop`.
 
+### Local sign-in shortcut
+
+On a local setup, the code `000000` works everywhere a code is asked for: the admin email code, the
+admin authenticator code and every staff PIN (`/checkin`, `/kitchen`, `/bar`, `/host`). Your email
+still has to be on `ADMIN_EMAIL_ALLOWLIST`. It only works when the database and Supabase are on this
+machine and the browser is on `localhost`, and never on Vercel. Set `LOCAL_SIGN_IN_CODE=off` in
+`.env.local` to turn it off, or to six other digits to change it.
+
 ## Commands
 
 | Command                       | Purpose                                                                                   |
