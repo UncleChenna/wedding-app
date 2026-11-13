@@ -9,7 +9,7 @@ labels: [security]
 module: shared
 owner: ""
 agent: ""
-blocked_by: [TICKET-033, TICKET-059, TICKET-105, TICKET-149]
+blocked_by: [TICKET-033, TICKET-059, TICKET-105, TICKET-149, TICKET-241]
 blocks: [TICKET-154]
 branch: ""
 pr: ""
@@ -31,7 +31,7 @@ See: [Security](../docs/prd.md#security).
 
 ## Scope
 
-- Update CSP and Permissions-Policy; ADR 0006 addendum.
+- Verify the CSP and Permissions-Policy implementation from TICKET-241 on HTTPS staging and production; retain ADR 0006 evidence.
 
 ## Out of scope
 
@@ -58,7 +58,7 @@ See: [Security](../docs/prd.md#security).
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-11-13: Local policy implementation and browser enforcement coverage are split into TICKET-241 so coding can proceed before TICKET-149 creates staging. Every acceptance criterion above remains mandatory here, including production grade A evidence, absence of unexpected CSP violations, HTTPS staging capability checks and post-release smoke checks. No deployment evidence or completion is implied.
 
 ## Activity log
 
