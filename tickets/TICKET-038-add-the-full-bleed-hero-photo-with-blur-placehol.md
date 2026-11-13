@@ -2,7 +2,7 @@
 id: TICKET-038
 title: Add the full-bleed hero photo with blur placeholder
 epic: invitations
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [frontend, design]

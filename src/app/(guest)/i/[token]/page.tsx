@@ -12,6 +12,7 @@ import { QrPass, PassUnavailable } from "@/modules/invitations/components/qr-pas
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { connection } from "next/server";
+import { readInvitationDesign } from "@/modules/shared/server/invitation-design";
 import { getEventSettings } from "@/modules/shared/server/settings";
 import { db } from "@/modules/shared/server/db/client";
 import { findGuestInvitation } from "@/modules/invitations/server/repository";
@@ -45,11 +46,25 @@ async function Invitation({ params }: { params: Promise<{ token: string }> }) {
     ? await issueGatePassFrom(db, identity, clientEnv.NEXT_PUBLIC_SITE_URL)
     : null;
   const settings = await getEventSettings();
+  const design = await readInvitationDesign(db);
+  const details = {
+    ...settings,
+    headline: design?.headline,
+    subline: design?.subline,
+    photo:
+      design?.photoId && design.blurDataURL
+        ? {
+            src: `/media/invitation/${design.photoId}`,
+            alt: design.photoAlt,
+            blurDataURL: design.blurDataURL,
+          }
+        : undefined,
+  };
   const window = rsvpWindow(settings);
   return (
     <PersonalInvitation
       invitation={invitation}
-      details={settings}
+      details={details}
       token={token}
       repliesOpen={window === "open"}
       replyClosedMessage={window === "locked" ? invitationSiteCopy.editsLocked : undefined}

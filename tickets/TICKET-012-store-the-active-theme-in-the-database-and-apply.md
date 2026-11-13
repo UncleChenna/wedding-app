@@ -2,7 +2,7 @@
 id: TICKET-012
 title: Store the active theme in the database and apply it on the server
 epic: design-system
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [backend, db, frontend]

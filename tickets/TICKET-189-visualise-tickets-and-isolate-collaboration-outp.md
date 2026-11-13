@@ -2,7 +2,7 @@
 id: TICKET-189
 title: Visualise tickets and isolate collaboration outputs
 epic: foundations
-status: in_review
+status: done
 priority: urgent
 estimate: L
 labels: [infra, frontend, test]

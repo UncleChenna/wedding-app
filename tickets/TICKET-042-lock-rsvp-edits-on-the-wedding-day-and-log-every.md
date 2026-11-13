@@ -2,7 +2,7 @@
 id: TICKET-042
 title: Lock RSVP edits on the wedding day and log every change
 epic: invitations
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [backend, frontend]

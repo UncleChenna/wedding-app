@@ -2,7 +2,7 @@
 id: TICKET-078
 title: Let staff move orders through received, preparing and served
 epic: ordering
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [frontend, backend]

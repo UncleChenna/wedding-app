@@ -26,6 +26,7 @@ it("names the event and offers every section plus sign-out in one labelled navig
     ["Guests", "/admin/guests"],
     ["Invitation requests", "/admin/link-requests"],
     ["Sharing", "/admin/sharing"],
+    ["Invitation design", "/admin/design"],
     ["Menu", "/admin/menu"],
     ["Staff", "/admin/staff"],
     ["Scan log", "/admin/scans"],

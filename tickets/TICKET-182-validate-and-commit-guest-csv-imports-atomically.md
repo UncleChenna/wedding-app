@@ -2,7 +2,7 @@
 id: TICKET-182
 title: Validate and commit guest CSV imports atomically
 epic: admin
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [backend, test]

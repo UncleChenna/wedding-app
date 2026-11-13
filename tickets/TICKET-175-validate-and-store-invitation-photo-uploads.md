@@ -2,7 +2,7 @@
 id: TICKET-175
 title: Validate and store invitation photo uploads
 epic: admin
-status: in_review
+status: done
 priority: medium
 estimate: M
 labels: [backend, security]

@@ -2,7 +2,7 @@
 id: TICKET-210
 title: Eliminate invitation font-swap shifts after integration
 epic: design-system
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [frontend, test]

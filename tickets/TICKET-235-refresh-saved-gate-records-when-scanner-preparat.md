@@ -2,7 +2,7 @@
 id: TICKET-235
 title: Refresh saved gate records when scanner preparation completes
 epic: checkin
-status: in_review
+status: done
 priority: high
 estimate: S
 labels: [frontend, test]

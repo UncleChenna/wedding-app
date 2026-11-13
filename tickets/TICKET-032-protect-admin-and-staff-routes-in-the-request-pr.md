@@ -2,7 +2,7 @@
 id: TICKET-032
 title: Protect admin and staff routes in the request proxy
 epic: data-auth
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [security, backend]

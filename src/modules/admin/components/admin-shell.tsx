@@ -12,6 +12,7 @@ export const adminSections = [
     exact: false,
   },
   { href: appRoutes.adminSharing.path, label: appRoutes.adminSharing.label, exact: false },
+  { href: appRoutes.adminDesign.path, label: appRoutes.adminDesign.label, exact: false },
   { href: appRoutes.adminMenu.path, label: appRoutes.adminMenu.label, exact: false },
   { href: appRoutes.adminStaff.path, label: appRoutes.adminStaff.label, exact: false },
   { href: appRoutes.adminScans.path, label: appRoutes.adminScans.label, exact: false },
@@ -85,8 +86,8 @@ export function AdminShell({
           </li>
         </ul>
       </nav>
-      {/* Bottom padding keeps the last content above the fixed phone navigation. */}
-      <div className="min-w-0 flex-1 pb-[calc(12rem+env(safe-area-inset-bottom))] md:pb-0">
+      {/* Four rows of phone navigation need clearance below the last action. */}
+      <div className="min-w-0 flex-1 pb-[calc(16rem+env(safe-area-inset-bottom))] md:pb-0">
         {children}
       </div>
     </div>

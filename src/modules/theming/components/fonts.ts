@@ -89,6 +89,8 @@ const interComplete = localFont({
 });
 
 const inter = localFont({
+  // Jost themes do not need Inter; request it only when rendered text uses it.
+  preload: false,
   src: [{ path: "../fonts/inter-common.woff2", weight: "100 900", style: "normal" }],
   variable: "--font-inter",
   display: "swap",

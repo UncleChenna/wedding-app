@@ -2,7 +2,7 @@
 id: TICKET-223
 title: Cover scan reconciliation safety boundaries
 epic: checkin
-status: in_review
+status: done
 priority: urgent
 estimate: S
 labels: [test]

@@ -2,7 +2,7 @@
 id: TICKET-186
 title: Use TICKET as the ticket prefix
 epic: foundations
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [infra, test]

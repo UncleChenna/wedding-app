@@ -2,7 +2,7 @@
 id: TICKET-100
 title: Show each invitation's RSVP change history
 epic: admin
-status: in_review
+status: done
 priority: medium
 estimate: S
 labels: [frontend]

@@ -2,7 +2,7 @@
 id: TICKET-033
 title: Set up realtime channels for boards and scanners
 epic: data-auth
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [backend, security]

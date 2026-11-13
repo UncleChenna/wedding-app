@@ -2,7 +2,7 @@
 id: TICKET-197
 title: Resolve pnpm for hooks launched with a minimal PATH
 epic: foundations
-status: in_review
+status: done
 priority: urgent
 estimate: S
 labels: [infra, test]

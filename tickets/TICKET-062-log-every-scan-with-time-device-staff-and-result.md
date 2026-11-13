@@ -2,7 +2,7 @@
 id: TICKET-062
 title: Log every scan with time, device, staff and result
 epic: checkin
-status: in_review
+status: done
 priority: high
 estimate: S
 labels: [backend]

@@ -2,7 +2,7 @@
 id: TICKET-237
 title: Bound browser transfer diagnostics without weakening wire budgets
 epic: quality
-status: in_review
+status: done
 priority: high
 estimate: S
 labels: [test]

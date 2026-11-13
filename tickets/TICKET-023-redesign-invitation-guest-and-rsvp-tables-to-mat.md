@@ -2,7 +2,7 @@
 id: TICKET-023
 title: Redesign invitation, guest and RSVP tables to match the PRD
 epic: data-auth
-status: in_review
+status: done
 priority: urgent
 estimate: L
 labels: [db, backend]

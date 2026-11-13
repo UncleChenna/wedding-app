@@ -2,7 +2,7 @@
 id: TICKET-017
 title: Harden base components for focus, tap targets and dialogs
 epic: design-system
-status: in_review
+status: done
 priority: urgent
 estimate: L
 labels: [frontend, design]

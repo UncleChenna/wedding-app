@@ -2,7 +2,7 @@
 id: TICKET-105
 title: Add the service worker with per-route caching
 epic: pwa
-status: in_review
+status: done
 priority: urgent
 estimate: L
 labels: [pwa, frontend]

@@ -2,7 +2,7 @@
 id: TICKET-014
 title: Create the couple's theme from their approved colours
 epic: design-system
-status: in_review
+status: done
 priority: urgent
 estimate: S
 labels: [design, frontend]

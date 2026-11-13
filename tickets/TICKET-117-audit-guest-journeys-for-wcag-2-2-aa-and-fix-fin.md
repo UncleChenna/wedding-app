@@ -2,7 +2,7 @@
 id: TICKET-117
 title: Audit guest journeys for WCAG 2.2 AA and fix findings
 epic: quality
-status: in_review
+status: done
 priority: high
 estimate: L
 labels: [frontend, test, human]

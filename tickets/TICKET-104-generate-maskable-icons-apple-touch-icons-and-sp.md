@@ -2,7 +2,7 @@
 id: TICKET-104
 title: Generate maskable icons, Apple touch icons and splash screens
 epic: pwa
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [pwa, design]

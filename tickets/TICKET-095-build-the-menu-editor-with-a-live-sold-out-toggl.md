@@ -2,7 +2,7 @@
 id: TICKET-095
 title: Build the menu editor with a live sold-out toggle
 epic: admin
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [frontend, backend]
