@@ -55,9 +55,9 @@ TICKET-124 combines local policy implementation with HTTPS staging and productio
 
 - `src/modules/shared/lib/security-headers.ts`
 - `src/modules/shared/__tests__/security-headers.test.ts`
-- `e2e/security-headers.spec.ts`
+- `e2e/smoke.spec.ts`
 - `docs/decisions/0006-security-headers.md`
-- `tickets/TICKET-124-review-security-headers-and-csp-for-camera-work.md`
+- `tickets/TICKET-124-review-security-headers-and-csp-for-camera-worke.md`
 
 ## Notes / decisions
 

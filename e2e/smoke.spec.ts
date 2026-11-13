@@ -87,4 +87,114 @@ test.describe("smoke @smoke", () => {
     expect(headers["referrer-policy"]).toBe("strict-origin-when-cross-origin");
     expect(headers["x-powered-by"]).toBeUndefined();
   });
+
+  test("CSP permits the required local worker, fonts and camera policy", async ({ page }) => {
+    await page.addInitScript(() => {
+      const state = window as unknown as { policyViolations: string[] };
+      state.policyViolations = [];
+      addEventListener("securitypolicyviolation", (event) => {
+        state.policyViolations.push(event.effectiveDirective);
+      });
+    });
+    const response = await page.goto("/");
+    expect(response?.status()).toBe(200);
+    const headers = response?.headers() ?? {};
+    expect(headers["permissions-policy"]).toBe(
+      "camera=(self), microphone=(), geolocation=(), payment=()",
+    );
+    expect(headers["content-security-policy"]).toContain("worker-src 'self' blob:");
+    expect(headers["content-security-policy"]).toContain("font-src 'self'");
+    expect(headers["content-security-policy"]).not.toContain("unsafe-eval");
+    expect(headers["strict-transport-security"]).toContain("max-age=63072000");
+
+    const capabilities = await page.evaluate(async () => {
+      await document.fonts.ready;
+      const policy = (
+        document as Document & {
+          featurePolicy: { allowsFeature(name: string): boolean };
+        }
+      ).featurePolicy;
+      const source = URL.createObjectURL(
+        new Blob(["postMessage('worker-ready')"], { type: "text/javascript" }),
+      );
+      const worker = new Worker(source);
+      const workerReady = await new Promise<boolean>((resolve) => {
+        const timeout = setTimeout(() => resolve(false), 5000);
+        worker.onmessage = (event) => {
+          clearTimeout(timeout);
+          resolve(event.data === "worker-ready");
+        };
+        worker.onerror = () => {
+          clearTimeout(timeout);
+          resolve(false);
+        };
+      });
+      worker.terminate();
+      URL.revokeObjectURL(source);
+      return {
+        workerReady,
+        camera: policy.allowsFeature("camera"),
+        microphone: policy.allowsFeature("microphone"),
+        loadedFonts: [...document.fonts].filter((font) => font.status === "loaded").length,
+      };
+    });
+    expect(capabilities.workerReady).toBe(true);
+    expect(capabilities.camera).toBe(true);
+    expect(capabilities.microphone).toBe(false);
+    expect(capabilities.loadedFonts).toBeGreaterThan(0);
+    await expect
+      .poll(() =>
+        page.evaluate(async () =>
+          Boolean((await navigator.serviceWorker.getRegistration())?.active),
+        ),
+      )
+      .toBe(true);
+    const workerResponse = await page.request.get("/sw.js");
+    expect(workerResponse.status()).toBe(200);
+    expect(workerResponse.headers()["service-worker-allowed"]).toBe("/");
+    await page.waitForLoadState("networkidle");
+    expect(
+      await page.evaluate(
+        () => (window as unknown as { policyViolations: string[] }).policyViolations,
+      ),
+    ).toEqual([]);
+  });
+
+  test("CSP blocks unauthorized script sources in the actual browser", async ({ page }) => {
+    await page.goto("/");
+    const violations = await page.evaluate(async () => {
+      return new Promise<string[]>((resolve) => {
+        const blocked: string[] = [];
+        const timeout = setTimeout(() => {
+          removeEventListener("securitypolicyviolation", onViolation);
+          resolve(blocked);
+        }, 5000);
+        function onViolation(event: SecurityPolicyViolationEvent) {
+          if (event.effectiveDirective !== "script-src-elem") return;
+          blocked.push(event.blockedURI);
+          if (blocked.length === 2) {
+            clearTimeout(timeout);
+            removeEventListener("securitypolicyviolation", onViolation);
+            resolve(blocked);
+          }
+        }
+        addEventListener("securitypolicyviolation", onViolation);
+        for (const source of [
+          "https://csp-probe.invalid/blocked.js",
+          "data:text/javascript,window.__cspProbeExecuted%3Dtrue",
+        ]) {
+          const script = document.createElement("script");
+          script.src = source;
+          document.head.append(script);
+        }
+      });
+    });
+    expect(violations).toContain("https://csp-probe.invalid/blocked.js");
+    expect(violations).toContain("data");
+    expect(
+      await page.evaluate(
+        () => (window as unknown as { __cspProbeExecuted?: boolean }).__cspProbeExecuted,
+      ),
+    ).toBeUndefined();
+  });
 });
