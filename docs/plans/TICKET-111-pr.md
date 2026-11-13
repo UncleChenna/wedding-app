@@ -40,3 +40,5 @@ PASS: tokens, restrained shared Card/Button,18px staff copy,44px controls, no ov
 # Harness changes, if any
 
 The existing queue-upgrade browser suite additionally exercises the production client watcher against real successive workers; all original cases remain.
+
+Hosted verification initially exposed an old toast smoke locator that assumed exactly one status region per theme. The assertion now selects the visible Order sent notification; all prior interaction assertions remain. Both mobile and desktop cases pass locally. Future notification tests should scope live regions by their expected message or named containing component, since update/reconciliation UI adds legitimate parallel status regions.
