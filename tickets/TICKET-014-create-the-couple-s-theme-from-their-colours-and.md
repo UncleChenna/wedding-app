@@ -1,15 +1,15 @@
 ---
 id: TICKET-014
-title: Create the couple's theme from their colours and photos
+title: Create the couple's theme from their approved colours
 epic: design-system
 status: todo
 priority: urgent
 estimate: S
-labels: [design, human]
+labels: [design, frontend]
 module: theming
 owner: ""
 agent: ""
-blocked_by: [TICKET-008, TICKET-013, TICKET-170]
+blocked_by: [TICKET-013, TICKET-170]
 blocks: [TICKET-176]
 branch: ""
 pr: ""
@@ -21,7 +21,7 @@ reason: ""
 resume_to: ""
 ---
 
-# TICKET-014: Create the couple's theme from their colours and photos
+# TICKET-014: Create the couple's theme from their approved colours
 
 ## Context
 
@@ -41,22 +41,24 @@ See: [How theming works](../docs/prd.md#how-theming-works) · [Open questions](.
 ## Acceptance criteria
 
 - [ ] The couple's theme passes the contrast gate.
-- [ ] Screenshots of `/` and `/dev/theme` at three widths are approved by the couple in notes.
+- [ ] Record screenshots of `/` and `/dev/theme` at 375/768/1280 and independent design/UI-checklist review. Final couple approval remains an explicit TICKET-008 release requirement.
 
 - [ ] Use ivory #FFF9EF, champagne #D6BE8D and chocolate #432B22, with chocolate text/controls and champagne as decoration or accessible fill. Include the spike QR/accent token additions.
 
 ## Test plan
 
-- Manual: Couple approves screenshots.
+- Manual: Review screenshots against the approved palette and design principles; record actual results without inferring couple approval.
 - Gate: `pnpm verify` passes; UI tickets also record the UI checklist (docs/ui-checklist.md).
 
-- Audit verification: Manual: approved palette screenshots plus measured AA text contrast, not a new palette decision.
+- Audit verification: Manual: implementation screenshots plus measured AA text contrast; final visual approval is retained in TICKET-008.
 
 ## Files likely touched
 
 - `src/modules/theming/themes/`
 
 ## Notes / decisions
+
+- 2026-11-13 — TICKET-236: Theme tokens do not require photos or a purchased domain. Implementation uses the user-approved palette; no final couple visual approval is claimed by completing this ticket.
 
 _Agents append dated notes here while working._
 
