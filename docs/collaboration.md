@@ -200,3 +200,26 @@ PR title/body edits run the text rule independently. The code workflow ignores
 those events using separate concurrency and distinct metadata-only check names,
 so it neither cancels nor supersedes real implementation checks. A base-branch
 edit still performs normal code verification against the new base SHA.
+
+## Explicit ownership handoffs
+
+When the owner authorizes a takeover, first coordinate with the previous editor,
+confirm they have stopped editing the worktree, and preserve all uncommitted work.
+A clean Git tree alone does not prove another editor is inactive. Check active
+sessions and the handoff; never discard changes to make a takeover possible.
+
+The receiving operator uses their own identity:
+
+```bash
+pnpm t:handoff TICKET-123 --from previous-owner --agent codex --coordinated --reason "Owner authorized takeover; previous editor stopped and work preserved"
+```
+
+`--coordinated` records the operator's explicit acknowledgement of authorization
+and coordination; it is not an access-control or editor-presence detector. The
+shared-ledger transaction checks the expected previous owner again on retries,
+records both identities and the reason, and changes only ownership/agent/date.
+It preserves the status, existing branch, PR, blockers and verification evidence.
+Unclaimed or terminal tickets cannot be handed off. Offline handoffs are refused.
+Existing claim, release, completion and reconciliation requirements still apply.
+Only the receiving ticket branch may synchronize its own definition afterward;
+no other working files or collaborator identity settings are changed.

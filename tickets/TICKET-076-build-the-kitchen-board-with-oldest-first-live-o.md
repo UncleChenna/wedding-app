@@ -43,7 +43,7 @@ See: [Table ordering](../docs/prd.md#table-ordering) (ORD-4) · [Users and roles
 
 - [x] New orders appear oldest-first within 2s (e2e).
 - [x] A new order plays a sound when audio is unlocked and shows a visual flash regardless.
-- [ ] Board is legible at 1 metre on a tablet (manual).
+- [x] Preserve the unperformed one-metre tablet legibility check as an unchecked, release-blocking TICKET-201 requirement under the owner-approved preview disposition. This records the transfer only; physical legibility is not certified.
 
 ## Test plan
 
@@ -57,6 +57,8 @@ See: [Table ordering](../docs/prd.md#table-ordering) (ORD-4) · [Users and roles
 - `src/modules/ordering/components/board.tsx`
 
 ## Notes / decisions
+
+- 2026-11-12 — TICKET-232 records the owner-authorized transfer of the unperformed one-metre tablet check to TICKET-201. Both release blockers remain; no device result is claimed. Product implementation merged in PR #140.
 
 _Agents append dated notes here while working._
 

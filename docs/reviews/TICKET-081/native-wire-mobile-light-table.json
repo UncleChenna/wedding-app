@@ -6,8 +6,8 @@
     "height": 839
   },
   "budget": 200000,
-  "total": 167745,
-  "browserReported": 133159,
+  "total": 168066,
+  "browserReported": 133157,
   "transport": "loopback HTTP/1 wire; no rewriting",
   "rows": [
     {
@@ -55,19 +55,19 @@
     {
       "path": "/offline",
       "worker": true,
-      "bytes": 8787,
-      "status": 200
-    },
-    {
-      "path": "/offline-assets/cormorant-6dcbd80f527db744.woff2",
-      "worker": true,
-      "bytes": 10350,
+      "bytes": 8785,
       "status": 200
     },
     {
       "path": "/offline-assets/inter-b714eddca05246b9.woff2",
       "worker": true,
       "bytes": 6922,
+      "status": 200
+    },
+    {
+      "path": "/offline-assets/cormorant-6dcbd80f527db744.woff2",
+      "worker": true,
+      "bytes": 10350,
       "status": 200
     },
     {

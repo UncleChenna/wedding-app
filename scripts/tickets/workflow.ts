@@ -82,6 +82,26 @@ export function release(meta: Frontmatter, facts: MoveFacts): Change {
   return { owner: "", agent: "", branch: "", updated: facts.today };
 }
 
+/** Explicit coordinated ownership transfer; never changes lifecycle or verification evidence. */
+export function handoff(
+  meta: Frontmatter,
+  facts: MoveFacts,
+  input: { expectedOwner: string; coordinated: boolean },
+): Change {
+  if (!input.coordinated)
+    throw new TransitionError("Handoff requires --coordinated after authorization and editor coordination.");
+  if (!facts.reason?.trim() || facts.reason.trim().length < 20)
+    throw new TransitionError("Handoff needs an authorization/coordination reason of at least 20 characters.");
+  if (!meta.owner) throw new TransitionError("Cannot hand off an unclaimed ticket; claim it instead.");
+  if (!input.expectedOwner || meta.owner !== input.expectedOwner)
+    throw new TransitionError("Ticket ownership changed; recheck the current owner before handoff.");
+  if (meta.status === "done" || meta.status === "cancelled")
+    throw new TransitionError("Cannot hand off a terminal ticket.");
+  if (!facts.actor?.trim() || !facts.agent?.trim() || facts.actor === meta.owner)
+    throw new TransitionError("Handoff needs a different recipient and an agent identity.");
+  return { owner: facts.actor, agent: facts.agent, updated: facts.today };
+}
+
 /** Validate a move and return the fields that change. Throws TransitionError when illegal. */
 export function move(meta: Frontmatter, to: Status, facts: MoveFacts): Change {
   const from = meta.status;

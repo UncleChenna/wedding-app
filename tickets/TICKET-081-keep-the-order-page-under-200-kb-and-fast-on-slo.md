@@ -55,7 +55,7 @@ See: [Connectivity plan](../docs/prd.md#connectivity-plan-signal-unknown) · [Pe
 
 ## Notes / decisions
 
-2026-11-12: Native progressive ordering preserves shared server/business contracts. Final cold-wire tests pass 8/8 at 158155–181065 bytes; actual slow-4G Supabase delivery passes 378.475 ms. Existing 11 guest journeys and 96 font-rendering comparisons pass. See docs/plans/TICKET-081-pr.md and ADR0027 for evidence, native-rendering tradeoff and unverified release QA. CI is configured for both strict gates; hosted check results remain required before merge.
+2026-11-12: Native progressive ordering preserves shared server/business contracts. Final cold-wire tests pass 8/8 at 158478–181388 bytes; actual slow-4G Supabase delivery passes 378.475 ms. Existing 11 guest journeys and 96 font-rendering comparisons pass. See docs/plans/TICKET-081-pr.md and ADR0027 for evidence, native-rendering tradeoff and unverified release QA. CI is configured for both strict gates; hosted check results remain required before merge.
 
 ## Activity log
 

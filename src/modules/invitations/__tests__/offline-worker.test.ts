@@ -58,7 +58,13 @@ function worker() {
     self: {
       location: { origin },
       clients,
-      addEventListener: (name: string, fn: (event: unknown) => void) => listeners.set(name, fn),
+      addEventListener: (name: string, fn: (event: unknown) => void) => {
+        const previous = listeners.get(name);
+        listeners.set(name, (event) => {
+          previous?.(event);
+          fn(event);
+        });
+      },
     },
     caches,
     fetch,

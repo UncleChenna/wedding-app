@@ -2,12 +2,12 @@
 
 A fresh `/order` visit originally transferred about 1.24 MB, including service-worker installation. The order page now uses a small themed HTML document with progressive enhancement and reuses the existing order submission, retry, validation, availability and status contracts. The original 200,000-byte budget remains unchanged.
 
-The final production build transfers 158,155–181,065 bytes across light/dark, mobile/desktop and table/menu cases. The menu fixture includes `Ọgbọnọ · Crème brûlée`. Real Supabase broadcast delivery under emulated slow 4G took 378.475 ms, below 2 seconds, with one persisted quantity and the matching broadcast observed before the board displayed it.
+The final production build transfers 158,478–181,388 bytes across light/dark, mobile/desktop and table/menu cases. The menu fixture includes `Ọgbọnọ · Crème brûlée`. Real Supabase broadcast delivery under emulated slow 4G took 378.475 ms, below 2 seconds, with one persisted quantity and the matching broadcast observed before the board displayed it.
 
 ## Acceptance criteria and evidence
 
-- [x] Cold `/order` transfer ≤200,000 bytes: all eight light/dark, mobile/desktop table/menu cases pass; maximum181,065 bytes including worker/font traffic. CI gate added.
-- [x] Order-to-board <2s on emulated slow4G: actual Supabase broadcast and persisted order proof measured378.475ms. CI gate added.
+- [x] Cold `/order` transfer ≤200,000 bytes: all eight light/dark, mobile/desktop table/menu cases pass; maximum 181,388 bytes including worker/font traffic. CI gate added.
+- [x] Order-to-board <2s on emulated slow 4G: actual Supabase broadcast and persisted order proof measured 378.475 ms. CI gate added.
 
 ## Changes
 
@@ -55,3 +55,7 @@ No database migration or production data change. Restore the previous `/order/pa
 | Sharing/devices     | OG metadata retained; WhatsApp preview and physical iOS/Android checks remain unverified release gates.                                                                                                                             |
 | QR / staff feedback | N/A: no QR or staff interface changes. Actual guest-to-staff delivery independently measured.                                                                                                                                       |
 | Verification        | Targeted quick verification and production build pass. CI scope checks and independent review required before merge. Full release verification remains required separately.                                                         |
+
+## Integrated base verification
+
+Verified against develop `b2ade840ff38f109723841ce35e760a166727a22`, including the worker update guard. The sole merge conflict was adjacent imports; both were retained. Production build passes, quick verification passes (344 related tests, 9 opt-in skips, plus 2 CI-parity tests), and all eight complete cold-wire cases pass at the totals above. Exact post-integration measurements replace the earlier per-case artifacts.

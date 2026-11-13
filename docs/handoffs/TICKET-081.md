@@ -1,6 +1,6 @@
 # Current checkpoint — 2026-11-12
 
-Native ordering implementation is complete locally on base 1cc4f020. Final wire tests pass 8/8: maximum 181065 bytes including worker install, default light/dark and both viewports. Real Supabase slow-4G delivery passes 378.475 ms. Full original variable axes restored after rejected partial-axis experiment; font parity 48 cases per viewport passes. Worker gzip negotiated with unchanged cache/scope and reviewed by queue_upgrade. Final guest parity passes all 11 cases across focused retries; implementation pushed 19bc2f4e and full independent source review found no blocker. PR162 remains pending CI. See docs/plans/TICKET-081-pr.md for current scope/evidence.
+Native ordering implementation is complete locally on base 1cc4f020. Final wire tests pass 8/8: maximum 181388 bytes including worker install, default light/dark and both viewports. Real Supabase slow-4G delivery passes 378.475 ms. Full original variable axes restored after rejected partial-axis experiment; font parity 48 cases per viewport passes. Worker gzip negotiated with unchanged cache/scope and reviewed by queue_upgrade. Final guest parity passes all 11 cases across focused retries; implementation pushed 19bc2f4e and full independent source review found no blocker. PR162 remains pending CI. See docs/plans/TICKET-081-pr.md for current scope/evidence.
 
 Owned Supabase stopped with backup preserved. Lightweight native PostgreSQL `/tmp/TICKET-081-postgres.J2KPia` on 36761 is stopping with data retained after final browser verification. No collaborator stacks touched. Earlier evidence below is historical, superseded by native-wire-<project>-<scheme>-<state>.json.
 
@@ -10,7 +10,7 @@ Owned branch/worktree TICKET-081; baseeb145497, claimed via supported --ahead wh
 
 Owned native PostgreSQL36761 (path in.harness/temporary-postgres-path) holds only synthetic performance fixtures and applied existing migrations. Production server36771 is a local measurement server. Other collaborators' Docker stacks are untouched. Native database is sufficient forbytes, not actual Realtime delivery; that needs the owned Supabase stack later.
 
-Next: reduce eager offline font downloads and inspect framework/font cost before choosing changes; retain all-theme and offline behavior. Add real guest-submit to authenticated kitchen/bar visible arrival timing with documented slow4G and strict<2s. Do not modify collaborator079's ordering work. Required CI gate not yetwired; draft only, no doneclaim.
+Next: reduce eager offline font downloads and inspect framework/font cost before choosing changes; retain all-theme and offline behavior. Add real guest-submit to authenticated kitchen/bar visible arrival timing with documented slow 4G and strict<2s. Do not modify collaborator079's ordering work. Required CI gate not yetwired; draft only, no doneclaim.
 
 ## 2026-11-12 measured investigation
 
@@ -55,7 +55,7 @@ this was fixed before final generation and browser evidence.
 
 Strict unchanged cold-transfer tests STILL FAIL:408,534 bytes table form and
 399,213 menu, including worker install. This is a measured reduction from~1.24MB,
-not completion of the200KB criterion. No Realtime/slow4G delivery proof yet.
+not completion of the200KB criterion. No Realtime/slow 4G delivery proof yet.
 Next: reduce remaining client validation/default font preload cost, preserving
 all theme contracts; incoming066 verifier adds~20KB gzip and must be measured.
 
