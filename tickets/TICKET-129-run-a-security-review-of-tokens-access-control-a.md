@@ -2,7 +2,7 @@
 id: TICKET-129
 title: Run a security review of tokens, access control and actions
 epic: security
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [security, test]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/185
 created: 2026-10-21
 updated: 2026-11-13
 started: 2026-11-13
-completed: ""
+completed: 2026-11-13
 reason: ""
 resume_to: ""
 ---
@@ -65,3 +65,5 @@ See: [Security](../docs/prd.md#security) · [Milestones, scope and testing](../d
 - 2026-11-13 — todo → claimed — divine (codex)
 - 2026-11-13 — todo → in_progress — divine (codex)
 - 2026-11-13 — in_progress → in_review — divine (codex)
+- 2026-11-13 — in_review → blocked — divine (codex) — Merged PR185 final CI43386213746 failed only ordering transfer diagnostics, with a later context.close timeout; all security-related jobs passed. Verified repair PR188 is now merged.
+- 2026-11-13 — blocked → done — divine (codex) — Reconciled original https://github.com/UncleChenna/wedding-app/pull/185; previous block: Merged PR185 final CI43386213746 failed only ordering transfer diagnostics, with a later context.close timeout; all security-related jobs passed. Verified repair PR188 is now merged.; PR185 CI43386213746 stalled in supplemental Chromium request-size diagnostics after network quiescence, later surfacing a context.close timeout. Merged PR188 bounds those diagnostics without weakening raw-byte budgets and passed full exact-head CI including the security changes.; verified repair https://github.com/UncleChenna/wedding-app/pull/188 head ab4f5883bbf2af3017c3249fab5495728c6fbd24; CI https://github.com/UncleChenna/wedding-app/actions/runs/43389448112; develop 49ecb0d117552806e77e0d6b62911705c864f99e
