@@ -1,0 +1,13 @@
+{
+  "name": "gate-invalid",
+  "theme": "blush-sage",
+  "violations": [],
+  "overflow": false,
+  "small": [],
+  "identifiers": [
+    {
+      "text": "Invalid pass",
+      "px": 36
+    }
+  ]
+}

@@ -2,20 +2,20 @@
 id: TICKET-118
 title: Audit staff and admin screens for accessibility and legibility
 epic: quality
-status: todo
+status: in_review
 priority: medium
 estimate: L
 labels: [frontend, test, human]
 module: admin
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-060, TICKET-078, TICKET-093, TICKET-115]
 blocks: [TICKET-154, TICKET-164]
-branch: ""
-pr: ""
+branch: TICKET-118
+pr: https://github.com/UncleChenna/wedding-app/pull/186
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-13
+started: 2026-11-13
 completed: ""
 reason: ""
 resume_to: ""
@@ -39,10 +39,10 @@ See: [Usability and accessibility](../docs/prd.md#usability-and-accessibility) �
 
 ## Acceptance criteria
 
-- [ ] Audit report in docs/audits/; no open serious finding.
-- [ ] Staff text ≥18px and identifiers ≥32px verified in every theme.
+- [x] Audit report in docs/audits/; no open serious finding.
+- [x] Staff text ≥18px and identifiers ≥32px verified in every theme.
 
-- [ ] Scope this review to the stated devices/journeys and bounded fixes; split larger remediation through t:new and block release on those tickets instead of accepting failed device evidence.
+- [x] Scope this review to the stated devices/journeys and bounded fixes; split larger remediation through t:new and block release on those tickets instead of accepting failed device evidence.
 
 ## Test plan
 
@@ -57,8 +57,11 @@ See: [Usability and accessibility](../docs/prd.md#usability-and-accessibility) �
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-11-13: 88 all-theme automated states pass axe, overflow and 18px/32px legibility thresholds. Real PIN/TOTP, camera verdict and modal/settings keyboard paths pass. Physical reading/device checks remain release-blocking in TICKET-201 under standing owner authorization; separate slow-read race reserved as TICKET-238. See docs/audits/TICKET-118-staff-admin-accessibility.md.
 
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-13 — todo → claimed — divine (codex)
+- 2026-11-13 — todo → in_progress — divine (codex)
+- 2026-11-13 — in_progress → in_review — divine (codex)
