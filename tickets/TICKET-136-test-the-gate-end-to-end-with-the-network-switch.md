@@ -2,7 +2,7 @@
 id: TICKET-136
 title: Test the gate end to end with the network switched off
 epic: testing
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [test, pwa]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/181
 created: 2026-10-21
 updated: 2026-11-13
 started: 2026-11-13
-completed: ""
+completed: 2026-11-13
 reason: ""
 resume_to: ""
 ---
@@ -62,3 +62,4 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-6) · [Milestones, scope
 - 2026-11-13 — todo → claimed — divine (codex)
 - 2026-11-13 — todo → in_progress — divine (codex)
 - 2026-11-13 — in_progress → in_review — divine (codex)
+- 2026-11-13 — in_review → done — divine (codex)
