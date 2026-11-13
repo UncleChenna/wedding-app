@@ -6,7 +6,20 @@ import { appRoutes, invitationHref, passHref, pageRouteSamples, routeList } from
 describe("application route contract", () => {
   it("registers every actual page, including dynamic and preview routes", () => {
     const pages = readdirSync(join(process.cwd(), "src/app"), { recursive: true, encoding: "utf8" })
-      .filter((file) => file === "page.tsx" || file.endsWith(sep + "page.tsx"))
+      .filter(
+        (file) =>
+          file === "page.tsx" ||
+          file.endsWith(sep + "page.tsx") ||
+          (file.endsWith(sep + "route.ts") &&
+            ["/order", "/offline"].includes(
+              "/" +
+                file
+                  .split(sep)
+                  .slice(0, -1)
+                  .filter((segment) => !(segment.startsWith("(") && segment.endsWith(")")))
+                  .join("/"),
+            )),
+      )
       .map(
         (file) =>
           "/" +

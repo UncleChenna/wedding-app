@@ -2,20 +2,20 @@
 id: TICKET-067
 title: Flag and resolve double entries from offline scanners
 epic: checkin
-status: todo
+status: in_review
 priority: high
 estimate: M
 labels: [frontend, backend]
 module: checkin
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-066, TICKET-033, TICKET-088]
-blocks: [TICKET-132, TICKET-154]
-branch: ""
-pr: ""
+blocks: [TICKET-136, TICKET-154]
+branch: TICKET-067
+pr: https://github.com/UncleChenna/wedding-app/pull/172
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-13
+started: 2026-11-12
 completed: ""
 reason: ""
 resume_to: ""
@@ -41,8 +41,8 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-6).
 
 ## Acceptance criteria
 
-- [ ] Two devices each admitting 4 of 4 offline produce one flagged conflict after sync (unit + e2e).
-- [ ] The conflict appears on every scanner within 2 seconds of sync.
+- [x] Two devices each admitting 4 of 4 offline produce one flagged conflict after sync (unit + e2e).
+- [x] The conflict appears on every scanner within 2 seconds of sync.
 
 ## Test plan
 
@@ -56,8 +56,11 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-6).
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-11-13 — Hosted production two-device sync passes in both projects: mobile851ms, desktop828ms, one flagged conflict, canonical admitted count4. All-theme axe/375px screenshots inspected. CI43318217477 passes all ten jobs at38de17eb; detailed evidence in docs/plans/TICKET-067-pr.md. Physical-device release checks remain unverified.
 
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-12 — todo → claimed — divine (codex)
+- 2026-11-12 — todo → in_progress — divine (codex)
+- 2026-11-13 — in_progress → in_review — divine (codex)

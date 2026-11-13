@@ -339,3 +339,83 @@ test("cold browser restart verifies a new signed pass offline with the installed
     await rm(profile, { recursive: true, force: true });
   }
 });
+
+test("expiry clears private lookups and acknowledged receipts but retains unsynced admission IDs", async ({
+  page,
+}) => {
+  expiresAt = Date.now() + 3000;
+  await setup(page);
+  const confirmed = input();
+  expect(await message(page, "RECORD_OFFLINE_ATTEMPT", { input: confirmed })).toMatchObject({
+    state: "recorded",
+  });
+  expect(await message(page, "SYNC_OFFLINE_QUEUE")).toMatchObject({
+    state: "synced",
+    committed: 1,
+  });
+  const pending = input();
+  expect(await message(page, "RECORD_OFFLINE_ATTEMPT", { input: pending })).toMatchObject({
+    state: "recorded",
+  });
+  await expect.poll(() => message(page, "SCANNER_STATUS")).toEqual({ state: "unavailable" });
+  const state = await page.evaluate(async () => {
+    async function read(name: string, store: string) {
+      return new Promise<unknown>((done, reject) => {
+        const request = indexedDB.open(name);
+        request.onsuccess = () => {
+          const db = request.result,
+            tx = db.transaction(store),
+            row = tx.objectStore(store).get("current");
+          row.onsuccess = () => done(row.result);
+          tx.oncomplete = () => db.close();
+          tx.onerror = () => reject(tx.error);
+        };
+        request.onerror = () => reject(request.error);
+      });
+    }
+    return {
+      snapshot: await read("wedding-scanner-guests-v1", "snapshot"),
+      journal: await read("wedding-scanner-attempts-v1", "journal"),
+    };
+  });
+  expect(state.snapshot).toMatchObject({ snapshot: null });
+  expect(state.journal).toMatchObject({
+    receipts: [],
+    attempts: [{ event: { clientEventId: pending.clientEventId } }],
+  });
+  expect(await message(page, "RECORD_OFFLINE_ATTEMPT", { input: input() })).toEqual({
+    state: "unavailable",
+  });
+  // The server fixture grants a renewed valid session, mirroring a fresh authorized sign-in.
+  // Real expired/revoked device recovery is an admin escalation, never automatic credential extension.
+  expiresAt = Date.now() + 120_000;
+  await setup(page);
+  expect(await message(page, "SYNC_OFFLINE_QUEUE")).toMatchObject({
+    state: "synced",
+    committed: 1,
+  });
+  expect([...receipts.keys()]).toEqual([confirmed.clientEventId, pending.clientEventId]);
+  expect(admitted).toBe(2);
+});
+
+test("partial queue eviction prevents a false offline-ready or admitted result", async ({
+  page,
+}) => {
+  await setup(page);
+  expect(await message(page, "RECORD_OFFLINE_ATTEMPT", { input: input() })).toMatchObject({
+    state: "recorded",
+  });
+  await page.evaluate(
+    () =>
+      new Promise<void>((done, reject) => {
+        const request = indexedDB.deleteDatabase("wedding-scanner-attempts-v1");
+        request.onsuccess = () => done();
+        request.onerror = () => reject(request.error);
+      }),
+  );
+  expect(await message(page, "SCANNER_STATUS")).toEqual({ state: "unavailable" });
+  expect(await message(page, "OFFLINE_QUEUE_STATUS")).toEqual({ state: "unavailable" });
+  expect(await message(page, "RECORD_OFFLINE_ATTEMPT", { input: input() })).toEqual({
+    state: "unavailable",
+  });
+});

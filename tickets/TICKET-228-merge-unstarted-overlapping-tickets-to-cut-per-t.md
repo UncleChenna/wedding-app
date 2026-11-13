@@ -31,15 +31,13 @@ work moves faster without changing what gets built. Rules: [tickets](../docs/tic
 
 ## Scope
 
-- Merge 16 unstarted, unclaimed tickets into 10 survivors that cover the same flow:
+- Merge 14 unstarted, unclaimed tickets into 9 survivors that cover the same flow:
   - 085 ← 087 (alert sending and its board health)
   - 116 ← 121 (guest page performance and layout-shift gates)
   - 014 ← 038, 119 (theme, hero photo, image optimisation)
   - 126 ← 127 (privacy notice and retention job)
-  - 129 ← 124 (security review and headers)
   - 149 ← 213 (preview/staging and worktree databases)
   - 150 ← 152 (migrations and smoke tests in the deploy pipeline)
-  - 132 ← 136 (gate journey online and offline)
   - 145 ← 144, 146, 147, 148 (production platform setup)
   - 114 ← 138, 201, 206 (one real-device test session)
 - Survivors get each absorbed ticket's scope, acceptance criteria (tagged "from TICKET-x"), test plan and
@@ -54,7 +52,7 @@ work moves faster without changing what gets built. Rules: [tickets](../docs/tic
 
 ## Acceptance criteria
 
-- [x] Each of the 16 absorbed tickets is `cancelled` with a "Merged into" reason, and its criteria appear in the survivor.
+- [x] Each of the 14 absorbed tickets is `cancelled` with a "Merged into" reason, and its criteria appear in the survivor.
 - [x] No unstarted ticket is blocked by a cancelled ticket (checked with grep), and `pnpm t:validate` passes.
 - [x] No started, claimed or finished ticket file is changed (only todo, backlog and cancelled files in the diff).
 
@@ -68,6 +66,8 @@ work moves faster without changing what gets built. Rules: [tickets](../docs/tic
 - `tickets/TICKET-*.md` (47 files)
 
 ## Notes / decisions
+
+- 2026-11-13 (unclechenna, claude): also dropped 129 ← 124 and 132 ← 136, since Codex had them in review on develop. Their files and dependents follow develop again, and 124 is back to todo.
 
 - 2026-11-13 (unclechenna, claude): TICKET-180 was planned to merge into 111, but Codex completed it on develop first (PR #169), so that merge was dropped: 180 stays done, 111 is back to develop's version, and TICKET-154 depends on 180 again.
 

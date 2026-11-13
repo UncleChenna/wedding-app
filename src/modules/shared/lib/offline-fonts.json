@@ -1,0 +1,43 @@
+{
+  "characters": " '.ABGILNOSTYabcdefghiklmnoprstuvwy",
+  "generator": "fonttools[woff]==4.60.1",
+  "fonts": [
+    {
+      "family": "cormorant",
+      "path": "/offline-assets/cormorant-6dcbd80f527db744.woff2",
+      "sha256": "6dcbd80f527db744360c29854d4fd0f123da19b32b1656d30179f8b35df0f468",
+      "bytes": 9392,
+      "sourceSha256": "173b1f3449514245b23cb6ff69a41b8c37f62e8f2a1121e9fc5cc64cdece2b63",
+      "sourceFile": "src/modules/theming/fonts/cormorant-latin.woff2",
+      "weight": "400 600"
+    },
+    {
+      "family": "inter",
+      "path": "/offline-assets/inter-b714eddca05246b9.woff2",
+      "sha256": "b714eddca05246b955812fce6c59b46d3166689d8502647ef42b6f20d2b73106",
+      "bytes": 5964,
+      "sourceSha256": "256be69dc7fa36c9d756c39e07c182ae0c0bc2100591c95aff634922a59fb8c5",
+      "sourceFile": "src/modules/theming/fonts/inter-latin.woff2",
+      "weight": "400 600"
+    },
+    {
+      "family": "playfair",
+      "path": "/offline-assets/playfair-5b5d69a12afed94f.woff2",
+      "sha256": "5b5d69a12afed94f95b272130adb381b88be99b58d27d8edb489ed4b4da9e599",
+      "bytes": 8424,
+      "sourceSha256": "f4ae954cf5a72a618a6f9e32aa681914a398fca752672316a77557fc854f00a3",
+      "sourceFile": "src/modules/theming/fonts/playfair-latin.woff2",
+      "weight": "400 600"
+    },
+    {
+      "family": "jost",
+      "path": "/offline-assets/jost-c38a7bce2755e180.woff2",
+      "sha256": "c38a7bce2755e1803031d85f59ebe70b4dc4b415fd0be9229ef16474f3fa2f5e",
+      "bytes": 4304,
+      "sourceSha256": "66e71d40fd6df61c7c3f00a4a2790528ab3b11c11bfa228ef48c6d0fde9c2d42",
+      "sourceFile": "src/modules/theming/fonts/jost-latin.woff2",
+      "weight": "400 600"
+    }
+  ],
+  "fallbackCss": "/*\n * Values match calculateSizeAdjustValues in the installed Next font-utils module.\n * They preserve Next's metric adjustments while adding installed Linux aliases.\n * Liberation Serif is the metric-compatible Linux alternative to Times New Roman.\n * Keep these overrides with the font registry when updating the pinned fonts.\n */\n@font-face {\n  font-family: \"Cormorant Metric Fallback\";\n  src: local(\"Times New Roman\"), local(\"Liberation Serif\");\n  ascent-override: 95.27%;\n  descent-override: 29.59%;\n  line-gap-override: 0%;\n  size-adjust: 96.98%;\n}\n\n@font-face {\n  font-family: \"Inter Metric Fallback\";\n  src: local(\"Arial\"), local(\"Liberation Sans\");\n  ascent-override: 90.44%;\n  descent-override: 22.52%;\n  line-gap-override: 0%;\n  size-adjust: 107.12%;\n}\n\n@font-face {\n  font-family: \"Jost Metric Fallback\";\n  src: local(\"Arial\"), local(\"Liberation Sans\");\n  ascent-override: 111.45%;\n  descent-override: 39.06%;\n  line-gap-override: 0%;\n  size-adjust: 96.01%;\n}\n\n@font-face {\n  font-family: \"Playfair Metric Fallback\";\n  src: local(\"Times New Roman\"), local(\"Liberation Serif\");\n  ascent-override: 97.25%;\n  descent-override: 22.56%;\n  line-gap-override: 0%;\n  size-adjust: 111.26%;\n}\n"
+}

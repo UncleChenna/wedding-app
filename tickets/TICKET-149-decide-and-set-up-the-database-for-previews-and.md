@@ -10,7 +10,7 @@ module: shared
 owner: ""
 agent: ""
 blocked_by: [TICKET-145]
-blocks: [TICKET-114, TICKET-129, TICKET-137, TICKET-150, TICKET-151]
+blocks: [TICKET-114, TICKET-137, TICKET-150, TICKET-151, TICKET-124]
 branch: ""
 pr: ""
 created: 2026-10-21

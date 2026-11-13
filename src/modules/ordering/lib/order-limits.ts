@@ -4,12 +4,17 @@ type Usage = { open: number; sinceLast: number | null };
 type TableLimits = { orderCooldownSeconds: number; maxOpenOrdersPerTable: number };
 
 /** Pure policy only. The server must read database time and usage after locking the table. */
+/**
+ * A table's limits for one new order. Staff entering an order for a table (TICKET-079) skip the
+ * cooldown, which only slows repeat taps from a guest's phone, but not the open-order limit.
+ */
 export function rejectTableUsage(
   usage: Usage | undefined,
   limits: TableLimits,
+  { staffEntered = false }: { staffEntered?: boolean } = {},
 ): Extract<OrderResult, { status: "rejected" }> | null {
   const sinceLast = usage?.sinceLast ?? null;
-  if (sinceLast !== null && sinceLast < limits.orderCooldownSeconds)
+  if (!staffEntered && sinceLast !== null && sinceLast < limits.orderCooldownSeconds)
     return {
       status: "rejected",
       reason: "cooldown",

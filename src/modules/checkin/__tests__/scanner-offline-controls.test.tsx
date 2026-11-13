@@ -34,6 +34,8 @@ function view(deadline = expiresAt(), clearSession = vi.fn()) {
   );
 }
 it("reports offline readiness only after save and a complete usable status", async () => {
+  const prepared = vi.fn();
+  window.addEventListener("scanner-preparation-complete", prepared, { once: true });
   const deadline = expiresAt();
   vi.mocked(scannerWorkerMessage)
     .mockResolvedValueOnce({ state: "ready" })
@@ -47,6 +49,7 @@ it("reports offline readiness only after save and a complete usable status", asy
   expect(await screen.findByText(/Camera ready for an offline reload/)).toBeInTheDocument();
   expect(scannerWorkerMessage).toHaveBeenNthCalledWith(1, "SAVE_SCANNER");
   expect(scannerWorkerMessage).toHaveBeenNthCalledWith(2, "SCANNER_STATUS");
+  expect(prepared).toHaveBeenCalledOnce();
 });
 it("allows online camera use when offline preparation fails and provides retry", async () => {
   vi.mocked(scannerWorkerMessage).mockResolvedValue({ state: "unavailable" });

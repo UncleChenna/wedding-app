@@ -1,0 +1,924 @@
+[
+  {
+    "menu": false,
+    "total": 1236989,
+    "rows": [
+      {
+        "url": "http://localhost:36771/_next/static/media/cormorant_italic_latin.p.2t_a1_-z7jep9.woff2",
+        "type": "font",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 596,
+        "responseBodySize": 39408,
+        "responseHeadersSize": 977
+      },
+      {
+        "url": "http://localhost:36771/_next/static/media/cormorant_latin.p.142lwln7a8ewm.woff2",
+        "type": "font",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 589,
+        "responseBodySize": 37396,
+        "responseHeadersSize": 977
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/0lwwnxtja9ayj.css",
+        "type": "stylesheet",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 557,
+        "responseBodySize": 839,
+        "responseHeadersSize": 1041
+      },
+      {
+        "url": "http://localhost:36771/order",
+        "type": "document",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 660,
+        "responseBodySize": 8181,
+        "responseHeadersSize": 1618
+      },
+      {
+        "url": "http://localhost:36771/_next/static/media/inter_latin.p.1w7yplba6jnhb.woff2",
+        "type": "font",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 585,
+        "responseBodySize": 49524,
+        "responseHeadersSize": 977
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/0ml5_j0ertd0g.js",
+        "type": "script",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 542,
+        "responseBodySize": 350,
+        "responseHeadersSize": 1024
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/16-bahn9lwtrk.css",
+        "type": "stylesheet",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 557,
+        "responseBodySize": 8145,
+        "responseHeadersSize": 1042
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/1271wu918nbgg.js",
+        "type": "script",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 542,
+        "responseBodySize": 7762,
+        "responseHeadersSize": 1056
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/31so6bar5gwkc.js",
+        "type": "script",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 542,
+        "responseBodySize": 9869,
+        "responseHeadersSize": 1056
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/turbopack-2c3mg3r-05n1w.js",
+        "type": "script",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 552,
+        "responseBodySize": 4408,
+        "responseHeadersSize": 1056
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/0br1ztogw4qzi.js",
+        "type": "script",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 542,
+        "responseBodySize": 7827,
+        "responseHeadersSize": 1056
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/3_fuey1lj3h04.js",
+        "type": "script",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 542,
+        "responseBodySize": 5378,
+        "responseHeadersSize": 1056
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/23ry5wiaikz45.js",
+        "type": "script",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 542,
+        "responseBodySize": 37037,
+        "responseHeadersSize": 1057
+      },
+      {
+        "url": "http://localhost:36771/themes/ivory-gold/paper.svg",
+        "type": "image",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 664,
+        "responseBodySize": 1426,
+        "responseHeadersSize": 1014
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/33k7qu9-8d2az.js",
+        "type": "script",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 542,
+        "responseBodySize": 73574,
+        "responseHeadersSize": 1057
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/2evwlrpfswvlm.js",
+        "type": "script",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 542,
+        "responseBodySize": 3108,
+        "responseHeadersSize": 1056
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/0qlukae3ckvq1.js",
+        "type": "script",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 542,
+        "responseBodySize": 10781,
+        "responseHeadersSize": 1056
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/3tqi3vgkhphbm.js",
+        "type": "script",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 542,
+        "responseBodySize": 32330,
+        "responseHeadersSize": 1057
+      },
+      {
+        "url": "http://localhost:36771/?_rsc=FxTT201-fnmB9zKK",
+        "type": "fetch",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 591,
+        "responseBodySize": 323,
+        "responseHeadersSize": 1093
+      },
+      {
+        "url": "http://localhost:36771/?_rsc=0OIbfOZgCMlnGu5N",
+        "type": "fetch",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 606,
+        "responseBodySize": 3351,
+        "responseHeadersSize": 1093
+      },
+      {
+        "url": "http://localhost:36771/sw.js",
+        "type": "script",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 58,
+        "responseBodySize": 0,
+        "responseHeadersSize": 1027
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/31voj11bz3t64.js",
+        "type": "script",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 542,
+        "responseBodySize": 3316,
+        "responseHeadersSize": 1056
+      },
+      {
+        "url": "http://localhost:36771/offline",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 423,
+        "responseBodySize": 5545,
+        "responseHeadersSize": 1552
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/0lwwnxtja9ayj.css",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 234,
+        "responseBodySize": -893,
+        "responseHeadersSize": 893
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/16-bahn9lwtrk.css",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 234,
+        "responseBodySize": -894,
+        "responseHeadersSize": 894
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/0ml5_j0ertd0g.js",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 233,
+        "responseBodySize": -904,
+        "responseHeadersSize": 904
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/1271wu918nbgg.js",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 233,
+        "responseBodySize": -908,
+        "responseHeadersSize": 908
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/33k7qu9-8d2az.js",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 233,
+        "responseBodySize": -909,
+        "responseHeadersSize": 909
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/23ry5wiaikz45.js",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 233,
+        "responseBodySize": -909,
+        "responseHeadersSize": 909
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/31so6bar5gwkc.js",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 233,
+        "responseBodySize": -908,
+        "responseHeadersSize": 908
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/turbopack-2c3mg3r-05n1w.js",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 243,
+        "responseBodySize": -908,
+        "responseHeadersSize": 908
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/0br1ztogw4qzi.js",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 233,
+        "responseBodySize": -908,
+        "responseHeadersSize": 908
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/44i9rfrpb012m.js",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 409,
+        "responseBodySize": 5473,
+        "responseHeadersSize": 1056
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/3_fuey1lj3h04.js",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 233,
+        "responseBodySize": -908,
+        "responseHeadersSize": 908
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/3tqi3vgkhphbm.js",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 233,
+        "responseBodySize": -909,
+        "responseHeadersSize": 909
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/2evwlrpfswvlm.js",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 233,
+        "responseBodySize": -908,
+        "responseHeadersSize": 908
+      },
+      {
+        "url": "http://localhost:36771/_next/static/media/cormorant.0_60j_baapgre.woff2",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 421,
+        "responseBodySize": 209428,
+        "responseHeadersSize": 979
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/0cz1d0mv5g_q7.js",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 409,
+        "responseBodySize": 39664,
+        "responseHeadersSize": 1057
+      },
+      {
+        "url": "http://localhost:36771/_next/static/media/cormorant_latin.p.142lwln7a8ewm.woff2",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 253,
+        "responseBodySize": -857,
+        "responseHeadersSize": 857
+      },
+      {
+        "url": "http://localhost:36771/_next/static/media/cormorant_italic_latin.p.2t_a1_-z7jep9.woff2",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 260,
+        "responseBodySize": -857,
+        "responseHeadersSize": 857
+      },
+      {
+        "url": "http://localhost:36771/_next/static/media/cormorant_italic.0q24yzw2crci0.woff2",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 428,
+        "responseBodySize": 143880,
+        "responseHeadersSize": 979
+      },
+      {
+        "url": "http://localhost:36771/_next/static/media/playfair_latin.3o_tw-pwo9p8h.woff2",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 426,
+        "responseBodySize": 34924,
+        "responseHeadersSize": 977
+      },
+      {
+        "url": "http://localhost:36771/_next/static/media/inter_latin.p.1w7yplba6jnhb.woff2",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 249,
+        "responseBodySize": -857,
+        "responseHeadersSize": 857
+      },
+      {
+        "url": "http://localhost:36771/_next/static/media/playfair.0ugw0y-gk5lnc.woff2",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 420,
+        "responseBodySize": 106696,
+        "responseHeadersSize": 979
+      },
+      {
+        "url": "http://localhost:36771/_next/static/media/inter.13hvi11ycy5-b.woff2",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 417,
+        "responseBodySize": 236076,
+        "responseHeadersSize": 979
+      },
+      {
+        "url": "http://localhost:36771/_next/static/media/jost_latin.20yracrfrld3x.woff2",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 422,
+        "responseBodySize": 26336,
+        "responseHeadersSize": 977
+      },
+      {
+        "url": "http://localhost:36771/_next/static/media/jost.08e_d0l1djpwm.woff2",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 416,
+        "responseBodySize": 50620,
+        "responseHeadersSize": 977
+      }
+    ]
+  },
+  {
+    "menu": true,
+    "total": 1227491,
+    "rows": [
+      {
+        "url": "http://localhost:36771/_next/static/media/cormorant_italic_latin.p.2t_a1_-z7jep9.woff2",
+        "type": "font",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 626,
+        "responseBodySize": 39408,
+        "responseHeadersSize": 977
+      },
+      {
+        "url": "http://localhost:36771/_next/static/media/cormorant_latin.p.142lwln7a8ewm.woff2",
+        "type": "font",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 619,
+        "responseBodySize": 37396,
+        "responseHeadersSize": 977
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/0lwwnxtja9ayj.css",
+        "type": "stylesheet",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 587,
+        "responseBodySize": 839,
+        "responseHeadersSize": 1041
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/16-bahn9lwtrk.css",
+        "type": "stylesheet",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 587,
+        "responseBodySize": 8145,
+        "responseHeadersSize": 1042
+      },
+      {
+        "url": "http://localhost:36771/_next/static/media/inter_latin.p.1w7yplba6jnhb.woff2",
+        "type": "font",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 615,
+        "responseBodySize": 49524,
+        "responseHeadersSize": 977
+      },
+      {
+        "url": "http://localhost:36771/order",
+        "type": "document",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 690,
+        "responseBodySize": 8955,
+        "responseHeadersSize": 1595
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/0ml5_j0ertd0g.js",
+        "type": "script",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 572,
+        "responseBodySize": 350,
+        "responseHeadersSize": 1024
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/1271wu918nbgg.js",
+        "type": "script",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 572,
+        "responseBodySize": 7762,
+        "responseHeadersSize": 1056
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/turbopack-2c3mg3r-05n1w.js",
+        "type": "script",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 582,
+        "responseBodySize": 4408,
+        "responseHeadersSize": 1056
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/0br1ztogw4qzi.js",
+        "type": "script",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 572,
+        "responseBodySize": 7827,
+        "responseHeadersSize": 1056
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/3_fuey1lj3h04.js",
+        "type": "script",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 572,
+        "responseBodySize": 5378,
+        "responseHeadersSize": 1056
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/31so6bar5gwkc.js",
+        "type": "script",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 572,
+        "responseBodySize": 9869,
+        "responseHeadersSize": 1056
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/2evwlrpfswvlm.js",
+        "type": "script",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 572,
+        "responseBodySize": 3108,
+        "responseHeadersSize": 1056
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/0qlukae3ckvq1.js",
+        "type": "script",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 572,
+        "responseBodySize": 10781,
+        "responseHeadersSize": 1056
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/23ry5wiaikz45.js",
+        "type": "script",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 572,
+        "responseBodySize": 37037,
+        "responseHeadersSize": 1057
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/33k7qu9-8d2az.js",
+        "type": "script",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 572,
+        "responseBodySize": 73574,
+        "responseHeadersSize": 1057
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/3tqi3vgkhphbm.js",
+        "type": "script",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 572,
+        "responseBodySize": 32330,
+        "responseHeadersSize": 1057
+      },
+      {
+        "url": "http://localhost:36771/themes/ivory-gold/paper.svg",
+        "type": "image",
+        "worker": false,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 694,
+        "responseBodySize": 1426,
+        "responseHeadersSize": 1014
+      },
+      {
+        "url": "http://localhost:36771/sw.js",
+        "type": "script",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 58,
+        "responseBodySize": 0,
+        "responseHeadersSize": 1027
+      },
+      {
+        "url": "http://localhost:36771/offline",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 453,
+        "responseBodySize": 5553,
+        "responseHeadersSize": 1527
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/0lwwnxtja9ayj.css",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 234,
+        "responseBodySize": -893,
+        "responseHeadersSize": 893
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/16-bahn9lwtrk.css",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 234,
+        "responseBodySize": -894,
+        "responseHeadersSize": 894
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/0ml5_j0ertd0g.js",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 233,
+        "responseBodySize": -904,
+        "responseHeadersSize": 904
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/1271wu918nbgg.js",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 233,
+        "responseBodySize": -908,
+        "responseHeadersSize": 908
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/33k7qu9-8d2az.js",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 233,
+        "responseBodySize": -909,
+        "responseHeadersSize": 909
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/23ry5wiaikz45.js",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 233,
+        "responseBodySize": -909,
+        "responseHeadersSize": 909
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/31so6bar5gwkc.js",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 233,
+        "responseBodySize": -908,
+        "responseHeadersSize": 908
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/turbopack-2c3mg3r-05n1w.js",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 243,
+        "responseBodySize": -908,
+        "responseHeadersSize": 908
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/0br1ztogw4qzi.js",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 233,
+        "responseBodySize": -908,
+        "responseHeadersSize": 908
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/44i9rfrpb012m.js",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 439,
+        "responseBodySize": 5473,
+        "responseHeadersSize": 1056
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/3_fuey1lj3h04.js",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 233,
+        "responseBodySize": -908,
+        "responseHeadersSize": 908
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/3tqi3vgkhphbm.js",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 233,
+        "responseBodySize": -909,
+        "responseHeadersSize": 909
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/2evwlrpfswvlm.js",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 233,
+        "responseBodySize": -908,
+        "responseHeadersSize": 908
+      },
+      {
+        "url": "http://localhost:36771/_next/static/chunks/0cz1d0mv5g_q7.js",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 439,
+        "responseBodySize": 39664,
+        "responseHeadersSize": 1057
+      },
+      {
+        "url": "http://localhost:36771/_next/static/media/cormorant.0_60j_baapgre.woff2",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 451,
+        "responseBodySize": 209428,
+        "responseHeadersSize": 979
+      },
+      {
+        "url": "http://localhost:36771/_next/static/media/cormorant_italic.0q24yzw2crci0.woff2",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 458,
+        "responseBodySize": 143880,
+        "responseHeadersSize": 979
+      },
+      {
+        "url": "http://localhost:36771/_next/static/media/cormorant_latin.p.142lwln7a8ewm.woff2",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 253,
+        "responseBodySize": -857,
+        "responseHeadersSize": 857
+      },
+      {
+        "url": "http://localhost:36771/_next/static/media/cormorant_italic_latin.p.2t_a1_-z7jep9.woff2",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 260,
+        "responseBodySize": -857,
+        "responseHeadersSize": 857
+      },
+      {
+        "url": "http://localhost:36771/_next/static/media/playfair.0ugw0y-gk5lnc.woff2",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 450,
+        "responseBodySize": 106696,
+        "responseHeadersSize": 979
+      },
+      {
+        "url": "http://localhost:36771/_next/static/media/inter_latin.p.1w7yplba6jnhb.woff2",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 249,
+        "responseBodySize": -857,
+        "responseHeadersSize": 857
+      },
+      {
+        "url": "http://localhost:36771/_next/static/media/playfair_latin.3o_tw-pwo9p8h.woff2",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 456,
+        "responseBodySize": 34924,
+        "responseHeadersSize": 977
+      },
+      {
+        "url": "http://localhost:36771/_next/static/media/jost.08e_d0l1djpwm.woff2",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 446,
+        "responseBodySize": 50620,
+        "responseHeadersSize": 977
+      },
+      {
+        "url": "http://localhost:36771/_next/static/media/inter.13hvi11ycy5-b.woff2",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 447,
+        "responseBodySize": 236076,
+        "responseHeadersSize": 979
+      },
+      {
+        "url": "http://localhost:36771/_next/static/media/jost_latin.20yracrfrld3x.woff2",
+        "type": "fetch",
+        "worker": true,
+        "status": 200,
+        "requestBodySize": 0,
+        "requestHeadersSize": 452,
+        "responseBodySize": 26336,
+        "responseHeadersSize": 977
+      }
+    ]
+  }
+]

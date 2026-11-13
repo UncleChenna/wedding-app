@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { strictObject, boolean, array, uuid, maxLength, type infer as Infer } from "zod/mini";
 import type { Station } from "./stations";
 
 export const MENU_CATEGORIES = [
@@ -31,12 +31,12 @@ export function groupMenu(items: readonly MenuItem[]): MenuSection[] {
 }
 
 export const MENU_POLL_INTERVAL_MS = 3000;
-export const menuAvailabilitySchema = z.strictObject({
+export const menuAvailabilitySchema = strictObject({
   /** Whether guests can send orders right now (ORD-7, set by the couple in admin). */
-  open: z.boolean(),
-  items: z.array(z.strictObject({ id: z.uuid(), available: z.boolean() })).max(500),
+  open: boolean(),
+  items: array(strictObject({ id: uuid(), available: boolean() })).check(maxLength(500)),
 });
-export type MenuAvailability = z.infer<typeof menuAvailabilitySchema>;
+export type MenuAvailability = Infer<typeof menuAvailabilitySchema>;
 
 export const menuCopy = {
   heading: "What can we bring you?",

@@ -19,6 +19,8 @@ import {
   type StationTicket,
 } from "../lib/station-board";
 import { MAX_CANCEL_REASON, type TicketStatus } from "../lib/ticket-status";
+import type { MenuItem } from "../lib/menu";
+import { StaffOrderSheet } from "./staff-order-sheet";
 
 const FLASH_MS = 4_000;
 
@@ -84,10 +86,19 @@ const liveLabels: Record<StationChannelStatus, string> = {
 
 const headings = { kitchen: "kitchen-orders", bar: "bar-orders" } as const;
 
-export function StationBoard({ station, initial }: { station: BoardStation; initial: Board }) {
+export function StationBoard({
+  station,
+  initial,
+  menu,
+}: {
+  station: BoardStation;
+  initial: Board;
+  menu: readonly MenuItem[];
+}) {
   const [tickets, setTickets] = useState<StationTicket[]>(initial.tickets);
   const [recent, setRecent] = useState<RecentTicket[]>(initial.recent);
   const [problem, setProblem] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
   // Tickets with a move still saving: their buttons wait, so a quick second tap can't race the first.
   const [saving, setSaving] = useState<ReadonlySet<string>>(new Set());
   const [cancelling, setCancelling] = useState<StationTicket | null>(null);
@@ -232,6 +243,18 @@ export function StationBoard({ station, initial }: { station: BoardStation; init
           >
             {liveLabels[live]}
           </p>
+          <StaffOrderSheet
+            station={station}
+            menu={menu}
+            onDone={(outcome) => {
+              if (outcome.kind === "signed-out") {
+                setSignedOut(true);
+                return;
+              }
+              setNotice(`Order sent for table ${outcome.table}.`);
+              void refetch();
+            }}
+          />
           {soundOn ? (
             <p className="text-lg">Sound on</p>
           ) : (
@@ -241,6 +264,15 @@ export function StationBoard({ station, initial }: { station: BoardStation; init
           )}
         </div>
       </div>
+
+      {notice ? (
+        <p
+          role="status"
+          className="rounded-md bg-success-subtle p-4 text-lg text-success-subtle-foreground"
+        >
+          {notice}
+        </p>
+      ) : null}
 
       {problem ? (
         <p
@@ -365,7 +397,7 @@ function TicketCard({
         )}
       />
       <div className="relative flex flex-col gap-4 p-6 text-lg leading-relaxed">
-        <div className="flex items-baseline justify-between gap-4">
+        <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
           <h3 className="font-display text-4xl leading-tight">
             Table {ticket.table.number}
             {ticket.table.name ? (
@@ -374,8 +406,11 @@ function TicketCard({
               </span>
             ) : null}
           </h3>
-          <p className="shrink-0 text-lg font-medium">
-            {isNew ? <span className="mr-3 tracking-widest uppercase">New</span> : null}
+          <p className="flex flex-wrap items-baseline gap-x-3 text-lg font-medium">
+            {isNew ? <span className="tracking-widest uppercase">New</span> : null}
+            {ticket.staffEntered ? (
+              <span className="tracking-widest uppercase">Staff order</span>
+            ) : null}
             <time dateTime={ticket.createdAt}>{ticketAge(ticket.createdAt, now)}</time>
           </p>
         </div>

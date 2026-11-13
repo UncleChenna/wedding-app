@@ -55,6 +55,7 @@ function snapshotState(session: string, expiresAt: number) {
         ),
         now: Date.now(),
       });
+      if (snapshot) window.dispatchEvent(new Event("scanner-preparation-complete"));
     } catch {
       if (active()) update({ failed: true, summary: null });
     } finally {

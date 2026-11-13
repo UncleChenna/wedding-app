@@ -35,6 +35,7 @@ test.describe("live menu availability", () => {
     for (const [name, category, station] of [
       [meal, "meal", "kitchen"],
       [drink, "soft_drink", "bar"],
+      [tag + " wine", "alcohol", "bar"],
     ] as const) {
       const [item] = await db<{ id: string }[]>`
         insert into menu_items(name, description, category_v2, station, sort_order, max_per_order)
@@ -92,7 +93,10 @@ test.describe("live menu availability", () => {
         expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
           true,
         );
-        const dir = "docs/reviews/TICKET-071/" + theme.id;
+        const dir =
+          (process.env.ORDER_REVIEW_DIR
+            ? process.env.ORDER_REVIEW_DIR + "/TICKET-071/"
+            : "docs/reviews/TICKET-071/") + theme.id;
         mkdirSync(dir, { recursive: true });
         await page.screenshot({ path: dir + "/" + width + "-menu.png", fullPage: false });
       }

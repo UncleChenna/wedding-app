@@ -8,6 +8,8 @@ import { staffSignOutAction } from "@/modules/shared/server/staff-actions";
 import { Button } from "@/modules/shared/components/ui/button";
 import type { BoardStation, StationBoard as Board } from "../lib/station-board";
 import { readStationBoard } from "../server/station-board";
+import { listMenuItems } from "../server/menu-repository";
+import type { MenuItem } from "../lib/menu";
 import { StationBoard } from "./station-board";
 
 const log = createLogger({ module: "station-board" });
@@ -27,6 +29,12 @@ async function StationScreenContent({ station }: { station: BoardStation }) {
   // Signed out (or the check failed): the shared PIN sign-in, exactly as before.
   if (!signedIn) return <StaffEntry role={station} />;
 
+  let menu: MenuItem[] = [];
+  try {
+    menu = await listMenuItems();
+  } catch {
+    log.warn("Menu unavailable for staff orders", { station });
+  }
   let initial: Board;
   try {
     initial = await readStationBoard(db, station);
@@ -57,7 +65,7 @@ async function StationScreenContent({ station }: { station: BoardStation }) {
           </Button>
         </form>
       </div>
-      <StationBoard station={station} initial={initial} />
+      <StationBoard station={station} initial={initial} menu={menu} />
     </main>
   );
 }

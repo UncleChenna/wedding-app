@@ -2,7 +2,7 @@
 id: TICKET-124
 title: Review security headers and CSP for camera, workers and realtime
 epic: security
-status: cancelled
+status: todo
 priority: high
 estimate: S
 labels: [security]
@@ -14,10 +14,10 @@ blocks: [TICKET-154]
 branch: ""
 pr: ""
 created: 2026-10-21
-updated: 2026-11-12
+updated: 2026-10-21
 started: ""
 completed: ""
-reason: "Merged into TICKET-129 (TICKET-228)"
+reason: ""
 resume_to: ""
 ---
 
@@ -63,4 +63,3 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
-- 2026-11-12 — todo → cancelled — unclechenna (claude) — merged into TICKET-129 (TICKET-228)
