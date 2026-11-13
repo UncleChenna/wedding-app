@@ -30,3 +30,5 @@ Physical VoiceOver/TalkBack, actual phone zoom/keyboards and full manual conform
 ## Risks and rollout
 
 No schema or production-data changes. Synthetic fixtures retire guests and preserve append-only history. Rollback removes heading wrapping and the form-reset handler; the latter would restore the documented misleading cleared selection. Manual screen-reader, WhatsApp, QR, Lighthouse and CLS checks remain release gates.
+
+2026-11-13 hero integration: develop `21722cb97d525a683e0fcd85a4007bbda5db9a76` retained with the celebration heading wrapping fix. Production build and all 16 invitation/saved-RSVP/issued-pass cases pass (44.4s), refreshing all four themes at 320/375/768/1280 and 80 axe state scans with zero violations/overflow. Existing native ordering evidence remains unchanged. Initial concurrent hook run had three unchanged 5s unit timeouts; all 6 affected tests pass in 2.97s with one worker, and the complete normal integration hook passes with VITEST_MAX_WORKERS=2 and unchanged limits. Native isolated database stopped with data preserved. Manual release criteria remain in TICKET-201.
