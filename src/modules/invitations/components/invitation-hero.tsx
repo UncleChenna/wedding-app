@@ -24,11 +24,11 @@ export function InvitationHero({ photo }: { photo?: InvitationHeroPhoto }) {
         />
       </div>
       {!photo && (
-        <figcaption className="px-6 py-4 text-base leading-relaxed md:px-12">
-          Sample photograph ·{" "}
+        <figcaption className="grid gap-y-1 px-6 py-4 text-base leading-relaxed md:px-12">
+          <span>Sample photograph</span>
           <a
             href="https://unsplash.com/photos/a-bride-and-groom-holding-hands-and-smiling-glouLzM1PMg"
-            className="inline-flex min-h-11 items-center text-primary underline underline-offset-4"
+            className="inline-flex min-h-11 w-fit items-center text-primary underline underline-offset-4"
             rel="noreferrer"
           >
             Lauren Mitchell / Unsplash
