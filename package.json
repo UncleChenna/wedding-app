@@ -8,8 +8,8 @@
     "node": ">=24"
   },
   "scripts": {
-    "dev": "node scripts/next-local.mjs dev",
-    "build": "tsx scripts/scanner-assets.ts && next build",
+    "dev": "tsx scripts/order-assets.ts --dev && node scripts/next-local.mjs dev",
+    "build": "tsx scripts/scanner-assets.ts && tsx scripts/order-assets.ts && next build",
     "start": "node scripts/next-local.mjs start",
     "lint": "eslint --cache --max-warnings=0 .",
     "lint:fix": "eslint --cache --fix .",
@@ -49,6 +49,7 @@
     "t:next": "tsx scripts/tickets.ts next",
     "t:show": "tsx scripts/tickets.ts show",
     "t:claim": "tsx scripts/tickets.ts claim",
+    "t:handoff": "tsx scripts/tickets.ts handoff",
     "t:release": "tsx scripts/tickets.ts release",
     "t:reconcile": "tsx scripts/tickets.ts reconcile",
     "t:move": "tsx scripts/tickets.ts move",

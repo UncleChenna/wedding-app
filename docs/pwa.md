@@ -60,11 +60,11 @@ The dedicated `wedding-own-pass-v1` store is keyed by the exact capability URL. 
 
 The saved HTML contains a read-only signed QR, name, party size, table and UTC refresh timestamp. Existing public CSS/font assets are precached from a strict same-origin build-asset allowlist; no framework hydration or editing action is included in the snapshot. The offline screen labels itself as a possibly stale copy and makes no admission guarantee. Refresh and reconnection retry the original invitation. A confirmed 401/403/404/410 response removes that capability's copy; transient outages preserve it. Saves/removals serialize per capability so a slow save cannot repopulate a known-revoked copy. Different capabilities remain isolated.
 
-The live saved hint appears only after Cache Storage accepts the write. Quota/storage failure leaves the online QR usable with screenshot-backup advice. Browser eviction yields the generic offline page. The private cache is explicitly retained during ordinary public-cache activation cleanup. Expiry, logout cleanup and broader retention remain mandatory in TICKET-184; this implementation does not certify indefinite offline validity or shared-device privacy beyond capability isolation.
+The live saved hint appears only after Cache Storage accepts the write. Quota/storage failure leaves the online QR usable with screenshot-backup advice. Browser eviction yields the generic offline page. The private cache is explicitly retained during ordinary public-cache activation cleanup. Private pass retention and storage-loss behavior are described below; offline validity is bounded, never indefinite.
 
 Existing installed workers still follow the no-auto-skipWaiting lifecycle: close old controlled tabs to activate this version. Until an old worker can answer the new save request, no saved-success claim is made. Physical iOS/Android WhatsApp, storage lifecycle and scanner checks remain release-gated; desktop offline emulation is not device certification.
 
-A changed token version invalidates the old saved QR before a replacement write is attempted, including when storage quota prevents the new save. If deletion fails, the worker attempts an empty durable tombstone. When both writes fail it reports unavailable and masks the known-invalid copy for that worker lifetime; durable cleanup under a completely unavailable storage API cannot be guaranteed. TICKET-184 must cover this lifecycle limitation before release.
+A changed token version invalidates the old saved QR before a replacement write is attempted, including when storage quota prevents the new save. If deletion fails, the worker attempts an empty durable tombstone. When both writes fail it reports unavailable and masks the known-invalid copy for that worker lifetime; durable cleanup under a completely unavailable storage API cannot be guaranteed. This limitation remains explicit: no browser code can guarantee physical deletion while every storage API rejects writes. Expired copies nevertheless fail closed on every read, including after a worker restart.
 
 ## Authorized scanner shell (TICKET-108)
 
@@ -128,3 +128,68 @@ The list refreshes every five minutes, on resume/reconnect and after known autho
 Offline signed QR checks show valid, used, revoked, replaced or unknown results without recording entry. Reconnection never turns an already displayed cached result into an admission form. Existing uncertain live admission retries preserve their exact intent. A new online scan is required to authorize a new admission; TICKET-066 owns offline queued admission.
 
 Evidence: `docs/reviews/TICKET-065/`, the actual authenticated snapshot browser runner and the generated-worker Chromium/WebKit suite. Automated tests include full browser restart after storage failure and physical private-data erasure; physical installed-device certification remains in TICKET-114/TICKET-163/TICKET-201.
+
+## Private retention and storage recovery (TICKET-184)
+
+The own-pass endpoint attaches `X-Wedding-Offline-Expires`, calculated from the wedding calendar date plus configured retention days at midnight in the venue time zone. A missing venue zone uses the earliest possible calendar boundary (UTC+14), expiring at most 26 hours early instead of retaining private data beyond the intended deadline. This conservative fallback is only for private-cache retention; it never establishes RSVP or staff authority. Invalid nonempty zones fail the save safely. Past deadlines return 410.
+
+The worker never returns a missing, malformed or expired-header pass offline. On own-pass access or refresh it sweeps expired entries, rereading each under its per-pass lock before removal. Legacy saves without a deadline must be saved again online. Physical removal runs when the browser executes worker activity; a closed browser cannot be promised to wake precisely at the deadline. Failed deletion cannot make an expired response readable.
+
+Scanner logout, expired authority and private-snapshot invalidation remove acknowledged receipt copies while preserving pending/rejected attempts and refresh barriers. No private dietary notes, raw session cookies or signing keys are introduced. The existing signed authority deadline still governs scanner access; retaining evidence is not permission to keep admitting people.
+
+An independent Cache Storage identity marker and IndexedDB journal identity detect partial eviction. IDB loss with a surviving marker, conflicting identities or interrupted initialization makes readiness and admission unavailable instead of inventing an empty journal. Cache-only marker loss is repaired only from an intact validated journal. Compatible legacy journals retain their original records when adopting the marker. Public worker cleanup retains the marker. Complete deletion of both namespaces is undetectable and cannot restore missing records; operator reconciliation and paper records remain necessary.
+
+If storage is unavailable, stop offline admission and use the existing connection/recovery advice or supervised paper fallback. Do not clear site data, delete the outbox, or reset its marker while pending evidence may remain. Reconnect and sync while valid staff authority exists; only exact server acknowledgements permit removal. After staff authority expires, preserve the browser profile and escalate to an administrator. Use the reviewed recovery procedure below; ordinary sync never renews expired authority.
+
+Automated evidence covers actual worker responses, capability switching/revocation, expired cached copies, partial eviction, legacy identity adoption, interrupted initialization and acknowledged-only cleanup in Chromium/WebKit. Physical phone storage behavior remains release QA under TICKET-201/TICKET-138.
+
+## Queue-safe worker updates (TICKET-180)
+
+The update UI (TICKET-111) must message the **waiting worker**, using a MessageChannel:
+`WORKER_UPDATE_STATUS` reads the origin-wide journal; `ACTIVATE_WORKER_UPDATE`
+rechecks it under the same Web Lock as scanner writes. Replies are `ready` with
+`pending: 0`, `deferred` with the total pending count, or `unavailable`. Only
+`ready` requests call `skipWaiting`. Counts include rejected and other-operator
+events: a page cannot authorize their deletion by supplying a count or override.
+Every successful query broadcasts `WORKER_UPDATE_STATE` to all same-origin tabs.
+The UI must query again before activation and on focus; broadcasts are snapshots,
+not permission tokens. It must never reload on `deferred` or `unavailable`.
+
+`skipWaiting` is invoked under the scanner lock but awaited outside it: activation
+also takes that lock. Holding it while awaiting activation deadlocks Chromium.
+An old tab may finish a compatible version-1 write during activation; no journal
+rewrite or clear occurs, so that evidence survives for the next worker.
+
+The stable `wedding-scanner-attempts-v1` database stores the strict version-1
+journal in `journal/current`. Readers open the current database version and close
+on `versionchange`. Future **additive** IDB migrations must use the same origin publication lock and may add stores atomically,
+but must retain this journal and its format through the supported rollback
+window. TICKET-180 is the minimum rollback reader for a higher IDB version;
+pre-180 readers pin version 1 and cannot reopen a version-2 database. No higher
+production database version is introduced by this ticket. Browser tests exercise
+an actual additive version-2 store and an aborted upgrade transaction.
+
+Incompatible journal formats or inaccessible coordination/storage return
+`unavailable`. Natural activation after every tab closes can still occur under
+browser lifecycle rules; its cleanup guard preserves all old caches and skips
+private-store invalidation if the journal cannot be read. It does not unregister
+workers, clear IndexedDB, or claim a completed migration. Restore a compatible
+worker to recover evidence. Compatible automatic activation may require signing
+in again before sync; it never discards queued IDs. Physical-device release QA
+remains separate. The upgrade fixture uses real emitted workers/IndexedDB and an
+idempotent HTTP acknowledgement fixture; database reconciliation is covered by
+TICKET-066's authenticated product tests, not simulated as production here.
+
+## Choosing an update (TICKET-111)
+
+The React app and saved gate scanner show a non-blocking notification when a new worker waits. **Later** hides that worker’s prompt for the current visit; **Reload** requests TICKET-180’s queue-safe activation. Any retained attempt, including rejected evidence, keeps Reload disabled. Unavailable storage/locking also leaves the page open. After activation the client rechecks the durable journal under the scanner publication lock before reloading. Another tab’s activation never automatically reloads this tab. The notification stays in document flow so it cannot cover scan controls or forms. The standalone guest order renderer does not use this React notification.
+
+## Reviewed recovery after staff expiry (TICKET-231)
+
+1. Keep the original browser profile. Open `/gate-recovery` from the staff hub and save the recovery file. It contains at most 200 original pending records with UUID, actor/device and admission intent; no session, signing key, invitation link or dietary notes. Repeat after confirmed records are removed if more remain.
+2. Transfer the file privately to the administrator. In **Scan log → Recover gate records**, sign in with current admin two-factor access, load the file, check the original device/operator and each record, and explicitly approve the import. Files are untrusted claims, not proof of authenticity.
+3. Review each outcome. Repeated imports reuse original event UUIDs without counting admissions twice. Conflicting records remain rejected and auditable. Each successful reconciliation, review note and immutable audit digest commits together; lost admin authority or audit failure rolls the record back.
+4. Save the confirmation receipt and return it to the original browser within 24 hours. Load it on `/gate-recovery` while online. The server checks its signature/expiry, and the browser matches complete actor and record identity before clearing confirmed records. Repeated receipts are harmless. An interrupted transfer can be repeated; re-importing the same file produces a fresh receipt.
+5. Retain rejected/unconfirmed records and escalate to the administrator for investigation. Never clear storage to remove a warning. Deleted original staff/device rows and complete loss of both local storage copies cannot be reconstructed by this flow. No expired or revoked credential is renewed.
+
+Apply additive migrations `0033_scan-recovery-audit` and `0034_scan-recovery-immutable` before enabling the new API. Roll back application code without dropping the audit table or its immutable trigger. The public recovery page grants no admission/admin authority; only the protected, explicitly reviewed admin import writes records. Physical phone file transfer remains release QA in TICKET-201/TICKET-138.

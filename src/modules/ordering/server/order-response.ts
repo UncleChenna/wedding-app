@@ -1,4 +1,5 @@
 import "server-only";
+import { readBoundedJson } from "@/modules/shared/server/bounded-json";
 import { logger } from "@/modules/shared/lib/logger";
 import { orderSubmissionSchema, type OrderResult, type OrderSubmission } from "../lib/order";
 
@@ -27,16 +28,9 @@ export async function orderResponse(
 ): Promise<Response> {
   if (!request.headers.get("content-type")?.startsWith("application/json"))
     return respond({ status: "rejected", reason: "invalid" });
-  const text = await request.text();
-  if (new TextEncoder().encode(text).byteLength > MAX_BODY_BYTES)
-    return respond({ status: "rejected", reason: "invalid" });
-  let body: unknown;
-  try {
-    body = JSON.parse(text);
-  } catch {
-    return respond({ status: "rejected", reason: "invalid" });
-  }
-  const parsed = orderSubmissionSchema.safeParse(body);
+  const body = await readBoundedJson(request, MAX_BODY_BYTES);
+  if (body.status !== "valid") return respond({ status: "rejected", reason: "invalid" });
+  const parsed = orderSubmissionSchema.safeParse(body.value);
   if (!parsed.success) return respond({ status: "rejected", reason: "invalid" });
   try {
     const result = await create(parsed.data);

@@ -13,11 +13,13 @@ it("renders a minimal escaped offline pass with a refresh timestamp and no RSVP 
     url: "https://example.com/p/signed.read-only",
     themes: getActiveThemes(),
     tokenVersion: 1,
+    expiresAt: new Date("2027-03-19T00:00:00Z"),
     refreshedAt: new Date("2026-11-02T20:00:00Z"),
   });
   const html = await response.text();
   expect(response.headers.get("cache-control")).toContain("no-store");
   expect(response.headers.get("x-wedding-offline-pass")).toBe("1");
+  expect(response.headers.get("x-wedding-offline-expires")).toBe("2027-03-19T00:00:00.000Z");
   expect(html).toContain("2026-11-02T20:00:00.000Z");
   expect(html).toContain("offline copy");
   expect(html).toContain("&lt;script&gt;");

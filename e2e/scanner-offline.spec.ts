@@ -46,12 +46,36 @@ test.describe("authenticated offline scanner", () => {
       timings[name] = Date.now() - started;
     };
     await page.addInitScript(() => {
-      const state = window as unknown as { offlineScannerCls: number };
+      const state = window as unknown as {
+        offlineScannerCls: number;
+        scannerShiftSources: unknown[];
+      };
       state.offlineScannerCls = 0;
+      state.scannerShiftSources = [];
       new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
           const shift = entry as PerformanceEntry & { hadRecentInput: boolean; value: number };
-          if (!shift.hadRecentInput) state.offlineScannerCls += shift.value;
+          if (!shift.hadRecentInput) {
+            state.offlineScannerCls += shift.value;
+            const sources = (
+              entry as PerformanceEntry & {
+                sources?: {
+                  node?: Node;
+                  previousRect: DOMRectReadOnly;
+                  currentRect: DOMRectReadOnly;
+                }[];
+              }
+            ).sources;
+            state.scannerShiftSources.push({
+              value: shift.value,
+              sources: sources?.map((source) => ({
+                tag: source.node instanceof Element ? source.node.tagName : source.node?.nodeName,
+                parent: source.node?.parentElement?.className,
+                before: source.previousRect.toJSON(),
+                after: source.currentRect.toJSON(),
+              })),
+            });
+          }
         }
       }).observe({ type: "layout-shift", buffered: true });
     });
@@ -65,10 +89,21 @@ test.describe("authenticated offline scanner", () => {
       timeout: 20_000,
     });
     await page.evaluate(() => document.fonts.ready);
-    await page.waitForLoadState("networkidle");
+    // Background synchronization stays active; wait for settled rendered frames.
+    await page.evaluate(
+      () =>
+        new Promise<void>((resolve) =>
+          requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+        ),
+    );
     expect(
       await page.evaluate(
         () => (window as unknown as { offlineScannerCls: number }).offlineScannerCls,
+      ),
+      JSON.stringify(
+        await page.evaluate(
+          () => (window as unknown as { scannerShiftSources: unknown[] }).scannerShiftSources,
+        ),
       ),
     ).toBe(0);
     const folder = `${process.env.SCANNER_REVIEW_DIR ?? "docs/reviews/TICKET-108"}/production-${info.project.name}`;

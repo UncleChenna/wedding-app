@@ -53,7 +53,7 @@ import {
   writeTicket,
 } from "./tickets/store";
 import { validateTickets } from "./tickets/validate";
-import { TransitionError, claim, logLine, move, release } from "./tickets/workflow";
+import { TransitionError, claim, handoff, logLine, move, release } from "./tickets/workflow";
 import type { MoveFacts } from "./tickets/workflow";
 
 const USAGE = `Usage: pnpm t:<command>
@@ -62,9 +62,10 @@ const USAGE = `Usage: pnpm t:<command>
   t:next [--module m] [--human]   best todo ticket with every blocker done
   t:show <id>
   t:claim <id> --owner <name> --agent <name>
+  t:handoff <id> --from <previous-owner> --agent <agent> --coordinated --reason <authorization>
   t:release <id>                  give back a claimed todo ticket
   t:move <id> <status> [--reason text] [--push]
-  t:reconcile <id> --repair-pr <number> --reason <failure and repair>
+  t:reconcile <id> --repair-pr <number> [--original-pr <number>] --reason <failure and repair>
   t:reconcile <id> --integration-pr <number> [--source-commit <full-oid>] --reason <historical stack and integration>
                                   close an already-merged owned ticket using verified repair CI
   t:new --title "Imperative title" --epic e --module m [--priority p] [--estimate S|M|L]
@@ -644,6 +645,37 @@ function main(): number {
       );
       return 0;
     }
+    case "handoff": {
+      const state = load(false);
+      if (state.mode !== "origin")
+        throw new TransitionError(
+          "Handoffs require the shared origin ledger; offline changes are refused.",
+        );
+      const ticket = find(state, args.positional[0] ?? "");
+      const who = actor(args, state.cwd);
+      const agent = str(args, "agent") || process.env.TICKETS_AGENT || "";
+      const reason = str(args, "reason")?.trim();
+      commitChange(state, ticket.meta.id, (current, statusOf) => ({
+        meta: handoff(
+          current.meta,
+          { actor: who, agent, today: today(), reason, statusOf },
+          {
+            expectedOwner: str(args, "from") || "",
+            coordinated: args.flags.coordinated === true,
+          },
+        ),
+        log: logLine(
+          today(),
+          current.meta.status,
+          current.meta.status,
+          who,
+          agent,
+          `Ownership handoff ${current.meta.owner} → ${who}; ${reason}`,
+        ),
+      }));
+      console.log(`${ticket.meta.id}: ownership handed to ${who}; status and evidence unchanged.`);
+      return 0;
+    }
     case "release": {
       const state = load(false);
       const id = find(state, args.positional[0] ?? "").meta.id;
@@ -680,6 +712,7 @@ function main(): number {
       const who = actor(args, state.cwd);
       const integration = str(args, "integration-pr");
       const historical = integration !== undefined;
+      const suppliedOriginal = str(args, "original-pr");
       const source = str(args, "source-commit");
       if (source !== undefined && !historical)
         throw new TransitionError("--source-commit requires --integration-pr historical recovery.");
@@ -700,20 +733,29 @@ function main(): number {
         who,
         (id) => state.tickets.find((entry) => entry.meta.id === id)?.meta.status,
         historical,
+        suppliedOriginal,
       );
       const result = commitChange(state, ticket.meta.id, (current, statusOf) => {
-        reconciliationEligibility(current.meta, who, statusOf, historical);
+        reconciliationEligibility(current.meta, who, statusOf, historical, suppliedOriginal);
         const proof = reconciliationEvidence(
           state.cwd,
-          current.meta.pr,
+          current.meta.pr || suppliedOriginal || "",
           repair,
           current.path,
           undefined,
           historical,
           source,
+          suppliedOriginal ? { id: current.meta.id, branch: current.meta.branch } : undefined,
         );
         return {
-          meta: { status: "done", updated: today(), completed: today(), reason: "", resume_to: "" },
+          meta: {
+            status: "done",
+            pr: proof.original,
+            updated: today(),
+            completed: today(),
+            reason: "",
+            resume_to: "",
+          },
           log: logLine(
             today(),
             current.meta.status,

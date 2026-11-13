@@ -14,7 +14,7 @@ import { REVIEW_SECTIONS } from "../tickets/review";
 import type { Frontmatter, SectionName, Ticket } from "../tickets/model";
 import { effective, loadTicketsSafely, recordFrom, renderOutputs } from "../tickets/store";
 import { validateTickets } from "../tickets/validate";
-import { claim, move, release } from "../tickets/workflow";
+import { claim, handoff, move, release } from "../tickets/workflow";
 import type { MoveFacts } from "../tickets/workflow";
 
 function ticket(id: string, overrides: Partial<Frontmatter> = {}, ticked = false): Ticket {
@@ -199,6 +199,52 @@ describe("transition rules", () => {
     );
     expect(() => release(claimed, facts({ actor: "friend" }))).toThrow(/belongs to divine/);
     expect(release(claimed, facts())).toMatchObject({ owner: "" });
+  });
+
+  it("hands off only explicitly coordinated ownership while preserving lifecycle evidence", () => {
+    const meta = {
+      ...todo,
+      status: "in_review" as const,
+      owner: "friend",
+      agent: "claude",
+      branch: "TICKET-005",
+      pr: "https://github.com/example/app/pull/5",
+    };
+    const input = { expectedOwner: "friend", coordinated: true };
+    const change = handoff(
+      meta,
+      facts({ reason: "Owner authorized this coordinated handoff", agent: "codex" }),
+      input,
+    );
+    expect(change).toEqual({ owner: "divine", agent: "codex", updated: facts().today });
+    expect({ ...meta, ...change }).toMatchObject({
+      status: "in_review",
+      branch: "TICKET-005",
+      pr: meta.pr,
+    });
+    expect(() =>
+      handoff(meta, facts({ reason: "A sufficiently detailed reason" }), {
+        ...input,
+        coordinated: false,
+      }),
+    ).toThrow(/coordination/);
+    expect(() => handoff(meta, facts(), input)).toThrow(/reason/);
+    expect(() =>
+      handoff(meta, facts({ reason: "Authorized coordinated handoff" }), {
+        ...input,
+        expectedOwner: "stale",
+      }),
+    ).toThrow(/changed/);
+    for (const status of ["done", "cancelled"] as const)
+      expect(() =>
+        handoff({ ...meta, status }, facts({ reason: "Authorized coordinated handoff" }), input),
+      ).toThrow(/terminal/);
+    expect(() =>
+      handoff({ ...meta, owner: "" }, facts({ reason: "Authorized coordinated handoff" }), input),
+    ).toThrow(/unclaimed/);
+    expect(() => move(meta, "blocked", facts({ reason: "still protected" }))).toThrow(
+      /belongs to friend/,
+    );
   });
 
   it("rejects transitions outside the table", () => {
@@ -544,6 +590,70 @@ process.exit(process.env.REVIEW_SCENARIO.endsWith("failed") || process.env.REVIE
     expect(JSON.parse(result)).toEqual({ existingBranch: false, baseCommit: base });
   });
 
+  it("records a coordinated ledger handoff and rejects stale retries without touching working files", async () => {
+    const { a, b, remote } = setup();
+    expect((await t(b, "claim", "TICKET-001", "--agent", "claude")).code).toBe(0);
+    const before = git(remote, "rev-parse", "refs/heads/ticket-ledger");
+    expect(
+      (
+        await t(
+          a,
+          "handoff",
+          "TICKET-001",
+          "--from",
+          "friend",
+          "--agent",
+          "codex",
+          "--reason",
+          "Owner authorized coordinated handoff",
+        )
+      ).code,
+    ).not.toBe(0);
+    expect(git(remote, "rev-parse", "refs/heads/ticket-ledger")).toBe(before);
+    writeFileSync(join(b, "notes.txt"), "Other collaborator's unfinished notes");
+    const result = await t(
+      a,
+      "handoff",
+      "TICKET-001",
+      "--from",
+      "friend",
+      "--agent",
+      "codex",
+      "--coordinated",
+      "--reason",
+      "Owner authorized coordinated handoff",
+    );
+    expect(result.code, result.out).toBe(0);
+    const ledger = JSON.parse(git(remote, "show", "ticket-ledger:ledger.json"));
+    expect(ledger.tickets["WED-001"]).toMatchObject({
+      owner: "divine",
+      agent: "codex",
+      status: "todo",
+      branch: "TICKET-001",
+    });
+    expect(ledger.tickets["WED-001"].log.join("\n")).toContain("friend → divine");
+    expect(readFileSync(join(b, "notes.txt"), "utf8")).toContain("unfinished notes");
+    const after = git(remote, "rev-parse", "refs/heads/ticket-ledger");
+    expect(
+      (
+        await t(
+          a,
+          "handoff",
+          "TICKET-001",
+          "--from",
+          "friend",
+          "--agent",
+          "codex",
+          "--coordinated",
+          "--reason",
+          "Owner authorized coordinated handoff",
+        )
+      ).out,
+    ).toMatch(/changed/);
+    expect(git(remote, "rev-parse", "refs/heads/ticket-ledger")).toBe(after);
+    expect(git(a, "status", "--porcelain")).toBe("");
+  }, 30000);
+
   it("dashboard overlays the live ledger and cannot inject ticket HTML", async () => {
     const { a, b } = setup();
     expect((await t(b, "claim", "TICKET-001", "--agent", "codex")).code).toBe(0);
@@ -766,6 +876,21 @@ describe("working ahead (TICKET-214)", () => {
 
 describe("explicit merged-ticket repair reconciliation", () => {
   it.each([
+    "unrecorded passed",
+    "unrecorded in-progress passed",
+    "unrecorded wrong title",
+    "unrecorded wrong branch",
+    "unrecorded cross repository",
+    "unrecorded changed identity",
+    "unrecorded existing link",
+    "unrecorded invalid number",
+    "unrecorded failed CI",
+    "unrecorded pending CI",
+    "unrecorded other owner",
+    "unrecorded unfinished blocker",
+    "unrecorded unchecked criteria",
+    "unrecorded different repository",
+    "unrecorded open original",
     "passed",
     "historical passed",
     "historical source passed",
@@ -830,13 +955,16 @@ describe("explicit merged-ticket repair reconciliation", () => {
   ])(
     "preserves the ledger unless complete immutable evidence passes: %s",
     async (entry) => {
+      const unrecorded = entry.startsWith("unrecorded ");
       const historical = entry.startsWith("historical ");
       const sourceMode = entry.startsWith("historical source ");
-      const scenario = sourceMode
-        ? entry.slice("historical source ".length)
-        : historical
-          ? entry.slice("historical ".length)
-          : entry;
+      const scenario = unrecorded
+        ? entry.slice("unrecorded ".length)
+        : sourceMode
+          ? entry.slice("historical source ".length)
+          : historical
+            ? entry.slice("historical ".length)
+            : entry;
       const { a, dir, remote } = setup();
       git(a, "checkout", "-qb", "develop");
       const active = ticket(
@@ -850,7 +978,10 @@ describe("explicit merged-ticket repair reconciliation", () => {
           owner: scenario === "other owner" ? "friend" : "divine",
           agent: "codex",
           branch: "TICKET-001",
-          pr: "https://github.com/example/repo/pull/1",
+          pr:
+            unrecorded && scenario !== "existing link"
+              ? ""
+              : "https://github.com/example/repo/pull/1",
           reason: "Original CI failed before external merge",
           resume_to: "in_progress",
           blocked_by: scenario === "unfinished blocker" ? ["TICKET-002"] : [],
@@ -911,7 +1042,16 @@ describe("explicit merged-ticket repair reconciliation", () => {
       ];
       writeFileSync(
         fixture,
-        JSON.stringify({ scenario, historical, originalHead, original, head, merge, jobNames }),
+        JSON.stringify({
+          scenario,
+          historical,
+          unrecorded,
+          originalHead,
+          original,
+          head,
+          merge,
+          jobNames,
+        }),
       );
       writeFileSync(
         join(bin, "gh"),
@@ -920,11 +1060,16 @@ const fs = require("node:fs");
 const f = JSON.parse(fs.readFileSync(process.env.RECONCILE_FIXTURE, "utf8"));
 const args = process.argv.slice(2); const s = f.scenario; let result;
 if (args[0] === "pr") {
-  const original = args[2].endsWith("/1");
+  const original = args[2] === "1" || args[2].endsWith("/1");
   const countFile = process.env.RECONCILE_FIXTURE + (original ? ".original-reads" : ".reads");
   const reads = fs.existsSync(countFile) ? Number(fs.readFileSync(countFile, "utf8")) : 0;
   fs.writeFileSync(countFile, String(reads + 1));
   result = {url: (original && s === "different repository" ? "https://github.com/other/repo/pull/" : "https://github.com/example/repo/pull/") + (original ? "1" : "2"), state: s === (original ? "open original" : "open repair") ? "OPEN" : "MERGED", baseRefName: s === "wrong base" ? "main" : original && f.historical ? "legacy-stack" : "develop", headRefOid: original && f.historical ? ((s === "original head missing" || (s === "original changed" && reads > 0)) ? f.merge : f.originalHead) : !original && s === "changed repair head" && reads > 0 ? f.merge : f.head, mergeCommit: {oid: original ? (s === "repair omits original" ? f.merge : f.original) : (s === "unreachable" ? "f".repeat(40) : f.merge)}};
+  if (f.unrecorded && original) {
+    result.title = s === "wrong title" || (s === "changed identity" && reads > 0) ? "TICKET-002: Different task" : "TICKET-001: Original task";
+    result.headRefName = s === "wrong branch" ? "TICKET-002" : "TICKET-001";
+    result.isCrossRepository = s === "cross repository";
+  }
 } else if(args[1] === "list") {
   const originalRun = f.historical && args[args.indexOf("--commit") + 1] === f.originalHead;
   const listFile = process.env.RECONCILE_FIXTURE + (originalRun ? ".original-lists" : ".lists");
@@ -962,6 +1107,7 @@ console.log(JSON.stringify(result));
         historical ? "--integration-pr" : "--repair-pr",
         "2",
         ...(scenario === "mixed flags" ? ["--repair-pr", "2"] : []),
+        ...(unrecorded ? ["--original-pr", scenario === "invalid number" ? "abc" : "1"] : []),
         ...(sourceMode || scenario === "source on repair"
           ? [
               "--source-commit",
@@ -984,7 +1130,9 @@ console.log(JSON.stringify(result));
         expect(ledger.tickets["WED-001"].log.join("\n")).toContain(
           "Original CI failed before external merge",
         );
-        expect(ledger.tickets["WED-001"].pr).toBe(active.meta.pr);
+        expect(ledger.tickets["WED-001"].pr).toBe(
+          unrecorded ? "https://github.com/example/repo/pull/1" : active.meta.pr,
+        );
         if (historical) {
           const log = ledger.tickets["WED-001"].log.join("\n");
           expect(log).toContain(`head ${originalHead} merge ${original} base legacy-stack`);

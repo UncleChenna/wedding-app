@@ -410,6 +410,7 @@ export const scanEvents = pgTable(
     conflict: boolean("conflict").notNull().default(false),
     source: text("source").notNull(),
     inputMethod: text("input_method"),
+    offlineIntentDigest: text("offline_intent_digest"),
     legacyCheckInId: uuid("legacy_check_in_id").references(() => checkIns.id, {
       onDelete: "restrict",
     }),
@@ -420,6 +421,10 @@ export const scanEvents = pgTable(
     index("scan_events_invitation_received_idx").on(t.invitationId, t.receivedAt),
     index("scan_events_device_received_idx").on(t.deviceId, t.receivedAt),
     index("scan_events_staff_received_idx").on(t.staffId, t.receivedAt),
+    check(
+      "scan_events_offline_intent_digest",
+      sql`${t.offlineIntentDigest} is null or (${t.source} = 'offline' and ${t.offlineIntentDigest} ~ '^[0-9a-f]{64}$')`,
+    ),
     check(
       "scan_events_input_method",
       sql`${t.inputMethod} is null or ${t.inputMethod} in ('qr', 'manual')`,
@@ -472,6 +477,33 @@ export const scanResolutionNotes = pgTable(
     check(
       "scan_resolution_notes_resolution",
       sql`${t.resolution} in ('reviewed', 'escalated', 'explained', 'follow_up')`,
+    ),
+  ],
+).enableRLS();
+
+/** Admin-reviewed imports retain intent digests, not copied device files or credentials. */
+export const scanRecoveryAudits = pgTable(
+  "scan_recovery_audits",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    requestId: uuid("request_id").notNull(),
+    clientEventId: uuid("client_event_id").notNull(),
+    adminId: uuid("admin_id").notNull(),
+    intentDigest: text("intent_digest").notNull(),
+    outcome: text("outcome").$type<"recorded" | "duplicate" | "rejected">().notNull(),
+    recordedAt: timestamp("recorded_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    uniqueIndex("scan_recovery_audits_request_event_idx").on(
+      t.adminId,
+      t.requestId,
+      t.clientEventId,
+    ),
+    index("scan_recovery_audits_event_time_idx").on(t.clientEventId, t.recordedAt),
+    check("scan_recovery_audits_digest", sql`${t.intentDigest} ~ '^[a-f0-9]{64}$'`),
+    check(
+      "scan_recovery_audits_outcome",
+      sql`${t.outcome} in ('recorded', 'duplicate', 'rejected')`,
     ),
   ],
 ).enableRLS();
@@ -534,6 +566,10 @@ export const orders = pgTable(
       .notNull()
       .references(() => tables.id, { onDelete: "restrict" }),
     guestName: text("guest_name"),
+    /** Set when staff entered the order from a board for a guest without signal (TICKET-079). */
+    enteredByStaffId: uuid("entered_by_staff_id").references(() => staff.id, {
+      onDelete: "set null",
+    }),
     status: orderStatus("status").notNull().default("received"),
     notes: text("notes"),
     createdAt: createdAt(),

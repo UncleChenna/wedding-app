@@ -32,6 +32,10 @@ async function fixture() {
     join(browser, "scanner-shell-entry.tsx"),
     'document.body.className = "bg-primary md:flex type-staff"; void import("./decoder").then(m => document.body.dataset.decoder = m.decode());',
   );
+  await writeFile(
+    join(browser, "offline-queue-crypto.ts"),
+    'export const verifyGatePass = () => "PUBLIC_VERIFIER";',
+  );
   return { root, browser };
 }
 describe("prebuild offline scanner assets", () => {
@@ -41,7 +45,12 @@ describe("prebuild offline scanner assets", () => {
     expect(parseScannerAssets(manifest)).toEqual(manifest);
     const manifestPath = join(root, "public/scanner-assets/manifest.json");
     expect(JSON.parse(await readFile(manifestPath, "utf8"))).toEqual(manifest);
-    expect(manifest.assets).toEqual([manifest.script, manifest.stylesheet, ...manifest.fonts]);
+    expect(manifest.assets).toEqual([
+      manifest.script,
+      manifest.stylesheet,
+      ...manifest.fonts,
+      manifest.verifier,
+    ]);
     for (const path of manifest.assets) {
       const bytes = await readFile(join(root, "public", path));
       expect(path).toContain(createHash("sha256").update(bytes).digest("hex"));
@@ -66,6 +75,30 @@ describe("prebuild offline scanner assets", () => {
     expect(after.script).not.toBe(before.script);
     expect(after.build).not.toBe(before.build);
     expect(after.stylesheet).toBe(before.stylesheet);
+  });
+  it("binds verifier changes to the build and refuses a private verifier import", async () => {
+    const { root, browser } = await fixture();
+    const first = await generateScannerAssets(root);
+    await writeFile(
+      join(browser, "offline-queue-crypto.ts"),
+      'export const verifyGatePass = () => "CHANGED_VERIFIER";',
+    );
+    const changed = await generateScannerAssets(root);
+    expect(changed.verifier).not.toBe(first.verifier);
+    expect(changed.build).not.toBe(first.build);
+    await mkdir(join(root, "src/modules/checkin/server"));
+    await writeFile(
+      join(root, "src/modules/checkin/server/private.ts"),
+      'export const secret = "PRIVATE";',
+    );
+    await writeFile(
+      join(browser, "offline-queue-crypto.ts"),
+      'export { secret } from "../server/private";',
+    );
+    await expect(generateScannerAssets(root)).rejects.toThrow(/public-only/);
+    expect(
+      JSON.parse(await readFile(join(root, "public/scanner-assets/manifest.json"), "utf8")),
+    ).toEqual(changed);
   });
   it("refuses server-module imports and never publishes a manifest for them", async () => {
     const { root, browser } = await fixture();

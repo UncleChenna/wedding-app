@@ -64,6 +64,7 @@ export function reconciliationEligibility(
   actor: string,
   statusOf: (id: string) => Status | undefined,
   historical = false,
+  suppliedOriginal?: string,
 ): void {
   if (!meta.owner || meta.owner !== actor)
     throw new TransitionError("Only the ticket owner can reconcile it.");
@@ -75,7 +76,11 @@ export function reconciliationEligibility(
     );
   const pending = meta.blocked_by.filter((id) => statusOf(id) !== "done");
   if (pending.length) throw new TransitionError(`Reconciliation waits for ${pending.join(", ")}.`);
-  if (!meta.pr)
+  if (suppliedOriginal !== undefined) {
+    if (historical || meta.pr || !/^[1-9]\d*$/.test(suppliedOriginal) || !meta.branch)
+      throw new TransitionError("--original-pr requires an unrecorded original repository PR, a recorded branch and repair mode.");
+  }
+  if (!meta.pr && suppliedOriginal === undefined)
     throw new TransitionError("The original merged PR must already be recorded on the ticket.");
 }
 
@@ -97,15 +102,27 @@ export function reconciliationEvidence(
   dependencies: Dependencies = defaults,
   historical = false,
   suppliedSource?: string,
+  unrecordedIdentity?: { id: string; branch: string },
 ) {
+  if (unrecordedIdentity && (historical || !/^[1-9]\d*$/.test(originalRef)))
+    throw new TransitionError("Unrecorded original PR recovery requires repair mode and a repository PR number.");
   if (suppliedSource !== undefined && !historical)
     throw new TransitionError("--source-commit requires --integration-pr historical recovery.");
   const source = suppliedSource === undefined ? undefined : oid.parse(suppliedSource);
   if (!/^[1-9]\d*$/.test(repairNumber))
     throw new TransitionError("--repair-pr must be a repository PR number.");
-  const fields = "url,state,baseRefName,headRefOid,mergeCommit";
-  const readPr = (ref: string) =>
-    prSchema.parse(dependencies.gh(["pr", "view", ref, "--json", fields], cwd));
+  const fields = "url,state,baseRefName,headRefOid,mergeCommit" +
+    (unrecordedIdentity ? ",title,headRefName,isCrossRepository" : "");
+  const readPr = (ref: string) => {
+    const schema = unrecordedIdentity && ref === originalRef
+      ? prSchema.extend({
+          title: z.string().startsWith(`${unrecordedIdentity.id}: `),
+          headRefName: z.literal(unrecordedIdentity.branch),
+          isCrossRepository: z.literal(false),
+        })
+      : prSchema;
+    return schema.parse(dependencies.gh(["pr", "view", ref, "--json", fields], cwd));
+  };
   const original = readPr(originalRef);
   const repair = readPr(repairNumber);
   if (
@@ -123,6 +140,11 @@ export function reconciliationEvidence(
   if (git(["fetch", "--quiet", "origin", `refs/heads/${REVIEW_BASE}`]) === null)
     throw new TransitionError("Cannot fetch fresh develop evidence.");
   const develop = oid.parse(git(["rev-parse", "--verify", "FETCH_HEAD^{commit}"]));
+  if (unrecordedIdentity) {
+    const originalTicket = git(["show", `${original.headRefOid}:${ticketPath}`]);
+    if (!originalTicket || parseTicket(originalTicket, ticketPath).meta.id !== unrecordedIdentity.id)
+      throw new TransitionError("The original tested head must contain the expected ticket definition.");
+  }
   // A source is explicit whole-tree evidence, never a patch similarity override.
   // Resolve commit objects only; refs/abbreviations and non-commit objects cannot certify it.
   let sourceTree: string | undefined;
@@ -191,17 +213,18 @@ export function reconciliationEvidence(
   };
 }
 
-const metadataJobNames = [
+const historicalMetadataJobNames = [
   "verification scope", "tickets valid", "no AI attribution in PR text", "pnpm verify",
   "migrations + seed", "invitation journey (mobile + desktop)",
   "camera QR pixels (Chromium + WebKit)", "admin journey (mobile + desktop)",
   "required CI gates", "full verification proof",
-].map((name) => [
+];
+const metadataJobSets = [historicalMetadataJobNames, [...historicalMetadataJobNames, "visual regression (guest pages)"]].map((names) => names.map((name) => [
   `${name} (metadata only)`,
   // GitHub leaves job-name expressions unevaluated when the entire job is skipped.
   // Match only our exact workflow expression, never arbitrary expressions or suffixes.
   `((github.event.action == 'edited' && !github.event.changes.base) || (github.event.action == 'labeled' && github.event.label.name != 'ci:full')) && '${name} (metadata only)' || '${name}'`,
-]);
+]));
 
 /** Only the exact, completed all-skipped metadata workflow is ignorable. */
 export function isMetadataOnlyRun(value: unknown, expectedHead: string): boolean {
@@ -210,8 +233,9 @@ export function isMetadataOnlyRun(value: unknown, expectedHead: string): boolean
     status: z.literal("completed"), conclusion: z.enum(["success", "skipped"]),
     jobs: z.array(z.object({name: z.string(), status: z.literal("completed"), conclusion: z.literal("skipped")})),
   }).safeParse(value);
-  return parsed.success && parsed.data.jobs.length === metadataJobNames.length &&
-    metadataJobNames.every((aliases) => parsed.data.jobs.some((job) => aliases.includes(job.name)));
+  return parsed.success && metadataJobSets.some((names) =>
+    parsed.data.jobs.length === names.length &&
+    names.every((aliases) => parsed.data.jobs.some((job) => aliases.includes(job.name))));
 }
 
 export function verifiedRun(cwd: string, head: string, dependencies: Dependencies, historical: boolean) {

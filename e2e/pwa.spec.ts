@@ -1,10 +1,15 @@
 import { waitForPublicDestination } from "./support/routes";
 import { expect, test, type Page } from "@playwright/test";
+import { mkdirSync } from "node:fs";
+import { themes } from "../src/modules/theming/themes";
+import { applyTheme } from "./support/theme";
+import { scanA11y } from "./support/axe";
 
 /**
  * Service worker on the production build (TICKET-105, ADR 0014): registered at root
  * scope, never cached itself, caches only immutable build assets, and never stores
- * pages, invitation URLs, admin or API responses.
+ * private pages, invitation URLs, admin or API responses. A separate random identity
+ * marker detects partial admission-journal eviction without caching guest data.
  */
 async function controlledPage(page: Page) {
   await page.goto("/");
@@ -63,9 +68,77 @@ test.describe("service worker @smoke", () => {
     expect(urls.length).toBeGreaterThan(0);
     // The only page ever stored is the generic, public offline page (TICKET-106).
     expect(urls.filter((url) => url === "/offline")).toHaveLength(1);
-    for (const url of urls.filter((url) => url !== "/offline")) {
-      expect(url).toMatch(/^\/_next\/static\//);
+    // Partial-eviction detection stores exactly one non-private random UUID,
+    // not a navigable page or invitation payload. Validate its dedicated cache.
+    const marker = await page.evaluate(async () => {
+      const cache = await caches.open("wedding-scanner-queue-identity-v1");
+      const keys = await cache.keys();
+      return Promise.all(
+        keys.map(async (request) => ({
+          url: request.url,
+          body: await (await cache.match(request))?.text(),
+        })),
+      );
+    });
+    expect(marker).toHaveLength(1);
+    const identity = marker[0];
+    if (!identity) throw new Error("Expected exactly one queue identity marker");
+    expect(identity.url).toBe(new URL("/offline-queue-identity", page.url()).href);
+    expect(identity.body).toMatch(/^[a-f0-9]{8}-(?:[a-f0-9]{4}-){3}[a-f0-9]{12}$/);
+    expect(urls.filter((url) => url === "/offline-queue-identity")).toHaveLength(1);
+    for (const url of urls.filter(
+      (url) => url !== "/offline" && url !== "/offline-queue-identity",
+    )) {
+      expect(url).toMatch(
+        /^\/_next\/static\/|^\/offline-assets\/(?:cormorant|inter|playfair|jost)-[a-f0-9]{16}\.woff2$/,
+      );
     }
+  });
+
+  test("cold installed offline fallback loads the intended fonts in every theme", async ({
+    page,
+    context,
+  }, info) => {
+    await controlledPage(page);
+    await context.setOffline(true);
+    await page.goto("/i/never-opened-font-proof");
+    await expect(page.getByRole("heading", { name: "You're offline" })).toBeVisible();
+    const folder = `${process.env.OFFLINE_FONT_REVIEW_DIR ?? "artifacts/TICKET-081"}/offline-${info.project.name}`;
+    mkdirSync(folder, { recursive: true });
+    for (const theme of themes) {
+      await applyTheme(page, theme);
+      const loaded = await page.evaluate(async ({ display, body }) => {
+        const faces = await Promise.all([
+          document.fonts.load(`500 36px "Offline ${display}"`, "You're offline"),
+          document.fonts.load(`400 16px "Offline ${body}"`, "The signal dropped for a moment."),
+        ]);
+        return faces.map((group) =>
+          group.map((face) => ({ family: face.family, status: face.status })),
+        );
+      }, theme.fonts);
+      expect(loaded).toEqual([
+        [{ family: `Offline ${theme.fonts.display}`, status: "loaded" }],
+        [{ family: `Offline ${theme.fonts.body}`, status: "loaded" }],
+      ]);
+      expect(await scanA11y(page)).toEqual([]);
+      for (const width of [375, 768, 1280]) {
+        await page.setViewportSize({ width, height: 812 });
+        expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)).toBe(
+          false,
+        );
+        await page.screenshot({ path: `${folder}/${theme.id}-${width}.png`, fullPage: true });
+      }
+    }
+    await page.setViewportSize({ width: 375, height: 812 });
+    const retry = page.getByRole("button", { name: "Try again" });
+    const box = await retry.boundingBox();
+    expect(box?.height).toBeGreaterThanOrEqual(44);
+    await retry.focus();
+    await expect(retry).toBeFocused();
+    await context.setOffline(false);
+    await page.keyboard.press("Enter");
+    await expect(page.getByRole("heading", { name: "You're offline" })).toBeHidden();
+    expect(new URL(page.url()).pathname).toBe("/i/never-opened-font-proof");
   });
 
   test("offline, navigating to a page never visited shows the styled offline page (TICKET-106)", async ({

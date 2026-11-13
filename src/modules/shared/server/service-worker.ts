@@ -1,9 +1,13 @@
 import "server-only";
+import { installWorkerUpdateGuard } from "@/modules/checkin/browser/worker-update-guard";
 import { createScannerShellStore } from "@/modules/checkin/browser/scanner-shell-store";
 import { createScannerShellRuntime } from "@/modules/checkin/browser/scanner-shell-runtime";
 import { installScannerShellWorker } from "@/modules/checkin/browser/scanner-shell-worker";
 import { createGuestSnapshotStore } from "@/modules/checkin/browser/guest-snapshot-store";
 import { createGuestSnapshotRuntime } from "@/modules/checkin/browser/guest-snapshot-runtime";
+import { createOfflineQueuePolicy } from "@/modules/checkin/lib/offline-queue";
+import { createOfflineQueueStore } from "@/modules/checkin/browser/offline-queue-store";
+import { createOfflineQueueRuntime } from "@/modules/checkin/browser/offline-queue-runtime";
 import { parseGuestSnapshot } from "@/modules/checkin/lib/guest-snapshot";
 
 import { ownPassWorkerSource } from "@/modules/invitations/lib/offline-worker";
@@ -22,7 +26,7 @@ import {
  * using the old one closes (TICKET-111 adds the update prompt).
  */
 export function serviceWorkerSource(
-  scanner: { build: string; assets: readonly string[] } | null = null,
+  scanner: { build: string; assets: readonly string[]; verifier?: string } | null = null,
 ): string {
   return `"use strict";
 const SW_CACHE_PREFIX = ${JSON.stringify(SW_CACHE_PREFIX)};
@@ -33,12 +37,13 @@ const cachePolicy = ${cachePolicy.toString()};
 
 /** Same-origin, query-free build asset paths referenced by a page or stylesheet. */
 const STATIC_ASSET = /^\\/_next\\/static\\/[\\w./-]+$/;
+const OFFLINE_FONT = /^\\/offline-assets\\/(?:cormorant|inter|playfair|jost)-[a-f0-9]{16}\\.woff2$/;
 function assetUrls(text, base) {
   const urls = new Set();
   for (const match of text.matchAll(/(?:src|href)="([^"]+)"|url\\(\\s*["']?([^"')\\s]+)/g)) {
     try {
       const url = new URL(match[1] || match[2], base);
-      if (url.origin === self.location.origin && !url.search && STATIC_ASSET.test(url.pathname)) {
+      if (url.origin === self.location.origin && !url.search && (STATIC_ASSET.test(url.pathname) || OFFLINE_FONT.test(url.pathname))) {
         urls.add(url.pathname);
       }
     } catch {
@@ -66,9 +71,19 @@ async function precacheAsset(cache, path) {
 
 ${ownPassWorkerSource()}
 
+const createQueuePolicy = ${createOfflineQueuePolicy.toString()};
+const createQueueStore = ${createOfflineQueueStore.toString()};
+const installUpdateGuard = ${installWorkerUpdateGuard.toString()};
+const updateGuard = installUpdateGuard(self, () => createQueueStore(createQueuePolicy()));
+
 const scannerWorker = ${
     scanner
       ? `(() => {
+  ${scanner.verifier ? `importScripts(${JSON.stringify(scanner.verifier)});` : ""}
+  const createQueueRuntime = ${createOfflineQueueRuntime.toString()};
+  const queuePolicy = createQueuePolicy();
+  let queueStore;
+  const getQueueStore = () => queueStore || (queueStore = createQueueStore(queuePolicy));
   const createStore = ${createScannerShellStore.toString()};
   const createRuntime = ${createScannerShellRuntime.toString()};
   const install = ${installScannerShellWorker.toString()};
@@ -85,6 +100,18 @@ const scannerWorker = ${
     origin: self.location.origin, build: ${JSON.stringify(scanner.build)}
   }));
   return install({ host: self, store: getStore, runtime: getRuntime,
+    ${
+      scanner.verifier
+        ? `queue: { store: getQueueStore, runtime: (snapshot) => createQueueRuntime({
+      policy: queuePolicy, store: getQueueStore(), snapshot,
+      verify: async (qr, keys) => {
+        const token = ScannerQueueCrypto.signedPassToken(qr, self.location.origin);
+        return token ? ScannerQueueCrypto.verifyGatePass(token, keys, { now: Date.now() }) : { ok: false, reason: "malformed" };
+      },
+      decide: ScannerQueueCrypto.decideAdmission, fetcher: fetch.bind(self), origin: self.location.origin
+    }) },`
+        : ""
+    }
     guests: { store: getGuestStore, runtime: (authority, denied) => createGuestRuntime({
       store: getGuestStore(), authority, denied, parse: parseGuestSnapshot,
       fetcher: fetch.bind(self), origin: self.location.origin
@@ -119,8 +146,8 @@ self.addEventListener("install", (event) => {
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    (async () => {
-      if (scannerWorker) await scannerWorker.activate();
+    updateGuard.cleanUp(async () => {
+      if (scannerWorker) await scannerWorker.activateUnderLock();
       const names = await caches.keys();
       await Promise.all(
         names
@@ -130,12 +157,13 @@ self.addEventListener("activate", (event) => {
               name !== SW_STATIC_CACHE &&
               name !== SW_OFFLINE_CACHE &&
               name !== OWN_PASS_CACHE &&
+              name !== "wedding-scanner-queue-identity-v1" &&
               name !== scannerWorker?.cacheName,
           )
           .map((name) => caches.delete(name)),
       );
       await self.clients.claim();
-    })(),
+    }),
   );
 });
 
@@ -193,17 +221,4 @@ self.addEventListener("fetch", (event) => {
   );
 });
 `;
-}
-
-/** /sw.js must never be cached itself, so updates are always noticed. */
-export function serviceWorkerResponse(
-  scanner: { build: string; assets: readonly string[] } | null = null,
-): Response {
-  return new Response(serviceWorkerSource(scanner), {
-    headers: {
-      "Content-Type": "application/javascript; charset=utf-8",
-      "Cache-Control": "no-cache, no-store, must-revalidate",
-      "Service-Worker-Allowed": "/",
-    },
-  });
 }

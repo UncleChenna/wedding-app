@@ -248,14 +248,33 @@ jobs:
           RUN_GUEST_SNAPSHOT_DB_TESTS: "1"
       - name: Verify authenticated cached scanner reads and revocation refresh
         run: pnpm exec tsx scripts/test-guest-snapshot.ts
+      - name: Verify immutable offline scan reconciliation
+        run: pnpm exec vitest run scripts/__tests__/scan-sync.integration.test.ts
+        env:
+          RUN_SCAN_SYNC_DB_TESTS: "1"
+      - name: Verify durable offline admission and foreground sync
+        run: pnpm exec tsx scripts/test-offline-queue.ts
       - name: Verify atomic shared-network request budgets
         run: pnpm exec vitest run scripts/__tests__/rate-limit.integration.test.ts
         env:
           RUN_RATE_LIMIT_DB_TESTS: "1"
+      - name: Verify cold ordering transfer budget and font parity
+        run: pnpm exec playwright test e2e/order-performance.spec.ts e2e/order-fonts.spec.ts --project=mobile --project=desktop --workers=1
+        env:
+          RUN_ORDER_PERFORMANCE: "1"
+      - name: Preserve ordering transfer evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: order-transfer-evidence
+          path: docs/reviews/TICKET-081/native-wire-*.json
+          retention-days: 7
       - name: Verify ordering rate-limit recovery
         run: pnpm exec playwright test e2e/order-submit.spec.ts --project=mobile --project=desktop --workers=1 --grep "network limit"
         env:
           RUN_ORDER_BROWSER_TESTS: "1"
+      - name: Verify Journey 3, guest order to kitchen and bar boards to served
+        run: pnpm exec tsx scripts/test-ordering-journey.ts
       - if: failure()
         uses: actions/upload-artifact@v7
         with:
@@ -285,6 +304,8 @@ jobs:
         run: pnpm exec playwright test --config scripts/scanner-shell.config.ts
       - name: Verify private snapshot lifecycle and worker upgrades
         run: pnpm exec playwright test --config scripts/guest-snapshot.config.ts
+      - name: Verify durable offline queue and cold worker restart
+        run: pnpm exec playwright test --config scripts/offline-queue.config.ts
       - if: failure()
         uses: actions/upload-artifact@v7
         with:
@@ -293,6 +314,7 @@ jobs:
             artifacts/TICKET-059/camera/
             artifacts/TICKET-108/store/
             artifacts/TICKET-065/store/
+            artifacts/TICKET-066/store/
           retention-days: 7
 
   admin-journey:
@@ -330,6 +352,28 @@ jobs:
         with:
           name: admin-scan-log-evidence
           path: artifacts/TICKET-174/
+          retention-days: 7
+      - name: Verify transaction-bound gate broadcasts
+        run: pnpm exec tsx scripts/test-scanner-updates.ts --db-only
+      - name: Verify two-scanner Realtime, polling and admission retries
+        run: pnpm exec tsx scripts/test-scanner-updates.ts
+      - name: Preserve scanner synchronization evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: scanner-synchronization-evidence
+          path: |
+            docs/reviews/TICKET-068/
+            docs/reviews/TICKET-067/
+          retention-days: 7
+      - name: Verify real slow-4G guest-to-board delivery
+        run: pnpm exec tsx scripts/test-order-delivery.ts
+      - name: Preserve ordering delivery evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: order-delivery-evidence
+          path: docs/reviews/TICKET-081/delivery.json
           retention-days: 7
       - name: Stop this job's isolated stack
         if: always()

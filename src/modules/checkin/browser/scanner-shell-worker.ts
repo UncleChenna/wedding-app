@@ -3,6 +3,10 @@ import type { createScannerShellStore } from "./scanner-shell-store";
 import type { createGuestSnapshotStore, SnapshotAuthority } from "./guest-snapshot-store";
 import type { createGuestSnapshotRuntime } from "./guest-snapshot-runtime";
 
+import type { createOfflineQueueStore } from "./offline-queue-store";
+import type { createOfflineQueueRuntime } from "./offline-queue-runtime";
+import type { GuestSnapshot } from "../lib/guest-snapshot";
+
 type Store = ReturnType<typeof createScannerShellStore>;
 type Runtime = ReturnType<typeof createScannerShellRuntime>;
 interface Client {
@@ -40,6 +44,12 @@ interface Options {
   build: string;
   assets: readonly string[];
   fallback: () => Promise<Response>;
+  queue?: {
+    store: () => ReturnType<typeof createOfflineQueueStore>;
+    runtime: (
+      snapshot: (session: string) => Promise<GuestSnapshot | null>,
+    ) => ReturnType<typeof createOfflineQueueRuntime>;
+  };
   guests?: {
     store: () => ReturnType<typeof createGuestSnapshotStore>;
     runtime: (
@@ -60,6 +70,7 @@ export function installScannerShellWorker({
   assets,
   fallback,
   guests,
+  queue,
 }: Options) {
   // Origin-wide lock also covers an old worker finishing work during activation.
   // Without it, failed IDB invalidation cannot safely race a pending publication.
@@ -119,6 +130,7 @@ export function installScannerShellWorker({
       await settleInvalidations([
         Promise.resolve().then(() => store().invalidate()),
         Promise.resolve().then(() => guests?.store().invalidate()),
+        Promise.resolve().then(() => queue?.store().purgeAcknowledged()),
       ]);
       storageInvalidationFailed = false;
     } catch (error) {
@@ -138,6 +150,7 @@ export function installScannerShellWorker({
     }
     try {
       await guests?.store().invalidate();
+      await queue?.store().purgeAcknowledged();
     } catch (error) {
       await failedInvalidation();
       throw error;
@@ -201,6 +214,9 @@ export function installScannerShellWorker({
         "REFRESH_GUEST_SNAPSHOT",
         "DENY_SCANNER_SESSION",
         "INVALIDATE_GUEST_SNAPSHOT",
+        "OFFLINE_QUEUE_STATUS",
+        "RECORD_OFFLINE_ATTEMPT",
+        "SYNC_OFFLINE_QUEUE",
       ].includes(String(data.type))
     )
       return;
@@ -211,7 +227,39 @@ export function installScannerShellWorker({
           // Resolve the real client, never trust a URL supplied in the message.
           if (!client || !scannerUrl(client.url)) return;
           let result: unknown;
-          if (data.type === "INVALIDATE_GUEST_SNAPSHOT") {
+          if (
+            ["OFFLINE_QUEUE_STATUS", "RECORD_OFFLINE_ATTEMPT", "SYNC_OFFLINE_QUEUE"].includes(
+              String(data.type),
+            )
+          ) {
+            if (!queue || !guests) result = { state: "unavailable" };
+            else {
+              const guestRuntime = guests.runtime(snapshotAuthority, invalidate);
+              const queueRuntime = queue.runtime((session) => guestRuntime.read(session));
+              if (data.type === "RECORD_OFFLINE_ATTEMPT")
+                result = await queueRuntime.record("input" in data ? data.input : null);
+              else if (!("session" in data) || typeof data.session !== "string")
+                result = { state: "unavailable" };
+              else if (data.type === "OFFLINE_QUEUE_STATUS")
+                result = await queueRuntime.status(data.session);
+              else {
+                const synced = await queueRuntime.sync(data.session);
+                result = synced;
+                if (synced.state === "denied") await invalidate();
+                else if (
+                  (synced.state === "synced" && synced.committed > 0) ||
+                  synced.state === "idle"
+                ) {
+                  const captured = (await queue.store().read()).barriers;
+                  if (captured.length > 0) {
+                    const refreshed = await guestRuntime.refresh();
+                    if (refreshed.state === "ready")
+                      await queue.store().clearCapturedBarriers(captured);
+                  }
+                }
+              }
+            }
+          } else if (data.type === "INVALIDATE_GUEST_SNAPSHOT") {
             const current = await store().current();
             if (guests && (!current || ("session" in data && current.session === data.session))) {
               try {
@@ -248,23 +296,47 @@ export function installScannerShellWorker({
               const guestRuntime = guests.runtime(snapshotAuthority, invalidate);
               if (data.type === "READ_GUEST_SNAPSHOT") {
                 const snapshot = await guestRuntime.read(data.session);
-                result = snapshot ? { state: "ready", snapshot } : { state: "unavailable" };
+                if (snapshot && queue) {
+                  const journal = await queue.store().read();
+                  // Canonical storage stays unchanged; all retained local operators share allowance.
+                  const invitations = snapshot.invitations.map((row) => ({
+                    ...row,
+                    admittedSoFar: Math.min(
+                      row.partySize,
+                      row.admittedSoFar +
+                        journal.attempts
+                          .filter(
+                            (attempt) =>
+                              attempt.event.invitationId === row.invitationId &&
+                              attempt.event.kind === "admission",
+                          )
+                          .reduce((sum, attempt) => sum + attempt.event.reportedPeople, 0),
+                    ),
+                  }));
+                  result = { state: "ready", snapshot: { ...snapshot, invitations } };
+                } else result = snapshot ? { state: "ready", snapshot } : { state: "unavailable" };
               } else {
                 const authority = await snapshotAuthority();
-                result =
+                const captured = queue ? (await queue.store().read()).barriers : [];
+                const refreshed =
                   authority?.session === data.session
                     ? await guestRuntime.refresh()
                     : { state: "unavailable" };
+                if (refreshed.state === "ready" && queue)
+                  await queue.store().clearCapturedBarriers(captured);
+                result = refreshed;
               }
             }
           } else if (data.type === "INVALIDATE_SCANNER") {
             await invalidate();
             result = { state: "removed", ...(guests ? { privateSnapshotRemoved: true } : {}) };
           } else if (data.type === "SCANNER_STATUS") {
-            result = storageInvalidationFailed
+            const status = storageInvalidationFailed
               ? { state: "unavailable" }
               : await runtime().status();
             if (!storageInvalidationFailed && guests) await snapshotAuthority();
+            if (status.state === "ready" && queue) await queue.store().read();
+            result = status;
           } else {
             let authorized: { session: string; build: string; expiresAt: number } | undefined;
             const prepared = await runtime().prepare((identity) => {
@@ -272,6 +344,7 @@ export function installScannerShellWorker({
             });
             result = prepared;
             if (prepared.state === "ready") {
+              if (queue) await queue.store().read();
               await syncSnapshotAuthority(authorized);
               storageInvalidationFailed = false;
             }
@@ -291,19 +364,22 @@ export function installScannerShellWorker({
       }).catch(() => event.ports[0]?.postMessage({ state: "unavailable" })),
     );
   });
+  async function activateUnderLock() {
+    try {
+      const current = await store().current();
+      if (current && current.build !== build) await invalidate();
+      else if (guests) await snapshotAuthority();
+    } catch {
+      // Storage unavailable: document/status remain fail-closed.
+      await notify();
+    }
+  }
   return {
     cacheName,
+    // Only the top-level worker update guard calls this while holding the same origin lock.
+    activateUnderLock,
     async activate() {
-      await serialized(async () => {
-        try {
-          const current = await store().current();
-          if (current && current.build !== build) await invalidate();
-          else if (guests) await snapshotAuthority();
-        } catch {
-          // Storage unavailable: document/status remain fail-closed.
-          await notify();
-        }
-      }).catch(() => notify());
+      await serialized(activateUnderLock).catch(() => notify());
     },
     handleFetch(event: FetchEvent) {
       const request = event.request;

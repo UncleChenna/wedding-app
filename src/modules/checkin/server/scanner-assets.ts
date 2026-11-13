@@ -9,6 +9,10 @@ const schema = z
     version: z.literal(1),
     build: z.string().regex(/^[a-f0-9]{64}$/),
     script: z.string().regex(/^\/scanner-assets\/scanner-[a-f0-9]{64}\.js$/),
+    verifier: z
+      .string()
+      .regex(/^\/scanner-assets\/scanner-[a-f0-9]{64}\.js$/)
+      .optional(),
     stylesheet: z.string().regex(/^\/scanner-assets\/scanner-[a-f0-9]{64}\.css$/),
     fonts: z
       .array(z.string().regex(/^\/scanner-assets\/scanner-[a-f0-9]{64}\.woff2$/))
@@ -27,8 +31,14 @@ export function parseScannerAssets(value: unknown): ScannerAssets | null {
     script: manifest.script,
     stylesheet: manifest.stylesheet,
     fonts: manifest.fonts,
+    ...(manifest.verifier ? { verifier: manifest.verifier } : {}),
   };
-  const expected = [manifest.script, manifest.stylesheet, ...manifest.fonts];
+  const expected = [
+    manifest.script,
+    manifest.stylesheet,
+    ...manifest.fonts,
+    ...(manifest.verifier ? [manifest.verifier] : []),
+  ];
   if (
     new Set(expected).size !== expected.length ||
     JSON.stringify(expected) !== JSON.stringify(manifest.assets)

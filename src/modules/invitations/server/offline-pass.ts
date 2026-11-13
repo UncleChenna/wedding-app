@@ -19,12 +19,14 @@ export function offlinePassResponse({
   themes,
   refreshedAt = new Date(),
   tokenVersion,
+  expiresAt,
 }: {
   pass: PassView;
   url: string;
   themes: ActiveThemes;
   refreshedAt?: Date;
   tokenVersion: number;
+  expiresAt: Date;
 }) {
   const name = pass.names.join(" & ") || pass.householdName || "Our dear guest";
   const matrix = qrMatrix(url);
@@ -72,6 +74,7 @@ window.addEventListener("online",refreshPass);
       "X-Wedding-Offline-Pass": "1",
       "X-Wedding-Pass-Version": String(tokenVersion),
       "X-Wedding-Offline-Refreshed": timestamp,
+      "X-Wedding-Offline-Expires": expiresAt.toISOString(),
       "Referrer-Policy": "no-referrer",
       "X-Robots-Tag": "noindex, nofollow, noarchive",
     },

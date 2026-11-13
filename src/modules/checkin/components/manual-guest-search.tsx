@@ -8,6 +8,7 @@ import {
   type ManualResponse,
 } from "../lib/manual-checkin";
 import { AdmissionResult } from "./admission-result";
+import { OfflineAdmissionResult } from "./offline-admission-result";
 import { ScanResultPanel } from "./scan-result-panel";
 import type { AdmissionResponse } from "../lib/online-admission";
 
@@ -17,6 +18,7 @@ export type ManualLookup = (
 ) => Promise<{
   response: ManualResponse;
   cached: boolean;
+  offlineSession?: string;
 }>;
 
 /** Names live only in this session-bound view; returning online never authorizes a cached selection. */
@@ -126,8 +128,9 @@ export function ManualGuestSearch({
       >
         {answer?.cached && (
           <p>
-            Using the saved guest list. No entry is recorded offline. Reconnect and select the guest
-            again before recording entry.
+            {answer.offlineSession
+              ? "Using the saved guest list. Confirm the number entering to save an offline entry on this phone."
+              : "Using the saved guest list. No entry is recorded offline. Reconnect and select the guest again before recording entry."}
           </p>
         )}
         {response?.state === "matches" && (
@@ -163,7 +166,18 @@ export function ManualGuestSearch({
         )}
         {answer?.cached && staleNotice && <p role="status">{staleNotice}</p>}
         {response?.state === "selection" &&
-          (answer?.cached ? (
+          (answer?.cached && answer.offlineSession ? (
+            <OfflineAdmissionResult
+              key={`${response.invitationId}:${response.version}`}
+              result={response.result}
+              qr={null}
+              manualInvitationId={response.invitationId}
+              session={answer.offlineSession}
+              notice={staleNotice}
+              onBusyChange={setBusy}
+              onRecorded={() => window.dispatchEvent(new Event("offline-queue-changed"))}
+            />
+          ) : answer?.cached ? (
             <ScanResultPanel
               state={response.result.state}
               guest={"guest" in response.result ? response.result.guest : undefined}

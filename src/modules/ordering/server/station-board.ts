@@ -56,6 +56,7 @@ async function readBoard(
       tableName: tables.name,
       note: orders.notes,
       guestName: orders.guestName,
+      staffEntered: sql<boolean>`${orders.enteredByStaffId} is not null`,
     })
     .from(stationOrders)
     .innerJoin(orders, eq(orders.id, stationOrders.orderId))
@@ -127,6 +128,7 @@ async function readBoard(
         items: lines.map(({ name, quantity }) => ({ name, quantity })),
         note: ticket.note?.trim() || null,
         guestName: ticket.guestName?.trim() || null,
+        staffEntered: ticket.staffEntered,
         tableId: ticket.tableId,
       },
     ];

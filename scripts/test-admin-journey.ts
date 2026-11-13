@@ -29,6 +29,9 @@ try {
       .flatMap((project) => [
         `${prefix}-${project}@example.test`,
         `${prefix}-counters-${project}@example.test`,
+        `${prefix}-health-${project}@example.test`,
+        `${prefix}-recovery-${project}-0@example.test`,
+        `${prefix}-recovery-${project}-1@example.test`,
         `${prefix}-scans-${project}-0@example.test`,
         `${prefix}-scans-${project}-1@example.test`,
       ])
@@ -37,29 +40,45 @@ try {
     NEXT_PUBLIC_SITE_URL: `http://localhost:${meta.pwPort}`,
   });
   run(["db:migrate"], env);
-  run(
-    ["exec", "vitest", "run", "scripts/__tests__/dashboard.integration.test.ts", "--maxWorkers=1"],
-    {
-      ...env,
-      RUN_DASHBOARD_DB_TESTS: "1",
-    },
-  );
-  run(
-    ["exec", "vitest", "run", "scripts/__tests__/scan-log.integration.test.ts", "--maxWorkers=1"],
-    {
-      ...env,
-      RUN_SCAN_LOG_DB_TESTS: "1",
-    },
-  );
+  if (!process.argv.includes("--health") && !process.argv.includes("--recovery")) {
+    run(
+      [
+        "exec",
+        "vitest",
+        "run",
+        "scripts/__tests__/dashboard.integration.test.ts",
+        "--maxWorkers=1",
+      ],
+      {
+        ...env,
+        RUN_DASHBOARD_DB_TESTS: "1",
+      },
+    );
+    run(
+      ["exec", "vitest", "run", "scripts/__tests__/scan-log.integration.test.ts", "--maxWorkers=1"],
+      {
+        ...env,
+        RUN_SCAN_LOG_DB_TESTS: "1",
+      },
+    );
+  }
   if (hosted || process.argv.includes("--build")) run(["build"], env);
   run(
     [
       "exec",
       "playwright",
       "test",
-      "e2e/admin.spec.ts",
-      "e2e/admin-dashboard.spec.ts",
-      "e2e/admin-scan-log.spec.ts",
+      ...(process.argv.includes("--recovery")
+        ? ["e2e/admin-recovery.spec.ts"]
+        : process.argv.includes("--health")
+          ? ["e2e/admin-health.spec.ts"]
+          : [
+              "e2e/admin.spec.ts",
+              "e2e/admin-dashboard.spec.ts",
+              "e2e/admin-scan-log.spec.ts",
+              "e2e/admin-health.spec.ts",
+              "e2e/admin-recovery.spec.ts",
+            ]),
       "--project=mobile",
       "--project=desktop",
       "--workers=1",

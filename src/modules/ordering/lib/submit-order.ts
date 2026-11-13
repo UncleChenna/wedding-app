@@ -1,4 +1,5 @@
-import { orderResponseSchema, type OrderResult, type OrderSubmission } from "./order";
+import { orderResponseSchema, type OrderResult } from "./order-contract";
+import type { OrderSubmission } from "./order";
 
 export const ORDERS_URL = "/api/orders";
 /** Waits before attempts 2, 3 and 4. Every attempt reuses the same client request id. */
