@@ -358,4 +358,84 @@ describe.runIf(process.env.RUN_SCAN_SYNC_DB_TESTS === "1")("offline scan reconci
       counter: 4,
     });
   });
+  it("admin recovery preserves revoked historical provenance, exact IDs and audited idempotency", async () => {
+    const { reconcileRecoveredScans } =
+      await import("../../src/modules/checkin/server/reconcile-scans");
+    const [member] = await sql<{ id: string }[]>`insert into staff(name, role, revoked_at)
+      values ('TICKET-231 historical gate', 'gate', now()) returning id`;
+    if (!member) throw new Error("Missing recovery fixture");
+    const deviceId = randomBytes(32).toString("hex");
+    await sql`insert into registered_devices(id, name, role, revoked_at, registered_by_staff_id)
+      values (${deviceId}, 'TICKET-231 historical device', 'gate', now(), ${member.id})`;
+    const actor = { staffId: member.id, deviceId };
+    const invitation = await party(2),
+      event = scan(invitation, 1);
+    expect(statuses((await reconcile(database, actor, [event])).acks)).toEqual(["retry"]);
+    const admin = randomUUID(),
+      request = randomUUID();
+    const record = { actor, event };
+    const first = await reconcileRecoveredScans(
+      database,
+      admin,
+      request,
+      [record],
+      async () => true,
+    );
+    expect(statuses(first)).toEqual(["recorded"]);
+    expect(
+      statuses(await reconcileRecoveredScans(database, admin, request, [record], async () => true)),
+    ).toEqual(["duplicate"]);
+    expect(
+      statuses(
+        await reconcileRecoveredScans(
+          database,
+          admin,
+          randomUUID(),
+          [{ actor, event: { ...event, reportedPeople: 2 } }],
+          async () => true,
+        ),
+      ),
+    ).toEqual(["rejected"]);
+    const events =
+      await sql`select staff_id, device_id, admitted_people from scan_events where client_event_id = ${event.clientEventId}`;
+    expect(events).toEqual([{ staff_id: member.id, device_id: deviceId, admitted_people: 1 }]);
+    const audits =
+      await sql`select outcome, intent_digest from scan_recovery_audits where client_event_id = ${event.clientEventId} order by recorded_at`;
+    expect(audits.map((row) => row.outcome)).toEqual(["recorded", "rejected"]);
+    expect(audits.every((row) => /^[a-f0-9]{64}$/.test(row.intent_digest))).toBe(true);
+    const notes =
+      await sql`select n.resolution from scan_resolution_notes n join scan_events e on n.event_id=e.id where e.client_event_id=${event.clientEventId} order by n.recorded_at`;
+    expect(notes.map((row) => row.resolution)).toEqual(["reviewed", "escalated"]);
+    await expect(
+      sql`update scan_recovery_audits set outcome='duplicate' where client_event_id=${event.clientEventId}`,
+    ).rejects.toThrow(/append-only/);
+  });
+  it("admin authority loss or audit failure rolls back recovery evidence and leaves a retry", async () => {
+    const { reconcileRecoveredScans } =
+      await import("../../src/modules/checkin/server/reconcile-scans");
+    const actor = await device(),
+      invitation = await party(2),
+      event = scan(invitation, 1);
+    let reads = 0;
+    const denied = await reconcileRecoveredScans(
+      database,
+      randomUUID(),
+      randomUUID(),
+      [{ actor, event }],
+      async () => ++reads < 3,
+    );
+    expect(statuses(denied)).toEqual(["retry"]);
+    const auditFailed = await reconcileRecoveredScans(
+      database,
+      "not-a-uuid",
+      randomUUID(),
+      [{ actor, event }],
+      async () => true,
+    );
+    expect(statuses(auditFailed)).toEqual(["retry"]);
+    expect(
+      await sql`select id from scan_events where client_event_id=${event.clientEventId}`,
+    ).toHaveLength(0);
+    expect((await stored(invitation)).counter).toBe(0);
+  });
 });

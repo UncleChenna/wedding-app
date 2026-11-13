@@ -39,3 +39,5 @@ Accepted: [0024 — Row-level security: server-only tables and per-station broad
 Accepted: [0025 — Scan observation input method is separate from transport](0025-scan-observation-input-method.md) (TICKET-062; zero-person observations preserve admission replay and private evidence).
 
 Proposed: [0026 — Resolve scan disputes without rewriting evidence](0026-scan-resolution-notes.md) (TICKET-174; append-only, predefined admin resolution notes).
+
+Accepted: [0027 — Lightweight guest ordering document](0027-lightweight-order-document.md) (TICKET-081; native progressive enhancement preserves the strict cold-transfer budget).

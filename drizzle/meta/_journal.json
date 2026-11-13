@@ -225,6 +225,27 @@
       "when": 1794482191507,
       "tag": "0031_offline-intent-digest",
       "breakpoints": true
+    },
+    {
+      "idx": 32,
+      "version": "7",
+      "when": 1794510908916,
+      "tag": "0032_staff-entered-orders",
+      "breakpoints": true
+    },
+    {
+      "idx": 33,
+      "version": "7",
+      "when": 1794552995088,
+      "tag": "0033_scan-recovery-audit",
+      "breakpoints": true
+    },
+    {
+      "idx": 34,
+      "version": "7",
+      "when": 1794553003158,
+      "tag": "0034_scan-recovery-immutable",
+      "breakpoints": true
     }
   ]
 }

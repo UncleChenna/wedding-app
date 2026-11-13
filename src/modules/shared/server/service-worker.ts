@@ -1,4 +1,5 @@
 import "server-only";
+import { installWorkerUpdateGuard } from "@/modules/checkin/browser/worker-update-guard";
 import { createScannerShellStore } from "@/modules/checkin/browser/scanner-shell-store";
 import { createScannerShellRuntime } from "@/modules/checkin/browser/scanner-shell-runtime";
 import { installScannerShellWorker } from "@/modules/checkin/browser/scanner-shell-worker";
@@ -36,12 +37,13 @@ const cachePolicy = ${cachePolicy.toString()};
 
 /** Same-origin, query-free build asset paths referenced by a page or stylesheet. */
 const STATIC_ASSET = /^\\/_next\\/static\\/[\\w./-]+$/;
+const OFFLINE_FONT = /^\\/offline-assets\\/(?:cormorant|inter|playfair|jost)-[a-f0-9]{16}\\.woff2$/;
 function assetUrls(text, base) {
   const urls = new Set();
   for (const match of text.matchAll(/(?:src|href)="([^"]+)"|url\\(\\s*["']?([^"')\\s]+)/g)) {
     try {
       const url = new URL(match[1] || match[2], base);
-      if (url.origin === self.location.origin && !url.search && STATIC_ASSET.test(url.pathname)) {
+      if (url.origin === self.location.origin && !url.search && (STATIC_ASSET.test(url.pathname) || OFFLINE_FONT.test(url.pathname))) {
         urls.add(url.pathname);
       }
     } catch {
@@ -69,12 +71,15 @@ async function precacheAsset(cache, path) {
 
 ${ownPassWorkerSource()}
 
+const createQueuePolicy = ${createOfflineQueuePolicy.toString()};
+const createQueueStore = ${createOfflineQueueStore.toString()};
+const installUpdateGuard = ${installWorkerUpdateGuard.toString()};
+const updateGuard = installUpdateGuard(self, () => createQueueStore(createQueuePolicy()));
+
 const scannerWorker = ${
     scanner
       ? `(() => {
   ${scanner.verifier ? `importScripts(${JSON.stringify(scanner.verifier)});` : ""}
-  const createQueuePolicy = ${createOfflineQueuePolicy.toString()};
-  const createQueueStore = ${createOfflineQueueStore.toString()};
   const createQueueRuntime = ${createOfflineQueueRuntime.toString()};
   const queuePolicy = createQueuePolicy();
   let queueStore;
@@ -141,8 +146,8 @@ self.addEventListener("install", (event) => {
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    (async () => {
-      if (scannerWorker) await scannerWorker.activate();
+    updateGuard.cleanUp(async () => {
+      if (scannerWorker) await scannerWorker.activateUnderLock();
       const names = await caches.keys();
       await Promise.all(
         names
@@ -152,12 +157,13 @@ self.addEventListener("activate", (event) => {
               name !== SW_STATIC_CACHE &&
               name !== SW_OFFLINE_CACHE &&
               name !== OWN_PASS_CACHE &&
+              name !== "wedding-scanner-queue-identity-v1" &&
               name !== scannerWorker?.cacheName,
           )
           .map((name) => caches.delete(name)),
       );
       await self.clients.claim();
-    })(),
+    }),
   );
 });
 
@@ -215,17 +221,4 @@ self.addEventListener("fetch", (event) => {
   );
 });
 `;
-}
-
-/** /sw.js must never be cached itself, so updates are always noticed. */
-export function serviceWorkerResponse(
-  scanner: { build: string; assets: readonly string[]; verifier?: string } | null = null,
-): Response {
-  return new Response(serviceWorkerSource(scanner), {
-    headers: {
-      "Content-Type": "application/javascript; charset=utf-8",
-      "Cache-Control": "no-cache, no-store, must-revalidate",
-      "Service-Worker-Allowed": "/",
-    },
-  });
 }

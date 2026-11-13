@@ -130,6 +130,7 @@ export function installScannerShellWorker({
       await settleInvalidations([
         Promise.resolve().then(() => store().invalidate()),
         Promise.resolve().then(() => guests?.store().invalidate()),
+        Promise.resolve().then(() => queue?.store().purgeAcknowledged()),
       ]);
       storageInvalidationFailed = false;
     } catch (error) {
@@ -149,6 +150,7 @@ export function installScannerShellWorker({
     }
     try {
       await guests?.store().invalidate();
+      await queue?.store().purgeAcknowledged();
     } catch (error) {
       await failedInvalidation();
       throw error;
@@ -329,10 +331,12 @@ export function installScannerShellWorker({
             await invalidate();
             result = { state: "removed", ...(guests ? { privateSnapshotRemoved: true } : {}) };
           } else if (data.type === "SCANNER_STATUS") {
-            result = storageInvalidationFailed
+            const status = storageInvalidationFailed
               ? { state: "unavailable" }
               : await runtime().status();
             if (!storageInvalidationFailed && guests) await snapshotAuthority();
+            if (status.state === "ready" && queue) await queue.store().read();
+            result = status;
           } else {
             let authorized: { session: string; build: string; expiresAt: number } | undefined;
             const prepared = await runtime().prepare((identity) => {
@@ -340,6 +344,7 @@ export function installScannerShellWorker({
             });
             result = prepared;
             if (prepared.state === "ready") {
+              if (queue) await queue.store().read();
               await syncSnapshotAuthority(authorized);
               storageInvalidationFailed = false;
             }
@@ -359,19 +364,22 @@ export function installScannerShellWorker({
       }).catch(() => event.ports[0]?.postMessage({ state: "unavailable" })),
     );
   });
+  async function activateUnderLock() {
+    try {
+      const current = await store().current();
+      if (current && current.build !== build) await invalidate();
+      else if (guests) await snapshotAuthority();
+    } catch {
+      // Storage unavailable: document/status remain fail-closed.
+      await notify();
+    }
+  }
   return {
     cacheName,
+    // Only the top-level worker update guard calls this while holding the same origin lock.
+    activateUnderLock,
     async activate() {
-      await serialized(async () => {
-        try {
-          const current = await store().current();
-          if (current && current.build !== build) await invalidate();
-          else if (guests) await snapshotAuthority();
-        } catch {
-          // Storage unavailable: document/status remain fail-closed.
-          await notify();
-        }
-      }).catch(() => notify());
+      await serialized(activateUnderLock).catch(() => notify());
     },
     handleFetch(event: FetchEvent) {
       const request = event.request;

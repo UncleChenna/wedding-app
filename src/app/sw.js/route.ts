@@ -1,10 +1,10 @@
 import { connection } from "next/server";
 import { readScannerAssets } from "@/modules/checkin/server/scanner-assets";
 
-import { serviceWorkerResponse } from "@/modules/shared/server/service-worker";
+import { serviceWorkerResponse } from "@/modules/shared/server/service-worker-response";
 
 /** The service worker, served from the root so its scope covers the whole site. */
-export async function GET() {
+export async function GET(request: Request) {
   // Render per request: a prerendered copy would carry framework cache headers, and the
   // worker script itself must never be cached (ADR 0014).
   await connection();
@@ -14,5 +14,5 @@ export async function GET() {
       status: 503,
       headers: { "Cache-Control": "no-store" },
     });
-  return serviceWorkerResponse(scanner);
+  return serviceWorkerResponse(scanner, request.headers.get("accept-encoding") ?? "");
 }
