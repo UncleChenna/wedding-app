@@ -35,6 +35,24 @@ export const serverEnvSchema = z.object({
       "ALERT_DRAIN_SECRET must be 32 random bytes encoded as lowercase hex",
     )
     .default(""),
+  WEB_PUSH_PUBLIC_KEY: z
+    .string()
+    .regex(/^(?:B[A-Za-z0-9_-]{86})?$/)
+    .default(""),
+  WEB_PUSH_PRIVATE_KEY: z
+    .string()
+    .regex(/^(?:[A-Za-z0-9_-]{43})?$/)
+    .default(""),
+  WEB_PUSH_SUBJECT: z
+    .string()
+    .max(254)
+    .refine(
+      (value) =>
+        value === "" ||
+        /^mailto:[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ||
+        (URL.canParse(value) && new URL(value).protocol === "https:"),
+    )
+    .default(""),
 });
 
 export const clientEnvSchema = z.object({

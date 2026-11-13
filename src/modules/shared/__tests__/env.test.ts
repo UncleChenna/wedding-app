@@ -15,6 +15,9 @@ describe("env schema", () => {
       STAFF_SESSION_SECRET: "",
       SUPABASE_JWT_SECRET: "",
       ALERT_DRAIN_SECRET: "",
+      WEB_PUSH_PUBLIC_KEY: "",
+      WEB_PUSH_PRIVATE_KEY: "",
+      WEB_PUSH_SUBJECT: "",
     });
   });
 

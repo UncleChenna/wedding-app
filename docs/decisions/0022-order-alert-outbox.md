@@ -64,3 +64,11 @@ Rejected:
 - **Not yet validated:** the schedule on the production host, which waits on TICKET-213.
 - **The secret lives in `cron.job`:** it's in the scheduled command, readable by database administrators only.
   Rotating it is one re-run of `pnpm alerts:schedule`.
+
+## TICKET-112 — optional browser push
+
+The same committed order-alert row now has independent push status and attempt count. The drain runs the two delivery channels independently. A WhatsApp failure cannot consume or prevent a browser notification, and push never blocks order creation. Generic notices coalesce per station and device; they contain no guest or order details.
+
+Subscriptions belong to a signed-in staff/device/credential version, expire with that session and are filtered again against live roles, credential version, PIN validity, event expiry and revoked devices before sending. Browser endpoint destinations are allowlisted; the maintained Web Push library encrypts the payload and signs VAPID. A three-second request timeout and fifteen-second drain budget bound work. Per-device delivery watermarks let later ticks resume without repeatedly notifying successful recipients. The board remains the authoritative order view.
+
+The feature is opt-in and unavailable without the complete server-side VAPID configuration. Permission denial leaves ordering intact. Browser delivery and physical installed-iOS evidence are distinct from isolated database tests; the latter verify persistence, retries and authorization invalidation, not external push-service availability.
