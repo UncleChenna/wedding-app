@@ -57,7 +57,9 @@ test.describe("admin staff PINs", () => {
     const add = page.getByRole("region", { name: "Add a person" });
     await add.getByLabel("Name").fill(name);
     await add.getByRole("button", { name: "Add a person" }).click();
-    await expect(add.getByText("Choose the gate, the kitchen or the bar.")).toBeVisible();
+    await expect(
+      add.getByText("Choose the gate, the kitchen, the bar or table host."),
+    ).toBeVisible();
     await expect(add.getByLabel("Name")).toHaveValue(name);
     await add.getByLabel("Works at").selectOption("kitchen");
     await add.getByRole("button", { name: "Add a person" }).click();

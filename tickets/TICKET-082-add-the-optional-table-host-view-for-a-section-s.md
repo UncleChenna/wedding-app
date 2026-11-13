@@ -2,16 +2,16 @@
 id: TICKET-082
 title: Add the optional table host view for a section's tables
 epic: ordering
-status: backlog
+status: in_review
 priority: low
 estimate: M
 labels: [frontend]
 module: ordering
-owner: ""
-agent: ""
+owner: UncleChenna
+agent: claude
 blocked_by: [TICKET-078]
 blocks: []
-branch: ""
+branch: TICKET-082
 pr: ""
 created: 2026-10-21
 updated: 2026-10-21
@@ -39,8 +39,8 @@ See: [Users and roles](../docs/prd.md#users-and-roles).
 
 ## Acceptance criteria
 
-- [ ] A host sees only orders for assigned tables (e2e).
-- [ ] Hosts can mark served but not cancel (unit).
+- [x] A host sees only orders for assigned tables (e2e).
+- [x] Hosts can mark served but not cancel (unit).
 
 ## Test plan
 

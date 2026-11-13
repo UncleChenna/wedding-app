@@ -5,7 +5,7 @@ import { z } from "zod";
 
 const identitySchema = z.strictObject({
   staffId: z.uuid(),
-  role: z.enum(["gate", "kitchen", "bar"]),
+  role: z.enum(["gate", "kitchen", "bar", "host"]),
   credentialVersion: z.number().int().positive(),
 });
 const sessionSchema = identitySchema.extend({

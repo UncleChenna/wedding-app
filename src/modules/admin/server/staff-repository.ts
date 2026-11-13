@@ -2,7 +2,7 @@ import "server-only";
 import { and, asc, eq, inArray, isNotNull, isNull, ne, sql } from "drizzle-orm";
 import { staffEventExpiry } from "@/modules/shared/lib/staff-expiry";
 import type { Db } from "@/modules/shared/server/db/client";
-import { staff } from "@/modules/shared/server/db/schema";
+import { hostTables, staff, tables } from "@/modules/shared/server/db/schema";
 import { getEventSettings } from "@/modules/shared/server/settings";
 import { hashStaffPin, verifyStaffPin } from "@/modules/shared/server/staff-pin";
 import type { StaffRole } from "@/modules/shared/server/staff-auth";
@@ -18,6 +18,8 @@ export type StaffMember = {
   pinActive: boolean;
   whatsappNumber: string | null;
   alertsOptIn: boolean;
+  /** Table numbers a table host looks after; empty for everyone else. */
+  hostTables: number[];
 };
 
 export async function listStaff(
@@ -37,8 +39,15 @@ export async function listStaff(
     .from(staff)
     .where(ne(staff.role, "admin"))
     .orderBy(asc(staff.role), asc(staff.name));
+  const assignments = await database
+    .select({ staffId: hostTables.staffId, number: tables.number })
+    .from(hostTables)
+    .innerJoin(tables, eq(tables.id, hostTables.tableId))
+    .orderBy(asc(tables.number));
+  const byHost = Map.groupBy(assignments, (row) => row.staffId);
   return rows.map(({ revokedAt, role, ...row }) => ({
     ...row,
+    hostTables: (byHost.get(row.id) ?? []).map((assignment) => assignment.number),
     role: role as StaffRole,
     revoked: revokedAt !== null,
     pinActive:
@@ -138,4 +147,40 @@ export async function setAlertContact(
     .where(and(eq(staff.id, staffId), inArray(staff.role, ["kitchen", "bar"])))
     .returning({ id: staff.id });
   return rows.length > 0;
+}
+
+export type HostTablesResult =
+  | { status: "saved"; count: number }
+  | { status: "missing" }
+  | { status: "unknown"; numbers: number[] };
+
+/**
+ * Replaces a table host's tables (TICKET-082). Every number must be a real table; nothing
+ * changes otherwise. Only `host` staff can have tables.
+ */
+export async function setHostTables(
+  database: Pick<Db, "transaction">,
+  staffId: string,
+  numbers: readonly number[],
+): Promise<HostTablesResult> {
+  return database.transaction(async (tx) => {
+    const [host] = await tx
+      .select({ id: staff.id })
+      .from(staff)
+      .where(and(eq(staff.id, staffId), eq(staff.role, "host")))
+      .for("update");
+    if (!host) return { status: "missing" };
+    const found = numbers.length
+      ? await tx
+          .select({ id: tables.id, number: tables.number })
+          .from(tables)
+          .where(inArray(tables.number, [...numbers]))
+      : [];
+    const unknown = numbers.filter((number) => !found.some((table) => table.number === number));
+    if (unknown.length) return { status: "unknown", numbers: unknown };
+    await tx.delete(hostTables).where(eq(hostTables.staffId, staffId));
+    if (found.length)
+      await tx.insert(hostTables).values(found.map((table) => ({ staffId, tableId: table.id })));
+    return { status: "saved", count: found.length };
+  });
 }

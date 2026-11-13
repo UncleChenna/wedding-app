@@ -48,7 +48,7 @@ export function AddStaffForm() {
           error={error?.field === "role" ? error.fieldMessage : undefined}
         >
           <option value="" disabled>
-            Choose the gate, kitchen or bar
+            Choose where they work
           </option>
           {STAFF_ROLE_OPTIONS.map((option) => (
             <option key={option.value} value={option.value}>

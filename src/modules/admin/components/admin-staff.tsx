@@ -1,6 +1,6 @@
 import { db } from "@/modules/shared/server/db/client";
 import { getEventSettings } from "@/modules/shared/server/settings";
-import { STAFF_ROLE_OPTIONS, staffCopy } from "../lib/staff";
+import { STAFF_ROLE_OPTIONS, hostTablesCopy, staffCopy } from "../lib/staff";
 import { formatStaffExpiry } from "../lib/staff-time";
 import { requireAdminPageAccess } from "../server/current-admin-access";
 import { listStaff } from "../server/staff-repository";
@@ -9,9 +9,10 @@ import { AddStaffForm } from "./add-staff-form";
 import { AdminDevices } from "./admin-devices";
 import { StaffMemberActions } from "./staff-member-actions";
 import { StaffAlertForm } from "./staff-alert-form";
+import { HostTablesForm } from "./host-tables-form";
 import { alertCopy } from "../lib/staff-alerts";
 
-/** ADM-4: staff PINs for the gate, kitchen and bar (TICKET-096). */
+/** ADM-4: staff PINs for the gate, kitchen, bar and table hosts (TICKET-096, TICKET-082). */
 export async function AdminStaff() {
   await requireAdminPageAccess();
   const [members, settings, devices] = await Promise.all([
@@ -48,7 +49,14 @@ export async function AdminStaff() {
                             )
                           : staffCopy.noPin}
                     </p>
-                    {member.role !== "gate" && (
+                    {member.role === "host" && (
+                      <p className="mt-1 text-muted-foreground">
+                        {member.hostTables.length
+                          ? hostTablesCopy.list(member.hostTables)
+                          : hostTablesCopy.none}
+                      </p>
+                    )}
+                    {(member.role === "kitchen" || member.role === "bar") && (
                       <p className="mt-1 text-muted-foreground">
                         {member.alertsOptIn && member.whatsappNumber
                           ? alertCopy.on(member.whatsappNumber)
@@ -58,7 +66,16 @@ export async function AdminStaff() {
                     <div className="mt-4">
                       <StaffMemberActions id={member.id} name={member.name} hasPin={active} />
                     </div>
-                    {member.role !== "gate" && !member.revoked && (
+                    {member.role === "host" && !member.revoked && (
+                      <div className="mt-6">
+                        <HostTablesForm
+                          id={member.id}
+                          name={member.name}
+                          tables={member.hostTables}
+                        />
+                      </div>
+                    )}
+                    {(member.role === "kitchen" || member.role === "bar") && !member.revoked && (
                       <div className="mt-6">
                         <StaffAlertForm
                           id={member.id}
