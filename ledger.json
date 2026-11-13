@@ -2983,18 +2983,19 @@
         "- 2026-11-10 — todo → in_progress — unclechenna (claude) — started ahead of TICKET-076 (in_progress)",
         "- 2026-11-10 — in_progress → in_review — unclechenna (claude)",
         "- 2026-11-13 — in_review → in_review — divine (codex) — Ownership handoff unclechenna → divine; Owner authorized coordinated ledger-only recovery of merged PR156; preserve collaborator files and original failed CI while verifying repair164",
-        "- 2026-11-13 — in_review → blocked — divine (codex) — Original merged PR156 CI43088907304 failed camera decoding and cancelled general verification; recover only with exact verified merged repair164"
+        "- 2026-11-13 — in_review → blocked — divine (codex) — Original merged PR156 CI43088907304 failed camera decoding and cancelled general verification; recover only with exact verified merged repair164",
+        "- 2026-11-13 — blocked → done — divine (codex) — Reconciled original https://github.com/UncleChenna/wedding-app/pull/156; previous block: Original merged PR156 CI43088907304 failed camera decoding and cancelled general verification; recover only with exact verified merged repair164; Original PR156 camera decoding failed and general verification was cancelled; integrated repair164 includes the dense QR fixes and passes all ten full CI jobs at dd772215; verified repair https://github.com/UncleChenna/wedding-app/pull/164 head dd7722157992517f6ecb5fb157083de09ab42a2f; CI https://github.com/UncleChenna/wedding-app/actions/runs/43247685207; develop 4b37377599afd4030e310058d56734fa1e8dc587"
       ],
-      "status": "blocked",
+      "status": "done",
       "owner": "divine",
       "agent": "codex",
       "branch": "TICKET-078",
       "pr": "https://github.com/UncleChenna/wedding-app/pull/156",
       "started": "2026-11-10",
-      "completed": "",
+      "completed": "2026-11-13",
       "updated": "2026-11-13",
-      "reason": "Original merged PR156 CI43088907304 failed camera decoding and cancelled general verification; recover only with exact verified merged repair164",
-      "resume_to": "in_review"
+      "reason": "",
+      "resume_to": ""
     },
     "WED-075": {
       "log": [
