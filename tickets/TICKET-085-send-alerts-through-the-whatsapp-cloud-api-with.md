@@ -2,20 +2,20 @@
 id: TICKET-085
 title: Send alerts through the WhatsApp Cloud API with retries
 epic: alerts
-status: todo
+status: in_progress
 priority: high
 estimate: L
 labels: [backend]
 module: ordering
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-084, TICKET-086, TICKET-076]
 blocks: [TICKET-154]
-branch: ""
+branch: TICKET-085
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-13
+started: 2026-11-13
 completed: ""
 reason: ""
 resume_to: ""
@@ -72,3 +72,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-13 — todo → claimed — divine (codex)
+- 2026-11-13 — todo → in_progress — divine (codex)
