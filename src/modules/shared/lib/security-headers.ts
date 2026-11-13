@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 /**
  * Security headers applied to every route (see next.config.ts).
  *
@@ -11,10 +13,28 @@ export interface SecurityHeaderOptions {
   supabaseUrl?: string;
 }
 
+const connectionUrl = z
+  .url()
+  .transform((value) => new URL(value))
+  .refine(
+    (url) =>
+      (url.protocol === "http:" || url.protocol === "https:") &&
+      !url.username &&
+      !url.password &&
+      /^[a-z0-9.:[\]-]+$/i.test(url.hostname),
+  );
+
 export function buildContentSecurityPolicy({ isDev, supabaseUrl }: SecurityHeaderOptions): string {
   const connect = ["'self'"];
   if (supabaseUrl) {
-    const url = new URL(supabaseUrl);
+    const parsed = connectionUrl.safeParse(supabaseUrl);
+    if (!parsed.success) {
+      // Configuration fails closed; never include the supplied value or credentials.
+      throw new Error(
+        "NEXT_PUBLIC_SUPABASE_URL must be an HTTP(S) URL with an exact hostname and no credentials",
+      );
+    }
+    const url = parsed.data;
     connect.push(url.origin, `${url.protocol === "https:" ? "wss:" : "ws:"}//${url.host}`);
   }
   if (isDev) connect.push("ws:");

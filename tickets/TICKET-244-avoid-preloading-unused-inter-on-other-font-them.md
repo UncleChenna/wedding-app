@@ -40,10 +40,10 @@ TICKET-116’s actual hero baseline on develop `21722cb97d525a683e0fcd85a4007bbd
 
 ## Acceptance criteria
 
-- [ ] A default Playfair/Jost invitation does not request Inter solely through a root preload; capture before/after network bytes.
-- [ ] Themes that use Inter still render with Inter on demand; all four themes retain correct display/body families.
-- [ ] Igbo and accented names/menu text still load their required complete font fallback, without missing glyphs or prohibited font substitution.
-- [ ] Existing font asset/metric tests and focused all-theme cold-font accessibility/layout checks pass without weakened assertions; report remaining manual release checks honestly.
+- [x] A default Playfair/Jost invitation does not request Inter solely through a root preload; capture before/after network bytes.
+- [x] Themes that use Inter still render with Inter on demand; all four themes retain correct display/body families.
+- [x] Igbo and accented names/menu text still load their required complete font fallback, without missing glyphs or prohibited font substitution.
+- [x] Existing font asset/metric tests and focused all-theme cold-font accessibility/layout checks pass without weakened assertions; report remaining manual release checks honestly.
 
 ## Test plan
 
@@ -62,8 +62,11 @@ TICKET-116’s actual hero baseline on develop `21722cb97d525a683e0fcd85a4007bbd
 - Full Jost’s 51,597-byte request in the same baseline is legitimate non-Latin fallback for the fixture’s Igbo meal name; do not remove it to improve scores.
 - Scoped preload-only change, not a claim that this alone achieves Performance 95.
 
+- 2026-11-13: Disabled only Inter preload. Five asset tests pass after reproducing the missing option; production build passes. Sixteen existing font/no-JavaScript/glyph/cold-swap browser cases pass, plus four theme-demand cases with WCAG AA scans and saved network/screenshots. Jost themes request zero Inter files; full glyph fallback remains. Evidence and limitations: docs/plans/TICKET-244-pr.md.
+
 ## Activity log
 
 - 2026-11-13 — new → todo — divine
 - 2026-11-13 — todo → claimed — divine (codex)
 - 2026-11-13 — todo → in_progress — divine (codex)
+
