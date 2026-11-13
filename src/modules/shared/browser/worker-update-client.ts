@@ -1,22 +1,31 @@
-import {
-  discriminatedUnion,
-  strictObject,
-  literal,
-  int,
-  positive,
-  type infer as Infer,
-} from "zod/mini";
-
-const replySchema = discriminatedUnion("state", [
-  strictObject({ state: literal("ready"), pending: literal(0) }),
-  strictObject({ state: literal("deferred"), pending: int().check(positive()) }),
-  strictObject({ state: literal("unavailable") }),
-]);
-export type UpdateReply = Infer<typeof replySchema>;
+export type UpdateReply =
+  | { state: "ready"; pending: 0 }
+  | { state: "deferred"; pending: number }
+  | { state: "unavailable" };
 export type UpdateView = UpdateReply | { state: "hidden" | "checking" | "updating" };
+
+const hasExactly = (value: object, keys: readonly string[]) =>
+  Object.keys(value).length === keys.length && keys.every((key) => Object.hasOwn(value, key));
+
+/**
+ * Strict check of the three worker replies. Hand-written because this loads on every page, and a
+ * validation library would add about 18 KB before the guest's content (TICKET-116).
+ */
 export function parseUpdateReply(value: unknown): UpdateReply {
-  const result = replySchema.safeParse(value);
-  return result.success ? result.data : { state: "unavailable" };
+  const unavailable = { state: "unavailable" } as const;
+  if (typeof value !== "object" || value === null || Array.isArray(value)) return unavailable;
+  const reply = value as Record<string, unknown>;
+  if (reply.state === "ready" && hasExactly(reply, ["state", "pending"]) && reply.pending === 0)
+    return { state: "ready", pending: 0 };
+  if (
+    reply.state === "deferred" &&
+    hasExactly(reply, ["state", "pending"]) &&
+    typeof reply.pending === "number" &&
+    Number.isSafeInteger(reply.pending) &&
+    reply.pending > 0
+  )
+    return { state: "deferred", pending: reply.pending };
+  return unavailable;
 }
 export async function reloadWithEmptyQueue({
   locks,

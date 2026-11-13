@@ -66,6 +66,13 @@ See: [Design principles](../docs/prd.md#design-principles) · [Design principles
 _Agents append dated notes here while working._
 - 2026-11-12 (unclechenna, claude): TICKET-228 merged TICKET-121 into this ticket (all unstarted) to cut per-ticket overhead. Their scope, criteria and dependencies are above; the merged tickets are cancelled.
 
+- 2026-11-13 (unclechenna, claude): removed Zod from every guest page's browser code. The crash page now reads the
+  default themes from JSON (`theming/lib/default-themes.ts`, tested equal to the validated pair), token lists moved to
+  Zod-free `theming/lib/tokens.ts`, the invitation voice constant to `invitation-voice-values.ts`, and the worker update
+  reply check is hand-written with strictness tests. Invitation page: JavaScript 240 → 174 KB, LCP 3.5 → 3.2 s,
+  performance 90/90/93 → 93/91/89 (median 90 → 91). Still below 95. What's left before the hero photo is React/Next
+  runtime (~150 KB, all pages need it), 62 KB of the active themes' fonts, and 14 KB of invitation components.
+
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md

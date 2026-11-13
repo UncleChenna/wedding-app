@@ -82,6 +82,23 @@ describe("update reload safety", () => {
       pending: 0,
     });
   });
+  it.each([
+    { state: "ready", pending: 0, extra: true },
+    { state: "unavailable", pending: 0 },
+    { state: "deferred", pending: 1.5 },
+    { state: "deferred", pending: Number.MAX_SAFE_INTEGER + 1 },
+    { state: "deferred", pending: "1" },
+    { state: "deferred" },
+    { state: "waiting" },
+    null,
+    "ready",
+    [{ state: "ready", pending: 0 }],
+  ])("rejects %j", (reply) => {
+    expect(parseUpdateReply(reply)).toEqual({ state: "unavailable" });
+  });
+  it("accepts the bare unavailable reply", () => {
+    expect(parseUpdateReply({ state: "unavailable" })).toEqual({ state: "unavailable" });
+  });
 });
 
 class UpdateWorker extends EventTarget {
