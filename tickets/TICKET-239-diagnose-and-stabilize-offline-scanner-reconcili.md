@@ -2,7 +2,7 @@
 id: TICKET-239
 title: Diagnose and stabilize offline scanner reconciliation evidence
 epic: quality
-status: in_progress
+status: in_review
 priority: high
 estimate: M
 labels: [test]
@@ -39,9 +39,9 @@ PR113 CI run43388307715 failed the real two-scanner journey at camera result and
 
 ## Acceptance criteria
 
-- [ ] Failure evidence identifies scanner/scan phase and bounded sync/UI state without credentials or tokens.
-- [ ] Identified defect has a focused regression; unexplained failures remain disclosed.
-- [ ] Both real scanner projects pass all fifty-scan retention,100event reconciliation and replay assertions.
+- [x] Failure evidence identifies scanner/scan phase and bounded sync/UI state without credentials or tokens.
+- [x] Identified defect has a focused regression; unexplained failures remain disclosed.
+- [x] Both real scanner projects pass all fifty-scan retention,100event reconciliation and replay assertions.
 
 ## Test plan
 
@@ -56,6 +56,10 @@ PR113 CI run43388307715 failed the real two-scanner journey at camera result and
 ## Notes / decisions
 
 2026-11-13: Existing traces/screenshots explicitly disabled, and custom contexts close before failure snapshot capture; first repair is diagnostic coverage.
+
+- 2026-11-13 (unclechenna, claude): integrated current develop; `scripts/test-offline-queue.ts` passes 4/4 (mobile and
+  desktop, 56.5s) on a fresh production build. The original CI failure was not reproduced; the diagnostics stay so a
+  repeat failure records its scanner, phase and sync state. No product fix is claimed.
 
 ## Activity log
 
