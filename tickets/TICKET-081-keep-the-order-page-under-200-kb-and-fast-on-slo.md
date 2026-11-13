@@ -2,7 +2,7 @@
 id: TICKET-081
 title: Keep the order page under 200 KB and fast on slow networks
 epic: ordering
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [frontend, test]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/162
 created: 2026-10-21
 updated: 2026-11-13
 started: 2026-11-12
-completed: ""
+completed: 2026-11-13
 reason: ""
 resume_to: ""
 ---
@@ -63,3 +63,4 @@ See: [Connectivity plan](../docs/prd.md#connectivity-plan-signal-unknown) · [Pe
 - 2026-11-12 — todo → claimed — divine (codex) — started ahead of TICKET-075 (in_review)
 - 2026-11-12 — todo → in_progress — divine (codex) — started ahead of TICKET-075 (in_review)
 - 2026-11-13 — in_progress → in_review — divine (codex)
+- 2026-11-13 — in_review → done — divine (codex)
