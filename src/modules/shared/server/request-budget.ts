@@ -1,6 +1,6 @@
 import "server-only";
 
-import { and, eq, sql } from "drizzle-orm";
+import { sql } from "drizzle-orm";
 import { z } from "zod";
 import type { Db } from "./db/client";
 import { requestBudgets } from "./db/schema";
@@ -31,44 +31,38 @@ export async function consumeRequestBudget(
         order by expires_at limit 32 for update skip locked
       )
   `);
-  return db.transaction(async (tx) => {
-    const where = and(eq(requestBudgets.scope, scope), eq(requestBudgets.identity, identity));
-    const [row] = await tx
-      .insert(requestBudgets)
-      .values({
-        identity,
-        scope,
-        used: 0,
-        expiresAt: sql`clock_timestamp()`,
-      })
-      .onConflictDoUpdate({
-        target: [requestBudgets.scope, requestBudgets.identity],
-        set: { scope },
-      })
-      .returning();
-    if (!row) throw new Error("Missing request budget row");
-    // Read time after acquiring the lock so queueing cannot extend an expired window.
-    const [clock] = await tx
-      .select({ now: sql<string>`clock_timestamp()` })
-      .from(requestBudgets)
-      .where(where);
-    if (!clock) throw new Error("Missing request budget clock");
-    const now = new Date(clock.now);
-    const expired = row.expiresAt.getTime() <= now.getTime();
-    const used = expired ? 0 : row.used;
-    if (used >= limit) {
-      return {
-        allowed: false,
-        retryAfterSeconds: Math.max(1, Math.ceil((row.expiresAt.getTime() - now.getTime()) / 1000)),
-      };
-    }
-    await tx
-      .update(requestBudgets)
-      .set({
-        used: used + 1,
-        expiresAt: expired ? new Date(now.getTime() + windowSeconds * 1000) : row.expiresAt,
-      })
-      .where(where);
-    return { allowed: true, retryAfterSeconds: 0 };
-  });
+  // One statement decides and records the request, so the shared row is locked only while that
+  // statement runs. A multi-statement transaction held it across app round trips: under load
+  // every request queued on it and exhausted the connection pool, stalling unrelated routes such
+  // as gate scans (TICKET-258). The update applies only while budget remains; no row back means
+  // the request is refused.
+  const allowed = await db.execute(sql`
+    insert into ${requestBudgets} (scope, identity, used, expires_at)
+    values (
+      ${scope},
+      ${identity},
+      1,
+      clock_timestamp() + make_interval(secs => ${windowSeconds})
+    )
+    on conflict (scope, identity) do update set
+      used = case
+        when ${requestBudgets.expiresAt} <= clock_timestamp() then 1
+        else ${requestBudgets.used} + 1
+      end,
+      expires_at = case
+        when ${requestBudgets.expiresAt} <= clock_timestamp()
+          then clock_timestamp() + make_interval(secs => ${windowSeconds})
+        else ${requestBudgets.expiresAt}
+      end
+    where ${requestBudgets.expiresAt} <= clock_timestamp() or ${requestBudgets.used} < ${limit}
+    returning 1 as allowed
+  `);
+  if ([...allowed].length > 0) return { allowed: true, retryAfterSeconds: 0 };
+  const [left] = [
+    ...(await db.execute<{ seconds: number | string | null }>(sql`
+      select ceil(extract(epoch from expires_at - clock_timestamp())) as seconds
+      from ${requestBudgets} where scope = ${scope} and identity = ${identity}
+    `)),
+  ];
+  return { allowed: false, retryAfterSeconds: Math.max(1, Number(left?.seconds ?? 1) || 1) };
 }
