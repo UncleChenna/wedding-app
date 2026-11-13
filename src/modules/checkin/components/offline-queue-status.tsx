@@ -10,6 +10,7 @@ import { scannerWorkerMessage } from "../browser/scanner-worker-message";
 export function OfflineQueueStatus({ session, expiresAt }: { session: string; expiresAt: number }) {
   const [status, setStatus] = useState<QueueStatus | null>(null);
   const [busy, setBusy] = useState(false);
+  const [preparing, setPreparing] = useState(true);
   const generation = useRef(0);
   const flight = useRef<{ generation: number; promise: Promise<void> } | null>(null);
   const update = useCallback(
@@ -42,6 +43,18 @@ export function OfflineQueueStatus({ session, expiresAt }: { session: string; ex
     const changed = () => {
       void update(false);
     };
+    const prepared = () => {
+      // Preparation may finish while an older probe is still reading unavailable
+      // state. Wait for that probe, then perform a fresh read instead of coalescing it.
+      const prior = flight.current?.promise ?? Promise.resolve();
+      void prior.then(async () => {
+        if (generation.current !== mountedGeneration) return;
+        await update(false);
+        if (generation.current === mountedGeneration) setPreparing(false);
+      });
+    };
+    const preparationDeadline = setTimeout(prepared, 15_000);
+    window.addEventListener("scanner-preparation-complete", prepared);
     window.addEventListener("online", resume);
     window.addEventListener("offline-queue-changed", changed);
     document.addEventListener("visibilitychange", resume);
@@ -50,6 +63,8 @@ export function OfflineQueueStatus({ session, expiresAt }: { session: string; ex
     return () => {
       generation.current = mountedGeneration + 1;
       clearInterval(timer);
+      clearTimeout(preparationDeadline);
+      window.removeEventListener("scanner-preparation-complete", prepared);
       window.removeEventListener("online", resume);
       window.removeEventListener("offline-queue-changed", changed);
       document.removeEventListener("visibilitychange", resume);
@@ -58,9 +73,10 @@ export function OfflineQueueStatus({ session, expiresAt }: { session: string; ex
   if (!status)
     return (
       <section aria-label="Saved gate records" className="space-y-3 text-lg">
-        <p>
-          Saved records could not be checked. Keep this phone’s data and ask the gate lead if this
-          continues.
+        <p role="status">
+          {preparing || busy
+            ? "Preparing saved records. Keep this page connected…"
+            : "Saved records could not be checked. Keep this phone’s data and ask the gate lead if this continues."}
         </p>
         <Button
           variant="secondary"

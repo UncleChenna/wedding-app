@@ -110,7 +110,7 @@ test("camera pixels show all five gate results without admitting anyone", async 
       .find((cookie) => cookie.name === "wedding-staff-device")
       ?.value.split(".")[0];
     expect(browserDevice).toMatch(/^[a-f0-9]{64}$/);
-    const folder = `docs/reviews/TICKET-132/${info.project.name}`;
+    const folder = `docs/reviews/TICKET-235/${info.project.name}`;
     mkdirSync(folder, { recursive: true });
     for (const [index, item] of cases.entries()) {
       const frame = frames[index];
@@ -142,11 +142,9 @@ test("camera pixels show all five gate results without admitting anyone", async 
       ]);
       await page.screenshot({ path: `${folder}/${item.state}.png`, fullPage: true });
     }
-    // The first status probe can precede worker preparation. A real retry must
-    // become healthy without clearing storage or resetting the saved journal.
+    // Preparation refreshes an early probe without a manual retry or storage reset.
     await expect(page.getByText(/Camera ready for an offline reload/)).toBeVisible();
     const savedRecords = page.getByRole("region", { name: "Saved gate records" });
-    await savedRecords.getByRole("button").click();
     await expect(
       savedRecords.getByText("No records are waiting for this operator.", { exact: true }),
     ).toBeVisible();
