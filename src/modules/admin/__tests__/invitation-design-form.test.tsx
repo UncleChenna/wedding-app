@@ -2,6 +2,15 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
 import { InvitationDesignForm } from "../components/invitation-design-form";
+// Vitest imports image URLs; Next's production loader supplies this static metadata.
+vi.mock("../../../../public/share/couple-placeholder.jpg", () => ({
+  default: {
+    src: "/share/couple-placeholder.jpg",
+    width: 1200,
+    height: 1800,
+    blurDataURL: "data:image/webp;base64,UklGRg==",
+  },
+}));
 vi.mock("../server/invitation-design-actions", () => ({ saveInvitationDesignAction: vi.fn() }));
 const defaults = {
   version: 0,

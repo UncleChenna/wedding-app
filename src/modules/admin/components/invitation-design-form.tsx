@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import samplePhoto from "../../../../public/share/couple-placeholder.jpg";
 import { useActionState, useEffect, useState } from "react";
 import { z } from "zod";
 import { Button, Input, Textarea } from "@/modules/shared/components/ui";
@@ -203,7 +204,7 @@ export function InvitationDesignForm({
                 src={visiblePreview}
                 alt={alt || "Selected invitation photograph"}
                 fill
-                sizes="(min-width: 1024px) 768px, 100vw"
+                sizes="(min-width: 1152px) 848px, (min-width: 768px) calc(100vw - 304px), calc(100vw - 48px)"
                 placeholder="blur"
                 blurDataURL={photo.blurDataURL}
                 className="object-cover object-top"
@@ -213,7 +214,28 @@ export function InvitationDesignForm({
             <p>Loading your selected photograph…</p>
           )
         ) : (
-          <p>Sample photograph will be shown. It is not a portrait of the couple.</p>
+          <figure className="space-y-4">
+            <div className="relative aspect-[4/3] overflow-hidden">
+              <Image
+                src={samplePhoto}
+                alt="A couple holding hands in warm evening light; stock photograph"
+                fill
+                sizes="(min-width: 1152px) 848px, (min-width: 768px) calc(100vw - 304px), calc(100vw - 48px)"
+                placeholder="blur"
+                className="object-cover object-top"
+              />
+            </div>
+            <figcaption>
+              <p>Sample photograph will be shown. It is not a portrait of the couple.</p>
+              <a
+                href="https://unsplash.com/photos/a-bride-and-groom-holding-hands-and-smiling-glouLzM1PMg"
+                className="inline-flex min-h-11 items-center text-primary underline underline-offset-4"
+                rel="noreferrer"
+              >
+                Lauren Mitchell / Unsplash
+              </a>
+            </figcaption>
+          </figure>
         )}
         <p className="font-display text-3xl leading-tight wrap-anywhere">{headline}</p>
         <p className="leading-relaxed wrap-anywhere whitespace-pre-line">{subline}</p>

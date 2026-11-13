@@ -47,11 +47,24 @@ async function Invitation({ params }: { params: Promise<{ token: string }> }) {
     : null;
   const settings = await getEventSettings();
   const design = await readInvitationDesign(db);
+  const details = {
+    ...settings,
+    headline: design?.headline,
+    subline: design?.subline,
+    photo:
+      design?.photoId && design.blurDataURL
+        ? {
+            src: `/media/invitation/${design.photoId}`,
+            alt: design.photoAlt,
+            blurDataURL: design.blurDataURL,
+          }
+        : undefined,
+  };
   const window = rsvpWindow(settings);
   return (
     <PersonalInvitation
       invitation={invitation}
-      details={{ ...settings, headline: design?.headline, subline: design?.subline }}
+      details={details}
       token={token}
       repliesOpen={window === "open"}
       replyClosedMessage={window === "locked" ? invitationSiteCopy.editsLocked : undefined}

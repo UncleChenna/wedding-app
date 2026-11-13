@@ -85,8 +85,8 @@ export function AdminShell({
           </li>
         </ul>
       </nav>
-      {/* Bottom padding keeps the last content above the fixed phone navigation. */}
-      <div className="min-w-0 flex-1 pb-[calc(12rem+env(safe-area-inset-bottom))] md:pb-0">
+      {/* Four rows of phone navigation need clearance below the last action. */}
+      <div className="min-w-0 flex-1 pb-[calc(16rem+env(safe-area-inset-bottom))] md:pb-0">
         {children}
       </div>
     </div>

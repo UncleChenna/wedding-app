@@ -95,6 +95,15 @@ test.describe("invitation design publication", () => {
     await expect(page.getByLabel("Headline", { exact: true })).toHaveValue(
       "Together for our favourite day",
     );
+    mkdirSync(`artifacts/TICKET-099/${info.project.name}`, { recursive: true });
+    for (const theme of themes) {
+      await applyTheme(page, theme);
+      expect(await scanA11y(page)).toEqual([]);
+      await page.screenshot({
+        path: `artifacts/TICKET-099/${info.project.name}/${theme.id}.png`,
+        fullPage: true,
+      });
+    }
     const guest = await browser.newContext({ baseURL });
     try {
       const invitation = await guest.newPage();
@@ -107,15 +116,6 @@ test.describe("invitation design publication", () => {
       ).toBeVisible();
     } finally {
       await guest.close();
-    }
-    mkdirSync(`artifacts/TICKET-099/${info.project.name}`, { recursive: true });
-    for (const theme of themes) {
-      await applyTheme(page, theme);
-      expect(await scanA11y(page)).toEqual([]);
-      await page.screenshot({
-        path: `artifacts/TICKET-099/${info.project.name}/${theme.id}.png`,
-        fullPage: true,
-      });
     }
   });
 });
