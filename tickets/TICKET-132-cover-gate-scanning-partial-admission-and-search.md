@@ -2,7 +2,7 @@
 id: TICKET-132
 title: Cover gate scanning, partial admission and search end to end
 epic: testing
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [test]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/178
 created: 2026-10-21
 updated: 2026-11-13
 started: 2026-11-13
-completed: ""
+completed: 2026-11-13
 reason: ""
 resume_to: ""
 ---
@@ -60,3 +60,4 @@ See: [Journey 2: check-in at the gate](../docs/prd.md#journey-2-check-in-at-the-
 - 2026-11-13 — todo → claimed — divine (codex)
 - 2026-11-13 — todo → in_progress — divine (codex)
 - 2026-11-13 — in_progress → in_review — divine (codex)
+- 2026-11-13 — in_review → done — divine (codex)
