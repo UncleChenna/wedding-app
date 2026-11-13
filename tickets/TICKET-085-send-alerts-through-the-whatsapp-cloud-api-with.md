@@ -2,7 +2,7 @@
 id: TICKET-085
 title: Send alerts through the WhatsApp Cloud API with retries
 epic: alerts
-status: in_review
+status: done
 priority: high
 estimate: L
 labels: [backend]
@@ -12,11 +12,11 @@ agent: codex
 blocked_by: [TICKET-084, TICKET-086, TICKET-076]
 blocks: [TICKET-154]
 branch: TICKET-085
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/208
 created: 2026-10-21
 updated: 2026-11-13
 started: 2026-11-13
-completed: ""
+completed: 2026-11-13
 reason: "Implementation and local verification published in PR #208; live phone receipt requires TICKET-083 account, approved template and opted-in recipient. No real message sent."
 resume_to: in_progress
 ---
@@ -76,9 +76,12 @@ _Agents append dated notes here while working._
   ambiguous and deliberately not retried. No live message sent; TICKET-083's account/template and
   consenting staff-phone check remain required before done. Detailed guarantee/rollback in ADR0022.
 
+- 2026-11-13 (unclechenna, claude): Merged in #208. The live phone message is the first criterion of TICKET-083 (WhatsApp number setup) and is verified there.
+
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-13 — todo → claimed — divine (codex)
 - 2026-11-13 — todo → in_progress — divine (codex)
 - 2026-11-13 — in_progress → blocked — divine (codex) — Implementation and local verification published in PR #208; live phone receipt requires TICKET-083 account, approved template and opted-in recipient. No real message sent.
+- 2026-11-13 — in_review → done — unclechenna (claude) — PR #208 merged

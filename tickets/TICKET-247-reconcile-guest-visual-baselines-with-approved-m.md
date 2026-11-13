@@ -2,7 +2,7 @@
 id: TICKET-247
 title: Reconcile reviewed UI baselines after merged design changes
 epic: foundations
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [test]
@@ -12,11 +12,11 @@ agent: codex
 blocked_by: []
 blocks: []
 branch: TICKET-247
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/206
 created: 2026-11-13
 updated: 2026-11-13
 started: 2026-11-13
-completed: ""
+completed: 2026-11-13
 reason: ""
 resume_to: ""
 ---
@@ -67,9 +67,12 @@ Merged theme, invitation hero and accessibility work changed intentional guest l
 
 - 2026-11-13: Explicitly delegated after the user requested autonomous completion. The initial 80 failures are screenshot mismatches, not proof that all differences are intentional.
 
+- 2026-11-13 (unclechenna, claude): Merged in #206. The lean CI (#209) retired the CI visual job, so the unticked "fresh CI visual run" check can no longer run there; the baselines stay for local `pnpm screenshots` runs.
+
 ## Activity log
 
 - 2026-11-13 — new → backlog — divine (codex)
 - 2026-11-13 — backlog → todo — divine (codex)
 - 2026-11-13 — todo → claimed — divine (codex)
 - 2026-11-13 — todo → in_progress — divine (codex)
+- 2026-11-13 — in_review → done — unclechenna (claude) — PR #206 merged

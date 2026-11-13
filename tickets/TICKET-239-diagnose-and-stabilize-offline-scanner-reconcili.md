@@ -2,7 +2,7 @@
 id: TICKET-239
 title: Diagnose and stabilize offline scanner reconciliation evidence
 epic: quality
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [test]
@@ -12,11 +12,11 @@ agent: codex
 blocked_by: []
 blocks: []
 branch: TICKET-239
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/191
 created: 2026-11-13
 updated: 2026-11-13
 started: 2026-11-13
-completed: ""
+completed: 2026-11-13
 reason: ""
 resume_to: ""
 ---
@@ -61,8 +61,11 @@ PR113 CI run43388307715 failed the real two-scanner journey at camera result and
   desktop, 56.5s) on a fresh production build. The original CI failure was not reproduced; the diagnostics stay so a
   repeat failure records its scanner, phase and sync state. No product fix is claimed.
 
+- 2026-11-13 (unclechenna, claude): Merged in #191.
+
 ## Activity log
 
 - 2026-11-13 — new → todo — divine
 - 2026-11-13 — todo → claimed — divine (codex)
 - 2026-11-13 — todo → in_progress — divine (codex)
+- 2026-11-13 — in_review → done — unclechenna (claude) — PR #191 merged
