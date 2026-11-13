@@ -2,7 +2,7 @@
 id: TICKET-118
 title: Audit staff and admin screens for accessibility and legibility
 epic: quality
-status: in_progress
+status: in_review
 priority: medium
 estimate: L
 labels: [frontend, test, human]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: [TICKET-060, TICKET-078, TICKET-093, TICKET-115]
 blocks: [TICKET-154, TICKET-164]
 branch: TICKET-118
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/186
 created: 2026-10-21
 updated: 2026-11-13
 started: 2026-11-13
@@ -64,3 +64,4 @@ See: [Usability and accessibility](../docs/prd.md#usability-and-accessibility) �
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
 - 2026-11-13 — todo → claimed — divine (codex)
 - 2026-11-13 — todo → in_progress — divine (codex)
+- 2026-11-13 — in_progress → in_review — divine (codex)
