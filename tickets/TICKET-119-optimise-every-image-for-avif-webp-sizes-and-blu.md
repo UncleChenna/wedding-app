@@ -39,7 +39,7 @@ See: [Design principles](../docs/prd.md#design-principles).
 
 ## Acceptance criteria
 
-- [ ] A test fails if any next/image lacks sizes or dimensions on guest routes.
+- [x] A test fails if any next/image lacks sizes or dimensions on guest routes.
 - [ ] Largest image on /i/<token> ≤150 KB at 375px.
 
 ## Test plan
@@ -53,7 +53,7 @@ See: [Design principles](../docs/prd.md#design-principles).
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-11-13 — Started ahead of TICKET-038 under the supported workflow. Eight source-policy tests pass; explicit AVIF/WebP configuration added. Private invitation byte-budget verification awaits the merged hero. Keep PR draft; no completed dependency or mobile budget is inferred. See docs/plans/TICKET-119-pr.md.
 
 ## Activity log
 
