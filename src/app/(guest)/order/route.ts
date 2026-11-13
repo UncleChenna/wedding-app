@@ -1,4 +1,7 @@
-import { orderPage, selectOrderTable } from "@/modules/ordering/server/order-page";
+import { getPublicEventDetails } from "@/modules/invitations/server/public-event-details";
+import { orderPage } from "@/modules/ordering/server/order-page";
+export { selectOrderTable as POST } from "@/modules/ordering/server/order-page";
 
-export const GET = orderPage;
-export const POST = selectOrderTable;
+export async function GET(request: Request) {
+  return orderPage(request, await getPublicEventDetails());
+}

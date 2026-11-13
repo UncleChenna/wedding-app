@@ -1,4 +1,10 @@
 import "server-only";
+import {
+  invitationPreviewHtml,
+  type PreviewEventDetails,
+} from "@/modules/invitations/lib/share-metadata";
+import { defaultEventSettings } from "@/modules/shared/lib/event-settings";
+import { clientEnv } from "@/modules/shared/lib/env/client";
 import { activeThemesToCssText } from "@/modules/theming/lib/css-vars";
 import type { ActiveThemes } from "@/modules/theming/lib/schema";
 import { groupMenu, menuCopy, type MenuItem } from "../lib/menu";
@@ -21,11 +27,13 @@ export function orderDocument({
   script,
   stylesheet,
   selection,
+  event = defaultEventSettings,
 }: {
   themes: ActiveThemes;
   script: string;
   stylesheet: string;
   selection: OrderSelection;
+  event?: PreviewEventDetails;
 }): string {
   const form = selection.kind === "form";
   const content = form
@@ -46,5 +54,5 @@ export function orderDocument({
                   "",
                 )}<div class="section"><label for="order-note">${orderCopy.noteLabel}</label><textarea id="order-note" maxlength="${ORDER_NOTE_MAX}" rows="2" aria-describedby="note-hint"></textarea><p class="muted" id="note-hint">${orderCopy.noteHint}</p></div><div class="action-bar"><p id="order-status" role="status">${orderCopy.emptyCart}</p><button type="button" id="send-order" class="primary wide" disabled>${orderCopy.send}</button></div><noscript><p>Please enable JavaScript to choose and send your order, or ask a member of the team.</p></noscript></div><section id="receipt" hidden aria-labelledby="order-sent"><h3 id="order-sent" tabindex="-1">${orderCopy.sent}</h3><div id="receipt-lines"></div><p id="receipt-note"></p><button type="button" id="another-order" class="primary">${orderCopy.another}</button></section></div>`
       }</section>`;
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Order to your table · Our Wedding</title><meta name="description" content="Hungry? Thirsty? Order a little something to your table."><meta property="og:title" content="Order to your table"><meta property="og:description" content="Celebrate with us."><meta property="og:image" content="/invitation-preview"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="robots" content="noindex"><link rel="manifest" href="/manifest.webmanifest"><style>${activeThemesToCssText(themes)}</style><link rel="stylesheet" href="${stylesheet}"></head><body><main><p class="label">At your table</p><h1>Hungry? Thirsty? Say the word.</h1><p>Tell us where you're sitting.</p><div class="selection">${content}</div><a href="/">Back to our day</a></main><script defer src="${script}"></script></body></html>`;
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Order to your table · Our Wedding</title><meta name="description" content="Hungry? Thirsty? Order a little something to your table.">${invitationPreviewHtml(clientEnv.NEXT_PUBLIC_SITE_URL, event)}<meta name="robots" content="noindex"><link rel="manifest" href="/manifest.webmanifest"><style>${activeThemesToCssText(themes)}</style><link rel="stylesheet" href="${stylesheet}"></head><body><main><p class="label">At your table</p><h1>Hungry? Thirsty? Say the word.</h1><p>Tell us where you're sitting.</p><div class="selection">${content}</div><a href="/">Back to our day</a></main><script defer src="${script}"></script></body></html>`;
 }

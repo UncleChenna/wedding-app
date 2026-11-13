@@ -1,6 +1,9 @@
+vi.mock("@/modules/shared/lib/env/client", () => ({
+  clientEnv: { NEXT_PUBLIC_SITE_URL: "https://wedding.example" },
+}));
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { themes } from "@/modules/theming/themes";
 import { getTheme } from "@/modules/theming/lib/registry";
 import copy from "../lib/offline-copy.json";

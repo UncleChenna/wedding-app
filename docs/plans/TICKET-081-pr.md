@@ -2,11 +2,11 @@
 
 A fresh `/order` visit originally transferred about 1.24 MB, including service-worker installation. The order page now uses a small themed HTML document with progressive enhancement and reuses the existing order submission, retry, validation, availability and status contracts. The original 200,000-byte budget remains unchanged.
 
-The final production build transfers 159,051–181,961 bytes across light/dark, mobile/desktop and table/menu cases. The menu fixture includes `Ọgbọnọ · Crème brûlée`. Real Supabase broadcast delivery under emulated slow 4G took 378.475 ms, below 2 seconds, with one persisted quantity and the matching broadcast observed before the board displayed it.
+The final production build transfers 160,439–183,349 bytes across light/dark, mobile/desktop and table/menu cases. The menu fixture includes `Ọgbọnọ · Crème brûlée`. Real Supabase broadcast delivery under emulated slow 4G took 378.475 ms, below 2 seconds, with one persisted quantity and the matching broadcast observed before the board displayed it.
 
 ## Acceptance criteria and evidence
 
-- [x] Cold `/order` transfer ≤200,000 bytes: all eight light/dark, mobile/desktop table/menu cases pass; maximum 181,961 bytes including worker/font traffic. CI gate added.
+- [x] Cold `/order` transfer ≤200,000 bytes: all eight light/dark, mobile/desktop table/menu cases pass; maximum 183,349 bytes including worker/font traffic. CI gate added.
 - [x] Order-to-board <2s on emulated slow 4G: actual Supabase broadcast and persisted order proof measured 378.475 ms. CI gate added.
 
 ## Changes
@@ -61,3 +61,5 @@ No database migration or production data change. Restore the previous `/order/pa
 Verified against develop `b2ade840ff38f109723841ce35e760a166727a22`, including the worker update guard. The sole merge conflict was adjacent imports; both were retained. Production build passes, quick verification passes (344 related tests, 9 opt-in skips, plus 2 CI-parity tests), and all eight complete cold-wire cases pass at the totals above. Exact post-integration measurements replace the earlier per-case artifacts.
 
 Final integration also verifies develop `63fcd2729ee6277adcfc89de17f1543a70acef8e` (TICKET-184): quick verification passes 97 related tests plus 2 CI-parity tests; production build passes; all 22 combined wire/PWA cases pass. Strict queue-identity cache/key/UUID assertions and hashed offline-font allowlisting are both retained. These are the final per-case wire artifacts.
+
+CI repair: native `/order` and `/offline` now inherit the same saved public-event OG/Twitter metadata as the layout routes, with attribute escaping and token-free image URLs. Worker gzip transport is separate from the pure worker-source generator, preserving the scanner VM fixture. Targeted unit tests pass 63/63, quick verification passes 76 related plus 2 parity tests, production build passes, scanner Chromium/WebKit passes 46/46, and share-preview/budget tests pass 12/12 (two unrelated invitation-fixture cases intentionally not enabled). Updated wire artifacts include the metadata bytes: maximum 183,349 bytes. No budget or assertion was relaxed.

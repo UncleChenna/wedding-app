@@ -1,4 +1,6 @@
 import "server-only";
+import type { PreviewEventDetails } from "@/modules/invitations/lib/share-metadata";
+import { defaultEventSettings } from "@/modules/shared/lib/event-settings";
 import { logger } from "@/modules/shared/lib/logger";
 import { requestRetryDocument } from "@/modules/shared/server/request-retry-document";
 import { readFile } from "node:fs/promises";
@@ -17,9 +19,12 @@ import { orderDocument, type OrderSelection } from "./order-document";
 
 const asset = z.string().regex(/^\/order-assets\/order-[a-f0-9]{64}\.(js|css)$/);
 const manifestSchema = z.object({ script: asset, stylesheet: asset });
-export async function orderPage(request: Request) {
+export async function orderPage(
+  request: Request,
+  event: PreviewEventDetails = defaultEventSettings,
+) {
   try {
-    return await renderOrderPage(request);
+    return await renderOrderPage(request, event);
   } catch (error) {
     unstable_rethrow(error);
     logger.child({ module: "ordering" }).warn("Order page could not be loaded");
@@ -34,7 +39,7 @@ export async function orderPage(request: Request) {
     });
   }
 }
-async function renderOrderPage(request: Request) {
+async function renderOrderPage(request: Request, event: PreviewEventDetails) {
   const url = new URL(request.url);
   const saved = (await cookies()).get(TABLE_COOKIE)?.value;
   const selected = saved ? await resolveTableSelection(saved, findTable) : null;
@@ -68,7 +73,7 @@ async function renderOrderPage(request: Request) {
     JSON.parse(await readFile(join(process.cwd(), "public/order-assets/manifest.json"), "utf8")),
   );
   return new Response(
-    orderDocument({ themes: await getStoredActiveThemes(), ...assets, selection }),
+    orderDocument({ themes: await getStoredActiveThemes(), ...assets, selection, event }),
     {
       headers: {
         "Content-Type": "text/html; charset=utf-8",

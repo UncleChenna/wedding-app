@@ -1,3 +1,6 @@
+vi.mock("@/modules/shared/lib/env/client", () => ({
+  clientEnv: { NEXT_PUBLIC_SITE_URL: "https://wedding.example" },
+}));
 import { beforeEach, expect, it, vi } from "vitest";
 const find = vi.hoisted(() => vi.fn());
 const cookieRead = vi.hoisted(() => vi.fn());

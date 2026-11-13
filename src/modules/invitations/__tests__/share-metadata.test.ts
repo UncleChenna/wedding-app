@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { invitationPreviewMetadata } from "../lib/share-metadata";
+import { invitationPreviewHtml, invitationPreviewMetadata } from "../lib/share-metadata";
 
 describe("public invitation previews", () => {
   it("uses approved public wording and a token-free image URL", () => {
@@ -45,4 +45,17 @@ it("uses saved public event details for both social cards without serializing ex
     ],
   });
   expect(JSON.stringify(result)).not.toMatch(/Uchenna|Adaora|Private Guest|private-token/);
+});
+
+it("escapes saved public details in native preview tags and discards private URL paths", () => {
+  const html = invitationPreviewHtml("https://wedding.example/i/private-token?guest=Private", {
+    coupleNames: ['Nneka <"', "Chidi & Co"],
+    eventDate: "2027-01-02",
+  });
+  expect(html).toContain('content="Nneka &lt;&quot; &amp; Chidi &amp; Co · 2 January 2027"');
+  expect(html).toContain(
+    'property="og:image" content="https://wedding.example/invitation-preview"',
+  );
+  expect(html).toContain('name="twitter:card" content="summary_large_image"');
+  expect(html).not.toMatch(/private-token|guest=|<"/);
 });

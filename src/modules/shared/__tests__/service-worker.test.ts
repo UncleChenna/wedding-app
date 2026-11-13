@@ -13,7 +13,8 @@ import {
   SW_STATIC_CACHE,
 } from "../lib/sw-policy";
 import { OWN_PASS_CACHE } from "@/modules/invitations/lib/offline-worker";
-import { serviceWorkerResponse, serviceWorkerSource } from "../server/service-worker";
+import { serviceWorkerSource } from "../server/service-worker";
+import { serviceWorkerResponse } from "../server/service-worker-response";
 
 const ORIGIN = "https://wedding.example";
 const req = (path: string, init: { method?: string; headers?: Record<string, string> } = {}) => ({

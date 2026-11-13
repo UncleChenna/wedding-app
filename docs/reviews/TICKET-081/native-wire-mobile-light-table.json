@@ -6,14 +6,14 @@
     "height": 839
   },
   "budget": 200000,
-  "total": 168641,
-  "browserReported": 133159,
+  "total": 170027,
+  "browserReported": 134545,
   "transport": "loopback HTTP/1 wire; no rewriting",
   "rows": [
     {
       "path": "/order",
       "worker": false,
-      "bytes": 5440,
+      "bytes": 6011,
       "status": 200
     },
     {
@@ -55,7 +55,7 @@
     {
       "path": "/offline",
       "worker": true,
-      "bytes": 8787,
+      "bytes": 9602,
       "status": 200
     },
     {
