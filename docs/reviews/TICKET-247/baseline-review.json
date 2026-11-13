@@ -1,0 +1,729 @@
+{
+  "source_run": 43411506204,
+  "source_job": 131839484742,
+  "source_head": "10055803b17ddbb3f4643b409b04dd529668ec9b",
+  "changed": 80,
+  "unchanged": 60,
+  "snapshots": [
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/invitation-ivory-gold-iphone-15-regression-linux.png",
+      "before_dimensions": [393, 3049],
+      "after_dimensions": [393, 3646],
+      "before_sha256": "673d92e79f5c8960684da018808afd38939850adeedde40913479c720db041c0",
+      "after_sha256": "e0fe1bc29c943e8c79e9cd0311f2ed88cf46c8ac544a03309f7947b9f43ca7f9",
+      "retry_identical": true,
+      "reason": "TICKET-038 labelled full-bleed stock hero and TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/offline-blush-sage-iphone-15-regression-linux.png",
+      "before_dimensions": [393, 852],
+      "after_dimensions": [393, 852],
+      "before_sha256": "90b26b8a1debcef62597b02bfc286c52654b2bbcaba2c4fc34b347bc781e3a9e",
+      "after_sha256": "f57b002d8dfe274a0661e4f594c8c57cd4cda91679b7673b8a1f311b6cc61eaa",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/offline-ivory-gold-iphone-15-regression-linux.png",
+      "before_dimensions": [393, 852],
+      "after_dimensions": [393, 852],
+      "before_sha256": "b051a34c884dafa5ea8e8071c853a360b6900f221244af4259984bed58813f22",
+      "after_sha256": "5695078791730ea3989b9a017b35c0e7816e48d228aed84156b400915e81dbf4",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/order-blush-sage-iphone-se-regression-linux.png",
+      "before_dimensions": [375, 781],
+      "after_dimensions": [375, 802],
+      "before_sha256": "77ab75826297e152d06490730f2ce329f6d28e231cf7da1fc3f0b25da50eaa29",
+      "after_sha256": "4eed1597f2764e2b9b9085acd7b083161c890a2a82df0569e9812886710a3816",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/invitation-midnight-champagne-iphone-15-regression-linux.png",
+      "before_dimensions": [393, 3038],
+      "after_dimensions": [393, 3636],
+      "before_sha256": "efea5bdcbacc1df79b406cb92f7dcd64b408aaff53624430df9b4bb6f1d86bc2",
+      "after_sha256": "5d9fc3efbeb7dd8485895794be140acddf406f18e24366b14ac85755f1b1e8b9",
+      "retry_identical": true,
+      "reason": "TICKET-038 labelled full-bleed stock hero and TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/offline-midnight-champagne-desktop-regression-linux.png",
+      "before_dimensions": [1280, 800],
+      "after_dimensions": [1280, 800],
+      "before_sha256": "5429ac3653af93e3fcf7c07438899af5862504fa07db6568011d2f5a0f86054c",
+      "after_sha256": "138a6ecfbe28822f50589316acc2ca37daf620f9221070470ac62369b96d248f",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/order-emerald-night-iphone-15-regression-linux.png",
+      "before_dimensions": [393, 852],
+      "after_dimensions": [393, 852],
+      "before_sha256": "e6d0b24aaf6247453ef23dfea4762cfc8aaf8af87e63896d96062de0a5020a94",
+      "after_sha256": "36049806673517573217ddf7ad6ee848bd74cea54b80b1c369c6c37ed56b380e",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/lost-link-ivory-gold-android-regression-linux.png",
+      "before_dimensions": [360, 933],
+      "after_dimensions": [360, 933],
+      "before_sha256": "13b4e1e547f398dcf68b7f73eadb74a2431dbe77860eae82a45dfaa18e2808a2",
+      "after_sha256": "9a88867688f40bcbc8159bc68c2f4edf9119b61fcac23e28d35665235205d4c5",
+      "retry_identical": true,
+      "reason": "TICKET-014 requested ivory/champagne/chocolate palette"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/offline-midnight-champagne-android-regression-linux.png",
+      "before_dimensions": [360, 800],
+      "after_dimensions": [360, 800],
+      "before_sha256": "64d155e304c82e766900aa41d74d09abfd61bd2dccef48b50e6a4701dd5b2afe",
+      "after_sha256": "bff412da387f946aae07e2ae75b7840f6d0f93cd894768191bf6d96ab9ce6bf4",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/invitation-ivory-gold-android-regression-linux.png",
+      "before_dimensions": [360, 3010],
+      "after_dimensions": [360, 3566],
+      "before_sha256": "62342ded773521bec7b16744c5844310338f07a76bd9748343caeccd25ca6ff5",
+      "after_sha256": "b45d17c0ef0d12759f8a0c220e8df61bd441dc3011948c85afdc55c0a6ce5129",
+      "retry_identical": true,
+      "reason": "TICKET-038 labelled full-bleed stock hero and TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/pass-ivory-gold-iphone-15-regression-linux.png",
+      "before_dimensions": [393, 852],
+      "after_dimensions": [393, 852],
+      "before_sha256": "63b27987af20549c881a1ba46c9bec088b383ad50fbc55bc7be3da11554d08a4",
+      "after_sha256": "feb215f6d20147c4d37d082a478ad26d2c541daee198e5528275b30f03be6b50",
+      "retry_identical": true,
+      "reason": "TICKET-014 requested ivory/champagne/chocolate palette"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/order-ivory-gold-ipad-regression-linux.png",
+      "before_dimensions": [820, 1180],
+      "after_dimensions": [820, 1180],
+      "before_sha256": "71a680a2563832255e39849142f6291c21ad8abdb1ddf635b225b7d2a7c7e1c4",
+      "after_sha256": "57d8631408d9a004ce9f59ec0184d09e85e717e261d64342b5815990dd347366",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/invite-ivory-gold-desktop-regression-linux.png",
+      "before_dimensions": [1280, 800],
+      "after_dimensions": [1280, 800],
+      "before_sha256": "66b43f4df37f45c1480a4a4a91ebb19a9531cad46780cbb8fcde7a05f7cf191b",
+      "after_sha256": "034ae9b9f821f8bc0f72b85ccb4812c5dfad4e4384154d6b80597e3499e1bd3a",
+      "retry_identical": true,
+      "reason": "TICKET-014 requested ivory/champagne/chocolate palette"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/offline-emerald-night-iphone-15-regression-linux.png",
+      "before_dimensions": [393, 852],
+      "after_dimensions": [393, 852],
+      "before_sha256": "659194b5ed5cb9d3303e12ffaad71298cae508cc5ec18e1a8299e123f9d2dbca",
+      "after_sha256": "8fad340204ca6b612fe4375f8c55bf0bd08afe2c2e9f317a5e458cce46b74c49",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/offline-emerald-night-iphone-se-regression-linux.png",
+      "before_dimensions": [375, 667],
+      "after_dimensions": [375, 667],
+      "before_sha256": "104f4dce9c73a1450bc29c64808d8f74671c6e3b0e495d83a02ecdd731a97c9a",
+      "after_sha256": "ca7be73c9aeb6893c709b3a1c90723b8f2f754dc667a278d794c249926798672",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/order-midnight-champagne-android-regression-linux.png",
+      "before_dimensions": [360, 800],
+      "after_dimensions": [360, 802],
+      "before_sha256": "552de91a941a7e30d4cb7ebc02524f36da5506e8f10eac2a8026b8d53ab0ceb0",
+      "after_sha256": "9c1cd003d9cc3f9eb74a613b9ca4782d7081a089b7ea2be80aea5ca9c214309a",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/order-blush-sage-android-regression-linux.png",
+      "before_dimensions": [360, 800],
+      "after_dimensions": [360, 802],
+      "before_sha256": "02adf71de7c458f215d0e886f265f36f5e750703d0a08ffa5bd84ab0fbaf3653",
+      "after_sha256": "c898a73d8e1d7a75a4e8ef3649f5d62f0f0f37866915b3e2ae02a98c4cd7d710",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/invitation-emerald-night-iphone-se-regression-linux.png",
+      "before_dimensions": [375, 3027],
+      "after_dimensions": [375, 3602],
+      "before_sha256": "d1cf732cf4ab0adde7a0a0ba4cb4bfb5e1660c627f79ab6cfb6ae9854c315145",
+      "after_sha256": "3b0b6283e69857d154062cbb220cef1a668ffac64b663f91ebb54a66018ac6fd",
+      "retry_identical": true,
+      "reason": "TICKET-038 labelled full-bleed stock hero and TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/home-ivory-gold-android-regression-linux.png",
+      "before_dimensions": [360, 823],
+      "after_dimensions": [360, 823],
+      "before_sha256": "0a8526ff674dd6fa66998e7901a63428620daafb957fa8bfb601bab01adc3902",
+      "after_sha256": "4865b14b179bf2dff2b1fab67f06b3bf2cca099a96d8bccd08a09332311b9801",
+      "retry_identical": true,
+      "reason": "TICKET-014 requested ivory/champagne/chocolate palette"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/invitation-midnight-champagne-iphone-se-regression-linux.png",
+      "before_dimensions": [375, 3027],
+      "after_dimensions": [375, 3602],
+      "before_sha256": "4bccb6335acd4735116b0760879757d3df6cd9a0df14ead8ba911f78b0d3653a",
+      "after_sha256": "608f3458b7e74884e7892bd0a7e65299cee06532c46ceaee3b4f1ad6de10b01f",
+      "retry_identical": true,
+      "reason": "TICKET-038 labelled full-bleed stock hero and TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/invite-ivory-gold-iphone-se-regression-linux.png",
+      "before_dimensions": [375, 854],
+      "after_dimensions": [375, 854],
+      "before_sha256": "91e46f998f98d61154f918dbf0e5e65d54b160fbe0bfb16eb8c262ab90d7d09d",
+      "after_sha256": "063c8c2efd990ed20192f456c9238de3fb0ca91ec55972c4cc1265335c60adee",
+      "retry_identical": true,
+      "reason": "TICKET-014 requested ivory/champagne/chocolate palette"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/invitation-ivory-gold-ipad-regression-linux.png",
+      "before_dimensions": [820, 3001],
+      "after_dimensions": [820, 3722],
+      "before_sha256": "f457a6cfeb5e5e15a1f3499e0750c3f7d1ec9f6f48f7771e6b31175974759706",
+      "after_sha256": "9cc5581f4896d1ee8b5a1c3b3b5ba19441210ea97c3c3e89db9ac20bbb96907a",
+      "retry_identical": true,
+      "reason": "TICKET-038 labelled full-bleed stock hero and TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/offline-emerald-night-ipad-regression-linux.png",
+      "before_dimensions": [820, 1180],
+      "after_dimensions": [820, 1180],
+      "before_sha256": "0031dae1828df12d28e6c2594195579bb42dcbb08c460fe252113550998b13ff",
+      "after_sha256": "ac2b2fecdf333778cc4fabd72a985d83be4d251937f35fbda8002252f474a71c",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/home-ivory-gold-iphone-se-regression-linux.png",
+      "before_dimensions": [375, 823],
+      "after_dimensions": [375, 823],
+      "before_sha256": "7564b78c7818ca71baf943c6aa329e50da5c424ba0d0db7736e003f38a43c9f8",
+      "after_sha256": "20ad8c7948dc1296e8bba72c0c7d7b3757a1309dcd1d269416ee1976973c2e23",
+      "retry_identical": true,
+      "reason": "TICKET-014 requested ivory/champagne/chocolate palette"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/invitation-blush-sage-ipad-regression-linux.png",
+      "before_dimensions": [820, 2975],
+      "after_dimensions": [820, 3696],
+      "before_sha256": "16390b5f40656713ab28f09de8a3ab4cc220eb7140efccb10f75296ff6c6543d",
+      "after_sha256": "2bbd4a18633eb43f6e0ca9c16041a5304663e1702b7e7c0266d8c98bf458da45",
+      "retry_identical": true,
+      "reason": "TICKET-038 labelled full-bleed stock hero and TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/order-midnight-champagne-ipad-regression-linux.png",
+      "before_dimensions": [820, 1180],
+      "after_dimensions": [820, 1180],
+      "before_sha256": "6be31c490d30ce95590813f7963be059d1bb00a56ae930fedba468579ea73cdd",
+      "after_sha256": "8dd5668f36629cf3948a9df9070cd0f9aa090fd5f122084231f4ebeda0b59d95",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/offline-blush-sage-android-regression-linux.png",
+      "before_dimensions": [360, 800],
+      "after_dimensions": [360, 800],
+      "before_sha256": "da920b825c99e2f8053d97b59a80c1c69b8ccb8fa48b5d03d2f68b14e28ab9d7",
+      "after_sha256": "dd9e9c26aae84301dee5409a3002537b857252d732e24a127daefdcaef4d758f",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/invitation-blush-sage-iphone-15-regression-linux.png",
+      "before_dimensions": [393, 3038],
+      "after_dimensions": [393, 3636],
+      "before_sha256": "5564300a2ff4cf74fd631ab22566b49adbb5827b1547d4b27d7369bc295f4b02",
+      "after_sha256": "f9d9b5c4864c7ad71362dac972b7a01afc391c0ea1c1940d65454f8a43f5c6e4",
+      "retry_identical": true,
+      "reason": "TICKET-038 labelled full-bleed stock hero and TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/lost-link-ivory-gold-iphone-se-regression-linux.png",
+      "before_dimensions": [375, 904],
+      "after_dimensions": [375, 904],
+      "before_sha256": "84a964d225369036e80398fe1ca9b485488f512d2bb9387e60ab1871e82848ee",
+      "after_sha256": "9abf9e555037f114b844b0117325d8e5b752980a1756a664b22fe8dbe8355cec",
+      "retry_identical": true,
+      "reason": "TICKET-014 requested ivory/champagne/chocolate palette"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/invite-ivory-gold-iphone-15-regression-linux.png",
+      "before_dimensions": [393, 852],
+      "after_dimensions": [393, 852],
+      "before_sha256": "74c3762ba4bd4f0d49cf56c473d2a7261082a6bf274bd8056b72cfee14a7502e",
+      "after_sha256": "210b5dd7eeebc1e917ef438b1acb00d4469bed61e94d521e15ec42caf4a516fd",
+      "retry_identical": true,
+      "reason": "TICKET-014 requested ivory/champagne/chocolate palette"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/lost-link-ivory-gold-desktop-regression-linux.png",
+      "before_dimensions": [1280, 800],
+      "after_dimensions": [1280, 800],
+      "before_sha256": "e80af998bd2ffb564fdb5f3f92fc6717cda0a9f89767c97ad8d261c3e07a9d8b",
+      "after_sha256": "ff08a969922f622412417491de473f62373594aa0dfbf0ff03048b47ffce87f0",
+      "retry_identical": true,
+      "reason": "TICKET-014 requested ivory/champagne/chocolate palette"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/order-midnight-champagne-desktop-regression-linux.png",
+      "before_dimensions": [1280, 827],
+      "after_dimensions": [1280, 846],
+      "before_sha256": "c3823bacbb2c00f878444801547e98d7085bac5b07e0b53590d467da95344709",
+      "after_sha256": "61ab25c2072a8491afb7b92c8b194bc17d0937c946197f8e66c8af1032d064b4",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/offline-ivory-gold-desktop-regression-linux.png",
+      "before_dimensions": [1280, 800],
+      "after_dimensions": [1280, 800],
+      "before_sha256": "ae0b848f4f6c69111288c2528c36f910b7ef63942bb9761b089749e6107efb61",
+      "after_sha256": "54bf4d018efe229f7a681ca1d1fa896b09db2fb45edcbe14e5940f8fc1153a3e",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/invitation-blush-sage-desktop-regression-linux.png",
+      "before_dimensions": [1280, 3058],
+      "after_dimensions": [1280, 3884],
+      "before_sha256": "22a000cca697fea249b0a54fb16e1b1bac55951e9532de2c83dc771139ca0d35",
+      "after_sha256": "945d92d2491117271f2ca6bf6289e467de85700c0500e73b664d072d9314bb9f",
+      "retry_identical": true,
+      "reason": "TICKET-038 labelled full-bleed stock hero and TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/offline-ivory-gold-android-regression-linux.png",
+      "before_dimensions": [360, 800],
+      "after_dimensions": [360, 800],
+      "before_sha256": "137f7206c657fa80d1013b11b0fa985fdd6e947f6dabb6aef41b7166b9a28b67",
+      "after_sha256": "5f6cacd538648fb8f4f882541519c1c6e58360abcf32546f06901a6a200b0cf4",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/offline-blush-sage-iphone-se-regression-linux.png",
+      "before_dimensions": [375, 667],
+      "after_dimensions": [375, 667],
+      "before_sha256": "4ca1a69afcd030406e8c5708985b2ed819b6a1a063ca0ab1ed15ce7c727a9249",
+      "after_sha256": "63a066c63a4113a9552f547aa99b2144e03e27ec066be55440bad36525ad1977",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/invite-ivory-gold-android-regression-linux.png",
+      "before_dimensions": [360, 854],
+      "after_dimensions": [360, 854],
+      "before_sha256": "41647fa4bf8b2daaac553aceda86cd3f59bdc73ddb5060566280391ec65b02d1",
+      "after_sha256": "b0261e206f9d56e353b6aaac30f2205d51fe0dcc11152b057e7eddb94355f3ae",
+      "retry_identical": true,
+      "reason": "TICKET-014 requested ivory/champagne/chocolate palette"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/invitation-ivory-gold-desktop-regression-linux.png",
+      "before_dimensions": [1280, 3058],
+      "after_dimensions": [1280, 3884],
+      "before_sha256": "7f49d67f509d3ff583cd79023e2552f59853c149a5c0b3e024bc099a34d96b02",
+      "after_sha256": "650edae160e8084f50d050cb0b173557ba11b12c1ff2423e9642c62a70cad0a7",
+      "retry_identical": true,
+      "reason": "TICKET-038 labelled full-bleed stock hero and TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/pass-ivory-gold-ipad-regression-linux.png",
+      "before_dimensions": [820, 1180],
+      "after_dimensions": [820, 1180],
+      "before_sha256": "ed871d3499d4c105eea8847fa8c4e2be1d3d1d3aad74ce3e56bf7d7d386153fb",
+      "after_sha256": "c4c9f917cb885c7412d3d54dd48a9dc593c38af2c67f832de506a673aea3c0fc",
+      "retry_identical": true,
+      "reason": "TICKET-014 requested ivory/champagne/chocolate palette"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/invitation-midnight-champagne-android-regression-linux.png",
+      "before_dimensions": [360, 3010],
+      "after_dimensions": [360, 3566],
+      "before_sha256": "5fe9d1767094c0d3081b01e8252f5eb59ba3593bba41b4d4d0082bdf210f344a",
+      "after_sha256": "1f9128d69e4bfc76296f0b38068dbd56a6e907408d82eaf2f5e9dfeef21d1b31",
+      "retry_identical": true,
+      "reason": "TICKET-038 labelled full-bleed stock hero and TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/offline-midnight-champagne-ipad-regression-linux.png",
+      "before_dimensions": [820, 1180],
+      "after_dimensions": [820, 1180],
+      "before_sha256": "9285c71b82a41745452a6ddaf86d3faaaa627c0516783d53c6d36a5db2ecfd98",
+      "after_sha256": "17a0968e9dd137781b7f76b48e8b25f1761455556dfb1d53d01b94b961fb9ac1",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/order-midnight-champagne-iphone-se-regression-linux.png",
+      "before_dimensions": [375, 781],
+      "after_dimensions": [375, 802],
+      "before_sha256": "2e3552f2c37d5499e7b4cbc3fa5a6fa065691ff336b9e6e01b285c87a5d6969e",
+      "after_sha256": "482154f3f2eed6ec00b129c491caca387e6932b03e35c028ebca8cbde8b20b8d",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/invite-ivory-gold-ipad-regression-linux.png",
+      "before_dimensions": [820, 1180],
+      "after_dimensions": [820, 1180],
+      "before_sha256": "cb589792dbbbe75e5e4023fabe4df596d706368463308252e5c32c7738a26145",
+      "after_sha256": "4e63c20a8f90c07b37c5a770a72d1c5f72be7fa7f6f95ba98edede33366d28fe",
+      "retry_identical": true,
+      "reason": "TICKET-014 requested ivory/champagne/chocolate palette"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/order-emerald-night-ipad-regression-linux.png",
+      "before_dimensions": [820, 1180],
+      "after_dimensions": [820, 1180],
+      "before_sha256": "c3d5900d5b67e5ceb8b82449931aa3a9a754819946674cd35a922f58d5e34493",
+      "after_sha256": "006b928e2907d0d127470593d5c898b1870eabcfdab3d570cd3b04f5f1b3c434",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/order-midnight-champagne-iphone-15-regression-linux.png",
+      "before_dimensions": [393, 852],
+      "after_dimensions": [393, 852],
+      "before_sha256": "975917647662107ee458b7d54331ea2bde22cac3412cdcf321feaf7c6fef5f98",
+      "after_sha256": "4f9dac470e1a59e9d728f5534568434aff9c44f3f26841b245af77cf8ecf6060",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/invitation-midnight-champagne-ipad-regression-linux.png",
+      "before_dimensions": [820, 2975],
+      "after_dimensions": [820, 3696],
+      "before_sha256": "9cb4d7c6fb7a32b048484013eee32b0d14713f0efc74aa94cad10272e0d9ffdf",
+      "after_sha256": "d1599ae0b5633a766a019cd09f49c2c1da0719d72261cc8c3b2ad041efe33469",
+      "retry_identical": true,
+      "reason": "TICKET-038 labelled full-bleed stock hero and TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/order-ivory-gold-android-regression-linux.png",
+      "before_dimensions": [360, 800],
+      "after_dimensions": [360, 802],
+      "before_sha256": "49267d149c3356ad358ddf0daef19393014abb37ef441bd3b76f57f598a02520",
+      "after_sha256": "04267c3243a8e1e2f733a7b868df88ac0ad93e8a6d3a36c8647b8472b9d0bcf6",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/lost-link-ivory-gold-ipad-regression-linux.png",
+      "before_dimensions": [820, 1180],
+      "after_dimensions": [820, 1180],
+      "before_sha256": "4ccd72c712b3d80580c16c073cb063f81f92d3d893f01f9145ff55b8270fa00f",
+      "after_sha256": "203a548dcee6c88488ead97a77c6a33646143af89b24ccca2901f23126dcc46f",
+      "retry_identical": true,
+      "reason": "TICKET-014 requested ivory/champagne/chocolate palette"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/home-ivory-gold-iphone-15-regression-linux.png",
+      "before_dimensions": [393, 852],
+      "after_dimensions": [393, 852],
+      "before_sha256": "95d820fd2dfacbe258adcebbadd0febe62dc7e0b4b4d875806081049b415c573",
+      "after_sha256": "5ff7e1339acdd2d9d72dcbd1cbc631457a26c3ff43366cbfc16cfcff5d217842",
+      "retry_identical": true,
+      "reason": "TICKET-014 requested ivory/champagne/chocolate palette"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/offline-emerald-night-android-regression-linux.png",
+      "before_dimensions": [360, 800],
+      "after_dimensions": [360, 800],
+      "before_sha256": "2b7d3b2aa68b73a4fa272ed889542eac81150b380a74d74cc7ccc6e05d7057d1",
+      "after_sha256": "880b9d2ab943e9f219882893e56e08322fc57f27ebb9d9a6ac973ea0108d8955",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/offline-blush-sage-ipad-regression-linux.png",
+      "before_dimensions": [820, 1180],
+      "after_dimensions": [820, 1180],
+      "before_sha256": "ba2fc7f9beba301d4badc6d6454db2c8d00aee1ef274097f0ba8a4062f44561e",
+      "after_sha256": "ed1ae86a4a5767c15e89ef3c7ebc6a87591cf972dc158ffab11111b7ed0cda80",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/order-ivory-gold-iphone-15-regression-linux.png",
+      "before_dimensions": [393, 852],
+      "after_dimensions": [393, 852],
+      "before_sha256": "a6f9c5ee1930714d95dcb7ec9106e32a2b32ea57d75b76f8aed25cb14cb2a56c",
+      "after_sha256": "0001f62e2e7a29a67096f86bfa42194416ebf5a42f8a509d978035e5f4ab8141",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/offline-midnight-champagne-iphone-se-regression-linux.png",
+      "before_dimensions": [375, 667],
+      "after_dimensions": [375, 667],
+      "before_sha256": "81757e16c0028196e2e20425725ec44e9387bd25152e832383e9064e2736f02e",
+      "after_sha256": "cb9e4f7c00ace2e537c7a60b6fed094ff812d6cd8e3828c6bfaaba869fbcbc06",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/lost-link-ivory-gold-iphone-15-regression-linux.png",
+      "before_dimensions": [393, 878],
+      "after_dimensions": [393, 878],
+      "before_sha256": "5d9e72e13246fd8d1dcd18fc4eaacc7e5aae353984d95fefaa3ff418b4efbc93",
+      "after_sha256": "60308fa73e197755d23d62d8ef2b441b57761a95e8aee4e50f277ce1649aaca3",
+      "retry_identical": true,
+      "reason": "TICKET-014 requested ivory/champagne/chocolate palette"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/home-ivory-gold-desktop-regression-linux.png",
+      "before_dimensions": [1280, 926],
+      "after_dimensions": [1280, 926],
+      "before_sha256": "2ced34046c67b8b9e814aa8e67004c10da328032b1958cb521b8dcb1f465042c",
+      "after_sha256": "21435d771e18bf8b5880e73a21b3d16135232ac956090edfed96604d0e719945",
+      "retry_identical": true,
+      "reason": "TICKET-014 requested ivory/champagne/chocolate palette"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/invitation-blush-sage-iphone-se-regression-linux.png",
+      "before_dimensions": [375, 3027],
+      "after_dimensions": [375, 3602],
+      "before_sha256": "2818cfc47a7d0fd12a4f11e6ac2b0f217dea09d8f46e95a95e9b7c03d6d2fc02",
+      "after_sha256": "f2920cc6b1350c020243807681ee606cbe14dd9173f57a6cf8afe562f771d567",
+      "retry_identical": true,
+      "reason": "TICKET-038 labelled full-bleed stock hero and TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/offline-blush-sage-desktop-regression-linux.png",
+      "before_dimensions": [1280, 800],
+      "after_dimensions": [1280, 800],
+      "before_sha256": "5e96451bd124eba2b9668dcfa062a5cb67dc9fa750b20a2ae465521d524c54cd",
+      "after_sha256": "fdd436d7fd837ae2368cff902d6451dc15f8770ebd3e7cba0bf7ced4610883af",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/invitation-emerald-night-ipad-regression-linux.png",
+      "before_dimensions": [820, 3001],
+      "after_dimensions": [820, 3722],
+      "before_sha256": "75c8198ffbd0f332d544c41fcee0f9e8c3d9f7ae6c31d4d45855ca0d8b220521",
+      "after_sha256": "c285dc4eb4fff429b8775d83ab4928e74a9e3e488742ae98e9d47aae03fdb8a5",
+      "retry_identical": true,
+      "reason": "TICKET-038 labelled full-bleed stock hero and TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/order-emerald-night-android-regression-linux.png",
+      "before_dimensions": [360, 800],
+      "after_dimensions": [360, 802],
+      "before_sha256": "f10d79c9dba9988b827e00a3f1c56f2631593bb63f6f7e38f0f8c87555a0c0de",
+      "after_sha256": "8ba06fad2f9445d2ccfca21694cba405adae400dd06c7deb270b32cb0098c01d",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/invitation-blush-sage-android-regression-linux.png",
+      "before_dimensions": [360, 3010],
+      "after_dimensions": [360, 3566],
+      "before_sha256": "ca18a6bbfd546acce754dc0fa950f52e4e73fdfcb10b6d2933153f361465f6ac",
+      "after_sha256": "cc7aa02a0ffdd07bfc1f6e7725f325289e8e83947c6163c0419f03c607d81bf1",
+      "retry_identical": true,
+      "reason": "TICKET-038 labelled full-bleed stock hero and TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/order-blush-sage-iphone-15-regression-linux.png",
+      "before_dimensions": [393, 852],
+      "after_dimensions": [393, 852],
+      "before_sha256": "dc1a81bfc8f166e1308c89d31d5d4a6d801f0739d4cf2ef177474403430aca35",
+      "after_sha256": "083a2fcbd69db0bac4b5b6060b67dfbaacdfa74e20c22fe5917462eab01f9c66",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/pass-ivory-gold-iphone-se-regression-linux.png",
+      "before_dimensions": [375, 816],
+      "after_dimensions": [375, 816],
+      "before_sha256": "5da3297c0c43eeaedf1639f6cb6450fe5a10fb14139128855a740ed433b9778d",
+      "after_sha256": "1b2200f986f09982a94182bc60746e806e93890bb37d86ebf5935fc2fe6893de",
+      "retry_identical": true,
+      "reason": "TICKET-014 requested ivory/champagne/chocolate palette"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/offline-ivory-gold-ipad-regression-linux.png",
+      "before_dimensions": [820, 1180],
+      "after_dimensions": [820, 1180],
+      "before_sha256": "71046fa3da3d79dfe6142331a1cdf238f6ed162e64cc8356f0b55286ac0c771e",
+      "after_sha256": "4ea687b2882db45c607131947ea8c5174143dd69ad5ac4e3702df7d8e442c2d6",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/order-ivory-gold-iphone-se-regression-linux.png",
+      "before_dimensions": [375, 781],
+      "after_dimensions": [375, 802],
+      "before_sha256": "060cf705d2f3aab19be895c4cb472995641809cd61e88f1ee37553dfe7b42de7",
+      "after_sha256": "3417936904b7918a1d0821daaa31d1efc8abd206b007204103985ef806abdbc2",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/invitation-emerald-night-desktop-regression-linux.png",
+      "before_dimensions": [1280, 3058],
+      "after_dimensions": [1280, 3884],
+      "before_sha256": "a477aa26a6bc5a35c5cb5e8537afeffdb83e2c1fb8d449d3a8483cc4f347c4de",
+      "after_sha256": "4bc19f7ccc88f9dd2a7300fbbe2336f7843cf8773f170e2c31ac34d4b40d4ee8",
+      "retry_identical": true,
+      "reason": "TICKET-038 labelled full-bleed stock hero and TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/order-ivory-gold-desktop-regression-linux.png",
+      "before_dimensions": [1280, 827],
+      "after_dimensions": [1280, 846],
+      "before_sha256": "8de21974b318ebaccb954b12343216908623869025c127a8faa8fe01d61ae6a0",
+      "after_sha256": "ca918a34aff09b79c97d6ad2ad8d0cc8d421824e7e8519f0728459e18237c8cc",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/offline-ivory-gold-iphone-se-regression-linux.png",
+      "before_dimensions": [375, 667],
+      "after_dimensions": [375, 667],
+      "before_sha256": "fadce137855be2f2b550f69e5e77eaa56532fa95f87db0cdad1354d9e97dfeb3",
+      "after_sha256": "c8977cd347f04cd21d99e501ba46f59617cb14154dd155482c2ec39fdc3dd8ed",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/order-blush-sage-ipad-regression-linux.png",
+      "before_dimensions": [820, 1180],
+      "after_dimensions": [820, 1180],
+      "before_sha256": "90a409a7f389207759aca53be4c6c6c004e1b798aef4b1a3d4e7721b67d05351",
+      "after_sha256": "df82214dec95f09b925af5baa8864f40685d0fbababda91b08773d23e5076a1f",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/offline-midnight-champagne-iphone-15-regression-linux.png",
+      "before_dimensions": [393, 852],
+      "after_dimensions": [393, 852],
+      "before_sha256": "174de7461756c95d22db2a6bfb781f77a701299ddf0b1d8e061f5c254223fae7",
+      "after_sha256": "528d8b74cd9d96bc5e8a9a029abf620e9e6204b90c68899f806cff4021dd24d1",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/order-emerald-night-iphone-se-regression-linux.png",
+      "before_dimensions": [375, 781],
+      "after_dimensions": [375, 802],
+      "before_sha256": "fea628f2cc4b14f03a469db62506e791fdf6dd777a90bc9762b6156d33126ab3",
+      "after_sha256": "394e4966e440d7f963610f3611d4df8019510a3a2c015335d7e3b1edcea304b7",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/pass-ivory-gold-desktop-regression-linux.png",
+      "before_dimensions": [1280, 840],
+      "after_dimensions": [1280, 840],
+      "before_sha256": "ba32424b5a6a83dac1ab5b3bc5fbab2c6de90d0d5e66712ff6ecd0bac8532650",
+      "after_sha256": "2c19100609f4bb2f98d80e0afc7db748fa58fb5923f8b9590a54da14a16ad02a",
+      "retry_identical": true,
+      "reason": "TICKET-014 requested ivory/champagne/chocolate palette"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/pass-ivory-gold-android-regression-linux.png",
+      "before_dimensions": [360, 808],
+      "after_dimensions": [360, 808],
+      "before_sha256": "104f31189daf597b01f3a8e947033cb0844c86647b2bd4ef47efa93ff81374db",
+      "after_sha256": "bfb45218bfd5c216d1eaec9d2e8a4e44aa12502e474f6e5ea94bc4859fec2411",
+      "retry_identical": true,
+      "reason": "TICKET-014 requested ivory/champagne/chocolate palette"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/invitation-ivory-gold-iphone-se-regression-linux.png",
+      "before_dimensions": [375, 3027],
+      "after_dimensions": [375, 3602],
+      "before_sha256": "0bed82fca3d41544242740305c40a0e6a8054e16625707bbe8e5776d97ad8b10",
+      "after_sha256": "bcb90160e27dd42e3530056c3680dfd414d5a2e9babffe4a4ae5132a93f6d5bc",
+      "retry_identical": true,
+      "reason": "TICKET-038 labelled full-bleed stock hero and TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/invitation-emerald-night-android-regression-linux.png",
+      "before_dimensions": [360, 3010],
+      "after_dimensions": [360, 3566],
+      "before_sha256": "a445abc85736da462b01072980f1da2f3bb2f891d7ecd2fbbf4c1081881e65dc",
+      "after_sha256": "9589f805a723890517ac3ced420e29feda0f73fbf5aea08699ae5d322814cb16",
+      "retry_identical": true,
+      "reason": "TICKET-038 labelled full-bleed stock hero and TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/offline-emerald-night-desktop-regression-linux.png",
+      "before_dimensions": [1280, 800],
+      "after_dimensions": [1280, 800],
+      "before_sha256": "6a72bead87c67867cceed0f53a92ed0188000492ccc7b1eca3dadc6c80e755b7",
+      "after_sha256": "4558b276fc57c73af49a4b67c3961f29ced8cdbdcd5434826d77d7546465d068",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/invitation-emerald-night-iphone-15-regression-linux.png",
+      "before_dimensions": [393, 3049],
+      "after_dimensions": [393, 3646],
+      "before_sha256": "ca1bf6d14dc3f2c34fb50964557dd7e6018fca74ba02576ff21eaa7eafcdc61f",
+      "after_sha256": "ff9cdb584fdbd9bd05e158a3baf23b42436a8bd8780a80f2c78afce411545705",
+      "retry_identical": true,
+      "reason": "TICKET-038 labelled full-bleed stock hero and TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/invitation-midnight-champagne-desktop-regression-linux.png",
+      "before_dimensions": [1280, 3058],
+      "after_dimensions": [1280, 3884],
+      "before_sha256": "2770767ab9822309b4dfe3b3474aa31e7c81d51cd4624bd43d4574ae90117180",
+      "after_sha256": "9352a14d6e6c390df8d94ebce62ecf633ec27e4f2b43dc08b55b1f68003bc1e4",
+      "retry_identical": true,
+      "reason": "TICKET-038 labelled full-bleed stock hero and TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/home-ivory-gold-ipad-regression-linux.png",
+      "before_dimensions": [820, 1180],
+      "after_dimensions": [820, 1180],
+      "before_sha256": "174b80341933b7bec1e5d9388f3a79d692466c31f2f57dc61b735ae83ffdcdf1",
+      "after_sha256": "74ecca53a4fbc86f3d35dda28b24bf19fc889a3b8898169fa9c020965a8e0058",
+      "retry_identical": true,
+      "reason": "TICKET-014 requested ivory/champagne/chocolate palette"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/order-blush-sage-desktop-regression-linux.png",
+      "before_dimensions": [1280, 827],
+      "after_dimensions": [1280, 846],
+      "before_sha256": "3ab6760fa8da57ca8e1202c9ef48a603eb87ed541094455298913c208c09e56b",
+      "after_sha256": "975db696e3045dcb89bc563a664cc6dd7fe5f5240aa4f72b7e7bf175faa201ba",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    },
+    {
+      "baseline": "e2e/regression/guest-pages.spec.ts-snapshots/order-emerald-night-desktop-regression-linux.png",
+      "before_dimensions": [1280, 827],
+      "after_dimensions": [1280, 846],
+      "before_sha256": "801968ef317ca7bef00cdaac4c7796e57b700306f7c25a624757b46812505b10",
+      "after_sha256": "37d4302e99859a1021ada10ca1c47b6eb88d32a723431f4400227198dab903e2",
+      "retry_identical": true,
+      "reason": "TICKET-081 bounded native document; TICKET-014 palette where ivory"
+    }
+  ]
+}
