@@ -1,8 +1,13 @@
-## Problem and result
+## Summary
 
 A fresh `/order` visit originally transferred about 1.24 MB, including service-worker installation. The order page now uses a small themed HTML document with progressive enhancement and reuses the existing order submission, retry, validation, availability and status contracts. The original 200,000-byte budget remains unchanged.
 
 The final production build transfers 158,155–181,065 bytes across light/dark, mobile/desktop and table/menu cases. The menu fixture includes `Ọgbọnọ · Crème brûlée`. Real Supabase broadcast delivery under emulated slow 4G took 378.475 ms, below 2 seconds, with one persisted quantity and the matching broadcast observed before the board displayed it.
+
+## Acceptance criteria and evidence
+
+- [x] Cold `/order` transfer ≤200,000 bytes: all eight light/dark, mobile/desktop table/menu cases pass; maximum181,065 bytes including worker/font traffic. CI gate added.
+- [x] Order-to-board <2s on emulated slow4G: actual Supabase broadcast and persisted order proof measured378.475ms. CI gate added.
 
 ## Changes
 
@@ -12,7 +17,7 @@ The final production build transfers 158,155–181,065 bytes across light/dark, 
 - Public worker responses negotiate gzip with identity fallback, `Vary: Accept-Encoding`, unchanged scope and no-store update semantics. No request is hidden or delayed to meet the budget.
 - CI runs complete cold-wire budget/font checks and an actual Supabase slow-4G delivery check. The passive wire proxy counts response headers, chunk framing, worker bytes and fonts, including bytes Chromium's worker accounting omits.
 
-## Evidence
+## Verification
 
 - Production build and `pnpm verify:quick`: pass, including lint, types, related tests and CI parity.
 - Final cold-wire browser tests: 8/8 pass. Exact per-case totals and request breakdowns: `docs/reviews/TICKET-081/native-wire-{mobile,desktop}-{light,dark}-{table,menu}.json`.
@@ -22,7 +27,7 @@ The final production build transfers 158,155–181,065 bytes across light/dark, 
 - Native form/security tests cover body stream limits, origin rejection, cookie preservation, escaping and safe error recovery. Existing ordering contract tests pass.
 - Existing guest journey screenshots: `docs/reviews/TICKET-081/parity/`; all 11 existing guest journeys pass across the final run and focused retries (8 initial passes, then availability/cooldown passes and the status pass with its required ephemeral staff secret). The initial run was interrupted by wall-clock jumps; the missing-secret status attempt was an environment failure, not counted as a pass.
 
-## Limitations and review
+## Risks and rollout
 
 This is a deliberate native-rendering exception documented in ADR 0027. Shared business rules remain authoritative, but the DOM adapter must stay aligned with shared controls. Physical phones, venue signal and fresh Lighthouse/CLS checks are not certified here; existing release gates remain mandatory. Large menus or additional Unicode fallback fonts can increase transfer beyond the measured synthetic menu. This does not promise an arbitrary amount of content fits 200 KB.
 
