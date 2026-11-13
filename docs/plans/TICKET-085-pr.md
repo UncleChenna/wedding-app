@@ -30,7 +30,7 @@ when an alert cannot be confirmed, while keeping order processing independent of
 
 25 focused tests pass, including five isolated database cases. Production build/TypeScript and the
 375px staff-board browser check pass; all-four-theme axe scans have zero violations. Normal final
-commit checks and hosted CI are pending. See docs/reviews/TICKET-085/verification.md for exact scope and limitations.
+commit checks pass; hosted CI is pending. See docs/reviews/TICKET-085/verification.md for exact scope and limitations.
 
 # Risks and rollout
 

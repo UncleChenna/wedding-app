@@ -21,7 +21,8 @@
   pass axe with zero violations and no375px horizontal overflow. Four screenshots are committed
   alongside this report and were visually reviewed. The initial new locator found hidden sheet
   content; it now scopes to the actual order list. No pre-existing assertion changed.
-- Normal final commit hook: pending.
+- Normal final commit hook passes: ticket validation, formatting/lint, TypeScript and related unit
+  tests. Implementation committed as51a0d8a3 and pushed in PR208. Hosted CI remains pending.
 - Live staff phone, actual Meta template/account, asynchronous delivery receipts: not verified.
   TICKET-083 remains required for live sending; this ticket cannot be marked done without its live test.
 
