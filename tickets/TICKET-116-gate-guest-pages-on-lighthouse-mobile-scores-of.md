@@ -2,20 +2,20 @@
 id: TICKET-116
 title: Gate guest pages on Lighthouse mobile scores of 95 or more
 epic: quality
-status: todo
+status: in_progress
 priority: high
 estimate: M
 labels: [test, infra]
 module: shared
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-038, TICKET-044, TICKET-072]
 blocks: [TICKET-121, TICKET-154]
-branch: ""
+branch: TICKET-116
 pr: ""
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-13
+started: 2026-11-13
 completed: ""
 reason: ""
 resume_to: ""
@@ -64,3 +64,5 @@ _Agents append dated notes here while working._
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-13 — todo → claimed — divine (codex) — started ahead of TICKET-038 (in_progress)
+- 2026-11-13 — todo → in_progress — divine (codex) — started ahead of TICKET-038 (in_progress)
