@@ -42,6 +42,8 @@ Claiming untested checks pass, weakening thresholds, changing TICKET-015's pause
 
 ## Acceptance criteria
 
+- [ ] TICKET-111: on actual event phones/tablets verify waiting-update notifications, Later, queue-blocked Reload and explicit safe reload across tabs; retain saved attempts through interruption. Record OS/browser/build. Fresh guest-page Lighthouse and layout-shift measurements remain required before release; automated preview evidence does not certify these checks.
+
 - [ ] TICKET-076: verify kitchen and shared bar boards are legible at one metre on the actual event tablets, in every shipped theme and realistic venue lighting. Check table numbers, item quantities, notes, age and status controls; record device/model/OS/browser/build, distance and actual outcomes. Also confirm new-order visual feedback and unlocked audio on those devices. The original manual criterion remains unperformed; this transfer permits preview completion only and continues to block both TICKET-154 and TICKET-176.
 
 - [ ] TICKET-063: Results are readable at arm's length (≥18px). Verify manual primary/tag-along search, denied-camera recovery, keyboard focus, uncertain admission retry and offline read-only warnings on physical gate phones/tablets in all shipped themes. Record device/OS/browser/build and actual results; browser emulation does not certify physical readability. This remains mandatory and release-blocking under the approved preview exception.
