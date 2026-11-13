@@ -20,6 +20,9 @@ describe("env schema", () => {
       WHATSAPP_API_VERSION: "",
       WHATSAPP_ALERT_TEMPLATE: "",
       WHATSAPP_TEMPLATE_LANGUAGE: "",
+      WEB_PUSH_PUBLIC_KEY: "",
+      WEB_PUSH_PRIVATE_KEY: "",
+      WEB_PUSH_SUBJECT: "",
     });
   });
 

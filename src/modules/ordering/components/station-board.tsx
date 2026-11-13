@@ -22,6 +22,7 @@ import { MAX_CANCEL_REASON, type TicketStatus } from "../lib/ticket-status";
 import type { MenuItem } from "../lib/menu";
 import { alertHealthText } from "../lib/alert-health";
 import { StaffOrderSheet } from "./staff-order-sheet";
+import { StaffPushControl } from "./staff-push-control";
 
 const FLASH_MS = 4_000;
 
@@ -297,6 +298,8 @@ export function StationBoard({
           ) : null}
         </p>
       ) : null}
+
+      <StaffPushControl station={station} />
 
       {notice ? (
         <p

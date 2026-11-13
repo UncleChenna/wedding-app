@@ -69,7 +69,8 @@ Rejected:
 
 The production route now uses a configured WhatsApp Cloud API template sender. The historical logging
 sender is retained for development only; it is no longer used by the route. Missing or incomplete
-provider configuration returns 503 before consuming any pending alert.
+provider configuration leaves pending alerts untouched; the route answers 503 only when neither WhatsApp nor
+browser push is configured.
 
 This supersedes the original network-inside-transaction production delivery guarantee. The drain
 locks pending rows, selects one due message (whole order lines, up to 1024 characters), snapshots
@@ -106,3 +107,11 @@ References: [Meta template messages](https://developers.facebook.com/documentati
 [Meta error codes](https://developers.facebook.com/documentation/business-messaging/whatsapp/support/error-codes).
 The error-code reference was reviewed on 2026-11-13; the template page rate-limited automated access.
 Live template compatibility and phone receipt remain mandatory setup evidence, not a claimed result.
+
+## TICKET-112 — optional browser push
+
+The same committed order-alert row now has independent push status and attempt count. The drain runs the two delivery channels independently. A WhatsApp failure cannot consume or prevent a browser notification, and push never blocks order creation. Generic notices coalesce per station and device; they contain no guest or order details.
+
+Subscriptions belong to a signed-in staff/device/credential version, expire with that session and are filtered again against live roles, credential version, PIN validity, event expiry and revoked devices before sending. Browser endpoint destinations are allowlisted; the maintained Web Push library encrypts the payload and signs VAPID. A three-second request timeout and fifteen-second drain budget bound work. Per-device delivery watermarks let later ticks resume without repeatedly notifying successful recipients. The board remains the authoritative order view.
+
+The feature is opt-in and unavailable without the complete server-side VAPID configuration. Permission denial leaves ordering intact. Browser delivery and physical installed-iOS evidence are distinct from isolated database tests; the latter verify persistence, retries and authorization invalidation, not external push-service availability.
