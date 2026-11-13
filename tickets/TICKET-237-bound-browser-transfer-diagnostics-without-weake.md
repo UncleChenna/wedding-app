@@ -39,10 +39,10 @@ TICKET-129 CI run43386213746 stalls after the native-order wire and browser netw
 
 ## Acceptance criteria
 
-- [ ] A never-resolving diagnostic is recorded as unavailable within a bounded interval, retaining request identity.
-- [ ] Successful diagnostics retain exact sizes; rejected diagnostics are explicit and do not produce unhandled rejections.
-- [ ] Raw wire budget remains200000bytes and all8 actual cold browser cases pass.
-- [ ] Cleanup always releases the owned proxy; report documents the actual failed trace.
+- [x] A never-resolving diagnostic is recorded as unavailable within a bounded interval, retaining request identity.
+- [x] Successful diagnostics retain exact sizes; rejected diagnostics are explicit and do not produce unhandled rejections.
+- [x] Raw wire budget remains200000bytes and all8 actual cold browser cases pass.
+- [x] Cleanup always releases the owned proxy; report documents the actual failed trace.
 
 ## Test plan
 
@@ -59,6 +59,8 @@ TICKET-129 CI run43386213746 stalls after the native-order wire and browser netw
 ## Notes / decisions
 
 2026-11-13: Follow-up preserves all raw traffic; browser-reported sizes are supplemental diagnostics only.
+
+2026-11-13: Four diagnostic tests and all8actual cold-transfer cases pass, max182380bytes; build passes. Independent review clean. Exact wire evidence in docs/reviews/TICKET-237. Original129CI failure traced to diagnostic wait, not wire budget.
 
 ## Activity log
 

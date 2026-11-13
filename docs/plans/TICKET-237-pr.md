@@ -13,13 +13,14 @@ The ordering transfer test can hang in Chromium's supplemental request-size API 
 
 The failed CI trace from run43386213746 passes both1500ms quiescence checks and pendingBytes=0 around2seconds, then stalls before wire assertions in Promise.all of protocol diagnostics. The60second test timeout subsequently reports context.close, masking that earlier stall.
 
-The focused regression covers exact success, rejection, never-settling protocol calls and rejection after timeout. Independent review found no blocker. Real transfer matrix verification pending.
+The focused regression covers exact success, rejection, never-settling protocol calls and rejection after timeout. Independent review found no blocker. All eight real transfer cases pass; exact JSON evidence is in docs/reviews/TICKET-237/.
 
 ## Verification
 
 - Four diagnostic unit tests pass.
 - Original raw200000byte limit, worker-presence assertion, actual worker/font traffic, readiness and network-quiescence checks remain unchanged.
-- Production build and real8-case transfer run pending.
+- Production build passes on develop fe97f5f89183cfa7c934f6dad9eb7dae3f6b5257.
+- Eight actual cold-transfer cases pass (22.1s), max182380bytes; all supplemental diagnostics available in this local run. The never-resolving failure is covered by the explicit unit regression.
 
 ## Risks and rollout
 
