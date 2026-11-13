@@ -1,4 +1,5 @@
 import "server-only";
+import { readBoundedJson } from "@/modules/shared/server/bounded-json";
 import { unstable_rethrow } from "next/navigation";
 import { logger } from "@/modules/shared/lib/logger";
 import type { BoardStation } from "../lib/station-board";
@@ -32,13 +33,13 @@ export async function moveTicketResponse(
     const actor = await deps.authorize();
     if (!actor || actor.station !== station)
       return Response.json({ error: "Sign-in required." }, { status: 403, headers });
-    let body: unknown = null;
-    try {
-      body = await request.json();
-    } catch {
-      body = null;
-    }
-    const parsed = ticketMoveSchema.safeParse(body);
+    if (request.headers.get("origin") !== new URL(request.url).origin)
+      return Response.json(
+        { error: "Update orders from this station’s board." },
+        { status: 403, headers },
+      );
+    const body = await readBoundedJson(request, 4096);
+    const parsed = ticketMoveSchema.safeParse(body.status === "valid" ? body.value : null);
     if (!parsed.success)
       return Response.json(
         { error: "Add a short reason to cancel, then try again." },
