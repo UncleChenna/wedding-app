@@ -169,9 +169,17 @@ test.describe("own offline pass", () => {
         mkdirSync(dir, { recursive: true });
         await page.screenshot({ path: dir + "/" + width + ".png", fullPage: true });
       }
-    await page.getByRole("button", { name: "Refresh pass" }).press("Enter");
+    // The timestamp is unchanged offline and can match the old document before reload.
+    // Await the real refresh navigation before testing a different private URL.
+    await Promise.all([
+      page.waitForEvent("framenavigated", (frame) => frame === page.mainFrame()),
+      page.getByRole("button", { name: "Refresh pass" }).press("Enter"),
+    ]);
+    await page.waitForLoadState("domcontentloaded");
+    expect(new URL(page.url()).pathname).toBe(a.path);
     await expect(page.locator("time")).toHaveAttribute("datetime", refreshed ?? "");
     await page.goto(b.path);
+    expect(new URL(page.url()).pathname).toBe(b.path);
     await expect(page.getByRole("heading", { name: "You're offline" })).toBeVisible();
     await expect(page.getByText("Ada Offline", { exact: true })).toHaveCount(0);
     await page.goto(a.path);
