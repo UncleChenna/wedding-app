@@ -272,3 +272,9 @@ Similar patches or selected files alone never qualify. TICKET-225's
 [provenance audit](reviews/TICKET-225/provenance.md) documents the exact retained
 source for TICKET-186/#4 and TICKET-187/#5. Their statuses remain unchanged until
 the guarded mechanism is independently reviewed, merged and applied through CLI.
+
+## Concurrent ledger commands
+
+Commands read the exact commit advertised by origin without rewriting shared remote-tracking references or `FETCH_HEAD`. Linked-worktree writers wait up to 30 seconds for the clone's existing ticket lock, then read fresh state and apply the usual remote compare-and-swap lease. Across separate clones, a lost lease retries the update against fresh state and rechecks its rules.
+
+If the wait expires, retry after the active command finishes. The command leaves the existing lock untouched; it never steals locks or treats a network failure as an empty ledger. A crashed writer still requires deliberate diagnosis before manual recovery. Older checkouts retain the previous behavior until updated.

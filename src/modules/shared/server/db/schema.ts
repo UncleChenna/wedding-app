@@ -481,6 +481,33 @@ export const scanResolutionNotes = pgTable(
   ],
 ).enableRLS();
 
+/** Admin-reviewed imports retain intent digests, not copied device files or credentials. */
+export const scanRecoveryAudits = pgTable(
+  "scan_recovery_audits",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    requestId: uuid("request_id").notNull(),
+    clientEventId: uuid("client_event_id").notNull(),
+    adminId: uuid("admin_id").notNull(),
+    intentDigest: text("intent_digest").notNull(),
+    outcome: text("outcome").$type<"recorded" | "duplicate" | "rejected">().notNull(),
+    recordedAt: timestamp("recorded_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    uniqueIndex("scan_recovery_audits_request_event_idx").on(
+      t.adminId,
+      t.requestId,
+      t.clientEventId,
+    ),
+    index("scan_recovery_audits_event_time_idx").on(t.clientEventId, t.recordedAt),
+    check("scan_recovery_audits_digest", sql`${t.intentDigest} ~ '^[a-f0-9]{64}$'`),
+    check(
+      "scan_recovery_audits_outcome",
+      sql`${t.outcome} in ('recorded', 'duplicate', 'rejected')`,
+    ),
+  ],
+).enableRLS();
+
 /** Historical guest-level archive, retained unchanged during invitation-level migration. */
 export const checkIns = pgTable(
   "check_ins",

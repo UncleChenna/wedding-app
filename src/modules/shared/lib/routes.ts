@@ -44,6 +44,18 @@ export const appRoutes = {
   },
   pass: { path: "/p/[pass]", label: "Your gate pass", audience: "guest", access: "pass" },
   order: { path: "/order", label: "Order to your table", audience: "guest", access: "public" },
+  gateRecovery: {
+    path: "/gate-recovery",
+    label: "Recover gate records",
+    audience: "staff",
+    access: "public",
+  },
+  adminScanRecovery: {
+    path: "/admin/scans/recovery",
+    label: "Recover gate records",
+    audience: "admin",
+    access: "admin",
+  },
   staff: { path: "/staff", label: "Staff home", audience: "staff", access: "public" },
   bar: { path: "/bar", label: "Bar board", audience: "staff", access: "public" },
   checkin: { path: "/checkin", label: "Gate check-in", audience: "staff", access: "public" },
