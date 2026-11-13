@@ -133,3 +133,21 @@ it("fails closed when origin cannot supply the snapshot", () => {
     ),
   ).toBe("LedgerUnavailableError");
 });
+
+it("rejects a stale remote lease without overwriting the newer ledger", () => {
+  const f = fixture();
+  const stale = f.git(["rev-parse", "refs/harness/local-tickets"]);
+  f.run(
+    `ledger.mutateLedger(process.cwd(), "origin", data => { data.lastId=2; return {result:null,message:"newer"}; });`,
+  );
+  expect(() =>
+    f.git([
+      "push",
+      "--quiet",
+      `--force-with-lease=refs/heads/ticket-ledger:${stale}`,
+      "origin",
+      `${stale}:refs/heads/ticket-ledger`,
+    ]),
+  ).toThrow();
+  expect(f.run(`console.log(ledger.readLedger(process.cwd(), "origin")?.data.lastId);`)).toBe("2");
+});
