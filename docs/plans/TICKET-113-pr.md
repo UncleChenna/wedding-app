@@ -16,11 +16,11 @@ The saved guest pass browser test was opt-in locally and absent from CI. It now 
 
 # Acceptance criteria and evidence
 
-Actual local HTTPS test passes: secure context, zero browser manifest/installability errors, worker control and themed offline navigation. Both existing offline-pass browser projects pass (11s/9s) against this ticket's migrated native PostgreSQL. Original scanner and N/N+1 tests remain in their existing CI jobs; TICKET-111 is still pending merge, so this PR stays draft until dependency integration.
+Actual local HTTPS test passes: secure context, zero browser manifest/installability errors, worker control and themed offline navigation. Both existing offline-pass browser projects pass (11s/9s) against this ticket's migrated native PostgreSQL. Original scanner and N/N+1 tests remain in their existing CI jobs. TICKET-111 is merged with all CI checks passing; integration uses develop 979609e6 and preserves both the update-prompt and reviewed-recovery documentation.
 
 # Verification
 
-Production build and focused lint passed. Independent review identified setup cleanup and fixture ownership improvements; both addressed. Final rerun after those fixes passes: two offline-pass projects (16.2s/10.9s), HTTPS smoke (1.2s), quick lint/types and two CI-parity tests. Hosted CI and TICKET-111 integration remain pending.
+Production build and focused lint passed. Independent review identified setup cleanup and fixture ownership improvements; both addressed. Final rerun after those fixes passes: two offline-pass projects (16.2s/10.9s), HTTPS smoke (1.2s), quick lint/types and two CI-parity tests. After resolving the sole documentation conflict, the integrated production build passes; HTTPS smoke passes (0.9s), offline-pass mobile/desktop pass (14.0s/16.2s), all-theme update-prompt browser checks pass (11.5s/8.5s), and 15 update-client/prompt tests pass, including rejection of reload while retained attempts remain. Hosted CI remains pending.
 
 # Risks and rollout
 

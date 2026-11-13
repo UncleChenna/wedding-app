@@ -39,9 +39,9 @@ See: [Tech stack and architecture](../docs/prd.md#tech-stack-and-architecture) Â
 
 ## Acceptance criteria
 
-- [ ] Automated manifest/icon/worker/offline regressions fail pnpm verify or CI.
-- [ ] Tests cover installed-shell navigation, offline pass and scanner, and TICKET-111 update behavior with pending events.
-- [ ] Document the separate TICKET-114 iOS/Android install evidence; do not require a removed Lighthouse PWA score.
+- [x] Automated manifest/icon/worker/offline regressions fail pnpm verify or CI.
+- [x] Tests cover installed-shell navigation, offline pass and scanner, and TICKET-111 update behavior with pending events.
+- [x] Document the separate TICKET-114 iOS/Android install evidence; do not require a removed Lighthouse PWA score.
 
 ## Test plan
 
@@ -54,7 +54,7 @@ See: [Tech stack and architecture](../docs/prd.md#tech-stack-and-architecture) Â
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-11-13: Integrated develop 979609e6 after TICKET-111 merged. Production build, HTTPS/offline-pass/update-prompt browser checks and 15 update-safety unit cases pass. Independent review found no remaining issues. Detailed evidence: docs/plans/TICKET-113-pr.md. Physical installation remains TICKET-114.
 
 ## Activity log
 
