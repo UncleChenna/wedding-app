@@ -5,6 +5,9 @@ import { logger } from "@/modules/shared/lib/logger";
 import { drainAuthorized } from "../lib/drain-auth";
 import { loggingSender } from "./alert-drain";
 import { drainOrderAlerts } from "./alert-outbox";
+import { staffPushConfig } from "./staff-push-config";
+import { drainStaffPush } from "./staff-push-outbox";
+import { sendStaffPush } from "./staff-push-send";
 
 const noStore = { "cache-control": "no-store" };
 
@@ -18,8 +21,15 @@ export async function alertDrainResponse(request: Request): Promise<Response> {
   if (!drainAuthorized(request.headers.get("authorization"), secret))
     return Response.json({ error: "unauthorized" }, { status: 401, headers: noStore });
   try {
-    const result = await drainOrderAlerts(db, loggingSender);
-    return Response.json(result, { headers: noStore });
+    const [alerts, push] = await Promise.allSettled([
+      drainOrderAlerts(db, loggingSender),
+      staffPushConfig() ? drainStaffPush(db, sendStaffPush) : Promise.resolve(null),
+    ]);
+    if (alerts.status === "rejected" || push.status === "rejected") {
+      logger.child({ module: "order-alerts" }).warn("An alert delivery channel could not complete");
+      return Response.json({ error: "unavailable" }, { status: 503, headers: noStore });
+    }
+    return Response.json({ ...alerts.value, push: push.value }, { headers: noStore });
   } catch (error) {
     logger.child({ module: "order-alerts" }).error("Order alert drain failed", {
       error: error instanceof Error ? error.name : "unknown",

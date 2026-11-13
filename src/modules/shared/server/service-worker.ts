@@ -11,6 +11,7 @@ import { createOfflineQueueRuntime } from "@/modules/checkin/browser/offline-que
 import { parseGuestSnapshot } from "@/modules/checkin/lib/guest-snapshot";
 
 import { ownPassWorkerSource } from "@/modules/invitations/lib/offline-worker";
+import { staffPushWorkerSource } from "@/modules/ordering/lib/staff-push-worker";
 
 import {
   cachePolicy,
@@ -34,6 +35,7 @@ const SW_STATIC_CACHE = ${JSON.stringify(SW_STATIC_CACHE)};
 const SW_OFFLINE_CACHE = ${JSON.stringify(SW_OFFLINE_CACHE)};
 const SW_OFFLINE_URL = ${JSON.stringify(SW_OFFLINE_URL)};
 const cachePolicy = ${cachePolicy.toString()};
+${staffPushWorkerSource}
 
 /** Same-origin, query-free build asset paths referenced by a page or stylesheet. */
 const STATIC_ASSET = /^\\/_next\\/static\\/[\\w./-]+$/;

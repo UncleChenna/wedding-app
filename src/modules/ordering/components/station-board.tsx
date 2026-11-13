@@ -21,6 +21,7 @@ import {
 import { MAX_CANCEL_REASON, type TicketStatus } from "../lib/ticket-status";
 import type { MenuItem } from "../lib/menu";
 import { StaffOrderSheet } from "./staff-order-sheet";
+import { StaffPushControl } from "./staff-push-control";
 
 const FLASH_MS = 4_000;
 
@@ -264,6 +265,8 @@ export function StationBoard({
           )}
         </div>
       </div>
+
+      <StaffPushControl station={station} />
 
       {notice ? (
         <p
