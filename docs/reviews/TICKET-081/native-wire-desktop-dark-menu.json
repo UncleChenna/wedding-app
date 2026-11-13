@@ -1,0 +1,98 @@
+{
+  "menu": true,
+  "colorScheme": "dark",
+  "viewport": {
+    "width": 1280,
+    "height": 800
+  },
+  "budget": 200000,
+  "total": 170787,
+  "browserReported": 135310,
+  "transport": "loopback HTTP/1 wire; no rewriting",
+  "rows": [
+    {
+      "path": "/order-assets/order-b31faeb4107a5c474451e7ecfdaf311e0fe7ea4f3d7fdf46f94397c7e76e7226.css",
+      "worker": false,
+      "bytes": 3658,
+      "status": 200
+    },
+    {
+      "path": "/order",
+      "worker": false,
+      "bytes": 9298,
+      "status": 200
+    },
+    {
+      "path": "/order-assets/order-dbb43310c76ea716cf6a8b1eff56a821b88fac30d4ef47f03a9679025cf92be0.js",
+      "worker": false,
+      "bytes": 13174,
+      "status": 200
+    },
+    {
+      "path": "/order-assets/order-5d86fcdd5b92b1a9493d39161abe2603b04c9c8350a7ed0194943fd093031e52.woff2",
+      "worker": false,
+      "bytes": 25763,
+      "status": 200
+    },
+    {
+      "path": "/order-assets/order-55c3c8212895d8f558cd97178560382658c4b62156fa717ef63d028e249390f7.woff2",
+      "worker": false,
+      "bytes": 33759,
+      "status": 200
+    },
+    {
+      "path": "/order-assets/order-12edd4bfdec213ede2bc68eb8b58e964632baad7541530add962ec5daa3c3044.woff2",
+      "worker": false,
+      "bytes": 4573,
+      "status": 200
+    },
+    {
+      "path": "/order-assets/order-0d5f0bc80133b83a23b86cc7317de12f4f828c8f45b90ad6dd5a9258186b2676.woff2",
+      "worker": false,
+      "bytes": 2493,
+      "status": 200
+    },
+    {
+      "path": "/scanner-assets/scanner-2f1362d50d7207b8944cc418f261a444a2e749b8ed8db0ee450e9cdcf7bffe0a.js",
+      "worker": true,
+      "bytes": 0,
+      "status": 200
+    },
+    {
+      "path": "/sw.js",
+      "worker": true,
+      "bytes": 1074,
+      "status": 200
+    },
+    {
+      "path": "/offline",
+      "worker": true,
+      "bytes": 9602,
+      "status": 200
+    },
+    {
+      "path": "/offline-assets/cormorant-6dcbd80f527db744.woff2",
+      "worker": true,
+      "bytes": 10350,
+      "status": 200
+    },
+    {
+      "path": "/offline-assets/inter-b714eddca05246b9.woff2",
+      "worker": true,
+      "bytes": 6922,
+      "status": 200
+    },
+    {
+      "path": "/offline-assets/playfair-5b5d69a12afed94f.woff2",
+      "worker": true,
+      "bytes": 9382,
+      "status": 200
+    },
+    {
+      "path": "/offline-assets/jost-c38a7bce2755e180.woff2",
+      "worker": true,
+      "bytes": 5262,
+      "status": 200
+    }
+  ]
+}

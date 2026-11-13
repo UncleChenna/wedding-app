@@ -3,7 +3,7 @@ import "server-only";
 import { activeThemesToCssText, getActiveThemes } from "@/modules/theming";
 
 /** Standalone outage document: no database/render fetch and no private URL interpolation. */
-export function requestRetryDocument() {
+export function requestRetryDocument(context: "invitation" | "ordering" = "invitation") {
   const fonts = ["cormorant", "playfair", "inter", "jost"];
   const fontFaces = fonts
     .map(
@@ -41,7 +41,7 @@ p,h1{margin:0;width:100%}p{max-width:30rem}h1{font-family:var(--t-font-display),
 button:focus-visible,a:focus-visible{outline:2px solid var(--t-color-ring);outline-offset:4px}a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;color:var(--t-color-primary);margin-top:24px;text-underline-offset:4px}
 @media(min-width:768px){main{justify-content:center}section{flex:none}h1{font-size:48px;min-height:1.2em}.description{min-height:3.2em}button{width:14rem}}
 </style></head><body><main><section>
-<h1>Please try again shortly</h1><p class="description">Please wait a minute, then try opening your invitation or pass again. Thank you for your patience.</p></section>
+<h1>Please try again shortly</h1><p class="description">Please wait a minute, then try opening ${context === "ordering" ? "the menu" : "your invitation or pass"} again. Thank you for your patience.</p></section>
 <form method="get"><button type="submit">Try again</button></form><a href="/">Back to our day</a>
 </main></body></html>`;
 }

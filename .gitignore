@@ -47,3 +47,5 @@ tooling/plugin/dist/
 
 # Generated immutable offline scanner assets (prebuild)
 /public/scanner-assets/
+
+/public/order-assets/

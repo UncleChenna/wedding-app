@@ -22,3 +22,5 @@ tickets
 
 # Content-addressed prebuild output; formatting would invalidate its hashes.
 public/scanner-assets
+
+public/order-assets

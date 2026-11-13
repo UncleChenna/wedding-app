@@ -43,3 +43,12 @@ export function invitationPreviewMetadata(
     },
   };
 }
+
+/** Equivalent public preview tags for native documents outside Next layouts. */
+export function invitationPreviewHtml(siteUrl: string, event: PreviewEventDetails) {
+  const copy = invitationPreviewCopy(event);
+  const image = new URL("/invitation-preview", new URL(siteUrl).origin).href;
+  const escape = (text: string) =>
+    text.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll('"', "&quot;");
+  return `<meta property="og:type" content="website"><meta property="og:title" content="${escape(copy.title)}"><meta property="og:description" content="${escape(invitationPreviewDescription)}"><meta property="og:image" content="${escape(image)}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:type" content="image/png"><meta property="og:image:alt" content="${escape(copy.alt)}"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${escape(copy.title)}"><meta name="twitter:description" content="${escape(invitationPreviewDescription)}"><meta name="twitter:image" content="${escape(image)}">`;
+}
