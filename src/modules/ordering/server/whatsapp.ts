@@ -27,6 +27,7 @@ const transientCodes = new Set([1, 2, 131000, 131016, 130429]);
 
 type Dependencies = {
   eligible: () => Promise<boolean>;
+  deadline?: number;
   fetcher?: typeof fetch;
   sleep?: (milliseconds: number) => Promise<void>;
 };
@@ -43,7 +44,10 @@ export async function sendWhatsAppTemplate(
   const sleep =
     dependencies.sleep ?? ((ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms)));
   for (let attempt = 0; attempt < 4; attempt++) {
+    if (Date.now() >= (dependencies.deadline ?? Number.POSITIVE_INFINITY)) return "failed";
     if (!(await dependencies.eligible())) return "skipped";
+    const remaining = (dependencies.deadline ?? Number.POSITIVE_INFINITY) - Date.now();
+    if (remaining <= 0) return "failed";
     try {
       const response = await fetcher(
         `https://graph.facebook.com/${config.apiVersion}/${config.phoneNumberId}/messages`,
@@ -51,7 +55,7 @@ export async function sendWhatsAppTemplate(
           method: "POST",
           redirect: "error",
           cache: "no-store",
-          signal: AbortSignal.timeout(5_000),
+          signal: AbortSignal.timeout(Math.min(5_000, remaining)),
           headers: {
             authorization: `Bearer ${config.accessToken}`,
             "content-type": "application/json",
@@ -84,7 +88,10 @@ export async function sendWhatsAppTemplate(
       // Do not violate a long/unknown provider backoff or hold a route open indefinitely.
       if (!Number.isFinite(requestedDelay) || requestedDelay > 5_000 || requestedDelay < 0)
         return "failed";
-      await sleep(Math.max(500 * 2 ** attempt, requestedDelay));
+      const delay = Math.max(500 * 2 ** attempt, requestedDelay);
+      if (Date.now() + delay >= (dependencies.deadline ?? Number.POSITIVE_INFINITY))
+        return "failed";
+      await sleep(delay);
     } catch {
       // The provider may already have accepted this POST. No automatic replay.
       return "uncertain";

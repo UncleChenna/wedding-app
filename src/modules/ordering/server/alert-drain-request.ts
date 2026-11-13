@@ -3,8 +3,8 @@ import { db } from "@/modules/shared/server/db/client";
 import { serverEnv } from "@/modules/shared/server/env";
 import { logger } from "@/modules/shared/lib/logger";
 import { drainAuthorized } from "../lib/drain-auth";
-import { loggingSender } from "./alert-drain";
-import { drainOrderAlerts } from "./alert-outbox";
+import { whatsAppConfig } from "./whatsapp-config";
+import { drainWhatsAppAlerts } from "./whatsapp-drain";
 
 const noStore = { "cache-control": "no-store" };
 
@@ -17,8 +17,10 @@ export async function alertDrainResponse(request: Request): Promise<Response> {
   if (!secret) return Response.json({ error: "unavailable" }, { status: 503, headers: noStore });
   if (!drainAuthorized(request.headers.get("authorization"), secret))
     return Response.json({ error: "unauthorized" }, { status: 401, headers: noStore });
+  const config = whatsAppConfig();
+  if (!config) return Response.json({ error: "unavailable" }, { status: 503, headers: noStore });
   try {
-    const result = await drainOrderAlerts(db, loggingSender);
+    const result = await drainWhatsAppAlerts(db, config);
     return Response.json(result, { headers: noStore });
   } catch (error) {
     logger.child({ module: "order-alerts" }).error("Order alert drain failed", {

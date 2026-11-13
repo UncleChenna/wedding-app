@@ -42,11 +42,11 @@ See: [ORD-9 WhatsApp order alerts](../docs/prd.md#ord-9--whatsapp-order-alerts-m
 
 ## Acceptance criteria
 
-- [ ] A provider 500 retries up to 3 times then records failure (unit with mocked fetch).
+- [x] A provider 500 retries up to 3 times then records failure (unit with mocked fetch).
 - [ ] A live test message is received on a staff phone (manual, in notes).
 
-- [ ] Require recorded station opt-in before sending; provider timeout/retry must not duplicate a batch and failure leaves the board operational.
-- [ ] (from TICKET-087) A recorded failure shows a visible warning with text on the board (e2e).
+- [x] Require recorded station opt-in before sending; provider timeout/retry must not duplicate a batch and failure leaves the board operational.
+- [x] (from TICKET-087) A recorded failure shows a visible warning with text on the board (e2e).
 
 ## Test plan
 
@@ -68,6 +68,13 @@ _Agents append dated notes here while working._
 - 2026-11-13 (unclechenna, claude): owner approved building this before the WhatsApp number exists. TICKET-083 no
   longer blocks the build: the sender stays off until its settings are set and is tested against a mocked Cloud
   API. The manual live-message criterion still needs TICKET-083 before this ticket is done.
+
+- 2026-11-13 (divine): Implemented configured template sending, committed one-message claims,
+  three retries for explicit structured transient500 rejections, no replay for uncertain/partial
+  outcomes, phone deduplication, and board health.25 focused tests including5 isolated PostgreSQL
+  cases pass; production build and four-theme375px warning/axe browser check pass. A bare500 is
+  ambiguous and deliberately not retried. No live message sent; TICKET-083's account/template and
+  consenting staff-phone check remain required before done. Detailed guarantee/rollback in ADR0022.
 
 ## Activity log
 

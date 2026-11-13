@@ -20,6 +20,7 @@ import {
 } from "../lib/station-board";
 import { MAX_CANCEL_REASON, type TicketStatus } from "../lib/ticket-status";
 import type { MenuItem } from "../lib/menu";
+import { alertHealthText } from "../lib/alert-health";
 import { StaffOrderSheet } from "./staff-order-sheet";
 
 const FLASH_MS = 4_000;
@@ -96,6 +97,7 @@ export function StationBoard({
   menu: readonly MenuItem[];
 }) {
   const [tickets, setTickets] = useState<StationTicket[]>(initial.tickets);
+  const [alertHealth, setAlertHealth] = useState(initial.alertHealth);
   const [recent, setRecent] = useState<RecentTicket[]>(initial.recent);
   const [problem, setProblem] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
@@ -108,6 +110,7 @@ export function StationBoard({
   const [live, setLive] = useState<StationChannelStatus>("connecting");
   const [signedOut, setSignedOut] = useState(false);
   const [soundOn, setSoundOn] = useState(false);
+  const fetchGeneration = useRef(0);
   const audio = useRef<AudioContext | null>(null);
   const known = useRef<StationTicket[]>(initial.tickets);
   const now = useNow(30_000);
@@ -123,22 +126,26 @@ export function StationBoard({
   }, []);
 
   const refetch = useCallback(async () => {
+    if (signedOut) return;
+    const generation = ++fetchGeneration.current;
     try {
       const response = await fetch(`/api/${station}/board`, { cache: "no-store" });
       if (response.status === 403) {
+        fetchGeneration.current++;
         setSignedOut(true);
         return;
       }
       const parsed = boardSchemas[station].safeParse(response.ok ? await response.json() : null);
-      if (!parsed.success) return;
+      if (!parsed.success || generation !== fetchGeneration.current) return;
       announce(newTicketIds(known.current, parsed.data.tickets));
       known.current = parsed.data.tickets;
       setTickets(parsed.data.tickets);
       setRecent(parsed.data.recent);
+      setAlertHealth(parsed.data.alertHealth);
     } catch {
       // Offline for a moment: keep showing the last board; the channel retries and refetches.
     }
-  }, [announce, station]);
+  }, [announce, station, signedOut]);
 
   useEffect(() => {
     const client = createStationClient(
@@ -161,6 +168,14 @@ export function StationBoard({
     };
   }, [refetch, station]);
 
+  useEffect(() => {
+    if (signedOut) return;
+    const timer = setInterval(() => {
+      if (document.visibilityState === "visible") void refetch();
+    }, 15_000);
+    return () => clearInterval(timer);
+  }, [refetch, signedOut]);
+
   /**
    * Shows the move at once, then saves it. If the save fails, the card goes back to how it was
    * and the board says so; it never pretends an order moved when it didn't.
@@ -181,6 +196,7 @@ export function StationBoard({
         body: JSON.stringify({ stationOrderId: ticket.id, from: ticket.status, to, reason: why }),
       });
       if (response.status === 403) {
+        fetchGeneration.current++;
         setSignedOut(true);
         return;
       }
@@ -264,6 +280,23 @@ export function StationBoard({
           )}
         </div>
       </div>
+
+      {alertHealth ? (
+        <p
+          role="status"
+          className={cn(
+            "rounded-md p-4 text-lg leading-relaxed",
+            alertHealth.state === "warning" || alertHealth.state === "unavailable"
+              ? "bg-warning-subtle text-warning-subtle-foreground"
+              : "text-muted-foreground",
+          )}
+        >
+          {alertHealthText(alertHealth)}
+          {alertHealth.state === "ready" && alertHealth.lastAcceptedAt ? (
+            <> · {ticketAge(alertHealth.lastAcceptedAt, now)}</>
+          ) : null}
+        </p>
+      ) : null}
 
       {notice ? (
         <p

@@ -79,6 +79,15 @@ describe("WhatsApp template sender", () => {
     ).toBe("failed");
     expect(fetcher).toHaveBeenCalledTimes(1);
   });
+  it("stops at the overall deadline before consent or HTTP work", async () => {
+    const eligible = vi.fn(async () => true),
+      fetcher = vi.fn();
+    expect(
+      await sendWhatsAppTemplate(config, message, { eligible, fetcher, deadline: Date.now() - 1 }),
+    ).toBe("failed");
+    expect(eligible).not.toHaveBeenCalled();
+    expect(fetcher).not.toHaveBeenCalled();
+  });
   it("does not truncate a long instruction or send an invalid phone number", async () => {
     const fetcher = vi.fn();
     for (const invalid of [

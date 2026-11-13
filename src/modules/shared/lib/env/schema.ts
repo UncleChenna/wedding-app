@@ -28,6 +28,11 @@ export const serverEnvSchema = z.object({
       message: "SUPABASE_JWT_SECRET must be at least 32 characters",
     })
     .default(""),
+  WHATSAPP_ACCESS_TOKEN: z.string().default(""),
+  WHATSAPP_PHONE_NUMBER_ID: z.string().default(""),
+  WHATSAPP_API_VERSION: z.string().default(""),
+  WHATSAPP_ALERT_TEMPLATE: z.string().default(""),
+  WHATSAPP_TEMPLATE_LANGUAGE: z.string().default(""),
   ALERT_DRAIN_SECRET: z
     .string()
     .regex(
