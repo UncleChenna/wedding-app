@@ -46,7 +46,7 @@ export function LostLinkForm() {
           </Button>
         </form>
       )}
-      <div role="status" className="mt-6 text-center text-lg leading-relaxed">
+      <div role="status" className="mt-6 text-center text-lg leading-relaxed empty:hidden">
         {result?.message}
       </div>
     </CenteredPanel>

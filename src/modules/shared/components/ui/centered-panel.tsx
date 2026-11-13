@@ -33,17 +33,23 @@ export function CenteredPanel({
   return (
     <main
       className={cn(
-        "flex w-full flex-1 flex-col items-center justify-center px-6 py-12 pb-[max(3rem,env(safe-area-inset-bottom))] sm:py-16",
+        "flex w-full flex-1 flex-col items-center justify-center px-6 py-10 pb-[max(2.5rem,env(safe-area-inset-bottom))] sm:py-10",
         className,
       )}
     >
       <div
         data-centered-panel
-        className="w-full max-w-md sm:rounded-lg sm:border sm:border-border sm:bg-surface sm:px-10 sm:py-12"
+        className="w-full max-w-md sm:rounded-lg sm:border sm:border-border sm:bg-surface sm:px-10 sm:py-10"
       >
         <header className="flex flex-col items-center text-center">
           {eyebrow ? (
-            <p className="text-sm font-medium tracking-[0.12em] text-primary uppercase">
+            <p
+              className={cn(
+                "font-medium tracking-[0.12em] text-primary uppercase",
+                // Staff screens keep every line at 18px or more for arm's-length reading.
+                variant === "staff" ? "text-lg" : "text-sm",
+              )}
+            >
               {eyebrow}
             </p>
           ) : null}
