@@ -42,6 +42,8 @@ Claiming untested checks pass, weakening thresholds, changing TICKET-015's pause
 
 ## Acceptance criteria
 
+- [ ] TICKET-111: on actual event phones/tablets verify waiting-update notifications, Later, queue-blocked Reload and explicit safe reload across tabs; retain saved attempts through interruption. Record OS/browser/build. Fresh guest-page Lighthouse and layout-shift measurements remain required before release; automated preview evidence does not certify these checks.
+
 - [ ] TICKET-063: Results are readable at arm's length (≥18px). Verify manual primary/tag-along search, denied-camera recovery, keyboard focus, uncertain admission retry and offline read-only warnings on physical gate phones/tablets in all shipped themes. Record device/OS/browser/build and actual results; browser emulation does not certify physical readability. This remains mandatory and release-blocking under the approved preview exception.
 
 - [ ] TICKET-166: On physical iOS and Android, verify the admin event-closure form's keyboard, safe areas, focus visibility and confirmation controls; download and open the anonymous memories CSV/PDF in native viewers and check long-menu pagination. Use synthetic events only, retain pending admission evidence, and record device/OS/browser/build and actual results. These checks remain release-blocking under the owner's preview exception; automated emulation does not certify them. Production closure still requires approved event timing and operator confirmation.
