@@ -36,7 +36,8 @@ export function AdminShell({
   currentPath?: string;
 }) {
   return (
-    <div className="flex min-h-dvh flex-col md:flex-row">
+    <div className="flex min-h-dvh flex-col md:flex-row [&_.text-base]:text-lg [&_.text-sm]:text-lg [&_.type-label]:text-lg [&_:is(input,select,textarea,button,a)]:scroll-mb-56 md:[&_:is(input,select,textarea,button,a)]:scroll-mb-0 [&_label]:text-lg">
+      {/* Admin controls keep the operational 18px minimum without changing guest defaults. */}
       <header
         data-admin-chrome
         className="flex items-start justify-between gap-4 border-b border-border px-6 py-4 md:hidden"

@@ -117,6 +117,7 @@ export function StaffOrderSheet({
         onOpenChange={(next) => {
           if (!sending) setOpen(next);
         }}
+        className="text-lg [&_.text-base]:text-lg [&_.text-sm]:text-lg [&_.type-label]:text-lg [&_label]:text-lg"
         title="New order for a table"
         description="For a guest whose phone can't connect. It goes to the kitchen and bar like any order."
       >

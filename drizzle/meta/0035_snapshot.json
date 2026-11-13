@@ -1,5 +1,5 @@
 {
-  "id": "c7fbc3bc-415b-41c2-9bd9-6656a1ebaad5",
+  "id": "3e569a36-80a3-4039-bc66-b991a0e0fa00",
   "prevId": "d217a341-3de6-47b3-b7c1-e2f9e253c679",
   "version": "7",
   "dialect": "postgresql",
@@ -239,6 +239,18 @@
         },
         "dress_code": {
           "name": "dress_code",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "wifi_name": {
+          "name": "wifi_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "wifi_password": {
+          "name": "wifi_password",
           "type": "text",
           "primaryKey": false,
           "notNull": false
@@ -592,105 +604,6 @@
         "guests_phone_e164": {
           "name": "guests_phone_e164",
           "value": "\"guests\".\"phone\" is null or \"guests\".\"phone\" ~ '^\\+[1-9][0-9]{1,14}$'"
-        }
-      },
-      "isRLSEnabled": true
-    },
-    "public.invitation_design": {
-      "name": "invitation_design",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "version": {
-          "name": "version",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "default": 1
-        },
-        "photo_id": {
-          "name": "photo_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "photo_alt": {
-          "name": "photo_alt",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "''"
-        },
-        "headline": {
-          "name": "headline",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "subline": {
-          "name": "subline",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "updated_by": {
-          "name": "updated_by",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "invitation_design_photo_id_invitation_photos_id_fk": {
-          "name": "invitation_design_photo_id_invitation_photos_id_fk",
-          "tableFrom": "invitation_design",
-          "tableTo": "invitation_photos",
-          "columnsFrom": [
-            "photo_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "restrict",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {
-        "invitation_design_singleton": {
-          "name": "invitation_design_singleton",
-          "value": "\"invitation_design\".\"id\" = 1"
-        },
-        "invitation_design_version": {
-          "name": "invitation_design_version",
-          "value": "\"invitation_design\".\"version\" > 0"
-        },
-        "invitation_design_headline": {
-          "name": "invitation_design_headline",
-          "value": "length(trim(\"invitation_design\".\"headline\")) between 1 and 200"
-        },
-        "invitation_design_subline": {
-          "name": "invitation_design_subline",
-          "value": "length(trim(\"invitation_design\".\"subline\")) between 1 and 1000"
-        },
-        "invitation_design_alt": {
-          "name": "invitation_design_alt",
-          "value": "length(\"invitation_design\".\"photo_alt\") <= 500 and (\"invitation_design\".\"photo_id\" is null or length(trim(\"invitation_design\".\"photo_alt\")) > 0)"
         }
       },
       "isRLSEnabled": true

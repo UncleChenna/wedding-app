@@ -1,0 +1,13 @@
+{
+  "name": "gate-invalid",
+  "theme": "emerald-night",
+  "violations": [],
+  "overflow": false,
+  "small": [],
+  "identifiers": [
+    {
+      "text": "Invalid pass",
+      "px": 36
+    }
+  ]
+}

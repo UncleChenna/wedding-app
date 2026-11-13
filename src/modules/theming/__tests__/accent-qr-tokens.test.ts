@@ -10,6 +10,14 @@ const ivory = getTheme("ivory-gold");
 describe("decorative and QR tokens", () => {
   it("uses the approved ivory, champagne and chocolate in Ivory & Gold", () => {
     expect(ivory.colors).toMatchObject({
+      background: "#FFF9EF",
+      foreground: "#432B22",
+      primary: "#432B22",
+      "primary-foreground": "#FFF9EF",
+      secondary: "#D6BE8D",
+      "secondary-foreground": "#432B22",
+      accent: "#432B22",
+      ring: "#432B22",
       decorative: "#D6BE8D",
       "decorative-foreground": "#432B22",
       "qr-ink": "#432B22",

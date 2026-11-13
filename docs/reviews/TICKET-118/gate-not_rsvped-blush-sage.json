@@ -1,0 +1,13 @@
+{
+  "name": "gate-not_rsvped",
+  "theme": "blush-sage",
+  "violations": [],
+  "overflow": false,
+  "small": [],
+  "identifiers": [
+    {
+      "text": "Not RSVP’d",
+      "px": 36
+    }
+  ]
+}

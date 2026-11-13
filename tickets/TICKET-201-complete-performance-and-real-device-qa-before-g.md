@@ -42,6 +42,8 @@ Claiming untested checks pass, weakening thresholds, changing TICKET-015's pause
 
 ## Acceptance criteria
 
+- [ ] TICKET-118: verify gate verdicts and admission identifiers, kitchen/bar boards and staff order dialogs at arm’s length on actual event devices in every shipped theme; record device/OS/browser/build and venue lighting. Verify admin keyboard, VoiceOver/TalkBack and software-keyboard operation on actual phones. Automated Chromium font/axe/keyboard evidence is not a physical-device pass.
+
 - [ ] TICKET-111: on actual event phones/tablets verify waiting-update notifications, Later, queue-blocked Reload and explicit safe reload across tabs; retain saved attempts through interruption. Record OS/browser/build. Fresh guest-page Lighthouse and layout-shift measurements remain required before release; automated preview evidence does not certify these checks.
 
 - [ ] TICKET-076: verify kitchen and shared bar boards are legible at one metre on the actual event tablets, in every shipped theme and realistic venue lighting. Check table numbers, item quantities, notes, age and status controls; record device/model/OS/browser/build, distance and actual outcomes. Also confirm new-order visual feedback and unlocked audio on those devices. The original manual criterion remains unperformed; this transfer permits preview completion only and continues to block both TICKET-154 and TICKET-176.

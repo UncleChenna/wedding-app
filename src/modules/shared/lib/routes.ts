@@ -71,6 +71,12 @@ export const appRoutes = {
     audience: "admin",
     access: "admin",
   },
+  adminTableCards: {
+    path: "/admin/guests/seating/cards",
+    label: "Table cards",
+    audience: "admin",
+    access: "admin",
+  },
   adminGatePrint: {
     path: "/admin/guests/print",
     label: "Print gate list",
