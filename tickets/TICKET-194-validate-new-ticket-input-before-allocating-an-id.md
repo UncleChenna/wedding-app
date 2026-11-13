@@ -2,7 +2,7 @@
 id: TICKET-194
 title: Validate new-ticket input before allocating an id
 epic: foundations
-status: in_review
+status: done
 priority: medium
 estimate: S
 labels: [infra, test]

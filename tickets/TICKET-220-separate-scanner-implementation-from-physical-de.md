@@ -2,7 +2,7 @@
 id: TICKET-220
 title: Separate scanner implementation from physical-device release approval
 epic: foundations
-status: in_review
+status: done
 priority: high
 estimate: S
 labels: [docs]

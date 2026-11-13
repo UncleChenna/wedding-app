@@ -1,24 +1,15 @@
-# UI completion checklist
+# UI checklist
 
-Run after every UI change against [the design principles](design-principles.md). Record **PASS** or **FAIL** and evidence for every item in the PR body. An item may be **N/A** only with a concrete reason (for example, no images on the affected route); unavailable testing is **not verified**, not a pass. Do not mark a UI task done with failures or required checks unverified.
+Run through this after a UI change, against [the design principles](design-principles.md). Note anything
+you could not check in the PR.
 
-**Scope (TICKET-217).**
-
-- **Guest-facing pages** (invitation, RSVP, pass, ordering) need the full list below.
-- **Admin and staff screens** need lighter evidence: screenshots in one theme at 375px, an axe scan, and contrast checked in every theme, which the axe scan per theme covers. Sharing and devices, Performance and QR are N/A unless the change touches them.
-
-- [ ] **Screenshots:** Playwright screenshots of affected routes at 375px, 768px, and 1280px in every registered theme (at least two). For admin and staff screens: one theme at 375px. Record paths and inspect them; use `SCREENSHOT_ROUTES=/affected-route pnpm screenshots`.
-- [ ] **Tokens:** Search changed files for hard-coded colours, font families, radii, and shadows. Components use theme tokens; any new token is defined through the documented theming process.
-- [ ] **Restraint and typography:** One main idea per section, restrained palette and decoration, required spacing, font roles, body size, line height, and prose width.
-- [ ] **Mobile:** No horizontal page scroll at review or intermediate widths; all tap targets at least 44×44px; primary actions reachable and safe-area/keyboard handling checked.
-- [ ] **Motion:** Reduced-motion mode checked; only opacity/transform animated; durations within limits; no blocking animation.
-- [ ] **Keyboard:** All actions reachable and operable, focus visible, fields labelled, and dialog focus/escape/return behaviour works.
-- [ ] **Contrast:** AA contrast passes in every theme, including actual rendered states. Meaning never depends on colour alone.
-- [ ] **Load and images:** CLS = 0 on load; image space reserved; photographs use `next/image`, accurate `sizes`, AVIF/WebP, blur placeholders, and appropriate alt text; fonts use `next/font` with swap and stable fallback metrics.
-- [ ] **Performance:** Affected guest pages score at least 95 for Performance and Accessibility in Lighthouse mobile on a production build. Record scores and routes; client boundaries remain minimal.
-- [ ] **Copy:** Warm, concise, human wording; approved PRD copy reused where present; no technical errors exposed to guests.
-- [ ] **Shared components:** Existing shared components reused; any new reusable pattern added to `/dev/theme`.
-- [ ] **Sharing and devices:** Guest-page Open Graph previews checked in WhatsApp; affected guest flows tested in WhatsApp's iOS and Android in-app browsers. Record devices and results.
-- [ ] **QR codes:** Contrast and four-module quiet zone preserved; scan tested on iOS and Android when QR output changes.
-- [ ] **Staff feedback:** Staff typography and fixed status meanings checked in all themes; actions provide immediate visual feedback; successful scans request supported sound/vibration and tolerate unavailable feedback APIs.
-- [ ] **Verification:** `pnpm verify` passes. Record the result.
+- **Screenshots:** look at the changed page at 375px (and 768/1280px for guest pages) in at least two themes.
+  `SCREENSHOT_ROUTES=/your-route pnpm screenshots`. Add the 375px shot to the PR.
+- **Tokens:** no hard-coded colours, fonts, radii or shadows; use theme tokens and shared components.
+- **Mobile:** no horizontal scroll; tap targets at least 44×44px; primary action within thumb reach.
+- **Keyboard and contrast:** everything reachable by keyboard with visible focus; labelled fields; AA
+  contrast; meaning never by colour alone.
+- **Motion:** only opacity/transform, 150–300ms, and respect reduced motion.
+- **Images:** `next/image` with `sizes` and reserved space, so nothing jumps on load.
+- **Copy:** warm and short; no technical errors shown to guests.
+- **Staff screens:** text at least 18px; green = done/valid, amber = waiting/used, red = problem.

@@ -2,7 +2,7 @@
 id: TICKET-199
 title: Build the RSVP frontend preview with confirmation states
 epic: invitations
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [frontend, design]

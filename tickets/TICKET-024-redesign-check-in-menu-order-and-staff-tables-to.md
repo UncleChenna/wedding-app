@@ -2,7 +2,7 @@
 id: TICKET-024
 title: Migrate admission counters and scan event tables
 epic: data-auth
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [db, backend]

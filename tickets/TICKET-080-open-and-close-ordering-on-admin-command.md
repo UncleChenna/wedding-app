@@ -2,7 +2,7 @@
 id: TICKET-080
 title: Open and close ordering on admin command
 epic: ordering
-status: in_review
+status: done
 priority: high
 estimate: S
 labels: [backend, frontend]

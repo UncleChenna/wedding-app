@@ -2,7 +2,7 @@
 id: TICKET-129
 title: Run a security review of tokens, access control and actions
 epic: security
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [security, test]

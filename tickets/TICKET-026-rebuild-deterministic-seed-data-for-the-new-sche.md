@@ -2,7 +2,7 @@
 id: TICKET-026
 title: Rebuild deterministic seed data for the new schema
 epic: data-auth
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [db, test]

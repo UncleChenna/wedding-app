@@ -2,7 +2,7 @@
 id: TICKET-110
 title: Add an iOS Add to Home Screen guide
 epic: pwa
-status: in_review
+status: done
 priority: medium
 estimate: S
 labels: [pwa, frontend]

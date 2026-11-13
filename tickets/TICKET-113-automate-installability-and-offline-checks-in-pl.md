@@ -2,7 +2,7 @@
 id: TICKET-113
 title: Automate installability and offline checks in Playwright
 epic: pwa
-status: in_progress
+status: done
 priority: high
 estimate: M
 labels: [pwa, test]

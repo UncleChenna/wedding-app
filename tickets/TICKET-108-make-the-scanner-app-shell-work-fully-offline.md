@@ -2,7 +2,7 @@
 id: TICKET-108
 title: Make the scanner app shell work fully offline
 epic: pwa
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [pwa, frontend]

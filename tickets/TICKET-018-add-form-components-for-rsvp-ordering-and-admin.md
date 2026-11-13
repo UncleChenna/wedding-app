@@ -2,7 +2,7 @@
 id: TICKET-018
 title: Add form components for RSVP, ordering and admin
 epic: design-system
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [frontend, design]

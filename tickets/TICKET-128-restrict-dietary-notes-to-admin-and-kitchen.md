@@ -2,7 +2,7 @@
 id: TICKET-128
 title: Restrict dietary notes to admin and kitchen
 epic: security
-status: in_review
+status: done
 priority: urgent
 estimate: S
 labels: [security, backend]

@@ -2,7 +2,7 @@
 id: TICKET-224
 title: Reconcile historical stacked ticket merges into develop
 epic: foundations
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [infra, test, docs]

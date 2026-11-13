@@ -2,7 +2,7 @@
 id: TICKET-029
 title: Add admin sign-in with email codes and an allowlist
 epic: data-auth
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [backend, security, frontend]

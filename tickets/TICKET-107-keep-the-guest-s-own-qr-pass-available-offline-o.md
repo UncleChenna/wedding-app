@@ -2,7 +2,7 @@
 id: TICKET-107
 title: Keep the guest's own QR pass available offline once opened
 epic: pwa
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [pwa, frontend]

@@ -2,7 +2,7 @@
 id: TICKET-234
 title: Isolate concurrent ledger fetches and wait for active ticket writers
 epic: quality
-status: in_review
+status: done
 priority: high
 estimate: S
 labels: [infra, test]

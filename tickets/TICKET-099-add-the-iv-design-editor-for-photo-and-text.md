@@ -2,7 +2,7 @@
 id: TICKET-099
 title: Add the IV design editor for photo and text
 epic: admin
-status: in_review
+status: done
 priority: medium
 estimate: M
 labels: [frontend, backend]

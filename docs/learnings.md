@@ -40,3 +40,9 @@ TICKET-123 and TICKET-062 both added test-only CI flags before documenting them 
 ## Bound ledger object preparation without piping JSON (TICKET-243)
 
 Repeated owned ticket publications stalled in `git hash-object --stdin`. Ledger writes now serialize the unchanged JSON into a mode-0600 file inside a mode-0700 temporary directory, and hash it with `--no-filters`. Every preparation command ignores stdin and has a 30-second per-command limit; timeout kills only that owned Git child. Cleanup and the existing three-attempt retry remain intact. Ref updates and pushes deliberately retain their existing acknowledgement semantics: this is not a whole-publication deadline. Real-Git failure, timeout, cleanup, recovery and concurrent-writer tests protect the change.
+
+## Ticket validation during concurrent merges
+
+Use the branch/develop merge-base when determining which ticket definitions already belong to a branch. Comparing with the moving develop tip wrongly makes later merged definitions mandatory on older branches. TICKET-246 reproduces this with isolated repositories and preserves deletion detection plus strict missing-history behavior.
+
+Before the first ticket status commit, use the validator-recognized test-plan labels `Unit:`, `End-to-end:` or `Manual:`. Describing a Git regression without one of those labels fails validation; check the completed definition before starting.

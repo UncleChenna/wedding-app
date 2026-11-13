@@ -2,7 +2,7 @@
 id: TICKET-074
 title: Route order items to kitchen and bar stations
 epic: ordering
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [backend]

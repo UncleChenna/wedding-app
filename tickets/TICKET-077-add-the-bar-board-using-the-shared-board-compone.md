@@ -2,7 +2,7 @@
 id: TICKET-077
 title: Add the bar board using the shared board component
 epic: ordering
-status: in_review
+status: done
 priority: high
 estimate: S
 labels: [frontend]

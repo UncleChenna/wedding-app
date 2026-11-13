@@ -2,7 +2,7 @@
 id: TICKET-219
 title: Require successful verification before direct review transitions
 epic: foundations
-status: in_review
+status: done
 priority: urgent
 estimate: S
 labels: [infra, test]

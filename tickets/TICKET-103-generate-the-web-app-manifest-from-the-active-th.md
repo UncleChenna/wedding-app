@@ -2,7 +2,7 @@
 id: TICKET-103
 title: Generate the web app manifest from the active theme
 epic: pwa
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [pwa, frontend]

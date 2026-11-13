@@ -2,7 +2,7 @@
 id: TICKET-225
 title: Audit rewritten historical ticket provenance
 epic: foundations
-status: in_review
+status: done
 priority: medium
 estimate: M
 labels: [infra, test, docs]

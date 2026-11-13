@@ -2,7 +2,7 @@
 id: TICKET-170
 title: Add QR paper and accessible decorative accent tokens
 epic: design-system
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [design, frontend]

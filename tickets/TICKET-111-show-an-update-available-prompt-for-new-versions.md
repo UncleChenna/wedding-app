@@ -2,7 +2,7 @@
 id: TICKET-111
 title: Show an update-available prompt for new versions
 epic: pwa
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [pwa, frontend]

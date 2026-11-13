@@ -2,7 +2,7 @@
 id: TICKET-183
 title: Resolve signed pass URLs without exposing invitation editing
 epic: invitations
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [backend, security]

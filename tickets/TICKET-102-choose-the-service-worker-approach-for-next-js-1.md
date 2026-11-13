@@ -2,7 +2,7 @@
 id: TICKET-102
 title: Choose the service worker approach for Next.js 16 in an ADR
 epic: pwa
-status: in_review
+status: done
 priority: urgent
 estimate: S
 labels: [pwa, docs]

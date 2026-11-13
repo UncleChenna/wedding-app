@@ -2,7 +2,7 @@
 id: TICKET-070
 title: Start the order page by typing and validating a table number
 epic: ordering
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [frontend, backend]
