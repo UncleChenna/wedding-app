@@ -4,6 +4,9 @@ Transcribed from `Wedding Website — PRD.pdf` (Oct 21, 2026, @Divine). The PDF 
 the linkable source of truth for tickets. If the two disagree, fix this file in a PR and note the change in the
 ticket that needed it.
 
+**Last reviewed 2026-11-13** against `develop`: every functional requirement below is built; what remains is
+account setup, owner decisions and on-site checks. See [Build status](#build-status-2026-11-13).
+
 ## Overview and goals
 
 One website runs the guest side of the wedding end to end: it sends personal invitations (IVs) with a QR code,
@@ -71,6 +74,24 @@ A guest touches the site three times: when the IV arrives, at the gate, and at t
 4. Staff move it through Received, Preparing, Served; the guest's page updates live.
 5. Limits stop abuse: e.g. max open orders per table and a cooldown between orders.
 
+## Build status (2026-11-13)
+
+All Must, Should and Could requirements in the tables below have merged code and tests. Nothing here is live yet:
+there is no deployment, and some checks need real accounts, devices or the venue, and two privacy items wait on an owner decision.
+
+| Area              | Built                                                            | Still to do                                                                           |
+| ----------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| Invitations, RSVP | INV-1 to INV-8, Share menu, reminders, lost-link requests        | Real photo and domain (TICKET-008), proof-read (TICKET-158), first send               |
+| Gate check-in     | CHK-1 to CHK-7, offline queue and reconciliation, printed list   | Devices and staff (TICKET-055), venue test and rehearsal (TICKET-155, 163)            |
+| Table ordering    | ORD-1 to ORD-8, kitchen/bar boards, table host view (TICKET-082) | Real menu (TICKET-157)                                                                |
+| WhatsApp alerts   | ORD-9 sender, retries, opt-ins and board warning (TICKET-085)    | WhatsApp account, template and live test (TICKET-083)                                 |
+| Admin             | ADM-1 to ADM-5, theme editor, event settings, event closure      | Production accounts and deployment (TICKET-144 to 154)                                |
+| Security, privacy | Signed passes, PINs, admin 2FA, rate limits, RLS                 | Privacy details (TICKET-122), then the notice page and clean-up job (TICKET-126, 127) |
+
+Added beyond the original requirements: optional push notifications for kitchen and bar boards (TICKET-112), Wi-Fi
+details on table cards (TICKET-094), an admin scan log with dispute filters and offline-record recovery (TICKET-174,
+231), an event health page (TICKET-143), and a post-event memories export (TICKET-166).
+
 ## Functional requirements
 
 Four modules; Must items are the minimum for the wedding day, Should and Could follow if time allows.
@@ -122,15 +143,21 @@ Sending automatically needs an API, so alerts (only alerts, not IVs) go through 
 one dedicated number to staff who have opted in. When busy, alerts batch per station every 60 seconds so phones
 aren't flooded. The board stays the source of truth: if an alert fails, the order is still on the tablet.
 
+As built (TICKET-084, 085, 086): the Cloud API sender stays off until all five WhatsApp settings are configured, sends an
+approved one-parameter template to opted-in kitchen or bar leads, retries clear provider rejections up to three times,
+never replays an uncertain send, and shows a warning on the board when alerts are failing
+([ADR 0022](decisions/0022-order-alert-outbox.md)). Optional browser push to the boards runs independently
+(TICKET-112).
+
 ### Admin dashboard
 
-| ID    | Requirement                                                                                                | Priority |
-| ----- | ---------------------------------------------------------------------------------------------------------- | -------- |
-| ADM-1 | Guest list with RSVP status, filters, export to CSV                                                        | Must     |
-| ADM-2 | Seating plan: assign guests to tables; print table cards with the table number and the one shared order QR | Must     |
-| ADM-3 | Live counters: invited, RSVP'd yes, arrived, orders open / served                                          | Must     |
-| ADM-4 | Menu editor and staff PIN management                                                                       | Must     |
-| ADM-5 | IV design editor (photo, text, colours) with preview                                                       | Should   |
+| ID    | Requirement                                                                                                                 | Priority |
+| ----- | --------------------------------------------------------------------------------------------------------------------------- | -------- |
+| ADM-1 | Guest list with RSVP status, filters, export to CSV                                                                         | Must     |
+| ADM-2 | Seating plan: assign guests to tables; print table cards with the table number, the one shared order QR and the venue Wi-Fi | Must     |
+| ADM-3 | Live counters: invited, RSVP'd yes, arrived, orders open / served                                                           | Must     |
+| ADM-4 | Menu editor and staff PIN management                                                                                        | Must     |
+| ADM-5 | IV design editor (photo, text, colours) with preview                                                                        | Should   |
 
 ## Non-functional requirements and security
 
@@ -167,12 +194,12 @@ The gate is the riskiest moment: it must be fast, work on bad venue Wi-Fi, and r
 ### Privacy (UK GDPR)
 
 - Collect only what is needed: name, contact, dietary notes. Dietary notes are visible to admin and kitchen only.
-- Privacy notice on the RSVP page; delete guest data a set time after the wedding (e.g. 90 days).
+- Privacy notice on the RSVP page; delete guest data 90 days after the wedding (owner, 2026-10-26).
 
 ### Usability and accessibility
 
 - Mobile-first; works on older Android and iPhone browsers, no app install.
-- Large tap targets, high contrast scanner results readable at arm's length, WCAG 2.1 AA on guest pages.
+- Large tap targets, high contrast scanner results readable at arm's length, WCAG 2.2 AA (which includes 2.1 AA).
 
 ## Design and theming
 
@@ -235,7 +262,9 @@ Every visual value is a design token exposed as a CSS custom property. Tailwind 
 
 ## Data model
 
-Nine tables cover v1; the invitation, not the person, is the unit the gate checks.
+Nine tables cover v1; the invitation, not the person, is the unit the gate checks. The built schema adds supporting
+tables (RSVP history, event settings, themes, devices, scan events, order alerts, push subscriptions and more) and keeps
+staff separate from admin accounts; `src/modules/shared/server/db/schema.ts` is the source of truth.
 
 | Entity     | Key fields                                                                                              | Notes                                                                       |
 | ---------- | ------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
@@ -254,18 +283,19 @@ Nine tables cover v1; the invitation, not the person, is the unit the gate check
 A single Next.js app on Supabase covers all four screens; nothing here needs a native mobile app. Every screen talks
 to the one app; check-ins and orders written to Postgres are pushed live to the boards and other scanners.
 
-| Layer                    | Suggested choice                                                | Why                                                                         |
-| ------------------------ | --------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| Web app and API          | Next.js (TypeScript) on Vercel                                  | One codebase for guest pages, scanner, boards and admin                     |
-| Database, auth, realtime | Supabase (Postgres, Auth, Realtime)                             | Live order board and multi-scanner sync without running your own websockets |
-| ORM                      | Prisma or Drizzle                                               | Typed queries and migrations                                                |
-| QR generation            | qrcode npm package, server-side                                 | Simple, PNG or SVG output                                                   |
-| QR scanning              | Browser BarcodeDetector API, with zxing / html5-qrcode fallback | Not every browser ships BarcodeDetector                                     |
-| IV PDF                   | @react-pdf/renderer                                             | Printable IV with QR                                                        |
-| Email                    | Resend or Postmark                                              | Admin login codes only; IVs go out through the Share menu                   |
-| Sharing IVs              | Web Share API, wa.me links, mailto: links, Clipboard API        | Free, no third-party account; messages go from your own WhatsApp or email   |
-| Offline gate             | PWA service worker + IndexedDB                                  | Survives Wi-Fi drops at the entrance                                        |
-| Monitoring               | Sentry                                                          | See errors live on the day                                                  |
+| Layer                    | Suggested choice                                         | Why                                                                         |
+| ------------------------ | -------------------------------------------------------- | --------------------------------------------------------------------------- |
+| Web app and API          | Next.js (TypeScript) on Vercel                           | One codebase for guest pages, scanner, boards and admin                     |
+| Database, auth, realtime | Supabase (Postgres, Auth, Realtime)                      | Live order board and multi-scanner sync without running your own websockets |
+| ORM                      | Drizzle (chosen)                                         | Typed queries and migrations                                                |
+| QR generation            | qrcode npm package, server-side                          | Simple, PNG or SVG output                                                   |
+| QR scanning              | Browser BarcodeDetector API, with a ZXing fallback       | Not every browser ships BarcodeDetector                                     |
+| IV PDF                   | @react-pdf/renderer                                      | Printable IV with QR                                                        |
+| Email                    | Resend or Postmark (not chosen yet, TICKET-028)          | Admin login codes only; IVs go out through the Share menu                   |
+| Sharing IVs              | Web Share API, wa.me links, mailto: links, Clipboard API | Free, no third-party account; messages go from your own WhatsApp or email   |
+| Offline gate             | PWA service worker + IndexedDB                           | Survives Wi-Fi drops at the entrance                                        |
+| Staff push (optional)    | web-push with VAPID keys                                 | Order notices on board devices; boards work without it                      |
+| Monitoring               | Sentry (not set up yet, TICKET-139, 140)                 | See errors live on the day                                                  |
 
 ## Milestones, scope and testing
 
@@ -274,7 +304,7 @@ is rehearsal, not coding.
 
 1. **Foundations (week 1).** Repo, auth, database schema, admin guest list with CSV import, theme tokens and base
    components.
-2. **Invitations and RSVP (weeks 2-3).** IV page and design, token + QR generation, email sending, RSVP form, QR
+2. **Invitations and RSVP (weeks 2-3).** IV page and design, token + QR generation, Share menu, RSVP form, QR
    download. Send IVs at the end of this phase.
 3. **Gate check-in (weeks 4-5).** Scanner page, validation, partial admission, manual search, scan log, offline mode,
    multi-device sync.
@@ -368,20 +398,22 @@ Wallet deferral amends Journey 1's original Add to Wallet requirement; no Wallet
 
 These change the scope or the timeline; answer them before week 2.
 
-| Question                                                                           | Answer so far                                                             |
-| ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| How IVs go out                                                                     | Share menu (WhatsApp, Email, Copy link), no business account              |
-| Payment at the table                                                               | None, all food and drink is free                                          |
-| Venue signal                                                                       | Unknown, so offline check-in is a Must and a router is budgeted           |
-| Look and feel                                                                      | Premium, mobile-first, plug-and-play themes                               |
-| Wedding date and venue                                                             | 19 December 2026; venue and time zone TBD (owner, 2026-10-26)             |
-| Guest count                                                                        | 200-300                                                                   |
-| IVs                                                                                | One per guest; the guest adds and edits tag-alongs until the wedding day  |
-| Who can order                                                                      | Anyone at the table                                                       |
-| Table number                                                                       | Typed by the guest; one shared QR on every table card                     |
-| Caterer                                                                            | Watches the tablet and gets WhatsApp alerts                               |
-| Message wording                                                                    | Warm selected on 2026-10-26; approved copy below and in the shared module |
-| Maximum tag-alongs per IV, or no limit?                                            | Default 1, editable per invitation; no global maximum approved here       |
-| Which numbers get order alerts, and one message per order or a batch every minute? | **Open**                                                                  |
-| Who runs the gate and the boards on the day, and on whose devices?                 | **Open**                                                                  |
-| Domain name, wedding colours and photos for the first theme                        | **Open**                                                                  |
+| Question                                                                           | Answer so far                                                               |
+| ---------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| How IVs go out                                                                     | Share menu (WhatsApp, Email, Copy link), no business account                |
+| Payment at the table                                                               | None, all food and drink is free                                            |
+| Venue signal                                                                       | Unknown, so offline check-in is a Must and a router is budgeted             |
+| Look and feel                                                                      | Premium, mobile-first, plug-and-play themes                                 |
+| Wedding date and venue                                                             | 19 December 2026; venue and time zone TBD (owner, 2026-10-26)               |
+| Guest count                                                                        | 200-300                                                                     |
+| IVs                                                                                | One per guest; the guest adds and edits tag-alongs until the wedding day    |
+| Who can order                                                                      | Anyone at the table                                                         |
+| Table number                                                                       | Typed by the guest; one shared QR on every table card                       |
+| Caterer                                                                            | Watches the tablet and gets WhatsApp alerts                                 |
+| Message wording                                                                    | Warm selected on 2026-10-26; approved copy below and in the shared module   |
+| Maximum tag-alongs per IV, or no limit?                                            | Default 1, editable per invitation; no global maximum approved here         |
+| Which numbers get order alerts, and one message per order or a batch every minute? | **Open**; built default: opted-in kitchen and bar leads, batched per minute |
+| Who runs the gate and the boards on the day, and on whose devices?                 | **Open**                                                                    |
+| Wedding colours                                                                    | Ivory, champagne gold and chocolate brown (TICKET-008, TICKET-014)          |
+| Domain name and photos for the first theme                                         | **Open**                                                                    |
+| Privacy contact and who sees dietary notes                                         | **Open**; default: admin and kitchen only (TICKET-122)                      |
