@@ -38,10 +38,10 @@ TICKET-132's real signed camera journey shows a transient saved-records failure 
 
 ## Acceptance criteria
 
-- [ ] Fresh scanner visits show a preparation state rather than a premature storage-failure warning.
-- [ ] Completion of real worker preparation refreshes saved-record status without manual retry.
-- [ ] Real unavailable or inconsistent storage still fails closed and retains retry guidance.
-- [ ] Existing TICKET-132 camera regression retains exact healthy-record assertions after readiness.
+- [x] Fresh scanner visits show a preparation state rather than a premature storage-failure warning.
+- [x] Completion of real worker preparation refreshes saved-record status without manual retry.
+- [x] Real unavailable or inconsistent storage still fails closed and retains retry guidance.
+- [x] Existing TICKET-132 camera regression retains exact healthy-record assertions after readiness.
 
 ## Test plan
 
@@ -55,6 +55,8 @@ TICKET-132's real signed camera journey shows a transient saved-records failure 
 ## Notes / decisions
 
 - 2026-11-13 — Reserved separately from TICKET-231 after independent actual-browser evidence; no queue data loss was observed.
+
+- 2026-11-13 — Implemented bounded preparing state and readiness refresh with original generation guards.23 focused unit tests and real mobile/desktop camera regression pass; original queue failures remain unavailable. See `docs/plans/TICKET-235-pr.md`.
 
 ## Activity log
 

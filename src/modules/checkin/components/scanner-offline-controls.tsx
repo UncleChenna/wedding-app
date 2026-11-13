@@ -56,6 +56,7 @@ export function ScannerOfflineControls({
           ? "ready"
           : "unavailable",
       );
+      window.dispatchEvent(new Event("scanner-preparation-complete"));
     }
   }, [expiresAt, session]);
   useEffect(() => {
