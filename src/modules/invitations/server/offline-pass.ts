@@ -65,7 +65,12 @@ button:focus-visible{outline:3px solid var(--t-color-ring);outline-offset:4px}
 </main><script>
 function refreshPass(){document.getElementById("connection").textContent="Checking for your latest pass…";location.reload();}
 document.getElementById("refresh").addEventListener("click",refreshPass);
-window.addEventListener("online",refreshPass);
+// Connectivity events may reach a document after navigation has departed it.
+// Only the active document may refresh; history restoration makes it active again.
+let departed=false;
+window.addEventListener("pagehide",function(){departed=true;});
+window.addEventListener("pageshow",function(){departed=false;});
+window.addEventListener("online",function(){if(!departed&&navigator.onLine)refreshPass();});
 </script></body></html>`;
   return new Response(html, {
     headers: {
