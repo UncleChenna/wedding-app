@@ -267,6 +267,13 @@
       "when": 1794567271472,
       "tag": "0037_staff-push",
       "breakpoints": true
+    },
+    {
+      "idx": 38,
+      "version": "7",
+      "when": 1794574517662,
+      "tag": "0038_host-tables",
+      "breakpoints": true
     }
   ]
 }

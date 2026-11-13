@@ -18,7 +18,7 @@ import { actionRateLimit } from "./request-rate-limit";
 
 const log = createLogger({ module: "staff-auth" });
 const formSchema = z.object({ role: staffRoleSchema, pin: z.string().max(100) });
-const destinations = { gate: "/checkin", kitchen: "/kitchen", bar: "/bar" } as const;
+const destinations = { gate: "/checkin", kitchen: "/kitchen", bar: "/bar", host: "/host" } as const;
 
 export async function staffSignInAction(
   _previous: StaffSignInState,

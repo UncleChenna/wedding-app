@@ -7,10 +7,24 @@ import { createLogger } from "@/modules/shared/lib/logger";
 import { appRoutes } from "@/modules/shared/lib/routes";
 import { db } from "@/modules/shared/server/db/client";
 import { getEventSettings } from "@/modules/shared/server/settings";
-import { newStaffSchema, staffCopy, type PinState, type StaffFormState } from "../lib/staff";
+import {
+  hostTablesCopy,
+  hostTablesSchema,
+  newStaffSchema,
+  staffCopy,
+  type HostTablesState,
+  type PinState,
+  type StaffFormState,
+} from "../lib/staff";
 import { formatStaffExpiry } from "../lib/staff-time";
 import { withCurrentAdminAccess } from "./current-admin-access";
-import { addStaff, issueStaffPin, revokeStaff, setAlertContact } from "./staff-repository";
+import {
+  addStaff,
+  issueStaffPin,
+  revokeStaff,
+  setAlertContact,
+  setHostTables,
+} from "./staff-repository";
 import { alertContactSchema, alertCopy, type AlertContactState } from "../lib/staff-alerts";
 
 const log = createLogger({ module: "admin-staff" });
@@ -120,5 +134,49 @@ export async function saveAlertContactAction(
     unstable_rethrow(error);
     log.warn("staff alert contact save failed");
     return { status: "error", message: alertCopy.failed, ...typed };
+  }
+}
+
+/** Saves which tables a table host looks after (TICKET-082). */
+export async function saveHostTablesAction(
+  _previous: HostTablesState,
+  form: FormData,
+): Promise<HostTablesState> {
+  const typed = String(form.get("tables") ?? "");
+  const parsed = hostTablesSchema.safeParse({ id: form.get("id") ?? "", tables: typed });
+  if (!parsed.success) {
+    const issue = parsed.error.issues.find((item) => item.path[0] === "tables");
+    if (!issue) return { status: "error", message: hostTablesCopy.missing, tables: typed };
+    return {
+      status: "error",
+      message: hostTablesCopy.check,
+      fieldMessage: issue.message,
+      tables: typed,
+    };
+  }
+  try {
+    const result = await withCurrentAdminAccess(() =>
+      setHostTables(db, parsed.data.id, parsed.data.tables),
+    );
+    if (!result.ok) return { status: "error", message: result.message, tables: typed };
+    const saved = result.value;
+    if (saved.status === "missing")
+      return { status: "error", message: hostTablesCopy.missing, tables: typed };
+    if (saved.status === "unknown")
+      return {
+        status: "error",
+        message: hostTablesCopy.check,
+        fieldMessage: hostTablesCopy.unknown(saved.numbers),
+        tables: typed,
+      };
+    revalidatePath(appRoutes.adminStaff.path);
+    return {
+      status: "saved",
+      message: saved.count ? hostTablesCopy.saved : hostTablesCopy.cleared,
+    };
+  } catch (error) {
+    unstable_rethrow(error);
+    log.warn("host tables save failed");
+    return { status: "error", message: hostTablesCopy.failed, tables: typed };
   }
 }

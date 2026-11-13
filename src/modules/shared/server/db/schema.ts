@@ -134,7 +134,7 @@ export const requestBudgets = pgTable(
 
 // ─── Enums ────────────────────────────────────────────────────────────────
 
-export const staffRole = pgEnum("staff_role", ["admin", "gate", "kitchen", "bar"]);
+export const staffRole = pgEnum("staff_role", ["admin", "gate", "kitchen", "bar", "host"]);
 export const invitationStatus = pgEnum("invitation_status", [
   "draft",
   "sent",
@@ -247,7 +247,8 @@ export const registeredDevices = pgTable(
   (t) => [
     check("registered_devices_id_format", sql`${t.id} ~ '^[A-Za-z0-9][A-Za-z0-9._:-]{0,199}$'`),
     check("registered_devices_name_length", sql`char_length(trim(${t.name})) between 1 and 120`),
-    check("registered_devices_staff_role", sql`${t.role} in ('gate', 'kitchen', 'bar')`),
+    // Any PIN role. Written as "not admin" so adding a role never needs this literal list.
+    check("registered_devices_staff_role", sql`${t.role} <> 'admin'`),
   ],
 ).enableRLS();
 
@@ -341,6 +342,24 @@ export const tables = pgTable(
     updatedAt: updatedAt(),
   },
   (t) => [check("tables_capacity_positive", sql`${t.capacity} > 0`)],
+).enableRLS();
+
+/** The tables a table host looks after (TICKET-082). Only `host` staff should appear here. */
+export const hostTables = pgTable(
+  "host_tables",
+  {
+    staffId: uuid("staff_id")
+      .notNull()
+      .references(() => staff.id, { onDelete: "cascade" }),
+    tableId: uuid("table_id")
+      .notNull()
+      .references(() => tables.id, { onDelete: "cascade" }),
+    createdAt: createdAt(),
+  },
+  (t) => [
+    primaryKey({ columns: [t.staffId, t.tableId] }),
+    index("host_tables_table_idx").on(t.tableId),
+  ],
 ).enableRLS();
 
 export const guests = pgTable(
