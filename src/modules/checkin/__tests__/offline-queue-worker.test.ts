@@ -35,6 +35,11 @@ function fixture() {
   };
   const queueStore = {
     read: async () => structuredClone(journal),
+    purgeAcknowledged: async () => {
+      const count = journal.receipts.length;
+      journal.receipts = [];
+      return count;
+    },
     record: vi.fn(
       async (
         attempt: Parameters<typeof policy.record>[1],

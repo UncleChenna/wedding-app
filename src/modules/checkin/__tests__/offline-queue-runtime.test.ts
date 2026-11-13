@@ -46,6 +46,11 @@ function setup() {
     ),
     acknowledge: async (owner: typeof actor, acks: readonly unknown[], generation: string) =>
       policy.acknowledge(state, owner, acks, generation),
+    purgeAcknowledged: async () => {
+      const count = state.receipts.length;
+      state.receipts = [];
+      return count;
+    },
     clearBarrier: async () => false,
     clearCapturedBarriers: async () => 0,
   };

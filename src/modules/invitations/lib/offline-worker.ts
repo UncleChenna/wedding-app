@@ -12,6 +12,11 @@ function ownPassPath(raw) {
   } catch { return null; }
 }
 const invalidOwnPasses = new Set();
+function ownPassExpired(response) {
+  const raw = response.headers.get("X-Wedding-Offline-Expires");
+  const deadline = raw ? Date.parse(raw) : NaN;
+  return !Number.isFinite(deadline) || deadline <= Date.now();
+}
 async function eraseOwnPass(path) {
   invalidOwnPasses.add(path);
   const cache = await caches.open(OWN_PASS_CACHE);
@@ -31,7 +36,21 @@ async function ownPassQueue(path, operation) {
   try { return await operation(); }
   finally { release(); if (ownPassLocks.get(path) === current) ownPassLocks.delete(path); }
 }
-function refreshOwnPass(path, appearance) {
+async function purgeExpiredOwnPasses() {
+  try {
+    const cache = await caches.open(OWN_PASS_CACHE);
+    for (const request of await cache.keys()) {
+      const path = ownPassPath(request.url);
+      if (!path) continue;
+      await ownPassQueue(path, async () => {
+        const copy = await cache.match(path);
+        if (copy && ownPassExpired(copy)) await eraseOwnPass(path);
+      });
+    }
+  } catch { /* Reads still check expiry before returning any private copy. */ }
+}
+async function refreshOwnPass(path, appearance) {
+  await purgeExpiredOwnPasses();
   return ownPassQueue(path,() => refreshOwnPassLocked(path,appearance));
 }
 async function refreshOwnPassLocked(path, appearance) {
@@ -42,6 +61,10 @@ async function refreshOwnPassLocked(path, appearance) {
   }
   if (response.status !== 200 || response.headers.get("X-Wedding-Offline-Pass") !== "1")
     return { state: "unavailable" };
+  if (ownPassExpired(response)) {
+    await eraseOwnPass(path);
+    return { state: "removed" };
+  }
   const version = response.headers.get("X-Wedding-Pass-Version");
   if (!version || !/^[1-9][0-9]*$/.test(version)) return { state: "unavailable" };
   const privateCache = await caches.open(OWN_PASS_CACHE);
@@ -76,6 +99,7 @@ self.addEventListener("message",(event) => {
   })());
 });
 async function ownPassNavigation(request) {
+  await purgeExpiredOwnPasses();
   const path = ownPassPath(request.url);
   try {
     const response = await fetch(request);
@@ -89,7 +113,10 @@ async function ownPassNavigation(request) {
   } catch {
     try {
       const copy = invalidOwnPasses.has(path) ? null : await (await caches.open(OWN_PASS_CACHE)).match(path);
-      if (copy?.status === 200 && copy.headers.get("X-Wedding-Offline-Pass") === "1") return copy;
+      if (copy?.status === 200 && copy.headers.get("X-Wedding-Offline-Pass") === "1") {
+        if (!ownPassExpired(copy)) return copy;
+        try { await ownPassQueue(path,() => eraseOwnPass(path)); } catch {}
+      }
     } catch {}
     try {
       const fallback = await (await caches.open(SW_OFFLINE_CACHE)).match(SW_OFFLINE_URL);

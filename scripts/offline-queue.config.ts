@@ -4,6 +4,7 @@ export default defineConfig({
   testMatch: [
     "offline-queue-store.spec.ts",
     "offline-queue-worker.spec.ts",
+    "private-pass-lifecycle.spec.ts",
     "queue-upgrade.spec.ts",
   ],
   outputDir: "../artifacts/TICKET-066/store",
