@@ -161,6 +161,44 @@ jobs:
       - name: Migrations match schema.ts
         run: pnpm db:generate --name ci-drift-check && git diff --exit-code drizzle/ && test -z "$(git ls-files --others --exclude-standard drizzle/)"
 
+  lighthouse:
+    needs: plan
+    if: needs.plan.outputs.guest == 'true'
+    name: ${{ ((github.event.action == 'edited' && !github.event.changes.base) || (github.event.action == 'labeled' && github.event.label.name != 'ci:full')) && 'guest Lighthouse mobile (metadata only)' || 'guest Lighthouse mobile' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 54322:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm db:migrate
+      - run: pnpm build
+      - name: Audit three cold mobile runs per guest page
+        run: pnpm exec tsx scripts/test-lighthouse.ts
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: guest-lighthouse-evidence
+          path: artifacts/TICKET-116/
+          retention-days: 7
+
   guest-journey:
     needs: plan
     if: needs.plan.outputs.guest == 'true'
@@ -342,7 +380,18 @@ jobs:
   required:
     name: ${{ ((github.event.action == 'edited' && !github.event.changes.base) || (github.event.action == 'labeled' && github.event.label.name != 'ci:full')) && 'required CI gates (metadata only)' || 'required CI gates' }}
     if: always() && needs.plan.result != 'skipped'
-    needs: [plan, tickets, pr-text, verify, database, guest-journey, camera-decoding, admin-journey]
+    needs:
+      [
+        plan,
+        tickets,
+        pr-text,
+        verify,
+        database,
+        guest-journey,
+        lighthouse,
+        camera-decoding,
+        admin-journey,
+      ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
