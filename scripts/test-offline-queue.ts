@@ -8,9 +8,11 @@ const result = spawnSync(
     "playwright",
     "test",
     "e2e/offline-queue.spec.ts",
+    "e2e/offline-gate.spec.ts",
     "--project=mobile",
     "--project=desktop",
     "--workers=1",
+    ...process.argv.slice(2),
   ],
   {
     stdio: "inherit",

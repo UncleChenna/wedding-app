@@ -1,0 +1,16 @@
+{
+  "qrScans": 50,
+  "scanners": 2,
+  "totals": {
+    "rows": 100,
+    "ids": 100,
+    "reported": 56,
+    "admitted": 52
+  },
+  "conflict": {
+    "reported": 8,
+    "admitted": 4,
+    "conflicts": 1
+  },
+  "exactEventIdsRetained": true
+}

@@ -39,9 +39,9 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-6) · [Milestones, scope
 
 ## Acceptance criteria
 
-- [ ] Two disconnected scanners retain every scan report across reload and reconcile duplicate event retries without duplicate canonical admissions.
-- [ ] Over-allowance reports remain visible conflicts: four allowed and eight reported yields four canonical admissions, eight reports and a resolvable conflict.
-- [ ] Invalid/used/revoked scans, stale snapshots, expired devices and quota failure follow TICKET-169/TICKET-184; no silent evidence loss.
+- [x] Two disconnected scanners retain every scan report across reload and reconcile duplicate event retries without duplicate canonical admissions.
+- [x] Over-allowance reports remain visible conflicts: four allowed and eight reported yields four canonical admissions, eight reports and a resolvable conflict.
+- [x] Invalid/used/revoked scans, stale snapshots, expired devices and quota failure follow TICKET-169/TICKET-184; no silent evidence loss.
 
 ## Test plan
 
@@ -54,7 +54,7 @@ See: [Gate check-in](../docs/prd.md#gate-check-in) (CHK-6) · [Milestones, scope
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-11-13: Actual two-context mobile/desktop 50-code rehearsal passes. Exact original100 event IDs survive reload and retry; shared8 reported/4 admitted/1 conflict, total56 reported/52 admitted. Existing40 browser fault cases and33 policy tests pass. See docs/plans/TICKET-136-pr.md and docs/reviews/TICKET-136/ for evidence. Physical devices remain TICKET-163.
 
 ## Activity log
 
