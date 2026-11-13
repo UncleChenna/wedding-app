@@ -12,7 +12,12 @@ import { Envelope } from "./envelope";
 
 export type InvitationEventDetails = Readonly<
   Pick<EventSettings, "eventDate" | "ceremonyTime" | "timeZone" | "venue" | "mapUrl" | "dressCode">
-> & { readonly coupleNames: readonly [string, string]; readonly photo?: InvitationHeroPhoto };
+> & {
+  readonly coupleNames: readonly [string, string];
+  readonly photo?: InvitationHeroPhoto;
+  readonly headline?: string;
+  readonly subline?: string;
+};
 
 const safeMap = z.url({ protocol: /^https$/ });
 const linkStyle =
@@ -53,19 +58,21 @@ export function InvitationLetter({
             <span className="my-2 block text-primary">{" & "}</span>
             <span className="block">{details.coupleNames[1]}</span>
           </h1>
-          <p className="mx-auto mt-10 max-w-lg text-left type-heading">
-            {invitationSiteCopy.headline.split(/(?<=\.) /).map((line, index) => (
-              <span key={line} className="block">
-                {index > 0 ? " " : ""}
-                {line}
-              </span>
-            ))}
+          <p className="mx-auto mt-10 max-w-lg text-left type-heading wrap-anywhere">
+            {(details.headline ?? invitationSiteCopy.headline)
+              .split(/(?<=\.) /)
+              .map((line, index) => (
+                <span key={`${index}-${line}`} className="block">
+                  {index > 0 ? " " : ""}
+                  {line}
+                </span>
+              ))}
           </p>
           <p className="mx-auto mt-6 max-w-prose text-left text-lg leading-relaxed wrap-anywhere">
             {greeting}
           </p>
-          <p className="mx-auto mt-6 max-w-prose text-left text-lg leading-relaxed">
-            {invitationSiteCopy.subline}
+          <p className="mx-auto mt-6 max-w-prose text-left text-lg leading-relaxed wrap-anywhere whitespace-pre-line">
+            {details.subline ?? invitationSiteCopy.subline}
           </p>
           <nav
             aria-label="Your invitation"

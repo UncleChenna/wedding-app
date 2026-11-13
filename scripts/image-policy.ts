@@ -35,7 +35,16 @@ function hasValue(value: ts.JsxAttributeValue | undefined): boolean {
 }
 
 function reservedFillParent(node: ImageNode): boolean {
-  const parent = ts.isJsxOpeningElement(node) ? node.parent.parent : node.parent;
+  let parent = ts.isJsxOpeningElement(node) ? node.parent.parent : node.parent;
+  // Conditional rendering does not introduce a DOM parent. Stop at the first
+  // actual JSX element so an unreserved inner wrapper cannot borrow an ancestor.
+  while (
+    ts.isParenthesizedExpression(parent) ||
+    ts.isConditionalExpression(parent) ||
+    ts.isJsxExpression(parent)
+  ) {
+    parent = parent.parent;
+  }
   if (!ts.isJsxElement(parent)) return false;
   const className = literal(attributes(parent.openingElement).get("className")) ?? "";
   return (

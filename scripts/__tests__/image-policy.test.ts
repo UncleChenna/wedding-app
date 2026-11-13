@@ -60,6 +60,23 @@ describe("responsive photograph policy", () => {
       expect.stringContaining("unoptimized"),
     ]);
   });
+  it("recognizes conditional images without skipping an actual unreserved wrapper", () => {
+    const image = '<Picture src={photo} alt="Couple" sizes="100vw" fill placeholder="blur" />';
+    const frame = '<div className="relative aspect-[4/3]">';
+    expect(
+      imagePolicyProblems(
+        `${staticImage} const x=${frame}{ready ? (${image}) : <p>Loading</p>}</div>;`,
+      ),
+    ).toEqual([]);
+    expect(
+      imagePolicyProblems(
+        `${staticImage} const x=${frame}<div>{ready ? (${image}) : null}</div></div>;`,
+      ),
+    ).toEqual([expect.stringContaining("reserved positioned parent")]);
+    expect(
+      imagePolicyProblems(`${staticImage} const x=<div>{ready ? (${image}) : null}</div>;`),
+    ).toEqual([expect.stringContaining("reserved positioned parent")]);
+  });
   it("rejects empty sizes, missing blur and raw browser images", () => {
     expect(
       imagePolicyProblems(
