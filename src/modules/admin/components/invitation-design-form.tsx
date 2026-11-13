@@ -248,7 +248,7 @@ export function InvitationDesignForm({
       {state.status !== "idle" && (
         <p role={state.status === "error" ? "alert" : "status"}>{state.message}</p>
       )}
-      <Button type="submit" disabled={pending || uploading}>
+      <Button type="submit" className="scroll-mb-72" disabled={pending || uploading}>
         {pending ? "Saving…" : "Save invitation design"}
       </Button>
     </form>

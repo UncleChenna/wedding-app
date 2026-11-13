@@ -95,6 +95,17 @@ test.describe("invitation design publication", () => {
     await expect(page.getByLabel("Headline", { exact: true })).toHaveValue(
       "Together for our favourite day",
     );
+    const saveButton = page.getByRole("button", { name: "Save invitation design", exact: true });
+    await saveButton.focus();
+    await expect(saveButton).toBeFocused();
+    const buttonBox = await saveButton.boundingBox();
+    const navigationBox = await page.getByRole("navigation", { name: "Admin" }).boundingBox();
+    expect(buttonBox).not.toBeNull();
+    expect(navigationBox).not.toBeNull();
+    if (info.project.name === "mobile" && buttonBox && navigationBox)
+      expect(buttonBox.y + buttonBox.height).toBeLessThanOrEqual(navigationBox.y);
+    await page.keyboard.press("Enter");
+    await expect(page.getByText("Your invitation design is saved.")).toBeVisible();
     mkdirSync(`artifacts/TICKET-099/${info.project.name}`, { recursive: true });
     for (const theme of themes) {
       await applyTheme(page, theme);
