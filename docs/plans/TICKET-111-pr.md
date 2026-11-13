@@ -19,7 +19,7 @@ Staff can choose when to reload for a new version without discarding queued chec
 - Fifteen focused tests pass for durable locking, pending/rejected attempts, unavailable storage, invalid replies, explicit activation, dismissal and other tabs.
 - Six actual Chromium/WebKit N/N+1 worker tests pass, including pending evidence, declined update, interrupted reload, additive migration and rollback, then explicit acceptance after exact acknowledgements.
 - All-theme browser review passes at375/768/1280: twelve screenshots, axe, tap targets, overflow, keyboard and reduced motion.
-- Initial production build passes. Remaining: integrated184 verification, independent review and hosted CI.
+- Production build and six actual worker cases pass after integrating develop3be8bd693d4a880f11bf72e177519161948e954e (includes184/067). Independent review found no blocker. Hosted CI remains pending.
 
 # Verification
 

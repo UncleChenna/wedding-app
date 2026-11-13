@@ -39,10 +39,10 @@ See: [Tech stack and architecture](../docs/prd.md#tech-stack-and-architecture).
 
 ## Acceptance criteria
 
-- [ ] A new build triggers the prompt (e2e with two builds or simulated waiting worker).
-- [ ] Reload is blocked while check-ins are pending (unit).
+- [x] A new build triggers the prompt (e2e with two builds or simulated waiting worker).
+- [x] Reload is blocked while check-ins are pending (unit).
 
-- [ ] Use TICKET-180 queue-safe activation; defer updates while scans are pending and preserve events across multiple tabs and worker/schema changes.
+- [x] Use TICKET-180 queue-safe activation; defer updates while scans are pending and preserve events across multiple tabs and worker/schema changes.
 
 ## Test plan
 
@@ -58,7 +58,7 @@ See: [Tech stack and architecture](../docs/prd.md#tech-stack-and-architecture).
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-11-13: Shared update notification and offline scanner integration implemented. Fifteen focused tests, six real Chromium/WebKit worker upgrade cases, production build and twelve all-theme screenshots/axe/keyboard checks pass. Independent review found no blockers. Physical-device and fresh page-performance checks stay unchecked in TICKET-201 under the approved preview disposition. Integration base:3be8bd693d4a880f11bf72e177519161948e954e.
 
 ## Activity log
 

@@ -311,7 +311,9 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: scanner-synchronization-evidence
-          path: docs/reviews/TICKET-068/
+          path: |
+            docs/reviews/TICKET-068/
+            docs/reviews/TICKET-067/
           retention-days: 7
       - name: Stop this job's isolated stack
         if: always()

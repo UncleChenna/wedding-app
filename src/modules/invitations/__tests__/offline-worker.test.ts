@@ -27,6 +27,7 @@ function worker() {
           items.set(key(url), response.clone());
         },
         match: async (url: string | Request) => items.get(key(url))?.clone(),
+        keys: async () => [...items.keys()].map((url) => new Request(url)),
         delete: async (url: string | Request) => {
           if (deleteFailure) throw new Error("delete unavailable");
           return items.delete(key(url));
@@ -44,6 +45,7 @@ function worker() {
       headers: {
         "X-Wedding-Offline-Pass": "1",
         "X-Wedding-Pass-Version": String(version),
+        "X-Wedding-Offline-Expires": "2099-12-20T06:00:00.000Z",
         "X-Wedding-Offline-Refreshed": "2026-11-02T20:00:00Z",
       },
     });
@@ -182,7 +184,11 @@ it("serializes a slow save before a later revocation check", async () => {
   const second = w.save(a);
   resolveFirst?.(
     new Response("old copy", {
-      headers: { "X-Wedding-Offline-Pass": "1", "X-Wedding-Pass-Version": "1" },
+      headers: {
+        "X-Wedding-Offline-Pass": "1",
+        "X-Wedding-Pass-Version": "1",
+        "X-Wedding-Offline-Expires": "2099-12-20T06:00:00.000Z",
+      },
     }),
   );
   expect((await first).state).toBe("saved");
@@ -224,4 +230,35 @@ it("does not report successful removal when both deletion and tombstone writing 
   w.setQuota(true);
   w.setStatus(404);
   expect((await w.save(a)).state).toBe("unavailable");
+});
+
+it("expired and legacy copies are never served even when deletion and tombstone writes fail", async () => {
+  const w = worker();
+  await w.save(a);
+  await (await w.caches.open(SW_OFFLINE_CACHE)).put(SW_OFFLINE_URL, new Response("GENERIC"));
+  const cache = await w.caches.open(OWN_PASS_CACHE);
+  const copy = await cache.match(a);
+  if (!copy) throw new Error("Missing saved copy");
+  const headers = new Headers(copy.headers);
+  headers.set("X-Wedding-Offline-Expires", "2000-01-01T00:00:00.000Z");
+  await cache.put(a, new Response(await copy.text(), { headers }));
+  w.setOnline(false);
+  w.setDeleteFailure(true);
+  w.setQuota(true);
+  expect(await (await w.navigate(a))?.text()).toBe("GENERIC");
+  expect(w.store.get(OWN_PASS_CACHE)?.size).toBe(1); // storage refused writes, never claim erased
+});
+it("a legacy saved pass without a bounded expiry is removed before offline use", async () => {
+  const w = worker();
+  await w.save(a);
+  await (await w.caches.open(SW_OFFLINE_CACHE)).put(SW_OFFLINE_URL, new Response("GENERIC"));
+  const cache = await w.caches.open(OWN_PASS_CACHE),
+    copy = await cache.match(a);
+  if (!copy) throw new Error("Missing saved copy");
+  const headers = new Headers(copy.headers);
+  headers.delete("X-Wedding-Offline-Expires");
+  await cache.put(a, new Response(await copy.text(), { headers }));
+  w.setOnline(false);
+  expect(await (await w.navigate(a))?.text()).toBe("GENERIC");
+  expect(w.store.get(OWN_PASS_CACHE)?.size).toBe(0);
 });
