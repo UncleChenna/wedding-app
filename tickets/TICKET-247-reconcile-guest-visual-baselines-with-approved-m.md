@@ -2,7 +2,7 @@
 id: TICKET-247
 title: Reconcile reviewed UI baselines after merged design changes
 epic: foundations
-status: in_progress
+status: in_review
 priority: high
 estimate: M
 labels: [test]
