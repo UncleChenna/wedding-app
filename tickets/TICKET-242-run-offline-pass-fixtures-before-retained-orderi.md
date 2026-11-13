@@ -2,7 +2,7 @@
 id: TICKET-242
 title: Fix offline-pass CI fixture and navigation sequencing
 epic: quality
-status: in_progress
+status: in_review
 priority: urgent
 estimate: S
 labels: [test, infra]
@@ -12,7 +12,7 @@ agent: codex
 blocked_by: []
 blocks: []
 branch: TICKET-242
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/200
 created: 2026-11-13
 updated: 2026-11-13
 started: 2026-11-13
@@ -70,3 +70,4 @@ TICKET-113's saved-pass CI check runs after ordering fixtures retain a default s
 - 2026-11-13 — backlog → todo — divine (codex)
 - 2026-11-13 — todo → claimed — divine (codex)
 - 2026-11-13 — todo → in_progress — divine (codex)
+- 2026-11-13 — in_progress → in_review — divine (codex)
