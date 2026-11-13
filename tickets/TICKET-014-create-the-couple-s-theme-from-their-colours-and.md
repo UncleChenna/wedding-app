@@ -2,7 +2,7 @@
 id: TICKET-014
 title: Create the couple's theme from their approved colours
 epic: design-system
-status: in_review
+status: done
 priority: urgent
 estimate: S
 labels: [design, frontend]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/190
 created: 2026-10-21
 updated: 2026-11-13
 started: 2026-11-13
-completed: ""
+completed: 2026-11-13
 reason: ""
 resume_to: ""
 ---
@@ -69,3 +69,4 @@ See: [How theming works](../docs/prd.md#how-theming-works) · [Open questions](.
 - 2026-11-13 — todo → in_progress — divine (codex)
 - 2026-11-13 — in_progress → in_review — divine (codex)
 - 2026-11-13 — in_review → in_progress — divine (codex) — CI correctly requires regenerating preset-derived PWA icons after palette changes
+- 2026-11-13 — in_review → done — divine (codex)
