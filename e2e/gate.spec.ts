@@ -142,6 +142,14 @@ test("camera pixels show all five gate results without admitting anyone", async 
       ]);
       await page.screenshot({ path: `${folder}/${item.state}.png`, fullPage: true });
     }
+    // The first status probe can precede worker preparation. A real retry must
+    // become healthy without clearing storage or resetting the saved journal.
+    await expect(page.getByText(/Camera ready for an offline reload/)).toBeVisible();
+    const savedRecords = page.getByRole("region", { name: "Saved gate records" });
+    await savedRecords.getByRole("button").click();
+    await expect(
+      savedRecords.getByText("No records are waiting for this operator.", { exact: true }),
+    ).toBeVisible();
     // Reads must never grant admission. Only the pre-existing used-pass fixture has entry evidence.
     expect(
       await db`select invitation_id,admitted_people from scan_events where staff_id=${staff} and admitted_people>0`,

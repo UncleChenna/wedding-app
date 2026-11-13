@@ -2,6 +2,12 @@
 
 The existing gate journey checked Valid and Invalid through camera pixels, but Already used, Revoked and Not RSVP’d only through direct authenticated HTTP calls. A new browser case sends real synthetic QR frames through the scanner and verifies all five displayed results and their persisted read-only observations. No application behavior changes.
 
+## Changes
+
+- Add a real camera-frame matrix for five gate results with authenticated audit checks.
+- Include it in the existing mobile/desktop admission runner.
+- Preserve existing partial/manual journeys and commit ten synthetic outcome screenshots.
+
 ## Acceptance criteria and evidence
 
 - [x] All five result types: `e2e/gate.spec.ts` signs synthetic passes, supplies canvas camera frames, signs in through the real PIN form and checks each visible heading. It also proves the camera tracks stop and non-valid results offer no admission action.
@@ -16,7 +22,7 @@ The existing gate journey checked Valid and Invalid through camera pixels, but A
 - New outcome screenshots: `docs/reviews/TICKET-132/{mobile,desktop}/{valid,already_used,invalid,revoked,not_rsvped}.png`.
 - Synthetic private dietary/RSVP markers never appear in page HTML. Tests disable traces/video and automatic failure screenshots to avoid publishing pass credentials.
 - Fixtures preserve immutable scan evidence and retire their staff/device credentials. No production database, collaborator database or audit guard is modified.
-- Quick verification passes lint and types; no related unit files are selected for the runner-only change. Independent source review found no blockers. Mobile outcome screenshots were inspected. The existing offline-recovery notice remains visible during the online-only fixture; offline health is outside this ticket.
+- Quick verification passes lint and types; no related unit files are selected for the runner-only change. Independent source review found no blockers. Mobile outcome screenshots were inspected. A first-probe recovery notice is transient: after worker preparation, a real saved-records retry reports no waiting records without resetting storage. The added check passes both viewport projects (2 cases, 8.6 seconds). This is not a full offline-operation certification.
 
 ## Risks and rollout
 
