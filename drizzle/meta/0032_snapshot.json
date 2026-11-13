@@ -1,5 +1,5 @@
 {
-  "id": "77c383bc-4f5a-451f-b8f1-2b40f04b2651",
+  "id": "f5c426bb-3b6c-4ece-adeb-d21f80964fee",
   "prevId": "93e7e26d-9ea1-45d6-9dd8-817700111459",
   "version": "7",
   "dialect": "postgresql",
@@ -1595,6 +1595,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "entered_by_staff_id": {
+          "name": "entered_by_staff_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
         "status": {
           "name": "status",
           "type": "order_status",
@@ -1659,6 +1665,19 @@
             "id"
           ],
           "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "orders_entered_by_staff_id_staff_id_fk": {
+          "name": "orders_entered_by_staff_id_staff_id_fk",
+          "tableFrom": "orders",
+          "tableTo": "staff",
+          "columnsFrom": [
+            "entered_by_staff_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
           "onUpdate": "no action"
         }
       },
@@ -2323,121 +2342,6 @@
         "scan_events_legacy_identity": {
           "name": "scan_events_legacy_identity",
           "value": "(\"scan_events\".\"source\" = 'legacy') = (\"scan_events\".\"legacy_check_in_id\" is not null)"
-        }
-      },
-      "isRLSEnabled": true
-    },
-    "public.scan_recovery_audits": {
-      "name": "scan_recovery_audits",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "request_id": {
-          "name": "request_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "client_event_id": {
-          "name": "client_event_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "admin_id": {
-          "name": "admin_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "intent_digest": {
-          "name": "intent_digest",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "outcome": {
-          "name": "outcome",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "recorded_at": {
-          "name": "recorded_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {
-        "scan_recovery_audits_request_event_idx": {
-          "name": "scan_recovery_audits_request_event_idx",
-          "columns": [
-            {
-              "expression": "admin_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "request_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "client_event_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "scan_recovery_audits_event_time_idx": {
-          "name": "scan_recovery_audits_event_time_idx",
-          "columns": [
-            {
-              "expression": "client_event_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "recorded_at",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {
-        "scan_recovery_audits_digest": {
-          "name": "scan_recovery_audits_digest",
-          "value": "\"scan_recovery_audits\".\"intent_digest\" ~ '^[a-f0-9]{64}$'"
-        },
-        "scan_recovery_audits_outcome": {
-          "name": "scan_recovery_audits_outcome",
-          "value": "\"scan_recovery_audits\".\"outcome\" in ('recorded', 'duplicate', 'rejected')"
         }
       },
       "isRLSEnabled": true

@@ -10,7 +10,7 @@ Recover retained offline admissions after gate credentials expire without restor
 
 - Add bounded strict export/import contracts and two-step admin authorization rechecked within each record transaction.
 - Preserve original UUID, actor and device provenance through existing reconciliation; atomically append recovery audit digests and scan-log notes before acknowledgement.
-- Add RLS-enabled append-only `scan_recovery_audits` with generated migrations 0032/0033. No browser policies or existing admission guards change. The generated trigger declaration is falsely classified destructive by the hook; its exact path authorization is recorded under the user’s standing instruction, without changing the hook.
+- Add RLS-enabled append-only `scan_recovery_audits` with generated migrations 0033/0034. No browser policies or existing admission guards change. The generated trigger declaration is falsely classified destructive by the hook; its exact path authorization is recorded under the user’s standing instruction, without changing the hook.
 - Add public local-device recovery and protected admin review pages with entry/return links. Public recovery grants no staff/admin authority and uploads no records until an administrator explicitly imports them.
 - Sign receipts using a separate HMAC domain on the existing server secret. Online receipt verification validates expiry; local cleanup matches complete record identity before acknowledging.
 - Make TICKET-231 a direct release TICKET-154 prerequisite; extend existing authenticated admin and scan-sync test lanes.
@@ -30,7 +30,7 @@ All six criteria have implementation and automated evidence: expired authority r
 
 # Risks and rollout
 
-Apply generated additive 0032/0033 before the new API; no production application is performed here. Audit rows are append-only. Local synthetic seed reset temporarily disables only the named audit guard in the existing transaction, restores it before inserts, and passed two synthetic seed runs with identical row counts. Concurrent migration numbering must be reconciled against latest develop before merge.
+Apply generated additive 0033/0034 before the new API; no production application is performed here. Audit rows are append-only. Local synthetic seed reset temporarily disables only the named audit guard in the existing transaction, restores it before inserts, and passed two synthetic seed runs with identical row counts. Concurrent migration numbering must be reconciled against latest develop before merge.
 
 Recovery files are untrusted claims, so an admin must check the original device/operator and explicitly approve. Deleted original staff/device rows cannot be reconstructed automatically. Full-origin loss cannot restore evidence. Receipts expire after 24 hours; replaying the same reviewed import regenerates a receipt without double-counting. Pending/rejected/mismatched records remain local; do not clear browser data. Physical-phone file transfer remains release QA.
 
@@ -45,3 +45,7 @@ Existing shared buttons, theme tokens, staff-size text, labelled file controls a
 # Harness changes, if any
 
 Existing admin journey runner gains focused `--recovery` mode and includes this journey by default. Existing scan-sync database lane includes the new transactional cases. No checks, hooks or test assertions were weakened.
+
+# Develop integration
+
+Integrated develop `7a43077b`, preserving TICKET-079 migration0032 unchanged. Regenerated only this ticket’s audit migration as0033 and immutable guard as0034; generated SQL is unchanged from the reviewed recovery implementation. Combined history applies twice on a fresh isolated native PostgreSQL database; no production application or deletion occurred.

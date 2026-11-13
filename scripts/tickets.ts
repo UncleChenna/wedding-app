@@ -65,7 +65,7 @@ const USAGE = `Usage: pnpm t:<command>
   t:handoff <id> --from <previous-owner> --agent <agent> --coordinated --reason <authorization>
   t:release <id>                  give back a claimed todo ticket
   t:move <id> <status> [--reason text] [--push]
-  t:reconcile <id> --repair-pr <number> --reason <failure and repair>
+  t:reconcile <id> --repair-pr <number> [--original-pr <number>] --reason <failure and repair>
   t:reconcile <id> --integration-pr <number> [--source-commit <full-oid>] --reason <historical stack and integration>
                                   close an already-merged owned ticket using verified repair CI
   t:new --title "Imperative title" --epic e --module m [--priority p] [--estimate S|M|L]
@@ -712,6 +712,7 @@ function main(): number {
       const who = actor(args, state.cwd);
       const integration = str(args, "integration-pr");
       const historical = integration !== undefined;
+      const suppliedOriginal = str(args, "original-pr");
       const source = str(args, "source-commit");
       if (source !== undefined && !historical)
         throw new TransitionError("--source-commit requires --integration-pr historical recovery.");
@@ -732,20 +733,29 @@ function main(): number {
         who,
         (id) => state.tickets.find((entry) => entry.meta.id === id)?.meta.status,
         historical,
+        suppliedOriginal,
       );
       const result = commitChange(state, ticket.meta.id, (current, statusOf) => {
-        reconciliationEligibility(current.meta, who, statusOf, historical);
+        reconciliationEligibility(current.meta, who, statusOf, historical, suppliedOriginal);
         const proof = reconciliationEvidence(
           state.cwd,
-          current.meta.pr,
+          current.meta.pr || suppliedOriginal || "",
           repair,
           current.path,
           undefined,
           historical,
           source,
+          suppliedOriginal ? { id: current.meta.id, branch: current.meta.branch } : undefined,
         );
         return {
-          meta: { status: "done", updated: today(), completed: today(), reason: "", resume_to: "" },
+          meta: {
+            status: "done",
+            pr: proof.original,
+            updated: today(),
+            completed: today(),
+            reason: "",
+            resume_to: "",
+          },
           log: logLine(
             today(),
             current.meta.status,

@@ -566,6 +566,10 @@ export const orders = pgTable(
       .notNull()
       .references(() => tables.id, { onDelete: "restrict" }),
     guestName: text("guest_name"),
+    /** Set when staff entered the order from a board for a guest without signal (TICKET-079). */
+    enteredByStaffId: uuid("entered_by_staff_id").references(() => staff.id, {
+      onDelete: "set null",
+    }),
     status: orderStatus("status").notNull().default("received"),
     notes: text("notes"),
     createdAt: createdAt(),

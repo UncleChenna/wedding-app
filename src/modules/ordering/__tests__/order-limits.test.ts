@@ -67,3 +67,25 @@ it("accepts exactly the item cap, rejects excess and missing items without silen
     ),
   ).toEqual(["rice", "unknown"]);
 });
+
+describe("staff-entered orders (TICKET-079)", () => {
+  it("skip the table cooldown", () => {
+    expect(rejectTableUsage({ open: 0, sinceLast: 1 }, limits)).toMatchObject({
+      reason: "cooldown",
+    });
+    expect(rejectTableUsage({ open: 0, sinceLast: 1 }, limits, { staffEntered: true })).toBeNull();
+  });
+
+  it("still respect the open-order limit and item caps", () => {
+    expect(rejectTableUsage({ open: 3, sinceLast: 1 }, limits, { staffEntered: true })).toEqual({
+      status: "rejected",
+      reason: "too-many-open",
+    });
+    expect(
+      overLimitItemIds(
+        [{ menuItemId: "soup", quantity: 4 }],
+        new Map([["soup", { maxPerOrder: 3 }]]),
+      ),
+    ).toEqual(["soup"]);
+  });
+});
