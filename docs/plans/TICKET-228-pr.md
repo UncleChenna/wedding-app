@@ -5,19 +5,18 @@ Ticket: TICKET-228
 # Summary
 
 Every ticket carries the same fixed cost, whatever its size: a worktree, a database stack, a production build,
-browser tests, a PR and about 20 minutes of CI. At the owner's request (2026-11-12), this folds 14 tickets that
-hadn't started into 9 tickets covering the same flow. The scope doesn't change; the open list shrinks from 85 to
-71, and about 11 PRs fewer will be needed.
+browser tests, a PR and about 20 minutes of CI. At the owner's request (2026-11-12), this folds 12 tickets that
+hadn't started into 7 tickets covering the same flow. The scope doesn't change; the open list shrinks from 85 to
+73, and about 11 PRs fewer will be needed.
 
 # Changes
 
-Three planned merges were dropped because Codex started those tickets on develop first: 111 ← 180 (#169, done), 129 ← 124 (129 in review) and 132 ← 136 (both in review). Those tickets keep develop's versions, and 124 returns to todo.
+Four planned merges were dropped because Codex started those tickets on develop first: 111 ← 180, 129 ← 124, 132 ← 136 and 014 ← 038, 119. Those tickets keep develop's versions and statuses.
 
 | Keeps going                           | Absorbs                                                | Why                                      |
 | ------------------------------------- | ------------------------------------------------------ | ---------------------------------------- |
 | TICKET-085 alert sending with retries | 087 alert health on boards                             | 087 shows 085's results                  |
 | TICKET-116 Lighthouse gate            | 121 layout-shift and console-error gate                | Same guest-page test setup               |
-| TICKET-014 couple's theme             | 038 hero photo, 119 image optimisation                 | All wait on the owner's photos (008)     |
 | TICKET-126 privacy notice             | 127 retention deletion job                             | Both carry out the 122 decision          |
 | TICKET-149 preview/staging database   | 213 worktree databases                                 | One decision on non-production databases |
 | TICKET-150 migrations in the pipeline | 152 smoke tests per deploy                             | Same pipeline                            |
@@ -49,13 +48,13 @@ For each pair:
 
 # Acceptance criteria and evidence
 
-- [x] **All 14 absorbed tickets are cancelled with a "Merged into" reason, and their criteria appear in the
-      survivor.** `pnpm t:list` shows all 14 as `cancelled`, and each survivor lists "(from TICKET-x)" criteria.
+- [x] **All 12 absorbed tickets are cancelled with a "Merged into" reason, and their criteria appear in the
+      survivor.** `pnpm t:list` shows all 12 as `cancelled`, and each survivor lists "(from TICKET-x)" criteria.
 - [x] **No unstarted ticket is blocked by a cancelled ticket, and `pnpm t:validate` passes.**
   - `t:validate`: 224 tickets valid.
   - A grep of todo and backlog tickets for blockers among the cancelled ids found none.
 - [x] **No started, claimed or finished ticket file is changed.** The diff contains only todo (30) and cancelled
-      (14) ticket files, plus TICKET-228.
+      (12) ticket files, plus TICKET-228.
 
 # Verification
 
@@ -65,7 +64,7 @@ For each pair:
 # Risks and rollout
 
 - **The combined tickets are larger** (size L), so each PR will be bigger to review.
-- **Rollback:** revert the PR, and move the 14 tickets from `cancelled` back to `todo` in the ledger.
+- **Rollback:** revert the PR, and move the 12 tickets from `cancelled` back to `todo` in the ledger.
 
 # Screenshots
 

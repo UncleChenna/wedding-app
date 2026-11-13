@@ -9,7 +9,7 @@ labels: [test, infra]
 module: shared
 owner: ""
 agent: ""
-blocked_by: [TICKET-014, TICKET-044, TICKET-072]
+blocked_by: [TICKET-044, TICKET-072, TICKET-038]
 blocks: [TICKET-154]
 branch: ""
 pr: ""

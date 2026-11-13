@@ -41,6 +41,7 @@ See: [Open questions](../docs/prd.md#open-questions) · [Tech stack and architec
 
 - [ ] https://<domain> serves the app with a valid certificate (curl output in notes).
 - [ ] NEXT_PUBLIC_SITE_URL set to the domain in production.
+- [ ] Record evidence of the authorized registrant, domain ownership and working DNS control without storing credentials or payment data. TICKET-008 supplies the domain choice; this ticket verifies ownership after purchase.
 
 ## Test plan
 
@@ -52,6 +53,8 @@ See: [Open questions](../docs/prd.md#open-questions) · [Tech stack and architec
 - `docs/deployment.md`
 
 ## Notes / decisions
+
+- 2026-11-13 — TICKET-236: Domain ownership evidence belongs here, not before this purchase ticket. TICKET-008 final asset and choice requirements remain intact; both release tickets also require this domain/HTTPS evidence.
 
 - 2026-10-21: Needs a person (decision, account or physical task). Agents may prepare docs and record the outcome.
 
