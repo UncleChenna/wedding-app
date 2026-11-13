@@ -118,7 +118,9 @@ export function Scanner({
   }, []);
 
   async function check(qr: string, cameraSignal: AbortSignal) {
-    readController.current?.abort();
+    // A decoded frame may repeat after the camera throttle expires. Aborting a
+    // request cannot undo a server observation, so keep this capture single-flight.
+    if (cameraSignal.aborted || readController.current) return;
     const request = new AbortController();
     readController.current = request;
     setReading(true);
