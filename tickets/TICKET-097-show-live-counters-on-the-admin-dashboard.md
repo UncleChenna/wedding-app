@@ -2,7 +2,7 @@
 id: TICKET-097
 title: Show live counters on the admin dashboard
 epic: admin
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [frontend, backend]

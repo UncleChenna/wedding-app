@@ -2,7 +2,7 @@
 id: TICKET-166
 title: "Close the event: expire PINs, close ordering, export memories"
 epic: launch
-status: in_review
+status: done
 priority: medium
 estimate: M
 labels: [backend, docs]

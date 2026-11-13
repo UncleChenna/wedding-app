@@ -2,7 +2,7 @@
 id: TICKET-016
 title: Add motion primitives that honour reduced motion
 epic: design-system
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [design, frontend]

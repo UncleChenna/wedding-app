@@ -2,7 +2,7 @@
 id: TICKET-248
 title: Prevent stale reconnect events from reopening a departed offline pass
 epic: pwa
-status: in_review
+status: done
 priority: urgent
 estimate: S
 labels: [frontend, pwa, security]

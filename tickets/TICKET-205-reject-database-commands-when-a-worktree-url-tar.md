@@ -2,7 +2,7 @@
 id: TICKET-205
 title: Reject database commands when a worktree URL targets another stack
 epic: foundations
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [infra, test]

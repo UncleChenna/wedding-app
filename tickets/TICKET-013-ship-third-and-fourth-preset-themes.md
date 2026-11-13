@@ -2,7 +2,7 @@
 id: TICKET-013
 title: Ship third and fourth preset themes
 epic: design-system
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [design, frontend]

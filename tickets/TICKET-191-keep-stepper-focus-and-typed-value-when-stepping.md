@@ -2,7 +2,7 @@
 id: TICKET-191
 title: Keep stepper focus and typed value when stepping
 epic: design-system
-status: in_review
+status: done
 priority: medium
 estimate: S
 labels: [frontend]

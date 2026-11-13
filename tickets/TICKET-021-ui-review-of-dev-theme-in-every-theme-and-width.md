@@ -2,7 +2,7 @@
 id: TICKET-021
 title: UI review of /dev/theme in every theme and width
 epic: design-system
-status: in_review
+status: done
 priority: urgent
 estimate: S
 labels: [design, test]

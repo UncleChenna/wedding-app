@@ -2,7 +2,7 @@
 id: TICKET-053
 title: Show a reminder list and re-share nudges to non-responders
 epic: sharing
-status: in_review
+status: done
 priority: medium
 estimate: M
 labels: [frontend, backend]

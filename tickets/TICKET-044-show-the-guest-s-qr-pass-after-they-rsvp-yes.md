@@ -2,7 +2,7 @@
 id: TICKET-044
 title: Show the guest's QR pass after they RSVP yes
 epic: invitations
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [frontend, backend]

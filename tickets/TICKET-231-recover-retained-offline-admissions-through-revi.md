@@ -2,7 +2,7 @@
 id: TICKET-231
 title: Recover retained offline admissions through reviewed admin imports
 epic: checkin
-status: in_review
+status: done
 priority: high
 estimate: L
 labels: [backend, security, test]

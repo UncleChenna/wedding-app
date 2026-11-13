@@ -2,7 +2,7 @@
 id: TICKET-006
 title: Prove the managed worktree lifecycle end to end
 epic: foundations
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [infra, test]

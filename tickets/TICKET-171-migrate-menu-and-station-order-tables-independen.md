@@ -2,7 +2,7 @@
 id: TICKET-171
 title: Migrate menu and station order tables independently
 epic: data-auth
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [db, backend]

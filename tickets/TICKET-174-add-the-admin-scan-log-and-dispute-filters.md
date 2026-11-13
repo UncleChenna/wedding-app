@@ -2,7 +2,7 @@
 id: TICKET-174
 title: Add the admin scan log and dispute filters
 epic: admin
-status: in_review
+status: done
 priority: medium
 estimate: M
 labels: [frontend, backend]

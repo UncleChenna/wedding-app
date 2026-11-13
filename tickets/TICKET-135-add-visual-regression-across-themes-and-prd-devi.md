@@ -2,7 +2,7 @@
 id: TICKET-135
 title: Add visual regression across themes and PRD device sizes
 epic: testing
-status: in_review
+status: done
 priority: medium
 estimate: M
 labels: [test, design]

@@ -2,7 +2,7 @@
 id: TICKET-230
 title: Record authorized ticket ownership handoffs
 epic: foundations
-status: in_review
+status: done
 priority: high
 estimate: S
 labels: [infra]

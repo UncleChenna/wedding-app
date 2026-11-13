@@ -2,7 +2,7 @@
 id: TICKET-011
 title: "Align theme files with the PRD: pattern texture and radius"
 epic: design-system
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [design, frontend]

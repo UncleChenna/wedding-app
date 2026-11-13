@@ -2,7 +2,7 @@
 id: TICKET-088
 title: Build the admin shell and navigation
 epic: admin
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [frontend]

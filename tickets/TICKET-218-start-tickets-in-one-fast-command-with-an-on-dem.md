@@ -2,7 +2,7 @@
 id: TICKET-218
 title: Start tickets in one fast command with an on-demand database
 epic: foundations
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [infra]

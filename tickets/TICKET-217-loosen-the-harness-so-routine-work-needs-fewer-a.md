@@ -2,7 +2,7 @@
 id: TICKET-217
 title: Loosen the harness so routine work needs fewer approvals
 epic: foundations
-status: in_review
+status: done
 priority: high
 estimate: M
 labels: [infra, docs]

@@ -2,7 +2,7 @@
 id: TICKET-241
 title: Harden and verify local CSP and browser permissions before deployment
 epic: security
-status: in_review
+status: done
 priority: high
 estimate: S
 labels: [security]

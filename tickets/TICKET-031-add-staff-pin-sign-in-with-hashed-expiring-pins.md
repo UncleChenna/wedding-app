@@ -2,7 +2,7 @@
 id: TICKET-031
 title: Add staff PIN sign-in with hashed, expiring PINs
 epic: data-auth
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [security, backend]

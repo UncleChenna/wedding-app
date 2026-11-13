@@ -2,7 +2,7 @@
 id: TICKET-040
 title: Build the RSVP form for attending yes or no
 epic: invitations
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [frontend, backend]

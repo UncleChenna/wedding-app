@@ -2,7 +2,7 @@
 id: TICKET-202
 title: Record unused ticket allocation
 epic: foundations
-status: backlog
+status: cancelled
 priority: medium
 estimate: S
 labels: [infra, docs]

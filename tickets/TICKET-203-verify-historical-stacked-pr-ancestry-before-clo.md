@@ -2,7 +2,7 @@
 id: TICKET-203
 title: Verify historical stacked PR ancestry before closing tickets
 epic: foundations
-status: in_review
+status: done
 priority: high
 estimate: S
 labels: [infra, test]

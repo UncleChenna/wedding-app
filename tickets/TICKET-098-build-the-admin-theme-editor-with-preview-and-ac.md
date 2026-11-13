@@ -2,7 +2,7 @@
 id: TICKET-098
 title: Build the admin theme editor with preview and activate
 epic: admin
-status: in_review
+status: done
 priority: medium
 estimate: M
 labels: [frontend, design]
