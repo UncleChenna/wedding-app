@@ -2,7 +2,7 @@
 id: TICKET-038
 title: Add the full-bleed hero photo with blur placeholder
 epic: invitations
-status: in_review
+status: done
 priority: urgent
 estimate: M
 labels: [frontend, design]
@@ -16,7 +16,7 @@ pr: https://github.com/UncleChenna/wedding-app/pull/189
 created: 2026-10-21
 updated: 2026-11-13
 started: 2026-11-13
-completed: ""
+completed: 2026-11-13
 reason: ""
 resume_to: ""
 ---
@@ -68,3 +68,4 @@ See: [Design principles](../docs/prd.md#design-principles) · [Design principles
 - 2026-11-13 — todo → claimed — divine (codex)
 - 2026-11-13 — todo → in_progress — divine (codex)
 - 2026-11-13 — in_progress → in_review — divine (codex)
+- 2026-11-13 — in_review → done — divine (codex)
