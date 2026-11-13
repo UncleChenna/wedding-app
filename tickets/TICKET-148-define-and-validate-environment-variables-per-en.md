@@ -9,7 +9,7 @@ labels: [infra, security]
 module: shared
 owner: ""
 agent: ""
-blocked_by: [TICKET-125, TICKET-144, TICKET-147]
+blocked_by: [TICKET-125, TICKET-144, TICKET-147, TICKET-245]
 blocks: [TICKET-150, TICKET-154, TICKET-176]
 branch: ""
 pr: ""
@@ -54,7 +54,7 @@ See: [Tech stack and architecture](../docs/prd.md#tech-stack-and-architecture).
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-11-13: TICKET-245 implements the offline explicit release-profile validator and documentation parity. Every existing acceptance criterion remains: set the correct provider scopes, wire the explicit check into the deployment step, prove missing configuration blocks that deployment, and verify real startup. Existing rotation/provider prerequisites remain unchanged; synthetic local tests are not deployment evidence.
 
 ## Activity log
 

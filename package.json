@@ -63,7 +63,8 @@
     "t:dashboard:snapshot": "tsx scripts/tickets.ts dashboard",
     "alerts:schedule": "tsx scripts/alerts-schedule.ts",
     "t:start": "tsx scripts/tickets.ts start",
-    "test:gate": "playwright test --config scripts/gate-verification.config.ts"
+    "test:gate": "playwright test --config scripts/gate-verification.config.ts",
+    "env:release": "node --conditions=react-server --import tsx scripts/check-release-environment.ts"
   },
   "dependencies": {
     "@noble/curves": "2.4.0",
