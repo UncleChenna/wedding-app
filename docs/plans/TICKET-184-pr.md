@@ -26,7 +26,8 @@ Saved private passes now expire at the configured retention deadline. Scanner cl
 - `pnpm verify:quick`: lint and types pass; 86 related unit tests pass.
 - Focused shared worker and offline-pass route suites: 37 tests pass, including marker preservation during activation.
 - Combined actual queue/store/private-pass/upgrade browser suite after integration: 40 pass (28.7s). Dedicated private-pass Chromium/WebKit suite: 4 pass.
-- Independent read-only review found no remaining blocker in expiry, purge, or identity guard.
+- Independent read-only review found no remaining blocker in expiry, purge, identity guard or merged activation.
+- Initial CI passed unit/build, migrations, invitation/admin journeys and camera checks, but PWA smoke rejected the new UUID-only cache marker. The repaired assertion validates the exact dedicated cache, URL, UUID-only body and single occurrence before exempting that marker; all private-page/static-asset restrictions remain. This smoke rerun is pending CI.
 - Integrated develop `c59cf5f2`, including TICKET-180's versionless reader and activation guard. Focused shared-worker/update-guard units: 37 pass after integration. CI is pending; no database, full production build or physical-device result is claimed here.
 
 # Risks and rollout
