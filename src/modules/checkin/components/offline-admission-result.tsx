@@ -105,7 +105,7 @@ export function OfflineAdmissionResult({
         role="status"
         className="rounded-xl space-y-4 border border-border bg-surface p-6 text-lg focus-visible:outline-2 focus-visible:outline-ring"
       >
-        <h2 className="text-3xl font-semibold">
+        <h2 className="text-4xl font-semibold">
           {response.state === "recorded"
             ? "Entry saved on this phone"
             : "This entry was already saved"}

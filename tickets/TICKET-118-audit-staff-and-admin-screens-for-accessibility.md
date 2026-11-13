@@ -39,10 +39,10 @@ See: [Usability and accessibility](../docs/prd.md#usability-and-accessibility) �
 
 ## Acceptance criteria
 
-- [ ] Audit report in docs/audits/; no open serious finding.
-- [ ] Staff text ≥18px and identifiers ≥32px verified in every theme.
+- [x] Audit report in docs/audits/; no open serious finding.
+- [x] Staff text ≥18px and identifiers ≥32px verified in every theme.
 
-- [ ] Scope this review to the stated devices/journeys and bounded fixes; split larger remediation through t:new and block release on those tickets instead of accepting failed device evidence.
+- [x] Scope this review to the stated devices/journeys and bounded fixes; split larger remediation through t:new and block release on those tickets instead of accepting failed device evidence.
 
 ## Test plan
 
@@ -57,7 +57,7 @@ See: [Usability and accessibility](../docs/prd.md#usability-and-accessibility) �
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+2026-11-13: 88 all-theme automated states pass axe, overflow and 18px/32px legibility thresholds. Real PIN/TOTP, camera verdict and modal/settings keyboard paths pass. Physical reading/device checks remain release-blocking in TICKET-201 under standing owner authorization; separate slow-read race reserved as TICKET-238. See docs/audits/TICKET-118-staff-admin-accessibility.md.
 
 ## Activity log
 

@@ -1,0 +1,112 @@
+{
+  "name": "admin-settings",
+  "theme": "ivory-gold",
+  "violations": [],
+  "overflow": false,
+  "small": [
+    {
+      "text": "The couple",
+      "px": 13
+    },
+    {
+      "text": "First name",
+      "px": 16
+    },
+    {
+      "text": "Second name",
+      "px": 16
+    },
+    {
+      "text": "The day",
+      "px": 13
+    },
+    {
+      "text": "Wedding date",
+      "px": 16
+    },
+    {
+      "text": "Ceremony time",
+      "px": 16
+    },
+    {
+      "text": "Optional until decided.",
+      "px": 14
+    },
+    {
+      "text": "Venue time zone",
+      "px": 16
+    },
+    {
+      "text": "For example Africa/Lagos or Europe/London. Replies open once this is set.",
+      "px": 14
+    },
+    {
+      "text": "Venue",
+      "px": 16
+    },
+    {
+      "text": "Optional until decided.",
+      "px": 14
+    },
+    {
+      "text": "Map link",
+      "px": 16
+    },
+    {
+      "text": "A full https:// link to the venue on a map.",
+      "px": 14
+    },
+    {
+      "text": "Dress code",
+      "px": 16
+    },
+    {
+      "text": "Optional.",
+      "px": 14
+    },
+    {
+      "text": "Replies",
+      "px": 13
+    },
+    {
+      "text": "RSVP cutoff",
+      "px": 16
+    },
+    {
+      "text": "Venue time. Optional: replies lock at midnight on the wedding day either way.",
+      "px": 14
+    },
+    {
+      "text": "Invitation voice",
+      "px": 16
+    },
+    {
+      "text": "Extra guests per invitation",
+      "px": 16
+    },
+    {
+      "text": "The usual number of plus-ones.",
+      "px": 14
+    },
+    {
+      "text": "Keep guest data for (days)",
+      "px": 16
+    },
+    {
+      "text": "Table ordering",
+      "px": 13
+    },
+    {
+      "text": "Open orders per table",
+      "px": 16
+    },
+    {
+      "text": "Wait between orders (seconds)",
+      "px": 16
+    },
+    {
+      "text": "Most of one item",
+      "px": 16
+    }
+  ]
+}

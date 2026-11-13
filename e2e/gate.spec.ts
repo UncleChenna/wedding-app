@@ -10,6 +10,7 @@ import { mkdirSync } from "node:fs";
 import postgres from "postgres";
 import QRCode from "qrcode";
 import { expect, test } from "@playwright/test";
+import { auditStaffScreen } from "./support/staff-audit";
 import { assertDatabaseTarget } from "../scripts/database-target";
 import { encodeGatePassPayload } from "../src/modules/checkin/lib/gate-token";
 
@@ -110,7 +111,10 @@ test("camera pixels show all five gate results without admitting anyone", async 
       .find((cookie) => cookie.name === "wedding-staff-device")
       ?.value.split(".")[0];
     expect(browserDevice).toMatch(/^[a-f0-9]{64}$/);
-    const folder = `docs/reviews/TICKET-132/${info.project.name}`;
+    const folder =
+      process.env.RUN_STAFF_ACCESSIBILITY === "1"
+        ? `docs/reviews/TICKET-118/gate-${info.project.name}`
+        : `docs/reviews/TICKET-235/${info.project.name}`;
     mkdirSync(folder, { recursive: true });
     for (const [index, item] of cases.entries()) {
       const frame = frames[index];
@@ -140,13 +144,23 @@ test("camera pixels show all five gate results without admitting anyone", async 
       expect(observations).toEqual([
         { result: item.state, input_method: "qr", source: "online", admitted_people: 0 },
       ]);
+      if (process.env.RUN_STAFF_ACCESSIBILITY === "1") {
+        await auditStaffScreen(page, `gate-${item.state}`, true);
+        await expect(page.getByRole("heading", { name: item.title, exact: true })).toHaveCSS(
+          "font-size",
+          "36px",
+        );
+        if (item.state === "valid" || item.state === "already_used")
+          await expect(page.getByText(`Table ${number}`, { exact: true })).toHaveCSS(
+            "font-size",
+            "36px",
+          );
+      }
       await page.screenshot({ path: `${folder}/${item.state}.png`, fullPage: true });
     }
-    // The first status probe can precede worker preparation. A real retry must
-    // become healthy without clearing storage or resetting the saved journal.
+    // Preparation refreshes an early probe without a manual retry or storage reset.
     await expect(page.getByText(/Camera ready for an offline reload/)).toBeVisible();
     const savedRecords = page.getByRole("region", { name: "Saved gate records" });
-    await savedRecords.getByRole("button").click();
     await expect(
       savedRecords.getByText("No records are waiting for this operator.", { exact: true }),
     ).toBeVisible();

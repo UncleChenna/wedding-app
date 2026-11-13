@@ -4,22 +4,24 @@ TICKET-118
 
 # Summary
 
-Audit staff and admin screens for readable text, accessible states and keyboard operation. This draft records real baseline evidence before bounded remediation.
+Staff labels and admin controls were smaller than the operational design minimum, and the real scanner’s table identifier was 30px. This draft raises those sizes within staff/admin scope and adds a real authenticated accessibility audit.
 
 # Changes
 
-- Add an owned-stack audit runner with real staff PIN and administrator email/TOTP sessions.
-- Measure four-theme axe, overflow and visible text sizes; preserve375px screenshots and machine-readable evidence.
-- Record actual14px staff label findings without misrepresenting them as an axe or WCAG minimum-size failure.
+- Keep staff/admin text and controls at least 18px without changing guest component defaults.
+- Raise scanner/admission identifiers to 36px.
+- Add mobile settings focus clearance above the fixed navigation, preserving desktop behaviour.
+- Audit actual PIN/email-TOTP sessions, signed camera verdicts and keyboard-opened order dialogs across all four themes.
+- Preserve baseline findings and retain physical device checks in release-blocking TICKET-201.
 
 # Acceptance criteria and evidence
 
-In progress. Baseline gate/PIN checks pass; kitchen/bar label sizing fails the project threshold. Admin and scanner-result coverage, remediation and final review remain.
+Still in progress. Corrected board/dialog and nine admin route typography/axe checks pass. Final settings focus and full camera retests remain; the expanded camera run uncovered a separate duplicate-read race, which is not hidden or accepted as passing.
 
 # Verification
 
-Initial production build passes. Baseline tests fail on real staff label sizes; a synthetic table-number collision prevented the first admin run and was fixed using unique fixture numbers. No unrun check is counted as passing.
+Production builds pass. Two actual browser cases passed after initial typography fixes. The subsequent three-case run failed on a duplicate zero-admission observation, a pending PIN request under load, and a genuine settings-focus occlusion. The focused settings repair is being verified. No assertion, timeout or required gate has been weakened.
 
 # Risks and rollout
 
-No product code changed yet. All fixtures belong to this isolated local database. Physical arm's-length, screen-reader and phone checks remain release requirements; automated tests do not certify them.
+No migration, dependency, authorization or guest typography change. Physical arm’s-length, screen-reader and actual phone keyboard checks remain unverified and release-blocking. Synthetic fixtures remain only in the isolated local database. Draft status is intentional until remaining failures are resolved.

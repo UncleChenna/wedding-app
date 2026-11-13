@@ -2,20 +2,20 @@
 id: TICKET-111
 title: Show an update-available prompt for new versions
 epic: pwa
-status: todo
+status: in_review
 priority: high
 estimate: M
 labels: [pwa, frontend]
 module: shared
-owner: ""
-agent: ""
+owner: divine
+agent: codex
 blocked_by: [TICKET-105, TICKET-066, TICKET-180]
 blocks: [TICKET-113]
-branch: ""
-pr: ""
+branch: TICKET-111
+pr: https://github.com/UncleChenna/wedding-app/pull/176
 created: 2026-10-21
-updated: 2026-10-21
-started: ""
+updated: 2026-11-13
+started: 2026-11-13
 completed: ""
 reason: ""
 resume_to: ""
@@ -39,10 +39,10 @@ See: [Tech stack and architecture](../docs/prd.md#tech-stack-and-architecture).
 
 ## Acceptance criteria
 
-- [ ] A new build triggers the prompt (e2e with two builds or simulated waiting worker).
-- [ ] Reload is blocked while check-ins are pending (unit).
+- [x] A new build triggers the prompt (e2e with two builds or simulated waiting worker).
+- [x] Reload is blocked while check-ins are pending (unit).
 
-- [ ] Use TICKET-180 queue-safe activation; defer updates while scans are pending and preserve events across multiple tabs and worker/schema changes.
+- [x] Use TICKET-180 queue-safe activation; defer updates while scans are pending and preserve events across multiple tabs and worker/schema changes.
 
 ## Test plan
 
@@ -58,8 +58,12 @@ See: [Tech stack and architecture](../docs/prd.md#tech-stack-and-architecture).
 
 ## Notes / decisions
 
-_Agents append dated notes here while working._
+- 2026-11-13: Shared update notification and offline scanner integration implemented. Fifteen focused tests, six real Chromium/WebKit worker upgrade cases, production build and twelve all-theme screenshots/axe/keyboard checks pass. Independent review found no blockers. Physical-device and fresh page-performance checks stay unchecked in TICKET-201 under the approved preview disposition. Integration base:3be8bd693d4a880f11bf72e177519161948e954e.
 
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-13 — todo → claimed — divine (codex)
+- 2026-11-13 — todo → in_progress — divine (codex)
+- 2026-11-13 — in_progress → in_review — divine (codex)
+- 2026-11-13 — in_review → in_progress — divine (codex) — Publish verified smoke selector and return-to-page refresh fixes

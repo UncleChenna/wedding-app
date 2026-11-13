@@ -1,12 +1,9 @@
 import { randomBytes, randomInt, randomUUID, scryptSync } from "node:crypto";
-import { mkdirSync, writeFileSync } from "node:fs";
 import postgres, { type Sql } from "postgres";
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import { assertAdminJourneyTarget } from "../scripts/admin-journey-ci";
 import { signInAdmin } from "./support/admin-session";
-import { scanA11y } from "./support/axe";
-import { applyTheme } from "./support/theme";
-import { themes } from "../src/modules/theming/themes";
+import { auditStaffScreen as audit } from "./support/staff-audit";
 
 test.use({ trace: "off", screenshot: "off", video: "off" });
 const venue = `staff-audit-${randomUUID()}`;
@@ -15,49 +12,6 @@ const tableId = randomUUID(),
   menuId = randomUUID(),
   orderId = randomUUID();
 let db: Sql;
-const results: unknown[] = [];
-async function audit(page: Page, name: string, staff = false) {
-  const folder = "docs/reviews/TICKET-118";
-  mkdirSync(folder, { recursive: true });
-  for (const theme of themes) {
-    await applyTheme(page, theme);
-    await page.evaluate(() => document.fonts.ready);
-    const violations = await scanA11y(page);
-    const geometry = await page.evaluate(() => {
-      const small: { text: string; px: number }[] = [];
-      const root = document.querySelector("main");
-      if (!root) throw new Error("Audit requires the rendered main landmark");
-      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
-      while (walker.nextNode()) {
-        const node = walker.currentNode,
-          element = node.parentElement;
-        if (
-          !element ||
-          !node.textContent?.trim() ||
-          element.closest('[aria-hidden="true"],.sr-only,script,style')
-        )
-          continue;
-        const bounds = element.getBoundingClientRect();
-        if (!bounds.width || !bounds.height || getComputedStyle(element).visibility === "hidden")
-          continue;
-        const px = parseFloat(getComputedStyle(element).fontSize);
-        if (px < 18) small.push({ text: node.textContent.trim().slice(0, 80), px });
-      }
-      return { overflow: document.documentElement.scrollWidth > innerWidth, small };
-    });
-    results.push({ name, theme: theme.id, violations, ...geometry });
-    writeFileSync(`${folder}/results.json`, JSON.stringify(results, null, 2) + "\n");
-    writeFileSync(
-      `${folder}/${name}-${theme.id}.json`,
-      JSON.stringify({ name, theme: theme.id, violations, ...geometry }, null, 2) + "\n",
-    );
-    if (theme === themes[0])
-      await page.screenshot({ path: `${folder}/${name}.png`, fullPage: true });
-    expect.soft(violations, `${name}/${theme.id}`).toEqual([]);
-    expect.soft(geometry.overflow, `${name}/${theme.id} overflow`).toBe(false);
-    if (staff) expect.soft(geometry.small, `${name}/${theme.id} staff typography`).toEqual([]);
-  }
-}
 
 test.describe("staff/admin accessibility", () => {
   test.skip(process.env.RUN_STAFF_ACCESSIBILITY !== "1", "Requires isolated Auth and database");
@@ -70,6 +24,9 @@ test.describe("staff/admin accessibility", () => {
     await db`insert into event_settings(id,venue,event_date,time_zone) values(1,${venue},'2099-12-19','Etc/UTC')`;
     await db`insert into tables(id,number,name,capacity) values(${tableId},${randomInt(100000, 900000)},'Audit table',8)`;
     await db`insert into menu_items(id,name,category_v2,station) values(${menuId},'Synthetic rice','meal','kitchen')`;
+    const invitation = randomUUID();
+    await db`insert into invitations(id,token,status,table_id) values(${invitation},${randomUUID().replaceAll("-", "")},'rsvp_yes',${tableId})`;
+    await db`insert into guests(invitation_id,name,is_primary,dietary_notes) values(${invitation},'Synthetic dietary guest',true,'No nuts')`;
     await db`insert into orders(id,table_id,notes) values(${orderId},${tableId},'No pepper')`;
     const [station] = await db<
       { id: string }[]
@@ -115,6 +72,21 @@ test.describe("staff/admin accessibility", () => {
             page.getByRole("button", { name: "Open camera", exact: true }),
           ).toBeVisible();
         await audit(page, role, true);
+        if (role !== "gate") {
+          const trigger = page.getByRole("button", { name: "New order", exact: true });
+          await trigger.focus();
+          await page.keyboard.press("Enter");
+          const dialog = page.getByRole("dialog", { name: "New order for a table" });
+          await expect(dialog).toBeVisible();
+          await audit(page, `${role}-new-order`, true);
+          await page.keyboard.press("Shift+Tab");
+          expect(await dialog.evaluate((element) => element.contains(document.activeElement))).toBe(
+            true,
+          );
+          await page.keyboard.press("Escape");
+          await expect(dialog).not.toBeVisible();
+          await expect(trigger).toBeFocused();
+        }
       } finally {
         await context.close();
       }
@@ -139,11 +111,31 @@ test.describe("staff/admin accessibility", () => {
       "/admin/health",
     ]) {
       await page.goto(route);
-      await expect(page.locator("main")).toBeVisible();
+      await expect(page.locator("main:visible")).toHaveCount(1);
       await audit(page, route.slice(1).replaceAll("/", "-"));
     }
+    await page.goto("/admin/settings");
+    for (const field of await page
+      .locator("main:visible input,main:visible select,main:visible textarea,main:visible button")
+      .all()) {
+      if (!(await field.isVisible()) || !(await field.isEnabled())) continue;
+      await field.focus();
+      expect(
+        await field.evaluate((element) => {
+          const bounds = element.getBoundingClientRect();
+          const hit = document.elementFromPoint(
+            bounds.left + bounds.width / 2,
+            bounds.top + bounds.height / 2,
+          );
+          return hit !== null && (hit === element || element.contains(hit));
+        }),
+        "Settings keyboard focus must not be covered by the fixed navigation",
+      ).toBe(true);
+    }
     await page.goto("/admin");
-    const staffLink = page.getByRole("link", { name: "Staff", exact: true });
+    const staffLink = page
+      .getByRole("navigation", { name: "Admin", exact: true })
+      .getByRole("link", { name: "Staff", exact: true });
     let reached = false;
     for (let i = 0; i < 60; i++) {
       await page.keyboard.press("Tab");

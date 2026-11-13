@@ -1,3 +1,7 @@
+import type {
+  watchWorkerUpdates,
+  reloadWithEmptyQueue,
+} from "../../src/modules/shared/browser/worker-update-client";
 import { createServer, type Server } from "node:http";
 import { resolve } from "node:path";
 import { runInNewContext } from "node:vm";
@@ -11,7 +15,11 @@ import type { createOfflineQueueStore } from "../../src/modules/checkin/browser/
 declare global {
   interface Window {
     updateStates: unknown[];
+    updateWatcher?: ReturnType<typeof watchWorkerUpdates>;
+    promptState?: string;
     UpgradeLibrary: {
+      watchWorkerUpdates: typeof watchWorkerUpdates;
+      reloadWithEmptyQueue: typeof reloadWithEmptyQueue;
       createOfflineQueuePolicy: typeof createOfflineQueuePolicy;
       createOfflineQueueStore: typeof createOfflineQueueStore;
     };
@@ -55,7 +63,7 @@ test.beforeAll(async () => {
   const browser = await build({
     stdin: {
       contents:
-        'export {createOfflineQueuePolicy} from "./src/modules/checkin/lib/offline-queue"; export {createOfflineQueueStore} from "./src/modules/checkin/browser/offline-queue-store";',
+        'export {watchWorkerUpdates,reloadWithEmptyQueue} from "./src/modules/shared/browser/worker-update-client"; export {createOfflineQueuePolicy} from "./src/modules/checkin/lib/offline-queue"; export {createOfflineQueueStore} from "./src/modules/checkin/browser/offline-queue-store";',
       resolveDir: process.cwd(),
     },
     bundle: true,
@@ -356,4 +364,92 @@ test("interrupted migration rolls back; incompatible journal prevents activation
       }
     }),
   ).toBe("preserved unsupported journal");
+});
+
+test("update prompt declines, retains pending evidence, then explicitly reloads only the accepting tab", async ({
+  page,
+  context,
+}) => {
+  release = 10;
+  acknowledged.clear();
+  await install(page);
+  const id = crypto.randomUUID();
+  await page.evaluate(
+    (value) =>
+      window.UpgradeLibrary.createOfflineQueueStore(
+        window.UpgradeLibrary.createOfflineQueuePolicy(),
+      ).record(value, { kind: "known", remaining: 1 }),
+    attempt(id),
+  );
+  const other = await context.newPage();
+  await other.goto(origin);
+  const connect = async (tab: Page) =>
+    tab.evaluate(async () => {
+      const registration = await navigator.serviceWorker.getRegistration();
+      if (!registration) throw new Error("Missing registration");
+      document.body.innerHTML =
+        '<p id="state"></p><button id="reload">Reload</button><button id="later">Later</button>';
+      const button = document.querySelector<HTMLButtonElement>("#reload");
+      const later = document.querySelector<HTMLButtonElement>("#later");
+      const status = document.querySelector("#state");
+      if (!button || !later || !status) throw new Error("Missing fixture controls");
+      window.updateWatcher = window.UpgradeLibrary.watchWorkerUpdates(
+        registration,
+        navigator.serviceWorker,
+        (value) => {
+          window.promptState = value.state;
+          status.textContent = value.state;
+          button.disabled = value.state !== "ready";
+        },
+        () =>
+          window.UpgradeLibrary.reloadWithEmptyQueue({
+            locks: navigator.locks,
+            read: () =>
+              window.UpgradeLibrary.createOfflineQueueStore(
+                window.UpgradeLibrary.createOfflineQueuePolicy(),
+              ).read(),
+            reload: () => {
+              sessionStorage.setItem("accepted-update", "yes");
+              location.reload();
+            },
+          }),
+      );
+      button.onclick = () => {
+        void window.updateWatcher?.accept();
+      };
+      later.onclick = () => window.updateWatcher?.dismiss();
+    });
+  await connect(page);
+  await connect(other);
+  release = 11;
+  await update(page);
+  await expect.poll(() => page.evaluate(() => window.promptState)).toBe("deferred");
+  await expect(page.getByRole("button", { name: "Reload", exact: true })).toBeDisabled();
+  await page.getByRole("button", { name: "Later", exact: true }).click();
+  expect(await ids(page)).toEqual([id]);
+  expect(await page.evaluate(() => sessionStorage.getItem("accepted-update"))).toBeNull();
+  await page.reload();
+  await connect(page);
+  await expect.poll(() => page.evaluate(() => window.promptState)).toBe("deferred");
+  await page.evaluate(
+    async ({ actor, id }) => {
+      const response = await fetch("/ack", { method: "POST", body: JSON.stringify([id]) });
+      const acks: unknown = await response.json();
+      if (!response.ok || !Array.isArray(acks)) throw new Error("Missing acknowledgements");
+      await window.UpgradeLibrary.createOfflineQueueStore(
+        window.UpgradeLibrary.createOfflineQueuePolicy(),
+      ).acknowledge(actor, acks, crypto.randomUUID());
+      await window.updateWatcher?.refresh();
+    },
+    { actor, id },
+  );
+  await expect.poll(() => page.evaluate(() => window.promptState)).toBe("ready");
+  await Promise.all([
+    page.waitForEvent("load"),
+    page.getByRole("button", { name: "Reload", exact: true }).click(),
+  ]);
+  expect(await page.evaluate(() => sessionStorage.getItem("accepted-update"))).toBe("yes");
+  expect(await ids(page)).toEqual([]);
+  expect(await other.evaluate(() => sessionStorage.getItem("accepted-update"))).toBeNull();
+  await expect.poll(() => other.evaluate(() => window.promptState)).toBe("ready");
 });

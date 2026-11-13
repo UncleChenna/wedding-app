@@ -1,4 +1,5 @@
 import "server-only";
+import { readBoundedJson } from "@/modules/shared/server/bounded-json";
 import { unstable_rethrow } from "next/navigation";
 import { logger } from "@/modules/shared/lib/logger";
 import {
@@ -30,16 +31,10 @@ export async function admissionResponse(request: Request, deps: Dependencies): P
     // Cookie authentication alone is insufficient against a same-site hostile origin.
     if (request.headers.get("origin") !== origin)
       return Response.json({ state: "invalid" }, { status: 400, headers });
-    const text = await request.text();
-    if (new TextEncoder().encode(text).byteLength > 8192)
+    const input = await readBoundedJson(request, 8192);
+    if (input.status !== "valid")
       return Response.json({ state: "invalid" }, { status: 400, headers });
-    let input: unknown;
-    try {
-      input = JSON.parse(text);
-    } catch {
-      input = null;
-    }
-    const parsed = admissionRequestSchema.safeParse(input);
+    const parsed = admissionRequestSchema.safeParse(input.value);
     if (!parsed.success) return Response.json({ state: "invalid" }, { status: 400, headers });
     const result = admissionResponseSchema.safeParse(await deps.submit(parsed.data, actor, origin));
     if (result.success) return Response.json(result.data, { headers });

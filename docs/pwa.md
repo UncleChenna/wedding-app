@@ -180,6 +180,10 @@ remains separate. The upgrade fixture uses real emitted workers/IndexedDB and an
 idempotent HTTP acknowledgement fixture; database reconciliation is covered by
 TICKET-066's authenticated product tests, not simulated as production here.
 
+## Choosing an update (TICKET-111)
+
+The React app and saved gate scanner show a non-blocking notification when a new worker waits. **Later** hides that worker’s prompt for the current visit; **Reload** requests TICKET-180’s queue-safe activation. Any retained attempt, including rejected evidence, keeps Reload disabled. Unavailable storage/locking also leaves the page open. After activation the client rechecks the durable journal under the scanner publication lock before reloading. Another tab’s activation never automatically reloads this tab. The notification stays in document flow so it cannot cover scan controls or forms. The standalone guest order renderer does not use this React notification.
+
 ## Reviewed recovery after staff expiry (TICKET-231)
 
 1. Keep the original browser profile. Open `/gate-recovery` from the staff hub and save the recovery file. It contains at most 200 original pending records with UUID, actor/device and admission intent; no session, signing key, invitation link or dietary notes. Repeat after confirmed records are removed if more remain.
