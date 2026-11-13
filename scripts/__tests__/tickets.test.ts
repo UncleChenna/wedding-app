@@ -2,6 +2,7 @@ import { execFileSync, spawn } from "node:child_process";
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
+import { pathToFileURL } from "node:url";
 
 import { afterEach, describe, expect, it } from "vitest";
 
@@ -514,6 +515,41 @@ describe("ticket CLI with a shared remote", () => {
     expect(after.code, after.out).toBe(0);
     rmSync(join(f.a, "tickets/TICKET-001-build-thing.md"));
     const removed = await t(f.a, "validate");
+    expect(removed.code).not.toBe(0);
+    expect(removed.out).toContain("missing TICKET-001");
+  }, 30_000);
+
+  it("requires complete history for a shallow synthetic PR merge and still rejects deletion", async () => {
+    const f = await reservedBranch();
+    git(f.a, "checkout", "-qb", "feature");
+    git(f.a, "add", "tickets");
+    git(f.a, "commit", "-qm", "fixture: feature with reserved gap");
+    git(f.a, "push", "origin", "feature");
+    git(f.b, "fetch", "origin", "feature");
+    git(f.b, "merge", "--no-ff", "origin/feature", "-m", "fixture: synthetic PR merge");
+    git(f.b, "push", "origin", "HEAD:refs/pull/1/merge");
+    const shallow = join(f.dir, "shallow-ci");
+    git(f.dir, "init", "-q", shallow);
+    git(shallow, "remote", "add", "origin", pathToFileURL(f.remote).href);
+    git(
+      shallow,
+      "fetch",
+      "--depth=1",
+      "origin",
+      "+refs/pull/1/merge:refs/remotes/pull/1/merge",
+      "+refs/heads/develop:refs/remotes/origin/develop",
+    );
+    git(shallow, "checkout", "-q", "--detach", "refs/remotes/pull/1/merge");
+    expect(git(shallow, "rev-parse", "--is-shallow-repository")).toBe("true");
+    const incomplete = await t(shallow, "validate");
+    expect(incomplete.code).not.toBe(0);
+    expect(incomplete.out).toContain("missing TICKET-165");
+    git(shallow, "fetch", "--unshallow", "origin", "+refs/heads/*:refs/remotes/origin/*");
+    expect(git(shallow, "rev-parse", "--is-shallow-repository")).toBe("false");
+    const complete = await t(shallow, "validate");
+    expect(complete.code, complete.out).toBe(0);
+    rmSync(join(shallow, "tickets/TICKET-001-build-thing.md"));
+    const removed = await t(shallow, "validate");
     expect(removed.code).not.toBe(0);
     expect(removed.out).toContain("missing TICKET-001");
   }, 30_000);

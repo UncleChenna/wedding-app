@@ -2,7 +2,7 @@
 id: TICKET-246
 title: Validate ticket reservations against the branch baseline
 epic: foundations
-status: in_review
+status: in_progress
 priority: urgent
 estimate: S
 labels: [test, infra]
@@ -67,3 +67,4 @@ Ticket validation compares reserved IDs with the moving origin/develop tip. When
 - 2026-11-13 — todo → claimed — divine (codex)
 - 2026-11-13 — todo → in_progress — divine (codex)
 - 2026-11-13 — in_progress → in_review — divine (codex)
+- 2026-11-13 — in_review → in_progress — divine (codex) — Repair hosted depth-one checkout failure; preserve strict baseline validation

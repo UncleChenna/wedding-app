@@ -9,6 +9,13 @@ const workflow = readFileSync(resolve(root, ".github/workflows/ci.yml"), "utf8")
 const example = readFileSync(resolve(root, ".env.example"), "utf8");
 
 describe("CI parity", () => {
+  it("fetches complete history for ticket baseline validation", () => {
+    const job = workflow.match(/^  tickets:\n([\s\S]*?)(?=^  [a-z][\w-]*:|$(?![\s\S]))/m)?.[1];
+    expect(job).toBeDefined();
+    expect(job).toMatch(/uses: actions\/checkout@v7\n\s+with:\n\s+fetch-depth: 0/);
+    expect(job).toContain("run: pnpm t:validate");
+  });
+
   it("runs the isolated saved-pass fixture before ordering retains default settings", () => {
     const guest = workflow.indexOf("run: pnpm exec tsx scripts/test-guest-journey.ts");
     const offline = workflow.indexOf("run: pnpm exec tsx scripts/review-offline-pass.ts");
