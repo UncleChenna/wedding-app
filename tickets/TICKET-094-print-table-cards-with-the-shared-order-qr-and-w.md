@@ -40,8 +40,8 @@ See: [Admin dashboard](../docs/prd.md#admin-dashboard) (ADM-2) · [Connectivity 
 
 ## Acceptance criteria
 
-- [ ] The QR on a printed card decodes to the /order URL (rasterised test).
-- [ ] One card per table, numbers correct (unit).
+- [x] The QR on a printed card decodes to the /order URL (rasterised test).
+- [x] One card per table, numbers correct (unit).
 
 ## Test plan
 
@@ -58,6 +58,9 @@ See: [Admin dashboard](../docs/prd.md#admin-dashboard) (ADM-2) · [Connectivity 
 _Agents append dated notes here while working._
 
 - 2026-11-12 (unclechenna, claude): owner asked to build this now. The domain only changes the QR's target, which comes from `NEXT_PUBLIC_SITE_URL`, so it no longer blocks building; printing (TICKET-160) still waits on the domain (TICKET-145).
+- 2026-11-13 (unclechenna, claude): cards live at `/admin/guests/seating/cards`, one A6 page each. Chromium
+  ignores the `A6` page-size keyword, so the print CSS uses `105mm 148mm`. The Wi-Fi migration was regenerated
+  as `0035` after develop reached `0034`. The manual print-and-scan on a real phone is still to do.
 
 ## Activity log
 

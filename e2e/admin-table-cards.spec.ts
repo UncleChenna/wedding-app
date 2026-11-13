@@ -131,9 +131,9 @@ test.describe("printable table cards", () => {
     });
     const pages = pdf.toString("latin1").match(/\/Type\s*\/Page[^s]/g) ?? [];
     expect(pages).toHaveLength(total?.count ?? -1);
-    // A6 portrait is 105 × 148 mm: 297.6 × 419.5 points.
-    expect(pdf.toString("latin1")).toMatch(
-      /\/MediaBox\s*\[\s*0 0 29[78](\.\d+)? 41[89](\.\d+)?\s*\]/,
-    );
+    // Every page is A6 portrait, 105 × 148 mm (Chromium rounds to 298.08 × 420 points).
+    const sizes = new Set(pdf.toString("latin1").match(/\/MediaBox ?\[[^\]]*\]/g));
+    expect([...sizes]).toHaveLength(1);
+    expect([...sizes][0]).toMatch(/^\/MediaBox ?\[0 0 29[78](\.\d+)? 4(19|20)(\.\d+)?\]$/);
   });
 });

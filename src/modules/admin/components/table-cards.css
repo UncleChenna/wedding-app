@@ -1,6 +1,7 @@
 @media print {
+  /* A6 portrait, in millimetres: Chromium ignores the A6 keyword. */
   @page table-card {
-    size: A6 portrait;
+    size: 105mm 148mm;
     margin: 8mm;
   }
   body:has(.table-cards-page) [data-admin-chrome],
