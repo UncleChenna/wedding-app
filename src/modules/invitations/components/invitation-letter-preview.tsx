@@ -34,8 +34,7 @@ export function InvitationLetterPreview({
         </p>
         {sample && (
           <p className="mt-4 text-base leading-relaxed">
-            Venues, times and dress code below are sample details, not the wedding
-            arrangements.
+            Venues, times and dress code below are sample details, not the wedding arrangements.
           </p>
         )}
         <nav aria-label="Preview theme" className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
