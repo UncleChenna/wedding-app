@@ -6,7 +6,9 @@ export function WeddingHome({ settings }: { settings: PublicEventDetails }) {
   const summary = eventSummary(settings);
   return (
     <main className="mx-auto flex min-h-dvh w-full max-w-5xl flex-col items-stretch justify-center px-6 py-16 text-center">
-      <p className="mb-12 text-base tracking-widest text-primary uppercase">The celebration</p>
+      <p className="mx-auto mb-12 w-56 max-w-full text-left text-base tracking-widest text-primary uppercase">
+        The celebration
+      </p>
       <h1 className="font-display text-6xl leading-tight tracking-tight wrap-anywhere md:text-8xl">
         {settings.coupleNames[0]} <span className="block text-primary">&amp;</span>{" "}
         {settings.coupleNames[1]}

@@ -1,7 +1,7 @@
 import { randomBytes } from "node:crypto";
 import { existsSync } from "node:fs";
 import postgres, { type Sql } from "postgres";
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./fixtures";
 import { assertDatabaseTarget } from "../scripts/database-target";
 import { invitationSiteCopy } from "../src/modules/invitations/lib/copy";
 import { retireInvitationFixtures } from "./support/invitation-fixtures";

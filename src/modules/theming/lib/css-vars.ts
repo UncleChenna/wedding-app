@@ -1,12 +1,7 @@
 import type { CSSProperties } from "react";
 
-import {
-  COLOR_TOKENS,
-  RADIUS_TOKENS,
-  SHADOW_TOKENS,
-  type ActiveThemes,
-  type Theme,
-} from "./schema";
+import type { ActiveThemes, Theme } from "./schema";
+import { COLOR_TOKENS, RADIUS_TOKENS, SHADOW_TOKENS } from "./tokens";
 
 export type CssVars = Record<`--${string}`, string>;
 

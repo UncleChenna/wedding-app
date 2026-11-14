@@ -6,8 +6,8 @@ import { CenteredPanel, panelLinkClassName } from "./ui/centered-panel";
 
 export interface PagePlaceholderProps {
   eyebrow: string;
-  title: string;
-  description: string;
+  title: ReactNode;
+  description: ReactNode;
   children?: ReactNode;
   /** `null` hides the back link when the page supplies its own way out. */
   backTo?: { path: Route; label: string } | null;

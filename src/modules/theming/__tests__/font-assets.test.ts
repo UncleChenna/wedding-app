@@ -46,7 +46,7 @@ it("loads every approved family from bundled fonts without the Google resolver",
     expect(options.adjustFontFallback).toBe(false);
     expect(options.fallback).toHaveLength(1);
     for (const source of options.src) {
-      expect(source.path).toContain("-latin.woff2");
+      expect(source.path).toContain("-common.woff2");
       const bytes = readFileSync(resolve("src/modules/theming/components", source.path));
       expect(bytes.subarray(0, 4).toString()).toBe("wOF2");
     }
@@ -113,7 +113,11 @@ it("retains complete character coverage without preloading full fonts for Latin 
     expect(font.preload).toBe(false);
     expect(font.fallback[0]).toContain("Metric Fallback");
     expect(font.declarations).toEqual([
-      { prop: "unicode-range", value: "U+0100-1FFF, U+2070-209F, U+20D0-10FFFF" },
+      {
+        prop: "unicode-range",
+        value:
+          "U+0100-0142, U+0145-1E43, U+1E46-1EC9, U+1ECE-1EE3, U+1EE6-1FFF, U+2070-209F, U+20D0-10FFFF",
+      },
     ]);
   }
 });
@@ -133,7 +137,7 @@ it("keeps all requested Latin characters in the primary subsets", () => {
     const latin=c => c<=255 || (c>=0x2000 && c<=0x206f) || (c>=0x20a0 && c<=0x20cf);
     console.log(JSON.stringify(names.map(name => {
       const full=parse(fs.readFileSync("src/modules/theming/fonts/"+name+".woff2"));
-      const fast=parse(fs.readFileSync("src/modules/theming/fonts/"+name+"-latin.woff2"));
+      const fast=parse(fs.readFileSync("src/modules/theming/fonts/"+name+"-common.woff2"));
       const coverage=full.characterSet.filter(latin).every(c => fast.characterSet.includes(c));
       return {name,coverage};
     })));
@@ -145,6 +149,58 @@ it("keeps all requested Latin characters in the primary subsets", () => {
     ["cormorant", "cormorant-italic", "inter", "jost", "playfair"].map((name) => ({
       name,
       coverage: true,
+    })),
+  );
+});
+
+it("preserves supported Igbo glyphs in bounded common faces and verifies source hashes", () => {
+  const result = execFileSync(
+    process.execPath,
+    [
+      "--input-type=module",
+      "-e",
+      `
+    import fs from "node:fs";
+    import crypto from "node:crypto";
+    import fontkit from "next/dist/compiled/@next/font/dist/fontkit/index.js";
+    const parse=fontkit.default||fontkit;
+    const root="src/modules/theming/fonts/";
+    const manifest=JSON.parse(fs.readFileSync(root+"common-manifest.json"));
+    const provenance=JSON.parse(fs.readFileSync(root+"provenance.json"));
+    console.log(JSON.stringify(manifest.fonts.map(face => {
+      const bytes=fs.readFileSync(root+face.file);
+      const original=fs.readFileSync(root+face.family+".woff2");
+      const full=parse(original), fast=parse(bytes);
+      const expected=full.characterSet.filter(c => manifest.codepoints.includes(c));
+      return {
+        family:face.family,
+        coverage:expected.every(c => fast.characterSet.includes(c)),
+        manifestCoverage:JSON.stringify([...expected].sort((a,b)=>a-b))===JSON.stringify(face.codepoints),
+        decomposed:manifest.codepoints.flatMap(c => [...String.fromCodePoint(c).normalize("NFD")].map(s=>s.codePointAt(0))).filter(c=>full.characterSet.includes(c)).every(c=>fast.characterSet.includes(c)),
+        hash:crypto.createHash("sha256").update(bytes).digest("hex")===face.sha256,
+        source:crypto.createHash("sha256").update(original).digest("hex")===face.sourceSha256,
+        latinSource:crypto.createHash("sha256").update(fs.readFileSync(root+face.family+"-latin.woff2")).digest("hex")===face.latinSourceSha256,
+        features:face.layoutFeatures.join(",")===provenance.fonts.find(font=>font.name===face.family).primary_layout_features,
+        bytes:bytes.length===face.bytes && bytes.length<original.length,
+        axes:JSON.stringify(Object.keys(full.variationAxes))===JSON.stringify(Object.keys(fast.variationAxes))
+      };
+    })));
+  `,
+    ],
+    { encoding: "utf8" },
+  );
+  expect(JSON.parse(result)).toEqual(
+    ["cormorant", "cormorant-italic", "inter", "jost", "playfair"].map((family) => ({
+      family,
+      coverage: true,
+      manifestCoverage: true,
+      decomposed: true,
+      hash: true,
+      source: true,
+      latinSource: true,
+      features: true,
+      bytes: true,
+      axes: true,
     })),
   );
 });

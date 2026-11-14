@@ -1,0 +1,137 @@
+{
+  "commit": "6765919f",
+  "note": "Current merged develop includes TICKET-240 parser reduction, TICKET-119 AVIF policy and TICKET-117 accessibility fixes. Not isolated attribution to any single change. Four untracked116 tool copies were hashed before use and removed only after hash equality; all nine reports completed with unchanged policy.",
+  "toolHashes": [
+    {
+      "path": "scripts/lighthouse-gate.ts",
+      "sha256": "c84c71b33732fac27bcb793d294354edecfd45d076b64c2b06608f4fb1a557c5",
+      "source": "TICKET-116 2b60183f"
+    },
+    {
+      "path": "scripts/test-lighthouse.ts",
+      "sha256": "e8bd1ceae84a0c41ac52c55ce9debe25e80baf31f7df5b4836943056d197e73c",
+      "source": "TICKET-116 2b60183f"
+    },
+    {
+      "path": "e2e/lighthouse.spec.ts",
+      "sha256": "27079afb0960dda00895ef5c8704ecd1ae482da99d2c5a5c73de1c5ca0dba1d9",
+      "source": "TICKET-116 2b60183f"
+    },
+    {
+      "path": "lighthouse.config.cjs",
+      "sha256": "2d5e3bc54721348bc13b4f337c92928d0cb1d9cf55508134ad8173da375bfe78",
+      "source": "TICKET-116 2b60183f"
+    }
+  ],
+  "scores": {
+    "policy": {
+      "version": "13.6.0",
+      "runs": 3,
+      "performance": 0.95,
+      "accessibility": 0.95
+    },
+    "scores": [
+      {
+        "page": "invitation-rsvp-saved",
+        "result": {
+          "passed": false,
+          "performance": [0.87, 0.9, 0.9],
+          "medianPerformance": 0.9,
+          "accessibility": [1, 1, 1]
+        }
+      },
+      {
+        "page": "issued-pass",
+        "result": {
+          "passed": true,
+          "performance": [1, 1, 1],
+          "medianPerformance": 1,
+          "accessibility": [1, 1, 1]
+        }
+      },
+      {
+        "page": "order-menu",
+        "result": {
+          "passed": true,
+          "performance": [1, 1, 1],
+          "medianPerformance": 1,
+          "accessibility": [1, 1, 1]
+        }
+      }
+    ]
+  },
+  "reports": [
+    {
+      "file": "invitation-rsvp-saved-1.json",
+      "sha256": "b878332268a8ff52beb3b5ef483d7494f94c88d9c3b4452f5c7ca804a80e4d9a",
+      "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+      "cls": 0,
+      "lcpMs": 4043.26,
+      "tbtMs": 78
+    },
+    {
+      "file": "invitation-rsvp-saved-2.json",
+      "sha256": "3c126f68ec0a992a6d70b46eb1f1aedd4f2bca94e3c8743709584b59f86a1a62",
+      "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+      "cls": 0,
+      "lcpMs": 3542.972,
+      "tbtMs": 14.5
+    },
+    {
+      "file": "invitation-rsvp-saved-3.json",
+      "sha256": "85d2cd73d24dbbb6f04ff296b2f81e1a2d76554d70de98b444aa3adc339970f7",
+      "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+      "cls": 0,
+      "lcpMs": 3593.092,
+      "tbtMs": 41.5
+    },
+    {
+      "file": "issued-pass-1.json",
+      "sha256": "75594e240d8cc5d2927ea681727076ab64d2b1c6f19569d85e8d3fea9bc735d4",
+      "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+      "cls": 0,
+      "lcpMs": 915.531,
+      "tbtMs": 15.5
+    },
+    {
+      "file": "issued-pass-2.json",
+      "sha256": "e4dec42f7ae77773d821b9a7583fe4838000705035473906b0ecc102597ad622",
+      "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+      "cls": 0,
+      "lcpMs": 1068.142,
+      "tbtMs": 38.714500000000044
+    },
+    {
+      "file": "issued-pass-3.json",
+      "sha256": "0c6da9208b139010c32205a7f07f47d55e5be3fd4add6ce4edb0cb14e8b2a8e7",
+      "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+      "cls": 0,
+      "lcpMs": 1071.952,
+      "tbtMs": 19.5
+    },
+    {
+      "file": "order-menu-1.json",
+      "sha256": "2dafd989a0b829ba75a1763a4ab657bff24e9eac88df278cf0d19dae7f5e023c",
+      "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+      "cls": 0,
+      "lcpMs": 757.594,
+      "tbtMs": 0
+    },
+    {
+      "file": "order-menu-2.json",
+      "sha256": "0e0f602dbfd7caf2d04e6dd01ad2724fd6554480d62aa0987110b4a66e41bbc0",
+      "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+      "cls": 0,
+      "lcpMs": 757.1360999999999,
+      "tbtMs": 0
+    },
+    {
+      "file": "order-menu-3.json",
+      "sha256": "42aea845aca8aa84511daafafaaf7c31118c460bcb9febd166260db30c1301aa",
+      "chrome": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+      "cls": 0,
+      "lcpMs": 755.8918000000001,
+      "tbtMs": 0
+    }
+  ]
+}

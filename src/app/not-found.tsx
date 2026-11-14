@@ -7,8 +7,18 @@ export default function NotFound() {
   return (
     <PagePlaceholder
       eyebrow="404"
-      title="This page wandered off"
-      description="We couldn't find what you were looking for. Check the link on your invitation, or head back home."
+      title={
+        // A fixed break keeps the heading from re-wrapping when the display font arrives.
+        <>
+          This page <span className="block">wandered off</span>
+        </>
+      }
+      description={
+        <>
+          <span className="block">Check the link on your invitation,</span>
+          <span className="block">or head back home.</span>
+        </>
+      }
       backTo={null}
       className="min-h-dvh"
     >

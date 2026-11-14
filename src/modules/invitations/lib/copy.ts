@@ -1,4 +1,4 @@
-import { defaultInvitationVoice } from "@/modules/shared/lib/invitation-voice";
+import { defaultInvitationVoice } from "@/modules/shared/lib/invitation-voice-values";
 
 /** Approved PRD wording; messages.ts fills placeholders without editing the copy. */
 export const invitationVoice = defaultInvitationVoice;

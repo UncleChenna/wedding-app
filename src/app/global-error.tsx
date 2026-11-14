@@ -3,12 +3,12 @@
 import { useEffect } from "react";
 
 import { logger } from "@/modules/shared/lib/logger";
-import { getActiveThemes } from "@/modules/theming";
+import { defaultActiveThemes } from "@/modules/theming/lib/default-themes";
 import { ThemeStyles } from "@/modules/theming/components/theme-styles";
 
 import "./globals.css";
 
-const themes = getActiveThemes();
+const themes = defaultActiveThemes;
 
 /** Replaces the root layout when it throws, so it renders its own <html> with the theme. */
 export default function GlobalError({ error, retry }: { error: unknown; retry: () => void }) {
