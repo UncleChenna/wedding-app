@@ -17,7 +17,7 @@ created: 2026-10-21
 updated: 2026-10-21
 started: ""
 completed: ""
-reason: "Load tool and local evidence done; the staging run waits on TICKET-149 and TICKET-258"
+reason: "Load tool and local evidence done; the staging run waits on TICKET-149"
 resume_to: ""
 ---
 

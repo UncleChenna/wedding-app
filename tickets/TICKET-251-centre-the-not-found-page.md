@@ -2,7 +2,7 @@
 id: TICKET-251
 title: Centre the not-found page and show one way home
 epic: quality
-status: in_review
+status: done
 priority: medium
 estimate: S
 labels: [frontend]
@@ -12,11 +12,11 @@ agent: claude
 blocked_by: []
 blocks: []
 branch: TICKET-251
-pr: ""
+pr: "#216"
 created: 2026-11-13
 updated: 2026-11-13
 started: 2026-11-13
-completed: ""
+completed: 2026-11-13
 reason: ""
 resume_to: ""
 ---

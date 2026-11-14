@@ -2,7 +2,7 @@
 id: TICKET-258
 title: Decide request budgets in one statement instead of a held transaction
 epic: reliability
-status: in_review
+status: done
 priority: high
 estimate: S
 labels: [backend, performance, reliability]
@@ -12,11 +12,11 @@ agent: claude
 blocked_by: []
 blocks: []
 branch: TICKET-258
-pr: ""
+pr: "#220"
 created: 2026-11-13
-updated: 2026-11-13
+updated: 2026-11-14
 started: 2026-11-13
-completed: ""
+completed: 2026-11-14
 reason: ""
 resume_to: ""
 ---
