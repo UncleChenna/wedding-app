@@ -12,7 +12,7 @@ agent: ""
 blocked_by: []
 blocks: []
 branch: "TICKET-259"
-pr: ""
+pr: "https://github.com/UncleChenna/wedding-app/pull/225"
 created: 2026-11-14
 updated: 2026-11-14
 ---
