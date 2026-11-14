@@ -21,6 +21,9 @@ export function InvitationLetterPreview({
         timeZone: "Etc/UTC",
         dressCode: "Sample: formal attire",
         mapUrl: "https://www.google.com/maps/search/?api=1&query=Kew+Gardens+London",
+        receptionVenue: "Sample Hall — preview only",
+        receptionTime: "17:00",
+        receptionMapUrl: null,
       }
     : defaultEventSettings;
   return (
@@ -31,7 +34,7 @@ export function InvitationLetterPreview({
         </p>
         {sample && (
           <p className="mt-4 text-base leading-relaxed">
-            Venue, time, time zone and dress code below are sample details, not the wedding
+            Venues, times and dress code below are sample details, not the wedding
             arrangements.
           </p>
         )}

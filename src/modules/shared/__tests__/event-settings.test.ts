@@ -3,17 +3,22 @@ import { eventSettingsSchema, defaultEventSettings } from "../lib/event-settings
 import { readEventSettings } from "../server/read-event-settings";
 
 describe("event settings", () => {
-  it("returns approved defaults without inventing a venue time zone or cutoff", async () => {
+  it("returns the details printed on the invitation card as defaults", async () => {
     expect(await readEventSettings(async () => null)).toEqual(defaultEventSettings);
     expect(defaultEventSettings).toMatchObject({
       coupleNames: ["Uchenna", "Adaora"],
       eventDate: "2026-12-19",
-      timeZone: null,
-      venue: null,
-      ceremonyTime: null,
+      timeZone: "Africa/Lagos",
+      venue: "St Paul's Anglican Church, Apo Resettlement, Abuja",
+      ceremonyTime: "12:00",
+      receptionTime: "14:30",
+      receptionVenue:
+        "Fineworld Recreational Park, Events & Gardens, opposite AYM Shafa fuel station, Apo Resettlement, Abuja",
+      rsvpPhone: "09160665114",
       mapUrl: null,
       dressCode: null,
-      rsvpLockAt: null,
+      // 23:59 on 17 December in Lagos (UTC+1).
+      rsvpLockAt: new Date("2026-12-17T22:59:00.000Z"),
       orderingOpen: false,
       defaultMaxTagAlongs: 1,
       retentionDays: 90,

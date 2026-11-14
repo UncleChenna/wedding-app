@@ -22,12 +22,6 @@ export function eventDateLabel(value: string) {
     timeZone: "UTC",
   }).format(new Date(value + "T12:00:00Z"));
 }
-export function ceremonyLabel(value: string | null, timeZone: string | null) {
-  if (!value) return "Time to follow";
-  const hour = Number(value.slice(0, 2));
-  const time = `${hour % 12 || 12}:${value.slice(3, 5)} ${hour < 12 ? "am" : "pm"}`;
-  return timeZone ? `${time} · ${timeZone}` : `${time} · time zone to follow`;
-}
 /** "12:00 pm", or null when the time isn't set. */
 export function timeOfDay(value: string | null): string | null {
   if (!value) return null;

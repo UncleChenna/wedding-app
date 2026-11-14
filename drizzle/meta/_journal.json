@@ -274,6 +274,20 @@
       "when": 1794574517662,
       "tag": "0038_host-tables",
       "breakpoints": true
+    },
+    {
+      "idx": 39,
+      "version": "7",
+      "when": 1794648224081,
+      "tag": "0039_event-details-from-card",
+      "breakpoints": true
+    },
+    {
+      "idx": 40,
+      "version": "7",
+      "when": 1794648249458,
+      "tag": "0040_fill-event-details-from-card",
+      "breakpoints": true
     }
   ]
 }
