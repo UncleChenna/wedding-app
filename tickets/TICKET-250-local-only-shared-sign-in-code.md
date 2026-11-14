@@ -2,7 +2,7 @@
 id: TICKET-250
 title: Add a local-only shared sign-in code for admin and staff
 epic: foundations
-status: in_review
+status: done
 priority: medium
 estimate: S
 labels: [backend, security, dx]
@@ -12,11 +12,11 @@ agent: claude
 blocked_by: []
 blocks: []
 branch: TICKET-250
-pr: ""
+pr: "#218"
 created: 2026-11-13
 updated: 2026-11-13
 started: 2026-11-13
-completed: ""
+completed: 2026-11-13
 reason: ""
 resume_to: ""
 ---
