@@ -6,12 +6,12 @@ import { buildSeedData } from "../seed-data";
 describe("buildSeedData", () => {
   const data = buildSeedData();
 
-  it("seeds the approved device theme pair while event details remain undecided", () => {
+  it("seeds the approved device theme pair and the details printed on the card", () => {
     expect(data.eventSettings).toMatchObject({
       activeThemeId: "ivory-gold",
       activeDarkThemeId: "midnight-champagne",
-      venue: null,
-      timeZone: null,
+      venue: "St Paul's Anglican Church, Apo Resettlement, Abuja",
+      timeZone: "Africa/Lagos",
       orderingOpen: false,
     });
   });

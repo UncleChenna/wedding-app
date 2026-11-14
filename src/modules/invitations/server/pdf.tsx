@@ -16,7 +16,7 @@ import type { EventSettings } from "@/modules/shared/lib/event-settings";
 import { qrMatrix, qrPathData, qrViewBoxSize } from "@/modules/shared/lib/qr";
 import type { Theme } from "@/modules/theming/lib/schema";
 import { FONT_KEYS } from "@/modules/theming/lib/schema";
-import { ceremonyLabel, eventDateLabel } from "../lib/event-summary";
+import { eventDateLabel, timeOfDay } from "../lib/event-summary";
 import { invitationSiteCopy } from "../lib/copy";
 
 // Static instances are generated from the same pinned sources as the web fonts.
@@ -68,8 +68,20 @@ export async function renderInvitationPdf({ details, theme, pass, passUrl }: Inv
         <Text style={{ marginTop: 12 }}>{invitationSiteCopy.subline}</Text>
         <View style={{ marginTop: 18 }}>
           <Text>{eventDateLabel(details.eventDate)}</Text>
-          <Text>{ceremonyLabel(details.ceremonyTime, details.timeZone)}</Text>
-          <Text>{details.venue ?? "Venue to follow"}</Text>
+          <Text>
+            Church service
+            {timeOfDay(details.ceremonyTime) ? `, ${timeOfDay(details.ceremonyTime)}` : ""}:{" "}
+            {details.venue ?? "venue to follow"}
+          </Text>
+          {details.receptionVenue || details.receptionTime ? (
+            <Text>
+              Reception
+              {timeOfDay(details.receptionTime ?? null)
+                ? `, ${timeOfDay(details.receptionTime ?? null)}`
+                : ""}
+              : {details.receptionVenue ?? "venue to follow"}
+            </Text>
+          ) : null}
           <Text>Dress code: {details.dressCode ?? "To follow"}</Text>
         </View>
         <View style={{ marginTop: 18 }}>

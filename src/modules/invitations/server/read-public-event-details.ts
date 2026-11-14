@@ -20,5 +20,9 @@ export async function readPublicEventDetails(
     ceremonyTime: settings.ceremonyTime,
     timeZone: settings.timeZone,
     venue: settings.venue,
+    receptionTime: settings.receptionTime,
+    receptionVenue: settings.receptionVenue,
+    rsvpPhone: settings.rsvpPhone,
+    rsvpLockAt: settings.rsvpLockAt,
   };
 }
