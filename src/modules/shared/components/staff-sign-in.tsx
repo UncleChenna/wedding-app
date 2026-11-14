@@ -26,7 +26,7 @@ export function StaffSignIn({ role, preview = false }: { role: StaffRole; previe
       aria-label="Staff sign-in"
     >
       <input type="hidden" name="role" value={role} />
-      <div className="[&_input]:text-2xl [&_label]:text-lg">
+      <div className="flex flex-col gap-2 [&_input]:text-2xl [&_label]:text-lg">
         <Input
           label="Your six-digit PIN"
           name="pin"
@@ -40,17 +40,18 @@ export function StaffSignIn({ role, preview = false }: { role: StaffRole; previe
           className="min-h-14 text-2xl tracking-widest"
           aria-describedby={statusId}
         />
+        <p
+          id={statusId}
+          role={pending || state.status !== "idle" ? "status" : undefined}
+          aria-live="polite"
+          // Two lines reserved so most messages appear without moving the button.
+          className="min-h-14 text-lg leading-relaxed text-muted-foreground"
+        >
+          {pending
+            ? "Checking your PIN…"
+            : state.message || "Use the PIN your team lead shared with you."}
+        </p>
       </div>
-      <p
-        id={statusId}
-        role={pending || state.status !== "idle" ? "status" : undefined}
-        aria-live="polite"
-        className="min-h-24 text-lg leading-relaxed text-muted-foreground"
-      >
-        {pending
-          ? "Checking your PIN…"
-          : state.message || "Use the PIN your team lead shared with you."}
-      </p>
       <Button type="submit" size="lg" fullWidth disabled={pending} aria-busy={pending}>
         {pending ? "Signing in…" : "Sign in"}
       </Button>

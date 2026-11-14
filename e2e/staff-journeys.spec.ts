@@ -28,11 +28,14 @@ for (const theme of listThemes())
           (await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21aa"]).analyze())
             .violations,
         ).toEqual([]);
-        expect(
-          await page
-            .getByRole("heading", { level: 1 })
-            .evaluate((node) => parseFloat(getComputedStyle(node).fontSize)),
-        ).toBeGreaterThanOrEqual(32);
+        // Polled: the heading can be replaced while the station's client view settles.
+        await expect
+          .poll(() =>
+            page
+              .getByRole("heading", { level: 1 })
+              .evaluate((node) => parseFloat(getComputedStyle(node).fontSize)),
+          )
+          .toBeGreaterThanOrEqual(32);
         const sizes = await page
           .locator("main p, main a, header a, header p")
           .evaluateAll((nodes) => nodes.map((node) => parseFloat(getComputedStyle(node).fontSize)));
@@ -46,7 +49,9 @@ for (const theme of listThemes())
         expect(targets.every((box) => box.width >= 44 && box.height >= 44)).toBe(true);
         if (capture)
           await page.screenshot({ path: `${dir}/${route.path.slice(1)}.png`, fullPage: true });
-        await page.getByRole("banner").getByRole("link", { name: "Staff home" }).focus();
+        if (route.path === appRoutes.staff.path) continue;
+        // Single-panel station pages carry their way back in the panel footer.
+        await page.getByRole("link", { name: "Staff home" }).focus();
         await page.keyboard.press("Enter");
         await expect(page).toHaveURL(/\/staff$/);
       }

@@ -7,7 +7,7 @@ export function StaffHeader() {
   const path = usePathname();
   const station = routeList.find((route) => route.path === path && route.audience === "staff");
   return (
-    <header className="mx-auto grid w-full max-w-3xl grid-cols-2 items-center gap-6 px-6 py-6 text-lg leading-relaxed">
+    <header className="mx-auto grid w-full max-w-3xl grid-cols-2 items-center gap-6 px-6 py-6 text-lg leading-relaxed group-has-[[data-centered-panel]]/staff:hidden">
       <Link
         href={appRoutes.staff.path}
         className="inline-flex min-h-11 items-center text-primary underline underline-offset-4"

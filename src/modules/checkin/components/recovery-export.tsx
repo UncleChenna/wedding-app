@@ -54,10 +54,10 @@ export function RecoveryExport() {
         This does not sign you in or admit anyone. Export the records, then give the file to your
         administrator through your agreed private channel.
       </p>
-      <Button size="lg" disabled={busy} onClick={() => void save()}>
+      <Button size="lg" fullWidth disabled={busy} onClick={() => void save()}>
         Save recovery file
       </Button>
-      <div className="space-y-2">
+      <div className="space-y-2 border-t border-border pt-6">
         <label htmlFor="recovery-receipt" className="block font-semibold">
           Administrator’s receipt
         </label>
@@ -70,17 +70,17 @@ export function RecoveryExport() {
           type="file"
           accept=".txt,text/plain"
           disabled={busy}
-          className="min-h-11 w-full max-w-full"
+          className="min-h-11 w-full max-w-full file:mr-4 file:min-h-11 file:cursor-pointer file:rounded-md file:border file:border-border file:bg-background file:px-4 file:font-medium file:text-foreground"
           onChange={(event) => {
             void receipt(event.target.files?.[0]);
             event.target.value = "";
           }}
         />
       </div>
-      <p role="status" aria-live="polite">
+      <p role="status" aria-live="polite" className="empty:hidden">
         {message}
       </p>
-      <p>
+      <p className="text-muted-foreground">
         Do not clear site data or remove this browser profile while records remain. A deleted copy
         cannot be recovered here.
       </p>
