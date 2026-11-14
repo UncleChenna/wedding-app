@@ -1,4 +1,5 @@
 "use client";
+import { useActionFeedback } from "@/modules/shared/components/use-action-feedback";
 
 import { useActionState, useId } from "react";
 import type { StaffRole } from "../server/staff-auth";
@@ -19,6 +20,7 @@ export function StaffSignIn({ role, preview = false }: { role: StaffRole; previe
     preview ? previewAction : staffSignInAction,
     initial,
   );
+  useActionFeedback(state);
   return (
     <form
       action={action}

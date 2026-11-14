@@ -1,4 +1,5 @@
 "use client";
+import { useActionFeedback } from "@/modules/shared/components/use-action-feedback";
 import { useActionState, useState } from "react";
 import { Button, Select } from "@/modules/shared/components/ui";
 import { scanResolutionNotes } from "../lib/scan-log";
@@ -42,6 +43,7 @@ export function ScanNoteForm({ eventId, requestId }: { eventId: string; requestI
     uncertain: false,
     submittedResolution: "",
   });
+  useActionFeedback(state);
   // React resets uncontrolled action forms even for expected error return values.
   // Retain the selected resolution so a failed request can be retried unchanged.
   const [resolution, setResolution] = useState("");

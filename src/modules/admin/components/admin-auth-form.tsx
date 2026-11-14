@@ -1,4 +1,5 @@
 "use client";
+import { useActionFeedback } from "@/modules/shared/components/use-action-feedback";
 import { appRoutes } from "@/modules/shared/lib/routes";
 import Link from "next/link";
 import { useActionState, useEffect, useRef } from "react";
@@ -13,6 +14,7 @@ export function AdminAuthForm({ signOut = false }: { signOut?: boolean }) {
     signOut ? adminSignOutAction : adminSignInAction,
     initialAdminAuthState,
   );
+  useActionFeedback(state);
   const message = useRef<HTMLParagraphElement>(null);
   useEffect(() => {
     if (state.message) message.current?.focus();

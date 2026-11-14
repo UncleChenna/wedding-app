@@ -1,4 +1,5 @@
 "use client";
+import { useFeedbackMessage } from "@/modules/shared/components/use-action-feedback";
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
@@ -35,6 +36,7 @@ export function GuestList({ invitations }: { invitations: GuestListInvitation[] 
   } | null>(null);
   const [undoMessage, setUndoMessage] = useState("");
   const [undoPending, setUndoPending] = useState(false);
+  useFeedbackMessage(undoPending ? "" : undoMessage);
   const currentUndo =
     undoRecord &&
     invitations.some(

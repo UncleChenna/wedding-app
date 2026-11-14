@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ConfirmSubmitButton } from "@/modules/shared/components/ui/confirm-submit-button";
 
 import {
   Button,
@@ -39,6 +40,29 @@ export function ShowcaseInteractive() {
           }
         >
           Show toast
+        </Button>
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            toast({ title: "Preview reset", tone: "success" });
+          }}
+        >
+          <ConfirmSubmitButton
+            confirmationTitle="Reset preview?"
+            confirmationDescription="This only resets the sample preview."
+            confirmLabel="Reset preview"
+            variant="secondary"
+          >
+            Confirm an action
+          </ConfirmSubmitButton>
+        </form>
+        <Button
+          variant="ghost"
+          onClick={() =>
+            toast({ title: "We couldn’t save just now. Please try again.", tone: "danger" })
+          }
+        >
+          Show error
         </Button>
       </CardContent>
       <Sheet open={open} onOpenChange={setOpen} title="Your order" description="Table 7 · 2 items">

@@ -1,4 +1,5 @@
 "use client";
+import { useActionFeedback } from "@/modules/shared/components/use-action-feedback";
 import { useActionState, useState } from "react";
 import { Button, Input } from "@/modules/shared/components/ui";
 import { hostTablesCopy, type HostTablesState } from "../lib/staff";
@@ -17,6 +18,7 @@ export function HostTablesForm({
   const [state, action, pending] = useActionState<HostTablesState, FormData>(saveHostTablesAction, {
     status: "idle",
   });
+  useActionFeedback(state);
   // React resets the form after an action; remount with what was typed when it was refused.
   const [shown, setShown] = useState(state);
   const [round, setRound] = useState(0);

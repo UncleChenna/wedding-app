@@ -1,4 +1,8 @@
 "use client";
+import {
+  useActionFeedback,
+  useFeedbackMessage,
+} from "@/modules/shared/components/use-action-feedback";
 
 import Link from "next/link";
 import { useEffect, useRef, useState, useSyncExternalStore, useTransition } from "react";
@@ -38,6 +42,11 @@ export function GuestImportForm({
   > | null>(null);
   const [committing, setCommitting] = useState(false);
   const [pending, start] = useTransition();
+  useActionFeedback(failure);
+  useFeedbackMessage(
+    complete ? "Guest import complete. Review the imported invitations below." : "",
+    "success",
+  );
   const version = useRef(0);
   const alert = useRef<HTMLDivElement>(null);
   const heading = useRef<HTMLHeadingElement>(null);

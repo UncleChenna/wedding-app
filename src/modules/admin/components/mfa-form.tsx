@@ -1,4 +1,5 @@
 "use client";
+import { useActionFeedback } from "@/modules/shared/components/use-action-feedback";
 import { appRoutes } from "@/modules/shared/lib/routes";
 import Link from "next/link";
 import { useActionState, useEffect, useRef } from "react";
@@ -11,7 +12,9 @@ import { enrollMfaAction, verifyMfaAction } from "../server/mfa-actions";
 
 export function MfaForm({ factorId }: { factorId?: string }) {
   const [enrollment, enroll, enrolling] = useActionState(enrollMfaAction, initialMfaState);
+  useActionFeedback(enrollment);
   const [verification, verify, verifying] = useActionState(verifyMfaAction, initialMfaState);
+  useActionFeedback(verification);
   const status = useRef<HTMLParagraphElement>(null);
   const setup = enrollment.status === "setup" ? enrollment.setup : undefined;
   const activeFactor = setup?.id ?? factorId;

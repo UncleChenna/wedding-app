@@ -1,4 +1,5 @@
 "use client";
+import { useFeedbackMessage } from "@/modules/shared/components/use-action-feedback";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ActionBar, Button, Textarea } from "@/modules/shared/components/ui";
 import { menuCopy, type MenuItem } from "../lib/menu";
@@ -38,6 +39,10 @@ export function OrderComposer({
   const [phase, setPhase] = useState<Phase>({ kind: "editing" });
   const [retryAt, setRetryAt] = useState(0);
   const [waitSeconds, setWaitSeconds] = useState(0);
+  useFeedbackMessage(
+    phase.kind === "sent" ? orderCopy.sent : phase.kind === "failed" ? orderCopy.failed : "",
+    phase.kind === "sent" ? "success" : "danger",
+  );
   // One id per submission. Automatic retries and "Try again" reuse it; any edit starts afresh.
   const requestId = useRef<string | null>(null);
   const sentHeading = useRef<HTMLHeadingElement>(null);

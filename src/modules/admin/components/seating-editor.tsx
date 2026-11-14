@@ -1,4 +1,8 @@
 "use client";
+import {
+  useActionFeedback,
+  useFeedbackMessage,
+} from "@/modules/shared/components/use-action-feedback";
 
 import { useEffect, useRef, useState, useTransition, type TransitionStartFunction } from "react";
 import { Button, Input, Select, Sheet } from "@/modules/shared/components/ui";
@@ -24,6 +28,7 @@ function TableForm({
   start: TransitionStartFunction;
 }) {
   const [result, setResult] = useState<SeatingMutation | null>(null);
+  useActionFeedback(result);
   const [confirm, setConfirm] = useState(false);
   const form = useRef<HTMLFormElement>(null);
   const confirmationUsed = useRef(false);
@@ -159,6 +164,7 @@ function AssignmentForm({
 }) {
   const [target, setTarget] = useState(party.tableId ?? "");
   const [message, setMessage] = useState("");
+  useFeedbackMessage(message, "danger");
   const error = useRef<HTMLParagraphElement>(null);
   const table = plan.tables.find((row) => row.id === target);
   const predicted = table
@@ -229,6 +235,7 @@ export function SeatingEditor({ plan }: { plan: SeatingPlan }) {
   >(null);
   const [query, setQuery] = useState("");
   const [notice, setNotice] = useState("");
+  useFeedbackMessage(notice, "success");
   const result = useRef<HTMLParagraphElement>(null);
   useEffect(() => {
     if (notice && !editing) result.current?.focus();
