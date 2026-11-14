@@ -6,14 +6,21 @@ import { PagePlaceholder } from "@/modules/shared/components/page-placeholder";
 export default function NotFound() {
   return (
     <PagePlaceholder
-      align="left"
       eyebrow="404"
       title={
-        <span className="block whitespace-pre-line sm:whitespace-normal">
-          {"This page\nwandered off"}
-        </span>
+        // A fixed break keeps the heading from re-wrapping when the display font arrives.
+        <>
+          This page <span className="block">wandered off</span>
+        </>
       }
-      description="We couldn't find what you were looking for. Check the link on your invitation, or head back home."
+      description={
+        <>
+          <span className="block">Check the link on your invitation,</span>
+          <span className="block">or head back home.</span>
+        </>
+      }
+      backTo={null}
+      className="min-h-dvh"
     >
       <Link
         href={appRoutes.home.path}

@@ -6,7 +6,8 @@ import { z } from "zod";
 import { staffEventExpiry } from "../lib/staff-expiry";
 import { db, schema } from "./db/client";
 import { withStaffPinAttempt } from "./staff-attempts";
-import { verifyStaffPin } from "./staff-pin";
+import { hashStaffPin, verifyStaffPin } from "./staff-pin";
+import { randomInt } from "node:crypto";
 import { readStaffSession, type StaffSessionIdentity } from "./staff-session";
 
 export const staffRoleSchema = z.enum(["gate", "kitchen", "bar", "host"]);
@@ -104,6 +105,66 @@ export async function signInStaff(
         role,
         credentialVersion: matched.credentialVersion,
         expiresAt,
+      },
+    };
+  });
+}
+
+/**
+ * Local development only (TICKET-250): signs this device in as the station's "Local tester",
+ * creating that person with a fresh random PIN until the event cutoff if needed. The caller must
+ * have checked `usesLocalSignInCode` first. Sessions go through the normal live checks afterwards.
+ */
+export async function signInLocalTester(
+  role: StaffRole,
+  deviceId: string,
+): Promise<StaffSignInResult> {
+  const cutoff = await eventExpiry();
+  if (!cutoff) return { status: "unavailable" };
+  const now = new Date();
+  if (cutoff <= now) return { status: "expired" };
+  const name = `Local ${role} tester`;
+  const pinHash = await hashStaffPin(String(randomInt(100000, 1000000)));
+  return db.transaction(async (tx) => {
+    const [device] = await tx
+      .select()
+      .from(schema.registeredDevices)
+      .where(eq(schema.registeredDevices.id, deviceId));
+    if (device?.revokedAt || (device && device.role !== role)) return { status: "wrong" };
+    let [tester] = await tx
+      .select()
+      .from(schema.staff)
+      .where(and(eq(schema.staff.name, name), eq(schema.staff.role, role)))
+      .for("update");
+    if (!tester)
+      [tester] = await tx
+        .insert(schema.staff)
+        .values({ name, role, pinHash, pinIssuedAt: now, pinExpiresAt: cutoff })
+        .returning();
+    else if (
+      tester.revokedAt ||
+      !tester.pinHash ||
+      !tester.pinExpiresAt ||
+      tester.pinExpiresAt <= now ||
+      tester.pinExpiresAt.getTime() !== cutoff.getTime()
+    )
+      [tester] = await tx
+        .update(schema.staff)
+        .set({ pinHash, pinIssuedAt: now, pinExpiresAt: cutoff, revokedAt: null, updatedAt: now })
+        .where(eq(schema.staff.id, tester.id))
+        .returning();
+    if (!tester) return { status: "unavailable" };
+    await tx
+      .insert(schema.registeredDevices)
+      .values({ id: deviceId, name: `${role} device`, role, registeredByStaffId: tester.id })
+      .onConflictDoNothing();
+    return {
+      status: "success",
+      value: {
+        staffId: tester.id,
+        role,
+        credentialVersion: tester.credentialVersion,
+        expiresAt: cutoff,
       },
     };
   });

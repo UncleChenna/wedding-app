@@ -5,6 +5,7 @@ import { useActionState, useEffect, useRef } from "react";
 import { Button } from "@/modules/shared/components/ui/button";
 import { Input } from "@/modules/shared/components/ui/input";
 import { QrMark } from "@/modules/shared/components/ui/qr-mark";
+import { CenteredPanel, panelLinkClassName } from "@/modules/shared/components/ui/centered-panel";
 import { initialMfaState } from "../lib/mfa-state";
 import { enrollMfaAction, verifyMfaAction } from "../server/mfa-actions";
 
@@ -20,16 +21,28 @@ export function MfaForm({ factorId }: { factorId?: string }) {
     if (message) status.current?.focus();
   }, [enrollment, verification, message]);
   return (
-    <main className="mx-auto flex w-full max-w-lg flex-1 flex-col px-6 pt-12 pb-[max(1.5rem,env(safe-area-inset-bottom))] sm:py-16">
-      <p className="mb-4 text-lg tracking-widest text-muted-foreground uppercase">Wedding admin</p>
-      <h1 className="type-heading">{factorId ? "One more step" : "Protect your account"}</h1>
-      <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-        {factorId
+    <CenteredPanel
+      variant="staff"
+      eyebrow="Wedding admin"
+      title={factorId ? "One more step" : "Protect your account"}
+      description={
+        factorId
           ? "Enter the current code from your authenticator app."
-          : "Add an authenticator app so only you can open the wedding admin."}
-      </p>
+          : "Add an authenticator app so only you can open the wedding admin."
+      }
+      footer={
+        <>
+          <Link href={appRoutes.adminSignOut.path} className={panelLinkClassName}>
+            Sign out
+          </Link>
+          <Link href={appRoutes.home.path} className={panelLinkClassName}>
+            Back to our day
+          </Link>
+        </>
+      }
+    >
       {setup && !finished && (
-        <section aria-label="Authenticator setup" className="mt-8 space-y-6">
+        <section aria-label="Authenticator setup" className="space-y-6 text-center">
           <QrMark
             geometry={setup.qr}
             label="Authenticator setup QR code"
@@ -48,21 +61,20 @@ export function MfaForm({ factorId }: { factorId?: string }) {
         tabIndex={-1}
         role="status"
         aria-label="Two-step status"
-        className="mt-6 min-h-7 text-lg leading-relaxed focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+        className="mt-6 text-center text-lg leading-relaxed empty:hidden focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
       >
         {message}
       </p>
       {finished ? (
-        <Link
-          href={appRoutes.admin.path}
-          className="mt-8 inline-flex min-h-11 items-center text-lg text-primary underline underline-offset-4"
-        >
-          Continue to admin
-        </Link>
+        <div className="mt-6 flex justify-center">
+          <Link href={appRoutes.admin.path} className={panelLinkClassName}>
+            Continue to admin
+          </Link>
+        </div>
       ) : activeFactor ? (
         <form
           action={verify}
-          className="mt-8 flex flex-1 flex-col gap-6 [&_input]:text-lg [&_label]:text-lg [&_p]:text-lg"
+          className="mt-6 flex flex-col gap-6 [&_input]:text-lg [&_label]:text-lg [&_p]:text-lg"
         >
           <input type="hidden" name="factorId" value={activeFactor} />
           <Input
@@ -76,20 +88,20 @@ export function MfaForm({ factorId }: { factorId?: string }) {
             maxLength={6}
             hint="Use the current six-digit code from your app."
           />
-          <div className="mt-auto pt-6">
+          <div>
             <Button type="submit" size="lg" fullWidth disabled={verifying} aria-busy={verifying}>
               {verifying ? "Checking…" : "Verify code"}
             </Button>
           </div>
         </form>
       ) : (
-        <form action={enroll} className="mt-auto pt-8">
+        <form action={enroll} className="mt-6">
           <Button type="submit" size="lg" fullWidth disabled={enrolling} aria-busy={enrolling}>
             {enrolling ? "Preparing…" : "Set up authenticator"}
           </Button>
         </form>
       )}
-      <details className="mt-8 text-lg leading-relaxed">
+      <details className="mt-8 text-center text-lg leading-relaxed">
         <summary className="min-h-11 cursor-pointer py-2 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring">
           Lost your authenticator?
         </summary>
@@ -98,18 +110,6 @@ export function MfaForm({ factorId }: { factorId?: string }) {
           arranging a reset. An email code alone cannot unlock admin access.
         </p>
       </details>
-      <Link
-        href={appRoutes.adminSignOut.path}
-        className="mt-6 inline-flex min-h-11 items-center self-start text-lg text-primary underline underline-offset-4"
-      >
-        Sign out
-      </Link>
-      <Link
-        href={appRoutes.home.path}
-        className="mt-6 inline-flex min-h-11 items-center self-start text-lg text-primary underline underline-offset-4"
-      >
-        Back to our day
-      </Link>
-    </main>
+    </CenteredPanel>
   );
 }

@@ -51,6 +51,7 @@ async function StaffEntryContent({ role }: { role: StaffRole }) {
         authenticated ? station.description : "Sign in with your staff PIN to open this station."
       }
       backTo={appRoutes.staff}
+      variant="staff"
     >
       {authenticated ? (
         <>
@@ -84,6 +85,7 @@ export function StaffEntry({ role }: { role: StaffRole }) {
           title={stations[role].title}
           description="Getting your station ready…"
           backTo={appRoutes.staff}
+          variant="staff"
         />
       }
     >

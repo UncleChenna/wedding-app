@@ -5,6 +5,24 @@ Audit of the repository against the [PRD](prd.md) on **2026-10-21**, at commit `
 it was committed). The [ticket backlog](../tickets/ROADMAP.md) starts from this state. Update this file when a
 fix-up ticket changes a fact recorded here.
 
+## Where things stand — 2026-11-13
+
+**The rest of this file is the original 2026-10-21 audit and its dated updates. It is history:** its "placeholder",
+"no authentication" and "no PWA" findings are long resolved. For today's picture:
+
+- **Built and merged:** every PRD requirement (see the PRD's [build status](prd.md#build-status-2026-11-13)). Guest
+  invitation, RSVP, pass, ordering and offline pages; gate scanner with offline queue and reconciliation; kitchen,
+  bar and table host boards; WhatsApp alert sender and optional board push; the full admin behind email code plus
+  authenticator sign-in.
+- **Not deployed:** no Vercel project, production Supabase, domain, email provider or Sentry yet (TICKET-139,
+  144–152, 028). Everything runs locally with `pnpm db:start` and `pnpm dev`.
+- **Waiting on the owner:** photos and domain (TICKET-008), devices and staff (055), WhatsApp number (083), privacy
+  details (122), proof-reading (158), and the venue and rehearsal tickets (155–167).
+- **Open code work:** the invitation page scores 90 on Lighthouse mobile against a target of 95 (TICKET-116).
+- **Workflow:** the lean ticket-file workflow in `AGENTS.md` (2026-11-13) replaced the harness, hooks and `t:*`
+  commands described below. CI runs lint, typecheck and unit tests.
+- **Assumptions confirmed since:** 14 (retention, 90 days). Still open: 7 (alert recipients) and 15 (devices).
+
 ## TICKET-012 update — 2026-10-31
 
 The older theming-gap entry below is superseded: four registered palettes exist, with status and texture tokens. The active light/dark pair now comes from event_settings, with server-rendered CSS, tagged invalidation and safe defaults during database outages. Admin selection/editing UI remains TICKET-098/181. Verified against develop c22d9d94105817f10c63b7dae239fd2d4f6686e6:458 unit tests and483 browser tests pass; see [evidence](reviews/TICKET-012/README.md). Production guest QA remains201; this is not launch approval.

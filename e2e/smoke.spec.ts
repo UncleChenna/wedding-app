@@ -77,6 +77,19 @@ test.describe("smoke @smoke", () => {
     const response = await page.goto("/this-does-not-exist");
     expect(response?.status()).toBe(404);
     await expect(page.getByRole("heading", { name: "This page wandered off" })).toBeVisible();
+    const links = page.getByRole("main").getByRole("link");
+    await expect(links).toHaveCount(1);
+    await expect(links).toHaveAttribute("href", "/");
+    for (const width of [375, 768, 1280]) {
+      await page.setViewportSize({ width, height: 812 });
+      const offset = await page.getByRole("main").evaluate((main) => {
+        const content = [...main.children].map((child) => child.getBoundingClientRect());
+        const top = Math.min(...content.map((box) => box.top));
+        const bottom = Math.max(...content.map((box) => box.bottom));
+        return Math.abs((top + bottom) / 2 - innerHeight / 2);
+      });
+      expect(offset, `content centred at ${width}px`).toBeLessThanOrEqual(2);
+    }
   });
 
   test("security headers are set", async ({ request }) => {

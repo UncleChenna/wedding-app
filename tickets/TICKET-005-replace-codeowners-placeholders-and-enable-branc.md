@@ -2,7 +2,7 @@
 id: TICKET-005
 title: Replace CODEOWNERS placeholders and enable branch protection
 epic: foundations
-status: in_review
+status: done
 priority: urgent
 estimate: S
 labels: [human, infra, security]
@@ -12,11 +12,11 @@ agent: claude
 blocked_by: [TICKET-004]
 blocks: [TICKET-164, TICKET-176]
 branch: TICKET-005
-pr: ""
+pr: https://github.com/UncleChenna/wedding-app/pull/211
 created: 2026-10-21
 updated: 2026-11-13
 started: 2026-11-13
-completed: ""
+completed: 2026-11-13
 reason: ""
 resume_to: ""
 ---
@@ -66,6 +66,9 @@ See: [Working together](../docs/collaboration.md).
   The third criterion isn't met as written: with the admin override, the owner's own push to `main` is allowed;
   a non-admin's push is rejected. Not tested by pushing, since agents never push to `main`.
 
+- 2026-11-13 (unclechenna, claude): Merged in #211. Owner chose protection that admins can override, so a push from the owner's account is allowed; the unticked "test push is rejected" check applies to non-admins only and was not run (agents never push to `main`).
+
 ## Activity log
 
 - 2026-10-21 — new → todo — UncleChenna (claude) — created from the PRD and docs/current-state.md
+- 2026-11-13 — in_review → done — unclechenna (claude) — PR #211 merged

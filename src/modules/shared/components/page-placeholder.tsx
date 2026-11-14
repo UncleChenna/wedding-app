@@ -2,45 +2,46 @@ import Link from "next/link";
 import type { Route } from "next";
 import { appRoutes } from "../lib/routes";
 import type { ReactNode } from "react";
+import { CenteredPanel, panelLinkClassName } from "./ui/centered-panel";
 
 export interface PagePlaceholderProps {
-  align?: "left" | "center";
   eyebrow: string;
   title: ReactNode;
-  description: string;
+  description: ReactNode;
   children?: ReactNode;
-  backTo?: { path: Route; label: string };
+  /** `null` hides the back link when the page supplies its own way out. */
+  backTo?: { path: Route; label: string } | null;
+  className?: string;
+  /** `staff` for staff screens: a plain divider instead of the guest ornament. */
+  variant?: "guest" | "staff";
 }
 
-/** Temporary page body for routes whose feature has not been built yet. */
+/** A centred single-message page (staff station sign-in, not found), built on CenteredPanel. */
 export function PagePlaceholder({
-  align = "center",
   eyebrow,
   title,
   description,
   children,
   backTo,
+  className,
+  variant = "guest",
 }: PagePlaceholderProps) {
   return (
-    <main
-      className={`mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center gap-6 px-6 py-16 ${align === "left" ? "items-start text-left" : "items-center text-center"}`}
+    <CenteredPanel
+      eyebrow={eyebrow}
+      title={title}
+      description={description}
+      variant={variant}
+      className={className}
+      footer={
+        backTo === null ? undefined : (
+          <Link href={backTo?.path ?? appRoutes.home.path} className={panelLinkClassName}>
+            {backTo?.label ?? "Back to our day"}
+          </Link>
+        )
+      }
     >
-      <p className="w-full text-lg font-semibold tracking-widest text-primary uppercase">
-        {eyebrow}
-      </p>
-      <h1 className="w-full font-display text-4xl leading-tight font-medium text-balance sm:text-5xl">
-        {title}
-      </h1>
-      <p className="w-full max-w-md text-left text-lg leading-relaxed text-pretty text-muted-foreground">
-        {description}
-      </p>
-      {children}
-      <Link
-        href={backTo?.path ?? appRoutes.home.path}
-        className="mt-6 inline-flex min-h-11 items-center text-lg text-primary underline underline-offset-4"
-      >
-        {backTo?.label ?? "Back to our day"}
-      </Link>
-    </main>
+      {children ? <div className="flex flex-col items-center gap-4">{children}</div> : null}
+    </CenteredPanel>
   );
 }

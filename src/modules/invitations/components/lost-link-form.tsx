@@ -2,21 +2,24 @@
 
 import { useActionState } from "react";
 import Link from "next/link";
-import { Button, Input } from "@/modules/shared/components/ui";
+import { Button, CenteredPanel, Input, panelLinkClassName } from "@/modules/shared/components/ui";
 import { requestInvitationLink } from "../server/lost-link-actions";
 
 export function LostLinkForm() {
   const [result, action, pending] = useActionState(requestInvitationLink, null, "/lost-link");
   return (
-    <main className="mx-auto flex min-h-dvh max-w-xl flex-col justify-center px-6 py-16">
-      <p className="text-base tracking-widest text-primary uppercase">Your invitation</p>
-      <h1 className="mt-6 font-display text-5xl">Let’s find your link</h1>
-      <p className="mt-6 text-lg leading-relaxed">
-        Leave your name and the phone number or email you shared with us. We’ll help you find your
-        invitation.
-      </p>
+    <CenteredPanel
+      eyebrow="Your invitation"
+      title="Let’s find your link"
+      description="Leave your name and the phone number or email you shared with us. We’ll help you find your invitation."
+      footer={
+        <Link href="/invite" className={panelLinkClassName}>
+          Back to invitations
+        </Link>
+      }
+    >
       {result?.status !== "received" && (
-        <form action={action} aria-busy={pending} className="mt-10 space-y-6">
+        <form action={action} aria-busy={pending} className="space-y-6">
           <Input
             name="name"
             label="Your full name"
@@ -38,20 +41,14 @@ export function LostLinkForm() {
             Only our wedding team can see your request. We’ll check the details before sharing a
             link.
           </p>
-          <Button type="submit" disabled={pending}>
+          <Button type="submit" size="lg" fullWidth disabled={pending}>
             {pending ? "Saving your request…" : "Request my link"}
           </Button>
         </form>
       )}
-      <div role="status" className="mt-6 text-lg leading-relaxed">
+      <div role="status" className="mt-6 text-center text-lg leading-relaxed empty:hidden">
         {result?.message}
       </div>
-      <Link
-        href="/invite"
-        className="mt-8 inline-flex min-h-11 items-center text-primary underline underline-offset-4"
-      >
-        Back to invitations
-      </Link>
-    </main>
+    </CenteredPanel>
   );
 }
