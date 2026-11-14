@@ -12,7 +12,7 @@ agent: ""
 blocked_by: []
 blocks: [TICKET-256, TICKET-257]
 branch: "TICKET-255"
-pr: ""
+pr: "#224"
 created: 2026-11-13
 updated: 2026-11-14
 started: 2026-11-13
