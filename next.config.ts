@@ -9,6 +9,18 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   images: { formats: ["image/avif", "image/webp"] },
   outputFileTracingIncludes: {
+    "/i/*/card.pdf": [
+      "./src/modules/invitations/fonts/Inter.ttf",
+      "./src/modules/invitations/assets/card/*.png",
+    ],
+    "/admin/invitations/*/card.pdf": [
+      "./src/modules/invitations/fonts/Inter.ttf",
+      "./src/modules/invitations/assets/card/*.png",
+    ],
+    "/dev/invitation/card.pdf": [
+      "./src/modules/invitations/fonts/Inter.ttf",
+      "./src/modules/invitations/assets/card/*.png",
+    ],
     "/order": ["./public/order-assets/manifest.json"],
     "/checkin/offline-shell": ["./public/scanner-assets/manifest.json"],
     "/sw.js": ["./public/scanner-assets/manifest.json"],

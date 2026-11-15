@@ -34,6 +34,14 @@ export async function AdminSharing() {
           {invitations.map((invitation) => (
             <li key={invitation.id} className="space-y-6">
               <h2 className="font-display text-3xl wrap-anywhere">{invitation.name}</h2>
+              {invitation.status !== "revoked" && (
+                <Link
+                  href={`/admin/invitations/${encodeURIComponent(invitation.id)}/card`}
+                  className="inline-flex min-h-11 items-center text-primary underline underline-offset-4"
+                >
+                  Preview invitation card
+                </Link>
+              )}
               {invitation.share ? (
                 <ShareMenu
                   key={invitation.tokenVersion}

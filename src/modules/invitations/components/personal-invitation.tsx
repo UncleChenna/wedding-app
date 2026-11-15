@@ -1,3 +1,4 @@
+import { PrintedInvitationCard } from "./printed-invitation-card";
 import { PartyForm } from "./party-form";
 import type { PartyDetails } from "../lib/party";
 import type { ReactNode } from "react";
@@ -34,6 +35,26 @@ export function PersonalInvitation({
     invitation.primaryNames.join(" & ") || invitation.householdName || "Our dear guest";
   return (
     <InvitationLetter
+      artwork={
+        invitation.cardNumber ? (
+          <>
+            <PrintedInvitationCard
+              dressCode={details.dressCode}
+              card={{
+                cardNumber: invitation.cardNumber,
+                guestName: greeting,
+                capacity: invitation.capacity ?? 1,
+              }}
+            />
+            <a
+              href={`/i/${encodeURIComponent(token)}/card.pdf`}
+              className="mt-6 inline-flex min-h-11 items-center text-primary underline underline-offset-4"
+            >
+              Download your invitation card
+            </a>
+          </>
+        ) : undefined
+      }
       details={details}
       greeting={greeting}
       replyLabel={repliesOpen ? "Kindly reply" : "Your reply"}

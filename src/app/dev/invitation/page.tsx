@@ -1,10 +1,8 @@
-import { defaultEventSettings } from "@/modules/shared/lib/event-settings";
-import { eventDateLabel } from "@/modules/invitations/lib/event-summary";
 import { appRoutes } from "@/modules/shared/lib/routes";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
-import { InvitationView } from "@/modules/invitations/components/invitation-view";
+import { PrintedInvitationCard } from "@/modules/invitations/components/printed-invitation-card";
 import { listThemes, themeStyle } from "@/modules/theming";
 
 export const metadata: Metadata = { title: "Invitation preview", robots: { index: false } };
@@ -36,16 +34,35 @@ async function ThemedInvitation({ searchParams }: { searchParams: Promise<{ them
           </Link>
         ))}
       </nav>
-      <InvitationView
-        details={{
-          names: defaultEventSettings.coupleNames,
-          date: eventDateLabel(defaultEventSettings.eventDate),
-          time: "Time to follow",
-          venue: "Sample Garden",
-          address: "London — sample location",
-          dressCode: "Sample: formal attire",
-        }}
-      />
+      <main className="mx-auto max-w-4xl px-6 py-12">
+        <h1 className="type-heading">Your invitation card</h1>
+        <p className="my-6 text-lg leading-relaxed">
+          Original card preview · sample household and card number. No invitation is sent here.
+        </p>
+        <PrintedInvitationCard
+          card={{ cardNumber: 3, guestName: "Sample household", capacity: 2 }}
+          replyHref="#preview-reply"
+        />
+        <a
+          href="/dev/invitation/card.pdf"
+          className="mt-6 inline-flex min-h-11 items-center text-primary underline"
+        >
+          Download sample card
+        </a>
+        <section id="preview-reply" className="mt-12 scroll-mt-6">
+          <h2 className="type-heading">Your online RSVP</h2>
+          <p className="mt-6 text-lg leading-relaxed">
+            Your guest’s personal link will show their card number and let them reply online. This
+            sample does not save a reply.
+          </p>
+          <Link
+            href={appRoutes.devRsvp.path}
+            className="mt-6 inline-flex min-h-11 items-center text-primary underline"
+          >
+            Try RSVP preview
+          </Link>
+        </section>
+      </main>
     </div>
   );
 }
