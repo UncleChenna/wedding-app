@@ -12,7 +12,7 @@ agent: ""
 blocked_by: []
 blocks: []
 branch: "TICKET-261"
-pr: ""
+pr: "#227"
 created: 2026-11-15
 updated: 2026-11-15
 started: 2026-11-15
