@@ -47,6 +47,15 @@ export function InvitationLetter({
         {artwork ? (
           <>
             <h1 className="sr-only">{details.coupleNames.join(" & ")} — your invitation</h1>
+            <div className="mx-auto max-w-3xl text-center">
+              <Envelope
+                initials={[
+                  Array.from(details.coupleNames[0])[0] ?? "",
+                  Array.from(details.coupleNames[1])[0] ?? "",
+                ]}
+                returning={Boolean(pass)}
+              />
+            </div>
             {artwork}
             {pass && (
               <a href="#pass" className={linkStyle}>
