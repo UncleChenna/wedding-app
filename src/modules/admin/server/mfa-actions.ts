@@ -6,7 +6,11 @@ import { createLogger } from "@/modules/shared/lib/logger";
 import { parseAdminEmails } from "../lib/admin-emails";
 import type { MfaState } from "../lib/mfa-state";
 import { enrollAdminTotp, verifyAdminTotp } from "./mfa-service";
-import { localAuthenticatorCode, usesLocalSignInCode } from "@/modules/shared/server/local-sign-in";
+import {
+  localAuthenticatorCode,
+  localSignInFailed,
+  usesLocalSignInCode,
+} from "@/modules/shared/server/local-sign-in";
 const log = createLogger({ module: "admin-mfa" });
 // These bootstrap actions accept an authenticated allowlisted AAL1 session so it can reach AAL2.
 // They cannot read or mutate privileged wedding data.
@@ -20,6 +24,7 @@ export async function enrollMfaAction(): Promise<MfaState> {
   }
 }
 export async function verifyMfaAction(_previous: MfaState, form: FormData): Promise<MfaState> {
+  let local = false;
   try {
     const client = await createSupabaseServerClient();
     const factorId = form.get("factorId");
@@ -29,13 +34,16 @@ export async function verifyMfaAction(_previous: MfaState, form: FormData): Prom
       typeof factorId === "string" &&
       /^[0-9a-f-]{36}$/i.test(factorId) &&
       (await usesLocalSignInCode(code))
-    )
+    ) {
+      local = true;
       code = (await localAuthenticatorCode(factorId)) ?? code;
+    }
     return await verifyAdminTotp(client.auth, parseAdminEmails(serverEnv.ADMIN_EMAIL_ALLOWLIST), {
       factorId,
       code,
     });
   } catch {
+    if (local) localSignInFailed("authenticator code");
     log.warn("authenticator verification unavailable");
     return { status: "error", message: "Verification is unavailable just now. Please try again." };
   }
