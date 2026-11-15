@@ -15,7 +15,7 @@ import {
 async function mutate(operation: () => Promise<SeatingMutation>): Promise<SeatingMutation> {
   try {
     if ((await currentAdminAccess()).status !== "ready")
-      return { ok: false, message: "Please complete two-step sign-in first." };
+      return { ok: false, message: "Please sign in with your admin email first." };
     const result = await operation();
     if (result.ok) {
       revalidatePath("/admin/guests/seating");

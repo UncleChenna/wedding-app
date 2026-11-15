@@ -36,9 +36,7 @@ export async function readAdminAccess(
   if (verified.error || !verified.data || verified.data.claims.sub !== user.id)
     return { status: "signed-out" };
   const factors = (user.factors ?? []).filter((factor) => factor.factor_type === "totp");
-  const enrolled = factors.some((factor) => factor.status === "verified");
-  const status = !enrolled ? "enroll" : verified.data.claims.aal === "aal2" ? "ready" : "challenge";
-  return { status, userId: user.id, factors };
+  return { status: "ready", userId: user.id, factors };
 }
 
 /** Privileged server actions must call this boundary themselves; a layout is not action authorization. */
@@ -49,6 +47,6 @@ export async function withAdminAccess<T>(
 ): Promise<{ ok: true; value: T } | { ok: false; message: string }> {
   const access = await readAdminAccess(auth, allowed);
   if (access.status !== "ready")
-    return { ok: false, message: "Please complete two-step sign-in first." };
+    return { ok: false, message: "Please sign in with your admin email first." };
   return { ok: true, value: await operation(access.userId) };
 }

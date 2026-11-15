@@ -1,13 +1,11 @@
 import { randomBytes } from "node:crypto";
 import { readFileSync } from "node:fs";
-import { createServerClient } from "@supabase/ssr";
 import { expect, test } from "@playwright/test";
 import postgres from "postgres";
 import { assertDatabaseTarget } from "../scripts/database-target";
 import { appRoutes, invitationHref, passHref, routeList } from "../src/modules/shared/lib/routes";
 import { localAdminLogin } from "./support/local-admin-login";
 import { reviewAdminJourneys } from "./support/journey-review";
-import { totp } from "./support/totp";
 import { crawlRoutes, requireReachableRoutes } from "./support/journey-crawl";
 
 test("all production journeys connect, including authenticated sharing", async ({
@@ -26,8 +24,6 @@ test("all production journeys connect, including authenticated sharing", async (
   assertDatabaseTarget(process.env.DATABASE_URL ?? "", { localOnly: true });
   const db = postgres(process.env.DATABASE_URL ?? "", { max: 1 });
   const ids: string[] = [];
-  let factorId = "";
-  let authCookies: { name: string; value: string }[] = [];
   const suffix = randomBytes(5).toString("hex");
   const token = randomBytes(32).toString("base64url");
   const name = "Journey household " + suffix;
@@ -44,21 +40,13 @@ test("all production journeys connect, including authenticated sharing", async (
       ids.push(row.id);
     }
     await localAdminLogin(page, request, `journeys-${info.project.name}@example.test`);
-    authCookies = await context.cookies();
     recordCurrent();
     await expect(page.getByRole("link", { name: "Back to our day" })).toBeVisible();
     await page.getByRole("link", { name: "Continue to admin" }).click();
-    await expect(page).toHaveURL(/\/admin\/mfa$/);
-    recordCurrent();
-    await page.getByRole("button", { name: "Set up authenticator" }).click();
-    const key = page.getByTestId("setup-key");
-    await expect(key).toBeVisible();
-    const secret = (await key.textContent()) ?? "";
-    factorId = await page.locator("input[name=factorId]").inputValue();
-    await page.getByLabel("Authenticator code").fill(totp(secret));
-    await page.getByRole("button", { name: "Verify code" }).click();
     await expect(page).toHaveURL(/\/admin$/);
-    authCookies = await context.cookies();
+    await page.goto("/admin/mfa");
+    visited.add(appRoutes.adminMfa.path);
+    await expect(page).toHaveURL(/\/admin$/);
     recordCurrent();
     await expect(page.getByRole("link", { name: "Sign in", exact: true })).toHaveCount(0);
     await page.getByRole("link", { name: "Sharing", exact: true }).click();
@@ -151,23 +139,10 @@ test("all production journeys connect, including authenticated sharing", async (
       contentType: "application/json",
     });
   } finally {
-    // Cleanup uses captured cookies, so a closed browser cannot prevent fixture cleanup.
     try {
-      if (factorId) {
-        const auth = createServerClient(
-          process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
-          process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? "",
-          { cookies: { getAll: () => authCookies, setAll: () => {} } },
-        );
-        const result = await auth.auth.mfa.unenroll({ factorId });
-        expect(result.error, "Remove only this synthetic account's factor").toBeNull();
-      }
+      if (ids.length) await db`delete from invitations where id in ${db(ids)}`;
     } finally {
-      try {
-        if (ids.length) await db`delete from invitations where id in ${db(ids)}`;
-      } finally {
-        await db.end();
-      }
+      await db.end();
     }
   }
 });

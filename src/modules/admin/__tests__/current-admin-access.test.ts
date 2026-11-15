@@ -60,8 +60,8 @@ describe("direct admin operation matrix", () => {
       });
       const operation = vi.fn(async () => "private household list");
       const result = await withCurrentAdminAccess(operation);
-      expect(result.ok).toBe(caller === "admin-aal2");
-      if (caller === "admin-aal2") expect(operation).toHaveBeenCalledExactlyOnceWith(userId);
+      expect(result.ok).toBe(caller.startsWith("admin-"));
+      if (caller.startsWith("admin-")) expect(operation).toHaveBeenCalledExactlyOnceWith(userId);
       else {
         expect(operation).not.toHaveBeenCalled();
         expect(JSON.stringify(result)).not.toContain("household");
