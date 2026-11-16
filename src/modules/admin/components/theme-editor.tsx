@@ -1,4 +1,5 @@
 "use client";
+import { useFeedbackMessage } from "@/modules/shared/components/use-action-feedback";
 import { useState, useTransition } from "react";
 import { ThemePreview } from "./theme-preview";
 import { useRouter } from "next/navigation";
@@ -24,6 +25,7 @@ export function ThemeEditor({ active, drafts }: { active: ActiveThemes; drafts: 
   const [message, setMessage] = useState("");
   const [failure, setFailure] = useState(false);
   const [pending, startTransition] = useTransition();
+  useFeedbackMessage(pending ? "" : message, failure ? "danger" : "success");
   const router = useRouter();
   const draft = pair[scheme];
   const problem = themeDraftProblem(draft);

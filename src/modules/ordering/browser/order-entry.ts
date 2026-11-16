@@ -1,3 +1,4 @@
+import { createOrderFeedback } from "./order-feedback";
 import { menuAvailabilitySchema, menuCopy, MENU_POLL_INTERVAL_MS } from "../lib/menu";
 import { orderCopy, cooldownMessage } from "../lib/order-contract";
 import { submitOrder, newRequestId } from "../lib/submit-order";
@@ -27,6 +28,7 @@ const composer = document.querySelector<HTMLElement>("#composer");
 if (composer) startComposer(composer);
 
 function startComposer(root: HTMLElement) {
+  const notifications = createOrderFeedback(document.body);
   const table = Number(root.dataset.table);
   const editing = required<HTMLElement>("#editing", root);
   const closed = required<HTMLElement>("#closed", root);
@@ -226,6 +228,7 @@ function startComposer(root: HTMLElement) {
     if (result.status === "sent") {
       requestId = null;
       sent = true;
+      notifications.notify(orderCopy.sent);
       failed = false;
       const container = required<HTMLElement>("#receipt-lines", root);
       container.replaceChildren();
@@ -256,9 +259,14 @@ function startComposer(root: HTMLElement) {
       required<HTMLElement>("#order-sent", root).focus();
       void pollStatus(result.orderId, ++generation, 0);
     } else if (result.status === "failed") {
+      notifications.notify(orderCopy.failed, true);
       failed = true;
       render();
     } else if (result.status === "limited") {
+      notifications.notify(
+        "Please wait a moment before trying again. Your choices are still here.",
+        true,
+      );
       failed = true;
       limited = true;
       retryAt = Date.now() + result.retryAfterSeconds * 1000;
@@ -271,6 +279,12 @@ function startComposer(root: HTMLElement) {
       requestId = null;
       failed = false;
       const { reason, itemIds = [], retryAfterSeconds } = result.result;
+      notifications.notify(
+        reason === "cooldown" && retryAfterSeconds
+          ? cooldownMessage(retryAfterSeconds)
+          : orderCopy.rejected[reason],
+        true,
+      );
       if (reason === "sold-out") apply(itemIds.map((id) => ({ id, available: false })));
       if (reason === "closed") open = false;
       render(
@@ -327,6 +341,7 @@ function startComposer(root: HTMLElement) {
   window.addEventListener("pagehide", (event) => {
     if (event.persisted) return;
     stopped = true;
+    notifications.dispose();
     generation++;
     for (const timer of timers) clearTimeout(timer);
     document.removeEventListener("visibilitychange", visible);

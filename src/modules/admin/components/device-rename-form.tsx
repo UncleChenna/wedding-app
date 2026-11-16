@@ -1,4 +1,5 @@
 "use client";
+import { useActionFeedback } from "@/modules/shared/components/use-action-feedback";
 import { useActionState, useState } from "react";
 import { Button, Input } from "@/modules/shared/components/ui";
 import { deviceCopy, type DeviceFormState } from "../lib/device";
@@ -8,6 +9,7 @@ export function DeviceRenameForm({ id, name: current }: { id: string; name: stri
   const [state, action, pending] = useActionState<DeviceFormState, FormData>(renameDeviceAction, {
     status: "idle",
   });
+  useActionFeedback(state);
   // Controlled, so a refused rename keeps what was typed through React's form reset.
   const [name, setName] = useState(current);
   return (

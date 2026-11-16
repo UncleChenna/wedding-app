@@ -1,4 +1,5 @@
 "use client";
+import { useFeedbackMessage } from "@/modules/shared/components/use-action-feedback";
 
 import { useEffect, useRef, useState } from "react";
 
@@ -26,6 +27,7 @@ export function ShareMenu({
   const [eventId, setEventId] = useState<string | null>(null);
   const [trackingMessage, setTrackingMessage] = useState("");
   const [recording, setRecording] = useState(false);
+  useFeedbackMessage(recording ? "" : trackingMessage);
   async function record(channel: ShareChannel) {
     if (!tracking) return;
     setRecording(true);

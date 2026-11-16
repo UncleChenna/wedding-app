@@ -222,3 +222,34 @@ button.primary {
     padding: 0;
   }
 }
+
+.order-feedback {
+  position: fixed;
+  top: max(1rem, env(safe-area-inset-top));
+  right: 1rem;
+  left: 1rem;
+  z-index: 50;
+  pointer-events: none;
+}
+.order-feedback-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  max-width: 28rem;
+  max-height: 40dvh;
+  overflow-y: auto;
+  margin-left: auto;
+  padding: 1rem;
+  border: 1px solid var(--t-color-border);
+  border-radius: var(--t-radius-md);
+  background: var(--t-color-surface);
+  color: var(--t-color-foreground);
+  pointer-events: auto;
+}
+.order-feedback-card p {
+  margin: 0;
+}
+.order-feedback-card button {
+  min-width: 44px;
+  min-height: 44px;
+}

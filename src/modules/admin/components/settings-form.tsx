@@ -1,4 +1,5 @@
 "use client";
+import { useActionFeedback } from "@/modules/shared/components/use-action-feedback";
 import { useActionState, useEffect, useRef, useState, type ReactNode } from "react";
 import { Button, Input, Select, Textarea } from "@/modules/shared/components/ui";
 import { settingsCopy, type SettingsField, type SettingsFormState } from "../lib/settings-form";
@@ -20,6 +21,7 @@ export function SettingsForm({ defaults }: { defaults: SettingsDefaults }) {
   const [state, action, pending] = useActionState<SettingsFormState, FormData>(saveSettingsAction, {
     status: "idle",
   });
+  useActionFeedback(state);
   const form = useRef<HTMLFormElement>(null);
   const errors = state.status === "error" ? (state.fields ?? {}) : {};
   const typed = state.status === "error" ? (state.values ?? {}) : {};

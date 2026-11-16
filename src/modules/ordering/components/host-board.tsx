@@ -1,4 +1,5 @@
 "use client";
+import { useOptionalToast } from "@/modules/shared/components/ui/toast";
 
 import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/modules/shared/components/ui/button";
@@ -16,6 +17,7 @@ const statusLabels = { received: "Waiting", preparing: "Preparing" } as const;
 
 /** Open orders for a host's tables. It refreshes every few seconds while the tab is visible. */
 export function HostBoard({ initial }: { initial: Board }) {
+  const notifications = useOptionalToast();
   const [tickets, setTickets] = useState<HostTicket[]>(initial.tickets);
   const [saving, setSaving] = useState<ReadonlySet<string>>(new Set());
   const [problem, setProblem] = useState<string | null>(null);
@@ -68,8 +70,18 @@ export function HostBoard({ initial }: { initial: Board }) {
       // Someone at the station already served or cancelled it: the refetch shows the truth.
       if (!response.ok && response.status !== 409 && response.status !== 404)
         throw new Error("not saved");
+      notifications?.toast({
+        title: response.ok
+          ? `Table ${ticket.table.number}: order marked served.`
+          : `Table ${ticket.table.number}: this order was already updated. Refreshing the board.`,
+        tone: response.ok ? "success" : "default",
+      });
     } catch {
       setTickets(before);
+      notifications?.toast({
+        title: `Table ${ticket.table.number} did not update. Please try again.`,
+        tone: "danger",
+      });
       setProblem(`Table ${ticket.table.number} didn’t update. Check the connection and try again.`);
     }
     setSaving((current) => new Set([...current].filter((id) => id !== ticket.id)));

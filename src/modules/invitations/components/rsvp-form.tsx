@@ -1,4 +1,5 @@
 "use client";
+import { useActionFeedback } from "@/modules/shared/components/use-action-feedback";
 
 import { invitationHref } from "@/modules/shared/lib/routes";
 import { useActionState, useEffect, useRef } from "react";
@@ -32,6 +33,7 @@ export function RsvpForm({
     initial,
     invitationHref(token),
   );
+  useActionFeedback(state);
   const canEdit = open && state.status !== "locked";
   const status = useRef<HTMLParagraphElement>(null);
   const previous = useRef(state);

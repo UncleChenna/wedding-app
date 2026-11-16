@@ -1,4 +1,5 @@
 "use client";
+import { useActionFeedback } from "@/modules/shared/components/use-action-feedback";
 
 import { useActionState } from "react";
 import Link from "next/link";
@@ -7,6 +8,7 @@ import { requestInvitationLink } from "../server/lost-link-actions";
 
 export function LostLinkForm() {
   const [result, action, pending] = useActionState(requestInvitationLink, null, "/lost-link");
+  useActionFeedback(result);
   return (
     <CenteredPanel
       eyebrow="Your invitation"

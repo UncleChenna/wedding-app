@@ -1,4 +1,5 @@
 "use client";
+import { useActionFeedback } from "@/modules/shared/components/use-action-feedback";
 import { useActionState, useEffect, useRef, useState } from "react";
 import { Button, Input, Select } from "@/modules/shared/components/ui";
 import { STAFF_ROLE_OPTIONS, staffCopy, type StaffFormState } from "../lib/staff";
@@ -8,6 +9,7 @@ export function AddStaffForm() {
   const [state, action, pending] = useActionState<StaffFormState, FormData>(addStaffAction, {
     status: "idle",
   });
+  useActionFeedback(state);
   const form = useRef<HTMLFormElement>(null);
   // Controlled so a refused submit keeps the choice through React's form reset.
   const [role, setRole] = useState("");

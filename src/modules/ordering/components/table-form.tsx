@@ -1,4 +1,5 @@
 "use client";
+import { useActionFeedback } from "@/modules/shared/components/use-action-feedback";
 import { useActionState, useEffect, useRef } from "react";
 import { Button, Input } from "@/modules/shared/components/ui";
 import { selectTableAction } from "../server/table-actions";
@@ -7,6 +8,7 @@ import type { TableFormState } from "../lib/table-selection";
 export function TableForm({ value = "", notice }: { value?: string; notice?: string }) {
   const initial: TableFormState = { status: notice ? "error" : "idle", value, message: notice };
   const [state, action, pending] = useActionState(selectTableAction, initial, "/order?change=1");
+  useActionFeedback(state);
   const form = useRef<HTMLFormElement>(null);
   useEffect(() => {
     if (state.status === "error")

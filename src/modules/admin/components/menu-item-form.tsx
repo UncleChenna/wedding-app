@@ -1,4 +1,5 @@
 "use client";
+import { useActionFeedback } from "@/modules/shared/components/use-action-feedback";
 import { useActionState, useEffect, useRef, useState } from "react";
 import { Button, Input, Select, Textarea } from "@/modules/shared/components/ui";
 import {
@@ -15,6 +16,7 @@ export function MenuItemForm({ item }: { item?: AdminMenuItem }) {
   const [state, action, pending] = useActionState<MenuFormState, FormData>(saveMenuItemAction, {
     status: "idle",
   });
+  useActionFeedback(state);
   const form = useRef<HTMLFormElement>(null);
   const prefix = item ? `menu-${item.id}` : "menu-new";
   const errors = state.status === "error" ? (state.fields ?? {}) : {};

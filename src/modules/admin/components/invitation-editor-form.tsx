@@ -1,4 +1,5 @@
 "use client";
+import { useActionFeedback } from "@/modules/shared/components/use-action-feedback";
 import Link from "next/link";
 import { useActionState, useEffect, useRef, useState } from "react";
 import { Button, Input, Select, Sheet } from "@/modules/shared/components/ui";
@@ -45,9 +46,11 @@ export function InvitationEditorForm({
     },
     { status: "idle" },
   );
+  useActionFeedback(state);
   const [deleted, deleteAction, deleting] = useActionState(deleteInvitationDraftAction, {
     status: "idle",
   });
+  useActionFeedback(deleted);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const form = useRef<HTMLFormElement>(null);
   const confirmation = useRef<HTMLParagraphElement>(null);
