@@ -86,7 +86,9 @@ export function ManualGuestSearch({
         <h2 id="manual-search-title" className="font-display text-3xl">
           Find a guest
         </h2>
-        <p>Search the guest’s name or a companion’s name, then confirm the household.</p>
+        <p>
+          Search the guest’s name or a companion’s name, then confirm the guest and their plus-one.
+        </p>
       </header>
       <form
         className="flex flex-col gap-3"
@@ -136,7 +138,7 @@ export function ManualGuestSearch({
         {response?.state === "matches" && (
           <>
             <h3 className="font-display text-2xl">
-              {response.matches.length ? "Choose the household" : "No matching guests"}
+              {response.matches.length ? "Choose the guest" : "No matching guests"}
             </h3>
             {response.matches.length === 0 && (
               <p>Try another part of the name or ask the gate lead to check the invitation.</p>
@@ -160,7 +162,7 @@ export function ManualGuestSearch({
               ))}
             </ul>
             {response.hasMore && (
-              <p>More households match. Add another part of the name to narrow the search.</p>
+              <p>More guests match. Add another part of the name to narrow the search.</p>
             )}
           </>
         )}

@@ -13,7 +13,7 @@ test.describe("seating admin", () => {
   test.setTimeout(240_000);
   let db: Sql;
   const id = randomUUID();
-  const tag = `Seating household ${randomUUID().slice(0, 8)}`;
+  const tag = `Seating guest ${randomUUID().slice(0, 8)}`;
   const first = randomInt(100000, 500000);
   const second = first + 1;
   const renamed = first + 2;
@@ -22,8 +22,8 @@ test.describe("seating admin", () => {
     process.loadEnvFile(".env.local");
     assertDatabaseTarget(process.env.DATABASE_URL ?? "", { localOnly: true });
     db = postgres(process.env.DATABASE_URL ?? "", { max: 1 });
-    await db`insert into invitations(id,token,household_name,status) values (${id},${randomBytes(32).toString("base64url")},${tag},'rsvp_yes')`;
-    await db`insert into guests(invitation_id,name,is_primary) values (${id},'Ada Seating',true),(${id},'Uchenna Seating',false)`;
+    await db`insert into invitations(id,token,status) values (${id},${randomBytes(32).toString("base64url")},'rsvp_yes')`;
+    await db`insert into guests(invitation_id,name,is_primary) values (${id},${tag},true),(${id},'Uchenna Seating',false)`;
     await db`insert into rsvps(invitation_id,attending,count_attending) values (${id},true,2)`;
     const payload = Buffer.from(
       JSON.stringify({
@@ -97,8 +97,11 @@ test.describe("seating admin", () => {
         .click();
       await expect(page.getByRole("dialog")).not.toBeVisible();
     }
-    await page.getByLabel("Find a household").fill(tag);
-    const assign = page.getByRole("button", { name: `Assign table for ${tag}`, exact: true });
+    await page.getByLabel("Find a guest").fill(tag);
+    const assign = page.getByRole("button", {
+      name: `Assign table for ${tag} & Uchenna Seating`,
+      exact: true,
+    });
     await assign.focus();
     await page.keyboard.press("Enter");
     await page
@@ -130,7 +133,9 @@ test.describe("seating admin", () => {
     await expect(page.getByRole("dialog")).toBeVisible();
     releaseSave();
     await expect(page.getByRole("dialog")).not.toBeVisible();
-    await expect(page.getByRole("status").filter({ hasText: "Household assigned" })).toBeFocused();
+    await expect(
+      page.getByRole("status").filter({ hasText: "Table assigned to guest and plus-one" }),
+    ).toBeFocused();
     await page.unrouteAll({ behavior: "wait" });
     const guest = await context.newPage();
     await guest.goto(`/p/${pass}`);

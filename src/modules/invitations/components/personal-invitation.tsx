@@ -31,8 +31,7 @@ export function PersonalInvitation({
   party?: PartyDetails;
 }) {
   const next = invitationNextStep(invitation.attendance, details.eventDate, details.timeZone, now);
-  const greeting =
-    invitation.primaryNames.join(" & ") || invitation.householdName || "Our dear guest";
+  const greeting = invitation.primaryNames.join(" & ") || "Our dear guest";
   return (
     <InvitationLetter
       artwork={

@@ -88,7 +88,6 @@ function editorValues(
   stored: NonNullable<Awaited<ReturnType<typeof readStored>>>,
 ): InvitationEditorValues {
   return {
-    householdName: stored.invitation.householdName ?? "",
     side: stored.invitation.side ?? "",
     tableId: stored.invitation.tableId ?? "",
     maxTagAlongs: String(stored.invitation.maxTagAlongs),
@@ -207,7 +206,6 @@ export async function saveAdminInvitation(
     await tx
       .update(invitations)
       .set({
-        householdName: input.householdName,
         side: input.side,
         tableId: input.tableId,
         maxTagAlongs: input.maxTagAlongs,

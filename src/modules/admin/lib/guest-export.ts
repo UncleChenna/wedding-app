@@ -58,13 +58,13 @@ export function guestExportCsv(invitations: ExportInvitation[], filters: GuestLi
   const ids = new Set(filterGuestList(invitations, filters).map((row) => row.id));
   const rows: (string | number)[][] = [
     [
-      "Household",
+      "Invitation guests",
       "Invitation status",
       "Sent at",
       "RSVP",
-      "Household attending count",
+      "Invited party attending count",
       "Side",
-      "Household table",
+      "Assigned table",
       "Guest name",
       "Primary guest",
       "Meal",

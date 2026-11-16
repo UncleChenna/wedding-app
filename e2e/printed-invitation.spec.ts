@@ -8,7 +8,7 @@ test("original card preview links to online RSVP without sending a reply", async
   await expect(
     page.getByRole("heading", { name: "Your invitation card", exact: true }),
   ).toBeVisible();
-  await expect(page.getByText("For Sample household · Card 003")).toBeVisible();
+  await expect(page.getByText("For Sample guest · Card 003")).toBeVisible();
   await expect(page.getByRole("link", { name: "View ceremony venue" })).toHaveAttribute(
     "href",
     /maps/,

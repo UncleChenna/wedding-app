@@ -1,4 +1,4 @@
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import { eq, inArray } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres, { type Sql } from "postgres";
@@ -7,7 +7,10 @@ import { assertDatabaseTarget } from "../database-target";
 import * as schema from "../../src/modules/shared/server/db/schema";
 import type { Db } from "../../src/modules/shared/server/db/client";
 import { previewGuestImport, commitGuestImport } from "../../src/modules/admin/server/guest-import";
-import type { ImportPreviewResult } from "../../src/modules/admin/lib/guest-import";
+import {
+  parseGuestImportCsv,
+  type ImportPreviewResult,
+} from "../../src/modules/admin/lib/guest-import";
 
 type Tx = Parameters<Parameters<Db["transaction"]>[0]>[0];
 const rollback = new Error("Rollback synthetic CSV fixtures");
@@ -54,6 +57,8 @@ describe.runIf(process.env.RUN_GUEST_IMPORT_DB_TESTS === "1")(
           .from(schema.invitations)
           .where(inArray(schema.invitations.id, result.invitationIds));
         expect(stored).toHaveLength(2);
+        expect(stored.every((i) => i.householdName === null)).toBe(true);
+        expect(stored.map((i) => i.maxTagAlongs).sort()).toEqual([0, 1]);
         expect(stored.every((i) => i.status === "draft")).toBe(true);
         expect(new Set(stored.map((i) => i.token)).size).toBe(2);
         const [batch] = await tx
@@ -75,6 +80,43 @@ describe.runIf(process.env.RUN_GUEST_IMPORT_DB_TESTS === "1")(
           ...result,
           replayed: true,
         });
+      }));
+    it("replays committed legacy six-column CSV without collecting a household label", async () =>
+      exercise(async (tx) => {
+        const text = csv(randomUUID());
+        const parsed = parseGuestImportCsv(text);
+        if (!parsed.ok) throw new Error("Expected valid fixture");
+        const legacy = parsed.parties.map(({ rows: _rows, ...party }) => ({
+          householdName: party.members[0]?.name ?? "",
+          ...party,
+        }));
+        legacy.sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b)));
+        const digest = createHash("sha256").update(JSON.stringify(legacy)).digest("hex");
+        const ids = [randomUUID(), randomUUID()];
+        const [batch] = await tx
+          .insert(schema.guestImportBatches)
+          .values({
+            digest,
+            actorId: actor,
+            invitationIds: ids,
+            csv: null,
+            tableSnapshot: [],
+            expiresAt: new Date(0),
+          })
+          .returning();
+        if (!batch) throw new Error("Missing fixture");
+        const before = await tx.select({ id: schema.invitations.id }).from(schema.invitations);
+        const request = key(await previewGuestImport(tx, text, actor));
+        expect(request).toEqual({ previewId: batch.id, digest });
+        expect(await commitGuestImport(tx, request, actor)).toEqual({
+          status: "committed",
+          invitationIds: ids,
+          count: 2,
+          replayed: true,
+        });
+        expect(await tx.select({ id: schema.invitations.id }).from(schema.invitations)).toEqual(
+          before,
+        );
       }));
     it("rolls back every earlier inserted household if a later insert fails", async () =>
       exercise(async (tx) => {

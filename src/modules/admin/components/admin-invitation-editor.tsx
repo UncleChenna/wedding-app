@@ -28,8 +28,8 @@ export async function AdminInvitationEditor({ id }: { id?: string }) {
       </h1>
       <p className="mt-6 max-w-prose">
         {invitation
-          ? "Update the household and its named guests. Their invitation link stays the same."
-          : "Start with a draft for one household. You can review it before sending the invitation."}
+          ? "Update the guest and their invited party. Their invitation link stays the same."
+          : "Start with a draft for a guest and their invited party. You can review it before sending the invitation."}
       </p>
       <InvitationEditorForm invitation={invitation ?? undefined} tables={tableOptions} />
     </main>

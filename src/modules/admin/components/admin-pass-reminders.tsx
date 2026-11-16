@@ -15,8 +15,8 @@ export async function AdminPassReminders() {
       </Link>
       <h1 className="font-display text-4xl leading-tight md:text-5xl">Pass reminders</h1>
       <p className="mt-6 max-w-prose">
-        Prepare a day-before message for the households joining us. Their invitation link holds
-        their pass. Choose each household when you’re ready; nothing is sent automatically.
+        Prepare a day-before message for the guests joining us. Their invitation link holds their
+        pass. Choose each guest when you’re ready; nothing is sent automatically.
       </p>
       <p className="mt-6 max-w-prose text-muted-foreground">
         These messages say “tomorrow”, so share them the day before the wedding. Sharing records an
@@ -28,7 +28,7 @@ export async function AdminPassReminders() {
           <RetryButton />
         </div>
       ) : result.invitations.length === 0 ? (
-        <p className="mt-12">No attending households to remind yet.</p>
+        <p className="mt-12">No attending guests to remind yet.</p>
       ) : (
         <ul className="mt-12 space-y-12">
           {result.invitations.map((invitation) => (

@@ -1,3 +1,4 @@
+import { invitationGuestName } from "@/modules/shared/server/invitation-guest-name";
 import "server-only";
 import { and, asc, desc, eq, gte, inArray, isNull, lte, sql } from "drizzle-orm";
 import type { Db } from "@/modules/shared/server/db/client";
@@ -42,7 +43,9 @@ export async function readScanLogPage(
         .select({
           id: scanEvents.id,
           invitationId: scanEvents.invitationId,
-          invitationName: invitations.householdName,
+          invitationName: sql<
+            string | null
+          >`case when ${invitations.id} is null then null else ${invitationGuestName()} end`,
           staffId: scanEvents.staffId,
           staffName: staff.name,
           deviceId: scanEvents.deviceId,
@@ -119,10 +122,10 @@ export async function readScanLogPage(
       const invitationOptions = await tx
         .select({
           id: invitations.id,
-          name: sql<string>`coalesce(nullif(${invitations.householdName}, ''), 'Invitation')`,
+          name: invitationGuestName(),
         })
         .from(invitations)
-        .orderBy(asc(invitations.householdName), asc(invitations.id));
+        .orderBy(asc(invitations.createdAt), asc(invitations.id));
       const staffOptions = await tx
         .select({ id: staff.id, name: staff.name })
         .from(staff)

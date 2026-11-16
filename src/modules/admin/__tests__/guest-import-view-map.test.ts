@@ -16,9 +16,8 @@ it("maps the approved identity and household limits without creating a second pa
       digest: "digest",
       expiresAt: "2099-01-01T00:00:00Z",
       counts: { invitations: 1, guests: 2 },
-      households: [
+      parties: [
         {
-          householdName: "Ada and Uchenna",
           side: "Family",
           tableNumber: 4,
           maxTagAlongs: 1,
@@ -38,10 +37,10 @@ it("maps the approved identity and household limits without creating a second pa
     expiresAt: "2099-01-01T00:00:00Z",
     invitationCount: 1,
     guestCount: 2,
-    households: [
+    parties: [
       {
         key: "2:3",
-        heading: "Ada and Uchenna",
+        heading: "Ada & Uchenna",
         side: "Family",
         table: "Table 4",
         partyLimit: 3,

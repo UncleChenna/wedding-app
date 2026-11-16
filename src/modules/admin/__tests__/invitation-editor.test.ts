@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest";
 import { invitationEditorSchema, planDraftInvitation } from "../lib/invitation-editor";
 
 const input = {
-  householdName: " Ada & Uchenna ",
   side: "Bride",
   tableId: "",
   maxTagAlongs: "1",
@@ -17,9 +16,9 @@ describe("invitation editor", () => {
       status: "draft",
       token: "unique-secure-token",
       tokenVersion: 1,
-      householdName: "Ada & Uchenna",
       maxTagAlongs: 1,
     });
+    expect(draft).not.toHaveProperty("householdName");
     expect(data.members[0]).toMatchObject({ phone: "+447700900123", email: "ada@example.test" });
   });
   it("returns precise phone/email field errors and rejects injected lifecycle fields", () => {
@@ -43,6 +42,11 @@ describe("invitation editor", () => {
       members: [{ id: "", name: "Ada", phone: "", email: "" }],
     });
     expect(data.members[0]).toMatchObject({ phone: null, email: null });
+  });
+  it("rejects obsolete household labels", () => {
+    expect(invitationEditorSchema.safeParse({ ...input, householdName: "Old label" }).success).toBe(
+      false,
+    );
   });
   it("rejects duplicate persisted member IDs", () => {
     const member = { ...input.members[0], id: "11111111-1111-4111-8111-111111111111" };

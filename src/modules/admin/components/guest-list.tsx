@@ -116,7 +116,7 @@ export function GuestList({ invitations }: { invitations: GuestListInvitation[] 
           type="search"
           autoComplete="off"
           className="text-lg"
-          placeholder="Household or guest name"
+          placeholder="Guest name"
           value={filters.query ?? ""}
           onChange={(event) => setFilters({ ...filters, query: event.target.value })}
         />

@@ -19,19 +19,19 @@ test.describe("guest CSV upload", () => {
   const tag = `CSV-${randomUUID().slice(0, 8)}`;
   const existingName = `${tag} Existing`;
   const existingEmail = `${tag.toLowerCase()}-existing@example.test`;
-  const header = "name,phone,email,party size,side,table,household\r\n";
+  const header = "name,phone,email,party size,side,table\r\n";
   const csv = (count: number, invalid = false) =>
     header +
     Array.from(
       { length: count },
       (_, index) =>
-        `${tag} Guest ${index},,${invalid && index === 149 ? "invalid-email" : `${tag.toLowerCase()}-${index}@example.test`},1,Family,,`,
+        `${tag} Guest ${index},,${invalid && index === 149 ? "invalid-email" : `${tag.toLowerCase()}-${index}@example.test`},1,Family,`,
     ).join("\r\n");
   test.beforeAll(async () => {
     process.loadEnvFile(".env.local");
     assertDatabaseTarget(process.env.DATABASE_URL ?? "", { localOnly: true });
     db = postgres(process.env.DATABASE_URL ?? "", { max: 1 });
-    await db`insert into invitations(id,token,household_name,status) values (${existingId},${randomBytes(32).toString("base64url")},${existingName},'rsvp_yes')`;
+    await db`insert into invitations(id,token,status) values (${existingId},${randomBytes(32).toString("base64url")},'rsvp_yes')`;
     await db`insert into guests(invitation_id,name,email,is_primary) values (${existingId},${existingName},${existingEmail},true)`;
     await db`insert into rsvps(invitation_id,attending,count_attending,responded_at) values (${existingId},true,1,'2026-11-01T12:00:00Z')`;
   });
@@ -39,7 +39,7 @@ test.describe("guest CSV upload", () => {
     if (!db) return;
     try {
       await db`delete from guest_import_batches where actor_id in (select id from auth.users where email = ${`${process.env.IMPORT_TEST_PREFIX}-mobile@example.test`} or email = ${`${process.env.IMPORT_TEST_PREFIX}-desktop@example.test`})`;
-      await db`delete from invitations where household_name like ${`${tag}%`}`;
+      await db`delete from invitations where id in (select invitation_id from guests where name like ${`${tag}%`})`;
     } finally {
       await db.end();
     }
@@ -88,7 +88,7 @@ test.describe("guest CSV upload", () => {
       (
         await db<
           { count: number }[]
-        >`select count(*)::int as count from invitations where household_name like ${`${tag}%`}`
+        >`select count(*)::int as count from invitations where id in (select invitation_id from guests where name like ${`${tag}%`})`
       )[0]?.count;
     await upload(csv(300, true));
     await expect(page.getByRole("main").getByRole("alert")).toContainText("Row 151");
@@ -115,7 +115,7 @@ test.describe("guest CSV upload", () => {
       ).toEqual([]);
       await page.screenshot({ path: `${folder}/${theme.id}-errors.png`, fullPage: true });
     }
-    await upload(header + `${tag} Conflict,,${existingEmail},1,Family,,`);
+    await upload(header + `${tag} Conflict,,${existingEmail},1,Family,`);
     await expect(page.getByRole("main").getByRole("alert")).toContainText("contact already exists");
     expect(await count()).toBe(1);
     await upload(csv(2));

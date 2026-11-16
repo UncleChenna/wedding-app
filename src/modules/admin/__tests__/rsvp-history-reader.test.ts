@@ -26,7 +26,7 @@ it("reads a consistent authorized snapshot and retains every history entry witho
   ]);
   const where = vi
     .fn()
-    .mockResolvedValueOnce([{ householdName: "Household" }])
+    .mockResolvedValueOnce([{ name: "Ada Guest" }])
     .mockReturnValueOnce({ orderBy: order });
   const select = vi
     .fn()
@@ -38,7 +38,7 @@ it("reads a consistent authorized snapshot and retains every history entry witho
   );
   expect(await getRsvpHistory(id)).toEqual({
     status: "ready",
-    name: "Household",
+    name: "Ada Guest",
     entries: [
       {
         id: "change",

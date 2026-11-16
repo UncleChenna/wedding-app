@@ -15,13 +15,14 @@ export async function AdminSeating() {
       </Link>
       <h1 className="mt-6 font-display text-4xl leading-tight md:text-5xl">Seating plan</h1>
       <p className="mt-6 max-w-prose">
-        Make room for everyone. Keep each household together and adjust tables as replies arrive.
+        Choose a table for each guest. Their plus-one stays with them on the same invitation. Seat
+        counts update as replies arrive.
       </p>
       <Link
         href="/admin/guests/seating/cards"
         className="mt-4 inline-flex min-h-11 items-center text-primary underline underline-offset-4"
       >
-        Print table cards
+        Print table signs
       </Link>
       {result.ok ? (
         <SeatingEditor plan={result.plan} />

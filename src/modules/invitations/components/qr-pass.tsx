@@ -16,7 +16,7 @@ export function QrPass({
   pdfUrl?: string;
   saveOffline?: boolean;
 }) {
-  const name = pass.names.join(" & ") || pass.householdName || "Our dear guest";
+  const name = pass.names.join(" & ") || "Our dear guest";
   return (
     <div className="mx-auto max-w-md">
       <p className="type-label text-primary">Your entry pass</p>

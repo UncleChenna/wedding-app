@@ -21,7 +21,6 @@ const id = "6f1c2a4e-8b3d-4c5a-9e7f-1a2b3c4d5e6f";
 function form() {
   const data = new FormData();
   for (const [key, value] of Object.entries({
-    householdName: "Test household",
     side: "",
     tableId: "",
     maxTagAlongs: "1",

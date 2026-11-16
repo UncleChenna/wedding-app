@@ -38,7 +38,7 @@ export async function AdminGatePrint() {
           </p>
           <p className="mt-3">
             Sorted by the last word of the primary guest’s name. All named companions are listed
-            with their household. This paper copy will not receive later changes.
+            with their invited guest. This paper copy will not receive later changes.
           </p>
           <div className="mt-8">
             {result.rows.length ? (

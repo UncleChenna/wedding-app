@@ -37,10 +37,10 @@ async function ThemedInvitation({ searchParams }: { searchParams: Promise<{ them
       <main className="mx-auto max-w-4xl px-6 py-12">
         <h1 className="type-heading">Your invitation card</h1>
         <p className="my-6 text-lg leading-relaxed">
-          Original card preview · sample household and card number. No invitation is sent here.
+          Original card preview · sample guest and card number. No invitation is sent here.
         </p>
         <PrintedInvitationCard
-          card={{ cardNumber: 3, guestName: "Sample household", capacity: 2 }}
+          card={{ cardNumber: 3, guestName: "Sample guest", capacity: 2 }}
           replyHref="#preview-reply"
         />
         <a

@@ -56,16 +56,11 @@ export function GatePass({ resolution, passUrl }: { resolution: PassResolution; 
   }
 
   const { pass } = resolution;
-  const heading = pass.names.join(" & ") || pass.householdName || "Our dear guest";
+  const heading = pass.names.join(" & ") || "Our dear guest";
   return (
     <CenteredPanel
       eyebrow="Your gate pass"
       title={<span className="wrap-anywhere">{heading}</span>}
-      description={
-        pass.householdName && pass.names.length > 0 ? (
-          <span className="wrap-anywhere">{pass.householdName}</span>
-        ) : undefined
-      }
       footer={
         <Link href={appRoutes.home.path} prefetch={false} className={linkStyle}>
           Back to our day

@@ -12,7 +12,7 @@ export function TableCardList({
   wifi: TableCardWifi | null;
 }) {
   return (
-    <ul className="table-cards grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <ul className="table-cards grid grid-cols-[repeat(auto-fit,minmax(min(100%,18rem),1fr))] gap-6">
       {cards.map((card) => (
         <li
           key={card.number}
@@ -28,7 +28,9 @@ export function TableCardList({
             label={`Scan to order food and drinks at table ${card.number}`}
             className="table-card-qr max-w-48"
           />
-          <p className="text-base">Scan to order food and drinks.</p>
+          <p className="text-base">
+            Scan to order food and drinks, then choose table {card.number}.
+          </p>
           {wifi ? (
             <dl className="table-card-wifi grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-left text-base">
               <dt className="text-sm tracking-[0.12em] uppercase">Wi-Fi</dt>

@@ -23,7 +23,7 @@ export async function AdminInvitationDesign() {
       <p className="mt-6 max-w-prose">
         Guest invitations now use your supplied floral card. These photograph and wording settings
         belong to the earlier web layout and do not change the printed card. Open Sharing to preview
-        each household’s personalised card before sending.
+        each guest’s personalised card before sending.
       </p>
       <InvitationDesignForm
         defaults={{

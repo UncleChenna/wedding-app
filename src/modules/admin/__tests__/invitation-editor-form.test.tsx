@@ -17,7 +17,6 @@ const invitation: InvitationEditorDetails = {
   tokenVersion: 1,
   reply: null,
   values: {
-    householdName: "Example household",
     side: "",
     tableId: "",
     maxTagAlongs: "1",
@@ -56,7 +55,7 @@ it("does not bless stale form values with a refreshed server fingerprint", () =>
   const { rerender, container } = render(
     <InvitationEditorForm invitation={invitation} tables={[]} />,
   );
-  fireEvent.change(screen.getByLabelText("Household name"), {
+  fireEvent.change(screen.getByLabelText("Guest 1 name"), {
     target: { value: "Unsaved correction" },
   });
   rerender(
@@ -64,12 +63,22 @@ it("does not bless stale form values with a refreshed server fingerprint", () =>
       invitation={{
         ...invitation,
         snapshot: "b".repeat(64),
-        values: { ...invitation.values, householdName: "Concurrent change" },
+        values: {
+          ...invitation.values,
+          members: [
+            {
+              id: "aabbccdd-1234-4567-8abc-123456789abc",
+              email: "",
+              phone: "",
+              name: "Concurrent change",
+            },
+          ],
+        },
       }}
       tables={[]}
     />,
   );
-  expect(screen.getByLabelText("Household name")).toHaveValue("Unsaved correction");
+  expect(screen.getByLabelText("Guest 1 name")).toHaveValue("Unsaved correction");
   expect(container.querySelector('input[name="snapshot"]')).toHaveValue(invitation.snapshot);
 });
 it("keeps the successful save fingerprint after a later validation failure", async () => {
@@ -104,7 +113,7 @@ it("offers revocation instead of permanent deletion for published invitations", 
   render(<InvitationEditorForm invitation={{ ...invitation, status: "sent" }} tables={[]} />);
   expect(screen.queryByRole("button", { name: "Delete draft" })).not.toBeInTheDocument();
   expect(
-    screen.getByRole("button", { name: "Revoke invitation: Example household" }),
+    screen.getByRole("button", { name: "Revoke invitation: Example guest" }),
   ).toBeInTheDocument();
 });
 

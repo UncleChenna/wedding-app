@@ -25,7 +25,6 @@ export async function getGuestList(): Promise<GuestListResult> {
           token: invitations.token,
           tokenVersion: invitations.tokenVersion,
           status: invitations.status,
-          householdName: invitations.householdName,
           side: invitations.side,
           tableId: invitations.tableId,
           tableNumber: tables.number,
@@ -52,10 +51,7 @@ export async function getGuestList(): Promise<GuestListResult> {
       ok: true,
       invitations: rows.map((row) => {
         const members = grouped.get(row.id) ?? [];
-        const name =
-          row.householdName ||
-          members.map((member) => member.name).join(" & ") ||
-          "Unnamed invitation";
+        const name = members.map((member) => member.name).join(" & ") || "Unnamed invitation";
         const sharing = prepareSharingInvitation(
           { ...row, name },
           settings,

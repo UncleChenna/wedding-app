@@ -12,7 +12,7 @@ export const dashboardSnapshotSchema = z.object({
 export type DashboardSnapshot = z.infer<typeof dashboardSnapshotSchema>;
 
 export const dashboardMetrics = [
-  { key: "invited", label: "Invitations sent", detail: "Active households" },
+  { key: "invited", label: "Invitations sent", detail: "Active invitations" },
   { key: "attending", label: "RSVP’d yes", detail: "People expected" },
   { key: "arrived", label: "Arrived", detail: "People admitted" },
   { key: "ordersOpen", label: "Orders open", detail: "Being prepared" },

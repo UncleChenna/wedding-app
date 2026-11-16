@@ -24,7 +24,7 @@ export async function AdminDashboard() {
           {
             href: appRoutes.adminSeating.path,
             name: "Seating",
-            text: "Arrange tables and keep households together.",
+            text: "Arrange tables and keep guests and plus-ones together.",
           },
           {
             href: appRoutes.adminGuests.path,

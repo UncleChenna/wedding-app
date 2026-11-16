@@ -15,7 +15,6 @@ import {
 import { InvitationLifecycleControls } from "./invitation-lifecycle-controls";
 
 const empty: InvitationEditorValues = {
-  householdName: "",
   side: "",
   tableId: "",
   maxTagAlongs: "1",
@@ -103,16 +102,7 @@ export function InvitationEditorForm({
           </>
         )}
         <fieldset disabled={pending} className="space-y-6">
-          <legend className="mb-6 font-display text-2xl">Household details</legend>
-          <Input
-            label="Household name"
-            name="householdName"
-            value={values.householdName}
-            onChange={(event) => setValues({ ...values, householdName: event.target.value })}
-            required
-            maxLength={200}
-            error={fields.householdName}
-          />
+          <legend className="mb-6 font-display text-2xl">Invitation details</legend>
           <Input
             label="Side"
             name="side"
@@ -127,7 +117,7 @@ export function InvitationEditorForm({
             name="tableId"
             value={values.tableId}
             onChange={(event) => setValues({ ...values, tableId: event.target.value })}
-            hint="Changing the household table seats all its named guests together."
+            hint="Changing the party table seats all its named guests together."
             error={fields.tableId}
           >
             <option value="">Not seated yet</option>
@@ -145,7 +135,7 @@ export function InvitationEditorForm({
             max={10}
             value={values.maxTagAlongs}
             onChange={(event) => setValues({ ...values, maxTagAlongs: event.target.value })}
-            hint="Extra people this household may name when replying, in addition to the named invitees."
+            hint="Extra people this party may name when replying, in addition to the named invitees."
             error={fields.maxTagAlongs}
           />
         </fieldset>
@@ -156,8 +146,8 @@ export function InvitationEditorForm({
           {invitation?.reply && (
             <p className="max-w-prose">
               {invitation.reply.attending
-                ? `This household replied yes for ${invitation.reply.countAttending}. Saving a changed guest list updates that party size, keeps their yes reply and records the correction. It cannot be smaller than the number already admitted.`
-                : "This household replied no. Their answer stays unchanged when you edit their details."}
+                ? `This party replied yes for ${invitation.reply.countAttending}. Saving a changed guest list updates that party size, keeps their yes reply and records the correction. It cannot be smaller than the number already admitted.`
+                : "This party replied no. Their answer stays unchanged when you edit their details."}
             </p>
           )}
           <p className="max-w-prose">
@@ -278,7 +268,10 @@ export function InvitationEditorForm({
           ) : (
             <InvitationLifecycleControls
               invitationId={invitation.id}
-              name={values.householdName}
+              name={values.members
+                .map((member) => member.name)
+                .filter(Boolean)
+                .join(" & ")}
               status={invitation.status}
               tokenVersion={invitation.tokenVersion}
             />

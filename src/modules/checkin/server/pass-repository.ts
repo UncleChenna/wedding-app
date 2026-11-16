@@ -1,3 +1,4 @@
+import { sql } from "drizzle-orm";
 import "server-only";
 
 import { and, asc, eq } from "drizzle-orm";
@@ -21,7 +22,7 @@ export async function findStoredPass(
     .select({
       status: invitations.status,
       tokenVersion: invitations.tokenVersion,
-      householdName: invitations.householdName,
+      householdName: sql<null>`null`,
       tableNumber: tables.number,
       attending: rsvps.attending,
       countAttending: rsvps.countAttending,

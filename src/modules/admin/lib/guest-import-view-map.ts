@@ -12,15 +12,15 @@ export function toImportPreviewView(result: ImportPreviewResult): ImportPreviewV
     expiresAt: preview.expiresAt,
     invitationCount: preview.counts.invitations,
     guestCount: preview.counts.guests,
-    households: preview.households.map((household) => ({
-      key: household.rows.join(":"),
-      heading: household.householdName,
-      members: household.members.map((member) =>
+    parties: preview.parties.map((party) => ({
+      key: party.rows.join(":"),
+      heading: party.members.map((member) => member.name).join(" & "),
+      members: party.members.map((member) =>
         [member.name, member.email, member.phone].filter(Boolean).join(" · "),
       ),
-      partyLimit: household.members.length + household.maxTagAlongs,
-      side: household.side,
-      table: household.tableNumber === null ? null : `Table ${household.tableNumber}`,
+      partyLimit: party.members.length + party.maxTagAlongs,
+      side: party.side,
+      table: party.tableNumber === null ? null : `Table ${party.tableNumber}`,
     })),
   };
 }

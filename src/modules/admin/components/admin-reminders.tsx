@@ -15,7 +15,7 @@ export async function AdminReminders() {
       </Link>
       <h1 className="font-display text-4xl leading-tight md:text-5xl">A gentle reminder</h1>
       <p className="mt-6 max-w-prose">
-        These households have been sent an invitation and haven&apos;t replied yet. Choose whom to
+        These guests have been sent an invitation and haven&apos;t replied yet. Choose whom to
         nudge; nothing is sent automatically.
       </p>
       <p className="mt-6 text-muted-foreground">

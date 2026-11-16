@@ -1,3 +1,4 @@
+import { sql } from "drizzle-orm";
 import "server-only";
 import { asc, desc, eq } from "drizzle-orm";
 import type { Db } from "@/modules/shared/server/db/client";
@@ -9,7 +10,7 @@ export async function searchManualGuests(database: Pick<Db, "select">, query: st
   const rows = await database
     .select({
       invitationId: invitations.id,
-      householdName: invitations.householdName,
+      householdName: sql<null>`null`,
       name: guests.name,
       isPrimary: guests.isPrimary,
     })

@@ -22,8 +22,8 @@ export async function AdminSharing() {
         Prepare day-before pass reminders
       </Link>
       <p className="mt-6 max-w-prose">
-        Choose an invitation to share. Each link belongs to its invited household; send it only to
-        them.
+        Choose an invitation to share. Each link belongs to its invited guest and plus-one; send it
+        only to them.
       </p>
       {invitations.length === 0 ? (
         <p className="mt-12">

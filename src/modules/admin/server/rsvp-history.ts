@@ -1,3 +1,4 @@
+import { invitationGuestName } from "@/modules/shared/server/invitation-guest-name";
 import "server-only";
 import { desc, eq } from "drizzle-orm";
 import { z } from "zod";
@@ -17,7 +18,7 @@ export async function getRsvpHistory(id: string): Promise<RsvpHistoryResult> {
     return await db.transaction(
       async (tx): Promise<RsvpHistoryResult> => {
         const [invitation] = await tx
-          .select({ householdName: invitations.householdName })
+          .select({ name: invitationGuestName() })
           .from(invitations)
           .where(eq(invitations.id, id));
         if (!invitation) return { status: "not-found" };
@@ -38,7 +39,7 @@ export async function getRsvpHistory(id: string): Promise<RsvpHistoryResult> {
         const meals = new Map(menu.map((item) => [item.id, item.name]));
         return {
           status: "ready",
-          name: invitation.householdName || "Invitation",
+          name: invitation.name,
           entries: rows.map((row) => ({
             id: row.id,
             changedAt: row.changedAt.toISOString(),

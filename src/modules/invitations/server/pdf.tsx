@@ -38,7 +38,7 @@ export type InvitationPdfInput = {
 export async function renderInvitationPdf({ details, theme, pass, passUrl }: InvitationPdfInput) {
   const matrix = qrMatrix(passUrl);
   const side = qrViewBoxSize(matrix);
-  const name = pass.names.join(" & ") || pass.householdName || "Our dear guest";
+  const name = pass.names.join(" & ") || "Our dear guest";
   return renderToBuffer(
     <Document
       title="Your wedding invitation"

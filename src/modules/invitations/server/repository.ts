@@ -11,7 +11,6 @@ import { resolveInvitation } from "./resolve-invitation";
 type InvitationDb = Pick<Db, "select" | "insert">;
 const newInvitationSchema = z
   .object({
-    householdName: z.string().trim().min(1).max(200),
     maxTagAlongs: z.number().int().min(0).max(10).default(1),
   })
   .strict();
@@ -37,7 +36,6 @@ export async function findGuestInvitation(db: InvitationDb, token: unknown) {
         cardNumber: invitations.cardNumber,
         maxTagAlongs: invitations.maxTagAlongs,
         status: invitations.status,
-        householdName: invitations.householdName,
         name: guests.name,
       })
       .from(invitations)
@@ -50,7 +48,7 @@ export async function findGuestInvitation(db: InvitationDb, token: unknown) {
       cardNumber: first.cardNumber,
       capacity: Math.max(1, rows.filter((row) => row.name !== null).length) + first.maxTagAlongs,
       status: first.status,
-      householdName: first.householdName,
+      householdName: null,
       primaryNames: rows.flatMap((row) => (row.name === null ? [] : [row.name])),
     };
   });

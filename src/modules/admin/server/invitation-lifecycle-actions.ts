@@ -53,7 +53,7 @@ export async function changeInvitationLifecycleAction(
       message:
         result.value.operation === "revoke"
           ? "Invitation revoked. Offline scanners will learn the change when they refresh."
-          : "New invitation link ready. Use the sharing options to send it to this household.",
+          : "New invitation link ready. Use the sharing options to send it to this guest.",
     };
   } catch (error) {
     unstable_rethrow(error);

@@ -1,0 +1,32 @@
+# TICKET-265 verification
+
+Guest and plus-one share an invitation and table. Guest editing/import no longer collect or
+persist a household label. Readers derive names from guests. The nullable legacy database
+column and compatible internal DTO fields remain; no real data was deleted or migrated.
+Historical six-column import digests are recognized to avoid duplicate re-imports.
+
+The cards page is now labelled Printable table signs, explains A6 printing and placement,
+and explicitly distinguishes signs from invitations/place cards. The shared QR opens ordering;
+guests choose their table there. Responsive columns now respect the available content width.
+
+## Results
+
+- Full verification: formatting, lint, types and 2,199 unit tests passed (243 skipped).
+  Production build BLOCKED by installed Next.js SecurityFatalError; no bypass applied.
+- Final verify:quick passed after review fixes.
+- Targeted editor/import: 44 unit/UI/action tests and 14 isolated database tests passed.
+- Seating/invitation repositories: six isolated database tests passed.
+- Review fixes: unknown scan IDs retain null rather than misleading Guest; long aggregated names
+  are bounded in gate-conflict responses. Real-database regression and 37 related tests passed.
+- Browser: authenticated seating and signs at 375/768/1280, light/dark; 12 screenshots.
+  No horizontal overflow or page errors. Guest names shown, legacy label absent.
+  Both mobile sign variants have zero axe violations. QR decodes to local /order.
+  Print media hides controls and keeps QR visible; generated PDF. Guest form has no household input.
+- Local main-checkout preview updated with three-way merges, preserving unrelated edits; types passed.
+
+## UI review limits
+
+Screenshots reviewed; reduced-motion preference used. Existing mobile admin navigation is fixed
+at the viewport bottom and overlays part of full-page captures; content remains scrollable.
+Physical devices, physical print scan, Lighthouse, every registered palette, and full keyboard
+journeys were not verified. This is not full release QA approval. Build security blocker remains.

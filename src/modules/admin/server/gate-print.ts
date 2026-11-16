@@ -1,3 +1,4 @@
+import { sql } from "drizzle-orm";
 import "server-only";
 import { asc, desc, eq } from "drizzle-orm";
 import { db } from "@/modules/shared/server/db/client";
@@ -22,7 +23,7 @@ export async function getGatePrintList(): Promise<GatePrintResult> {
         const rows = await tx
           .select({
             id: invitations.id,
-            householdName: invitations.householdName,
+            householdName: sql<null>`null`,
             status: invitations.status,
             countAttending: rsvps.countAttending,
             tableNumber: tables.number,
