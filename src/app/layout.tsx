@@ -1,3 +1,4 @@
+import { developmentWorkerBootstrap } from "@/modules/shared/server/development-worker";
 import type { Metadata, Viewport } from "next";
 import { installationMetadata } from "@/modules/shared/lib/pwa-assets";
 
@@ -41,6 +42,12 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
     // so each device paints its own theme first, with no flash and no client JS.
     <html lang="en" className={fontVariables}>
       <head>
+        {process.env.NODE_ENV === "development" && (
+          <script
+            id="retire-development-worker"
+            dangerouslySetInnerHTML={{ __html: developmentWorkerBootstrap }}
+          />
+        )}
         <ThemeStyles themes={themes} />
       </head>
       <body className="min-h-dvh bg-background font-sans text-foreground">
