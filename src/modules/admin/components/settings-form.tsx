@@ -49,7 +49,7 @@ export function SettingsForm({ defaults }: { defaults: SettingsDefaults }) {
           <Input {...field("eventDate")} label="Wedding date" type="date" required />
           <Input
             {...field("ceremonyTime")}
-            label="Ceremony time"
+            label="Church service time"
             type="time"
             hint="Optional until decided."
           />
@@ -61,13 +61,35 @@ export function SettingsForm({ defaults }: { defaults: SettingsDefaults }) {
           autoComplete="off"
           spellCheck={false}
         />
-        <Input {...field("venue")} label="Venue" maxLength={500} hint="Optional until decided." />
+        <Input
+          {...field("venue")}
+          label="Church venue"
+          maxLength={500}
+          hint="Optional until decided."
+        />
         <Input
           {...field("mapUrl")}
-          label="Map link"
+          label="Church map link"
           type="url"
           inputMode="url"
-          hint="A full https:// link to the venue on a map."
+          hint="A full https:// link to the church on a map."
+        />
+        <Input {...field("receptionTime")} label="Reception time" type="time" />
+        <Input {...field("receptionVenue")} label="Reception venue" maxLength={500} />
+        <Input
+          {...field("receptionMapUrl")}
+          label="Reception map link"
+          type="url"
+          inputMode="url"
+          hint="A full https:// link to the reception on a map."
+        />
+        <Input
+          {...field("rsvpPhone")}
+          label="RSVP phone number"
+          type="tel"
+          inputMode="tel"
+          autoComplete="off"
+          hint="Guests with a printed card call or text this number to reply."
         />
         <Textarea
           {...field("dressCode")}

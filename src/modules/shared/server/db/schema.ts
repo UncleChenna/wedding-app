@@ -769,15 +769,26 @@ export const eventSettings = pgTable(
     invitationVoice: text("invitation_voice").notNull().default("warm"),
     coupleNames: text("couple_names").array().notNull().default(["Uchenna", "Adaora"]),
     eventDate: date("event_date", { mode: "string" }).notNull().default("2026-12-19"),
-    ceremonyTime: time("ceremony_time"),
-    timeZone: text("time_zone"),
-    venue: text("venue"),
+    /** The church service (TICKET-255: values from the printed card). */
+    ceremonyTime: time("ceremony_time").default("12:00"),
+    timeZone: text("time_zone").default("Africa/Lagos"),
+    venue: text("venue").default("St Paul's Anglican Church, Apo Resettlement, Abuja"),
     mapUrl: text("map_url"),
+    /** The reception that follows the service. */
+    receptionTime: time("reception_time").default("14:30"),
+    receptionVenue: text("reception_venue").default(
+      "Fineworld Recreational Park, Events & Gardens, opposite AYM Shafa fuel station, Apo Resettlement, Abuja",
+    ),
+    receptionMapUrl: text("reception_map_url"),
+    /** Guests with a printed card RSVP by call or SMS to this number. */
+    rsvpPhone: text("rsvp_phone").default("09160665114"),
     dressCode: text("dress_code"),
     /** The venue router's Wi-Fi, printed on every table card (TICKET-094). */
     wifiName: text("wifi_name"),
     wifiPassword: text("wifi_password"),
-    rsvpLockAt: timestamp("rsvp_lock_at", { withTimezone: true }),
+    rsvpLockAt: timestamp("rsvp_lock_at", { withTimezone: true }).default(
+      sql`'2026-12-17 23:59:00+01'`,
+    ),
     orderingOpen: boolean("ordering_open").notNull().default(false),
     activeThemeId: text("active_theme_id").notNull().default("ivory-gold"),
     activeDarkThemeId: text("active_dark_theme_id").notNull().default("midnight-champagne"),

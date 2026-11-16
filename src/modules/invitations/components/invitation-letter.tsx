@@ -5,19 +5,20 @@ import { z } from "zod";
 import { Divider } from "@/modules/shared/components/ui/decorations";
 import type { EventSettings } from "@/modules/shared/lib/event-settings";
 import { invitationSiteCopy } from "../lib/copy";
-import { eventDateLabel, ceremonyLabel } from "../lib/event-summary";
+import { eventDateLabel, timeOfDay } from "../lib/event-summary";
 import { InvitationHero } from "./invitation-hero";
 import type { InvitationHeroPhoto } from "../lib/hero-photo";
 import { Envelope } from "./envelope";
 
 export type InvitationEventDetails = Readonly<
   Pick<EventSettings, "eventDate" | "ceremonyTime" | "timeZone" | "venue" | "mapUrl" | "dressCode">
-> & {
-  readonly coupleNames: readonly [string, string];
-  readonly photo?: InvitationHeroPhoto;
-  readonly headline?: string;
-  readonly subline?: string;
-};
+> &
+  Readonly<Partial<Pick<EventSettings, "receptionTime" | "receptionVenue" | "receptionMapUrl">>> & {
+    readonly coupleNames: readonly [string, string];
+    readonly photo?: InvitationHeroPhoto;
+    readonly headline?: string;
+    readonly subline?: string;
+  };
 
 const safeMap = z.url({ protocol: /^https$/ });
 const linkStyle =
@@ -38,6 +39,7 @@ export function InvitationLetter({
   replyLabel?: string;
 }) {
   const map = safeMap.safeParse(details.mapUrl);
+  const receptionMap = safeMap.safeParse(details.receptionMapUrl);
   return (
     <main className="w-full">
       <InvitationHero photo={details.photo} />
@@ -105,18 +107,18 @@ export function InvitationLetter({
           <h2 id="celebration-details" className="text-center type-heading wrap-anywhere">
             The celebration
           </h2>
-          <dl className="mt-8 grid gap-8 text-center text-base leading-relaxed md:grid-cols-3 md:gap-12">
+          <dl className="mt-8 grid gap-8 text-center text-base leading-relaxed md:grid-cols-2 md:gap-12">
             <div className="min-w-0">
               <dt className="type-label text-primary">The day</dt>
               <dd className="mt-4">
                 <time dateTime={details.eventDate}>{eventDateLabel(details.eventDate)}</time>
-                <p className="mt-2">{ceremonyLabel(details.ceremonyTime, details.timeZone)}</p>
               </dd>
             </div>
             <div className="min-w-0">
-              <dt className="type-label text-primary">The place</dt>
+              <dt className="type-label text-primary">Church service</dt>
               <dd className="mt-4 wrap-anywhere">
-                {details.venue ?? "Venue to follow"}
+                <p>{timeOfDay(details.ceremonyTime) ?? "Time to follow"}</p>
+                <p className="mt-2">{details.venue ?? "Venue to follow"}</p>
                 {details.venue && map.success && (
                   <div className="mt-2">
                     <a
@@ -125,12 +127,33 @@ export function InvitationLetter({
                       rel="noreferrer"
                       referrerPolicy="no-referrer"
                     >
-                      View the venue
+                      Map to the church
                     </a>
                   </div>
                 )}
               </dd>
             </div>
+            {details.receptionVenue || details.receptionTime ? (
+              <div className="min-w-0">
+                <dt className="type-label text-primary">Reception</dt>
+                <dd className="mt-4 wrap-anywhere">
+                  <p>{timeOfDay(details.receptionTime ?? null) ?? "Time to follow"}</p>
+                  <p className="mt-2">{details.receptionVenue ?? "Venue to follow"}</p>
+                  {details.receptionVenue && receptionMap.success && (
+                    <div className="mt-2">
+                      <a
+                        className={linkStyle}
+                        href={receptionMap.data}
+                        rel="noreferrer"
+                        referrerPolicy="no-referrer"
+                      >
+                        Map to the reception
+                      </a>
+                    </div>
+                  )}
+                </dd>
+              </div>
+            ) : null}
             <div className="min-w-0">
               <dt className="type-label text-primary">Dress code</dt>
               <dd className="mt-4 wrap-anywhere">{details.dressCode ?? "Dress code to follow"}</dd>
