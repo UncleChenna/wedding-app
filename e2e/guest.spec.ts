@@ -91,7 +91,7 @@ test.describe("real invitation journey", () => {
     expect(image.suggestedFilename()).toBe("entry-pass.png");
     expect(await image.failure()).toBeNull();
     const pdfPending = page.waitForEvent("download");
-    await page.getByRole("link", { name: "Download invitation PDF", exact: true }).click();
+    await page.getByRole("link", { name: "Download entry pass PDF", exact: true }).click();
     const pdf = await pdfPending;
     expect(pdf.suggestedFilename()).toBe("wedding-invitation.pdf");
     expect(await pdf.failure()).toBeNull();

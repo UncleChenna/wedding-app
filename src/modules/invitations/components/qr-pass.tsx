@@ -53,14 +53,14 @@ export function QrPass({
             referrerPolicy="no-referrer"
             className="inline-flex min-h-11 min-w-11 items-center py-2 text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring dark:hidden"
           >
-            Download invitation PDF
+            Download entry pass PDF
           </a>
           <a
             href={pdfUrl + "?scheme=dark"}
             referrerPolicy="no-referrer"
             className="hidden min-h-11 min-w-11 items-center py-2 text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring dark:inline-flex"
           >
-            Download invitation PDF
+            Download entry pass PDF
           </a>
         </div>
       ) : null}

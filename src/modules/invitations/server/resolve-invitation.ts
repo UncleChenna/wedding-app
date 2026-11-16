@@ -3,6 +3,8 @@ import "server-only";
 import { invitationTokenSchema } from "../lib/token";
 
 export interface GuestInvitation {
+  cardNumber?: number;
+  capacity?: number;
   householdName: string | null;
   primaryNames: string[];
   attendance: "yes" | "no" | null;
@@ -24,6 +26,8 @@ export async function resolveInvitation(
   return {
     attendance:
       invitation.status === "rsvp_yes" ? "yes" : invitation.status === "rsvp_no" ? "no" : null,
+    cardNumber: invitation.cardNumber,
+    capacity: invitation.capacity,
     householdName: invitation.householdName,
     primaryNames: invitation.primaryNames,
   };

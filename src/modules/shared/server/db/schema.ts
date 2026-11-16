@@ -274,6 +274,8 @@ export const invitations = pgTable(
   "invitations",
   {
     id: uuid("id").primaryKey().defaultRandom(),
+    // Permanent printed identifier; sequence gaps are intentional, never renumber existing cards.
+    cardNumber: integer("card_number").generatedAlwaysAsIdentity().notNull().unique(),
     // Application inserts use 256 random bits; raw SQL must supply its own secure token.
     token: text("token")
       .notNull()
@@ -291,6 +293,7 @@ export const invitations = pgTable(
     updatedAt: updatedAt(),
   },
   (t) => [
+    check("invitations_card_number_positive", sql`${t.cardNumber} > 0`),
     check("invitations_tag_along_capacity", sql`${t.maxTagAlongs} between 0 and 10`),
     check("invitations_token_format", sql`${t.token} ~ '^[A-Za-z0-9_-]{22,}$'`),
     check("invitations_token_version_positive", sql`${t.tokenVersion} > 0`),

@@ -56,7 +56,7 @@ test.describe("printable invitation", () => {
       await applyTheme(page, theme);
       for (const width of [375, 768, 1280]) {
         await page.setViewportSize({ width, height: 900 });
-        const link = page.getByRole("link", { name: "Download invitation PDF" });
+        const link = page.getByRole("link", { name: "Download entry pass PDF" });
         await expect(link).toHaveCount(1);
         await link.focus();
         await expect(link).toBeFocused();
@@ -71,7 +71,7 @@ test.describe("printable invitation", () => {
         await page.locator("#pass").screenshot({ path: directory + "/" + width + ".png" });
       }
     }
-    const link = page.getByRole("link", { name: "Download invitation PDF" });
+    const link = page.getByRole("link", { name: "Download entry pass PDF" });
     const downloadPromise = page.waitForEvent("download");
     await link.press("Enter");
     const download = await downloadPromise;

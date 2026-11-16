@@ -31,65 +31,88 @@ export function InvitationLetter({
   children,
   pass,
   replyLabel = "Kindly reply",
+  artwork,
 }: {
   details: InvitationEventDetails;
   greeting: string;
   children: ReactNode;
   pass?: ReactNode;
   replyLabel?: string;
+  artwork?: ReactNode;
 }) {
   const map = safeMap.safeParse(details.mapUrl);
   const receptionMap = safeMap.safeParse(details.receptionMapUrl);
   return (
     <main className="w-full">
-      <InvitationHero photo={details.photo} />
+      {!artwork && <InvitationHero photo={details.photo} />}
       <div className="mx-auto w-full max-w-5xl px-6 pt-12 pb-[max(3rem,env(safe-area-inset-bottom))] md:px-12 md:pt-20">
-        <header className="mx-auto max-w-3xl text-center">
-          <Envelope
-            initials={[
-              Array.from(details.coupleNames[0])[0] ?? "",
-              Array.from(details.coupleNames[1])[0] ?? "",
-            ]}
-            returning={Boolean(pass)}
-          />
-          <p className="mx-auto w-[17rem] max-w-full text-left type-label text-primary">
-            Together with our families
-          </p>
-          <h1 className="mx-auto mt-8 max-w-72 text-left type-script wrap-anywhere">
-            <span className="block">{details.coupleNames[0]}</span>
-            <span className="my-2 block text-primary">{" & "}</span>
-            <span className="block">{details.coupleNames[1]}</span>
-          </h1>
-          <p className="mx-auto mt-10 max-w-lg text-left type-heading wrap-anywhere">
-            {(details.headline ?? invitationSiteCopy.headline)
-              .split(/(?<=\.) /)
-              .map((line, index) => (
-                <span key={`${index}-${line}`} className="block">
-                  {index > 0 ? " " : ""}
-                  {line}
-                </span>
-              ))}
-          </p>
-          <p className="mx-auto mt-6 max-w-prose text-left text-lg leading-relaxed wrap-anywhere">
-            {greeting}
-          </p>
-          <p className="mx-auto mt-6 max-w-prose text-left text-lg leading-relaxed wrap-anywhere whitespace-pre-line">
-            {details.subline ?? invitationSiteCopy.subline}
-          </p>
-          <nav
-            aria-label="Your invitation"
-            className="mt-6 flex flex-wrap justify-center gap-x-8 gap-y-2"
-          >
+        {artwork ? (
+          <>
+            <h1 className="sr-only">{details.coupleNames.join(" & ")} — your invitation</h1>
+            <div className="mx-auto max-w-3xl text-center">
+              <Envelope
+                initials={[
+                  Array.from(details.coupleNames[0])[0] ?? "",
+                  Array.from(details.coupleNames[1])[0] ?? "",
+                ]}
+                returning={Boolean(pass)}
+              />
+            </div>
+            {artwork}
             {pass && (
               <a href="#pass" className={linkStyle}>
                 Your pass
               </a>
             )}
-            <a href="#reply" className={linkStyle}>
-              {replyLabel}
-            </a>
-          </nav>
-        </header>
+          </>
+        ) : (
+          <header className="mx-auto max-w-3xl text-center">
+            <Envelope
+              initials={[
+                Array.from(details.coupleNames[0])[0] ?? "",
+                Array.from(details.coupleNames[1])[0] ?? "",
+              ]}
+              returning={Boolean(pass)}
+            />
+            <p className="mx-auto w-[17rem] max-w-full text-left type-label text-primary">
+              Together with our families
+            </p>
+            <h1 className="mx-auto mt-8 max-w-72 text-left type-script wrap-anywhere">
+              <span className="block">{details.coupleNames[0]}</span>
+              <span className="my-2 block text-primary">{" & "}</span>
+              <span className="block">{details.coupleNames[1]}</span>
+            </h1>
+            <p className="mx-auto mt-10 max-w-lg text-left type-heading wrap-anywhere">
+              {(details.headline ?? invitationSiteCopy.headline)
+                .split(/(?<=\.) /)
+                .map((line, index) => (
+                  <span key={`${index}-${line}`} className="block">
+                    {index > 0 ? " " : ""}
+                    {line}
+                  </span>
+                ))}
+            </p>
+            <p className="mx-auto mt-6 max-w-prose text-left text-lg leading-relaxed wrap-anywhere">
+              {greeting}
+            </p>
+            <p className="mx-auto mt-6 max-w-prose text-left text-lg leading-relaxed wrap-anywhere whitespace-pre-line">
+              {details.subline ?? invitationSiteCopy.subline}
+            </p>
+            <nav
+              aria-label="Your invitation"
+              className="mt-6 flex flex-wrap justify-center gap-x-8 gap-y-2"
+            >
+              {pass && (
+                <a href="#pass" className={linkStyle}>
+                  Your pass
+                </a>
+              )}
+              <a href="#reply" className={linkStyle}>
+                {replyLabel}
+              </a>
+            </nav>
+          </header>
+        )}
         {pass && (
           <section
             id="pass"
@@ -102,64 +125,70 @@ export function InvitationLetter({
             <IosInstallGuide />
           </section>
         )}
-        <Divider className="my-12 md:my-16" />
-        <section aria-labelledby="celebration-details">
-          <h2 id="celebration-details" className="text-center type-heading wrap-anywhere">
-            The celebration
-          </h2>
-          <dl className="mt-8 grid gap-8 text-center text-base leading-relaxed md:grid-cols-2 md:gap-12">
-            <div className="min-w-0">
-              <dt className="type-label text-primary">The day</dt>
-              <dd className="mt-4">
-                <time dateTime={details.eventDate}>{eventDateLabel(details.eventDate)}</time>
-              </dd>
-            </div>
-            <div className="min-w-0">
-              <dt className="type-label text-primary">Church service</dt>
-              <dd className="mt-4 wrap-anywhere">
-                <p>{timeOfDay(details.ceremonyTime) ?? "Time to follow"}</p>
-                <p className="mt-2">{details.venue ?? "Venue to follow"}</p>
-                {details.venue && map.success && (
-                  <div className="mt-2">
-                    <a
-                      className={linkStyle}
-                      href={map.data}
-                      rel="noreferrer"
-                      referrerPolicy="no-referrer"
-                    >
-                      Map to the church
-                    </a>
+        {!artwork && (
+          <>
+            <Divider className="my-12 md:my-16" />
+            <section aria-labelledby="celebration-details">
+              <h2 id="celebration-details" className="text-center type-heading wrap-anywhere">
+                The celebration
+              </h2>
+              <dl className="mt-8 grid gap-8 text-center text-base leading-relaxed md:grid-cols-2 md:gap-12">
+                <div className="min-w-0">
+                  <dt className="type-label text-primary">The day</dt>
+                  <dd className="mt-4">
+                    <time dateTime={details.eventDate}>{eventDateLabel(details.eventDate)}</time>
+                  </dd>
+                </div>
+                <div className="min-w-0">
+                  <dt className="type-label text-primary">Church service</dt>
+                  <dd className="mt-4 wrap-anywhere">
+                    <p>{timeOfDay(details.ceremonyTime) ?? "Time to follow"}</p>
+                    <p className="mt-2">{details.venue ?? "Venue to follow"}</p>
+                    {details.venue && map.success && (
+                      <div className="mt-2">
+                        <a
+                          className={linkStyle}
+                          href={map.data}
+                          rel="noreferrer"
+                          referrerPolicy="no-referrer"
+                        >
+                          Map to the church
+                        </a>
+                      </div>
+                    )}
+                  </dd>
+                </div>
+                {details.receptionVenue || details.receptionTime ? (
+                  <div className="min-w-0">
+                    <dt className="type-label text-primary">Reception</dt>
+                    <dd className="mt-4 wrap-anywhere">
+                      <p>{timeOfDay(details.receptionTime ?? null) ?? "Time to follow"}</p>
+                      <p className="mt-2">{details.receptionVenue ?? "Venue to follow"}</p>
+                      {details.receptionVenue && receptionMap.success && (
+                        <div className="mt-2">
+                          <a
+                            className={linkStyle}
+                            href={receptionMap.data}
+                            rel="noreferrer"
+                            referrerPolicy="no-referrer"
+                          >
+                            Map to the reception
+                          </a>
+                        </div>
+                      )}
+                    </dd>
                   </div>
-                )}
-              </dd>
-            </div>
-            {details.receptionVenue || details.receptionTime ? (
-              <div className="min-w-0">
-                <dt className="type-label text-primary">Reception</dt>
-                <dd className="mt-4 wrap-anywhere">
-                  <p>{timeOfDay(details.receptionTime ?? null) ?? "Time to follow"}</p>
-                  <p className="mt-2">{details.receptionVenue ?? "Venue to follow"}</p>
-                  {details.receptionVenue && receptionMap.success && (
-                    <div className="mt-2">
-                      <a
-                        className={linkStyle}
-                        href={receptionMap.data}
-                        rel="noreferrer"
-                        referrerPolicy="no-referrer"
-                      >
-                        Map to the reception
-                      </a>
-                    </div>
-                  )}
-                </dd>
-              </div>
-            ) : null}
-            <div className="min-w-0">
-              <dt className="type-label text-primary">Dress code</dt>
-              <dd className="mt-4 wrap-anywhere">{details.dressCode ?? "Dress code to follow"}</dd>
-            </div>
-          </dl>
-        </section>
+                ) : null}
+                <div className="min-w-0">
+                  <dt className="type-label text-primary">Dress code</dt>
+                  <dd className="mt-4 wrap-anywhere">
+                    {details.dressCode ?? "Dress code to follow"}
+                  </dd>
+                </div>
+              </dl>
+            </section>
+          </>
+        )}
         <div
           id="reply"
           tabIndex={-1}

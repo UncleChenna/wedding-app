@@ -96,6 +96,23 @@ From the control room or admin navigation, open **Event health** (`/admin/health
 
 Staff home → Recover retained gate records (`/gate-recovery`) → save at most200 original pending records without staff renewal → privately give the file to an administrator. Admin scan log → Recover gate records (`/admin/scans/recovery`) → review original operator/device/record details → explicitly confirm and import → save signed confirmation receipt → return receipt to the original browser → verify online and clear only exact committed records. Rejected, mismatched and unconfirmed records stay retained. Both screens link back; full origin storage deletion cannot be recovered.
 
+## Supplied invitation card (TICKET-264)
+
+- `/dev/invitation`: sample of the owner's original two-page floral card, with a sample PDF.
+- `/admin/sharing` → **Preview invitation card** → `/admin/invitations/[id]/card`: authenticated
+  household preview and private PDF download. Draft previews do not publish, send or record a share;
+  the page explains that the RSVP link is inactive until publication.
+- `/i/[token]`: published guest card, readable venue/dress-code details, maps, online RSVP and
+  **Download your invitation card** (`/i/[token]/card.pdf`). Available before a reply is saved.
+- The card PDF keeps the two artwork pages and adds an RSVP sheet. Its QR opens the household's
+  personal editing link, so it must be shared only with that household. It is not an entry credential.
+- After attendance is confirmed, **Download entry pass PDF** still downloads the separate signed,
+  read-only gate pass. It is deliberately distinct from the personalised invitation card.
+- Reply requested by 17 December 2026 follows the supplied card; existing RSVP lock policy remains
+  unchanged. Artwork dates/venues are fixed to that source, while dress code comes from event settings.
+- Admin headline/photo editing applies to the earlier web layout, not the supplied fixed artwork.
+  Permanent numbers are allocated once by the database and must not be regenerated after printing.
+
 ## Admin sign-in (TICKET-262)
 
 Admins verify their approved email with an email code, then open the dashboard.

@@ -21,7 +21,9 @@ export async function AdminInvitationDesign() {
     <main className="mx-auto w-full max-w-4xl px-6 py-12 text-lg leading-relaxed">
       <h1 className="font-display text-4xl leading-tight">Your invitation design</h1>
       <p className="mt-6 max-w-prose">
-        Choose a photograph and make the wording your own. Preview your changes before saving.
+        Guest invitations now use your supplied floral card. These photograph and wording settings
+        belong to the earlier web layout and do not change the printed card. Open Sharing to preview
+        each household’s personalised card before sending.
       </p>
       <InvitationDesignForm
         defaults={{

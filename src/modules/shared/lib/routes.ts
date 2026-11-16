@@ -10,6 +10,12 @@ export interface AppRoute {
 
 /** Navigation metadata is not authorization; server readers still enforce access. */
 export const appRoutes = {
+  adminCard: {
+    path: "/admin/invitations/[id]/card",
+    label: "Invitation card preview",
+    audience: "admin",
+    access: "admin",
+  },
   adminPassReminders: {
     path: "/admin/sharing/pass-reminders",
     label: "Pass reminders",
@@ -173,6 +179,8 @@ export function passHref(pass: string): string {
 
 /** Public error-state fixtures; never put real credentials into the route inventory. */
 export const pageRouteSamples = routeList.map((route) => {
+  if (route.path === appRoutes.adminCard.path)
+    return "/admin/invitations/00000000-0000-4000-8000-000000000000/card";
   if (route.path === appRoutes.invitation.path) return invitationHref("invalid");
   if (route.path === appRoutes.pass.path) return passHref("invalid");
   if (route.path === appRoutes.adminGuestEdit.path) return "/admin/guests/invalid/edit";

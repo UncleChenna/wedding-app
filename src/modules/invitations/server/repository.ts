@@ -34,6 +34,8 @@ export async function findGuestInvitation(db: InvitationDb, token: unknown) {
   return resolveInvitation(token, async (validatedToken) => {
     const rows = await db
       .select({
+        cardNumber: invitations.cardNumber,
+        maxTagAlongs: invitations.maxTagAlongs,
         status: invitations.status,
         householdName: invitations.householdName,
         name: guests.name,
@@ -45,6 +47,8 @@ export async function findGuestInvitation(db: InvitationDb, token: unknown) {
     const first = rows[0];
     if (!first) return null;
     return {
+      cardNumber: first.cardNumber,
+      capacity: Math.max(1, rows.filter((row) => row.name !== null).length) + first.maxTagAlongs,
       status: first.status,
       householdName: first.householdName,
       primaryNames: rows.flatMap((row) => (row.name === null ? [] : [row.name])),
