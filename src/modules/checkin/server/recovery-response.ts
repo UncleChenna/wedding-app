@@ -66,7 +66,7 @@ export async function recoveryImportResponse(
 ): Promise<Response> {
   try {
     const adminId = await ports.authorize();
-    if (!adminId) return reply({ message: "Please complete two-step sign-in first." }, 403);
+    if (!adminId) return reply({ message: "Please sign in with your admin email first." }, 403);
     const parsed = recoveryImportSchema.safeParse(await readRecoveryBody(request));
     if (!parsed.success)
       return reply({ message: "Choose a valid recovery file and confirm your review." }, 400);

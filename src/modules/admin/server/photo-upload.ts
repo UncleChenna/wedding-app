@@ -21,7 +21,7 @@ export async function photoUploadResponse(
   try {
     const access = await authorize();
     if (access.status !== "ready")
-      return reply({ message: "Please complete two-step sign-in first." }, 403);
+      return reply({ message: "Please sign in with your admin email first." }, 403);
     if (request.headers.get("origin") !== new URL(request.url).origin)
       return reply({ message: "Please upload from the wedding admin page." }, 403);
     const mime = mimeSchema.safeParse(request.headers.get("content-type"));

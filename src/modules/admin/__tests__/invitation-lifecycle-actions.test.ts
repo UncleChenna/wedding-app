@@ -21,7 +21,10 @@ function form() {
 }
 beforeEach(() => vi.resetAllMocks());
 it("does not mutate or invalidate anything without live admin authorization", async () => {
-  mocks.access.mockResolvedValue({ ok: false, message: "Please complete two-step sign-in first." });
+  mocks.access.mockResolvedValue({
+    ok: false,
+    message: "Please sign in with your admin email first.",
+  });
   const result = await changeInvitationLifecycleAction({ status: "idle" }, form());
   expect(result.status).toBe("error");
   expect(mocks.change).not.toHaveBeenCalled();

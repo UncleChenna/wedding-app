@@ -24,7 +24,6 @@ export async function requireAdminPageAccess() {
   const access = await currentAdminAccess();
   if (access.status === "signed-out" || access.status === "denied")
     redirect(appRoutes.adminSignIn.path);
-  if (access.status !== "ready") redirect(appRoutes.adminMfa.path);
   return access;
 }
 
@@ -34,6 +33,6 @@ export async function withCurrentAdminAccess<T>(
 ): Promise<{ ok: true; value: T } | { ok: false; message: string }> {
   const access = await currentAdminAccess();
   if (access.status !== "ready")
-    return { ok: false, message: "Please complete two-step sign-in first." };
+    return { ok: false, message: "Please sign in with your admin email first." };
   return { ok: true, value: await operation(access.userId) };
 }

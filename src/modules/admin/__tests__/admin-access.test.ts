@@ -18,15 +18,15 @@ function auth(aal: string = "aal1", factors = [factor]): AdminAccessPort {
 }
 const allowed = ["admin@example.test"];
 describe("admin assurance boundary", () => {
-  it("requires enrolment for an allowlisted account without a verified factor", async () => {
-    expect((await readAdminAccess(auth("aal1", []), allowed)).status).toBe("enroll");
+  it("admits a verified email session without authenticator enrolment", async () => {
+    expect((await readAdminAccess(auth("aal1", []), allowed)).status).toBe("ready");
   });
-  it("requires a challenge for an AAL1 account with a verified factor", async () => {
-    expect((await readAdminAccess(auth(), allowed)).status).toBe("challenge");
+  it("admits returning email sessions even with an existing authenticator", async () => {
+    expect((await readAdminAccess(auth(), allowed)).status).toBe("ready");
   });
-  it("admits only verified AAL2 plus a live verified TOTP factor", async () => {
+  it("also accepts existing AAL2 sessions", async () => {
     expect((await readAdminAccess(auth("aal2"), allowed)).status).toBe("ready");
-    expect((await readAdminAccess(auth("aal2", []), allowed)).status).toBe("enroll");
+    expect((await readAdminAccess(auth("aal2", []), allowed)).status).toBe("ready");
   });
   it("fails closed without a live authenticated user", async () => {
     const client = auth("aal2");
@@ -47,20 +47,19 @@ describe("admin assurance boundary", () => {
     }));
     expect((await readAdminAccess(client, allowed)).status).toBe("signed-out");
   });
-  it("does not count an unverified or non-TOTP factor", async () => {
+  it("does not require a particular factor type or enrolment status", async () => {
     expect(
       (await readAdminAccess(auth("aal2", [{ ...factor, status: "unverified" }]), allowed)).status,
-    ).toBe("enroll");
+    ).toBe("ready");
     expect(
       (await readAdminAccess(auth("aal2", [{ ...factor, factor_type: "phone" }]), allowed)).status,
-    ).toBe("enroll");
+    ).toBe("ready");
   });
-  it("never invokes a privileged operation for AAL1 or an unlisted user", async () => {
+  it("rejects unlisted users and permits verified email sessions", async () => {
     const run = vi.fn(async () => "private data");
-    expect((await withAdminAccess(auth(), allowed, run)).ok).toBe(false);
     expect((await withAdminAccess(auth("aal2"), [], run)).ok).toBe(false);
     expect(run).not.toHaveBeenCalled();
-    expect(await withAdminAccess(auth("aal2"), allowed, run)).toEqual({
+    expect(await withAdminAccess(auth("aal1", []), allowed, run)).toEqual({
       ok: true,
       value: "private data",
     });

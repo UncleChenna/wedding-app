@@ -20,7 +20,7 @@ describe("validated theme drafts", () => {
     );
     expect(await saveValidatedThemeDraft(input, { authorize: async () => false, save })).toEqual({
       status: "denied",
-      message: "Please complete two-step admin sign-in first.",
+      message: "Please sign in with your admin email first.",
     });
     expect(save).not.toHaveBeenCalled();
   });

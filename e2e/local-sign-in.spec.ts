@@ -45,7 +45,7 @@ test.describe("local sign-in code", () => {
     }
   });
 
-  test("admin: 000000 passes the email step and the authenticator step", async ({ page }) => {
+  test("admin: 000000 opens admin after email verification", async ({ page }) => {
     await page.goto("/admin/sign-in");
     await page.getByLabel("Email address").fill(email);
     await page.getByRole("button", { name: "Send code", exact: true }).click();
@@ -59,10 +59,6 @@ test.describe("local sign-in code", () => {
     );
 
     await page.goto("/admin");
-    await expect(page).toHaveURL(/\/admin\/mfa$/);
-    await page.getByRole("button", { name: "Set up authenticator" }).click();
-    await page.getByLabel("Authenticator code").fill("000000");
-    await page.getByRole("button", { name: "Verify code" }).click();
     await expect(page).toHaveURL(/\/admin$/);
     await expect(
       page.getByRole("heading", { name: "Wedding control room", exact: true }),

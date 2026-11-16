@@ -24,7 +24,7 @@ export async function saveValidatedThemeDraft(
   };
   try {
     if (!(await dependencies.authorize())) {
-      return { status: "denied", message: "Please complete two-step admin sign-in first." };
+      return { status: "denied", message: "Please sign in with your admin email first." };
     }
   } catch {
     return unavailable;

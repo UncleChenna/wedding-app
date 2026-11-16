@@ -97,11 +97,13 @@ describe("request authorization matrix", () => {
       expect((await proxy(request(path, "POST"))).status).toBe(403);
     }
   });
-  it("requires allowlisted AAL2 claims and does not treat guest or staff identity as admin", async () => {
+  it("requires verified allowlisted claims and does not treat guest or staff identity as admin", async () => {
     admin("aal1");
-    const mfa = await proxy(request("/admin"));
-    expect(new URL(mfa.headers.get("location") ?? "").pathname).toBe("/admin/mfa");
-    expect((await proxy(request("/admin", "POST"))).status).toBe(403);
+    const response = await proxy(request("/admin"));
+    expect(response.status).toBe(200);
+    expect(response.headers.get("location")).toBeNull();
+    expect(response.headers.get("cache-control")).toContain("no-store");
+    expect((await proxy(request("/admin", "POST"))).status).toBe(200);
     admin("aal2", "guest@example.test");
     expect((await proxy(request("/api/admin/settings"))).status).toBe(403);
     admin("aal2");

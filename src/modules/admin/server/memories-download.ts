@@ -26,7 +26,7 @@ export async function memoriesDownload(
   try {
     // Layout/proxy protection is not sufficient for a direct route invocation.
     if ((await currentAdminAccess()).status !== "ready")
-      return new Response("Please complete two-step sign-in first.", { status: 403, headers });
+      return new Response("Please sign in with your admin email first.", { status: 403, headers });
     const { format } = await context.params;
     const options = optionsSchema.safeParse({
       format,
