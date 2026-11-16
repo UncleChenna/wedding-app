@@ -1,4 +1,8 @@
 "use client";
+import {
+  useActionFeedback,
+  useFeedbackMessage,
+} from "@/modules/shared/components/use-action-feedback";
 import Image from "next/image";
 import samplePhoto from "../../../../public/share/couple-placeholder.jpg";
 import { useActionState, useEffect, useState } from "react";
@@ -36,6 +40,7 @@ export function InvitationDesignForm({
     },
     { status: "idle" },
   );
+  useActionFeedback(state);
   const [headline, setHeadline] = useState(defaults.headline);
   const [subline, setSubline] = useState(defaults.subline);
   const [alt, setAlt] = useState(defaults.photoAlt);
@@ -44,6 +49,7 @@ export function InvitationDesignForm({
   const visiblePreview = preview?.id === photo?.id ? preview?.url : null;
   const [photoMessage, setPhotoMessage] = useState("");
   const [uploading, setUploading] = useState(false);
+  useFeedbackMessage(uploading ? "" : photoMessage);
   useEffect(() => {
     if (!photo) return;
     const controller = new AbortController();

@@ -9,9 +9,11 @@ for (const theme of listThemes())
       await page.emulateMedia({ reducedMotion: "reduce" });
       await page.goto(`/dev/invitation/letter?theme=${theme.id}`);
       await expect(page.getByRole("heading", { level: 1 })).toHaveText("Uchenna & Adaora");
-      await expect(page.getByText("Venue to follow")).toBeVisible();
+      await expect(
+        page.getByText("St Paul's Anglican Church, Apo Resettlement, Abuja"),
+      ).toBeVisible();
       await expect(page.getByText("Dress code to follow")).toBeVisible();
-      await expect(page.getByRole("link", { name: "View the venue" })).toHaveCount(0);
+      await expect(page.getByRole("link", { name: /^Map to/ })).toHaveCount(0);
       expect(await scanA11y(page)).toEqual([]);
       for (const link of await page.getByRole("link").all()) {
         const rect = await link.boundingBox();
@@ -42,7 +44,7 @@ test("@smoke configured sample maps are labelled and use an HTTPS destination", 
 }) => {
   await page.goto("/dev/invitation/letter?details=sample");
   await expect(page.getByText(/not the wedding arrangements/)).toBeVisible();
-  const map = page.getByRole("link", { name: "View the venue" });
+  const map = page.getByRole("link", { name: "Map to the church" });
   await expect(map).toHaveAttribute(
     "href",
     "https://www.google.com/maps/search/?api=1&query=Kew+Gardens+London",

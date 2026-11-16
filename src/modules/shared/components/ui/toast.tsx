@@ -85,11 +85,11 @@ export function ToastView({
     >
       <ToneIcon tone={tone} />
       <div className="flex flex-1 flex-col gap-0.5">
-        <p className="text-sm font-semibold">
+        <p className="text-lg font-semibold">
           {toneLabels[tone] && <span className="sr-only">{toneLabels[tone]} </span>}
           {title}
         </p>
-        {description && <p className="text-sm opacity-90">{description}</p>}
+        {description && <p className="text-base opacity-90">{description}</p>}
       </div>
       {onDismiss && (
         <button
@@ -117,9 +117,11 @@ export function ToastView({
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<ToastItem[]>([]);
   const nextId = useRef(1);
+  const visibleIds = useRef<number[]>([]);
   const timers = useRef(new Map<number, ReturnType<typeof setTimeout>>());
 
   const dismiss = useCallback((id: number) => {
+    visibleIds.current = visibleIds.current.filter((item) => item !== id);
     setItems((current) => current.filter((item) => item.id !== id));
     const timer = timers.current.get(id);
     if (timer) clearTimeout(timer);
@@ -127,8 +129,18 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const toast = useCallback(
-    ({ title, description, tone = "default", duration = 4000 }: ToastOptions) => {
+    ({
+      title,
+      description,
+      tone = "default",
+      duration = tone === "danger" ? 0 : 6000,
+    }: ToastOptions) => {
       const id = nextId.current++;
+      visibleIds.current.push(id);
+      while (visibleIds.current.length > 3) {
+        const oldest = visibleIds.current[0];
+        if (oldest !== undefined) dismiss(oldest);
+      }
       setItems((current) => [...current, { id, title, description, tone, duration }]);
       if (duration > 0)
         timers.current.set(
@@ -150,7 +162,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   return (
     <ToastContext value={value}>
       {children}
-      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-50 flex flex-col items-center gap-2 p-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:items-end">
+      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-50 flex max-h-[50dvh] flex-col items-center gap-2 overflow-y-auto p-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:items-end">
         {/* Errors interrupt (assertive); everything else waits its turn (polite). */}
         <div role="alert" className="flex w-full flex-col items-center gap-2 sm:items-end">
           {items
@@ -183,4 +195,9 @@ export function useToast(): ToastContextValue {
   const context = useContext(ToastContext);
   if (!context) throw new Error("useToast must be used inside <ToastProvider>");
   return context;
+}
+
+/** Optional for independently mounted forms: their persistent inline feedback still works. */
+export function useOptionalToast() {
+  return useContext(ToastContext);
 }

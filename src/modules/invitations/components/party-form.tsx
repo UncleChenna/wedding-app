@@ -1,4 +1,5 @@
 "use client";
+import { useActionFeedback } from "@/modules/shared/components/use-action-feedback";
 import { useActionState, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { Button } from "@/modules/shared/components/ui/button";
 import { Input } from "@/modules/shared/components/ui/input";
@@ -24,6 +25,7 @@ export function PartyForm({ token, details }: { token: string; details: PartyDet
     status: "idle",
     message: "",
   });
+  useActionFeedback(state);
   const notice = useRef<HTMLParagraphElement>(null);
   const previous = useRef(state);
   const container = useRef<HTMLFormElement>(null);

@@ -71,9 +71,13 @@ it("records successful copying and supports undo without claiming recall", async
     }),
   );
   await waitFor(() =>
-    expect(screen.getByText(/Messages already sent are not recalled/)).toBeVisible(),
+    expect(
+      screen.getByText(/Messages already sent are not recalled/, { selector: 'p[role="status"]' }),
+    ).toBeVisible(),
   );
-  expect(screen.getByText(/Messages already sent are not recalled/)).toHaveFocus();
+  expect(
+    screen.getByText(/Messages already sent are not recalled/, { selector: 'p[role="status"]' }),
+  ).toHaveFocus();
 });
 it("records successful native share separately from external delivery", async () => {
   Object.defineProperty(navigator, "share", {
@@ -85,7 +89,9 @@ it("records successful native share separately from external delivery", async ()
   await waitFor(() =>
     expect(actions.record).toHaveBeenCalledWith(expect.objectContaining({ channel: "native" })),
   );
-  expect(screen.getByText(/does not confirm delivery/)).toBeVisible();
+  expect(
+    screen.getByText(/does not confirm delivery/, { selector: 'p[role="status"]' }),
+  ).toBeVisible();
 });
 
 it.each([
@@ -99,7 +105,9 @@ it.each([
   await waitFor(() =>
     expect(actions.record).toHaveBeenCalledWith(expect.objectContaining({ channel })),
   );
-  expect(screen.getByText(/does not confirm delivery/)).toBeInTheDocument();
+  expect(
+    screen.getByText(/does not confirm delivery/, { selector: 'p[role="status"]' }),
+  ).toBeInTheDocument();
 });
 it("failed recording is disclosed and never offers a false Undo", async () => {
   actions.record.mockResolvedValue({ ok: false, message: "Sharing could not be recorded." });
@@ -109,6 +117,10 @@ it("failed recording is disclosed and never offers a false Undo", async () => {
   });
   setup();
   fireEvent.click(screen.getByRole("button", { name: "Copy link" }));
-  await waitFor(() => expect(screen.getByText("Sharing could not be recorded.")).toBeVisible());
+  await waitFor(() =>
+    expect(
+      screen.getByText("Sharing could not be recorded.", { selector: 'p[role="status"]' }),
+    ).toBeVisible(),
+  );
   expect(screen.queryByRole("button", { name: "Undo sharing record" })).toBeNull();
 });

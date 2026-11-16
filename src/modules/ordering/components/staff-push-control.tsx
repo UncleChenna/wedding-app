@@ -1,4 +1,5 @@
 "use client";
+import { useFeedbackMessage } from "@/modules/shared/components/use-action-feedback";
 
 import { useEffect, useState } from "react";
 import { Button } from "@/modules/shared/components/ui/button";
@@ -26,6 +27,7 @@ export function StaffPushControl({ station }: { station: Station }) {
   const [busy, setBusy] = useState(false);
   const [enabled, setEnabled] = useState(false);
   const [message, setMessage] = useState("");
+  useFeedbackMessage(message);
   const [publicKey, setPublicKey] = useState<string | null>(null);
   useEffect(() => {
     if (

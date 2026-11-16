@@ -47,8 +47,8 @@ test("TICKET-037 configured details and long names reach no-JavaScript HTML", as
       await page.goto(`/i/${token}`);
       await expect(page.getByRole("heading", { level: 1 })).toContainText(longName);
       await expect(page.getByText("Test formal attire")).toBeVisible();
-      await expect(page.getByText("3:30 pm · Etc/UTC")).toBeVisible();
-      await expect(page.getByRole("link", { name: "View the venue" })).toHaveAttribute(
+      await expect(page.getByText("3:30 pm")).toBeVisible();
+      await expect(page.getByRole("link", { name: "Map to the church" })).toHaveAttribute(
         "href",
         "https://www.google.com/maps/search/?api=1&query=Kew+Gardens",
       );

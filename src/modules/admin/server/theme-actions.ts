@@ -26,7 +26,7 @@ export async function activateThemeDraftAction(
 > {
   try {
     if ((await currentAdminAccess()).status !== "ready") {
-      return { status: "denied", message: "Please complete two-step admin sign-in first." };
+      return { status: "denied", message: "Please sign in with your admin email first." };
     }
     await activateThemeSelection(input);
     return { status: "activated" };

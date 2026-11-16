@@ -1,7 +1,11 @@
 import "server-only";
 import { z } from "zod";
 import { qrMatrix, qrPathData, qrViewBoxSize } from "@/modules/shared/lib/qr";
-import { readAdminAccess, type AdminAccessPort } from "./admin-access";
+import {
+  readAdminAccess as readEmailAccess,
+  type AdminAccess,
+  type AdminAccessPort,
+} from "./admin-access";
 import type { MfaState } from "../lib/mfa-state";
 
 export interface AdminMfaPort extends AdminAccessPort {
@@ -13,6 +17,20 @@ export interface AdminMfaPort extends AdminAccessPort {
     unenroll(input: { factorId: string }): Promise<{ error: unknown }>;
     challengeAndVerify(input: { factorId: string; code: string }): Promise<{ error: unknown }>;
   };
+}
+// Retained for a future opt-in MFA flow; it no longer gates dashboard access.
+async function readAdminAccess(
+  auth: AdminAccessPort,
+  allowed: readonly string[],
+): Promise<AdminAccess> {
+  const access = await readEmailAccess(auth, allowed);
+  if (access.status !== "ready") return access;
+  const verified = await auth.getClaims();
+  if (verified.error || verified.data?.claims.sub !== access.userId)
+    return { status: "signed-out" as const };
+  const enrolled = access.factors.some((factor) => factor.status === "verified");
+  const status = !enrolled ? "enroll" : verified.data.claims.aal === "aal2" ? "ready" : "challenge";
+  return { ...access, status };
 }
 const failure = (message: string): MfaState => ({ status: "error", message });
 export async function enrollAdminTotp(

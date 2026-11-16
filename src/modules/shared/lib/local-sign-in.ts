@@ -20,17 +20,32 @@ function loopback(url: string | undefined): boolean {
   }
 }
 
+/**
+ * Why the local code is refused here, or null when it is allowed. Reasons name a setting, never
+ * its value, so they are safe to log.
+ */
+export function localSignInRefusal(
+  env: Record<string, string | undefined>,
+  requestHost: string | null | undefined,
+): string | null {
+  if (env.VERCEL || env.VERCEL_ENV) return "running on Vercel";
+  const configured = env.LOCAL_SIGN_IN_CODE?.trim();
+  if (configured === "off") return "LOCAL_SIGN_IN_CODE is off";
+  if (configured && !/^\d{6}$/.test(configured)) return "LOCAL_SIGN_IN_CODE is not six digits";
+  if (!loopback(env.DATABASE_URL)) return "DATABASE_URL is not a database on this machine";
+  if (!loopback(env.NEXT_PUBLIC_SUPABASE_URL))
+    return "NEXT_PUBLIC_SUPABASE_URL is not Supabase on this machine";
+  if (!requestHost || !loopback(`http://${requestHost}`))
+    return "the page was not opened from localhost";
+  return null;
+}
+
 export function localSignInCode(
   env: Record<string, string | undefined>,
   requestHost: string | null | undefined,
 ): string | null {
-  if (env.VERCEL || env.VERCEL_ENV) return null;
-  const configured = env.LOCAL_SIGN_IN_CODE?.trim();
-  if (configured === "off") return null;
-  if (!loopback(env.DATABASE_URL) || !loopback(env.NEXT_PUBLIC_SUPABASE_URL)) return null;
-  if (!requestHost || !loopback(`http://${requestHost}`)) return null;
-  const code = configured || DEFAULT_LOCAL_SIGN_IN_CODE;
-  return /^\d{6}$/.test(code) ? code : null;
+  if (localSignInRefusal(env, requestHost)) return null;
+  return env.LOCAL_SIGN_IN_CODE?.trim() || DEFAULT_LOCAL_SIGN_IN_CODE;
 }
 
 export function isLocalSignInCode(

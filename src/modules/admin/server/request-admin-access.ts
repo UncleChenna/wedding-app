@@ -10,7 +10,7 @@ import { isAdminEmail, parseAdminEmails } from "../lib/admin-emails";
 /** Verified claims prefilter; live identity and factor checks remain in currentAdminAccess. */
 export async function authorizeAdminRequest(request: NextRequest): Promise<NextResponse> {
   let refreshed = NextResponse.next({ request });
-  let destination: "/admin/sign-in" | "/admin/mfa" | null = "/admin/sign-in";
+  let destination: "/admin/sign-in" | null = "/admin/sign-in";
   try {
     const client = createServerClient(
       clientEnv.NEXT_PUBLIC_SUPABASE_URL,
@@ -39,7 +39,7 @@ export async function authorizeAdminRequest(request: NextRequest): Promise<NextR
       data?.claims.sub &&
       isAdminEmail(data.claims.email, parseAdminEmails(serverEnv.ADMIN_EMAIL_ALLOWLIST))
     ) {
-      destination = data.claims.aal === "aal2" ? null : "/admin/mfa";
+      destination = null;
     }
   } catch {
     createLogger({ module: "admin-access" }).warn("admin request identity unavailable");

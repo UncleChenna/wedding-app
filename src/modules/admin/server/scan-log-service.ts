@@ -51,7 +51,7 @@ export async function recordScanNote(input: unknown, ports: ScanLogPorts): Promi
   try {
     const actor = await ports.access();
     if (actor.status !== "ready")
-      return { ok: false, message: "Please complete two-step sign-in first." };
+      return { ok: false, message: "Please sign in with your admin email first." };
     const parsed = scanNoteInput.safeParse(input);
     if (!parsed.success) return { ok: false, message: "Choose a resolution note and try again." };
     const result = await ports.append({ ...parsed.data, adminId: actor.userId });

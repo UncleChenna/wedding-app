@@ -1,4 +1,5 @@
 "use client";
+import { useActionFeedback } from "@/modules/shared/components/use-action-feedback";
 import { useActionState, useEffect, useRef, useState } from "react";
 import { Button, Sheet } from "@/modules/shared/components/ui";
 import type { LifecycleFormState, LifecycleStatus } from "../lib/invitation-lifecycle";
@@ -33,6 +34,7 @@ export function InvitationLifecycleControls({
     },
     { status: "idle" },
   );
+  useActionFeedback(result);
   useEffect(() => {
     // Successful revocation removes the opener. Wait for updated props and the
     // closed sheet, then restore focus once to the surviving household action.

@@ -2,7 +2,7 @@
 id: TICKET-252
 title: Bring the PRD and current-state notes up to date
 epic: foundations
-status: in_review
+status: done
 priority: medium
 estimate: S
 labels: [docs]
@@ -12,11 +12,11 @@ agent: claude
 blocked_by: []
 blocks: []
 branch: TICKET-252
-pr: ""
+pr: "#217"
 created: 2026-11-13
 updated: 2026-11-13
 started: 2026-11-13
-completed: ""
+completed: 2026-11-13
 reason: ""
 resume_to: ""
 ---

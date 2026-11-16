@@ -1,4 +1,5 @@
 "use client";
+import { useFeedbackMessage } from "@/modules/shared/components/use-action-feedback";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/modules/shared/components/ui/button";
 
@@ -8,6 +9,7 @@ export function SavePassImage({ href }: { href: string }) {
   const [message, setMessage] = useState(
     "If saving doesn't work here, open the image and hold it to save.",
   );
+  useFeedbackMessage(busy ? "" : message);
   const [scheme, setScheme] = useState("light");
   const objectUrls = useRef<string[]>([]);
   useEffect(() => {

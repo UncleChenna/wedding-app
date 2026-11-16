@@ -1,4 +1,9 @@
 "use client";
+import { ConfirmSubmitButton } from "@/modules/shared/components/ui/confirm-submit-button";
+import {
+  useActionFeedback,
+  useNotifiedAction,
+} from "@/modules/shared/components/use-action-feedback";
 import { useActionState } from "react";
 import { Button } from "@/modules/shared/components/ui";
 import { menuAdminCopy, type MenuFormState } from "../lib/menu-item";
@@ -18,8 +23,10 @@ export function MenuItemActions({
     setAvailabilityAction,
     { status: "idle" },
   );
+  useActionFeedback(toggle);
+  const notifiedRemoval = useNotifiedAction(deleteMenuItemAction);
   const [removal, removeAction, removing] = useActionState<MenuFormState, FormData>(
-    deleteMenuItemAction,
+    notifiedRemoval,
     { status: "idle" },
   );
   const message = [toggle, removal].find((state) => state.status === "error");
@@ -41,15 +48,18 @@ export function MenuItemActions({
         </form>
         <form action={removeAction}>
           <input type="hidden" name="id" value={id} />
-          <Button
-            type="submit"
+          <ConfirmSubmitButton
+            confirmationTitle="Remove this menu item?"
+            confirmationDescription="It will no longer appear on the guest menu. Existing orders are preserved."
+            confirmLabel="Remove item"
+
             variant="ghost"
             disabled={removing}
             aria-busy={removing}
             aria-label={`${menuAdminCopy.remove}: ${name}`}
           >
             {menuAdminCopy.remove}
-          </Button>
+          </ConfirmSubmitButton>
         </form>
       </div>
       <p role="status" className="text-lg leading-relaxed">

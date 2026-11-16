@@ -2,7 +2,7 @@
 id: TICKET-253
 title: Centre and polish the single-panel pages
 epic: quality
-status: in_review
+status: done
 priority: medium
 estimate: M
 labels: [frontend]
@@ -12,11 +12,11 @@ agent: claude
 blocked_by: []
 blocks: []
 branch: TICKET-253
-pr: ""
+pr: "#219"
 created: 2026-11-13
 updated: 2026-11-13
 started: 2026-11-13
-completed: ""
+completed: 2026-11-13
 reason: ""
 resume_to: ""
 ---

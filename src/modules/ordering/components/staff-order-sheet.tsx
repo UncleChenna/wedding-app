@@ -1,4 +1,5 @@
 "use client";
+import { useOptionalToast } from "@/modules/shared/components/ui/toast";
 
 import { useRef, useState } from "react";
 import { Button, Input, Sheet, Textarea } from "@/modules/shared/components/ui";
@@ -24,6 +25,7 @@ export function StaffOrderSheet({
   menu: readonly MenuItem[];
   onDone: (outcome: Outcome) => void;
 }) {
+  const notifications = useOptionalToast();
   const [open, setOpen] = useState(false);
   const [table, setTable] = useState("");
   const [quantities, setQuantities] = useState<Record<string, number>>({});
@@ -83,6 +85,7 @@ export function StaffOrderSheet({
       ) {
         setOpen(false);
         reset();
+        notifications?.toast({ title: `Order sent for table ${number}.`, tone: "success" });
         onDone({ kind: "sent", table: number });
         return;
       }

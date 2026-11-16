@@ -37,7 +37,7 @@ Day-of navigation uses the configured venue's calendar date. With the owner's ti
 | `/admin/sharing/reminders` | Sharing page                                | Sent households without replies → approved nudge → share attempt → optional Undo | 053                         |
 | `/admin/sharing`           | Authenticated control room                  | Share published household invitation; back to control room                       | 050,052,209; guest list089  |
 | `/admin/sign-in`           | Admin gate                                  | Email code → account status → admin/TOTP                                         | 029,030                     |
-| `/admin/mfa`               | Signed-in account requiring second factor   | Enrol/challenge → control room; sign out                                         | 030                         |
+| `/admin/mfa`               | Legacy sign-in bookmark                     | Verified email → control room; otherwise sign in                                 | 030                         |
 | `/admin/sign-out`          | Admin account controls                      | Sign out → sign-in/home                                                          | 029                         |
 | `/offline`                 | Worker fallback                             | Retry the failed page or return home; no invented cached pass                    | 106; actual offline pass107 |
 | `/dev`                     | Development preview index                   | Every preview listed below; home                                                 | 209                         |
@@ -112,3 +112,11 @@ Staff home → Recover retained gate records (`/gate-recovery`) → save at most
   unchanged. Artwork dates/venues are fixed to that source, while dress code comes from event settings.
 - Admin headline/photo editing applies to the earlier web layout, not the supplied fixed artwork.
   Permanent numbers are allocated once by the database and must not be regenerated after printing.
+
+## Admin sign-in (TICKET-262)
+
+Admins verify their approved email with an email code, then open the dashboard.
+Authenticator enrolment and subsequent TOTP challenges are deferred by owner decision.
+Old `/admin/mfa` bookmarks redirect authenticated admins to `/admin`; signed-out visitors
+return to sign-in. Live identity, matching signed claims, email allowlisting and private
+response headers remain required. Existing authenticator factors are not deleted.

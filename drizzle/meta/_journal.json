@@ -278,8 +278,22 @@
     {
       "idx": 39,
       "version": "7",
-      "when": 1794769698533,
-      "tag": "0039_invitation-card-number",
+      "when": 1794648224081,
+      "tag": "0039_event-details-from-card",
+      "breakpoints": true
+    },
+    {
+      "idx": 40,
+      "version": "7",
+      "when": 1794648249458,
+      "tag": "0040_fill-event-details-from-card",
+      "breakpoints": true
+    },
+    {
+      "idx": 41,
+      "version": "7",
+      "when": 1794828580904,
+      "tag": "0041_invitation-card-number",
       "breakpoints": true
     }
   ]

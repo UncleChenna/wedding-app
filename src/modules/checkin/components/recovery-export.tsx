@@ -1,10 +1,12 @@
 "use client";
+import { useFeedbackMessage } from "@/modules/shared/components/use-action-feedback";
 import { useState } from "react";
 import { Button } from "@/modules/shared/components/ui/button";
 import { exportRecoveryEvidence, applyRecoveryReceipt } from "../browser/recovery-client";
 export function RecoveryExport() {
   const [busy, setBusy] = useState(false),
     [message, setMessage] = useState("");
+  useFeedbackMessage(message);
   async function save() {
     setBusy(true);
     try {

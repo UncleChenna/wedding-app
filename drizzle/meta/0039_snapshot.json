@@ -1,5 +1,5 @@
 {
-  "id": "9f7d1f6c-445f-4291-9aa5-ce9e8dc7934e",
+  "id": "49cb163a-4457-4eb7-8a5e-959c798e3090",
   "prevId": "4ac21758-000d-4bb4-8660-232a4f56612f",
   "version": "7",
   "dialect": "postgresql",
@@ -217,25 +217,55 @@
           "name": "ceremony_time",
           "type": "time",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "'12:00'"
         },
         "time_zone": {
           "name": "time_zone",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "'Africa/Lagos'"
         },
         "venue": {
           "name": "venue",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "'St Paul''s Anglican Church, Apo Resettlement, Abuja'"
         },
         "map_url": {
           "name": "map_url",
           "type": "text",
           "primaryKey": false,
           "notNull": false
+        },
+        "reception_time": {
+          "name": "reception_time",
+          "type": "time",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'14:30'"
+        },
+        "reception_venue": {
+          "name": "reception_venue",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'Fineworld Recreational Park, Events & Gardens, opposite AYM Shafa fuel station, Apo Resettlement, Abuja'"
+        },
+        "reception_map_url": {
+          "name": "reception_map_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "rsvp_phone": {
+          "name": "rsvp_phone",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'09160665114'"
         },
         "dress_code": {
           "name": "dress_code",
@@ -259,7 +289,8 @@
           "name": "rsvp_lock_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "'2026-12-17 23:59:00+01'"
         },
         "ordering_open": {
           "name": "ordering_open",
@@ -1235,23 +1266,6 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "card_number": {
-          "name": "card_number",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "identity": {
-            "type": "always",
-            "name": "invitations_card_number_seq",
-            "schema": "public",
-            "increment": "1",
-            "startWith": "1",
-            "minValue": "1",
-            "maxValue": "2147483647",
-            "cache": "1",
-            "cycle": false
-          }
-        },
         "token": {
           "name": "token",
           "type": "text",
@@ -1359,13 +1373,6 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "invitations_card_number_unique": {
-          "name": "invitations_card_number_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "card_number"
-          ]
-        },
         "invitations_token_unique": {
           "name": "invitations_token_unique",
           "nullsNotDistinct": false,
@@ -1376,10 +1383,6 @@
       },
       "policies": {},
       "checkConstraints": {
-        "invitations_card_number_positive": {
-          "name": "invitations_card_number_positive",
-          "value": "\"invitations\".\"card_number\" > 0"
-        },
         "invitations_tag_along_capacity": {
           "name": "invitations_tag_along_capacity",
           "value": "\"invitations\".\"max_tag_alongs\" between 0 and 10"

@@ -1,4 +1,5 @@
 "use client";
+import { useFeedbackMessage } from "@/modules/shared/components/use-action-feedback";
 import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/modules/shared/components/ui/button";
@@ -20,6 +21,7 @@ export function ScanRecovery() {
   const [requestId, setRequestId] = useState(""),
     [busy, setBusy] = useState(false),
     [message, setMessage] = useState("");
+  useFeedbackMessage(busy ? "" : message);
   const [receipt, setReceipt] = useState<string | null>(null),
     [outcomes, setOutcomes] = useState<{ clientEventId: string; status: string }[]>([]);
   async function choose(file: File | undefined) {

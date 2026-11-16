@@ -24,7 +24,7 @@ export async function closeEventAction(form: FormData): Promise<
 > {
   try {
     if ((await currentAdminAccess()).status !== "ready")
-      return { status: "unauthorized", message: "Please complete two-step sign-in first." };
+      return { status: "unauthorized", message: "Please sign in with your admin email first." };
     const result = await closeEvent(db, {
       confirmation: form.get("confirmation"),
       eventDate: form.get("eventDate"),

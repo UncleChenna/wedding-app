@@ -1,4 +1,5 @@
 "use client";
+import { useActionFeedback } from "@/modules/shared/components/use-action-feedback";
 import { useActionState, useState } from "react";
 import { Button, Checkbox, Input } from "@/modules/shared/components/ui";
 import { alertCopy, type AlertContactState } from "../lib/staff-alerts";
@@ -20,6 +21,7 @@ export function StaffAlertForm({
     saveAlertContactAction,
     { status: "idle" },
   );
+  useActionFeedback(state);
   // React resets the form after every action, which unticks a box whose state didn't change.
   // Remounting the fields per result with the right defaults keeps what was typed on a refusal.
   const [shown, setShown] = useState(state);

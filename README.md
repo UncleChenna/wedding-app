@@ -38,6 +38,15 @@ still has to be on `ADMIN_EMAIL_ALLOWLIST`. It only works when the database and 
 machine and the browser is on `localhost`, and never on Vercel. Set `LOCAL_SIGN_IN_CODE=off` in
 `.env.local` to turn it off, or to six other digits to change it.
 
+If `000000` is rejected, the server log says why: `local sign-in code ignored` names the setting that
+keeps it off, and `local sign-in code could not complete` names what failed, such as an empty
+`SUPABASE_JWT_SECRET`, local Supabase being down, or a local database that needs `pnpm db:migrate`
+(or `pnpm db:reset` if it is from an old version of the app).
+
+If sign-in emails arrive as a link instead of a code, or authenticator setup says "We couldn’t start
+setup", your local Supabase is still running an older `supabase/config.toml`. Restart it with
+`pnpm db:stop` then `pnpm db:start`; your local data is kept.
+
 ## Commands
 
 | Command                       | Purpose                                                                                   |

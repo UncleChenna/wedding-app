@@ -1,4 +1,5 @@
 "use client";
+import { useOptionalToast } from "@/modules/shared/components/ui/toast";
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/modules/shared/components/ui/button";
@@ -97,6 +98,7 @@ export function StationBoard({
   initial: Board;
   menu: readonly MenuItem[];
 }) {
+  const notifications = useOptionalToast();
   const [tickets, setTickets] = useState<StationTicket[]>(initial.tickets);
   const [alertHealth, setAlertHealth] = useState(initial.alertHealth);
   const [recent, setRecent] = useState<RecentTicket[]>(initial.recent);
@@ -202,8 +204,16 @@ export function StationBoard({
         return;
       }
       if (!response.ok) throw new Error("not saved");
+      notifications?.toast({
+        title: `Table ${ticket.table.number}: order ${to}.`,
+        tone: "success",
+      });
     } catch {
       setTickets(before);
+      notifications?.toast({
+        title: `Table ${ticket.table.number} did not update. Please try again.`,
+        tone: "danger",
+      });
       setProblem(`Table ${ticket.table.number} didn’t update. Check the connection and try again.`);
     }
     setSaving((current) => new Set([...current].filter((id) => id !== ticket.id)));
@@ -226,7 +236,10 @@ export function StationBoard({
       audio.current ??= new AudioContext();
       await audio.current.resume();
       setSoundOn(audio.current.state === "running");
-      if (audio.current.state === "running") chime(audio.current);
+      if (audio.current.state === "running") {
+        chime(audio.current);
+        notifications?.toast({ title: "Order sounds are on.", tone: "success" });
+      }
     } catch {
       setSoundOn(false);
     }
