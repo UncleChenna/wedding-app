@@ -18,7 +18,7 @@ import { formatCardNumber, printedCard, type PrintedCardDetails } from "../lib/p
 
 Font.register({
   family: "CardBody",
-  src: resolve(process.cwd(), "src/modules/invitations/fonts/Inter.ttf"),
+  src: resolve(process.cwd(), "src/modules/invitations/fonts/inter.ttf"),
 });
 const width = 419.25;
 const height = 590.3;
