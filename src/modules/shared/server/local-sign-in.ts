@@ -3,7 +3,11 @@ import { createHmac } from "node:crypto";
 import { headers } from "next/headers";
 import { sql } from "drizzle-orm";
 import { createLogger } from "../lib/logger";
-import { isLocalSignInCode } from "../lib/local-sign-in";
+import {
+  DEFAULT_LOCAL_SIGN_IN_CODE,
+  isLocalSignInCode,
+  localSignInRefusal,
+} from "../lib/local-sign-in";
 import { totp } from "../lib/totp";
 
 /**
@@ -18,8 +22,26 @@ export async function usesLocalSignInCode(value: unknown): Promise<boolean> {
   const host = (await headers()).get("host");
   const local = isLocalSignInCode(value, process.env, host);
   if (local) log.warn("local sign-in code used");
+  else if (
+    typed(value) === DEFAULT_LOCAL_SIGN_IN_CODE &&
+    !process.env.VERCEL &&
+    !process.env.VERCEL_ENV
+  )
+    // Off Vercel only: say why 000000 was treated as an ordinary code instead of failing silently.
+    log.warn("local sign-in code ignored", { reason: localSignInRefusal(process.env, host) });
   return local;
 }
+
+const typed = (value: unknown) => (typeof value === "string" ? value.trim() : "");
+
+/** Logged when a local step fails, so a misconfigured machine says what to fix. */
+function failed(step: string, reason: string): null {
+  log.warn("local sign-in code could not complete", { step, reason });
+  return null;
+}
+
+const DATABASE_HINT =
+  "local database unreachable or out of date; run pnpm db:start and pnpm db:migrate";
 
 const encode = (value: object) => Buffer.from(JSON.stringify(value)).toString("base64url");
 
@@ -40,10 +62,11 @@ export async function localEmailCode(email: string): Promise<string | null> {
     import("../lib/env/client"),
   ]);
   const secret = serverEnv.SUPABASE_JWT_SECRET;
-  if (!secret) return null;
+  if (!secret) return failed("email code", "SUPABASE_JWT_SECRET is empty in .env.local");
   const token = localServiceToken(secret);
+  let response: Response;
   try {
-    const response = await fetch(
+    response = await fetch(
       new URL("/auth/v1/admin/generate_link", clientEnv.NEXT_PUBLIC_SUPABASE_URL),
       {
         method: "POST",
@@ -56,24 +79,41 @@ export async function localEmailCode(email: string): Promise<string | null> {
         cache: "no-store",
       },
     );
-    if (!response.ok) return null;
+  } catch {
+    return failed("email code", "local Supabase Auth is unreachable; run pnpm db:start");
+  }
+  if (response.status === 401 || response.status === 403)
+    return failed("email code", "SUPABASE_JWT_SECRET does not match local Supabase");
+  if (!response.ok) return failed("email code", `local Supabase Auth replied ${response.status}`);
+  try {
     const body = (await response.json()) as {
       email_otp?: unknown;
       properties?: { email_otp?: unknown };
     };
     const code = body.properties?.email_otp ?? body.email_otp;
-    return typeof code === "string" ? code : null;
+    if (typeof code === "string") return code;
   } catch {
-    return null;
+    // Fall through to the logged failure.
   }
+  return failed("email code", "local Supabase Auth returned no code");
 }
 
 /** The current code for one of the signed-in admin's own authenticator factors, read locally. */
 export async function localAuthenticatorCode(factorId: string): Promise<string | null> {
-  const { db } = await import("./db/client");
-  const rows = await db.execute<{ secret: string | null }>(
-    sql`select secret from auth.mfa_factors where id = ${factorId} and factor_type = 'totp'`,
-  );
-  const secret = [...rows][0]?.secret;
-  return secret ? totp(secret) : null;
+  let secret: string | null | undefined;
+  try {
+    const { db } = await import("./db/client");
+    const rows = await db.execute<{ secret: string | null }>(
+      sql`select secret from auth.mfa_factors where id = ${factorId} and factor_type = 'totp'`,
+    );
+    secret = [...rows][0]?.secret;
+  } catch {
+    return failed("authenticator code", DATABASE_HINT);
+  }
+  return secret ? totp(secret) : failed("authenticator code", "authenticator not found locally");
+}
+
+/** For callers: logs why a local step failed (by default the likely database cause), never the error. */
+export function localSignInFailed(step: string, reason: string = DATABASE_HINT): void {
+  failed(step, reason);
 }
