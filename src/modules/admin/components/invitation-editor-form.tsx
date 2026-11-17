@@ -163,21 +163,13 @@ export function InvitationEditorForm({
         {values.members[0] && renderGuest(values.members[0], 0)}
         <fieldset disabled={pending} className="space-y-6">
           <legend className="mb-6 font-display text-2xl">Invitation details</legend>
-          <Input
-            label="Side"
-            name="side"
-            value={values.side}
-            onChange={(event) => setValues({ ...values, side: event.target.value })}
-            maxLength={200}
-            hint="Optional, for example bride's family or groom's friends."
-            error={fields.side}
-          />
+          <input type="hidden" name="side" value={values.side} />
           <Select
             label="Table"
             name="tableId"
             value={values.tableId}
             onChange={(event) => setValues({ ...values, tableId: event.target.value })}
-            hint="The guest and their plus-ones sit together at this table."
+            hint="Multiple guests and their plus-ones can share a table. Each person counts toward its capacity."
             error={fields.tableId}
           >
             <option value="">Not seated yet</option>

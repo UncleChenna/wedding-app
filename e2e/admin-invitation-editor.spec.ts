@@ -94,9 +94,7 @@ test.describe("authenticated invitation editor", () => {
     await page.getByRole("link", { name: "Edit this invitation" }).click();
     await expect(page.getByRole("heading", { name: "Edit invitation", exact: true })).toBeVisible();
     await page.getByLabel("Guest name", { exact: true }).fill(`${tag} corrected`);
-    await page
-      .getByRole("textbox", { name: "Side", exact: true })
-      .fill("FamilyAndFriends".repeat(12));
+    await expect(page.getByRole("textbox", { name: "Side", exact: true })).toHaveCount(0);
     await page.getByRole("button", { name: "Add a plus-one" }).click();
     await page.getByLabel("Plus one 1 name", { exact: true }).fill("Synthetic second");
     await page.getByRole("button", { name: "Save invitation", exact: true }).click();
@@ -107,11 +105,16 @@ test.describe("authenticated invitation editor", () => {
       { id: string }[]
     >`select id from guests where invitation_id=${created.id} order by id`;
     expect(membersBefore).toHaveLength(2);
-    await page.getByRole("textbox", { name: "Side", exact: true }).fill("Family corrected");
+    await page.getByLabel("Guest email", { exact: true }).fill("corrected@example.com");
     await page.getByRole("button", { name: "Save invitation", exact: true }).click();
     await expect
-      .poll(async () => (await db`select side from invitations where id=${created.id}`)[0]?.side)
-      .toBe("Family corrected");
+      .poll(
+        async () =>
+          (
+            await db`select email from guests where invitation_id=${created.id} and email=${"corrected@example.com"}`
+          )[0]?.email,
+      )
+      .toBe("corrected@example.com");
     expect(await db`select id from guests where invitation_id=${created.id} order by id`).toEqual(
       membersBefore,
     );

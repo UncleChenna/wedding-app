@@ -15,8 +15,8 @@ export async function AdminSeating() {
       </Link>
       <h1 className="mt-6 font-display text-4xl leading-tight md:text-5xl">Seating plan</h1>
       <p className="mt-6 max-w-prose">
-        Choose a table for each guest. Their plus-one stays with them on the same invitation. Seat
-        counts update as replies arrive.
+        Multiple guests and their plus-ones can share a table. Keep each guest with their plus-one
+        and use the seat count to check capacity. Counts update as replies arrive.
       </p>
       <Link
         href="/admin/guests/seating/cards"
