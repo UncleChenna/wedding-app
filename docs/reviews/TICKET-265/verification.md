@@ -38,3 +38,16 @@ with email/phone alongside it. Named guests is now Plus one; companions are list
 and can be added/removed without removing the primary guest. Form submission order remains
 primary guest first, preserving IDs and saved details. Six form tests and an authenticated
 mobile add/remove check pass; screenshot included. No database field or migration required.
+
+## Send from confirmation — 17 November
+
+The saved-invitation screen now offers inline personalised card preview and a Send invitation
+button using the existing tracked share menu. Admin authorization and UUID validation precede
+credential reads; previewing never records sending. Failed loading can be retried without
+recreating the invitation. Card data is read directly for drafts (public draft links are inactive).
+Older local databases without card numbering show an explicit unavailable message rather than
+an invented number. No migration or outbound message is performed here.
+
+Quick verification passed (14 related tests); two authorization/input tests also passed.
+Authenticated browser check created a synthetic invitation in the isolated database, loaded
+both artwork images, opened the card panel and then the sharing menu. No message was sent.

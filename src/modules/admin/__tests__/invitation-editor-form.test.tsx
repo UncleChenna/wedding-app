@@ -1,6 +1,13 @@
 // @vitest-environment jsdom
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeAll, expect, it, vi } from "vitest";
+vi.mock("../server/saved-invitation-sharing", () => ({
+  loadSavedInvitationSharing: vi.fn().mockResolvedValue({ ok: false, message: "Unavailable" }),
+}));
+vi.mock("../server/share-tracking-actions", () => ({
+  recordShareAction: vi.fn(),
+  undoShareAction: vi.fn(),
+}));
 vi.mock("../server/invitation-editor-actions", () => ({
   saveInvitationEditorAction: vi.fn(),
   deleteInvitationDraftAction: vi.fn(),

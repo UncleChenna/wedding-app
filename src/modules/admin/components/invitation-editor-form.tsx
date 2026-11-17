@@ -12,6 +12,7 @@ import {
   deleteInvitationDraftAction,
   saveInvitationEditorAction,
 } from "../server/invitation-editor-actions";
+import { SavedInvitationSharing } from "./saved-invitation-sharing";
 import { InvitationLifecycleControls } from "./invitation-lifecycle-controls";
 
 const empty: InvitationEditorValues = {
@@ -72,6 +73,7 @@ export function InvitationEditorForm({
               ? state.message
               : ""}
         </p>
+        {state.status === "saved" && <SavedInvitationSharing id={state.id} />}
         {state.status === "saved" && (
           <Link className={linkStyle} href={`/admin/guests/${state.id}/edit`}>
             Edit this invitation

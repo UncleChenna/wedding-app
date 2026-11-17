@@ -17,8 +17,10 @@ export function ShareMenu({
   tracking,
   onRecorded,
   purpose = "invitation",
+  triggerLabel,
 }: {
   invitation: ShareInput;
+  triggerLabel?: string;
   tracking?: { invitationId: string; expectedVersion: number };
   onRecorded?: (eventId: string) => void;
   purpose?: "invitation" | "reminder";
@@ -175,7 +177,7 @@ export function ShareMenu({
   return (
     <>
       <Button size="lg" onClick={begin} disabled={recording} aria-haspopup="dialog">
-        {purpose === "reminder" ? "Share reminder" : "Share invitation"}
+        {triggerLabel ?? (purpose === "reminder" ? "Share reminder" : "Share invitation")}
       </Button>
       {tracking && (
         <div className="space-y-3">
