@@ -100,7 +100,7 @@ test.describe("complete admin setup journey", () => {
     await page.goto(`/admin/guests/${invitation.id}/edit`);
     await page.getByRole("button", { name: "Add a plus-one" }).click();
     await page.getByLabel("Plus one 1 name", { exact: true }).fill(`${tag} Uchenna`);
-    await page.getByLabel("Additional tag-along places").fill("0");
+    await expect(page.getByLabel("Additional tag-along places")).toHaveCount(0);
     await page.getByRole("button", { name: "Save invitation", exact: true }).click();
     await expect(
       page.getByRole("main").getByRole("status").filter({ hasText: "Invitation details saved." }),

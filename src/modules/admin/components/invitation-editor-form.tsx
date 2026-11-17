@@ -187,17 +187,7 @@ export function InvitationEditorForm({
               </option>
             ))}
           </Select>
-          <Input
-            label="Additional tag-along places"
-            name="maxTagAlongs"
-            type="number"
-            min={0}
-            max={10}
-            value={values.maxTagAlongs}
-            onChange={(event) => setValues({ ...values, maxTagAlongs: event.target.value })}
-            hint="Extra people this party may name when replying, in addition to the named invitees."
-            error={fields.maxTagAlongs}
-          />
+          <input type="hidden" name="maxTagAlongs" value={values.maxTagAlongs} />
         </fieldset>
         <section aria-labelledby="plus-one" className="space-y-6">
           <h2 id="plus-one" className="font-display text-2xl">
