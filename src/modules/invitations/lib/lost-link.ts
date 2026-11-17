@@ -56,6 +56,6 @@ export function matchLostLinkRequest(
       request.contactKind === "email" ? candidate.email?.trim().toLowerCase() : candidate.phone;
     if (contact === request.contact) matches.add(candidate.invitationId);
   }
-  // Never guess which household to disclose when the same name/contact occurs twice.
+  // Never guess which guest to disclose when the same name/contact occurs twice.
   return matches.size === 1 ? (matches.values().next().value ?? null) : null;
 }

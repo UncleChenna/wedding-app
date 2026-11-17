@@ -4,7 +4,7 @@ import { asc, eq } from "drizzle-orm";
 import type { Db } from "@/modules/shared/server/db/client";
 import { invitations } from "@/modules/shared/server/db/schema";
 
-/** Only called after admin authorization; returned links are private household credentials. */
+/** Only called after admin authorization; returned links are private guest credentials. */
 export function readPassReminderRows(database: Pick<Db, "select">) {
   return database
     .select({

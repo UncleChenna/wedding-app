@@ -105,7 +105,7 @@ export function parseGuestImportCsv(input: unknown): ImportParseResult {
   const headers = (parsed[0] ?? []).map((s) => s.trim().toLowerCase());
   if (headers.includes("household"))
     return fail(
-      "Remove the obsolete household column. Use one row per invited guest; party size includes that guest and their plus-ones.",
+      "Remove the obsolete grouping column. Use one row per invited guest; party size includes that guest and their plus-ones.",
     );
   if (
     new Set(headers).size !== headers.length ||

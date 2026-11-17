@@ -28,7 +28,7 @@ export async function passImageResponse(
         status: issued.state === "absent" ? 404 : 503,
         headers,
       });
-    // Explicit allowlist: never pass the household's contact, meals, table or editing capability to the renderer.
+    // Explicit allowlist: never pass the guest's contact, meals, table or editing capability to the renderer.
     return await (deps.render ?? renderPassImage)(
       {
         name: issued.pass.names.join(" & ") || issued.pass.householdName || "Our dear guest",

@@ -375,7 +375,7 @@ export const guests = pgTable(
     name: text("name").notNull(),
     email: text("email"),
     phone: text("phone"),
-    /** The named invitee (false for tag-alongs added by the household). */
+    /** The named invitee (false for tag-alongs added by the guest). */
     isPrimary: boolean("is_primary").notNull().default(false),
     mealChoice: text("meal_choice"),
     dietaryNotes: text("dietary_notes"),

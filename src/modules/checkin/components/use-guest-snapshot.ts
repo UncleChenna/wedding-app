@@ -13,7 +13,7 @@ interface FreshnessState {
   now: number;
 }
 
-/** External browser subscription: React stores metadata only, never household rows. */
+/** External browser subscription: React stores metadata only, never guest rows. */
 function snapshotState(session: string, expiresAt: number) {
   const initial: FreshnessState = { summary: null, refreshing: true, failed: false, now: 0 };
   let state = initial;

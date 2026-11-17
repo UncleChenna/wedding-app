@@ -26,7 +26,7 @@ describe("guest CSV parsing", () => {
     );
     expect(result.ok).toBe(false);
     if (!result.ok)
-      expect(result.errors[0]?.message).toContain("Remove the obsolete household column");
+      expect(result.errors[0]?.message).toContain("Remove the obsolete grouping column");
   });
   it.each(['"broken', 'Ada"bad,,,1,,', '"Ada"x,,,1,,'])("rejects malformed quotes: %s", (row) => {
     expect(parseGuestImportCsv(header + row).ok).toBe(false);

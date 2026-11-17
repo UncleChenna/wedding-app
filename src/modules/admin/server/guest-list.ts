@@ -35,7 +35,7 @@ export async function getGuestList(): Promise<GuestListResult> {
         .leftJoin(rsvps, eq(rsvps.invitationId, invitations.id))
         .leftJoin(tables, eq(tables.id, invitations.tableId))
         .orderBy(asc(invitations.createdAt), asc(invitations.id)),
-      // A separate ordered query prevents households being duplicated by members.
+      // A separate ordered query prevents guests being duplicated by members.
       db
         .select({ id: guests.id, invitationId: guests.invitationId, name: guests.name })
         .from(guests)

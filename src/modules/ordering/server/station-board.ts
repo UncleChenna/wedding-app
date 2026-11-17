@@ -146,7 +146,7 @@ async function readBoard(
       recent,
     };
 
-  // A guest's own table wins; otherwise their household's table.
+  // A guest's own table wins; otherwise their guest's table.
   const tableIds = [...new Set(tickets.map((ticket) => ticket.tableId))];
   if (tableIds.length === 0) return { generatedAt: now.toISOString(), tickets: [], recent };
   const seatedAt = sql<string>`coalesce(${guests.tableId}, ${invitations.tableId})`;
