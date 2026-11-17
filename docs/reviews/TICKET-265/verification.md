@@ -30,3 +30,11 @@ Screenshots reviewed; reduced-motion preference used. Existing mobile admin navi
 at the viewport bottom and overlays part of full-page captures; content remains scrollable.
 Physical devices, physical print scan, Lighthouse, every registered palette, and full keyboard
 journeys were not verified. This is not full release QA approval. Build security blocker remains.
+
+## Guest input clarification — 17 November
+
+Restored a distinct Guest name input at the top, backed by the primary guest record,
+with email/phone alongside it. Named guests is now Plus one; companions are listed below
+and can be added/removed without removing the primary guest. Form submission order remains
+primary guest first, preserving IDs and saved details. Six form tests and an authenticated
+mobile add/remove check pass; screenshot included. No database field or migration required.

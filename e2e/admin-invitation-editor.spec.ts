@@ -54,19 +54,19 @@ test.describe("authenticated invitation editor", () => {
       page.getByRole("heading", { name: "Add an invitation", exact: true }),
     ).toBeVisible();
     await expect(page.getByLabel("Household name", { exact: true })).toHaveCount(0);
-    await page.getByLabel("Guest 1 name", { exact: true }).fill(tag);
-    await page.getByLabel("Guest 1 email", { exact: true }).fill("bad email");
-    await page.getByLabel("Guest 1 phone", { exact: true }).fill("bad phone");
+    await page.getByLabel("Guest name", { exact: true }).fill(tag);
+    await page.getByLabel("Guest email", { exact: true }).fill("bad email");
+    await page.getByLabel("Guest phone", { exact: true }).fill("bad phone");
     await page.getByRole("button", { name: "Create draft invitation", exact: true }).click();
-    await expect(page.getByLabel("Guest 1 email", { exact: true })).toHaveAttribute(
+    await expect(page.getByLabel("Guest email", { exact: true })).toHaveAttribute(
       "aria-invalid",
       "true",
     );
-    await expect(page.getByLabel("Guest 1 phone", { exact: true })).toHaveAttribute(
+    await expect(page.getByLabel("Guest phone", { exact: true })).toHaveAttribute(
       "aria-invalid",
       "true",
     );
-    await expect(page.getByLabel("Guest 1 email", { exact: true })).toBeFocused();
+    await expect(page.getByLabel("Guest email", { exact: true })).toBeFocused();
     mkdirSync("docs/reviews/TICKET-090/screenshots", { recursive: true });
     for (const theme of themes) {
       await applyTheme(page, theme);
@@ -76,8 +76,8 @@ test.describe("authenticated invitation editor", () => {
         fullPage: true,
       });
     }
-    await page.getByLabel("Guest 1 email", { exact: true }).fill("synthetic@example.invalid");
-    await page.getByLabel("Guest 1 phone", { exact: true }).fill("07700900123");
+    await page.getByLabel("Guest email", { exact: true }).fill("synthetic@example.invalid");
+    await page.getByLabel("Guest phone", { exact: true }).fill("07700900123");
     await page.getByRole("button", { name: "Create draft invitation", exact: true }).click();
     await expect(page.locator("main").getByRole("status")).toContainText(
       "Draft invitation created",
@@ -93,12 +93,12 @@ test.describe("authenticated invitation editor", () => {
     expect(created.token).toMatch(/^[A-Za-z0-9_-]{43}$/);
     await page.getByRole("link", { name: "Edit this invitation" }).click();
     await expect(page.getByRole("heading", { name: "Edit invitation", exact: true })).toBeVisible();
-    await page.getByLabel("Guest 1 name", { exact: true }).fill(`${tag} corrected`);
+    await page.getByLabel("Guest name", { exact: true }).fill(`${tag} corrected`);
     await page
       .getByRole("textbox", { name: "Side", exact: true })
       .fill("FamilyAndFriends".repeat(12));
-    await page.getByRole("button", { name: "Add a named guest" }).click();
-    await page.getByLabel("Guest 2 name", { exact: true }).fill("Synthetic second");
+    await page.getByRole("button", { name: "Add a plus-one" }).click();
+    await page.getByLabel("Plus one 1 name", { exact: true }).fill("Synthetic second");
     await page.getByRole("button", { name: "Save invitation", exact: true }).click();
     await expect(
       page.locator("main").getByRole("status").filter({ hasText: "Invitation details saved." }),
@@ -159,8 +159,8 @@ test.describe("authenticated invitation editor", () => {
     await db`insert into rsvps(invitation_id,attending,count_attending,responded_at) values(${published},true,1,'2026-10-01T12:00:00Z')`;
     await page.goto(`/admin/guests/${published}/edit`);
     await expect(page.getByRole("button", { name: "Delete draft", exact: true })).toHaveCount(0);
-    await page.getByRole("button", { name: "Add a named guest" }).click();
-    await page.getByLabel("Guest 2 name", { exact: true }).fill("Added invited guest");
+    await page.getByRole("button", { name: "Add a plus-one" }).click();
+    await page.getByLabel("Plus one 1 name", { exact: true }).fill("Added invited guest");
     await page.getByRole("button", { name: "Save invitation", exact: true }).click();
     await expect(
       page.locator("main").getByRole("status").filter({ hasText: "Invitation details saved." }),

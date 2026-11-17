@@ -92,6 +92,65 @@ export function InvitationEditorForm({
       ),
     }));
   }
+  function renderGuest(member: InvitationEditorValues["members"][number], index: number) {
+    return (
+      <fieldset
+        key={member.id || `new-${index}`}
+        disabled={pending}
+        className="space-y-6 border-t border-border pt-6"
+      >
+        <legend className="px-1 text-lg font-medium">
+          {index === 0 ? "Guest details" : `Plus one ${index}`}
+        </legend>
+        <input type="hidden" name="memberId" value={member.id} />
+        <Input
+          label={index === 0 ? "Guest name" : `Plus one ${index} name`}
+          name="memberName"
+          value={member.name}
+          onChange={(event) => updateMember(index, "name", event.target.value)}
+          required
+          maxLength={200}
+          error={fields[`members.${index}.name`]}
+        />
+        <Input
+          label={index === 0 ? "Guest email" : `Plus one ${index} email`}
+          name="memberEmail"
+          type="email"
+          value={member.email}
+          onChange={(event) => updateMember(index, "email", event.target.value)}
+          maxLength={254}
+          autoComplete="email"
+          error={fields[`members.${index}.email`]}
+        />
+        <Input
+          label={index === 0 ? "Guest phone" : `Plus one ${index} phone`}
+          name="memberPhone"
+          type="tel"
+          value={member.phone}
+          onChange={(event) => updateMember(index, "phone", event.target.value)}
+          maxLength={200}
+          autoComplete="tel"
+          hint="Include the country code for numbers outside the UK."
+          error={fields[`members.${index}.phone`]}
+        />
+        {index > 0 && (
+          <Button
+            type="button"
+            variant="ghost"
+            disabled={pending || values.members.length === 1}
+            onClick={() =>
+              setValues({
+                ...values,
+                members: values.members.filter((_, position) => position !== index),
+              })
+            }
+          >
+            Remove plus one {index}
+          </Button>
+        )}
+      </fieldset>
+    );
+  }
   return (
     <div className="mt-8 space-y-12">
       <form ref={form} action={action} noValidate className="space-y-8 [&_label]:text-base">
@@ -101,6 +160,7 @@ export function InvitationEditorForm({
             <input type="hidden" name="snapshot" value={snapshot} />
           </>
         )}
+        {values.members[0] && renderGuest(values.members[0], 0)}
         <fieldset disabled={pending} className="space-y-6">
           <legend className="mb-6 font-display text-2xl">Invitation details</legend>
           <Input
@@ -117,7 +177,7 @@ export function InvitationEditorForm({
             name="tableId"
             value={values.tableId}
             onChange={(event) => setValues({ ...values, tableId: event.target.value })}
-            hint="Changing the party table seats all its named guests together."
+            hint="The guest and their plus-ones sit together at this table."
             error={fields.tableId}
           >
             <option value="">Not seated yet</option>
@@ -139,9 +199,9 @@ export function InvitationEditorForm({
             error={fields.maxTagAlongs}
           />
         </fieldset>
-        <section aria-labelledby="named-guests" className="space-y-6">
-          <h2 id="named-guests" className="font-display text-2xl">
-            Named guests
+        <section aria-labelledby="plus-one" className="space-y-6">
+          <h2 id="plus-one" className="font-display text-2xl">
+            Plus one
           </h2>
           {invitation?.reply && (
             <p className="max-w-prose">
@@ -151,62 +211,10 @@ export function InvitationEditorForm({
             </p>
           )}
           <p className="max-w-prose">
-            Existing meal choices and dietary notes stay with each guest. Removing a guest removes
-            their current details; saved reply history stays on record.
+            Add anyone accompanying this guest. They share the invitation and table. Meal choices
+            and dietary notes stay with each person; removing a plus-one keeps saved reply history.
           </p>
-          {values.members.map((member, index) => (
-            <fieldset
-              key={member.id || `new-${index}`}
-              disabled={pending}
-              className="space-y-6 border-t border-border pt-6"
-            >
-              <legend className="px-1 text-lg font-medium">Guest {index + 1}</legend>
-              <input type="hidden" name="memberId" value={member.id} />
-              <Input
-                label={`Guest ${index + 1} name`}
-                name="memberName"
-                value={member.name}
-                onChange={(event) => updateMember(index, "name", event.target.value)}
-                required
-                maxLength={200}
-                error={fields[`members.${index}.name`]}
-              />
-              <Input
-                label={`Guest ${index + 1} email`}
-                name="memberEmail"
-                type="email"
-                value={member.email}
-                onChange={(event) => updateMember(index, "email", event.target.value)}
-                maxLength={254}
-                autoComplete="email"
-                error={fields[`members.${index}.email`]}
-              />
-              <Input
-                label={`Guest ${index + 1} phone`}
-                name="memberPhone"
-                type="tel"
-                value={member.phone}
-                onChange={(event) => updateMember(index, "phone", event.target.value)}
-                maxLength={200}
-                autoComplete="tel"
-                hint="Include the country code for numbers outside the UK."
-                error={fields[`members.${index}.phone`]}
-              />
-              <Button
-                type="button"
-                variant="ghost"
-                disabled={pending || values.members.length === 1}
-                onClick={() =>
-                  setValues({
-                    ...values,
-                    members: values.members.filter((_, position) => position !== index),
-                  })
-                }
-              >
-                Remove guest {index + 1}
-              </Button>
-            </fieldset>
-          ))}
+          {values.members.slice(1).map((member, index) => renderGuest(member, index + 1))}
           {fields.members && <p role="alert">{fields.members}</p>}
           <Button
             type="button"
@@ -219,7 +227,7 @@ export function InvitationEditorForm({
               })
             }
           >
-            Add a named guest
+            Add a plus-one
           </Button>
         </section>
         {state.status !== "idle" && (
