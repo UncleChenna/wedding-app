@@ -52,3 +52,23 @@ it("keeps the saved invitation recoverable if sharing cannot load", async () => 
   await screen.findByText("This invitation has been withdrawn.");
   expect(screen.queryByRole("button", { name: "Send invitation" })).not.toBeInTheDocument();
 });
+it("shows the original artwork even when personal numbering is unavailable", async () => {
+  load.mockResolvedValue({
+    ok: true,
+    card: null,
+    invitation: {
+      id: "one",
+      share: { url: "https://example.com/i/token", subject: "Invitation", message: "Welcome" },
+    },
+  });
+  render(<SavedInvitationSharing id="one" />);
+  fireEvent.click(await screen.findByRole("button", { name: "Preview invitation" }));
+  expect(screen.getByRole("region", { name: "Original invitation card" })).toBeInTheDocument();
+  expect(
+    screen.getByRole("img", { name: "Original invitation cover: Uchenna and Adaora" }),
+  ).toBeInTheDocument();
+  expect(screen.getByRole("link", { name: "Open original PDF" })).toHaveAttribute(
+    "href",
+    "/invitations/original-invitation.pdf",
+  );
+});

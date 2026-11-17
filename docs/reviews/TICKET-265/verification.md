@@ -51,3 +51,13 @@ an invented number. No migration or outbound message is performed here.
 Quick verification passed (14 related tests); two authorization/input tests also passed.
 Authenticated browser check created a synthetic invitation in the isolated database, loaded
 both artwork images, opened the card panel and then the sharing menu. No message was sent.
+
+## Blank preview repair
+
+Opened the supplied PDF using the local PDF renderer and verified SHA-256 matches the project's
+original.pdf byte-for-byte. Preview now displays the original two-page artwork when a local
+record has no personal card number, instead of withholding all artwork. Personalised cards keep
+the existing number/RSVP overlays. Images load directly without the optimizer/blur placeholder.
+Open original PDF serves an exact byte-for-byte copy of the supplied document.
+Quick verification passed (24 related tests); three preview component tests including missing
+number fallback passed. Authenticated browser loaded both images and the send menu successfully.

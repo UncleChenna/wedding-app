@@ -1,4 +1,7 @@
 "use client";
+import Image from "next/image";
+import front from "@/modules/invitations/assets/card/front.png";
+import back from "@/modules/invitations/assets/card/details.png";
 import { useEffect, useState } from "react";
 import { Button, Sheet } from "@/modules/shared/components/ui";
 import { loadSavedInvitationSharing } from "../server/saved-invitation-sharing";
@@ -64,14 +67,35 @@ export function SavedInvitationSharing({ id }: { id: string }) {
         <p className="mb-4">
           This is your guest’s invitation. Opening this preview does not send it.
         </p>
+        <a
+          href="/invitations/original-invitation.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mb-4 inline-flex min-h-11 items-center text-primary underline"
+        >
+          Open original PDF
+        </a>
         <div className="max-h-[65dvh] overflow-y-auto">
           {preview &&
             (result.card ? (
               <PrintedInvitationCard card={result.card} replyHref={share.url} />
             ) : (
-              <p role="status">
-                The personalised card is not available on this local database yet.
-              </p>
+              <section aria-label="Original invitation card" className="bg-white space-y-6">
+                <Image
+                  src={front}
+                  alt="Original invitation cover: Uchenna and Adaora"
+                  unoptimized
+                  priority
+                  className="h-auto w-full"
+                />
+                <Image
+                  src={back}
+                  alt="Original invitation: ceremony, reception and RSVP details"
+                  unoptimized
+                  loading="eager"
+                  className="h-auto w-full"
+                />
+              </section>
             ))}
         </div>
       </Sheet>
