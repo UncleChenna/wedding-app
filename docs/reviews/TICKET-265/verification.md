@@ -61,3 +61,21 @@ the existing number/RSVP overlays. Images load directly without the optimizer/bl
 Open original PDF serves an exact byte-for-byte copy of the supplied document.
 Quick verification passed (24 related tests); three preview component tests including missing
 number fallback passed. Authenticated browser loaded both images and the send menu successfully.
+
+## Online card numbering — 17 November
+
+Owner reserves 001–150 for hard-copy invitations. New online allocations start at 151;
+20 consecutive successful creations use 151–170. There is no artificial 20-invitation cap.
+Generated migration 0042 changes identity START and advances its current counter to at least
+150, preserving all existing card numbers and any higher consumed sequence value. Sequence
+gaps remain intentional: rolled-back/deleted invitations never cause number reuse.
+
+Isolated PostgreSQL: 20 allocations returned151–170, unique; synthetic rows rolled back.
+Existing id/number pairs unchanged; repeating migration retained the higher counter.
+Drizzle migrate twice had identical row/migration counts; all30 public tables retain RLS.
+Two invitation repository database tests pass, including new numbers>=151.
+Local main database had no card_number column: applied additive pending0039–0042 through
+Drizzle, verified guest/invitation counts unchanged and next online allocation151. Existing
+records received historical identifiers from0041 and are not renumbered by0042. No production
+application or reset. To roll back application code, retain the sequence floor and existing
+identifiers; never lower/recycle the sequence.

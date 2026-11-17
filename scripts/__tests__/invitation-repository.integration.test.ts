@@ -39,6 +39,11 @@ describe.runIf(enabled)("invitation persistence on isolated Postgres", () => {
         expect(result.ok).toBe(true);
         if (!result.ok) throw new Error("Expected fixture invitation");
         const { id, token } = result.value;
+        const [numbered] = await tx
+          .select({ number: schema.invitations.cardNumber })
+          .from(schema.invitations)
+          .where(eq(schema.invitations.id, id));
+        expect(numbered?.number).toBeGreaterThanOrEqual(151);
         expect(token).toMatch(/^[A-Za-z0-9_-]{43}$/);
         expect(await findGuestInvitation(tx, token)).toBeNull();
         await tx.insert(schema.guests).values([
