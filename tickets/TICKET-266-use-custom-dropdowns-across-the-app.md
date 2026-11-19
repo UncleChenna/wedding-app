@@ -11,7 +11,7 @@ owner: UncleChenna
 blocked_by: []
 blocks: []
 branch: TICKET-266
-pr: ""
+pr: "https://github.com/UncleChenna/wedding-app/pull/232"
 created: 2026-11-19
 updated: 2026-11-19
 ---
