@@ -126,3 +126,13 @@ synthetic invitation save, nested preview/share, Escape leaving the parent open 
 focus restoration with URL still /admin/guests. No message sent. Screenshots included.
 Print gate list remains the printable confirmed-guest backup with arrival tick boxes; opening
 it does not send invitations or record admission automatically.
+
+## Compact phone selector and responsive modal — 19 November
+
+Country code now occupies6.5rem alongside the phone input at every width, with one visible
+phone label and distinct accessible labels for both controls. Options put the dial code first;
+Nigeria remains the default. The modal uses dynamic viewport height, scroll containment and
+horizontal desktop margins. Browser measurements after viewport layout settled passed at
+320x568,375x812,768x1024,1280x800,667x375 and375x400: dialog inside viewport, no horizontal
+overflow, code<=110px, controls aligned and submit reachable by scrolling. Axe:zero violations.
+Quick verification:nine tests passed. Physical keyboard/device behavior remains unverified.
