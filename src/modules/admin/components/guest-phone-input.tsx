@@ -37,12 +37,12 @@ export function GuestPhoneInput({
         <input type="hidden" name="memberPhone" value={value} />
         <Select
           label={`${label} country code`}
-          className="px-2 pr-7"
+          className="px-2"
           value={parts.country}
           onChange={(event) => update(event.target.value, parts.number)}
         >
           {guestPhoneCountries.map((c) => (
-            <option key={c.code} value={c.code}>
+            <option key={c.code} value={c.code} data-display={`+${c.dial}`}>
               +{c.dial} · {c.label}
             </option>
           ))}
