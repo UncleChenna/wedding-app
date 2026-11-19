@@ -21,7 +21,13 @@ it("posts one international value while displaying the local number and selectab
   expect(screen.getByLabelText("Guest phone", { exact: true })).toHaveValue("09160665114");
   const form = screen.getByRole("form", { name: "Guest" }) as HTMLFormElement;
   expect(new FormData(form).getAll("memberPhone")).toEqual(["+2349160665114"]);
-  fireEvent.change(screen.getByLabelText("Guest phone country code"), { target: { value: "GB" } });
+  const country = screen.getByLabelText("Guest phone country code");
+  if (country.tagName === "BUTTON") {
+    fireEvent.click(country);
+    fireEvent.click(screen.getByRole("option", { name: /United Kingdom/ }));
+  } else {
+    fireEvent.change(country, { target: { value: "GB" } });
+  }
   fireEvent.change(screen.getByLabelText("Guest phone", { exact: true }), {
     target: { value: "07700900123" },
   });
