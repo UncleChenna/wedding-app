@@ -133,7 +133,7 @@ test.describe("complete admin setup journey", () => {
     ).toEqual([{ channel: "copy", undone_at: null }]);
 
     await nav.getByRole("link", { name: "Guests", exact: true }).click();
-    await page.getByRole("link", { name: "Seating plan", exact: true }).click();
+    await page.goto("/admin/guests/seating");
     await page.getByRole("button", { name: "Add table", exact: true }).click();
     await page.getByLabel("Table number", { exact: true }).fill(String(tableNumber));
     await page.getByLabel("Table name", { exact: true }).fill(tableName);

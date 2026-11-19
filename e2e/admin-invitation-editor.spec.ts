@@ -49,7 +49,7 @@ test.describe("authenticated invitation editor", () => {
     if (info.project.name === "mobile") await page.setViewportSize({ width: 375, height: 900 });
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/admin/guests");
-    await page.getByRole("link", { name: "Add an invitation", exact: true }).click();
+    await page.getByRole("button", { name: "Add an invitation", exact: true }).click();
     await expect(
       page.getByRole("heading", { name: "Add an invitation", exact: true }),
     ).toBeVisible();

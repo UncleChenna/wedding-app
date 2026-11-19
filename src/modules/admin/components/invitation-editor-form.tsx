@@ -28,8 +28,10 @@ export function InvitationEditorForm({
   invitation,
   tables,
   saveAction = saveInvitationEditorAction,
+  embedded = false,
 }: {
   invitation?: InvitationEditorDetails;
+  embedded?: boolean;
   tables: { id: string; number: number }[];
   saveAction?: (previous: InvitationEditorState, form: FormData) => Promise<InvitationEditorState>;
 }) {
@@ -80,11 +82,13 @@ export function InvitationEditorForm({
             Edit this invitation
           </Link>
         )}
-        <p>
-          <Link className={linkStyle} href="/admin/guests">
-            Back to guests
-          </Link>
-        </p>
+        {!embedded && (
+          <p>
+            <Link className={linkStyle} href="/admin/guests">
+              Back to guests
+            </Link>
+          </p>
+        )}
       </div>
     );
   function updateMember(index: number, key: "name" | "email" | "phone", value: string) {
@@ -155,7 +159,11 @@ export function InvitationEditorForm({
         ref={form}
         action={action}
         noValidate
-        className="space-y-8 rounded-lg border border-border bg-surface p-4 sm:p-6 md:p-8 [&_label]:text-sm"
+        className={
+          embedded
+            ? "space-y-6 [&_label]:text-sm"
+            : "space-y-8 rounded-lg border border-border bg-surface p-4 sm:p-6 md:p-8 [&_label]:text-sm"
+        }
       >
         {invitation && (
           <>

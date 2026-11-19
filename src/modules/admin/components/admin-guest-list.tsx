@@ -1,3 +1,6 @@
+import { Suspense } from "react";
+import { AddInvitationModal } from "./add-invitation-modal";
+import { AdminInvitationEditor } from "./admin-invitation-editor";
 import Link from "next/link";
 import { appRoutes } from "@/modules/shared/lib/routes";
 import { RetryButton } from "@/modules/shared/components/retry-button";
@@ -20,20 +23,13 @@ export async function AdminGuestList({ draftDeleted = false }: { draftDeleted?: 
             Everyone you’re celebrating with, in one place.
           </p>
         </div>
-        <Link
-          href={appRoutes.adminGuestNew.path}
-          className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-md bg-primary px-5 py-3 font-medium text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
-        >
-          Add an invitation
-        </Link>
+        <AddInvitationModal>
+          <Suspense fallback={<p role="status">Loading guest form…</p>}>
+            <AdminInvitationEditor embedded />
+          </Suspense>
+        </AddInvitationModal>
       </header>
       <nav aria-label="Guest tools" className="flex flex-wrap gap-x-6 gap-y-1 py-4 text-sm">
-        <Link
-          href={appRoutes.adminSeating.path}
-          className="inline-flex min-h-11 items-center text-primary underline underline-offset-4"
-        >
-          Seating plan
-        </Link>
         <Link
           href={appRoutes.adminGuestImport.path}
           className="inline-flex min-h-11 items-center text-primary underline underline-offset-4"

@@ -112,3 +112,17 @@ have zero axe violations. Filters/reset, add navigation and Nigeria defaults exe
 browser. Source review found no blocking regressions. Existing future opportunity: auto-scroll
 later active mobile navigation links into view. Physical devices, all additional palettes and
 fresh performance measurements remain unverified; prior build security blocker is unchanged.
+
+## Add invitation modal — 19 November
+
+Removed Seating plan from Guest tools. Add an invitation now opens the shared native-dialog
+sheet with the guest form; the full-page URL remains available for direct links. Saving keeps
+preview/send controls in the same modal. Closing refreshes the list and returns focus to its
+trigger. Nested card/share dialogs own Escape and Tab events rather than closing/trapping the
+parent. Modal form omits redundant navigation and nested card borders.
+
+Quick verification passed175 tests. Browser verified no seating link, modal375/768/1280,
+synthetic invitation save, nested preview/share, Escape leaving the parent open and final
+focus restoration with URL still /admin/guests. No message sent. Screenshots included.
+Print gate list remains the printable confirmed-guest backup with arrival tick boxes; opening
+it does not send invitations or record admission automatically.

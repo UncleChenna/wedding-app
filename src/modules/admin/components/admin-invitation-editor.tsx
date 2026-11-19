@@ -7,7 +7,13 @@ import { requireAdminPageAccess } from "../server/current-admin-access";
 import { readInvitationEditor } from "../server/invitation-editor";
 import { InvitationEditorForm } from "./invitation-editor-form";
 
-export async function AdminInvitationEditor({ id }: { id?: string }) {
+export async function AdminInvitationEditor({
+  id,
+  embedded = false,
+}: {
+  id?: string;
+  embedded?: boolean;
+}) {
   await requireAdminPageAccess();
   const invitation = id ? await readInvitationEditor(db, id) : undefined;
   if (id && !invitation) notFound();
@@ -15,6 +21,10 @@ export async function AdminInvitationEditor({ id }: { id?: string }) {
     .select({ id: tables.id, number: tables.number })
     .from(tables)
     .orderBy(asc(tables.number));
+  if (embedded)
+    return (
+      <InvitationEditorForm invitation={invitation ?? undefined} tables={tableOptions} embedded />
+    );
   return (
     <main className="mx-auto w-full max-w-4xl px-4 py-8 text-base leading-relaxed sm:px-6 md:py-10">
       <Link
