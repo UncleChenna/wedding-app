@@ -79,3 +79,19 @@ Drizzle, verified guest/invitation counts unchanged and next online allocation15
 records received historical identifiers from0041 and are not renumbered by0042. No production
 application or reset. To roll back application code, retain the sequence floor and existing
 identifiers; never lower/recycle the sequence.
+
+## Country-code phone input — 19 November
+
+Guest and plus-one phone fields now pair a native country-code dropdown with a local number.
+New fields default to Nigeria +234; saved international values infer their existing code.
+Common codes are listed, with Other country accepting a complete international number.
+No location lookup, permission prompt, external service or dependency is introduced.
+The form still submits a single international memberPhone value; blank optional numbers remain
+blank, pasted international numbers are recognized, and Italy's significant zero is retained.
+UK-specific helper/error wording was removed from this form.
+
+Quick verification passed:32 related tests,14 database tests skipped. Focused tests cover
+Nigeria normalization, country switching, persisted UK numbers, blank fields, international
+paste and unlisted codes. Browser checks at375/768/1280 pass without overflow; the guest and
+plus-one both default toNigeria and UK selection submits+44. Screenshots included. Physical
+devices and all theme variants not reverified for this incremental form change.

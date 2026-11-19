@@ -77,6 +77,7 @@ test.describe("authenticated invitation editor", () => {
       });
     }
     await page.getByLabel("Guest email", { exact: true }).fill("synthetic@example.invalid");
+    await page.getByLabel("Guest phone country code", { exact: true }).selectOption("GB");
     await page.getByLabel("Guest phone", { exact: true }).fill("07700900123");
     await page.getByRole("button", { name: "Create draft invitation", exact: true }).click();
     await expect(page.locator("main").getByRole("status")).toContainText(

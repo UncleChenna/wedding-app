@@ -12,6 +12,7 @@ import {
   deleteInvitationDraftAction,
   saveInvitationEditorAction,
 } from "../server/invitation-editor-actions";
+import { GuestPhoneInput } from "./guest-phone-input";
 import { SavedInvitationSharing } from "./saved-invitation-sharing";
 import { InvitationLifecycleControls } from "./invitation-lifecycle-controls";
 
@@ -124,15 +125,10 @@ export function InvitationEditorForm({
           autoComplete="email"
           error={fields[`members.${index}.email`]}
         />
-        <Input
+        <GuestPhoneInput
           label={index === 0 ? "Guest phone" : `Plus one ${index} phone`}
-          name="memberPhone"
-          type="tel"
           value={member.phone}
-          onChange={(event) => updateMember(index, "phone", event.target.value)}
-          maxLength={200}
-          autoComplete="tel"
-          hint="Include the country code for numbers outside the UK."
+          onChange={(value) => updateMember(index, "phone", value)}
           error={fields[`members.${index}.phone`]}
         />
         {index > 0 && (

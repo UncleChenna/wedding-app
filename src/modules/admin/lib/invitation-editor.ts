@@ -18,7 +18,10 @@ const memberSchema = z.strictObject({
       if (!value) return null;
       const result = normalisePhone(value);
       if (result.ok) return result.phone;
-      context.addIssue({ code: "custom", message: result.error.message });
+      context.addIssue({
+        code: "custom",
+        message: "Enter a valid phone number for the selected country.",
+      });
       return z.NEVER;
     }),
 });
