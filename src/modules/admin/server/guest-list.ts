@@ -25,7 +25,6 @@ export async function getGuestList(): Promise<GuestListResult> {
           token: invitations.token,
           tokenVersion: invitations.tokenVersion,
           status: invitations.status,
-          householdName: invitations.householdName,
           side: invitations.side,
           tableId: invitations.tableId,
           tableNumber: tables.number,
@@ -36,7 +35,7 @@ export async function getGuestList(): Promise<GuestListResult> {
         .leftJoin(rsvps, eq(rsvps.invitationId, invitations.id))
         .leftJoin(tables, eq(tables.id, invitations.tableId))
         .orderBy(asc(invitations.createdAt), asc(invitations.id)),
-      // A separate ordered query prevents households being duplicated by members.
+      // A separate ordered query prevents guests being duplicated by members.
       db
         .select({ id: guests.id, invitationId: guests.invitationId, name: guests.name })
         .from(guests)
@@ -52,10 +51,7 @@ export async function getGuestList(): Promise<GuestListResult> {
       ok: true,
       invitations: rows.map((row) => {
         const members = grouped.get(row.id) ?? [];
-        const name =
-          row.householdName ||
-          members.map((member) => member.name).join(" & ") ||
-          "Unnamed invitation";
+        const name = members.map((member) => member.name).join(" & ") || "Unnamed invitation";
         const sharing = prepareSharingInvitation(
           { ...row, name },
           settings,

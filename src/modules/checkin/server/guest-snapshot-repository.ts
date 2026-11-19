@@ -19,7 +19,7 @@ export async function readGuestSnapshotRows(
       invitationId: invitations.id,
       tokenVersion: invitations.tokenVersion,
       status: invitations.status,
-      householdName: sql<string | null>`left(${invitations.householdName}, 513)`,
+      householdName: sql<null>`null`,
       attending: rsvps.attending,
       countAttending: rsvps.countAttending,
       allowance: admissionCounters.allowance,
@@ -61,7 +61,7 @@ export async function readGuestSnapshotRows(
     const primary = group.filter((member) => member.isPrimary).map((member) => member.name);
     // Keep the arm's-length display label bounded even for many named invitees;
     // every member name remains available in the separate search projection.
-    const label = primary.slice(0, 2).join(" & ") + (primary.length > 2 ? " & household" : "");
+    const label = primary.slice(0, 2).join(" & ") + (primary.length > 2 ? " & guests" : "");
     return {
       invitationId: row.invitationId,
       tokenVersion: row.tokenVersion,
@@ -70,7 +70,7 @@ export async function readGuestSnapshotRows(
       partySize: row.allowance ?? row.countAttending ?? 0,
       admittedSoFar: row.admittedSoFar ?? 0,
       tableNumber: row.tableNumber,
-      name: label || row.householdName || "Guest household",
+      name: label || row.householdName || "Guest",
       names: group.map((member) => member.name),
     };
   });

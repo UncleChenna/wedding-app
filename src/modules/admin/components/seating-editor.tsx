@@ -110,7 +110,7 @@ function TableForm({
         {table && (
           <div className="space-y-3 border-t border-border pt-6">
             <p className="text-base text-muted-foreground">
-              Move or unassign households first. Tables with order history must be kept.
+              Move or unassign guests first. Tables with order history must be kept.
             </p>
             {confirm ? (
               <>
@@ -309,18 +309,19 @@ export function SeatingEditor({ plan }: { plan: SeatingPlan }) {
           </ul>
         )}
       </section>
-      <section aria-labelledby="households-heading" className="space-y-6">
-        <h2 id="households-heading" className="font-display text-3xl">
-          Households
+      <section aria-labelledby="guests-heading" className="space-y-6">
+        <h2 id="guests-heading" className="font-display text-3xl">
+          Guests and plus-ones
         </h2>
         <Input
-          label="Find a household"
+          label="Find a guest"
           type="search"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
         />
         <p aria-live="polite">
-          {visible.length} household{visible.length === 1 ? "" : "s"}
+          {visible.length} invitation{visible.length === 1 ? "" : "s"} · guests on the same
+          invitation sit together
         </p>
         <ul className="divide-y divide-border">
           {visible.map((party) => {
@@ -361,7 +362,7 @@ export function SeatingEditor({ plan }: { plan: SeatingPlan }) {
         }}
         title={
           editing?.kind === "party"
-            ? "Seat this household"
+            ? "Assign a table"
             : editing?.table
               ? `Edit table ${editing.table.number}`
               : "Add a table"

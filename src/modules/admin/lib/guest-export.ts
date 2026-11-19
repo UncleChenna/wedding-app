@@ -53,18 +53,18 @@ export function spreadsheetCell(value: string | number): string {
   return `"${text.replaceAll('"', '""')}"`;
 }
 
-/** Each selected household expands to all its members; household counts repeat per member. */
+/** Each selected guest expands to all its members; guest counts repeat per member. */
 export function guestExportCsv(invitations: ExportInvitation[], filters: GuestListFilters): string {
   const ids = new Set(filterGuestList(invitations, filters).map((row) => row.id));
   const rows: (string | number)[][] = [
     [
-      "Household",
+      "Invitation guests",
       "Invitation status",
       "Sent at",
       "RSVP",
-      "Household attending count",
+      "Invited party attending count",
       "Side",
-      "Household table",
+      "Assigned table",
       "Guest name",
       "Primary guest",
       "Meal",

@@ -13,7 +13,6 @@ export async function readGuestExport(
       const rows = await tx
         .select({
           id: invitations.id,
-          householdName: invitations.householdName,
           status: invitations.status,
           tokenVersion: invitations.tokenVersion,
           side: invitations.side,
@@ -56,10 +55,7 @@ export async function readGuestExport(
         const guests = grouped.get(row.id) ?? [];
         return {
           id: row.id,
-          name:
-            row.householdName ||
-            guests.map((guest) => guest.name).join(" & ") ||
-            "Unnamed invitation",
+          name: guests.map((guest) => guest.name).join(" & ") || "Unnamed invitation",
           status: row.status,
           tokenVersion: row.tokenVersion,
           guests,

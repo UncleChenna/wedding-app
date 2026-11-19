@@ -94,7 +94,7 @@ export function GuestSnapshotScanner({
             return { response, cached: false };
           }
           if (response.state !== "unavailable") {
-            // Selecting a current household can contradict its prior cached allowance.
+            // Selecting a current guest can contradict its prior cached allowance.
             if (input.operation === "read") await changed();
             return { response, cached: false };
           }

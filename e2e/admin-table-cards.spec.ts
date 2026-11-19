@@ -59,7 +59,7 @@ test.describe("printable table cards", () => {
       adminTestEmail(info.project.name, process.env.ADMIN_TABLE_CARDS_PREFIX ?? "table-cards"),
     );
     await page.goto("/admin/guests/seating");
-    await page.getByRole("link", { name: "Print table cards" }).click();
+    await page.getByRole("link", { name: "Print table signs" }).click();
     await expect(page).toHaveURL(/\/admin\/guests\/seating\/cards$/);
 
     const [total] = await db<{ count: number }[]>`select count(*)::integer as count from tables`;

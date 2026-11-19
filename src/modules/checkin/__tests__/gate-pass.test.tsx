@@ -23,7 +23,7 @@ describe("GatePass", () => {
       />,
     );
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Ngozi Okafor");
-    expect(screen.getByText("The Okafor family")).toBeVisible();
+    expect(screen.queryByText("The Okafor family")).toBeNull();
     expect(screen.getByText("3 guests")).toBeVisible();
     expect(screen.getByText("12")).toBeVisible();
     expect(screen.getByRole("img", { name: "Gate pass QR code for Ngozi Okafor" })).toBeVisible();
@@ -39,7 +39,7 @@ describe("GatePass", () => {
         passUrl={URL}
         resolution={{
           state: "valid",
-          pass: { names: [], householdName: "Amara", partySize: 1, tableNumber: null },
+          pass: { names: ["Amara"], householdName: null, partySize: 1, tableNumber: null },
         }}
       />,
     );

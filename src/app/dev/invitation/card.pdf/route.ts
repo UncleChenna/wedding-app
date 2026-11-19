@@ -3,7 +3,7 @@ import { cardHeaders } from "@/modules/invitations/server/printed-card-response"
 export async function GET() {
   const buffer = await renderPrintedCard({
     cardNumber: 3,
-    guestName: "Sample household — preview only",
+    guestName: "Sample guest — preview only",
     capacity: 2,
     rsvpUrl: "https://example.com/i/sample-invitation-preview-only#reply",
   });

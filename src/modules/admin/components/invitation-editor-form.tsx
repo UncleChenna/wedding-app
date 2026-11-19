@@ -12,10 +12,11 @@ import {
   deleteInvitationDraftAction,
   saveInvitationEditorAction,
 } from "../server/invitation-editor-actions";
+import { GuestPhoneInput } from "./guest-phone-input";
+import { SavedInvitationSharing } from "./saved-invitation-sharing";
 import { InvitationLifecycleControls } from "./invitation-lifecycle-controls";
 
 const empty: InvitationEditorValues = {
-  householdName: "",
   side: "",
   tableId: "",
   maxTagAlongs: "1",
@@ -27,8 +28,10 @@ export function InvitationEditorForm({
   invitation,
   tables,
   saveAction = saveInvitationEditorAction,
+  embedded = false,
 }: {
   invitation?: InvitationEditorDetails;
+  embedded?: boolean;
   tables: { id: string; number: number }[];
   saveAction?: (previous: InvitationEditorState, form: FormData) => Promise<InvitationEditorState>;
 }) {
@@ -73,16 +76,19 @@ export function InvitationEditorForm({
               ? state.message
               : ""}
         </p>
+        {state.status === "saved" && <SavedInvitationSharing id={state.id} />}
         {state.status === "saved" && (
           <Link className={linkStyle} href={`/admin/guests/${state.id}/edit`}>
             Edit this invitation
           </Link>
         )}
-        <p>
-          <Link className={linkStyle} href="/admin/guests">
-            Back to guests
-          </Link>
-        </p>
+        {!embedded && (
+          <p>
+            <Link className={linkStyle} href="/admin/guests">
+              Back to guests
+            </Link>
+          </p>
+        )}
       </div>
     );
   function updateMember(index: number, key: "name" | "email" | "phone", value: string) {
@@ -93,41 +99,88 @@ export function InvitationEditorForm({
       ),
     }));
   }
+  function renderGuest(member: InvitationEditorValues["members"][number], index: number) {
+    return (
+      <fieldset
+        key={member.id || `new-${index}`}
+        disabled={pending}
+        className="grid min-w-0 gap-4 sm:grid-cols-2 [&>div:last-of-type]:sm:col-span-2"
+      >
+        <legend className="mb-4 text-base font-semibold">
+          {index === 0 ? "Guest details" : `Plus one ${index}`}
+        </legend>
+        <input type="hidden" name="memberId" value={member.id} />
+        <Input
+          label={index === 0 ? "Guest name" : `Plus one ${index} name`}
+          name="memberName"
+          value={member.name}
+          onChange={(event) => updateMember(index, "name", event.target.value)}
+          required
+          maxLength={200}
+          error={fields[`members.${index}.name`]}
+        />
+        <Input
+          label={index === 0 ? "Guest email" : `Plus one ${index} email`}
+          name="memberEmail"
+          type="email"
+          value={member.email}
+          onChange={(event) => updateMember(index, "email", event.target.value)}
+          maxLength={254}
+          autoComplete="email"
+          error={fields[`members.${index}.email`]}
+        />
+        <GuestPhoneInput
+          label={index === 0 ? "Guest phone" : `Plus one ${index} phone`}
+          value={member.phone}
+          onChange={(value) => updateMember(index, "phone", value)}
+          error={fields[`members.${index}.phone`]}
+        />
+        {index > 0 && (
+          <Button
+            type="button"
+            variant="ghost"
+            disabled={pending || values.members.length === 1}
+            onClick={() =>
+              setValues({
+                ...values,
+                members: values.members.filter((_, position) => position !== index),
+              })
+            }
+          >
+            Remove plus one {index}
+          </Button>
+        )}
+      </fieldset>
+    );
+  }
   return (
-    <div className="mt-8 space-y-12">
-      <form ref={form} action={action} noValidate className="space-y-8 [&_label]:text-base">
+    <div className="mt-6 space-y-8">
+      <form
+        ref={form}
+        action={action}
+        noValidate
+        className={
+          embedded
+            ? "space-y-6 [&_label]:text-sm"
+            : "space-y-8 rounded-lg border border-border bg-surface p-4 sm:p-6 md:p-8 [&_label]:text-sm"
+        }
+      >
         {invitation && (
           <>
             <input type="hidden" name="id" value={invitation.id} />
             <input type="hidden" name="snapshot" value={snapshot} />
           </>
         )}
-        <fieldset disabled={pending} className="space-y-6">
-          <legend className="mb-6 font-display text-2xl">Household details</legend>
-          <Input
-            label="Household name"
-            name="householdName"
-            value={values.householdName}
-            onChange={(event) => setValues({ ...values, householdName: event.target.value })}
-            required
-            maxLength={200}
-            error={fields.householdName}
-          />
-          <Input
-            label="Side"
-            name="side"
-            value={values.side}
-            onChange={(event) => setValues({ ...values, side: event.target.value })}
-            maxLength={200}
-            hint="Optional, for example bride's family or groom's friends."
-            error={fields.side}
-          />
+        {values.members[0] && renderGuest(values.members[0], 0)}
+        <fieldset disabled={pending} className="space-y-4">
+          <legend className="mb-4 text-base font-semibold">Invitation details</legend>
+          <input type="hidden" name="side" value={values.side} />
           <Select
             label="Table"
             name="tableId"
             value={values.tableId}
             onChange={(event) => setValues({ ...values, tableId: event.target.value })}
-            hint="Changing the household table seats all its named guests together."
+            hint="Optional. You can arrange shared tables later in the seating plan."
             error={fields.tableId}
           >
             <option value="">Not seated yet</option>
@@ -137,86 +190,23 @@ export function InvitationEditorForm({
               </option>
             ))}
           </Select>
-          <Input
-            label="Additional tag-along places"
-            name="maxTagAlongs"
-            type="number"
-            min={0}
-            max={10}
-            value={values.maxTagAlongs}
-            onChange={(event) => setValues({ ...values, maxTagAlongs: event.target.value })}
-            hint="Extra people this household may name when replying, in addition to the named invitees."
-            error={fields.maxTagAlongs}
-          />
+          <input type="hidden" name="maxTagAlongs" value={values.maxTagAlongs} />
         </fieldset>
-        <section aria-labelledby="named-guests" className="space-y-6">
-          <h2 id="named-guests" className="font-display text-2xl">
-            Named guests
+        <section aria-labelledby="plus-one" className="space-y-4">
+          <h2 id="plus-one" className="text-base font-semibold">
+            Plus one
           </h2>
           {invitation?.reply && (
-            <p className="max-w-prose">
+            <p className="max-w-prose text-sm text-muted-foreground">
               {invitation.reply.attending
-                ? `This household replied yes for ${invitation.reply.countAttending}. Saving a changed guest list updates that party size, keeps their yes reply and records the correction. It cannot be smaller than the number already admitted.`
-                : "This household replied no. Their answer stays unchanged when you edit their details."}
+                ? `This party replied yes for ${invitation.reply.countAttending}. Saving a changed guest list updates that party size, keeps their yes reply and records the correction. It cannot be smaller than the number already admitted.`
+                : "This party replied no. Their answer stays unchanged when you edit their details."}
             </p>
           )}
-          <p className="max-w-prose">
-            Existing meal choices and dietary notes stay with each guest. Removing a guest removes
-            their current details; saved reply history stays on record.
+          <p className="max-w-prose text-sm text-muted-foreground">
+            Someone joining them? Add their details below. They’ll share the invitation and table.
           </p>
-          {values.members.map((member, index) => (
-            <fieldset
-              key={member.id || `new-${index}`}
-              disabled={pending}
-              className="space-y-6 border-t border-border pt-6"
-            >
-              <legend className="px-1 text-lg font-medium">Guest {index + 1}</legend>
-              <input type="hidden" name="memberId" value={member.id} />
-              <Input
-                label={`Guest ${index + 1} name`}
-                name="memberName"
-                value={member.name}
-                onChange={(event) => updateMember(index, "name", event.target.value)}
-                required
-                maxLength={200}
-                error={fields[`members.${index}.name`]}
-              />
-              <Input
-                label={`Guest ${index + 1} email`}
-                name="memberEmail"
-                type="email"
-                value={member.email}
-                onChange={(event) => updateMember(index, "email", event.target.value)}
-                maxLength={254}
-                autoComplete="email"
-                error={fields[`members.${index}.email`]}
-              />
-              <Input
-                label={`Guest ${index + 1} phone`}
-                name="memberPhone"
-                type="tel"
-                value={member.phone}
-                onChange={(event) => updateMember(index, "phone", event.target.value)}
-                maxLength={200}
-                autoComplete="tel"
-                hint="Include the country code for numbers outside the UK."
-                error={fields[`members.${index}.phone`]}
-              />
-              <Button
-                type="button"
-                variant="ghost"
-                disabled={pending || values.members.length === 1}
-                onClick={() =>
-                  setValues({
-                    ...values,
-                    members: values.members.filter((_, position) => position !== index),
-                  })
-                }
-              >
-                Remove guest {index + 1}
-              </Button>
-            </fieldset>
-          ))}
+          {values.members.slice(1).map((member, index) => renderGuest(member, index + 1))}
           {fields.members && <p role="alert">{fields.members}</p>}
           <Button
             type="button"
@@ -229,7 +219,7 @@ export function InvitationEditorForm({
               })
             }
           >
-            Add a named guest
+            Add a plus-one
           </Button>
         </section>
         {state.status !== "idle" && (
@@ -240,8 +230,8 @@ export function InvitationEditorForm({
         </Button>
       </form>
       {invitation && (
-        <section className="space-y-6" aria-label="Invitation status actions">
-          <h2 className="font-display text-2xl">Invitation status</h2>
+        <section className="space-y-4" aria-label="Invitation status actions">
+          <h2 className="text-base font-semibold">Invitation status</h2>
           {invitation.status === "draft" ? (
             <>
               <p>
@@ -261,7 +251,7 @@ export function InvitationEditorForm({
                 title="Delete this draft?"
               >
                 <p>This removes the draft and its named guests. It cannot be undone.</p>
-                <form action={deleteAction} className="space-y-6">
+                <form action={deleteAction} className="space-y-4">
                   <input type="hidden" name="id" value={invitation.id} />
                   <input type="hidden" name="snapshot" value={snapshot} />
                   <input type="hidden" name="confirmation" value="delete" />
@@ -278,7 +268,10 @@ export function InvitationEditorForm({
           ) : (
             <InvitationLifecycleControls
               invitationId={invitation.id}
-              name={values.householdName}
+              name={values.members
+                .map((member) => member.name)
+                .filter(Boolean)
+                .join(" & ")}
               status={invitation.status}
               tokenVersion={invitation.tokenVersion}
             />

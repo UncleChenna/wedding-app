@@ -8,7 +8,7 @@ export type ImportPreviewViewResult =
       expiresAt: string;
       invitationCount: number;
       guestCount: number;
-      households: {
+      parties: {
         key: string;
         heading: string;
         members: string[];

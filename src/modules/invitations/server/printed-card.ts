@@ -12,7 +12,6 @@ export type PersonalCard = PrintedCardDetails & { rsvpUrl: string; status: strin
 function assemble(
   rows: {
     cardNumber: number;
-    householdName: string | null;
     name: string | null;
     maxTagAlongs: number;
     token: string;
@@ -24,7 +23,7 @@ function assemble(
   const names = rows.flatMap((row) => (row.name ? [row.name] : []));
   return {
     cardNumber: first.cardNumber,
-    guestName: first.householdName || names.join(" & ") || "Our dear guest",
+    guestName: names.join(" & ") || "Our dear guest",
     capacity: Math.max(1, rows.filter((row) => row.name !== null).length) + first.maxTagAlongs,
     rsvpUrl: new URL(`/i/${encodeURIComponent(first.token)}#reply`, clientEnv.NEXT_PUBLIC_SITE_URL)
       .href,
@@ -37,7 +36,6 @@ async function readCard(where: ReturnType<typeof eq>) {
     await db
       .select({
         cardNumber: invitations.cardNumber,
-        householdName: invitations.householdName,
         name: guests.name,
         maxTagAlongs: invitations.maxTagAlongs,
         token: invitations.token,

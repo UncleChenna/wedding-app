@@ -19,7 +19,8 @@ test.describe("complete admin setup journey", () => {
   let db: Sql;
   let saved: { event_date: string; time_zone: string | null } | undefined;
   const tag = `Journey ${randomUUID().slice(0, 8)}`;
-  const household = `${tag} household`;
+  const guestName = `${tag} Ada`;
+  const tableName = `${tag} table`;
   const tableNumber = randomInt(100000, 900000);
   const staffName = `${tag} kitchen`;
   const mealName = `${tag} rice`;
@@ -39,9 +40,9 @@ test.describe("complete admin setup journey", () => {
       // Exact synthetic ownership; never disable audit guards or reset unrelated fixtures.
       await db`delete from registered_devices where registered_by_staff_id in (select id from staff where name=${staffName})`;
       await db`delete from staff where name=${staffName}`;
-      await db`delete from invitations where household_name=${household}`;
+      await db`delete from invitations where id in (select invitation_id from guests where name=${guestName})`;
       await db`delete from guest_import_batches where actor_id in (select id from auth.users where email=${`${process.env.ADMIN_JOURNEY_PREFIX}-mobile@example.test`} or email=${`${process.env.ADMIN_JOURNEY_PREFIX}-desktop@example.test`})`;
-      await db`delete from tables where name=${household}`;
+      await db`delete from tables where name=${tableName}`;
       await db`delete from menu_items where name=${mealName}`;
     } finally {
       if (saved)
@@ -70,32 +71,49 @@ test.describe("complete admin setup journey", () => {
     await nav.getByRole("link", { name: "Guests", exact: true }).click();
     await page.getByRole("link", { name: "Import guests", exact: true }).click();
     const csv =
-      "name,phone,email,party size,side,table,household\r\n" +
-      `${tag} Ada,,${tag.replaceAll(" ", "-").toLowerCase()}@example.test,2,Family,,${household}\r\n` +
-      `${tag} Uchenna,,,2,Family,,${household}\r\n`;
+      "name,phone,email,party size,side,table\r\n" +
+      `${guestName},,${tag.replaceAll(" ", "-").toLowerCase()}@example.test,2,Family,\r\n`;
     await expect(page.getByLabel("Guest CSV file")).toBeEnabled();
     await page
       .getByLabel("Guest CSV file")
-      .setInputFiles({ name: "household.csv", mimeType: "text/csv", buffer: Buffer.from(csv) });
+      .setInputFiles({ name: "guests.csv", mimeType: "text/csv", buffer: Buffer.from(csv) });
     await page.getByRole("button", { name: "Preview guests", exact: true }).click();
     await expect(page.getByRole("heading", { name: "Review your invitations" })).toBeVisible();
-    expect(await db`select id from invitations where household_name=${household}`).toHaveLength(0);
+    expect(
+      await db`select id from invitations where id in (select invitation_id from guests where name=${guestName})`,
+    ).toHaveLength(0);
     await page.getByRole("button", { name: "Import guests", exact: true }).click();
     await expect(page.getByText("1 draft invitation added.", { exact: true })).toBeVisible();
     const invitations = await db<
       { id: string; status: string; token: string }[]
-    >`select id,status,token from invitations where household_name=${household}`;
+    >`select id,status,token from invitations where id in (select invitation_id from guests where name=${guestName})`;
     expect(invitations).toHaveLength(1);
     const invitation = invitations[0];
-    if (!invitation) throw new Error("Imported household missing");
+    if (!invitation) throw new Error("Imported invitation missing");
     expect(invitation.status).toBe("draft");
+    // One CSV row creates one guest's invitation, retaining their plus-one allowance.
+    expect(
+      (
+        await db`select max_tag_alongs,household_name from invitations where id=${invitation.id}`
+      )[0],
+    ).toEqual({ max_tag_alongs: 1, household_name: null });
+    await page.goto(`/admin/guests/${invitation.id}/edit`);
+    await page.getByRole("button", { name: "Add a plus-one" }).click();
+    await page.getByLabel("Plus one 1 name", { exact: true }).fill(`${tag} Uchenna`);
+    await expect(page.getByLabel("Additional tag-along places")).toHaveCount(0);
+    await page.getByRole("button", { name: "Save invitation", exact: true }).click();
+    await expect(
+      page.getByRole("main").getByRole("status").filter({ hasText: "Invitation details saved." }),
+    ).toContainText("Invitation details saved.");
     expect(
       await db`select name from guests where invitation_id=${invitation.id} order by name`,
     ).toEqual([{ name: `${tag} Ada` }, { name: `${tag} Uchenna` }]);
     await nav.getByRole("link", { name: "Guests", exact: true }).click();
-    await page.getByRole("searchbox", { name: "Search guests" }).fill(household);
+    await page.getByRole("searchbox", { name: "Search guests" }).fill(guestName);
     const row = page.locator(`[data-invitation-id="${invitation.id}"]`);
-    await row.getByRole("button", { name: `Invitation actions for ${household}` }).click();
+    await row
+      .getByRole("button", { name: `Invitation actions for ${guestName} & ${tag} Uchenna` })
+      .click();
     await row.getByRole("button", { name: "Share invitation", exact: true }).click();
     await page
       .getByRole("dialog", { name: "Share invitation", exact: true })
@@ -115,19 +133,21 @@ test.describe("complete admin setup journey", () => {
     ).toEqual([{ channel: "copy", undone_at: null }]);
 
     await nav.getByRole("link", { name: "Guests", exact: true }).click();
-    await page.getByRole("link", { name: "Seating plan", exact: true }).click();
+    await page.goto("/admin/guests/seating");
     await page.getByRole("button", { name: "Add table", exact: true }).click();
     await page.getByLabel("Table number", { exact: true }).fill(String(tableNumber));
-    await page.getByLabel("Table name", { exact: true }).fill(household);
+    await page.getByLabel("Table name", { exact: true }).fill(tableName);
     await page.getByLabel("Seats", { exact: true }).fill("4");
     await page.getByRole("dialog").getByRole("button", { name: "Add table", exact: true }).click();
     await expect(page.getByRole("dialog")).not.toBeVisible();
-    await page.getByLabel("Find a household").fill(household);
-    await page.getByRole("button", { name: `Assign table for ${household}`, exact: true }).click();
+    await page.getByLabel("Find a guest").fill(guestName);
     await page
-      .getByRole("dialog", { name: "Seat this household" })
+      .getByRole("button", { name: `Assign table for ${guestName} & ${tag} Uchenna`, exact: true })
+      .click();
+    await page
+      .getByRole("dialog", { name: "Assign a table" })
       .getByLabel("Table", { exact: true })
-      .selectOption({ label: `Table ${tableNumber} · ${household}` });
+      .selectOption({ label: `Table ${tableNumber} · ${tableName}` });
     await page.getByRole("button", { name: "Save assignment" }).click();
     await expect(page.getByRole("dialog")).not.toBeVisible();
     expect(
@@ -199,8 +219,9 @@ test.describe("complete admin setup journey", () => {
         {
           project: info.project.name,
           authenticated: true,
-          importedHouseholds: 1,
-          importedMembers: 2,
+          importedInvitations: 1,
+          importedMembers: 1,
+          namedMembersAfterEdit: 2,
           copiedAndRecorded: true,
           seatedMembers: 2,
           menuEdited: true,

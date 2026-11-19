@@ -10,8 +10,8 @@ server chooses the role; never accept a role from a request parameter.
 | Gate guest name and primary marker        | Yes   | Relevant guests only       | Yes  | No          | No        |
 | Deliberately submitted order instructions | Yes   | Own station                | No   | Own station | No        |
 
-The invitation bearer still allows a household to read/edit its own RSVP. That
-existing household-authorized route is not an anonymous guest-list endpoint.
+The invitation bearer still allows a guest to read/edit its own RSVP. That
+existing guest-authorized route is not an anonymous guest-list endpoint.
 
 ## Executable contract
 

@@ -8,12 +8,12 @@ const rows = [
   { invitationId: "c", name: "Other", names: ["Bola Lawal"] },
 ] as const;
 describe("manual guest name search", () => {
-  it("uses readable household fallbacks and concise labels for ordinary families", () => {
-    expect(manualHouseholdName([], "  Okafor family  ")).toBe("Okafor family");
-    expect(manualHouseholdName([], null)).toBe("Guest household");
-    expect(manualHouseholdName([], "  ")).toBe("Guest household");
+  it("uses guest names and ignores legacy household labels", () => {
+    expect(manualHouseholdName([], "  Okafor family  ")).toBe("Guest");
+    expect(manualHouseholdName([], null)).toBe("Guest");
+    expect(manualHouseholdName([], "  ")).toBe("Guest");
     expect(manualHouseholdName(["Ada", "Chidi"], null)).toBe("Ada & Chidi");
-    expect(manualHouseholdName(["Ada", "Chidi", "Ife"], null)).toBe("Ada & Chidi & household");
+    expect(manualHouseholdName(["Ada", "Chidi", "Ife"], null)).toBe("Ada & Chidi & guests");
   });
   it("ranks exact names before prefixes and one-edit typos, without duplicate households", () => {
     const candidates = [

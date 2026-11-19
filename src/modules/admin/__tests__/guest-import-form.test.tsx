@@ -16,7 +16,7 @@ const approved: ImportPreviewViewResult = {
   expiresAt: "2099-12-19T00:00:00Z",
   invitationCount: 1,
   guestCount: 2,
-  households: [
+  parties: [
     {
       key: "row-2",
       heading: "Ada household",

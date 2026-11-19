@@ -22,7 +22,6 @@ const actor = randomUUID();
 let client: Sql;
 const input = () =>
   invitationEditorSchema.parse({
-    householdName: "Synthetic editor",
     side: "Family",
     tableId: "",
     maxTagAlongs: "1",
@@ -69,6 +68,24 @@ describe.runIf(process.env.RUN_INVITATION_EDITOR_DB_TESTS === "1")(
         if (error !== rollback) throw error;
       }
     }
+    it("does not expose or overwrite legacy stored labels when saving guest details", async () =>
+      exercise(async (tx) => {
+        const created = await create(tx);
+        await tx
+          .update(schema.invitations)
+          .set({ householdName: "Legacy label" })
+          .where(eq(schema.invitations.id, created.id));
+        const current = await details(tx, created.id);
+        expect(current.values).not.toHaveProperty("householdName");
+        expect((await edit(tx, current, { ...current.values, side: "Updated side" })).ok).toBe(
+          true,
+        );
+        const [row] = await tx
+          .select({ householdName: schema.invitations.householdName })
+          .from(schema.invitations)
+          .where(eq(schema.invitations.id, created.id));
+        expect(row?.householdName).toBe("Legacy label");
+      }));
     it("creates unique draft capabilities and deletes only untouched drafts", async () =>
       exercise(async (tx) => {
         const first = await create(tx),
@@ -81,7 +98,8 @@ describe.runIf(process.env.RUN_INVITATION_EDITOR_DB_TESTS === "1")(
           .select()
           .from(schema.invitations)
           .where(eq(schema.invitations.id, second.id));
-        expect(stored).toMatchObject({ status: "draft", tokenVersion: 1 });
+        expect(stored).toMatchObject({ status: "draft", tokenVersion: 1, householdName: null });
+        expect(first.values).not.toHaveProperty("householdName");
         expect(stored?.token).toMatch(/^[A-Za-z0-9_-]{43}$/);
         expect(other?.token).not.toBe(stored?.token);
         expect(first.values.members[0]?.id).toMatch(/^[a-f0-9-]{36}$/);

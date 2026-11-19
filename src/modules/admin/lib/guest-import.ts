@@ -15,8 +15,7 @@ export interface ImportError {
   column: string;
   message: string;
 }
-export interface ImportHousehold {
-  householdName: string;
+export interface ImportParty {
   side: string | null;
   tableNumber: number | null;
   maxTagAlongs: number;
@@ -24,12 +23,12 @@ export interface ImportHousehold {
   members: { name: string; email: string | null; phone: string | null }[];
 }
 export type ImportParseResult =
-  { ok: true; households: ImportHousehold[] } | { ok: false; errors: ImportError[] };
+  { ok: true; parties: ImportParty[] } | { ok: false; errors: ImportError[] };
 export interface ImportPreview {
   id: string;
   digest: string;
   expiresAt: string;
-  households: ImportHousehold[];
+  parties: ImportParty[];
   counts: { invitations: number; guests: number };
 }
 export type ImportPreviewResult =
@@ -104,16 +103,20 @@ export function parseGuestImportCsv(input: unknown): ImportParseResult {
   if (!parsed || parsed.length < 2 || parsed.length > 301)
     return fail("Use valid CSV with between 1 and 300 guest rows.");
   const headers = (parsed[0] ?? []).map((s) => s.trim().toLowerCase());
+  if (headers.includes("household"))
+    return fail(
+      "Remove the obsolete grouping column. Use one row per invited guest; party size includes that guest and their plus-ones.",
+    );
   if (
     new Set(headers).size !== headers.length ||
     required.some((h) => !headers.includes(h)) ||
-    headers.some((h) => ![...required, "household"].includes(h))
+    headers.some((h) => !required.includes(h))
   )
     return fail(
-      "Use name, phone, email, party size, side and table headers; household is optional.",
+      "Use name, phone, email, party size, side and table headers. Each row creates one invitation.",
     );
   const errors: ImportError[] = [];
-  const groups = new Map<string, { household: ImportHousehold; partySize: number }>();
+  const groups = new Map<string, { party: ImportParty; partySize: number }>();
   parsed.slice(1).forEach((cells, index) => {
     const row = index + 2;
     const issue = (column: string, message: string) => errors.push({ row, column, message });
@@ -140,7 +143,6 @@ export function parseGuestImportCsv(input: unknown): ImportParseResult {
       return;
     }
     const result = invitationEditorSchema.safeParse({
-      householdName: values.household || values.name,
       side: values.side,
       tableId: "",
       maxTagAlongs: "0",
@@ -156,68 +158,43 @@ export function parseGuestImportCsv(input: unknown): ImportParseResult {
       issue("name", "Enter a guest name.");
       return;
     }
-    const key = values.household
-      ? `household:${values.household.toLocaleLowerCase()}`
-      : `row:${row}`;
     const tableNumber = values.table ? Number(values.table) : null;
-    const partySize = Number(values["party size"]);
-    let group = groups.get(key);
-    if (!group) {
-      group = {
-        partySize,
-        household: {
-          householdName: data.householdName,
-          side: data.side,
-          tableNumber,
-          maxTagAlongs: 0,
-          rows: [],
-          members: [],
-        },
-      };
-      groups.set(key, group);
-    }
-    if (
-      group.partySize !== partySize ||
-      group.household.side !== data.side ||
-      group.household.tableNumber !== tableNumber
-    ) {
-      issue("household", "Members of one household must have matching party size, side and table.");
-      return;
-    }
-    if (
-      group.household.members.some(
-        (m) => m.name.toLocaleLowerCase() === member.name.toLocaleLowerCase(),
-      )
-    )
-      issue("name", "This named member appears twice in the household.");
-    group.household.rows.push(row);
     const { name, email, phone } = member;
-    group.household.members.push({ name, email: email?.toLowerCase() ?? null, phone });
+    groups.set(`row:${row}`, {
+      partySize: Number(values["party size"]),
+      party: {
+        side: data.side,
+        tableNumber,
+        maxTagAlongs: 0,
+        rows: [row],
+        members: [{ name, email: email?.toLowerCase() ?? null, phone }],
+      },
+    });
   });
-  const contacts = new Map<string, ImportHousehold>();
-  const households = [...groups.values()].map(({ household, partySize }) => {
-    household.maxTagAlongs = partySize - household.members.length;
-    if (household.maxTagAlongs < 0 || household.maxTagAlongs > 10)
+  const contacts = new Map<string, ImportParty>();
+  const parties = [...groups.values()].map(({ party, partySize }) => {
+    party.maxTagAlongs = partySize - party.members.length;
+    if (party.maxTagAlongs < 0 || party.maxTagAlongs > 10)
       errors.push({
-        row: household.rows[0] ?? 2,
+        row: party.rows[0] ?? 2,
         column: "party size",
         message:
           "Party size must include all named members and no more than 10 unnamed tag-alongs.",
       });
-    for (const member of household.members)
+    for (const member of party.members)
       for (const value of [member.email, member.phone]) {
         if (!value) continue;
         const previous = contacts.get(value);
-        if (previous && previous !== household)
+        if (previous && previous !== party)
           errors.push({
-            row: household.rows[0] ?? 2,
+            row: party.rows[0] ?? 2,
             column: "contact",
             message:
-              "This contact appears in different households. Correct the grouping before importing.",
+              "This contact appears on separate invitations. Correct duplicate contacts before importing.",
           });
-        contacts.set(value, household);
+        contacts.set(value, party);
       }
-    return household;
+    return party;
   });
-  return errors.length ? { ok: false, errors } : { ok: true, households };
+  return errors.length ? { ok: false, errors } : { ok: true, parties };
 }

@@ -62,6 +62,7 @@ it("combines visible filters, announces results and restores the complete list",
     target: { value: "Uchenna" },
   });
   expect(screen.getByRole("status")).toHaveTextContent("1 of 2 invitations");
+  fireEvent.click(screen.getByText("Filter invitations"));
   fireEvent.change(screen.getByLabelText("Sent"), { target: { value: "unsent" } });
   expect(screen.getByRole("status")).toHaveTextContent("0 of 2 invitations");
   expect(screen.getByText(/No invitations match/)).toBeVisible();
@@ -107,6 +108,7 @@ it("mounts sharing only for an expanded row and refreshes it with a new token ve
 
 it("restores focus to results if a mutation removes the expanded row from its status filter", () => {
   const { rerender } = render(<GuestList invitations={invitations} />);
+  fireEvent.click(screen.getByText("Filter invitations"));
   fireEvent.change(screen.getByLabelText("Invitation status"), { target: { value: "rsvp_yes" } });
   const opener = screen.getByRole("button", { name: "Invitation actions for Ada household" });
   opener.focus();
@@ -125,6 +127,7 @@ it("restores focus to results if a mutation removes the expanded row from its st
 it("retains Undo when first sharing removes the row from the unsent filter, and clears it after reissue", () => {
   const unsent = invitations.map((row) => (row.id === "one" ? { ...row, sentAt: null } : row));
   const { rerender } = render(<GuestList invitations={unsent} />);
+  fireEvent.click(screen.getByText("Filter invitations"));
   fireEvent.change(screen.getByLabelText("Sent"), { target: { value: "unsent" } });
   fireEvent.click(screen.getByRole("button", { name: "Invitation actions for Ada household" }));
   fireEvent.click(screen.getByRole("button", { name: "Record test share" }));

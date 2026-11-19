@@ -26,7 +26,7 @@ test.describe("authenticated invitation editor", () => {
     try {
       const created = await db<
         { id: string }[]
-      >`select id from invitations where household_name=${tag} or household_name=${tag + " corrected"}`;
+      >`select id from invitations where id in (select invitation_id from guests where name=${tag} or name=${tag + " corrected"})`;
       for (const row of created) if (!ids.includes(row.id)) ids.push(row.id);
       const retained = await db<
         { invitation_id: string }[]
@@ -49,24 +49,24 @@ test.describe("authenticated invitation editor", () => {
     if (info.project.name === "mobile") await page.setViewportSize({ width: 375, height: 900 });
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/admin/guests");
-    await page.getByRole("link", { name: "Add an invitation", exact: true }).click();
+    await page.getByRole("button", { name: "Add an invitation", exact: true }).click();
     await expect(
       page.getByRole("heading", { name: "Add an invitation", exact: true }),
     ).toBeVisible();
-    await page.getByLabel("Household name", { exact: true }).fill(tag);
-    await page.getByLabel("Guest 1 name", { exact: true }).fill("Synthetic primary");
-    await page.getByLabel("Guest 1 email", { exact: true }).fill("bad email");
-    await page.getByLabel("Guest 1 phone", { exact: true }).fill("bad phone");
+    await expect(page.getByLabel("Household name", { exact: true })).toHaveCount(0);
+    await page.getByLabel("Guest name", { exact: true }).fill(tag);
+    await page.getByLabel("Guest email", { exact: true }).fill("bad email");
+    await page.getByLabel("Guest phone", { exact: true }).fill("bad phone");
     await page.getByRole("button", { name: "Create draft invitation", exact: true }).click();
-    await expect(page.getByLabel("Guest 1 email", { exact: true })).toHaveAttribute(
+    await expect(page.getByLabel("Guest email", { exact: true })).toHaveAttribute(
       "aria-invalid",
       "true",
     );
-    await expect(page.getByLabel("Guest 1 phone", { exact: true })).toHaveAttribute(
+    await expect(page.getByLabel("Guest phone", { exact: true })).toHaveAttribute(
       "aria-invalid",
       "true",
     );
-    await expect(page.getByLabel("Guest 1 email", { exact: true })).toBeFocused();
+    await expect(page.getByLabel("Guest email", { exact: true })).toBeFocused();
     mkdirSync("docs/reviews/TICKET-090/screenshots", { recursive: true });
     for (const theme of themes) {
       await applyTheme(page, theme);
@@ -76,8 +76,9 @@ test.describe("authenticated invitation editor", () => {
         fullPage: true,
       });
     }
-    await page.getByLabel("Guest 1 email", { exact: true }).fill("synthetic@example.invalid");
-    await page.getByLabel("Guest 1 phone", { exact: true }).fill("07700900123");
+    await page.getByLabel("Guest email", { exact: true }).fill("synthetic@example.invalid");
+    await page.getByLabel("Guest phone country code", { exact: true }).selectOption("GB");
+    await page.getByLabel("Guest phone", { exact: true }).fill("07700900123");
     await page.getByRole("button", { name: "Create draft invitation", exact: true }).click();
     await expect(page.locator("main").getByRole("status")).toContainText(
       "Draft invitation created",
@@ -85,20 +86,18 @@ test.describe("authenticated invitation editor", () => {
     await expect(page.locator("main").getByRole("status")).toBeFocused();
     const [created] = await db<
       { id: string; token: string; status: string; token_version: number }[]
-    >`select id,token,status,token_version from invitations where household_name=${tag}`;
-    if (!created) throw new Error("Created household missing");
+    >`select id,token,status,token_version from invitations where id in (select invitation_id from guests where name=${tag})`;
+    if (!created) throw new Error("Created invitation missing");
     ids.push(created.id);
     expect(created.status).toBe("draft");
     expect(created.token_version).toBe(1);
     expect(created.token).toMatch(/^[A-Za-z0-9_-]{43}$/);
     await page.getByRole("link", { name: "Edit this invitation" }).click();
     await expect(page.getByRole("heading", { name: "Edit invitation", exact: true })).toBeVisible();
-    await page.getByLabel("Household name", { exact: true }).fill(`${tag} corrected`);
-    await page
-      .getByRole("textbox", { name: "Side", exact: true })
-      .fill("FamilyAndFriends".repeat(12));
-    await page.getByRole("button", { name: "Add a named guest" }).click();
-    await page.getByLabel("Guest 2 name", { exact: true }).fill("Synthetic second");
+    await page.getByLabel("Guest name", { exact: true }).fill(`${tag} corrected`);
+    await expect(page.getByRole("textbox", { name: "Side", exact: true })).toHaveCount(0);
+    await page.getByRole("button", { name: "Add a plus-one" }).click();
+    await page.getByLabel("Plus one 1 name", { exact: true }).fill("Synthetic second");
     await page.getByRole("button", { name: "Save invitation", exact: true }).click();
     await expect(
       page.locator("main").getByRole("status").filter({ hasText: "Invitation details saved." }),
@@ -107,11 +106,16 @@ test.describe("authenticated invitation editor", () => {
       { id: string }[]
     >`select id from guests where invitation_id=${created.id} order by id`;
     expect(membersBefore).toHaveLength(2);
-    await page.getByRole("textbox", { name: "Side", exact: true }).fill("Family corrected");
+    await page.getByLabel("Guest email", { exact: true }).fill("corrected@example.com");
     await page.getByRole("button", { name: "Save invitation", exact: true }).click();
     await expect
-      .poll(async () => (await db`select side from invitations where id=${created.id}`)[0]?.side)
-      .toBe("Family corrected");
+      .poll(
+        async () =>
+          (
+            await db`select email from guests where invitation_id=${created.id} and email=${"corrected@example.com"}`
+          )[0]?.email,
+      )
+      .toBe("corrected@example.com");
     expect(await db`select id from guests where invitation_id=${created.id} order by id`).toEqual(
       membersBefore,
     );
@@ -154,13 +158,13 @@ test.describe("authenticated invitation editor", () => {
     // An attending household keeps its answer and original reply date when corrected.
     const published = randomUUID();
     ids.push(published);
-    await db`insert into invitations(id,household_name,token,status) values(${published},${tag + " attending"},${randomBytes(32).toString("base64url")},'rsvp_yes')`;
+    await db`insert into invitations(id,token,status) values(${published},${randomBytes(32).toString("base64url")},'rsvp_yes')`;
     await db`insert into guests(invitation_id,name,is_primary,meal_choice,dietary_notes) values(${published},'Existing guest',true,'Vegetarian','No nuts')`;
     await db`insert into rsvps(invitation_id,attending,count_attending,responded_at) values(${published},true,1,'2026-10-01T12:00:00Z')`;
     await page.goto(`/admin/guests/${published}/edit`);
     await expect(page.getByRole("button", { name: "Delete draft", exact: true })).toHaveCount(0);
-    await page.getByRole("button", { name: "Add a named guest" }).click();
-    await page.getByLabel("Guest 2 name", { exact: true }).fill("Added invited guest");
+    await page.getByRole("button", { name: "Add a plus-one" }).click();
+    await page.getByLabel("Plus one 1 name", { exact: true }).fill("Added invited guest");
     await page.getByRole("button", { name: "Save invitation", exact: true }).click();
     await expect(
       page.locator("main").getByRole("status").filter({ hasText: "Invitation details saved." }),
@@ -175,14 +179,19 @@ test.describe("authenticated invitation editor", () => {
     expect(
       (await db`select actor from rsvp_changes where invitation_id=${published}`)[0]?.actor,
     ).toMatch(/^admin:/);
-    await page.getByRole("button", { name: `Revoke invitation: ${tag} attending` }).click();
+    const editorName = (
+      await db<
+        { name: string }[]
+      >`select name from guests where invitation_id=${published} order by id`
+    )
+      .map((guest) => guest.name)
+      .join(" & ");
+    await page.getByRole("button", { name: `Revoke invitation: ${editorName}` }).click();
     await page
       .getByRole("dialog", { name: "Revoke invitation?" })
       .getByRole("button", { name: "Revoke invitation", exact: true })
       .click();
-    await expect(
-      page.getByRole("button", { name: `Reissue link: ${tag} attending` }),
-    ).toBeFocused();
+    await expect(page.getByRole("button", { name: `Reissue link: ${editorName}` })).toBeFocused();
     expect((await db`select status from invitations where id=${published}`)[0]?.status).toBe(
       "revoked",
     );

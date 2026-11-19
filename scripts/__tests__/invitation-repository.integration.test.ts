@@ -35,10 +35,15 @@ describe.runIf(enabled)("invitation persistence on isolated Postgres", () => {
     const db = drizzle(sql, { schema });
     try {
       await db.transaction(async (tx) => {
-        const result = await createInvitation(tx, { householdName: "Test household" });
+        const result = await createInvitation(tx, {});
         expect(result.ok).toBe(true);
         if (!result.ok) throw new Error("Expected fixture invitation");
         const { id, token } = result.value;
+        const [numbered] = await tx
+          .select({ number: schema.invitations.cardNumber })
+          .from(schema.invitations)
+          .where(eq(schema.invitations.id, id));
+        expect(numbered?.number).toBeGreaterThanOrEqual(151);
         expect(token).toMatch(/^[A-Za-z0-9_-]{43}$/);
         expect(await findGuestInvitation(tx, token)).toBeNull();
         await tx.insert(schema.guests).values([
@@ -51,7 +56,9 @@ describe.runIf(enabled)("invitation persistence on isolated Postgres", () => {
           .where(eq(schema.invitations.id, id));
         expect(await findGuestInvitation(tx, token)).toEqual({
           attendance: null,
-          householdName: "Test household",
+          householdName: null,
+          cardNumber: expect.any(Number),
+          capacity: 2,
           primaryNames: ["Primary guest"],
         });
         await tx

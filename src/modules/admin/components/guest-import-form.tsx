@@ -16,8 +16,7 @@ import {
 
 type Approved = Extract<ImportPreviewViewResult, { status: "preview" }>;
 type Failure = Extract<ImportPreviewViewResult, { status: "error" }>;
-const template =
-  "name,phone,email,party size,side,table,household\r\nAda Example,,,2,Family,,Example household\r\n";
+const template = "name,phone,email,party size,side,table\r\nAda Example,,,2,Family,\r\n";
 const subscribeToHydration = () => () => {};
 const clientReady = () => true;
 const serverReady = () => false;
@@ -137,9 +136,9 @@ export function GuestImportForm({
           cells may be blank.
         </p>
         <p className="max-w-prose">
-          Party size is the maximum number invited, including named guests. Use the optional
-          household column to keep people on one invitation. Shared contact details across separate
-          households need correcting before import.
+          Each row creates one invitation for the named guest. Party size includes that guest and
+          their plus-ones, who stay on the same invitation and table. Correct shared contact details
+          across separate invitations before importing.
         </p>
         <a
           href={`data:text/csv;charset=utf-8,${encodeURIComponent(template)}`}
@@ -208,13 +207,13 @@ export function GuestImportForm({
             completed import does not add duplicates. This preview expires after 30 minutes.
           </p>
           <ul className="divide-y divide-border">
-            {preview.households.map((household) => (
-              <li key={household.key} className="space-y-3 py-6 wrap-anywhere">
-                <h3 className="font-display text-2xl">{household.heading}</h3>
-                <p>{household.members.join(" · ")}</p>
+            {preview.parties.map((party) => (
+              <li key={party.key} className="space-y-3 py-6 wrap-anywhere">
+                <h3 className="font-display text-2xl">{party.heading}</h3>
+                <p>{party.members.join(" · ")}</p>
                 <p>
-                  Up to {household.partyLimit} {household.partyLimit === 1 ? "guest" : "guests"} ·{" "}
-                  {household.side || "Side not set"} · {household.table || "Table not assigned"}
+                  Up to {party.partyLimit} {party.partyLimit === 1 ? "guest" : "guests"} ·{" "}
+                  {party.side || "Side not set"} · {party.table || "Table not assigned"}
                 </p>
               </li>
             ))}

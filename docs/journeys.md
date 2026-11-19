@@ -34,8 +34,8 @@ Day-of navigation uses the configured venue's calendar date. With the owner's ti
 | `/kitchen`                 | Staff hub                                   | Station lead while unavailable; Staff home                                       | 076,078,079                 |
 | `/bar`                     | Staff hub                                   | Station lead while unavailable; Staff home                                       | 077,078,079                 |
 | `/admin`                   | Admin bookmark or successful authentication | Sharing; sign out; home                                                          | 088,209                     |
-| `/admin/sharing/reminders` | Sharing page                                | Sent households without replies → approved nudge → share attempt → optional Undo | 053                         |
-| `/admin/sharing`           | Authenticated control room                  | Share published household invitation; back to control room                       | 050,052,209; guest list089  |
+| `/admin/sharing/reminders` | Sharing page                                | Sent guests without replies → approved nudge → share attempt → optional Undo | 053                         |
+| `/admin/sharing`           | Authenticated control room                  | Share published guest invitation; back to control room                       | 050,052,209; guest list089  |
 | `/admin/sign-in`           | Admin gate                                  | Email code → account status → admin/TOTP                                         | 029,030                     |
 | `/admin/mfa`               | Legacy sign-in bookmark                     | Verified email → control room; otherwise sign in                                 | 030                         |
 | `/admin/sign-out`          | Admin account controls                      | Sign out → sign-in/home                                                          | 029                         |
@@ -82,11 +82,11 @@ Signed-pass entry is separate from the personal invitation: /p/[pass] carries no
 
 ## Invitation reply history (TICKET-100)
 
-Admin → Guests → Invitation actions → Reply history opens `/admin/guests/[id]/history` for that household. The protected, read-only timeline shows every saved RSVP or admin correction newest first, before/after details and explicit UTC timestamps. Back to guests returns to the list. Missing invitations return404; no-record and temporary-load-failure states are distinct. Raw invitation credentials, contacts and actor identifiers are not part of the history display.
+Admin → Guests → Invitation actions → Reply history opens `/admin/guests/[id]/history` for that guest. The protected, read-only timeline shows every saved RSVP or admin correction newest first, before/after details and explicit UTC timestamps. Back to guests returns to the list. Missing invitations return404; no-record and temporary-load-failure states are distinct. Raw invitation credentials, contacts and actor identifiers are not part of the history display.
 
 ## Offline admission conflicts
 
-The signed-in gate scanner shows recent conflicting offline entries below the scan controls. Each entry includes the household, operator/device, reported and received times, reported count and canonical admitted count. Realtime notifications refresh this online-only list; an unavailable connection clears it rather than presenting stale certainty. The gate lead opens **Admin → Scan log**, filters conflicts, and adds an append-only resolution note. Original admission evidence and counts are never rewritten.
+The signed-in gate scanner shows recent conflicting offline entries below the scan controls. Each entry includes the guest, operator/device, reported and received times, reported count and canonical admitted count. Realtime notifications refresh this online-only list; an unavailable connection clears it rather than presenting stale certainty. The gate lead opens **Admin → Scan log**, filters conflicts, and adds an append-only resolution note. Original admission evidence and counts are never rewritten.
 
 ## Event health (TICKET-143)
 
@@ -100,12 +100,12 @@ Staff home → Recover retained gate records (`/gate-recovery`) → save at most
 
 - `/dev/invitation`: sample of the owner's original two-page floral card, with a sample PDF.
 - `/admin/sharing` → **Preview invitation card** → `/admin/invitations/[id]/card`: authenticated
-  household preview and private PDF download. Draft previews do not publish, send or record a share;
+  guest preview and private PDF download. Draft previews do not publish, send or record a share;
   the page explains that the RSVP link is inactive until publication.
 - `/i/[token]`: published guest card, readable venue/dress-code details, maps, online RSVP and
   **Download your invitation card** (`/i/[token]/card.pdf`). Available before a reply is saved.
-- The card PDF keeps the two artwork pages and adds an RSVP sheet. Its QR opens the household's
-  personal editing link, so it must be shared only with that household. It is not an entry credential.
+- The card PDF keeps the two artwork pages and adds an RSVP sheet. Its QR opens the guest's
+  personal editing link, so it must be shared only with that guest. It is not an entry credential.
 - After attendance is confirmed, **Download entry pass PDF** still downloads the separate signed,
   read-only gate pass. It is deliberately distinct from the personalised invitation card.
 - Reply requested by 17 December 2026 follows the supplied card; existing RSVP lock policy remains

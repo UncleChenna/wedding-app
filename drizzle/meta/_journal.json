@@ -295,6 +295,13 @@
       "when": 1794828580904,
       "tag": "0041_invitation-card-number",
       "breakpoints": true
+    },
+    {
+      "idx": 42,
+      "version": "7",
+      "when": 1794906543833,
+      "tag": "0042_online-card-number-range",
+      "breakpoints": true
     }
   ]
 }

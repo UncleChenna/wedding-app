@@ -1,3 +1,4 @@
+import { invitationGuestName } from "@/modules/shared/server/invitation-guest-name";
 import "server-only";
 import { desc, eq, sql } from "drizzle-orm";
 import { db } from "@/modules/shared/server/db/client";
@@ -18,7 +19,9 @@ export async function readGateConflicts(database: Pick<Db, "select">) {
   const rows = await database
     .select({
       id: scanEvents.id,
-      household: invitations.householdName,
+      household: sql<
+        string | null
+      >`case when ${invitations.id} is null then null else ${invitationGuestName()} end`,
       staff: staff.name,
       device: registeredDevices.name,
       reportedAt: scanEvents.reportedAt,
@@ -38,6 +41,12 @@ export async function readGateConflicts(database: Pick<Db, "select">) {
     .limit(25);
   return rows.map((row) => ({
     ...row,
+    // Display projection only: preserve full guest names in the underlying roster.
+    // Match the protocol's UTF-16 length bound without splitting a surrogate pair.
+    household:
+      row.household && row.household.length > 500
+        ? row.household.slice(0, 499).replace(/[\uD800-\uDBFF]$/, "") + "…"
+        : row.household,
     reportedAt: row.reportedAt.toISOString(),
     receivedAt: row.receivedAt.toISOString(),
   }));

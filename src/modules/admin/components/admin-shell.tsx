@@ -65,9 +65,9 @@ export function AdminShell({
           <p className="type-label text-primary">Wedding control room</p>
           <p className="mt-2 font-display text-2xl leading-tight">{eventName}</p>
         </div>
-        <ul className="grid grid-cols-3 gap-1 md:mt-10 md:grid-cols-1 md:gap-2">
+        <ul className="flex gap-1 overflow-x-auto md:mt-10 md:grid md:grid-cols-1 md:gap-2 md:overflow-visible">
           {adminSections.map((section) => (
-            <li key={section.href}>
+            <li key={section.href} className="shrink-0 whitespace-nowrap md:whitespace-normal">
               <AdminNavLink
                 href={section.href}
                 label={section.label}
@@ -86,8 +86,8 @@ export function AdminShell({
           </li>
         </ul>
       </nav>
-      {/* Four rows of phone navigation need clearance below the last action. */}
-      <div className="min-w-0 flex-1 pb-[calc(16rem+env(safe-area-inset-bottom))] md:pb-0">
+      {/* Leave room for the compact phone navigation and safe area. */}
+      <div className="min-w-0 flex-1 pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-0">
         {children}
       </div>
     </div>

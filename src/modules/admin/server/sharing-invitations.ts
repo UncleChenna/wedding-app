@@ -17,7 +17,6 @@ export async function getSharingInvitations() {
       token: invitations.token,
       tokenVersion: invitations.tokenVersion,
       status: invitations.status,
-      householdName: invitations.householdName,
     })
     .from(invitations)
     .orderBy(asc(invitations.createdAt), asc(invitations.id));
@@ -36,7 +35,7 @@ export async function getSharingInvitations() {
     ...prepareSharingInvitation(
       {
         ...row,
-        name: row.householdName || grouped.get(row.id)?.join(" & ") || "Our dear guest",
+        name: grouped.get(row.id)?.join(" & ") || "Our dear guest",
       },
       settings,
       clientEnv.NEXT_PUBLIC_SITE_URL,

@@ -16,7 +16,7 @@ for (const key of FONT_KEYS) {
 export async function renderMemoriesPdf(input: unknown, theme: Theme) {
   const data = parseMemories(input);
   const totals = [
-    ["Invited households", data.invitations],
+    ["Invitations", data.invitations],
     ["Accepted invitations", data.repliedYes],
     ["Declined invitations", data.repliedNo],
     ["Expected guests", data.attending],

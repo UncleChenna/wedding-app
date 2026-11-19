@@ -87,6 +87,39 @@ describe.runIf(process.env.RUN_SCAN_LOG_DB_TESTS === "1")("admin scan log persis
     if (!first) throw new Error("Missing fixture scan");
     return { invitationId, staffId, deviceId, eventId: first.id };
   }
+  it("keeps unknown invitations null and bounds multi-guest gate conflict labels", async () => {
+    await exercise(async (tx) => {
+      const fixture = await fixtures(tx);
+      await tx
+        .insert(schema.guests)
+        .values(
+          Array.from({ length: 3 }, (_, index) => ({
+            invitationId: fixture.invitationId,
+            name: `${index}${"Ọ".repeat(199)}`,
+            isPrimary: true,
+          })),
+        );
+      const page = await read(tx, { page: 1, staff: fixture.staffId, invitation: "unknown" });
+      expect(page.entries).toHaveLength(1);
+      expect(page.entries[0]?.invitationName).toBeNull();
+      const { readGateConflicts } = await import("../../src/modules/checkin/server/gate-conflicts");
+      const { gateConflictsSchema } = await import("../../src/modules/checkin/lib/gate-conflicts");
+      const rows = await readGateConflicts(tx);
+      const own = rows.filter((row) => row.staff === "Synthetic gate");
+      expect(own).toHaveLength(5);
+      expect(own.filter((row) => row.household === null)).toHaveLength(1);
+      const named = own.find((row) => row.household !== null);
+      expect(named?.household?.length).toBeLessThanOrEqual(500);
+      expect(named?.household?.endsWith("…")).toBe(true);
+      expect(
+        gateConflictsSchema.safeParse({
+          session: "a".repeat(64),
+          expiresAt: Date.now() + 60000,
+          entries: own,
+        }).success,
+      ).toBe(true);
+    });
+  });
   it("filters all five results, unknown identities, transport and UTC received time without private data", async () => {
     await exercise(async (tx) => {
       const fixture = await fixtures(tx);

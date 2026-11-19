@@ -28,10 +28,9 @@ async function planRows(database: Pick<Db, "select">): Promise<SeatingPlan> {
     })
     .from(tables)
     .orderBy(asc(tables.number));
-  const households = await database
+  const invitationRows = await database
     .select({
       id: invitations.id,
-      householdName: invitations.householdName,
       status: invitations.status,
       tableId: invitations.tableId,
       countAttending: rsvps.countAttending,
@@ -48,9 +47,9 @@ async function planRows(database: Pick<Db, "select">): Promise<SeatingPlan> {
     names.set(member.invitationId, [...(names.get(member.invitationId) ?? []), member.name]);
   return {
     tables: tableRows,
-    parties: households.map((row) => ({
+    parties: invitationRows.map((row) => ({
       id: row.id,
-      name: row.householdName || names.get(row.id)?.join(" & ") || "Unnamed invitation",
+      name: names.get(row.id)?.join(" & ") || "Unnamed invitation",
       status: row.status,
       tableId: row.tableId,
       countAttending: row.countAttending,
@@ -159,7 +158,7 @@ export async function deleteSeatingTable(
       .where(eq(guests.tableId, id))
       .limit(1);
     if (party || member)
-      return { ok: false, message: "Move or unassign this table’s households before deleting it." };
+      return { ok: false, message: "Move or unassign this table’s guests before deleting it." };
     await tx.delete(tables).where(eq(tables.id, id));
     return { ok: true, message: "Table deleted." };
   });
@@ -202,7 +201,7 @@ export async function assignSeatingTable(
       message: capacityMessage(
         await planRows(tx),
         tableId,
-        tableId ? "Household assigned." : "Household unassigned.",
+        tableId ? "Table assigned to guest and plus-one." : "Guest and plus-one unassigned.",
       ),
     };
   });

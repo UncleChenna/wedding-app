@@ -27,7 +27,7 @@ export function memoriesCsv(input: unknown): string {
   const data = parseMemories(input);
   const rows: (string | number)[][] = [
     ["Category", "Label", "Count", "Served"],
-    ["Invitations", "Households", data.invitations, ""],
+    ["Invitations", "Invitations", data.invitations, ""],
     ["RSVP", "Yes", data.repliedYes, ""],
     ["RSVP", "No", data.repliedNo, ""],
     ["Attendance", "Expected guests", data.attending, ""],

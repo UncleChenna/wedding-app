@@ -37,7 +37,7 @@ export function InvitationLifecycleControls({
   useActionFeedback(result);
   useEffect(() => {
     // Successful revocation removes the opener. Wait for updated props and the
-    // closed sheet, then restore focus once to the surviving household action.
+    // closed sheet, then restore focus once to the surviving guest action.
     if (restoreAfterRevoke.current && status === "revoked" && operation === null && !pending) {
       controlsRef.current?.querySelector<HTMLButtonElement>("[data-lifecycle-reissue]")?.focus();
       restoreAfterRevoke.current = false;

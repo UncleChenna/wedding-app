@@ -22,7 +22,7 @@ export function PrintedInvitationCard({
         <Image
           src={front}
           alt="Uchenna and Adaora, together with their families. Original floral invitation cover."
-          placeholder="blur"
+          unoptimized
           sizes="(min-width: 768px) 768px, 100vw"
           priority
           className="h-auto w-full"
@@ -32,7 +32,7 @@ export function PrintedInvitationCard({
             src={back}
             loading="eager"
             alt="Wedding ceremony and reception details; readable details follow below."
-            placeholder="blur"
+            unoptimized
             sizes="(min-width: 768px) 768px, 100vw"
             className="h-auto w-full"
           />

@@ -18,13 +18,15 @@ const memberSchema = z.strictObject({
       if (!value) return null;
       const result = normalisePhone(value);
       if (result.ok) return result.phone;
-      context.addIssue({ code: "custom", message: result.error.message });
+      context.addIssue({
+        code: "custom",
+        message: "Enter a valid phone number for the selected country.",
+      });
       return z.NEVER;
     }),
 });
 export const invitationEditorSchema = z
   .strictObject({
-    householdName: z.string().trim().min(1, "Enter a household name.").max(200),
     side: z
       .string()
       .trim()
@@ -74,7 +76,6 @@ export interface InvitationEditorDetails {
 
 export function planDraftInvitation(input: InvitationEditorInput, token: () => string) {
   return {
-    householdName: input.householdName,
     side: input.side,
     tableId: input.tableId,
     maxTagAlongs: input.maxTagAlongs,
@@ -90,7 +91,6 @@ export function parseInvitationEditorForm(form: FormData) {
   const emails = form.getAll("memberEmail");
   const phones = form.getAll("memberPhone");
   return invitationEditorSchema.safeParse({
-    householdName: form.get("householdName"),
     side: form.get("side"),
     tableId: form.get("tableId"),
     maxTagAlongs: form.get("maxTagAlongs"),

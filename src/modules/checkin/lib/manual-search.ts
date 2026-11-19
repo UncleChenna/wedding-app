@@ -12,10 +12,10 @@ export interface GuestNameMatch {
 /** Display only; the search projection retains every full name separately. */
 export function manualHouseholdName(
   primary: readonly string[],
-  householdName: string | null,
+  _householdName: string | null,
 ): string {
-  const suffix = primary.length > 2 ? " & household" : "";
-  const label = primary.slice(0, 2).join(" & ") || householdName?.trim() || "Guest household";
+  const suffix = primary.length > 2 ? " & guests" : "";
+  const label = primary.slice(0, 2).join(" & ") || "Guest";
   const budget = 512 - suffix.length;
   return (label.length > budget ? label.slice(0, budget - 1) + "…" : label) + suffix;
 }

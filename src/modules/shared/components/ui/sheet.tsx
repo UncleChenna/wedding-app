@@ -22,6 +22,9 @@ const FOCUSABLE =
  */
 function trapTab(event: KeyboardEvent<HTMLDialogElement>) {
   if (event.key !== "Tab") return;
+  // Nested previews/share dialogs own their keyboard focus.
+  if (event.target instanceof Element && event.target.closest("dialog") !== event.currentTarget)
+    return;
   const focusable = [...event.currentTarget.querySelectorAll<HTMLElement>(FOCUSABLE)];
   const first = focusable[0];
   const last = focusable.at(-1);
@@ -59,6 +62,8 @@ export function Sheet({ open, onOpenChange, title, description, children, classN
       aria-labelledby={titleId}
       aria-describedby={description ? descriptionId : undefined}
       onCancel={(event) => {
+        if (event.target !== event.currentTarget) return;
+        event.stopPropagation();
         // Keep Escape in the controlled-state path: native close restores focus
         // before its queued close event, allowing a quick reopen to be lost.
         event.preventDefault();

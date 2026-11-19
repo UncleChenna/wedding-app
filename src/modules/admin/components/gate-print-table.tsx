@@ -21,9 +21,6 @@ export function GatePrintTable({ rows }: { rows: readonly GatePrintRow[] }) {
                   <li key={index}>{name}</li>
                 ))}
               </ul>
-              {row.householdName && !row.names.includes(row.householdName) ? (
-                <p className="mt-2">{row.householdName}</p>
-              ) : null}
             </td>
             <td>{row.partySize ?? "Check reply"}</td>
             <td>{row.tableNumber ?? "Not seated"}</td>
