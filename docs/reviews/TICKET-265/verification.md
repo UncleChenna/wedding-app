@@ -95,3 +95,20 @@ Nigeria normalization, country switching, persisted UK numbers, blank fields, in
 paste and unlisted codes. Browser checks at375/768/1280 pass without overflow; the guest and
 plus-one both default toNigeria and UK selection submits+44. Screenshots included. Physical
 devices and all theme variants not reverified for this incremental form change.
+
+## Guest-page UI redesign — 19 November
+
+Reworked guest-list hierarchy: prominent add action, secondary guest tools, invitation/attendance
+counts, searchable list and expandable filters. Removed obsolete Side filtering/display. Guest
+rows have smaller names, less duplicate information and direct Edit guest links. The form uses
+one contained surface, two desktop columns, compact section headings and shorter guidance;
+primary guest, plus-one, country-code input and save/preview/send behavior remain intact.
+Mobile admin navigation now uses one scrollable row instead of covering four rows of content;
+desktop sidebar remains. Bottom content clearance matches the shorter bar.
+
+Quick verification:13 related tests passed. Root preview types passed. Twelve screenshots cover
+list/form at375/768/1280 in light/dark; no horizontal overflow. Both mobile routes in both modes
+have zero axe violations. Filters/reset, add navigation and Nigeria defaults exercised in the
+browser. Source review found no blocking regressions. Existing future opportunity: auto-scroll
+later active mobile navigation links into view. Physical devices, all additional palettes and
+fresh performance measurements remain unverified; prior build security blocker is unchanged.

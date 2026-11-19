@@ -77,7 +77,7 @@ test.describe("authenticated guest list", () => {
         if (!status) throw new Error("Missing synthetic invitation status");
         await tx`insert into invitations(id, household_name, token, status, side, table_id, sent_at)
           values (${id}, ${`${tag} household ${String(index).padStart(3, "0")}`}, ${randomBytes(32).toString("base64url")}, ${status}, ${index % 2 ? null : longSide}, ${index % 3 ? null : tableId}, ${index % 2 ? null : new Date("2026-11-01T12:00:00Z")})`;
-        await tx`insert into guests(invitation_id,name,is_primary) values (${id}, ${`Ada ${index}`}, true), (${id}, ${`Uchenna ${index}`}, false)`;
+        await tx`insert into guests(invitation_id,name,is_primary) values (${id}, ${`${tag} Ada ${String(index).padStart(3, "0")}`}, true), (${id}, ${`${tag} Uchenna ${String(index).padStart(3, "0")}`}, false)`;
         if (status === "rsvp_yes" || status === "revoked" || status === "rsvp_no")
           await tx`insert into rsvps(invitation_id,attending,count_attending) values (${id}, ${status !== "rsvp_no"}, ${status === "rsvp_no" ? 0 : 2})`;
       }
@@ -101,7 +101,7 @@ test.describe("authenticated guest list", () => {
     }
   });
 
-  test("300 households render, filter and retain usable admin actions", async ({
+  test("300 invitations render, filter and retain usable admin actions", async ({
     page,
     request,
   }, info) => {
@@ -158,7 +158,7 @@ test.describe("authenticated guest list", () => {
     for (let attempt = 0; attempt < 5; attempt++) {
       timings.push({
         operation: "filter-to-one",
-        ms: await measureUpdate(page, 1, () => search.fill(`${tag} household 001`)),
+        ms: await measureUpdate(page, 1, () => search.fill(`${tag} Ada 001`)),
       });
       timings.push({
         operation: "render-300",
@@ -192,10 +192,11 @@ test.describe("authenticated guest list", () => {
       expect(await scanA11y(page)).toEqual([]);
     }
 
-    await search.fill(`${tag} Uchenna household 000`);
+    await search.fill(`${tag} Uchenna 000`);
+    await page.getByText("Filter invitations", { exact: true }).click();
     await page.getByLabel("Invitation status", { exact: true }).selectOption("rsvp_yes");
     await page.getByLabel("Sent", { exact: true }).selectOption("sent");
-    await page.getByLabel("Side", { exact: true }).selectOption(`value:${longSide}`);
+    await expect(page.getByLabel("Side", { exact: true })).toHaveCount(0);
     await page.getByLabel("Table", { exact: true }).selectOption(`value:${tableId}`);
     await expect(page.locator(`[data-invitation-id="${lifecycleId}"]`)).toBeVisible();
     await expect(page.locator("[data-invitation-id]")).toHaveCount(1);

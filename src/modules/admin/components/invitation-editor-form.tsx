@@ -100,9 +100,9 @@ export function InvitationEditorForm({
       <fieldset
         key={member.id || `new-${index}`}
         disabled={pending}
-        className="space-y-6 border-t border-border pt-6"
+        className="grid min-w-0 gap-4 sm:grid-cols-2 [&>div:last-of-type]:sm:col-span-2"
       >
-        <legend className="px-1 text-lg font-medium">
+        <legend className="mb-4 text-base font-semibold">
           {index === 0 ? "Guest details" : `Plus one ${index}`}
         </legend>
         <input type="hidden" name="memberId" value={member.id} />
@@ -150,8 +150,13 @@ export function InvitationEditorForm({
     );
   }
   return (
-    <div className="mt-8 space-y-12">
-      <form ref={form} action={action} noValidate className="space-y-8 [&_label]:text-base">
+    <div className="mt-6 space-y-8">
+      <form
+        ref={form}
+        action={action}
+        noValidate
+        className="space-y-8 rounded-lg border border-border bg-surface p-4 sm:p-6 md:p-8 [&_label]:text-sm"
+      >
         {invitation && (
           <>
             <input type="hidden" name="id" value={invitation.id} />
@@ -159,15 +164,15 @@ export function InvitationEditorForm({
           </>
         )}
         {values.members[0] && renderGuest(values.members[0], 0)}
-        <fieldset disabled={pending} className="space-y-6">
-          <legend className="mb-6 font-display text-2xl">Invitation details</legend>
+        <fieldset disabled={pending} className="space-y-4">
+          <legend className="mb-4 text-base font-semibold">Invitation details</legend>
           <input type="hidden" name="side" value={values.side} />
           <Select
             label="Table"
             name="tableId"
             value={values.tableId}
             onChange={(event) => setValues({ ...values, tableId: event.target.value })}
-            hint="Multiple guests and their plus-ones can share a table. Each person counts toward its capacity."
+            hint="Optional. You can arrange shared tables later in the seating plan."
             error={fields.tableId}
           >
             <option value="">Not seated yet</option>
@@ -179,20 +184,19 @@ export function InvitationEditorForm({
           </Select>
           <input type="hidden" name="maxTagAlongs" value={values.maxTagAlongs} />
         </fieldset>
-        <section aria-labelledby="plus-one" className="space-y-6">
-          <h2 id="plus-one" className="font-display text-2xl">
+        <section aria-labelledby="plus-one" className="space-y-4">
+          <h2 id="plus-one" className="text-base font-semibold">
             Plus one
           </h2>
           {invitation?.reply && (
-            <p className="max-w-prose">
+            <p className="max-w-prose text-sm text-muted-foreground">
               {invitation.reply.attending
                 ? `This party replied yes for ${invitation.reply.countAttending}. Saving a changed guest list updates that party size, keeps their yes reply and records the correction. It cannot be smaller than the number already admitted.`
                 : "This party replied no. Their answer stays unchanged when you edit their details."}
             </p>
           )}
-          <p className="max-w-prose">
-            Add anyone accompanying this guest. They share the invitation and table. Meal choices
-            and dietary notes stay with each person; removing a plus-one keeps saved reply history.
+          <p className="max-w-prose text-sm text-muted-foreground">
+            Someone joining them? Add their details below. They’ll share the invitation and table.
           </p>
           {values.members.slice(1).map((member, index) => renderGuest(member, index + 1))}
           {fields.members && <p role="alert">{fields.members}</p>}
@@ -218,8 +222,8 @@ export function InvitationEditorForm({
         </Button>
       </form>
       {invitation && (
-        <section className="space-y-6" aria-label="Invitation status actions">
-          <h2 className="font-display text-2xl">Invitation status</h2>
+        <section className="space-y-4" aria-label="Invitation status actions">
+          <h2 className="text-base font-semibold">Invitation status</h2>
           {invitation.status === "draft" ? (
             <>
               <p>
@@ -239,7 +243,7 @@ export function InvitationEditorForm({
                 title="Delete this draft?"
               >
                 <p>This removes the draft and its named guests. It cannot be undone.</p>
-                <form action={deleteAction} className="space-y-6">
+                <form action={deleteAction} className="space-y-4">
                   <input type="hidden" name="id" value={invitation.id} />
                   <input type="hidden" name="snapshot" value={snapshot} />
                   <input type="hidden" name="confirmation" value="delete" />
