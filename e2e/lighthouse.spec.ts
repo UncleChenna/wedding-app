@@ -1,3 +1,4 @@
+import { selectDropdown } from "./support/select-dropdown";
 import { execFile } from "node:child_process";
 import { randomBytes, randomUUID, randomInt } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -40,7 +41,7 @@ test("mobile guest pages meet the recorded Lighthouse policy", async ({
     await page.goto(`/i/${token}`);
     await page.getByRole("button", { name: "Count me in", exact: true }).click();
     const party = page.locator('section[aria-labelledby="party-heading"]');
-    await party.getByLabel("Meal choice").selectOption(meal);
+    await selectDropdown(party.getByLabel("Meal choice"), meal);
     await party.getByRole("button", { name: "Save guest details", exact: true }).click();
     await expect(party.getByRole("status")).toContainText("Your guest details are saved");
     const pass = await page

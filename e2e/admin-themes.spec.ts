@@ -1,3 +1,4 @@
+import { selectDropdown } from "./support/select-dropdown";
 import { mkdirSync } from "node:fs";
 import postgres, { type Sql } from "postgres";
 import { expect, test } from "@playwright/test";
@@ -61,7 +62,7 @@ test.describe("theme studio", () => {
     await expect(page.getByRole("heading", { name: "Theme studio", exact: true })).toBeVisible();
     await page.getByText("Colours", { exact: true }).click();
     const light = getTheme("blush-sage");
-    await page.getByLabel("Start from a preset").selectOption(light.id);
+    await selectDropdown(page.getByLabel("Start from a preset"), light.id);
     await page.getByLabel("foreground hex", { exact: true }).fill(light.colors.background);
     await page.getByRole("button", { name: "Save draft", exact: true }).click();
     await expect(page.getByRole("main").getByRole("alert").last()).toContainText("foreground");
@@ -81,8 +82,8 @@ test.describe("theme studio", () => {
     await expect(page.getByRole("main").getByRole("status").last()).toContainText("Draft saved");
     const [draft] = await db`select published_tokens from themes where id='wedding-light'`;
     expect(draft?.published_tokens).toBeNull();
-    await page.getByLabel("Appearance", { exact: true }).selectOption("dark");
-    await page.getByLabel("Start from a preset").selectOption("emerald-night");
+    await selectDropdown(page.getByLabel("Appearance", { exact: true }), "dark");
+    await selectDropdown(page.getByLabel("Start from a preset"), "emerald-night");
     await page.getByRole("button", { name: "Save draft", exact: true }).click();
     await expect(page.getByRole("main").getByRole("status").last()).toContainText("Draft saved");
     await page.reload();
@@ -150,10 +151,10 @@ test.describe("theme studio", () => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     for (const theme of listThemes()) {
       await applyTheme(page, theme);
-      await page.getByLabel("Appearance", { exact: true }).selectOption(theme.colorScheme);
-      await page.getByLabel("Start from a preset").selectOption(theme.id);
+      await selectDropdown(page.getByLabel("Appearance", { exact: true }), theme.colorScheme);
+      await selectDropdown(page.getByLabel("Start from a preset"), theme.id);
       for (const preview of ["invitation", "order"]) {
-        await page.getByLabel("Preview page").selectOption(preview);
+        await selectDropdown(page.getByLabel("Preview page"), preview);
         for (const width of [375, 768, 1280]) {
           await page.setViewportSize({ width, height: 900 });
           await expect(page.locator("body")).toHaveJSProperty("scrollWidth", width);

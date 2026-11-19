@@ -1,3 +1,4 @@
+import { selectDropdown } from "./support/select-dropdown";
 import { createPrivateKey, randomBytes, randomInt, randomUUID, sign } from "node:crypto";
 import { mkdirSync } from "node:fs";
 import postgres, { type Sql } from "postgres";
@@ -101,9 +102,9 @@ test.describe("seating admin", () => {
     const assign = page.getByRole("button", { name: `Assign table for ${tag}`, exact: true });
     await assign.focus();
     await page.keyboard.press("Enter");
-    await page
-      .getByLabel("Table", { exact: true })
-      .selectOption({ label: `Table ${first} · ${tag}` });
+    await selectDropdown(page.getByLabel("Table", { exact: true }), {
+      label: `Table ${first} · ${tag}`,
+    });
     await expect(page.getByRole("dialog").getByRole("status")).toContainText("1 over capacity");
     const save = page.getByRole("button", { name: "Save assignment" });
     let releaseSave: () => void = () => {};
@@ -184,9 +185,9 @@ test.describe("seating admin", () => {
       await expect(assign).toBeFocused();
     }
     await assign.click();
-    await page
-      .getByLabel("Table", { exact: true })
-      .selectOption({ label: `Table ${second} · ${tag}` });
+    await selectDropdown(page.getByLabel("Table", { exact: true }), {
+      label: `Table ${second} · ${tag}`,
+    });
     await page.getByRole("button", { name: "Save assignment" }).click();
     await expect(page.getByRole("dialog")).not.toBeVisible();
     await guest.reload();
@@ -221,7 +222,7 @@ test.describe("seating admin", () => {
     await guest.reload();
     await expect(guest.locator("dd").getByText(String(renamed), { exact: true })).toBeVisible();
     await assign.click();
-    await page.getByLabel("Table", { exact: true }).selectOption("");
+    await selectDropdown(page.getByLabel("Table", { exact: true }), "");
     await page.getByRole("button", { name: "Save assignment" }).click();
     await expect(page.getByRole("dialog")).not.toBeVisible();
     await guest.reload();

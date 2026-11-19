@@ -1,3 +1,4 @@
+import { selectDropdown } from "./support/select-dropdown";
 import { randomInt, randomUUID } from "node:crypto";
 import { mkdirSync, writeFileSync } from "node:fs";
 import postgres, { type Sql } from "postgres";
@@ -124,10 +125,12 @@ test.describe("complete admin setup journey", () => {
     await expect(page.getByRole("dialog")).not.toBeVisible();
     await page.getByLabel("Find a household").fill(household);
     await page.getByRole("button", { name: `Assign table for ${household}`, exact: true }).click();
-    await page
-      .getByRole("dialog", { name: "Seat this household" })
-      .getByLabel("Table", { exact: true })
-      .selectOption({ label: `Table ${tableNumber} · ${household}` });
+    await selectDropdown(
+      page
+        .getByRole("dialog", { name: "Seat this household" })
+        .getByLabel("Table", { exact: true }),
+      { label: `Table ${tableNumber} · ${household}` },
+    );
     await page.getByRole("button", { name: "Save assignment" }).click();
     await expect(page.getByRole("dialog")).not.toBeVisible();
     expect(
@@ -143,8 +146,8 @@ test.describe("complete admin setup journey", () => {
     await nav.getByRole("link", { name: "Menu", exact: true }).click();
     const add = page.getByRole("region", { name: "Add an item" });
     await add.getByLabel("Name", { exact: true }).fill(mealName);
-    await add.getByLabel("Category").selectOption("meal");
-    await add.getByLabel("Prepared by").selectOption("kitchen");
+    await selectDropdown(add.getByLabel("Category"), "meal");
+    await selectDropdown(add.getByLabel("Prepared by"), "kitchen");
     await add.getByRole("button", { name: "Add an item" }).click();
     await expect(add.getByRole("status")).toHaveText("Added to the menu.");
     const item = page
@@ -164,7 +167,7 @@ test.describe("complete admin setup journey", () => {
     await nav.getByRole("link", { name: "Staff", exact: true }).click();
     const person = page.getByRole("region", { name: "Add a person" });
     await person.getByLabel("Name").fill(staffName);
-    await person.getByLabel("Works at").selectOption("kitchen");
+    await selectDropdown(person.getByLabel("Works at"), "kitchen");
     await person.getByRole("button", { name: "Add a person" }).click();
     await page.getByRole("button", { name: `Issue PIN: ${staffName}` }).click();
     const panel = page.getByRole("status", { name: `PIN for ${staffName}` });

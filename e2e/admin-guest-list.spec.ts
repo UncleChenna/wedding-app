@@ -1,3 +1,4 @@
+import { selectDropdown } from "./support/select-dropdown";
 import { randomBytes, randomUUID } from "node:crypto";
 import { mkdirSync, writeFileSync } from "node:fs";
 import postgres, { type Sql } from "postgres";
@@ -193,10 +194,10 @@ test.describe("authenticated guest list", () => {
     }
 
     await search.fill(`${tag} Uchenna household 000`);
-    await page.getByLabel("Invitation status", { exact: true }).selectOption("rsvp_yes");
-    await page.getByLabel("Sent", { exact: true }).selectOption("sent");
-    await page.getByLabel("Side", { exact: true }).selectOption(`value:${longSide}`);
-    await page.getByLabel("Table", { exact: true }).selectOption(`value:${tableId}`);
+    await selectDropdown(page.getByLabel("Invitation status", { exact: true }), "rsvp_yes");
+    await selectDropdown(page.getByLabel("Sent", { exact: true }), "sent");
+    await selectDropdown(page.getByLabel("Side", { exact: true }), `value:${longSide}`);
+    await selectDropdown(page.getByLabel("Table", { exact: true }), `value:${tableId}`);
     await expect(page.locator(`[data-invitation-id="${lifecycleId}"]`)).toBeVisible();
     await expect(page.locator("[data-invitation-id]")).toHaveCount(1);
     const row = page.locator(`[data-invitation-id="${lifecycleId}"]`);

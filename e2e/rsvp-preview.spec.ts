@@ -1,3 +1,4 @@
+import { selectDropdown } from "./support/select-dropdown";
 import { expect, test } from "@playwright/test";
 import { listThemes } from "../src/modules/theming";
 import { scanA11y } from "./support/axe";
@@ -18,7 +19,7 @@ for (const theme of listThemes()) {
       await page.emulateMedia({ reducedMotion: "reduce" });
       await page.goto("/dev");
       await page.getByRole("link", { name: "RSVP preview", exact: true }).click();
-      await page.getByLabel("Preview theme").selectOption(theme.id);
+      await selectDropdown(page.getByLabel("Preview theme"), theme.id);
 
       async function check(state: string) {
         await page.evaluate(() => document.fonts.ready);
@@ -59,16 +60,16 @@ for (const theme of listThemes()) {
       await expect(page.getByText("Please choose a meal.")).toBeVisible();
       await check("party-errors");
       await page.getByLabel("Your name", { exact: true }).fill("Alex Taylor");
-      await page.getByLabel("Meal choice", { exact: true }).selectOption("chicken");
+      await selectDropdown(page.getByLabel("Meal choice", { exact: true }), "chicken");
       await page.getByRole("button", { name: "Add a companion" }).click();
       await expect(page.getByLabel("Companion 1 name")).toBeFocused();
       await page.getByRole("button", { name: "Review your reply" }).click();
       await expect(page.getByLabel("Companion 1 name")).toHaveAttribute("aria-invalid", "true");
       await page.getByLabel("Companion 1 name").fill("Sam Taylor");
-      await page.getByLabel("Meal choice", { exact: true }).nth(1).selectOption("fish");
+      await selectDropdown(page.getByLabel("Meal choice", { exact: true }).nth(1), "fish");
       await page.getByRole("button", { name: "Add a companion" }).click();
       await page.getByLabel("Companion 2 name").fill("Jordan Taylor");
-      await page.getByLabel("Meal choice", { exact: true }).nth(2).selectOption("vegetarian");
+      await selectDropdown(page.getByLabel("Meal choice", { exact: true }).nth(2), "vegetarian");
       await expect(page.getByRole("button", { name: "Add a companion" })).toBeDisabled();
       await check("party-full");
       await page.getByRole("button", { name: "Remove companion 1" }).click();
@@ -79,9 +80,9 @@ for (const theme of listThemes()) {
       );
       const otherTheme = listThemes().find((item) => item.id !== theme.id);
       if (!otherTheme) throw new Error("The RSVP review needs two themes");
-      await page.getByLabel("Preview theme").selectOption(otherTheme.id);
+      await selectDropdown(page.getByLabel("Preview theme"), otherTheme.id);
       await expect(page.getByLabel("Companion 1 name")).toHaveValue("Jordan Taylor");
-      await page.getByLabel("Preview theme").selectOption(theme.id);
+      await selectDropdown(page.getByLabel("Preview theme"), theme.id);
       await page.getByRole("button", { name: "Review your reply" }).click();
       await expect(page.getByRole("list", { name: "Party and meals" })).toContainText(
         "Jordan Taylor",

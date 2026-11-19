@@ -1,3 +1,4 @@
+import { selectDropdown } from "./support/select-dropdown";
 import { randomBytes, randomInt } from "node:crypto";
 import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import postgres, { type Sql } from "postgres";
@@ -95,7 +96,7 @@ test.describe("guest accessibility audit", () => {
         await expect(page.getByRole("status", { name: "Your reply" })).toBeFocused();
         const party = page.locator('section[aria-labelledby="party-heading"]');
         await expect(party.getByLabel("Full name")).toBeVisible();
-        await party.getByLabel("Meal choice").selectOption(mealId);
+        await selectDropdown(party.getByLabel("Meal choice"), mealId);
         await party.getByRole("button", { name: "Save guest details", exact: true }).focus();
         await page.keyboard.press("Enter");
         await expect(party.getByRole("status")).toBeFocused();

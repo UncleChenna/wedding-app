@@ -1,3 +1,4 @@
+import { selectDropdown } from "./support/select-dropdown";
 import { retireInvitationFixtures } from "./support/invitation-fixtures";
 import { randomBytes } from "node:crypto";
 import { mkdirSync, readFileSync } from "node:fs";
@@ -80,13 +81,13 @@ test.describe("named RSVP party", () => {
         await passPage.close();
       }
     }
-    await section.getByLabel("Meal choice").selectOption(mealId);
+    await selectDropdown(section.getByLabel("Meal choice"), mealId);
     await section.getByLabel("Dietary notes (optional)").fill("No nuts");
     for (const name of ["Uche Example", "Obi Example"]) {
       await section.getByRole("button", { name: "Add tag-along" }).click();
       await expect(section.getByLabel("Full name").last()).toBeFocused();
       await section.getByLabel("Full name").last().fill(name);
-      await section.getByLabel("Meal choice").last().selectOption(mealId);
+      await selectDropdown(section.getByLabel("Meal choice").last(), mealId);
       await section.getByLabel("Dietary notes (optional)").last().fill("Vegetarian");
     }
     await expect(section.getByRole("button", { name: "Add tag-along" })).toBeDisabled();

@@ -1,3 +1,4 @@
+import { changeControl } from "@/test/change-control";
 // @vitest-environment jsdom
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { expect, it, vi } from "vitest";
@@ -58,11 +59,11 @@ const invitations: GuestListInvitation[] = [
 
 it("combines visible filters, announces results and restores the complete list", () => {
   render(<GuestList invitations={invitations} />);
-  fireEvent.change(screen.getByRole("searchbox", { name: "Search guests" }), {
+  changeControl(screen.getByRole("searchbox", { name: "Search guests" }), {
     target: { value: "Uchenna" },
   });
   expect(screen.getByRole("status")).toHaveTextContent("1 of 2 invitations");
-  fireEvent.change(screen.getByLabelText("Sent"), { target: { value: "unsent" } });
+  changeControl(screen.getByLabelText("Sent"), { target: { value: "unsent" } });
   expect(screen.getByRole("status")).toHaveTextContent("0 of 2 invitations");
   expect(screen.getByText(/No invitations match/)).toBeVisible();
   fireEvent.click(screen.getByRole("button", { name: "Clear filters" }));
@@ -107,7 +108,7 @@ it("mounts sharing only for an expanded row and refreshes it with a new token ve
 
 it("restores focus to results if a mutation removes the expanded row from its status filter", () => {
   const { rerender } = render(<GuestList invitations={invitations} />);
-  fireEvent.change(screen.getByLabelText("Invitation status"), { target: { value: "rsvp_yes" } });
+  changeControl(screen.getByLabelText("Invitation status"), { target: { value: "rsvp_yes" } });
   const opener = screen.getByRole("button", { name: "Invitation actions for Ada household" });
   opener.focus();
   fireEvent.click(opener);
@@ -125,7 +126,7 @@ it("restores focus to results if a mutation removes the expanded row from its st
 it("retains Undo when first sharing removes the row from the unsent filter, and clears it after reissue", () => {
   const unsent = invitations.map((row) => (row.id === "one" ? { ...row, sentAt: null } : row));
   const { rerender } = render(<GuestList invitations={unsent} />);
-  fireEvent.change(screen.getByLabelText("Sent"), { target: { value: "unsent" } });
+  changeControl(screen.getByLabelText("Sent"), { target: { value: "unsent" } });
   fireEvent.click(screen.getByRole("button", { name: "Invitation actions for Ada household" }));
   fireEvent.click(screen.getByRole("button", { name: "Record test share" }));
   rerender(<GuestList invitations={invitations} />);

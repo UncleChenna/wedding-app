@@ -1,3 +1,4 @@
+import { selectDropdown } from "./support/select-dropdown";
 import { randomBytes, randomUUID } from "node:crypto";
 import { mkdir } from "node:fs/promises";
 import postgres, { type Sql } from "postgres";
@@ -59,7 +60,7 @@ test.describe("authenticated sharing records", () => {
     );
     await page.goto("/admin/guests");
     await page.getByRole("searchbox", { name: "Search guests" }).fill(name);
-    await page.getByLabel("Sent", { exact: true }).selectOption("unsent");
+    await selectDropdown(page.getByLabel("Sent", { exact: true }), "unsent");
     const row = page.locator(`[data-invitation-id="${invitationId}"]`);
     await row.getByRole("button", { name: `Invitation actions for ${name}` }).click();
     await row.getByRole("button", { name: "Share invitation", exact: true }).click();

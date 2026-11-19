@@ -1,3 +1,4 @@
+import { selectDropdown } from "./support/select-dropdown";
 import { randomBytes } from "node:crypto";
 import { existsSync } from "node:fs";
 import postgres, { type Sql } from "postgres";
@@ -59,10 +60,10 @@ test.describe("real invitation journey", () => {
     await page.getByRole("button", { name: "Count me in", exact: true }).click();
     const party = page.locator('section[aria-labelledby="party-heading"]');
     await expect(party).toBeVisible();
-    await party.getByLabel("Meal choice").selectOption(mealId);
+    await selectDropdown(party.getByLabel("Meal choice"), mealId);
     await party.getByRole("button", { name: "Add tag-along", exact: true }).click();
     await party.getByLabel("Full name").last().fill("Obi Journey");
-    await party.getByLabel("Meal choice").last().selectOption(mealId);
+    await selectDropdown(party.getByLabel("Meal choice").last(), mealId);
     await party.getByRole("button", { name: "Save guest details", exact: true }).click();
     await expect(party.getByRole("status")).toContainText("Your guest details are saved");
     await expect(page.locator("#pass")).toContainText("2 guests");
