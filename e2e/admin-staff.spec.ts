@@ -1,3 +1,4 @@
+import { selectDropdown } from "./support/select-dropdown";
 import { randomInt } from "node:crypto";
 import { mkdirSync, readFileSync } from "node:fs";
 import postgres, { type Sql } from "postgres";
@@ -61,7 +62,7 @@ test.describe("admin staff PINs", () => {
       add.getByText("Choose the gate, the kitchen, the bar or table host."),
     ).toBeVisible();
     await expect(add.getByLabel("Name")).toHaveValue(name);
-    await add.getByLabel("Works at").selectOption("kitchen");
+    await selectDropdown(add.getByLabel("Works at"), "kitchen");
     await add.getByRole("button", { name: "Add a person" }).click();
     await expect(page.getByRole("heading", { name, level: 3 })).toBeVisible();
     await expect(page.getByText("No PIN yet").first()).toBeVisible();
@@ -178,7 +179,7 @@ test.describe("admin staff PINs", () => {
     const name = tag + " Bisi";
     const add = page.getByRole("region", { name: "Add a person" });
     await add.getByLabel("Name").fill(name);
-    await add.getByLabel("Works at").selectOption("bar");
+    await selectDropdown(add.getByLabel("Works at"), "bar");
     await add.getByRole("button", { name: "Add a person" }).click();
     await expect(page.getByRole("heading", { name, level: 3 })).toBeVisible();
 

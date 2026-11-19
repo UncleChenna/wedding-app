@@ -1,3 +1,4 @@
+import { selectDropdown } from "./support/select-dropdown";
 import { randomUUID } from "node:crypto";
 import { existsSync, mkdirSync } from "node:fs";
 import postgres, { type Sql } from "postgres";
@@ -67,14 +68,14 @@ test.describe("authenticated scan log", () => {
     await page.reload();
     await page.evaluate(() => document.fonts.ready);
     expect(await page.evaluate(() => Reflect.get(window, "scanLogCLS") as number)).toBe(0);
-    await page.getByLabel("Staff", { exact: true }).selectOption(staff);
-    await page.getByLabel("Device", { exact: true }).selectOption(device);
-    await page.getByLabel("Connection").selectOption("offline");
-    await page.getByLabel("Conflicts").selectOption("yes");
+    await selectDropdown(page.getByLabel("Staff", { exact: true }), staff);
+    await selectDropdown(page.getByLabel("Device", { exact: true }), device);
+    await selectDropdown(page.getByLabel("Connection"), "offline");
+    await selectDropdown(page.getByLabel("Conflicts"), "yes");
     await page.getByLabel("Received from (UTC)").fill("2099-12-19T12:19");
     await page.getByLabel("Received until (UTC)").fill("2099-12-19T12:21");
     for (const result of ["valid", "already_used", "invalid", "revoked", "not_rsvped"]) {
-      await page.getByLabel("Result", { exact: true }).selectOption(result);
+      await selectDropdown(page.getByLabel("Result", { exact: true }), result);
       await page.getByRole("button", { name: "Apply filters", exact: true }).click();
       await expect(page.getByRole("article")).toHaveCount(1);
       const entry = page.getByRole("article");
@@ -82,13 +83,16 @@ test.describe("authenticated scan log", () => {
       await expect(entry.getByText("Offline sync", { exact: true })).toBeVisible();
       if (result === "invalid") await expect(entry).toHaveAccessibleName("Unknown invitation");
     }
-    await page.getByLabel("Result", { exact: true }).selectOption("already_used");
-    await page.getByRole("combobox", { name: "Invitation", exact: true }).selectOption(invitation);
+    await selectDropdown(page.getByLabel("Result", { exact: true }), "already_used");
+    await selectDropdown(
+      page.getByRole("combobox", { name: "Invitation", exact: true }),
+      invitation,
+    );
     await page.getByRole("button", { name: "Apply filters", exact: true }).click();
     const eventId = eventIds.get("already_used");
     if (!eventId) throw new Error("Missing synthetic conflict event");
     const before = await db`select * from scan_events where id=${eventId}`;
-    await page.getByLabel("Resolution note", { exact: true }).selectOption("explained");
+    await selectDropdown(page.getByLabel("Resolution note", { exact: true }), "explained");
     await page.getByRole("button", { name: "Add note", exact: true }).click();
     await expect(
       page.getByText("Note saved. Original scan evidence is unchanged.", { exact: true }),
@@ -146,9 +150,12 @@ test.describe("authenticated scan log", () => {
     await page.getByRole("link", { name: "Clear filters", exact: true }).click();
     await expect(page.getByLabel("Result", { exact: true })).toHaveValue("");
     await expect(page.getByRole("combobox", { name: "Invitation", exact: true })).toHaveValue("");
-    await page.getByLabel("Staff", { exact: true }).selectOption(staff);
-    await page.getByLabel("Result", { exact: true }).selectOption("invalid");
-    await page.getByRole("combobox", { name: "Invitation", exact: true }).selectOption("unknown");
+    await selectDropdown(page.getByLabel("Staff", { exact: true }), staff);
+    await selectDropdown(page.getByLabel("Result", { exact: true }), "invalid");
+    await selectDropdown(
+      page.getByRole("combobox", { name: "Invitation", exact: true }),
+      "unknown",
+    );
     await page.getByRole("button", { name: "Apply filters", exact: true }).focus();
     await page.keyboard.press("Enter");
     await expect(page.getByRole("article", { name: "Unknown invitation" })).toHaveCount(1);

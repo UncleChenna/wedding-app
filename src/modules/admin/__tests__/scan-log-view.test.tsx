@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { cleanup, render, screen, within } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, expect, it } from "vitest";
 import { ScanLogView } from "../components/scan-log-view";
 import type { ScanLogEntry } from "../lib/scan-log";
@@ -71,8 +71,9 @@ it("preserves filters in page links and offers all five result filters, not manu
     "href",
     "/admin/scans?page=3&source=offline&conflict=yes",
   );
-  const verdicts = within(screen.getByLabelText("Result")).getAllByRole("option");
-  expect(verdicts.map((option) => option.getAttribute("value"))).toEqual([
+  fireEvent.click(screen.getByLabelText("Result"));
+  const verdicts = within(screen.getByRole("listbox", { name: "Result" })).getAllByRole("option");
+  expect(verdicts.map((option) => option.getAttribute("data-value"))).toEqual([
     "",
     "valid",
     "already_used",

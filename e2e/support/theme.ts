@@ -1,3 +1,4 @@
+import { selectDropdown } from "./select-dropdown";
 import type { Page } from "@playwright/test";
 
 import { themeToCssVars, type Theme } from "../../src/modules/theming";
@@ -16,7 +17,7 @@ export async function applyTheme(
 ): Promise<void> {
   // Interactive previews scope variables below <html>; switch their real control too.
   const previewTheme = page.getByRole("combobox", { name: "Preview theme", exact: true });
-  if (await previewTheme.count()) await previewTheme.selectOption(theme.id);
+  if (await previewTheme.count()) await selectDropdown(previewTheme, theme.id);
   // Match the device setting too, so scheme-dependent CSS (theme-color, pattern) agrees.
   await page.emulateMedia({ colorScheme: theme.colorScheme });
   await page.evaluate(

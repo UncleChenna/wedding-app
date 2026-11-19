@@ -22,7 +22,9 @@ const FOCUSABLE =
  */
 function trapTab(event: KeyboardEvent<HTMLDialogElement>) {
   if (event.key !== "Tab") return;
-  const focusable = [...event.currentTarget.querySelectorAll<HTMLElement>(FOCUSABLE)];
+  const focusable = [...event.currentTarget.querySelectorAll<HTMLElement>(FOCUSABLE)].filter(
+    (element) => !element.hidden && !element.closest("[hidden]"),
+  );
   const first = focusable[0];
   const last = focusable.at(-1);
   if (!first || !last) return;

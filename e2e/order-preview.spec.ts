@@ -1,3 +1,4 @@
+import { selectDropdown } from "./support/select-dropdown";
 import { expect, test } from "@playwright/test";
 import { listThemes } from "../src/modules/theming";
 import { scanA11y } from "./support/axe";
@@ -15,7 +16,7 @@ for (const theme of listThemes())
       await page.emulateMedia({ reducedMotion: "reduce" });
       await page.goto("/dev");
       await page.getByRole("link", { name: "Table ordering preview", exact: true }).click();
-      await page.getByLabel("Preview theme").selectOption(theme.id);
+      await selectDropdown(page.getByLabel("Preview theme"), theme.id);
       async function check(state: string) {
         await page.evaluate(() => document.fonts.ready);
         expect(await scanA11y(page)).toEqual([]);
@@ -70,9 +71,9 @@ for (const theme of listThemes())
         .fill("Please bring water without ice.");
       const other = listThemes().find((item) => item.id !== theme.id);
       if (!other) throw new Error("Two themes are required for ordering review");
-      await page.getByLabel("Preview theme").selectOption(other.id);
+      await selectDropdown(page.getByLabel("Preview theme"), other.id);
       await expect(rice).toHaveValue("2");
-      await page.getByLabel("Preview theme").selectOption(theme.id);
+      await selectDropdown(page.getByLabel("Preview theme"), theme.id);
       await page.getByRole("button", { name: "Review order" }).click();
       await expect(page.getByRole("list", { name: "Order summary" })).toContainText("Jollof rice");
       await expect(

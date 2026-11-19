@@ -1,3 +1,4 @@
+import { changeControl } from "@/test/change-control";
 // @vitest-environment jsdom
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
@@ -11,7 +12,7 @@ afterEach(() => {
 it("keeps a network failure recoverable with the original request identity", async () => {
   action.mockRejectedValue(new Error("synthetic network failure"));
   const view = render(<ScanNoteForm eventId="event-id" requestId="request-id" />);
-  fireEvent.change(screen.getByLabelText("Resolution note"), { target: { value: "reviewed" } });
+  changeControl(screen.getByLabelText("Resolution note"), { target: { value: "reviewed" } });
   const form = view.container.querySelector("form");
   if (!form) throw new Error("Missing note form");
   await act(async () => {
@@ -40,7 +41,7 @@ it("keeps the same retry identity and chosen note after a recoverable error", as
     message: "Your note couldn't be saved. Please try again.",
   });
   const view = render(<ScanNoteForm eventId="event-id" requestId="request-id" />);
-  fireEvent.change(screen.getByLabelText("Resolution note"), { target: { value: "reviewed" } });
+  changeControl(screen.getByLabelText("Resolution note"), { target: { value: "reviewed" } });
   const form = view.container.querySelector("form");
   if (!form) throw new Error("Missing note form");
   await act(async () => {
@@ -62,7 +63,7 @@ it("disables repeated submission while pending and reports successful persistenc
       }),
   );
   const view = render(<ScanNoteForm eventId="event-id" requestId="request-id" />);
-  fireEvent.change(screen.getByLabelText("Resolution note"), { target: { value: "explained" } });
+  changeControl(screen.getByLabelText("Resolution note"), { target: { value: "explained" } });
   const form = view.container.querySelector("form");
   if (!form) throw new Error("Missing note form");
   await act(async () => {

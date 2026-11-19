@@ -1,3 +1,4 @@
+import { selectDropdown } from "./support/select-dropdown";
 import { randomInt } from "node:crypto";
 import { mkdirSync, readFileSync } from "node:fs";
 import postgres, { type Sql } from "postgres";
@@ -80,7 +81,7 @@ test.describe("admin menu editor", () => {
     const add = page.getByRole("region", { name: "Add an item" });
     const name = tag + " rice";
     await add.getByLabel("Name").fill(name);
-    await add.getByLabel("Category").selectOption("meal");
+    await selectDropdown(add.getByLabel("Category"), "meal");
     await add.getByLabel("Position").fill("-1000");
     await add.getByRole("button", { name: "Add an item" }).click();
     await expect(add.getByText("Choose the kitchen or the bar.")).toBeVisible();
@@ -91,7 +92,7 @@ test.describe("admin menu editor", () => {
     await expect(add.getByLabel("Position")).toHaveValue("-1000");
     expect((await db`select 1 from menu_items where name = ${name}`).length).toBe(0);
 
-    await add.getByLabel("Prepared by").selectOption("kitchen");
+    await selectDropdown(add.getByLabel("Prepared by"), "kitchen");
     await add.getByLabel("Most per order").fill("3");
     await add.getByRole("button", { name: "Add an item" }).click();
     await expect(add.getByRole("status")).toHaveText("Added to the menu.");
